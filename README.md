@@ -7,7 +7,7 @@ Please fork this repository, make your changes and then submit a pull request.
 
 ## The CANBUS protocol
 - Newer Bafang hardware uses a CANBUS protocol for all internal communications.
-- A short overview of the currently known CANBUS registers is available here: https://github.com/stancecoke/BionX_Minimal_Translator/blob/Sniffer_for_Bafang/Inc/CAN-Registers.h
+- A short overview of the currently known CANBUS registers is available here (sniffed from a Bafang display with an Ananda Controller): https://github.com/stancecoke/BionX_Minimal_Translator/blob/Sniffer_for_Bafang/Inc/CAN-Registers.h
 
 ## Notes on the Bafang BESST Software
 
