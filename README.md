@@ -30,3 +30,11 @@ One could write a complete alternative backend for BEST in about a week or two, 
 - Comparing different versions, indicate some obfustication might be going on, but we can clearly deff the actual hex differences.
 - After running Binwalk it seems the code is for ARM, little endian based cortex hardware with THUMB instructions
 - Initial tries with GHIDRA or IDA Pro to decompile where not (yet) successfull
+
+## Basic reprogramming using CAN commands
+
+- [CiDi](https://endless-sphere.com/forums/memberlist.php?mode=viewprofile&u=74090) was able to reverse engineer the commands for changing 25/45/60kmh mode, wheel size, circumference, tourque and position calibration without genuine Bafang hardware (BESST tool). See [ES#p1595302](https://endless-sphere.com/forums/viewtopic.php?f=28&t=100777&start=400#p1595302) Works for M500 & M600
+
+## Python trick for BEEST software
+
+- [CiDi](https://endless-sphere.com/forums/memberlist.php?mode=viewprofile&u=74090) also wrote a python script to fool the BESST software, to use it without any licenced Bafang account. Script from [ES#p1617500](https://endless-sphere.com/forums/viewtopic.php?f=28&t=100777&start=500#p1617500). Software from [Bafang OEM](https://bafang-e.com/en/oem-area/service/besst/) Works with currently latest 1.2.26
