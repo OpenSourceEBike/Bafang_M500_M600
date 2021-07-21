@@ -1,0 +1,136 @@
+This file contains a readout by CIDI (https://endless-sphere.com/forums/viewtopic.php?f=28&t=100777&start=375#p1591512)
+It lists the CANBUS readout settings used to snoop the CANBUS SET commands as send by the BESST hardware tool for the settings available in the BESST software tool.
+
+
+Pinout HIGO-B5-Female:
+    ────────┐
+ /    1   5 │
+│ 2         │
+ \    3   4 │
+    ────────┘
+1 Orange	: P+
+2 White	: CAN L
+3 Brown	: PL
+4 Green	: CAN H
+5 Black	: Ground
+
+
+CAN ID = 02F832=Controller / 031063=HMI / 051032=BESST
+Bit Rate 250 kBit/s
+
+-Presence increase Byte 3
+ID: 01F83100
+Byte: 4
+Fixed Byte 0				: EE
+Fixed Byte 1				: 02
+Fixed Byte 2				: 00
+Presence Byte 3			: 00÷FF
+
+-During power up
+ID: 011D0000
+Byte: 8
+Byte 0						: 53
+Byte 1						: 52
+Byte 2						: 20
+Byte 3						: 50
+Byte 4						: 41
+Byte 5						: 32
+Byte 6						: 31
+Byte 7						: 32
+
+-During power up
+ID: 011D0001
+Byte: 8
+Byte 0						: 2E
+Byte 1						: 33
+Byte 2						: 32
+Byte 3						: 2E
+Byte 4						: 53
+Byte 5						: 54
+Byte 6						: 2E
+Byte 7						: 43
+
+-During power up
+ID: 011E0002
+Byte: 5
+Byte 0						: 20
+Byte 1						: 31
+Byte 2						: 2E
+Byte 3						: 30
+Byte 4						: 11
+
+-During power up
+ID: 011C6001
+Byte: 5
+Byte 0						: 11
+
+
+-BESST Setup
+ID: 05103203
+Byte: 6
+Speed Limit Byte 0/1		: 60.00km/h(1770Hex) = 70 17 / 25.00km/h(9C4Hex) = C4 09
+Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
+Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
+
+ID: 05106101
+Byte: 0
+Torque Sensor Calibration
+
+ID: 05106200
+Byte: 0
+Position Sensor Calibration
+
+
+
+-Controller display
+ID: 02F83200
+Byte: 8
+Byte 0/1						: 
+Byte 2/3						: 
+Byte 4/5						: 
+Level Byte 6/7				: 0 = FF FF / 1= 40 1F / 2= 2C 1A / 3 = EC 13 / 4 = AC 0D / 5 = 8C 0A
+
+ID: 02F83201
+Byte: 8
+Speed Byte 0/1				: 25.00km/h(9C4Hex) = C4 09
+Current						: 10.00A(3E8Hex) = E8 03
+Temperature Byte 4/5		: 10.00°C(3E8Hex) = E8 03
+Voltage Byte 6/7			: 53.46V(14E2Hex) = E2 14
+
+ID: 02F83202
+Byte: 1
+Presence Byte 0			: 00
+
+ID: 02F83203
+Byte: 6
+Speed Limit Byte 0/1		: 60.00km/h(1770Hex) = 70 17 / 25.00km/h(9C4Hex) = C4 09
+Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
+Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
+
+ID: 02F83205
+Byte: 2
+Byte 0						: 00
+Byte 1						: 00
+
+
+-HMI Setup Controller
+ID: 03106300
+Byte: 4
+Level number Byte 0		: 05
+Set Level Byte 1			: 0 = 00 / 1 = 0B / 2 = 0D / 3 = 15 / 4 = 17 / 5 = 03
+Button Set level Byte 2	: Change Off = 00 / Change On = 02 / Change Off with light = 01 / Change On with light = 03
+On/Off Byte 3				: Off = 00 / On = 01
+
+ID: 03106303
+Byte: 1
+Presence Byte 0			: 09
+
+
+Level matching:
+L9  L5  L3	
+0   0   0	: FF FF
+1-2 1 		: 40 1F
+3-4 2   1	: 2C 1A
+5-6 3   2	: EC 13
+7-8 4			: AC 0D
+9   5   3	: 8C 0A
