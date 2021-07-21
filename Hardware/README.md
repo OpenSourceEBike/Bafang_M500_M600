@@ -47,7 +47,7 @@ The difference between 52v or 48v are, however, very small so it wouldn't actual
 
 ##### m500
 
-The m500 is available in a 43v/?A and a 48v/?A varaiant.
+The m500 is available in a 36v/15a, 43v/?A and a 48v/?A varaiant.
 
 
 ## Gearing
@@ -62,4 +62,11 @@ m600: 6:27
 m500: 7:32
 
 Here are a few pictures of people trying to find the stock gearing part numbers:
+`TODO: Insert images`
+
+## Controller hardware module
+
+It should technically be possible to transplant a m600 module into a m500, however: one would need to change the wiring from the board to the motor (phase wires) in such a way that the colors line up.
+The differences are mostly the fact that the m500 has 1 instead of 2 shunt resistors in the m600 and the m600 seems to have one or more extra MOSFETS
+
 `TODO: Insert images`
