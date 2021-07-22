@@ -9,7 +9,7 @@ https://www.higoconnector.com/news/compact-transmission-connector-range
 
 ##### Connection diagram
 
-`TODO: insert image`
+![connectiondiagram](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/Bafang%20Diagram.png)
 
 ### m600 Teardown
 
@@ -20,17 +20,23 @@ https://www.youtube.com/watch?v=muSNIUXNNaQ
 ## Specifications
 
 ##### m500
-`TODO: Insert image`
+![m500specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/m500%20specs.PNG)
+
 
 
 ##### m600
-`TODO: Insert image`
+![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/m600%20specs.PNG)
+
 
 
 ## Battery
 
 For both models the official Bafang battery includes a connector that might in the future include CANBUS integration for the battery.
 However: The motor controller, as of July 2021, does not require the battery to be CANBUS connected to function. This means connecting the battery power-wires to the motor controller is enough.
+
+![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/battery.jpg)
+
+## Power
 
 ##### m600
 
@@ -76,4 +82,4 @@ Here are a few pictures of people trying to find the stock gearing part numbers:
 It should technically be possible to transplant a m600 module into a m500, however: one would need to change the wiring from the board to the motor (phase wires) in such a way that the colors line up.
 The differences are mostly the fact that the m500 has 1 instead of 2 shunt resistors in the m600 and the m600 seems to have one or more extra MOSFETS
 
-`TODO: Insert images`
+![controllercomparison](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/controllercomparison.jpg)
