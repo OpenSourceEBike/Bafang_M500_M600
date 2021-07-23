@@ -351,6 +351,24 @@ module.exports.sensorSignal = (source, target) => {
 
 ##### controllerInformation
 
+example code:
+```
+if (res.data.code === '32' && res.data.subCode === '00') {
+    var temInfo_0 = Buffer.from(res.data.data, 'hex');
+    _this13.conCapacityLeft = temInfo_0[0];
+    _this13.conSingleTrip = (temInfo_0[1] + temInfo_0[2] * 256) / 100;
+    _this13.conCadence = temInfo_0[3];
+    _this13.conTorque = temInfo_0[4] + temInfo_0[5] * 256;
+    var tem = temInfo_0[6] + temInfo_0[7] * 256;
+    if (tem < 65535) {
+        _this13.conSingleTripLeft = tem / 100;
+    } else {
+        _this13.conSingleTripLeft = "-";
+    }
+}
+```
+
+Function code:
 
 ```
 /**
@@ -368,6 +386,19 @@ module.exports.controllerInformation = (source, target) => {
 
 ##### controllerInformation_1
 
+example code:
+```
+if (res.data.code === '32' && res.data.subCode === '01') {
+    var temInfo_1 = Buffer.from(res.data.data, 'hex');
+    _this13.conSpeed = (temInfo_1[0] + temInfo_1[1] * 256) / 100;
+    _this13.conCurrent = (temInfo_1[2] + temInfo_1[3] * 256) / 100;
+    _this13.conVoltage = (temInfo_1[4] + temInfo_1[5] * 256) / 100;
+    _this13.conTemperature = temInfo_1[6] - 40;
+    _this13.motorTemperature = temInfo_1[7] - 40;
+}
+```
+
+Function code:
 
 ```
 /**
@@ -384,6 +415,18 @@ module.exports.controllerInformation_1 = (source, target) => {
 
 
 ##### controllerInformation_2
+
+example code:
+```
+if (res.data.code === '32' && res.data.subCode === '02') {
+    var temInfo_2 = Buffer.from(res.data.data, 'hex');
+    var temInfo_2_value = _controller2.default.port.addZero(temInfo_2[0].toString(2), 8);
+    _this13.assistance = temInfo_2_value.substr(7, 1) === '0' ? _this13.lanTrans[0] : _this13.lanTrans[1];
+}
+```
+
+Function code:
+
 
 
 ```
@@ -402,6 +445,23 @@ module.exports.controllerInformation_2 = (source, target) => {
 
 
 ##### controllerInformation_3
+
+
+example code:
+```
+if (res.data.code === '32' && res.data.subCode === '03' && res.data.targetCode == 15) {
+    var result_3 = Buffer.from(res.data.data, 'hex');
+    _this13.speedLimitRead = (result_3[0] + result_3[1] * 256) / 100;
+    _this13.wheelDiameters.find(function (item) {
+        if (item.value == res.data.data.substr(4, 4).toUpperCase()) {
+            _this13.wheelDiameterRead = item.label;
+        }
+    });
+    _this13.circumferenceRead = result_3[4] + result_3[5] * 256;
+}
+```
+
+Function code:
 
 
 ```
@@ -449,6 +509,16 @@ module.exports.controllerInformation_4 = (source, target) => {
 
 
 ##### controllerInformation_5
+
+example code:
+```
+if (res.data.code === '32' && res.data.subCode === '05') {
+    var temInfo_5 = Buffer.from(res.data.data, 'hex');
+    _this13.calorie = temInfo_5[0] + temInfo_5[1] * 256;
+}
+```
+
+Function code:
 
 
 ```
@@ -1058,6 +1128,44 @@ module.exports.batteryCharacteristics= (source, target) => {
 
 ## "Public" CANBUS SET/UPDATE functions
 
+Example code:
+```
+writeSpeed: function writeSpeed(data) {
+    var _this17 = this;
+
+    var spd = this.speedLimit * 100;
+    var cir = parseInt(this.circumference);
+    var spdStr = Buffer.from([spd >> 8 & 0xff, spd & 0xff]).reverse().toString('hex');
+    var cirBuf = Buffer.from([cir >> 8 & 0xff, cir & 0xff]).reverse().toString('hex');
+
+    _controller2.default.port.usbSDK.publicInformation.update.controllerInformation_3(0x05, 0x02, spdStr + this.wheelDiameter + cirBuf).then(function (res) {
+        console.log(res);
+
+        if (res.can == "NORMAL_ACK" && res.targetCode == 5) {
+            _this17.speedLimitRead = '';
+            _this17.wheelDiameterRead = '';
+            _this17.circumferenceRead = '';
+            _this17.$message({
+                message: _this17.$t('cNam.writeSuccess'),
+                type: 'success'
+            });
+            _this17.saveRecord(data);
+        } else if (res.can == "ERROR_ACK" && res.targetCode == 5) {
+            _this17.$message({
+                message: _this17.$t('cNam.writeFail'),
+                type: 'error'
+            });
+        }
+    }).catch(function (err) {
+        console.log(err);
+        _this17.usbErrorCheck(err);
+    }).finally(function () {
+        console.log("write speed finally.");
+    });
+},
+```
+
+Actual function:
 
 ```
 /**
