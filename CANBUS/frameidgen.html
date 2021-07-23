@@ -1,0 +1,54 @@
+
+<HTML>
+<HEAD>
+<TITLE>Generate FrameID</TITLE>
+<SCRIPT LANGUAGE="JavaScript">
+function testResults (form) {
+    var test = buildHexStringCommand(form.source.value, form.target.value, form.opt.value, form.code.value, form.subcode.value);
+    alert ("Calculated FrameID: " + test);
+     console.log(test)
+}
+
+
+function hexReverse(hexString) {
+    var array = [];
+    if (hexString.length % 2 !== 0) {
+        hexString = '0' + hexString;
+    }
+
+    for (var i = 0; i < hexString.length; i += 2) {
+        array.push(hexString.substr(i, 2));
+    }
+    return array.reverse().join('');
+}
+function hexAllocToBinaryStr(hex, length) {
+    let str = new Array(length + 1).join('0') + parseInt(hex, 16).toString(2);
+    return str.substr(str.length - length, length);
+}
+
+function buildHexStringCommand(source, target, opt, anfn, nfn) {
+    const cmdPrefix = hexAllocToBinaryStr(source, 5) + hexAllocToBinaryStr(target, 5) + hexAllocToBinaryStr(opt, 3);
+    let cmdPrefixHex = parseInt(cmdPrefix, 2).toString(16);
+    if (cmdPrefixHex.length % 2 !== 0) {
+        cmdPrefixHex = '0' + cmdPrefixHex;
+    }
+    let cmdHexString = cmdPrefixHex + anfn + nfn;
+    //return hexReverse(cmdHexString);
+    return cmdHexString;
+};
+
+</SCRIPT>
+</HEAD>
+<BODY>
+<FORM NAME="frameform" ACTION="" METHOD="GET">enter the details to calculate the frameid for: <BR>
+<input type="text" NAME="source"> 
+<input type="text" NAME="target"> 
+<input type="text" NAME="opt"> 
+<input type="text" NAME="code" > 
+<input type="text" NAME="subcode" > 
+<P>
+
+<INPUT TYPE="button" NAME="button" Value="Click" onClick="testResults(this.form)">
+</FORM>
+</BODY>
+</HTML>
