@@ -37,7 +37,7 @@ module.exports.modelNumber = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '02');
 };
 
-## get.serialNumber
+## get.serialNumber(0x05, 0x04)
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -59,7 +59,7 @@ module.exports.customerNumber = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '04');
 };
 
-## get.
+## get.conParams(0x05, 0x02)
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -70,7 +70,7 @@ module.exports.conParams = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '11');
 };
 
-## get.
+## get.conParams_2(0x05, 0x02)
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -81,7 +81,7 @@ module.exports.conParams_2 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '12');
 };
 
-## get.
+## get.conParams_3(0x05, 0x02)
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -92,7 +92,7 @@ module.exports.conParams_3 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '13');
 };
 
-## get.
+## Never Called in code
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -104,7 +104,7 @@ module.exports.sensorCalibration = (source, target) => {
 };
 
 
-## get.
+## Never Called in code
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -139,7 +139,14 @@ module.exports.dataOfHmi = () => {
 };
 
 
-## get.
+## get.dataOfHmi_1(0x05, 0x03)
+# _hmi2.default.port.usbSDK.machineInformation.get.dataOfHmi_1(0x05, 0x03).then(function (res) {
+#     var result_1 = Buffer.from(res.data, 'hex');
+#     _this4.totalMileage = result_1[0] + result_1[1] * 256 + result_1[2] * 256 * 256;
+#     _this4.singleMileage = (result_1[3] + result_1[4] * 256 + result_1[5] * 256 * 256) / 10;
+#     _this4.speedMax = (result_1[6] + result_1[7] * 256) / 10;
+# });
+
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -150,7 +157,10 @@ module.exports.dataOfHmi_1 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '63', '01');
 };
 
-## get.
+## get.dataOfHmi_2(0x05, 0x03)
+# var result_3 = Buffer.from(res.data, 'hex');
+# _this4.speedAverage = (result_3[0] + result_3[1] * 256) / 10;
+# _this4.serviceMileage = (result_3[2] + result_3[3] * 256 + result_3[4] * 256 * 256) / 10;
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -161,7 +171,7 @@ module.exports.dataOfHmi_2 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '63', '02');
 };
 
-## get.
+## Not Called in code
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -194,7 +204,7 @@ module.exports.designInformation = () => {
     return deferred.promise;
 };
 
-## get.
+## get.chargingInformation
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -205,7 +215,7 @@ module.exports.chargingInformation = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '01');
 };
 
-## get.
+## get.batteryCellsInformation
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -216,7 +226,7 @@ module.exports.batteryCellsInformation = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '02');
 };
 
-## get.
+## get.batteryCellsInformation_1
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -227,7 +237,7 @@ module.exports.batteryCellsInformation_1 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '03');
 };
 
-## get.
+## get.batteryCellsInformation_2
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -238,7 +248,7 @@ module.exports.batteryCellsInformation_2 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '04');
 };
 
-## get.
+## get.batteryCellsInformation_3
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -249,7 +259,7 @@ module.exports.batteryCellsInformation_3 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '05');
 };
 
-## get.
+## get.batteryCellsInformation_4
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -260,7 +270,7 @@ module.exports.batteryCellsInformation_4 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '06');
 };
 
-## get.
+## get.batteryCellsInformation_5
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -271,7 +281,7 @@ module.exports.batteryCellsInformation_5 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '07');
 };
 
-## get.
+## get.batteryCellsInformation_6
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -282,7 +292,7 @@ module.exports.batteryCellsInformation_6 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '08');
 };
 
-## get.
+## get.batteryCellsInformation_7
 /**
  * @function
  * @param {string} source - defaults to BST
@@ -293,7 +303,7 @@ module.exports.batteryCellsInformation_7 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '09');
 };
 
-## get.
+## get.batteryCharacteristics
 /**
  * @function
  * @param {string} source - defaults to BST
