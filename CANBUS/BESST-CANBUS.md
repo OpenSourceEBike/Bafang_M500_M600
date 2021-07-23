@@ -7,6 +7,23 @@
 
 |Function|GET/SET|second-last-digit|last-digit|
 |---|---|---|---|
+|pulse|GET|30|00|
+|sensorSignal|GET|31|00|
+|controllerInformation|GET|32|00|
+|controllerInformation_1|GET|32|01|
+|controllerInformation_2|GET|32|02|
+|controllerInformation_3|GET/SET|32|03|
+|controllerInformation_4|GET|32|04|
+|controllerInformation_5|GET|32|05|
+|batteryInformation|GET|34|00|
+|batteryInformation_1|GET|34|01|
+|batteryInformation_2|GET|34|02|
+|besst|GET|35|00|
+|transmissionInformation|GET|36|00|
+|transmissionInformation_1|GET|36|01|
+|transmissionInformation_2|GET|36|02|
+|transmissionInformation_3|GET|36|03|
+|eletronicLockInformation|GET|37|00|
 |hardwareVersionNumber|GET/SET|60|00|
 |softwareVersionNumber|GET|60|01|
 |modelNumber|GET/SET|60|02|
@@ -315,7 +332,7 @@ module.exports.pulse = (source, target) => {
 ```
 
 
-#####
+##### sensorSignal
 
 
 ```
@@ -332,7 +349,7 @@ module.exports.sensorSignal = (source, target) => {
 
 
 
-#####
+##### controllerInformation
 
 
 ```
@@ -349,7 +366,7 @@ module.exports.controllerInformation = (source, target) => {
 
 
 
-#####
+##### controllerInformation_1
 
 
 ```
@@ -366,7 +383,7 @@ module.exports.controllerInformation_1 = (source, target) => {
 
 
 
-#####
+##### controllerInformation_2
 
 
 ```
@@ -384,7 +401,7 @@ module.exports.controllerInformation_2 = (source, target) => {
 
 
 
-#####
+##### controllerInformation_3
 
 
 ```
@@ -414,7 +431,7 @@ module.exports.controllerInformation_3 = (source, target) => {
 
 
 
-#####
+##### controllerInformation_4
 
 
 ```
@@ -431,7 +448,7 @@ module.exports.controllerInformation_4 = (source, target) => {
 
 
 
-#####
+##### controllerInformation_5
 
 
 ```
@@ -448,7 +465,7 @@ module.exports.controllerInformation_5 = (source, target) => {
 
 
 
-#####
+##### batteryInformation
 
 
 ```
@@ -465,7 +482,7 @@ module.exports.batteryInformation = (source, target) => {
 
 
 
-#####
+##### batteryInformation_1
 
 
 ```
@@ -482,7 +499,7 @@ module.exports.batteryInformation_1 = (source, target) => {
 
 
 
-#####
+##### batteryInformation_2
 
 
 ```
@@ -499,7 +516,7 @@ module.exports.batteryInformation_2 = (source, target) => {
 
 
 
-#####
+##### besst
 
 
 ```
@@ -516,7 +533,7 @@ module.exports.besst = (source, target) => {
 
 
 
-#####
+##### transmissionInformation
 
 
 ```
@@ -533,7 +550,7 @@ module.exports.transmissionInformation = (source, target) => {
 
 
 
-#####
+##### transmissionInformation_1
 
 
 ```
@@ -550,7 +567,7 @@ module.exports.transmissionInformation_1 = (source, target) => {
 
 
 
-#####
+##### transmissionInformation_2
 
 
 ```
@@ -567,7 +584,7 @@ module.exports.transmissionInformation_2 = (source, target) => {
 
 
 
-#####
+##### transmissionInformation_3
 
 
 ```
@@ -584,7 +601,7 @@ module.exports.transmissionInformation_3 = (source, target) => {
 
 
 
-#####
+##### eletronicLockInformation
 
 
 ```
