@@ -1,0 +1,415 @@
+
+/**
+ * Machine information CAN get
+ * @module machineInformation/can/get
+ */
+
+## get.hardwareVersionNumber(0x05, target)
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.hardwareVersionNumber = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '00');
+};
+
+## get.softwareVersionNumber(0x05, target)
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.softwareVersionNumber = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '01');
+};
+
+## get.modelNumber(0x05, target)
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.modelNumber = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '02');
+};
+
+## get.serialNumber
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.serialNumber = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '03');
+};
+
+## get.customerNumber(0x05, 0x02)
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.customerNumber = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '04');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.conParams = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '11');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.conParams_2 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '12');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.conParams_3 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '60', '13');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.sensorCalibration = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '61', '00');
+};
+
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.controllerFeatures = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '62', '15');
+};
+
+
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.dataOfHmi = () => {
+    const deferred = q.defer();
+    //Timeout requests after 1 seconds
+    let timer = setTimeout(() => {
+        deferred.reject('Timeout');
+    }, 10000);
+
+    client.events.on('data', (res) => {
+        if (res.code === '63' && res.subCode == '00') {
+            clearTimeout(timer);
+            deferred.resolve(res);
+        }
+    });
+    return deferred.promise;
+};
+
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.dataOfHmi_1 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '63', '01');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.dataOfHmi_2 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '63', '02');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.dataOfHmi_3 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '63', '03');
+};
+
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.designInformation = () => {
+    const deferred = q.defer();
+    //Timeout requests after 1 seconds
+    let timer = setTimeout(() => {
+        deferred.reject('Timeout');
+    }, common.timeout);
+
+    client.events.on('data', (res) => {
+        if (res.code === '64') {
+            clearTimeout(timer);
+            deferred.resolve(res);
+        }
+    });
+    return deferred.promise;
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.chargingInformation = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '01');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.batteryCellsInformation = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '02');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.batteryCellsInformation_1 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '03');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.batteryCellsInformation_2 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '04');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.batteryCellsInformation_3 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '05');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.batteryCellsInformation_4 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '06');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.batteryCellsInformation_5 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '07');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.batteryCellsInformation_6 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '08');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.batteryCellsInformation_7 = (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '09');
+};
+
+## get.
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @returns {Promise}
+ */
+module.exports.batteryCharacteristics= (source, target) => {
+    return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '15');
+};
+
+
+
+/**
+ * Machine information CAN get
+ * @module machineInformation/can/update
+ */
+
+const client = __webpack_require__(71);
+const common = __webpack_require__(28);
+
+module.exports.hardwareVersionNumber = (source, target, newValue) => {
+    return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '00', newValue);
+};
+
+module.exports.modelNumber = (source, target, newValue) => {
+    return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '02', newValue);
+};
+
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @param {string} newValue - new value
+ * @returns {Promise}
+ */
+module.exports.serialNumber = (source, target, newValue) => {
+    return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '03', newValue);
+};
+
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @param {string} newValue - new value
+ * @returns {Promise}
+ */
+module.exports.customerNumber = (source, target, newValue) => {
+    return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '04', newValue);
+};
+
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @param {string} newValue - new value
+ * @returns {Promise}
+ */
+module.exports.dataOfHmi_2 = (source, target, newValue) => {
+    return client.request_updateSimple(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '63', '02', newValue);
+};
+
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @param {string} newValue - new value
+ * @returns {Promise}
+ */
+module.exports.conParams = (source, target, newValue) => {
+    return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '11', newValue);
+};
+
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @param {string} newValue - new value
+ * @returns {Promise}
+ */
+module.exports.conParams_2 = (source, target, newValue) => {
+    return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '12', newValue);
+};
+
+
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @param {string} newValue - new value
+ * @returns {Promise}
+ */
+module.exports.conParams_2 = (source, target, newValue) => {
+    return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '12', newValue);
+};
+
+## conParams_3(0x05, 0x02, this.conParamsWrite_13
+/**
+ *  @function
+ *  @param {string} source - defaults to BST
+ *  @param {string} target - defaults to HMI 
+ *  @param {string} newValue - new value
+ *  @returns {Promise}
+ */
+module.exports.conParams_3 = (source, target, newValue) => {
+    return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '13', newValue);
+};
+
+
+## positionSensorCalibration(0x05, 0x02, '')
+/**
+ * @function
+ * @param {string} source - defaults to BST
+ * @param {string} target - defaults to HMI 
+ * @param {string} newValue - new value
+ * @returns {Promise}
+ */
+module.exports.positionSensorCalibration = (source, target,newValue) => {
+    return client.request_updateSimple(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '62', '00',newValue);
+};
