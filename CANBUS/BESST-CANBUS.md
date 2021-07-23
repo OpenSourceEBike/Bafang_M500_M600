@@ -1310,3 +1310,265 @@ module.exports.positionSensorCalibration = (source, target,newValue) => {
     return client.request_updateSimple(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '62', '00',newValue);
 };
 ```
+
+
+## Setting the controller parameters
+
+Inside BESST using SET by CANBUS towards the controller is actually possible, which should allow setting things like Max current.
+However it needs more reverse enginering, because BESST obfusticates how to get actual indiviual values out of the GET/SET CANBUS data.
+
+See the following Codesnippet that needs reverse enginering
+
+```
+        conParamsRead_6011: function conParamsRead_6011() {
+            var _this4 = this;
+
+            _controller2.default.port.usbSDK.machineInformation.get.conParams(0x05, 0x02).then(function (res) {
+                _this4.conParamsRead_11 = res.data;
+
+                if (_this4.conParamsRead_11) {
+
+                    var checkSum = _core2.default.Util.calculateChecksumFF(_this4.conParamsRead_11.substr(0, 126));
+                    console.log(checkSum);
+                    if (checkSum == parseInt(_this4.conParamsRead_11.substr(126, 2), 16)) {
+                        _this4.$message("数据校验通过");
+                        _this4.ctrlParams6011.forEach(function (item) {
+                            var ind = parseInt(item.data.substr(0, 2));
+                            var len = item.length;
+                            if (len == 1) {
+                                item.read_value = parseInt(_this4.conParamsRead_11.substr(ind * 2, len * 2), 16);
+                                item.set_value = parseInt(_this4.conParamsRead_11.substr(ind * 2, len * 2), 16);
+                            } else {
+                                var data = _this4.conParamsRead_11.substr(ind * 2, len * 2);
+                                var arr = Buffer.from(data, 'Hex').reverse();
+                                item.read_value = parseInt(arr.toString('Hex'), 16);
+                                item.set_value = parseInt(arr.toString('Hex'), 16);
+                            }
+                        });
+                    } else {
+                        _this4.$message("数据校验不通过");
+                    }
+                }
+            }).catch(function (err) {
+                console.log(err);
+            }).finally(function () {
+                console.log('conParams 11');
+            });
+        },
+        conParamsRead_6012: function conParamsRead_6012() {
+            var _this5 = this;
+
+            _controller2.default.port.usbSDK.machineInformation.get.conParams_2(0x05, 0x02).then(function (res) {
+
+                _this5.conParamsRead_12 = res.data;
+
+                if (_this5.conParamsRead_12) {
+
+                    var checkSum = _core2.default.Util.calculateChecksumFF(_this5.conParamsRead_12.substr(0, 126));
+                    console.log(checkSum);
+                    if (checkSum == parseInt(_this5.conParamsRead_12.substr(126, 2), 16)) {
+                        _this5.$message("数据校验通过");
+                        _this5.ctrlParams6012.forEach(function (item) {
+                            var ind = parseInt(item.data.substr(0, 2));
+                            var len = item.length;
+                            if (len == 1) {
+                                item.read_value = parseInt(_this5.conParamsRead_12.substr(ind * 2, len * 2), 16);
+                                item.set_value = parseInt(_this5.conParamsRead_12.substr(ind * 2, len * 2), 16);
+                            } else {
+                                var data = _this5.conParamsRead_12.substr(ind * 2, len * 2);
+                                var arr = Buffer.from(data, 'Hex').reverse();
+                                item.read_value = parseInt(arr.toString('Hex'), 16);
+                                item.set_value = parseInt(arr.toString('Hex'), 16);
+                            }
+                        });
+                    } else {
+                        _this5.$message("数据校验不通过");
+                    }
+                }
+            }).catch(function (err) {
+                console.log(err);
+            }).finally(function () {
+                console.log('conParams 12');
+            });
+        },
+        conParamsRead_6013: function conParamsRead_6013() {
+            var _this6 = this;
+
+            _controller2.default.port.usbSDK.machineInformation.get.conParams_3(0x05, 0x02).then(function (res) {
+
+                _this6.conParamsRead_13 = res.data;
+
+                if (_this6.conParamsRead_13) {
+
+                    var checkSum = _core2.default.Util.calculateChecksumFF(_this6.conParamsRead_13.substr(0, 126));
+                    console.log(checkSum);
+                    if (checkSum == parseInt(_this6.conParamsRead_13.substr(126, 2), 16)) {
+                        _this6.$message("数据校验通过");
+                        _this6.ctrlParams6013.forEach(function (item) {
+                            var ind = parseInt(item.data.substr(0, 2));
+                            var len = item.length;
+                            if (len == 1) {
+                                item.read_value = parseInt(_this6.conParamsRead_13.substr(ind * 2, len * 2), 16);
+                                item.set_value = parseInt(_this6.conParamsRead_13.substr(ind * 2, len * 2), 16);
+                            } else {
+                                var data = _this6.conParamsRead_13.substr(ind * 2, len * 2);
+                                var arr = Buffer.from(data, 'Hex').reverse();
+                                item.read_value = parseInt(arr.toString('Hex'), 16);
+                                item.set_value = parseInt(arr.toString('Hex'), 16);
+                            }
+                        });
+                    } else {
+                        _this6.$message("数据校验不通过");
+                    }
+                }
+            }).catch(function (err) {
+                console.log(err);
+            }).finally(function () {
+                console.log('conParams 12');
+            });
+        },
+        conParamsCombine_6011: function conParamsCombine_6011() {
+            var _this7 = this;
+
+            var data = '';
+
+            this.ctrlParams6011.forEach(function (item) {
+                var len = item.length;
+
+                var dateTem = parseInt(item.set_value);
+                var hexTemp = dateTem.toString(16);
+
+                hexTemp = _this7.addLength(hexTemp, len);
+                var arr = Buffer.from(hexTemp, 'Hex');
+                data += arr.reverse().toString('Hex');
+            });
+            data = (data + 'ff').substr(0, 126);
+            var checkSum = _core2.default.Util.calculateChecksumFF(data);
+            console.log(checkSum);
+            this.conParamsWrite_11 = data + Buffer.from([checkSum]).toString('Hex');
+        },
+        conParamsCombine_6012: function conParamsCombine_6012() {
+            var _this8 = this;
+
+            var data = '';
+
+            this.ctrlParams6012.forEach(function (item) {
+                var len = item.length;
+
+                var dateTem = parseInt(item.set_value);
+                var hexTemp = dateTem.toString(16);
+
+                hexTemp = _this8.addLength(hexTemp, len);
+                var arr = Buffer.from(hexTemp, 'Hex');
+                data += arr.reverse().toString('Hex');
+            });
+            data = (data + 'ffffffffffffffffffffffffffffffffffffffffff').substr(0, 126);
+            var checkSum = _core2.default.Util.calculateChecksumFF(data);
+            console.log(checkSum);
+            this.conParamsWrite_12 = data + Buffer.from([checkSum]).toString('Hex');
+        },
+        conParamsCombine_6013: function conParamsCombine_6013() {
+            var _this9 = this;
+
+            var data = '';
+
+            this.ctrlParams6013.forEach(function (item) {
+                var len = item.length;
+
+                var dateTem = parseInt(item.set_value);
+                var hexTemp = dateTem.toString(16);
+
+                hexTemp = _this9.addLength(hexTemp, len);
+                var arr = Buffer.from(hexTemp, 'Hex');
+                data += arr.reverse().toString('Hex');
+            });
+            data = (data + 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff').substr(0, 126);
+            var checkSum = _core2.default.Util.calculateChecksumFF(data);
+            console.log(checkSum);
+            this.conParamsWrite_13 = data + Buffer.from([checkSum]).toString('Hex');
+        },
+        addLength: function addLength(hexData, len) {
+            var hex = hexData || '';
+            var step = len * 2;
+            var hexLength = hex.length / 2;
+            if (len === hexLength) {
+                return hex;
+            } else if (len > hexLength) {
+                return ('000000' + hex).substr(-step);
+            } else {
+                return '------'.substr(-step);
+            }
+        },
+        conParamsUpdate_6011: function conParamsUpdate_6011() {
+            var _this10 = this;
+
+            if (this.conParamsWrite_11 == '') {
+                this.conParamsCombine_6011();
+            }
+            _controller2.default.port.usbSDK.machineInformation.update.conParams(0x05, 0x02, this.conParamsWrite_11).then(function (res) {
+                console.log(res);
+                if (res.can === 'NORMAL_ACK') {
+                    _this10.$message({
+                        message: _this10.$t('cNam.writeSuccess'),
+                        type: 'success'
+                    });
+                } else {
+                    _this10.$message({
+                        message: _this10.$t('cNam.writeFail'),
+                        type: 'error'
+                    });
+                }
+            }).catch(function (err) {
+                console.log(err);
+                _this10.usbErrorCheck(err);
+            }).finally(function () {});
+        },
+        conParamsUpdate_6012: function conParamsUpdate_6012() {
+            var _this11 = this;
+
+            if (this.conParamsWrite_12 == '') {
+                this.conParamsCombine_6012();
+            }
+            _controller2.default.port.usbSDK.machineInformation.update.conParams_2(0x05, 0x02, this.conParamsWrite_12).then(function (res) {
+                console.log(res);
+                if (res.can === 'NORMAL_ACK') {
+                    _this11.$message({
+                        message: _this11.$t('cNam.writeSuccess'),
+                        type: 'success'
+                    });
+                } else {
+                    _this11.$message({
+                        message: _this11.$t('cNam.writeFail'),
+                        type: 'error'
+                    });
+                }
+            }).catch(function (err) {
+                console.log(err);
+                _this11.usbErrorCheck(err);
+            }).finally(function () {});
+        },
+        conParamsUpdate_6013: function conParamsUpdate_6013() {
+            var _this12 = this;
+
+            if (this.conParamsWrite_13 == '') {
+                this.conParamsCombine_6013();
+            }
+            _controller2.default.port.usbSDK.machineInformation.update.conParams_3(0x05, 0x02, this.conParamsWrite_13).then(function (res) {
+                console.log(res);
+                if (res.can === 'NORMAL_ACK') {
+                    _this12.$message({
+                        message: _this12.$t('cNam.writeSuccess'),
+                        type: 'success'
+                    });
+                } else {
+                    _this12.$message({
+                        message: _this12.$t('cNam.writeFail'),
+                        type: 'error'
+                    });
+                }
+            }).catch(function (err) {
+                console.log(err);
+                _this12.usbErrorCheck(err);
+            }).finally(function () {});
+        },
+```
