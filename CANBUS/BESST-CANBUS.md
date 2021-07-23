@@ -1,7 +1,17 @@
 # CANBUS information from the BESST software sourcecode
 
 
-## General Values
+## Summary
+
+##### The following Canbus frameid's have been identified:
+
+|Function|GET/SET|second-last-digit|last-digit|
+|---|---|---|---|
+|hardwareVersionNumber|GET|60|00|
+|   |   |   |   |
+|   |   |   |   |
+
+## Global Enums in BESST code
 
 ##### source and target devices on the canbus.
 
@@ -689,25 +699,28 @@ module.exports.batteryCharacteristics= (source, target) => {
 };
 ```
 
+##### hardwareVersionNumber
+
 ```
 /**
  * Machine information CAN get
  * @module machineInformation/can/update
  */
 
-const client = __webpack_require__(71);
-const common = __webpack_require__(28);
-
 module.exports.hardwareVersionNumber = (source, target, newValue) => {
     return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '00', newValue);
 };
 ```
+
+##### modelNumber
 
 ```
 module.exports.modelNumber = (source, target, newValue) => {
     return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '02', newValue);
 };
 ```
+
+##### serialNumber
 
 ```
 /**
@@ -722,6 +735,8 @@ module.exports.serialNumber = (source, target, newValue) => {
 };
 ```
 
+##### customerNumber
+
 ```
 /**
  * @function
@@ -734,6 +749,8 @@ module.exports.customerNumber = (source, target, newValue) => {
     return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '04', newValue);
 };
 ```
+
+##### dataOfHmi_2
 
 ```
 /**
@@ -748,6 +765,8 @@ module.exports.dataOfHmi_2 = (source, target, newValue) => {
 };
 ```
 
+##### conParams
+
 ```
 /**
  * @function
@@ -761,18 +780,7 @@ module.exports.conParams = (source, target, newValue) => {
 };
 ```
 
-```
-/**
- * @function
- * @param {string} source - defaults to BST
- * @param {string} target - defaults to HMI 
- * @param {string} newValue - new value
- * @returns {Promise}
- */
-module.exports.conParams_2 = (source, target, newValue) => {
-    return client.request_update(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, '60', '12', newValue);
-};
-```
+##### conParams_2
 
 ```
 /**
@@ -787,8 +795,10 @@ module.exports.conParams_2 = (source, target, newValue) => {
 };
 ```
 
+##### conParams_3
 
-## conParams_3(0x05, 0x02, this.conParamsWrite_13
+conParams_3(0x05, 0x02, this.conParamsWrite_13
+
 ```
 /**
  *  @function
@@ -802,8 +812,9 @@ module.exports.conParams_3 = (source, target, newValue) => {
 };
 ```
 
+##### positionSensorCalibration
 
-## positionSensorCalibration(0x05, 0x02, '')
+positionSensorCalibration(0x05, 0x02, '')
 ```
 /**
  * @function
