@@ -7,9 +7,33 @@
 
 |Function|GET/SET|second-last-digit|last-digit|
 |---|---|---|---|
-|hardwareVersionNumber|GET|60|00|
-|   |   |   |   |
-|   |   |   |   |
+|hardwareVersionNumber|GET/SET|60|00|
+|softwareVersionNumber|GET|60|01|
+|modelNumber|GET/SET|60|02|
+|serialNumber|GET/SET|60|03|
+|customerNumber|GET/SET|60|04|
+|conParams|GET/SET|60|11|
+|conParams_2|GET/SET|60|12|
+|conParams_3|GET/SET|60|13|
+|sensorCalibration|GET|61|00|
+|positionSensorCalibration|SET|62|00|
+|controllerFeatures|GET|62|15|
+|dataOfHmi|GET|63|00|
+|dataOfHmi_1|GET|63|01|
+|dataOfHmi_2|GET/SET|63|02|
+|dataOfHmi_3|GET|63|03|
+|designInformation|GET|64|?|
+|chargingInformation|GET|64|01|
+|batteryCellsInformation|GET|64|02|
+|batteryCellsInformation_1|GET|64|03|
+|batteryCellsInformation_2|GET|64|04|
+|batteryCellsInformation_3|GET|64|05|
+|batteryCellsInformation_4|GET|64|06|
+|batteryCellsInformation_5|GET|64|07|
+|batteryCellsInformation_6|GET|64|08|
+|batteryCellsInformation_7|GET|64|09|
+|batteryCharacteristics|GET|64|15|
+
 
 ## Global Enums in BESST code
 
@@ -403,7 +427,7 @@ module.exports.conParams_3 = (source, target) => {
 
 ##### sensorCalibration
 
-## Never Called in code
+Never Called in code
 ```
 /**
  * @function
@@ -418,7 +442,7 @@ module.exports.sensorCalibration = (source, target) => {
 
 ##### controllerFeatures
 
-## Never Called in code
+Never Called in code
 ```
 /**
  * @function
@@ -524,6 +548,8 @@ module.exports.dataOfHmi_3 = (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '63', '03');
 };
 ```
+
+##### designInformation
 
 ```
 /**
@@ -698,6 +724,8 @@ module.exports.batteryCharacteristics= (source, target) => {
     return client.request_get(common.USB_CMD.USB_CMD_PC_TO_CAN, source, target, common.CAN.READ_CMD, '64', '15');
 };
 ```
+
+## CANBUS SET/UPDATE functions
 
 ##### hardwareVersionNumber
 
