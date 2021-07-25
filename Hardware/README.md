@@ -88,8 +88,13 @@ The differences are mostly the fact that the m500 has 1 instead of 2 shunt resis
 
 The controller SoC seems to be a S32K142H NXP SoC
 
+Datasheet:
+https://github.com/OpenSourceEBike/Bafang_M500_M600/blob/main/Hardware/S32K-DS.pdf
+
 ##### MOSFETS
 
 The MOSFET(s) seem to be HGN036N08S, which are 80V/60A rated but seemingly not adequately/optimaly cooled.
 
+Datasheet:
+https://github.com/OpenSourceEBike/Bafang_M500_M600/blob/main/Hardware/HGN036N08S_V1.0-061417.pdf
 
