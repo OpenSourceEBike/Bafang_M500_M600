@@ -83,3 +83,13 @@ It should technically be possible to transplant a m600 module into a m500, howev
 The differences are mostly the fact that the m500 has 1 instead of 2 shunt resistors in the m600 and the m600 seems to have one or more extra MOSFETS
 
 ![controllercomparison](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/controllercomparison.jpg)
+
+##### Controller SoC
+
+The controller SoC seems to be a S32K142H NXP SoC
+
+##### MOSFETS
+
+The MOSFET(s) seem to be HGN036N08S, which are 80V/60A rated but seemingly not adequately/optimaly cooled.
+
+
