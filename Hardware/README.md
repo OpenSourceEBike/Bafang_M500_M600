@@ -54,7 +54,7 @@ The m500 is available in the following variants:
 - 36v/15a
 - 36v/17a
 - 48v/10A 
-- 48v/10A 
+- 48v/12A 
 
 ##### Custom power setups
 
