@@ -94,6 +94,18 @@ module.exports.CAN = {
 }
 ```
 
+/**
+ * @enum {hex}
+ * @readonly
+ */
+module.exports.OPT = {
+    OPT_HARDWARE_VERSION: 0x00,
+    OPT_SOFTWARE_VERSION: 0x01,
+    OPT_MODEL_VERSION: 0x02,
+    OPT_SN: 0x03,
+    OPT_CLIENT_NO: 0x04
+}
+
 ## Main functions
 
 ##### GET Function
