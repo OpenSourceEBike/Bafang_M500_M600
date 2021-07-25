@@ -29,6 +29,9 @@ hex address = value == effect/target-effect
 0774 = 12 == 18A
 0774 = 14 == 20A
 
-**Max current setting (Prior to assist levels, cannot find this in other firmwares?):**
-11b89
-11b8A
+**Max current setting 2:**
+somewhere around 11b00, this whole section differs between firmwares with different voltage setting
+
+24 24 == 36v
+2B 2B == 43V
+30 30 == 48v
