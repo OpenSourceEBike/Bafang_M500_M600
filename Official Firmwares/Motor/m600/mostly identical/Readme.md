@@ -24,6 +24,7 @@ hex address = value == effect/target-effect
 **Max current setting:**
 
 0774 = 0a == 10A
+0774 = 0d == 13A
 0774 = 0f == 15A
 0774 = 12 == 18A
 0774 = 14 == 20A
