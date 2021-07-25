@@ -1,16 +1,30 @@
 # Information after Diffing:
 
-0770: 24 = 36v
-0770: 30 = 48v
+hex address = value == effect/target-effect
 
-0770: VV ?? ?? ?? AA = 36v
-0770: VV ?? ?? ?? AA = 48v
+**Fully Charged voltage**
+0768 = 29 == 41( 36v firmwares)
+0768 = 30 == 48 ( 43v firmwares)
+0768 = 35 == 53 ( 48v firmwares)
 
-VV = 24 == 36v
-VV = 30 == 48v
-VV = 2B == 43V
 
-AA = 12 == 18a
-AA = 14 == 20A
-AA = 0a == 10A
+**Low voltage level:**
+
+076c = 2A  == 42v
+076c = 32 == 32v
+076c = 39  == 39v
+
+**Normal/Nominal Voltage setting:**
+
+0770 = 24 == 36v
+0770 = 2B == 43V
+0770 = 30 == 48v
+
+
+**Max current setting:**
+
+0774 = 0a == 10A
+0774 = 12 == 18A
+0774 = 14 == 20A
+
 
