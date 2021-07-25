@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="wdog" label="wdog_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+    <sw_comp_ref name="platform.driver.wdog" version="1.0.0"/>
+    <description>S32 SDK Peripheral Driver for WatchDog Timer (WDOG)</description>
+    <mode id="general" label="General" available="true">
+        <description>WDOG general mode</description>
+        <config_set_refs>
+            <config_set_ref>wdog</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>WDOG</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set id="wdog" label="WDOG Configuration" from_source="wdog_driver.h">
+        <description>WDOG Default Configuration</description>
+        <quick_selections>
+            <quick_selection id="defaultConfig" label="Default values for WDOG" available="true">
+                <description>WDOG configuration</description>
+                    <set id="WDOGConfig.0.name">WDOG_Cfg0</set>
+                    <set id="WDOGConfig.0.readonly">true</set>
+                    <set id="WDOGConfig.0.windowValue">0</set>
+                    <set id="WDOGConfig.0.timeoutValue">1024</set>
+
+            </quick_selection>
+            <default>defaultConfig</default>
+        </quick_selections>
+        <generated_types>
+            <enum id="wdog_clk_source_t" label="Clock sources for the WDOG" from="wdog_clk_source_t">
+                <description></description>
+                <item id="WDOG_BUS_CLOCK" label="WDOG_BUS_CLOCK">
+                    <description>Bus clock</description>
+                </item>
+                <item id="WDOG_LPO_CLOCK" label="WDOG_LPO_CLOCK">
+                    <description>LPO clock</description>
+                </item>
+                <item id="WDOG_SOSC_CLOCK" label="WDOG_SOSC_CLOCK">
+                    <description>SOSC clock</description>
+                </item>
+                <item id="WDOG_SIRC_CLOCK" label="WDOG_SIRC_CLOCK">
+                    <description>SIRC clock</description>
+                </item>
+            </enum>
+            <enum id="wdog_test_mode_t" label="Test modes for the WDOG" from="wdog_test_mode_t">
+                <description></description>
+                <item id="WDOG_TST_DISABLED" label="Test mode disabled">
+                    <description>Test mode disabled</description>
+                </item>
+                <item id="WDOG_TST_USER" label="User mode enabled">
+                    <description>User mode enabled. (Test mode disabled.)</description>
+                </item>
+                <item id="WDOG_TST_LOW" label="Test mode enabled, only the low byte is used">
+                    <description>Test mode enabled, only the low byte is used.</description>
+                </item>
+                <item id="WDOG_TST_HIGH" label="Test mode enabled, only the high byte is used">
+                    <description>Test mode enabled, only the high byte is used.</description>
+                </item>
+            </enum>
+        </generated_types>
+        <user_types>
+            <struct id="wdog_user_config_t" label="WDOG user configuration structure Implements : wdog_user_config_t_Class" from="wdog_user_config_t">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <info id="typeConfig" label="Type" value="`wdog_user_config_t`"/>
+                <bool id="readonly" label="Read Only">
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+                </bool>
+                <reference id="clkSource" label="Clock Source" type="wdog_clk_source_t">
+                    <description>The clock source of the WDOG</description>
+                </reference>
+                <bool id="wait" label="Wait mode" enable="(featureDefined(`FEATURE_WDOG_HAS_WAIT_MODE`) == true) &amp;&amp; (getFeature(`FEATURE_WDOG_HAS_WAIT_MODE`) == 1)">
+                    <description>Wait mode</description>
+                </bool>
+                <bool id="stop" label="Stop mode">
+                    <description>Stop mode</description>
+                </bool>
+                <bool id="debug" label="Debug mode">
+                    <description>Debug mode</description>
+                </bool>
+                <bool id="prescalerEnable" label="Prescaler Enable">
+                    <description>If true, a fixed 256 prescaling of the counter reference clock is enabled</description>
+                </bool>
+                <bool id="updateEnable" label="Update Enable">
+                    <description>If true, further updates of the WDOG are enabled</description>
+                </bool>
+                <bool id="intEnable" label="Interrupt Enable">
+                    <description>If true, an interrupt request is generated before reset</description>
+                </bool>
+                <bool id="winEnable" label="Window Enable" options="cStructField">
+                    <description>If true, window mode is enabled</description>
+                </bool>
+                <integer id="windowValue" label="Window value" type="uint16_t" enable="$parent.winEnable.getValue()" options="cStructField" max_expr="$parent.timeoutValue.getValue()">
+                    <description>The window value</description>
+                </integer>
+                <integer id="timeoutValue" label="Timeout value" type="uint16_t">
+                    <description>The timeout value</description>
+                </integer>
+            </struct>
+        </user_types>
+        <settings>
+            <array id="WDOGConfig" label="WDOG User Configuration" available="true" type="wdog_user_config_t" config_set_id="wdog" component_id="wdog" options="ShowContentAs=MasterDetail" key_selector_expr="x -> (x.getSetting(`name`).value())">
+                <description>Watchdog Timer User Configurations</description>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> ($instance.getLabel() + `_Cfg` + x.getID())"/>
+                        <set_default id="readonly" value_expr="x -> (`true`)"/>
+                        <set_default id="timeoutValue" value_expr="x -> (`1024`)"/>
+                    </item_defaults>
+            </array>
+            <variable value="`../wdog/wdog_codegen.js`" id="codegen_file"></variable>
+            <variable value="`WDOG_CodeGen`" id="codegen_class"></variable>
+        </settings>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+    </config_set>
+</component:config_component>

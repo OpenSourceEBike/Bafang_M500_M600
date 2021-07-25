@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="TSR" description="RTC Time Seconds Register">
+    <alias type="CMSIS" value="TSR"/>
+    <bit_field offset="0" width="32" name="TSR" access="RW" reset_value="0" description="Time Seconds Register">
+      <alias type="CMSIS" value="RTC_TSR_TSR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="TPR" description="RTC Time Prescaler Register">
+    <alias type="CMSIS" value="TPR"/>
+    <bit_field offset="0" width="16" name="TPR" access="RW" reset_value="0" description="Time Prescaler Register">
+      <alias type="CMSIS" value="RTC_TPR_TPR(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="TAR" description="RTC Time Alarm Register">
+    <alias type="CMSIS" value="TAR"/>
+    <bit_field offset="0" width="32" name="TAR" access="RW" reset_value="0" description="Time Alarm Register">
+      <alias type="CMSIS" value="RTC_TAR_TAR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xC" width="32" name="TCR" description="RTC Time Compensation Register">
+    <alias type="CMSIS" value="TCR"/>
+    <bit_field offset="0" width="8" name="TCR" access="RW" reset_value="0" description="Time Compensation Register">
+      <alias type="CMSIS" value="RTC_TCR_TCR(x)"/>
+      <bit_field_value name="TCR_TCR_0b00000000" value="0b00000000" description="Time Prescaler Register overflows every 32768 clock cycles."/>
+      <bit_field_value name="TCR_TCR_0b00000001" value="0b00000001" description="Time Prescaler Register overflows every 32767 clock cycles."/>
+      <bit_field_value name="TCR_TCR_0b01111110" value="0b01111110" description="Time Prescaler Register overflows every 32642 clock cycles."/>
+      <bit_field_value name="TCR_TCR_0b01111111" value="0b01111111" description="Time Prescaler Register overflows every 32641 clock cycles."/>
+      <bit_field_value name="TCR_TCR_0b10000000" value="0b10000000" description="Time Prescaler Register overflows every 32896 clock cycles."/>
+      <bit_field_value name="TCR_TCR_0b10000001" value="0b10000001" description="Time Prescaler Register overflows every 32895 clock cycles."/>
+      <bit_field_value name="TCR_TCR_0b11111111" value="0b11111111" description="Time Prescaler Register overflows every 32769 clock cycles."/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="CIR" access="RW" reset_value="0" description="Compensation Interval Register">
+      <alias type="CMSIS" value="RTC_TCR_CIR(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="TCV" access="RO" reset_value="0" description="Time Compensation Value">
+      <alias type="CMSIS" value="RTC_TCR_TCV(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="CIC" access="RO" reset_value="0" description="Compensation Interval Counter">
+      <alias type="CMSIS" value="RTC_TCR_CIC(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="32" name="CR" description="RTC Control Register">
+    <alias type="CMSIS" value="CR"/>
+    <bit_field offset="0" width="1" name="SWR" access="RW" reset_value="0" description="Software Reset">
+      <alias type="CMSIS" value="RTC_CR_SWR(x)"/>
+      <bit_field_value name="CR_SWR_0b0" value="0b0" description="No effect."/>
+      <bit_field_value name="CR_SWR_0b1" value="0b1" description="Resets all RTC registers except for the SWR bit . The SWR bit is cleared by POR and by software explicitly clearing it."/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <bit_field offset="2" width="1" name="SUP" access="RW" reset_value="0" description="Supervisor Access">
+      <alias type="CMSIS" value="RTC_CR_SUP(x)"/>
+      <bit_field_value name="CR_SUP_0b0" value="0b0" description="Non-supervisor mode write accesses are not supported and generate a bus error."/>
+      <bit_field_value name="CR_SUP_0b1" value="0b1" description="Non-supervisor mode write accesses are supported."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="UM" access="RW" reset_value="0" description="Update Mode">
+      <alias type="CMSIS" value="RTC_CR_UM(x)"/>
+      <bit_field_value name="CR_UM_0b0" value="0b0" description="Registers cannot be written when locked."/>
+      <bit_field_value name="CR_UM_0b1" value="0b1" description="Registers can be written when locked under limited conditions."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <bit_field offset="5" width="1" name="CPS" access="RW" reset_value="0" description="Clock Pin Select">
+      <alias type="CMSIS" value="RTC_CR_CPS(x)"/>
+      <bit_field_value name="CR_CPS_0b0" value="0b0" description="The prescaler output clock (as configured by TSIC) is output on RTC_CLKOUT."/>
+      <bit_field_value name="CR_CPS_0b1" value="0b1" description="The RTC 32kHz crystal clock is output on RTC_CLKOUT, provided it is output to other peripherals."/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <bit_field offset="7" width="1" name="LPOS" access="RW" reset_value="0" description="LPO Select">
+      <alias type="CMSIS" value="RTC_CR_LPOS(x)"/>
+      <bit_field_value name="CR_LPOS_0b0" value="0b0" description="RTC prescaler increments using 32kHz crystal."/>
+      <bit_field_value name="CR_LPOS_0b1" value="0b1" description="RTC prescaler increments using 1kHz LPO, bits [4:0] of the prescaler are ignored."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="7" reset_value="0"/>
+    <reserved_bit_field offset="15" width="9" reset_value="0"/>
+    <bit_field offset="24" width="1" name="CPE" access="RW" reset_value="0" description="Clock Pin Enable">
+      <alias type="CMSIS" value="RTC_CR_CPE(x)"/>
+      <bit_field_value name="CR_CPE_0b0" value="0b0" description="Disable RTC_CLKOUT pin."/>
+      <bit_field_value name="CR_CPE_0b1" value="0b1" description="Enable RTC_CLKOUT pin."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="1" reset_value="0"/>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="SR" description="RTC Status Register">
+    <alias type="CMSIS" value="SR"/>
+    <bit_field offset="0" width="1" name="TIF" access="RO" reset_value="0x1" description="Time Invalid Flag">
+      <alias type="CMSIS" value="RTC_SR_TIF(x)"/>
+      <bit_field_value name="SR_TIF_0b0" value="0b0" description="Time is valid."/>
+      <bit_field_value name="SR_TIF_0b1" value="0b1" description="Time is invalid and time counter is read as zero."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="TOF" access="RO" reset_value="0" description="Time Overflow Flag">
+      <alias type="CMSIS" value="RTC_SR_TOF(x)"/>
+      <bit_field_value name="SR_TOF_0b0" value="0b0" description="Time overflow has not occurred."/>
+      <bit_field_value name="SR_TOF_0b1" value="0b1" description="Time overflow has occurred and time counter is read as zero."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TAF" access="RO" reset_value="0" description="Time Alarm Flag">
+      <alias type="CMSIS" value="RTC_SR_TAF(x)"/>
+      <bit_field_value name="SR_TAF_0b0" value="0b0" description="Time alarm has not occurred."/>
+      <bit_field_value name="SR_TAF_0b1" value="0b1" description="Time alarm has occurred."/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <bit_field offset="4" width="1" name="TCE" access="RW" reset_value="0" description="Time Counter Enable">
+      <alias type="CMSIS" value="RTC_SR_TCE(x)"/>
+      <bit_field_value name="SR_TCE_0b0" value="0b0" description="Time counter is disabled."/>
+      <bit_field_value name="SR_TCE_0b1" value="0b1" description="Time counter is enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="2" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="LR" description="RTC Lock Register">
+    <alias type="CMSIS" value="LR"/>
+    <reserved_bit_field offset="0" width="3" reset_value="0x7"/>
+    <bit_field offset="3" width="1" name="TCL" access="RW" reset_value="0x1" description="Time Compensation Lock">
+      <alias type="CMSIS" value="RTC_LR_TCL(x)"/>
+      <bit_field_value name="LR_TCL_0b0" value="0b0" description="Time Compensation Register is locked and writes are ignored."/>
+      <bit_field_value name="LR_TCL_0b1" value="0b1" description="Time Compensation Register is not locked and writes complete as normal."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="CRL" access="RW" reset_value="0x1" description="Control Register Lock">
+      <alias type="CMSIS" value="RTC_LR_CRL(x)"/>
+      <bit_field_value name="LR_CRL_0b0" value="0b0" description="Control Register is locked and writes are ignored."/>
+      <bit_field_value name="LR_CRL_0b1" value="0b1" description="Control Register is not locked and writes complete as normal."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="SRL" access="RW" reset_value="0x1" description="Status Register Lock">
+      <alias type="CMSIS" value="RTC_LR_SRL(x)"/>
+      <bit_field_value name="LR_SRL_0b0" value="0b0" description="Status Register is locked and writes are ignored."/>
+      <bit_field_value name="LR_SRL_0b1" value="0b1" description="Status Register is not locked and writes complete as normal."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="LRL" access="RW" reset_value="0x1" description="Lock Register Lock">
+      <alias type="CMSIS" value="RTC_LR_LRL(x)"/>
+      <bit_field_value name="LR_LRL_0b0" value="0b0" description="Lock Register is locked and writes are ignored."/>
+      <bit_field_value name="LR_LRL_0b1" value="0b1" description="Lock Register is not locked and writes complete as normal."/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0x1"/>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="IER" description="RTC Interrupt Enable Register">
+    <alias type="CMSIS" value="IER"/>
+    <bit_field offset="0" width="1" name="TIIE" access="RW" reset_value="0x1" description="Time Invalid Interrupt Enable">
+      <alias type="CMSIS" value="RTC_IER_TIIE(x)"/>
+      <bit_field_value name="IER_TIIE_0b0" value="0b0" description="Time invalid flag does not generate an interrupt."/>
+      <bit_field_value name="IER_TIIE_0b1" value="0b1" description="Time invalid flag does generate an interrupt."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="TOIE" access="RW" reset_value="0x1" description="Time Overflow Interrupt Enable">
+      <alias type="CMSIS" value="RTC_IER_TOIE(x)"/>
+      <bit_field_value name="IER_TOIE_0b0" value="0b0" description="Time overflow flag does not generate an interrupt."/>
+      <bit_field_value name="IER_TOIE_0b1" value="0b1" description="Time overflow flag does generate an interrupt."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TAIE" access="RW" reset_value="0x1" description="Time Alarm Interrupt Enable">
+      <alias type="CMSIS" value="RTC_IER_TAIE(x)"/>
+      <bit_field_value name="IER_TAIE_0b0" value="0b0" description="Time alarm flag does not generate an interrupt."/>
+      <bit_field_value name="IER_TAIE_0b1" value="0b1" description="Time alarm flag does generate an interrupt."/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <bit_field offset="4" width="1" name="TSIE" access="RW" reset_value="0" description="Time Seconds Interrupt Enable">
+      <alias type="CMSIS" value="RTC_IER_TSIE(x)"/>
+      <bit_field_value name="IER_TSIE_0b0" value="0b0" description="Seconds interrupt is disabled."/>
+      <bit_field_value name="IER_TSIE_0b1" value="0b1" description="Seconds interrupt is enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="2" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="3" name="TSIC" access="RW" reset_value="0" description="Timer Seconds Interrupt Configuration">
+      <alias type="CMSIS" value="RTC_IER_TSIC(x)"/>
+      <bit_field_value name="IER_TSIC_0b000" value="0b000" description="1 Hz."/>
+      <bit_field_value name="IER_TSIC_0b001" value="0b001" description="2 Hz."/>
+      <bit_field_value name="IER_TSIC_0b010" value="0b010" description="4 Hz."/>
+      <bit_field_value name="IER_TSIC_0b011" value="0b011" description="8 Hz."/>
+      <bit_field_value name="IER_TSIC_0b100" value="0b100" description="16 Hz."/>
+      <bit_field_value name="IER_TSIC_0b101" value="0b101" description="32 Hz."/>
+      <bit_field_value name="IER_TSIC_0b110" value="0b110" description="64 Hz."/>
+      <bit_field_value name="IER_TSIC_0b111" value="0b111" description="128 Hz."/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="13" reset_value="0"/>
+  </register>
+</regs:peripheral>

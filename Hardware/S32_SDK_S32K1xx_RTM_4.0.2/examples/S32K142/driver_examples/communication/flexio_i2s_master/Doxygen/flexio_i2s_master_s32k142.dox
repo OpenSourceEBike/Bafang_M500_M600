@@ -1,0 +1,99 @@
+/*!
+    @page flexio_i2s_master_s32k142_group FLEXIO I2S MASTER
+    @brief Example application showing FlexIO I2S driver usage
+
+    ## Application description ##
+    _____
+    The purpose of this demo application is to show you the usage of the FlexIO I2S driver found
+    on the S32K142 SoC using S32 SDK API.
+
+    The application uses FlexIO I2S driver to make a data transfer of a defined size.
+    The application will work in conjunction with the flexio_i2s_slave demo on S32K14x.
+
+    The application displays on the host PC terminal a menu in which the user can select to:
+    For Slave board:
+    "Press:
+    1) [Slave] Send data
+    2) [Slave] Received data
+    Enter your input:"
+
+    For Master board:
+    "Press:
+    1) [Master] Send data
+    2) [Master] Received data
+    Enter your input:"
+
+    Select Send/Receive on Slave first. After that select Receive/Send on Master.
+
+    The slave buffers and master buffers will be checked after each transfer by the application, RED or GREEN led will be lit depend on the check result.
+    Red led will turn if data does not match.
+    Green led will turn if then data is transfered correctly.
+
+    The MASTER I2S driver is configured to use DMA for transfers.
+
+    Data size is configured by TRANSFER_SIZE define, by default is configured to be 64 Bytes.
+
+    ## Prerequisites ##
+    _____
+    To run the example you will need to have the following items:
+    - 2 S32K142 board
+    - 2 Power Adapter 12V (if the board can't be powered from the USB)
+    - 4 Dupont male to male cable
+    - 1 Personal Computer
+    - 2 PEMicro Multilink Debugger (optional, users can use J-link)
+
+    ## Boards supported ##
+    _____
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+
+    ## Hardware Wiring ##
+    _____
+    The following connections must be done to for this example application to work:
+    Connect each FlexIO pin board master to pin board slave.
+    PIN FUNCTION                |   S32K142EVB-Q100 MASTER   | S32K142EVB-Q100 SLAVE
+    ----------------------------|----------------------------|----------------------
+    FLEXIO SCK                  |       J6.5 (\b PTD9)       |      J1.1(\b PTA2)
+    FLEXIO WS                   |       J1.2 (\b PTA11)      |      J1.3(\b PTA3)
+    FLEXIO MASTER TX - SLAVE RX |       J5.7 (\b PTA0)       |      J6.19(\b PTA9)
+    FLEXIO MASTER RX - SLAVE TX |       J5.5 (\b PTA1)       |      J6.17(\b PTA8)
+    RED_LED     (\b PTD15)      | RGB_RED - wired on board   | RGB_RED - wired on board
+    GREEN_LED   (\b PTD16)      | RGB_GREEN - wired on board | RGB_GREEN - wired on board
+    UART                        |       Wired on board       |      Wired on board
+
+    ## How to run ##
+    _____
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New -> \b S32DS \b Project \b From \bExample and select \b flexio_i2s_master_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    #### 2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    Left click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar).
+    In S32 Configuration menu, click on the desired configurator (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components.
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user.
+    Make the desired changes (if any) then click "Update Code".
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) or \b RAM (Debug_RAM) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Debugging the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be four debug configurations for this project:
+     Configuration Name | Description
+     -------------------|------------
+     \b flexio_i2s_master_s32k142_debug_flash_jlink | Debug the FLASH configuration using Segger Jlink debuggers
+     \b flexio_i2s_master_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+    ## Notes ##
+    ______
+    For this example it is necessary to open a terminal emulator and configure it with:
+    -   9600 baud
+    -   One stop bit
+    -   No parity
+    -   No flow control
+    -   '\\n' line ending
+*/
+

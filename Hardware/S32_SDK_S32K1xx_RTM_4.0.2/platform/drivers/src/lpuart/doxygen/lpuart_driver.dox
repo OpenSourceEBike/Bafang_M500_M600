@@ -1,0 +1,145 @@
+/**
+@defgroup lpuart Low Power Universal Asynchronous Receiver-Transmitter (LPUART)
+@brief The S32 SDK provides a Peripheral Driver for the Low Power Universal Asynchronous
+Receiver-Transmitter (LPUART) module of S32 SDK devices.
+@n
+The LPUART module is used for serial communication, supporting LIN master and slave operation. These sections
+describe the S32 SDK software modules API that can be used for initializing and configuring the module, as well
+as initiating serial communications using the interrupt-based method.
+
+*/
+
+/**
+@defgroup lpuart_driver LPUART Driver
+@ingroup lpuart
+@brief This module covers the functionality of the Low Power Universal Asynchronous Receiver-Transmitter (LPUART)
+peripheral driver.
+<p>
+  The LPUART driver implements serial communication using the LPUART module in the S32K1xx platforms.
+</p>
+  ## Features ##
+   - Interrupt based, DMA based and polling communication
+   - Provides blocking and non-blocking transmit and receive functions
+   - Configurable baud rate
+   - 8/9/10 bits per char
+
+  ## Functionality ##
+<p>
+  In order to use the LPUART driver it must be first initialized, using LPUART_DRV_Init() function.
+  Once initialized, it cannot be initialized again for the same LPUART module instance until it is
+  de-initialized, using LPUART_DRV_Deinit(). The initialization function does the following operations:
+    - sets the baud rate
+    - sets parity/bit count/stop bits count
+    - initializes the state structure for the current instance
+  Different LPUART module instances can function independently of each other.
+</p>
+
+  ### Interrupt-based communication ###
+<p>
+  After initialization, a serial communication can be triggered by calling LPUART_DRV_SendData() function; this
+  will save the reference of the data buffer received as parameter in the internal tx buffer pointer, then copy
+  the first byte to the data register. The transmitter then automatically shifts the data and triggers a
+  'Transmit buffer empty' interrupt when all bits are shifted. The drivers interrupt handler takes care of
+  transmitting the next byte in the buffer, by increasing the data pointer and decreasing the data size. The same
+  sequence of operations is executed until all bytes in the tx buffer have been transmitted.
+</p>
+<p>
+  Similarly, data reception is triggered by calling LPUART_DRV_ReceiveData() function, passing the rx buffer as
+  parameter. When the receiver copies the received bits in the data register, the 'Receive buffer full' interrupt
+  is triggered; the driver irq handler clears the flag by reading the received byte, saves it in the rx buffer,
+  then increments the data pointer and decrements the data size. This is repeated until all bytes are received.
+</p>
+<p>
+  The workflow applies to send/receive operations using blocking method (triggered by LPUART_DRV_SendDataBlocking()
+  and LPUART_DRV_ReceiveDataBlocking()), with the single difference that the send/receive function will not return
+  until the send/receive operation is complete (all bytes are successfully transferred or a timeout occurred). The
+  timeout for the blocking method is passed as parameter by the user.
+</p>
+  ### DMA-based communication ###
+<p>
+  In DMA operation, both blocking and non-blocking transmission methods configure a DMA channel to copy data
+  from the buffer to the data register (for tx), or viceversa (for rx). The driver assumes the DMA channel is
+  already allocated and the proper requests are routed to it via DMAMUX. After configuring the DMA channel, the
+  driver enables DMA requests for rx/tx, then the DMA engine takes care of moving data to/from the data buffer.
+</p>
+  ### Polling mode ###
+<p>
+  The driver also provides polling methods for send and receive (LPUART_DRV_SendDataPolling() and LPUART_DRV_ReceiveDataPolling()).
+  These functions are blocking (return only when the transfer is complete) and do not use interrupt or DMA services. The
+  tx buffer empty and rx buffer full flags are polled by software in order to copy data to/from the data register.
+</p>
+  ### Error handling ###
+<p>
+  The driver treats the following errors on reception:
+    - rx overrun
+    - parity error
+    - framing error
+    - noise error<br/>
+  In case any of these error events occur on the rx line during an ongoing reception, the transfer is aborted and rx status
+  is updated accordingly. LPUART_DRV_GetReceiveStatus() function can be called to retrieve the status of the last reception.
+  If a receive callback is installed, it is called right after aborting the current transfer (with UART_EVENT_ERROR parameter).
+</p>
+  ### Callbacks ###
+<p>
+  The driver provides callback notifications for asynchronous transfers. LPUART_DRV_InstallTxCallback() function
+  can be used for installing a callback routine to be called when the transmission is finished.
+  The tx callback is called twice: first when the tx buffer becomes empty (no more data to be transmitted) - at this point
+  the application can call LPUART_DRV_SetTxBuffer() inside the callback in order to provide more data, resulting
+  in a continuous transmission; if there is no more data to be transmitted, the callback is called again when the transmission
+  is complete (all the bytes have been shifted out on the line). The event parameter in the callback signature differentiates
+  these two calls - the values are UART_EVENT_TX_EMPTY and UART_EVENT_END_TRANSFER, respectively.<br/>
+  Similarly, LPUART_DRV_InstallRxCallback() installs a callback routine for reception. This callback is called
+  twice (UART_EVENT_RX_FULL and UART_EVENT_END_TRANSFER); if a new buffer is provided within the first callback call
+  (LPUART_DRV_SetRxBuffer()), the reception will continue without interruption. In case of an error detected during an
+  ongoing reception, the transfer is aborted and the callback is called with UART_EVENT_ERROR parameter. The driver treats
+  rx overrun, parity, framing and noise errors.<br/>
+</p>
+  ## Important Notes ##
+<p>
+  - Before using the LPUART driver the module clock must be configured
+  - The driver enables the interrupts for the corresponding LPUART module, but any interrupt priority
+    must be done by the application
+  - The board specific configurations must be done prior to driver calls; the driver has no influence on the
+    functionality of the rx/tx pins - they must be configured by application
+  - DMA module has to be initialized prior to LPUART usage in DMA mode; also, DMA channels need to be allocated
+    for LPUART usage by the application (the driver only takes care of configuring the DMA channels received in
+    the configuration structure)
+  - For 9/10 bits characters, the application must provide the appropriate buffers; the size of the tx/rx buffers
+    in this scenario needs to be an even number, as the transferred characters will be split in two bytes (bit 8
+    for 9-bits chars and bits 8 & 9 for 10-bits chars will be stored in the subsequent byte). 9/10 bits chars are
+    only supported in interrupt-based and polling communications
+  - For 10-bits word length, parity cannot be enabled.
+  - When the vector table is not in ram (__flash_vector_table__ = 1):
+    + INT_SYS_InstallHandler shall check if the function pointer provided as parameter for the new handler is already present in the vector table for the given IRQ number.
+    + The user will be required to manually add the correct handlers in the startup files
+</p>
+<p>
+  ## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\lpuart\lpuart_driver.c
+${S32SDK_PATH}\platform\drivers\src\lpuart\lpuart_hw_access.c
+${S32SDK_PATH}\platform\drivers\src\lpuart\lpuart_irq.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref interrupt_manager
+\ref edma
+</p>
+*/

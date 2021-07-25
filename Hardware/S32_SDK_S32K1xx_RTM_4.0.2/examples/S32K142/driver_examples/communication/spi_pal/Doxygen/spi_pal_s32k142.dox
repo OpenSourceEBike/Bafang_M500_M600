@@ -1,0 +1,70 @@
+/*!
+    @page spi_pal_s32k142_group SPI PAL
+    @brief Driver example using SPI
+
+    ## Application description ##
+    ______
+    The purpose of this application is to show you how to use the LPSPI and FLEXIO Interfaces on the S32K142 using the S32 SDK API.
+
+    The application uses one board instance of LPSPI in slave configuration and one board instance of FLEXIO in master configuration to communicate data via the SPI bus using interrupts. It also verifies that the data sent is the same as the received data. If transfer is successful, RED led will be on, otherwise it will be off. 
+
+    ## Prerequisites ##
+    ______
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board can't be powered from the USB)
+    - 1 Personal Computer
+    - 4 Dupont male to male cable
+    - 1 Jlink Lite Debugger or 1 PEMicro Debugger (optional, users can use Open SDA)
+
+    ## Boards supported ##
+    ______
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+    - S32K142-MB
+
+    ## Hardware Wiring ##
+    ______
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION    | S32K142EVB-Q100 | S32K142-MB
+    ----------------|-----------------|--------------
+    FLEXIO_MASTER CS    (\b PTA1)   |J5.5 - J4.5   |   PTA1 - PTB0
+    FLEXIO_MASTER SCK   (\b PTA0)   |J5.7 - J2.11  |   PTA0 - PTB2
+    FLEXIO_MASTER MOSI  (\b PTD1)   |J6.2 - J2.9   |   PTD1 - PTB3
+    FLEXIO_MASTER MISO  (\b PTA2)   |J1.1 - J4.7   |   PTA2 - PTB1
+    LPSPI_SLAVE SS      (\b PTB0)   |J5.5 - J4.5   |   PTB0 - PTA1
+    LPSPI_SLAVE SCK     (\b PTB2)   |J5.7 - J2.11  |   PTB2 - PTA0
+    LPSPI_SLAVE MOSI    (\b PTB3)   |J6.2 - J2.9   |   PTB3 - PTD1
+    LPSPI_SLAVE MISO    (\b PTB1)   |J1.1 - J4.7   |   PTB1 - PTA2
+    LED (\b PTD15)           |  LED - wired on the board  |   J12.18 - J5.1
+
+    ## How to run ##
+
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New \b S32DS \b Project \b From... and select \b spi_pal_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    #### 2. Generating the S32 Configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated. \n
+    The initial configuration will have the same settings as the default example settings.
+    Right click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar). \n
+    In S32 Configuration menu, click on the desired configuration (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components. \n
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user. \n
+    Make the desired changes (if any) then click "Update Code".
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png). 
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be two debug configurations for this project:
+     Configuration Name | Description
+     -------------------|------------
+     \b spi_pal_s32k142_debug_flash_jlink   | Debug the FLASH configuration using Segger Jlink debuggers
+     \b spi_pal_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+
+*/
+

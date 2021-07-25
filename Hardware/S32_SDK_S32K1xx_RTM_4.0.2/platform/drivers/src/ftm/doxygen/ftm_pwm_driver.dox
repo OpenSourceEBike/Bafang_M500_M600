@@ -1,0 +1,419 @@
+/*!
+    @defgroup ftm_pwm_driver FlexTimer Pulse Width Modulation Driver (FTM_PWM)
+    @ingroup ftm
+    @details
+    @brief FlexTimer Pulse Width Modulation Peripheral Driver.
+
+    ## Hardware background ##
+    The FlexTimer module is based on a 16 bits counter and supports: input capture, output compare, PWM and some instances
+    include quadrature decoder.
+
+    ## How to use FTM driver in your application ##
+    For all operation modes (without Quadrature Decoder mode) the user need to configure ftm_user_config_t. This structure will be used for initialization
+    (FTM_DRV_Init). The next functions used are specific for each operation mode.
+
+    ### PWM mode ###
+    For this mode, the user needs to configure parameters such: number of PWM channels, frequency, dead time, fault channels and
+    duty cycle, alignment (edge or center). All this information is included in the ftm_pwm_param_t structure.
+
+    FTM_DRV_UpdatePwmChannel can be used to update duty cycles at run time. If the type of update in the duty cycle
+    when the duty cycle can have value between 0x0 (0%) and 0x8000 (100%). If the type of update in ticks when the firstEdge and secondEdge variables
+    can have value between 0 and ftmPeriod which is stored in the state structure.
+
+    ### Safe state and polarity of the PWM channels ###
+    These 2 parameters are dependent from FTM hardware perspective, but the FTM_PWM driver can handle them independently, so polarity field configures the final polarity measured at MCU pins
+    and safeState field is the value of the PWM channel when fault is detected and fault is configured to use safe state, not tri-state mode. The same behavior is available for combined mode, polarity and safe state
+    can be configured independently.
+
+    ## API code changes ##
+    In BETA 2.9.0 the following changes were made in FTM_PWM API:
+    - from ftm_independent_ch_param_t the following fields were removed: levelSelect
+    - in ftm_independent_ch_param_t safeState field was added
+    - from ftm_combined_ch_param_t the following fields were removed: levelSelect, levelSelectOnNextChn.
+    - in ftm_combined_ch_param_t mainChannelSafeState and secondChannelSafeState fields were added.
+    - ftm_safe_state_polarity_t enum was changed
+
+    From application perspective the impact is the following:
+    - second channel can't be used in independent channels, just in combined channels
+    - polarity and safe state should be checked with the new API.
+
+    The advantages of the FTM_PWM API from BETA 2.9,0 are:
+    - safe state and polarity can be configured without strong understatement of the Reference Manual
+    - dead time will be always inserted
+    Note that:
+    - In the ftm_independent_ch_param_t structure has the "ftm_safe_state_polarity_t safeState" variable which user can configure the polarity of PWM signal on the channel n+1.
+    and the "ftm_second_channel_polarity_t secondChannelPolarity" is only used to configure the channel n+1 in the complementary mode for the inverted or duplicated channel n.
+    - In the combined channel, the configuration structure has same feature as in the independent mode. It is only difference which the "ftm_safe_state_polarity_t secondChannelSafeState" variable should be set the channel (n+1) polarity if needed.
+    - When the fault input is disabled in the configuration the user should be set the ftm_safe_state_polarity_t as FTM_LOW_STATE for both cases in the independent and combined channel because it is not necessary.
+    - On S32K1xx, the clock source for Deadtime is always the System Clock, regardless of the current Clock Source used for FTM (Fixed, External).
+
+    ## Integration guideline ##
+
+    ### Compilation units ###
+
+    The following files need to be compiled in the project:
+    \verbatim
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_pwm_driver.c
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_common.c
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_hw_access.c
+    \endverbatim
+
+    ### Include path ###
+
+    The following paths need to be added to the include path of the toolchain:
+    \verbatim
+    ${S32SDK_PATH}\platform\drivers\inc\
+    ${S32SDK_PATH}\platform\drivers\src\ftm\
+    \endverbatim
+
+    ### Preprocessor symbols ###
+
+    No special symbols are required for this component
+
+    ### Dependencies ###
+
+    \ref clock_manager
+    \ref interrupt_manager
+
+   Example:
+    @code
+    /* The state structure of instance in the PWM mode */
+    ftm_state_t statePwm;
+    #define FTM_PWM_INSTANCE        1UL
+    /* Fault configuration structure */
+    ftm_pwm_fault_param_t PWM_FaultConfig =
+    {
+        false,
+        true,
+        5U,                             /* Fault filter value */
+        FTM_FAULT_CONTROL_MAN_EVEN,
+        {
+            {
+                true,                   /* Fault channel state (Enabled/Disabled) */
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_HIGH,      /* Channel output state on fault */
+            },
+            {
+                false,                  /* Fault Channel state (Enabled/Disabled) */
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_LOW        /* Channel output state on fault */
+            },
+            {
+                false,                  /* Fault Channel state (Enabled/Disabled) */
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_LOW        /* Channel output state on fault */
+            },
+            {
+                false,                  /* Fault Channel state (Enabled/Disabled) */
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_LOW        /* Channel output state on fault */
+            }
+        }
+    };
+
+    /* Independent channels configuration structure for PWM */
+    ftm_independent_ch_param_t PWM_IndependentChannelsConfig[1] =
+    {
+        {
+        0U,                     /* hwChannelId */
+        FTM_POLARITY_LOW,         /* Polarity of the PWM signal */
+        4096U,                     /* Duty cycle percent 0-0x8000 */
+        false,                     /* External Trigger */
+        FTM_LOW_STATE,             /* Safe state of the PWM channel when faults are detected */
+        }
+    };
+
+    /* PWM configuration for PWM */
+    ftm_pwm_param_t PWM_PwmConfig =
+    {
+        1U,                             /* Number of independent PWM channels */
+        0U,                             /* Number of combined PWM channels */
+        FTM_MODE_EDGE_ALIGNED_PWM,      /* PWM mode */
+        0U,                             /* DeadTime Value */
+        FTM_DEADTIME_DIVID_BY_4,        /* DeadTime clock divider */
+        7481U,                          /* PWM frequency */
+        PWM_IndependentChannelsConfig,  /* Independent PWM channels configuration structure */
+        NULL,                           /* Combined PWM channels configuration structure */
+        &PWM_FaultConfig                /* PWM fault configuration structure */
+    };
+
+    /* Timer mode configuration for PWM */
+    /* Global configuration of PWM */
+    ftm_user_config_t  PWM_InitConfig =
+    {
+        {
+            true,                       /* Software trigger state */
+            false,                      /* Hardware trigger 1 state */
+            false,                      /* Hardware trigger 2 state */
+            false,                      /* Hardware trigger 3 state */
+            true,                       /* Maximum loading point state */
+            true,                       /* Min loading point state */
+            FTM_SYSTEM_CLOCK,           /* Update mode for INVCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for SWOCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for OUTMASK register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for CNTIN register */
+            false,                      /* Auto clear trigger state for hardware trigger */
+            FTM_UPDATE_NOW,             /* Select synchronization method */
+        },
+        FTM_MODE_EDGE_ALIGNED_PWM,      /* PWM mode */
+        FTM_CLOCK_DIVID_BY_4,           /* FTM clock pre-scaler */
+        FTM_CLOCK_SOURCE_SYSTEMCLK,     /* FTM clock source */
+        FTM_BDM_MODE_11,                /* FTM debug mode */
+        false,                          /* Interrupt state */
+        false                           /* Initialization trigger */
+    };
+    FTM_DRV_Init(FTM_PWM_INSTANCE, &PWM_InitConfig, &statePwm);
+    FTM_DRV_InitPwm(FTM_PWM_INSTANCE, &PWM_PwmConfig);
+    /* It's recommended to use softwareTrigger = true */
+    /* The SECOND_EDGE value is used only when PWM is used in combined mode */
+    FTM_DRV_UpdatePwmChannel(FTM_PWM_INSTANCE, 0UL, FTM_PWM_UPDATE_IN_DUTY_CYCLE, 0x800U, 0x2000U, true);
+    @endcode
+
+   ### PWM in Modified Combine mode ###
+    For this mode the user needs to configure parameters such: number of PWM channels, frequency, dead time, fault channels and
+    duty cycle, alignment (edge or center). All this information is included in ftm_pwm_param_t data type.
+    The Modified Combine PWM mode is intended to support the generation of PWM signals where the period is not modified while the signal is being generated,
+    but the duty cycle will be varied.
+    FTM_DRV_UpdatePwmChannel can be used to update duty cycles at run time. If the type of update in the duty cycle
+    when the duty cycle can have value  between 0x0 (0%) and 0x8000 (100%). If the type of update in ticks when the firstEdge and secondEdge variables
+    can have value between 0 and ftmPeriod which is stored in the state structure.In this mode, an even channel (n) and adjacent odd channel (n+1) are
+    combined to generate a PWM signal in the channel (n) output. Thus, the channel (n) match edge is fixed and the channel (n+1) match edge can be varied.
+
+   Example:
+    @code
+    /* The state structure of instance in the PWM mode */
+    ftm_state_t statePwm;
+    #define FTM_PWM_INSTANCE        0UL
+    /* Fault configuration structure */
+    ftm_pwm_fault_param_t PWM_FaultConfig =
+    {
+        false,
+        true,
+        5U,                             /* Fault filter value */
+        FTM_FAULT_CONTROL_MAN_EVEN,
+        {
+            {
+                true,                   /* Fault channel state (Enabled/Disabled )*/
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_HIGH,      /* Channel output state on fault */
+            },
+            {
+                false,                  /* Fault Channel state (Enabled/Disabled) */
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_LOW        /* Channel output state on fault */
+            },
+            {
+                false,                  /* Fault Channel state (Enabled/Disabled) */
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_LOW        /* Channel output state on fault */
+            },
+            {
+                false,                  /* Fault Channel state (Enabled/Disabled) */
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_LOW        /* Channel output state on fault */
+            }
+        }
+    };
+    /* Combine channels configuration structure for PWM */
+    ftm_combined_ch_param_t flexTimer1_CombinedChannelsConfig[1] =
+    {
+        {
+            2U,                   /* Hardware channel for channel (n) */
+            0U,                   /* First edge time */
+            0U,                   /* Second edge time */
+            true,                 /* Dead time enabled/disabled */
+            true,                 /* The modified combine mode enabled/disabled */
+            FTM_POLARITY_HIGH,     /* Select channel (n) polarity */
+            true,                 /* Enabled/disabled the channel (n+1) output */
+            FTM_MAIN_INVERTED,     /* Select channel (n+1) output relative to channel (n) */
+            false,                 /* External Trigger on the channel (n) */
+            false,                 /* External Trigger on the channel (n+1) */
+            FTM_LOW_STATE,         /* Safe state of the PWM channel n when faults are detected */
+            FTM_LOW_STATE,         /* Safe state of the PWM channel n+1 when faults are detected */
+        }
+    };
+    /* PWM configuration for PWM */
+    ftm_pwm_param_t PWM_PwmConfig =
+    {
+        0U,                                /* Number of independent PWM channels */
+        1U,                                /* Number of combined PWM channels */
+        FTM_MODE_EDGE_ALIGNED_PWM,         /* PWM mode */
+        0U,                                /* DeadTime Value */
+        FTM_DEADTIME_DIVID_BY_4,           /* DeadTime clock divider */
+        7481U,                             /* PWM frequency */
+        NULL,                              /* Independent PWM channels configuration structure */
+        flexTimer1_CombinedChannelsConfig, /* Combined PWM channels configuration structure */
+        &PWM_FaultConfig                   /* PWM fault configuration structure */
+    };
+    /* Timer mode configuration for PWM */
+    /* Global configuration of PWM */
+    ftm_user_config_t  PWM_InitConfig =
+    {
+        {
+            true,                       /* Software trigger state */
+            false,                      /* Hardware trigger 1 state */
+            false,                      /* Hardware trigger 2 state */
+            false,                      /* Hardware trigger 3 state */
+            true,                       /* Maximum loading point state */
+            true,                       /* Min loading point state */
+            FTM_SYSTEM_CLOCK,           /* Update mode for INVCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for SWOCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for OUTMASK register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for CNTIN register */
+            false,                      /* Auto clear trigger state for hardware trigger */
+            FTM_UPDATE_NOW,             /* Select synchronization method */
+        },
+        FTM_MODE_EDGE_ALIGNED_PWM,      /* PWM mode */
+        FTM_CLOCK_DIVID_BY_4,           /* FTM clock pre-scaler */
+        FTM_CLOCK_SOURCE_SYSTEMCLK,     /* FTM clock source */
+        FTM_BDM_MODE_11,                /* FTM debug mode */
+        false,                          /* Interrupt state */
+        false                           /* Initialization trigger */
+    };
+    FTM_DRV_Init(FTM_PWM_INSTANCE, &PWM_InitConfig, &statePwm);
+    FTM_DRV_InitPwm(FTM_PWM_INSTANCE, &PWM_PwmConfig);
+    /* It's recommended to use softwareTrigger = true */
+    /* Only second edge can be updated when FTM is running. */
+    FTM_DRV_UpdatePwmChannel(FTM_PWM_INSTANCE, 0UL, FTM_PWM_UPDATE_IN_DUTY_CYCLE, 0x0U, 0x2000U, true);
+    @endcode
+
+   ### Edge-Aligned PWM and Input Capture mode ###
+    Support an additional Input Capture mode on other channels in the same FTM instance:
+    - The measurement range of Input Capture will depend on PWM configuration.
+      The frequency of measured signal must greater than frequency of PWM signal.
+    - For this mode, the recommended synchronization point is the next loading point (not immediately)
+      to avoid breaking the current measurement signal from Input Capture.
+    - The S32CT configuration is not possible to add both drivers on the same instance, even if the driver support this.
+    The initialization sequences below:
+    @code
+    /* The state structure of instance in the PWM and Input Capture mode */
+    ftm_state_t statePwmIc;
+    #define FTM_PWM_IC_INSTANCE        0UL
+    /* Fault configuration structure */
+    ftm_pwm_fault_param_t PWM_FaultConfig =
+    {
+        false,
+        true,
+        5U,                             /* Fault filter value */
+        FTM_FAULT_CONTROL_MAN_EVEN,
+        {
+            {
+                true,                   /* Fault channel state (Enabled/Disabled )*/
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_HIGH,      /* Channel output state on fault */
+            },
+            {
+                false,                  /* Fault Channel state (Enabled/Disabled) */
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_LOW        /* Channel output state on fault */
+            },
+            {
+                false,                  /* Fault Channel state (Enabled/Disabled) */
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_LOW        /* Channel output state on fault */
+            },
+            {
+                false,                  /* Fault Channel state (Enabled/Disabled) */
+                false,                  /* Fault channel filter state (Enabled/Disabled) */
+                FTM_POLARITY_LOW        /* Channel output state on fault */
+            }
+        }
+    };
+    /* Combine channels configuration structure for PWM */
+    ftm_combined_ch_param_t flexTimer1_CombinedChannelsConfig[1] =
+    {
+        {
+            0U,                   /* Hardware channel for channel 0 and channel 1 */
+            0U,                   /* First edge time */
+            0x2000U,              /* Second edge time */
+            true,                 /* Dead time enabled/disabled */
+            true,                 /* The modified combine mode enabled/disabled */
+            FTM_POLARITY_HIGH,     /* Select channel (n) polarity */
+            true,                 /* Enabled/disabled the channel (n+1) output */
+            FTM_MAIN_INVERTED,     /* Select channel (n+1) output relative to channel (n) */
+            false,                 /* External Trigger on the channel (n) */
+            false,                 /* External Trigger on the channel (n+1) */
+            FTM_LOW_STATE,         /* Safe state of the PWM channel n when faults are detected */
+            FTM_LOW_STATE,         /* Safe state of the PWM channel n+1 when faults are detected */
+        }
+    };
+    /* PWM configuration for PWM */
+    ftm_pwm_param_t PWM_PwmConfig =
+    {
+        0U,                                /* Number of independent PWM channels */
+        1U,                                /* Number of combined PWM channels */
+        FTM_MODE_EDGE_ALIGNED_PWM,         /* PWM mode */
+        0U,                                /* DeadTime Value */
+        FTM_DEADTIME_DIVID_BY_4,           /* DeadTime clock divider */
+        7481U,                             /* PWM frequency */
+        NULL,                              /* Independent PWM channels configuration structure */
+        flexTimer1_CombinedChannelsConfig, /* Combined PWM channels configuration structure */
+        &PWM_FaultConfig                   /* PWM fault configuration structure */
+    };
+    /* Channels configuration structure for inputCapture input capture */
+    ftm_input_ch_param_t inputCapture_InputCaptureChannelConfig[1] =
+    {
+        {
+        3U,                             /* Channel 3 (Make sure that the channel ID must different than PWM channels) */
+        FTM_EDGE_DETECT,                /* Input capture operation Mode */
+        FTM_RISING_EDGE,                /* Edge alignment Mode */
+        FTM_NO_MEASUREMENT,             /* Signal measurement operation type */
+        0U,                             /* Filter value */
+        false,                          /* Filter disabled */
+        true                            /* Continuous mode measurement */
+        NULL,                           /* Vector of callbacks  parameters for channels events */
+        NULL                            /* Vector of callbacks for channels events */
+        }
+    };
+    /* Input capture configuration for inputCapture */
+    ftm_input_param_t inputCapture_InputCaptureConfig =
+    {
+        1U,                                     /* Number of channels */
+        65535U,                                 /* Maximum count value (This value is ignored and replaced by period value calculated from PWM configuration) */
+        inputCapture_InputCaptureChannelConfig  /* Channels configuration */
+    };
+    /* Timer mode configuration for PWM and Input Capture */
+    ftm_user_config_t  PWM_IC_InitConfig =
+    {
+        {
+            true,                       /* Software trigger state */
+            false,                      /* Hardware trigger 1 state */
+            false,                      /* Hardware trigger 2 state */
+            false,                      /* Hardware trigger 3 state */
+            true,                       /* Maximum loading point state */
+            true,                       /* Min loading point state */
+            FTM_SYSTEM_CLOCK,           /* Update mode for INVCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for SWOCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for OUTMASK register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for CNTIN register */
+            false,                      /* Auto clear trigger state for hardware trigger */
+            FTM_WAIT_LOADING_POINTS,    /* Select synchronization method (Next Loading Point is recommended) */
+        },
+        FTM_MODE_EDGE_ALIGNED_PWM,      /* Edge-Align PWM mode that can be used with Input Capture mode */
+        FTM_CLOCK_DIVID_BY_4,           /* FTM clock pre-scaler */
+        FTM_CLOCK_SOURCE_SYSTEMCLK,     /* FTM clock source */
+        FTM_BDM_MODE_11,                /* FTM debug mode */
+        false,                          /* Interrupt state */
+        false                           /* Initialization trigger */
+    };
+
+    /* Initialize FTM module */
+    FTM_DRV_Init(FTM_PWM_IC_INSTANCE, &PWM_IC_InitConfig, &statePwmIc);
+    /* Initialize PWM cofiguration (Clock configuration for both PWM and Input Capture mode)
+     * Initialize the additional Input Capture mode for other channels
+     * FTM_DRV_InitPwm() must be called first before user calls FTM_DRV_InitInputCapture()
+     */
+    FTM_DRV_InitPwm(FTM_PWM_IC_INSTANCE, &PWM_PwmConfig);
+    FTM_DRV_InitInputCapture(FTM_PWM_IC_INSTANCE, &inputCapture_InputCaptureConfig);
+
+    ...
+
+    /* De-initialize Input Capture first
+     * PWM signal still work normally
+     */
+    FTM_DRV_DeinitInputCapture(FTM_PWM_IC_INSTANCE, &inputCapture_InputCaptureConfig);
+    /* De-initialize PWM (FTM counter will be disabled) */
+    FTM_DRV_DeinitPwm(FTM_PWM_IC_INSTANCE);
+    @endcode
+
+@}*/

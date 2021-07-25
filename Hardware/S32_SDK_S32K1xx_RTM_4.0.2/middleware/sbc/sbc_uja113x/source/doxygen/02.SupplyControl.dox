@@ -1,0 +1,53 @@
+/**
+  @addtogroup scr
+<p>
+The supply control registers (0x10 - 0x1F) allow:
+<ul>
+<li>Configuring voltage regulators (0x10)</li>
+<li>Configuring battery monitor (0x11 - 0x18)</li>
+<li>Configuring switched Mode Power Supply (0x19 - 0x1A)</li>
+<li>Read supply voltage status (0x1B)</li>
+<li>Enable supply interrupts (0x1C)</li>
+</li>
+</ul>
+Interrupts and interrupt status is described in @ref isr.
+</p>
+  @{
+  @defgroup rcconfig 01. Regulator configuration
+  @defgroup bmconfig 02. Battery monitor configuration
+  @defgroup smpsconfig 03. SMPS configuration
+  @}
+*/
+
+/**
+ @addtogroup rcconfig
+ @section rc_intro Introduction
+<p>
+The SBC incorporates two voltage regulators. Configurations influencing behaviour
+during start-up are stored in the MTPNV memory (see @ref mtpnvsuc_group & @ref 
+mtpnvsbccc_group). After successful start-up, the regulators can be configured
+by invoking the UJA113X_SetRegulator().
+</p>
+*/
+
+/**
+ @addtogroup bmconfig
+ @section bm_intro Introduction
+<p>
+The battery monitor can measure the voltage either on BAT or BATSENSE pin and 
+is able to generate an interrupt in case of under-/overvoltage in Normal mode.\n
+To read the content of the ADC, the UJA113X_SbcTransfer() function can be used.
+No dedicated function for reading the ADC is available at the moment.\n
+UJA113X_SetBatteryMonitor() can be used to configure the whole battery monitor
+except interrupts.\n
+</p>
+*/
+
+/**
+ @addtogroup smpsconfig
+ @section smps_intro Introduction
+<p>
+The Switched Mode Power Supply (SMPS) can be configured by invoking the 
+UJA113X_SetSmps() function.
+</p>
+*/

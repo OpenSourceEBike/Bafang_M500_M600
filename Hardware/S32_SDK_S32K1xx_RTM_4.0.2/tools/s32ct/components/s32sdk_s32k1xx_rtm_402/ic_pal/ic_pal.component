@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="icPal" label="ic_pal" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+   <sw_comp_ref name="platform.pal.ic_pal" version="1.0.0"/>
+   <description>IC_PAL Component</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>IC PAL General</description>
+      <config_set_refs>
+         <config_set_ref>ic_pal</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>FTM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="ic_pal" label="IC_PAL configuration settings" from_source="ic_pal.h">
+      <description>IC PAL</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="def_ic_pal" label="Default Values for IC PAL" available="true">
+            <description>IC PAL default configuration</description>
+            <set id="icPalInstanceCfg.name">instanceConfig</set>
+            <set id="icPalInstanceCfg.readonly">true</set>
+            <set id="icPalInstanceCfg.instType">IC_INST_TYPE_FTM</set>
+            <set id="icPalClockConfig.ClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <!-- <set id="icPalClockConfig.icPalPowerMode">DRUN</set> -->
+            <set id="icPalClockConfig.icPalPrescaler">1</set>
+            <set id="icPalConfig.icPalChnConfigList.0.hwChannelId">0</set>
+            <set id="icPalConfig.icPalChnConfigList.0.inputCaptureMode">IC_MEASURE_RISING_EDGE_PERIOD</set>
+            <set id="icPalConfig.icPalChnConfigList.0.channelCallbacks">NULL</set>
+            <set id="icPalConfig.icPalChnConfigList.0.channelCallbackParams">NULL</set>
+         </quick_selection>
+         <default>def_ic_pal</default>
+      </quick_selections>
+      <generated_types>
+         <enum id="ic_option_mode_t" label="The measurement type for input capture mode Implements : ic_option_mode_t_Class" from="ic_option_mode_t">
+            <item id="IC_DISABLE_OPERATION" label="Disable operation mode"/>
+            <item id="IC_TIMESTAMP_RISING_EDGE" label="Detect rising edge"/>
+            <item id="IC_TIMESTAMP_FALLING_EDGE" label="Detect falling edge"/>
+            <item id="IC_TIMESTAMP_BOTH_EDGES" label="Detect both edges"/>
+            <item id="IC_MEASURE_RISING_EDGE_PERIOD" label="Measure period between two consecutive rising edges"/>
+            <item id="IC_MEASURE_FALLING_EDGE_PERIOD" label="Measure period between two consecutive falling edges"/>
+            <item id="IC_MEASURE_PULSE_HIGH" label="Measure duty cycle ON"/>
+            <item id="IC_MEASURE_PULSE_LOW" label="Measure duty cycle OFF"/>
+         </enum>
+         <enum id="ic_pal_channel_t" label="Hardware channel list" from="ic_pal_channel_t">
+                <description>Channel ID</description>
+                <item id="0" label="Channel 0" available="(getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 0)"/>
+                <item id="1" label="Channel 1" available="(getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 1)"/>
+                <item id="2" label="Channel 2" available="(getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 2)"/>
+                <item id="3" label="Channel 3" available="(getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 3)"/>
+                <item id="4" label="Channel 4" available="(getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 4)"/>
+                <item id="5" label="Channel 5" available="(getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 5)"/>
+                <item id="6" label="Channel 6" available="(getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 6)"/>
+                <item id="7" label="Channel 7" available="(getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 7)"/>
+          </enum>
+         <struct id="ic_input_ch_param_t" label="The configuration structure of input capture parameters for each channel" from="ic_input_ch_param_t">
+            <description>Implements : ic_input_ch_param_t_Class</description>
+            <string id="icPalName" label="Name" enable='false'>
+               <description>Configuration name.</description>
+            </string>
+            <reference id="hwChannelId" label="Channel ID" type="ic_pal_channel_t">
+               <description>Physical hardware channel ID</description>
+               <validation>
+                  <constraint cond_expr="!(($parent.filterEn.getValue()) &amp;&amp;
+                                           (toInt($this.value()) &gt;= getFeature(`FEATURE_FTM_NUM_FILTER_CHANNELS`)))"
+                              level="error"
+                              description="The filter is only available on channels 0, 1, 2, and 3."/>
+                  <constraint cond_expr="!( featureDefined(`FEATURE_INSTANCE1_NUM_CHANNELS`) &amp;&amp;
+                                            (toInt($this.value()) &gt;= 2) &amp;&amp;
+                                            (getPeriphInstanceIndex($instance.getPeripheral()) == 1) )"
+                              level="error"
+                              description="FTM_1 has only 2 channels."/>
+               </validation>
+            </reference>
+            <reference id="inputCaptureMode" label="Operation Mode" type="ic_option_mode_t">
+               <description>Input capture mode of operation</description>
+           <validation>
+             <constraint cond_expr="!( (($this.getValue() == `IC_MEASURE_RISING_EDGE_PERIOD`)  ||
+                                        ($this.getValue() == `IC_MEASURE_FALLING_EDGE_PERIOD`) ||
+                                        ($this.getValue() == `IC_MEASURE_PULSE_HIGH`) ||
+                                        ($this.getValue() == `IC_MEASURE_PULSE_LOW`))
+                            &amp;&amp; ((toInt($parent.hwChannelId.getValue()) % 2) != 0) )"
+                         level="error"
+                         description="The odd channels are not supported in the measurement mode"/>
+           </validation>
+            </reference>
+            <bool id="filterEn" label="Input Capture Filter">
+               <description>Input capture filter state</description>
+            </bool>
+            <integer id="filterValue"
+                     label="Input Capture Filter Value"
+                     type="uint16_t" min_expr="0"
+                     max_expr="15"
+                     enable="$parent.filterEn.getValue() &amp;&amp;
+                             (toInt($parent.hwChannelId.value()) &lt; getFeature(`FEATURE_FTM_NUM_FILTER_CHANNELS`))">
+               <description>Filter Value</description>
+            </integer>
+            <bool id="continuousMode" label="Continuous Measurement">
+               <description>The Continuous Measurement Mode</description>
+            </bool>
+            <string id="channelCallbacks" label="Callback Function" value="`NULL`" options="cStructField">
+               <description>The callback function for channels event</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue()) || ($this.getValue() == `NULL`)" level="error" description="Callback function name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <string id="channelCallbackParams" label="Callback Parameter" value="`NULL`" options="cStructField">
+               <description>Parameter for callback: type + name, separated by a space and without semicolon (For example: "int counter", "uint32_t myVariable")</description>
+            </string>
+         </struct>
+      </generated_types>
+      <user_types>
+          <enum id="ic_pal_clk_src_type" label="" from="ic_pal_clk_src_type">
+                <description></description>
+                <item id="FTM_CLOCK_SOURCE_SYSTEMCLK" label="System clock" available="true"/>
+                <item id="FTM_CLOCK_SOURCE_EXTERNALCLK" label="External clock" available="featureDefined(`FEATURE_FTM_HAS_EXT_CLOCK_SOURCE`)"/>
+                <item id="FTM_CLOCK_SOURCE_FIXEDCLK" label="Fixed clock" available="featureDefined(`FEATURE_FTM_HAS_FIXED_CLOCK_SOURCE`)"/>
+          </enum>
+          <enum id="ic_pal_mcu_mode_type" label="" from="ic_pal_mcu_mode_type">
+                <description></description>
+                <item id="DRUN" label="DRUN"/>
+                <item id="RUN0" label="RUN0"/>
+                <item id="RUN1" label="RUN1"/>
+                <item id="RUN2" label="RUN2"/>
+                <item id="RUN3" label="RUN3"/>
+          </enum>
+          <enum id="ic_pal_clock_ps_type" label="" from="ic_pal_clock_ps_type">
+                <description></description>
+                <item id="1" label="1"/>
+                <item id="2" label="2"/>
+                <item id="4" label="4"/>
+                <item id="8" label="8"/>
+                <item id="16" label="16"/>
+                <item id="32" label="32"/>
+                <item id="64" label="64"/>
+                <item id="128" label="128"/>
+          </enum>
+         <enum id="ic_inst_type" label="Instance types" from="ic_inst_type">
+            <item id="IC_INST_TYPE_FTM" label="IC Pal over FTM"/>
+         </enum>
+        <struct id="ic_pal_inst_config_t" label="Structure storing PAL instance information" from="ic_pal_inst_config_t">
+            <description>This structure is used for storing PAL instance information.</description>
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readOnly" label="Read-only">
+               <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+            </bool>
+            <reference id="instType" label="Peripheral Over Which The PAL Is Used" type="ic_inst_type" options="cStructField">
+               <description>Peripheral over which the PAL is used</description>
+            </reference>
+            <info id="instIdx" label="Instance Of The Peripheral Is Used" value="$instance.getPeripheral()" options="cStructField" />
+         </struct>
+         <struct id="ic_pal_clock_config_t" label="Initialization Clock Config" from="ic_pal_clock_config_t">
+            <reference id="ClockSource" label="Input Clock Source" type="ic_pal_clk_src_type">
+               <description>Select the clock source for IC PAL</description>
+            </reference>
+
+            <info id="Name_ModuleClock"
+                  value="getFeature(`FEATURE_FTM_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="Name_ExternalClock"
+                  value="getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="SystemClockFrequency"
+                  label="System Clock(Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_SYS_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="false">
+            </info>
+            <info id="DisplaySystemClock"
+                  label="Frequency of source clock (Hz)"
+                  value="$parent.SystemClockFrequency.getValue()"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_SYSTEMCLK`)">
+            </info>
+            <info id="DisplayExternalClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               $parent.Name_ExternalClock.getValue(),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_EXTERNALCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 4))"
+                              level="error"
+                              description="The frequency of the external clock source must not exceed 1/4 of the FTM input clock frequency"/>
+               </validation>
+            </info>
+            <info id="DisplayFixedClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_FIX_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_FIXEDCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 2))"
+                              level="error"
+                              description="The frequency of the fixed frequency clock must not exceed 1/2 of the FTM input clock frequency"/>
+               </validation>
+            </info>
+
+<!--             <reference id="icPalPowerMode" label="MCU Power Mode Of operation" type="ic_pal_mcu_mode_type">
+               <description>The operation mode of MCU</description>
+            </reference> -->
+
+            <reference id="icPalPrescaler" label="Prescaler" type="ic_pal_clock_ps_type">
+               <description>The prescaler value</description>
+            </reference>
+
+            <info id="DisplayCounterClock_None"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayNoneClock.getValue()"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_NONE`)">
+            </info>
+            <info id="DisplayCounterClock_System"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplaySystemClock.getValue() / toInt($parent.icPalPrescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_SYSTEMCLK`)">
+            </info>
+            <info id="DisplayCounterClock_External"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayExternalClock.getValue() / toInt($parent.icPalPrescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_EXTERNALCLK`)">
+            </info>
+            <info id="DisplayCounterClock_Fixed"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayFixedClock.getValue() / toInt($parent.icPalPrescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_FIXEDCLK`)">
+            </info>
+
+         </struct>
+        <struct id="ic_pal_config_t" label="Configurations" from="ic_pal_config_t">
+            <description>IC PAL Configurations</description>
+            <info id="icPalNumOfChnConfig" label="Number Of Channels: " value="0" options="cStructField"/>
+            <array id="icPalChnConfigList" label="Chanels Configuration List" type="ic_input_ch_param_t" options="ShowContentAs=MasterDetail">
+                <description>Configuration for independent PWM channels</description>
+                <item_defaults>
+                <set_default id="hwChannelId"           value_expr="x -> x.getID()"/>
+                <set_default id="channelCallbacks"      value_expr="x -> (`NULL`)"/>
+                <set_default id="channelCallbackParams" value_expr="x -> (`NULL`)"/>
+                </item_defaults>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`hwChannelId`).value()).length() == 0"
+                                level="error" description="There are some duplicated `hw Channel Id` in the configuration"/>
+                </validation>
+            </array>
+         </struct>
+      </user_types>
+      <settings>
+            <reference id="icPalInstanceCfg" label="PAL Instance Config" type="ic_pal_inst_config_t" available="true">
+            <description>IC PAL instance Configuration</description>
+            </reference>
+            <reference id="icPalClockConfig" label="Clock Configuration" type="ic_pal_clock_config_t" available="true">
+                <description>IC PAL clock Configuration.</description>
+            </reference>
+            <reference id="icPalConfig" label="IC PAL User Configuration" type="ic_pal_config_t" available="true">
+                <description>IC PAL User Configuration.</description>
+            </reference>
+             <variable value="`../ic_pal/ic_pal_codegen.js`" id="codegen_file"></variable>
+             <variable value="`IC_PAL_CodeGenerator`" id="codegen_class"></variable>
+             <variable value="`../ic_pal/ic_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+             <variable value="`IC_PAL_ToolchainSettings`" id="toolchain_settings_class"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

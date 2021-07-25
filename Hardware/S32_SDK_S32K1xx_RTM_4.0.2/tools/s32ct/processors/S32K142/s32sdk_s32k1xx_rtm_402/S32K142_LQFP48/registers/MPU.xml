@@ -1,0 +1,1922 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="CESR" description="Control/Error Status Register">
+    <alias type="CMSIS" value="CESR"/>
+    <bit_field offset="0" width="1" name="VLD" access="RW" reset_value="0x1" description="Valid">
+      <alias type="CMSIS" value="MPU_CESR_VLD(x)"/>
+      <bit_field_value name="CESR_VLD_0b0" value="0b0" description="MPU is disabled. All accesses from all bus masters are allowed."/>
+      <bit_field_value name="CESR_VLD_0b1" value="0b1" description="MPU is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="7" reset_value="0"/>
+    <bit_field offset="8" width="4" name="NRGD" access="RO" reset_value="0" description="Number Of Region Descriptors">
+      <alias type="CMSIS" value="MPU_CESR_NRGD(x)"/>
+      <bit_field_value name="CESR_NRGD_0b0000" value="0b0000" description="8 region descriptors"/>
+      <bit_field_value name="CESR_NRGD_0b0001" value="0b0001" description="12 region descriptors"/>
+      <bit_field_value name="CESR_NRGD_0b0010" value="0b0010" description="16 region descriptors"/>
+    </bit_field>
+    <bit_field offset="12" width="4" name="NSP" access="RO" reset_value="0x4" description="Number Of Slave Ports">
+      <alias type="CMSIS" value="MPU_CESR_NSP(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="HRL" access="RO" reset_value="0x1" description="Hardware Revision Level">
+      <alias type="CMSIS" value="MPU_CESR_HRL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="3" reset_value="0"/>
+    <reserved_bit_field offset="23" width="1" reset_value="0x1"/>
+    <reserved_bit_field offset="24" width="1" reset_value="0"/>
+    <reserved_bit_field offset="25" width="1" reset_value="0"/>
+    <reserved_bit_field offset="26" width="1" reset_value="0"/>
+    <reserved_bit_field offset="27" width="1" reset_value="0"/>
+    <bit_field offset="28" width="1" name="SPERR3" access="W1C" reset_value="0" description="Slave Port 3 Error">
+      <alias type="CMSIS" value="MPU_CESR_SPERR3(x)"/>
+      <bit_field_value name="CESR_SPERR3_0b0" value="0b0" description="No error has occurred for slave port 3."/>
+      <bit_field_value name="CESR_SPERR3_0b1" value="0b1" description="An error has occurred for slave port 3."/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="SPERR2" access="W1C" reset_value="0" description="Slave Port 2 Error">
+      <alias type="CMSIS" value="MPU_CESR_SPERR2(x)"/>
+      <bit_field_value name="CESR_SPERR2_0b0" value="0b0" description="No error has occurred for slave port 2."/>
+      <bit_field_value name="CESR_SPERR2_0b1" value="0b1" description="An error has occurred for slave port 2."/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="SPERR1" access="W1C" reset_value="0" description="Slave Port 1 Error">
+      <alias type="CMSIS" value="MPU_CESR_SPERR1(x)"/>
+      <bit_field_value name="CESR_SPERR1_0b0" value="0b0" description="No error has occurred for slave port 1."/>
+      <bit_field_value name="CESR_SPERR1_0b1" value="0b1" description="An error has occurred for slave port 1."/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="SPERR0" access="W1C" reset_value="0" description="Slave Port 0 Error">
+      <alias type="CMSIS" value="MPU_CESR_SPERR0(x)"/>
+      <bit_field_value name="CESR_SPERR0_0b0" value="0b0" description="No error has occurred for slave port 0."/>
+      <bit_field_value name="CESR_SPERR0_0b1" value="0b1" description="An error has occurred for slave port 0."/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="32" name="EAR0" description="Error Address Register, slave port 0">
+    <alias type="CMSIS" value="EAR0"/>
+    <bit_field offset="0" width="32" name="EADDR" access="RO" reset_value="0" description="Error Address">
+      <alias type="CMSIS" value="MPU_EAR0_EADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x14" width="32" name="EDR0" description="Error Detail Register, slave port 0">
+    <alias type="CMSIS" value="EDR0"/>
+    <bit_field offset="0" width="1" name="ERW" access="RO" reset_value="0" description="Error Read/Write">
+      <alias type="CMSIS" value="MPU_EDR0_ERW(x)"/>
+      <bit_field_value name="EDR0_ERW_0b0" value="0b0" description="Read"/>
+      <bit_field_value name="EDR0_ERW_0b1" value="0b1" description="Write"/>
+    </bit_field>
+    <bit_field offset="1" width="3" name="EATTR" access="RO" reset_value="0" description="Error Attributes">
+      <alias type="CMSIS" value="MPU_EDR0_EATTR(x)"/>
+      <bit_field_value name="EDR0_EATTR_0b000" value="0b000" description="User mode, instruction access"/>
+      <bit_field_value name="EDR0_EATTR_0b001" value="0b001" description="User mode, data access"/>
+      <bit_field_value name="EDR0_EATTR_0b010" value="0b010" description="Supervisor mode, instruction access"/>
+      <bit_field_value name="EDR0_EATTR_0b011" value="0b011" description="Supervisor mode, data access"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="EMN" access="RO" reset_value="0" description="Error Master Number">
+      <alias type="CMSIS" value="MPU_EDR0_EMN(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="EPID" access="RO" reset_value="0" description="Error Process Identification">
+      <alias type="CMSIS" value="MPU_EDR0_EPID(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="16" name="EACD" access="RO" reset_value="0" description="Error Access Control Detail">
+      <alias type="CMSIS" value="MPU_EDR0_EACD(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x18" width="32" name="EAR1" description="Error Address Register, slave port 1">
+    <alias type="CMSIS" value="EAR1"/>
+    <bit_field offset="0" width="32" name="EADDR" access="RO" reset_value="0" description="Error Address">
+      <alias type="CMSIS" value="MPU_EAR1_EADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x1C" width="32" name="EDR1" description="Error Detail Register, slave port 1">
+    <alias type="CMSIS" value="EDR1"/>
+    <bit_field offset="0" width="1" name="ERW" access="RO" reset_value="0" description="Error Read/Write">
+      <alias type="CMSIS" value="MPU_EDR1_ERW(x)"/>
+      <bit_field_value name="EDR1_ERW_0b0" value="0b0" description="Read"/>
+      <bit_field_value name="EDR1_ERW_0b1" value="0b1" description="Write"/>
+    </bit_field>
+    <bit_field offset="1" width="3" name="EATTR" access="RO" reset_value="0" description="Error Attributes">
+      <alias type="CMSIS" value="MPU_EDR1_EATTR(x)"/>
+      <bit_field_value name="EDR1_EATTR_0b000" value="0b000" description="User mode, instruction access"/>
+      <bit_field_value name="EDR1_EATTR_0b001" value="0b001" description="User mode, data access"/>
+      <bit_field_value name="EDR1_EATTR_0b010" value="0b010" description="Supervisor mode, instruction access"/>
+      <bit_field_value name="EDR1_EATTR_0b011" value="0b011" description="Supervisor mode, data access"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="EMN" access="RO" reset_value="0" description="Error Master Number">
+      <alias type="CMSIS" value="MPU_EDR1_EMN(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="EPID" access="RO" reset_value="0" description="Error Process Identification">
+      <alias type="CMSIS" value="MPU_EDR1_EPID(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="16" name="EACD" access="RO" reset_value="0" description="Error Access Control Detail">
+      <alias type="CMSIS" value="MPU_EDR1_EACD(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x20" width="32" name="EAR2" description="Error Address Register, slave port 2">
+    <alias type="CMSIS" value="EAR2"/>
+    <bit_field offset="0" width="32" name="EADDR" access="RO" reset_value="0" description="Error Address">
+      <alias type="CMSIS" value="MPU_EAR2_EADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x24" width="32" name="EDR2" description="Error Detail Register, slave port 2">
+    <alias type="CMSIS" value="EDR2"/>
+    <bit_field offset="0" width="1" name="ERW" access="RO" reset_value="0" description="Error Read/Write">
+      <alias type="CMSIS" value="MPU_EDR2_ERW(x)"/>
+      <bit_field_value name="EDR2_ERW_0b0" value="0b0" description="Read"/>
+      <bit_field_value name="EDR2_ERW_0b1" value="0b1" description="Write"/>
+    </bit_field>
+    <bit_field offset="1" width="3" name="EATTR" access="RO" reset_value="0" description="Error Attributes">
+      <alias type="CMSIS" value="MPU_EDR2_EATTR(x)"/>
+      <bit_field_value name="EDR2_EATTR_0b000" value="0b000" description="User mode, instruction access"/>
+      <bit_field_value name="EDR2_EATTR_0b001" value="0b001" description="User mode, data access"/>
+      <bit_field_value name="EDR2_EATTR_0b010" value="0b010" description="Supervisor mode, instruction access"/>
+      <bit_field_value name="EDR2_EATTR_0b011" value="0b011" description="Supervisor mode, data access"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="EMN" access="RO" reset_value="0" description="Error Master Number">
+      <alias type="CMSIS" value="MPU_EDR2_EMN(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="EPID" access="RO" reset_value="0" description="Error Process Identification">
+      <alias type="CMSIS" value="MPU_EDR2_EPID(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="16" name="EACD" access="RO" reset_value="0" description="Error Access Control Detail">
+      <alias type="CMSIS" value="MPU_EDR2_EACD(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x28" width="32" name="EAR3" description="Error Address Register, slave port 3">
+    <alias type="CMSIS" value="EAR3"/>
+    <bit_field offset="0" width="32" name="EADDR" access="RO" reset_value="0" description="Error Address">
+      <alias type="CMSIS" value="MPU_EAR3_EADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x2C" width="32" name="EDR3" description="Error Detail Register, slave port 3">
+    <alias type="CMSIS" value="EDR3"/>
+    <bit_field offset="0" width="1" name="ERW" access="RO" reset_value="0" description="Error Read/Write">
+      <alias type="CMSIS" value="MPU_EDR3_ERW(x)"/>
+      <bit_field_value name="EDR3_ERW_0b0" value="0b0" description="Read"/>
+      <bit_field_value name="EDR3_ERW_0b1" value="0b1" description="Write"/>
+    </bit_field>
+    <bit_field offset="1" width="3" name="EATTR" access="RO" reset_value="0" description="Error Attributes">
+      <alias type="CMSIS" value="MPU_EDR3_EATTR(x)"/>
+      <bit_field_value name="EDR3_EATTR_0b000" value="0b000" description="User mode, instruction access"/>
+      <bit_field_value name="EDR3_EATTR_0b001" value="0b001" description="User mode, data access"/>
+      <bit_field_value name="EDR3_EATTR_0b010" value="0b010" description="Supervisor mode, instruction access"/>
+      <bit_field_value name="EDR3_EATTR_0b011" value="0b011" description="Supervisor mode, data access"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="EMN" access="RO" reset_value="0" description="Error Master Number">
+      <alias type="CMSIS" value="MPU_EDR3_EMN(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="EPID" access="RO" reset_value="0" description="Error Process Identification">
+      <alias type="CMSIS" value="MPU_EDR3_EPID(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="16" name="EACD" access="RO" reset_value="0" description="Error Access Control Detail">
+      <alias type="CMSIS" value="MPU_EDR3_EACD(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x400" width="32" name="RGD0_WORD0" description="Region Descriptor 0, Word 0">
+    <alias type="CMSIS" value="RGD[0].WORD0"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0"/>
+    <bit_field offset="5" width="27" name="SRTADDR" access="RW" reset_value="0" description="Start Address">
+      <alias type="CMSIS" value="MPU_WORD0_SRTADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x404" width="32" name="RGD0_WORD1" description="Region Descriptor 0, Word 1">
+    <alias type="CMSIS" value="RGD[0].WORD1"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0x1F"/>
+    <bit_field offset="5" width="27" name="ENDADDR" access="RW" reset_value="0x7FFFFFF" description="End Address">
+      <alias type="CMSIS" value="MPU_WORD1_ENDADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x408" width="32" name="RGD0_WORD2" description="Region Descriptor 0, Word 2">
+    <alias type="CMSIS" value="RGD[0].WORD2"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0x7" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0x3" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0SM(x)"/>
+      <bit_field_value name="RGD0_WORD2_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD0_WORD2_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD0_WORD2_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD0_WORD2_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M0PE(x)"/>
+      <bit_field_value name="RGD0_WORD2_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD0_WORD2_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0x7" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0x3" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1SM(x)"/>
+      <bit_field_value name="RGD0_WORD2_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD0_WORD2_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD0_WORD2_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD0_WORD2_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M1PE(x)"/>
+      <bit_field_value name="RGD0_WORD2_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD0_WORD2_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0x7" description="Bus Master 2 User Mode Access control">
+      <alias type="CMSIS" value="MPU_WORD2_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0x3" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M2SM(x)"/>
+      <bit_field_value name="RGD0_WORD2_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD0_WORD2_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD0_WORD2_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD0_WORD2_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0x3" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3SM(x)"/>
+      <bit_field_value name="RGD0_WORD2_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD0_WORD2_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD0_WORD2_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD0_WORD2_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4WE(x)"/>
+      <bit_field_value name="RGD0_WORD2_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD0_WORD2_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4RE(x)"/>
+      <bit_field_value name="RGD0_WORD2_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD0_WORD2_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5WE(x)"/>
+      <bit_field_value name="RGD0_WORD2_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD0_WORD2_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5RE(x)"/>
+      <bit_field_value name="RGD0_WORD2_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD0_WORD2_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6WE(x)"/>
+      <bit_field_value name="RGD0_WORD2_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD0_WORD2_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6RE(x)"/>
+      <bit_field_value name="RGD0_WORD2_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD0_WORD2_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7WE(x)"/>
+      <bit_field_value name="RGD0_WORD2_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD0_WORD2_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7RE(x)"/>
+      <bit_field_value name="RGD0_WORD2_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD0_WORD2_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x40C" width="32" name="RGD0_WORD3" description="Region Descriptor 0, Word 3">
+    <alias type="CMSIS" value="RGD[0].WORD3"/>
+    <bit_field offset="0" width="1" name="VLD" access="RW" reset_value="0x1" description="Valid">
+      <alias type="CMSIS" value="MPU_WORD3_VLD(x)"/>
+      <bit_field_value name="RGD0_WORD3_VLD_0b0" value="0b0" description="Region descriptor is invalid"/>
+      <bit_field_value name="RGD0_WORD3_VLD_0b1" value="0b1" description="Region descriptor is valid"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="15" reset_value="0"/>
+    <bit_field offset="16" width="8" name="PIDMASK" access="RW" reset_value="0" description="Process Identifier Mask">
+      <alias type="CMSIS" value="MPU_WORD3_PIDMASK(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="PID" access="RW" reset_value="0" description="Process Identifier">
+      <alias type="CMSIS" value="MPU_WORD3_PID(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x410" width="32" name="RGD1_WORD0" description="Region Descriptor 1, Word 0">
+    <alias type="CMSIS" value="RGD[1].WORD0"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0"/>
+    <bit_field offset="5" width="27" name="SRTADDR" access="RW" reset_value="0" description="Start Address">
+      <alias type="CMSIS" value="MPU_WORD0_SRTADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x414" width="32" name="RGD1_WORD1" description="Region Descriptor 1, Word 1">
+    <alias type="CMSIS" value="RGD[1].WORD1"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0x1F"/>
+    <bit_field offset="5" width="27" name="ENDADDR" access="RW" reset_value="0" description="End Address">
+      <alias type="CMSIS" value="MPU_WORD1_ENDADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x418" width="32" name="RGD1_WORD2" description="Region Descriptor 1, Word 2">
+    <alias type="CMSIS" value="RGD[1].WORD2"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0SM(x)"/>
+      <bit_field_value name="RGD1_WORD2_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD1_WORD2_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD1_WORD2_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD1_WORD2_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M0PE(x)"/>
+      <bit_field_value name="RGD1_WORD2_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD1_WORD2_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1SM(x)"/>
+      <bit_field_value name="RGD1_WORD2_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD1_WORD2_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD1_WORD2_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD1_WORD2_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M1PE(x)"/>
+      <bit_field_value name="RGD1_WORD2_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD1_WORD2_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access control">
+      <alias type="CMSIS" value="MPU_WORD2_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M2SM(x)"/>
+      <bit_field_value name="RGD1_WORD2_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD1_WORD2_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD1_WORD2_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD1_WORD2_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3SM(x)"/>
+      <bit_field_value name="RGD1_WORD2_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD1_WORD2_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD1_WORD2_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD1_WORD2_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4WE(x)"/>
+      <bit_field_value name="RGD1_WORD2_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD1_WORD2_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4RE(x)"/>
+      <bit_field_value name="RGD1_WORD2_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD1_WORD2_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5WE(x)"/>
+      <bit_field_value name="RGD1_WORD2_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD1_WORD2_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5RE(x)"/>
+      <bit_field_value name="RGD1_WORD2_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD1_WORD2_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6WE(x)"/>
+      <bit_field_value name="RGD1_WORD2_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD1_WORD2_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6RE(x)"/>
+      <bit_field_value name="RGD1_WORD2_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD1_WORD2_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7WE(x)"/>
+      <bit_field_value name="RGD1_WORD2_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD1_WORD2_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7RE(x)"/>
+      <bit_field_value name="RGD1_WORD2_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD1_WORD2_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x41C" width="32" name="RGD1_WORD3" description="Region Descriptor 1, Word 3">
+    <alias type="CMSIS" value="RGD[1].WORD3"/>
+    <bit_field offset="0" width="1" name="VLD" access="RW" reset_value="0" description="Valid">
+      <alias type="CMSIS" value="MPU_WORD3_VLD(x)"/>
+      <bit_field_value name="RGD1_WORD3_VLD_0b0" value="0b0" description="Region descriptor is invalid"/>
+      <bit_field_value name="RGD1_WORD3_VLD_0b1" value="0b1" description="Region descriptor is valid"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="15" reset_value="0"/>
+    <bit_field offset="16" width="8" name="PIDMASK" access="RW" reset_value="0" description="Process Identifier Mask">
+      <alias type="CMSIS" value="MPU_WORD3_PIDMASK(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="PID" access="RW" reset_value="0" description="Process Identifier">
+      <alias type="CMSIS" value="MPU_WORD3_PID(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x420" width="32" name="RGD2_WORD0" description="Region Descriptor 2, Word 0">
+    <alias type="CMSIS" value="RGD[2].WORD0"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0"/>
+    <bit_field offset="5" width="27" name="SRTADDR" access="RW" reset_value="0" description="Start Address">
+      <alias type="CMSIS" value="MPU_WORD0_SRTADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x424" width="32" name="RGD2_WORD1" description="Region Descriptor 2, Word 1">
+    <alias type="CMSIS" value="RGD[2].WORD1"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0x1F"/>
+    <bit_field offset="5" width="27" name="ENDADDR" access="RW" reset_value="0" description="End Address">
+      <alias type="CMSIS" value="MPU_WORD1_ENDADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x428" width="32" name="RGD2_WORD2" description="Region Descriptor 2, Word 2">
+    <alias type="CMSIS" value="RGD[2].WORD2"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0SM(x)"/>
+      <bit_field_value name="RGD2_WORD2_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD2_WORD2_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD2_WORD2_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD2_WORD2_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M0PE(x)"/>
+      <bit_field_value name="RGD2_WORD2_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD2_WORD2_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1SM(x)"/>
+      <bit_field_value name="RGD2_WORD2_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD2_WORD2_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD2_WORD2_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD2_WORD2_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M1PE(x)"/>
+      <bit_field_value name="RGD2_WORD2_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD2_WORD2_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access control">
+      <alias type="CMSIS" value="MPU_WORD2_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M2SM(x)"/>
+      <bit_field_value name="RGD2_WORD2_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD2_WORD2_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD2_WORD2_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD2_WORD2_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3SM(x)"/>
+      <bit_field_value name="RGD2_WORD2_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD2_WORD2_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD2_WORD2_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD2_WORD2_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4WE(x)"/>
+      <bit_field_value name="RGD2_WORD2_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD2_WORD2_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4RE(x)"/>
+      <bit_field_value name="RGD2_WORD2_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD2_WORD2_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5WE(x)"/>
+      <bit_field_value name="RGD2_WORD2_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD2_WORD2_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5RE(x)"/>
+      <bit_field_value name="RGD2_WORD2_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD2_WORD2_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6WE(x)"/>
+      <bit_field_value name="RGD2_WORD2_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD2_WORD2_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6RE(x)"/>
+      <bit_field_value name="RGD2_WORD2_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD2_WORD2_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7WE(x)"/>
+      <bit_field_value name="RGD2_WORD2_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD2_WORD2_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7RE(x)"/>
+      <bit_field_value name="RGD2_WORD2_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD2_WORD2_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x42C" width="32" name="RGD2_WORD3" description="Region Descriptor 2, Word 3">
+    <alias type="CMSIS" value="RGD[2].WORD3"/>
+    <bit_field offset="0" width="1" name="VLD" access="RW" reset_value="0" description="Valid">
+      <alias type="CMSIS" value="MPU_WORD3_VLD(x)"/>
+      <bit_field_value name="RGD2_WORD3_VLD_0b0" value="0b0" description="Region descriptor is invalid"/>
+      <bit_field_value name="RGD2_WORD3_VLD_0b1" value="0b1" description="Region descriptor is valid"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="15" reset_value="0"/>
+    <bit_field offset="16" width="8" name="PIDMASK" access="RW" reset_value="0" description="Process Identifier Mask">
+      <alias type="CMSIS" value="MPU_WORD3_PIDMASK(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="PID" access="RW" reset_value="0" description="Process Identifier">
+      <alias type="CMSIS" value="MPU_WORD3_PID(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x430" width="32" name="RGD3_WORD0" description="Region Descriptor 3, Word 0">
+    <alias type="CMSIS" value="RGD[3].WORD0"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0"/>
+    <bit_field offset="5" width="27" name="SRTADDR" access="RW" reset_value="0" description="Start Address">
+      <alias type="CMSIS" value="MPU_WORD0_SRTADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x434" width="32" name="RGD3_WORD1" description="Region Descriptor 3, Word 1">
+    <alias type="CMSIS" value="RGD[3].WORD1"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0x1F"/>
+    <bit_field offset="5" width="27" name="ENDADDR" access="RW" reset_value="0" description="End Address">
+      <alias type="CMSIS" value="MPU_WORD1_ENDADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x438" width="32" name="RGD3_WORD2" description="Region Descriptor 3, Word 2">
+    <alias type="CMSIS" value="RGD[3].WORD2"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0SM(x)"/>
+      <bit_field_value name="RGD3_WORD2_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD3_WORD2_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD3_WORD2_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD3_WORD2_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M0PE(x)"/>
+      <bit_field_value name="RGD3_WORD2_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD3_WORD2_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1SM(x)"/>
+      <bit_field_value name="RGD3_WORD2_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD3_WORD2_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD3_WORD2_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD3_WORD2_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M1PE(x)"/>
+      <bit_field_value name="RGD3_WORD2_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD3_WORD2_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access control">
+      <alias type="CMSIS" value="MPU_WORD2_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M2SM(x)"/>
+      <bit_field_value name="RGD3_WORD2_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD3_WORD2_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD3_WORD2_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD3_WORD2_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3SM(x)"/>
+      <bit_field_value name="RGD3_WORD2_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD3_WORD2_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD3_WORD2_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD3_WORD2_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4WE(x)"/>
+      <bit_field_value name="RGD3_WORD2_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD3_WORD2_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4RE(x)"/>
+      <bit_field_value name="RGD3_WORD2_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD3_WORD2_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5WE(x)"/>
+      <bit_field_value name="RGD3_WORD2_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD3_WORD2_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5RE(x)"/>
+      <bit_field_value name="RGD3_WORD2_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD3_WORD2_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6WE(x)"/>
+      <bit_field_value name="RGD3_WORD2_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD3_WORD2_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6RE(x)"/>
+      <bit_field_value name="RGD3_WORD2_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD3_WORD2_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7WE(x)"/>
+      <bit_field_value name="RGD3_WORD2_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD3_WORD2_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7RE(x)"/>
+      <bit_field_value name="RGD3_WORD2_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD3_WORD2_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x43C" width="32" name="RGD3_WORD3" description="Region Descriptor 3, Word 3">
+    <alias type="CMSIS" value="RGD[3].WORD3"/>
+    <bit_field offset="0" width="1" name="VLD" access="RW" reset_value="0" description="Valid">
+      <alias type="CMSIS" value="MPU_WORD3_VLD(x)"/>
+      <bit_field_value name="RGD3_WORD3_VLD_0b0" value="0b0" description="Region descriptor is invalid"/>
+      <bit_field_value name="RGD3_WORD3_VLD_0b1" value="0b1" description="Region descriptor is valid"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="15" reset_value="0"/>
+    <bit_field offset="16" width="8" name="PIDMASK" access="RW" reset_value="0" description="Process Identifier Mask">
+      <alias type="CMSIS" value="MPU_WORD3_PIDMASK(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="PID" access="RW" reset_value="0" description="Process Identifier">
+      <alias type="CMSIS" value="MPU_WORD3_PID(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x440" width="32" name="RGD4_WORD0" description="Region Descriptor 4, Word 0">
+    <alias type="CMSIS" value="RGD[4].WORD0"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0"/>
+    <bit_field offset="5" width="27" name="SRTADDR" access="RW" reset_value="0" description="Start Address">
+      <alias type="CMSIS" value="MPU_WORD0_SRTADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x444" width="32" name="RGD4_WORD1" description="Region Descriptor 4, Word 1">
+    <alias type="CMSIS" value="RGD[4].WORD1"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0x1F"/>
+    <bit_field offset="5" width="27" name="ENDADDR" access="RW" reset_value="0" description="End Address">
+      <alias type="CMSIS" value="MPU_WORD1_ENDADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x448" width="32" name="RGD4_WORD2" description="Region Descriptor 4, Word 2">
+    <alias type="CMSIS" value="RGD[4].WORD2"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0SM(x)"/>
+      <bit_field_value name="RGD4_WORD2_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD4_WORD2_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD4_WORD2_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD4_WORD2_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M0PE(x)"/>
+      <bit_field_value name="RGD4_WORD2_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD4_WORD2_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1SM(x)"/>
+      <bit_field_value name="RGD4_WORD2_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD4_WORD2_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD4_WORD2_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD4_WORD2_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M1PE(x)"/>
+      <bit_field_value name="RGD4_WORD2_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD4_WORD2_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access control">
+      <alias type="CMSIS" value="MPU_WORD2_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M2SM(x)"/>
+      <bit_field_value name="RGD4_WORD2_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD4_WORD2_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD4_WORD2_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD4_WORD2_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3SM(x)"/>
+      <bit_field_value name="RGD4_WORD2_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD4_WORD2_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD4_WORD2_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD4_WORD2_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4WE(x)"/>
+      <bit_field_value name="RGD4_WORD2_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD4_WORD2_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4RE(x)"/>
+      <bit_field_value name="RGD4_WORD2_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD4_WORD2_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5WE(x)"/>
+      <bit_field_value name="RGD4_WORD2_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD4_WORD2_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5RE(x)"/>
+      <bit_field_value name="RGD4_WORD2_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD4_WORD2_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6WE(x)"/>
+      <bit_field_value name="RGD4_WORD2_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD4_WORD2_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6RE(x)"/>
+      <bit_field_value name="RGD4_WORD2_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD4_WORD2_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7WE(x)"/>
+      <bit_field_value name="RGD4_WORD2_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD4_WORD2_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7RE(x)"/>
+      <bit_field_value name="RGD4_WORD2_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD4_WORD2_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x44C" width="32" name="RGD4_WORD3" description="Region Descriptor 4, Word 3">
+    <alias type="CMSIS" value="RGD[4].WORD3"/>
+    <bit_field offset="0" width="1" name="VLD" access="RW" reset_value="0" description="Valid">
+      <alias type="CMSIS" value="MPU_WORD3_VLD(x)"/>
+      <bit_field_value name="RGD4_WORD3_VLD_0b0" value="0b0" description="Region descriptor is invalid"/>
+      <bit_field_value name="RGD4_WORD3_VLD_0b1" value="0b1" description="Region descriptor is valid"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="15" reset_value="0"/>
+    <bit_field offset="16" width="8" name="PIDMASK" access="RW" reset_value="0" description="Process Identifier Mask">
+      <alias type="CMSIS" value="MPU_WORD3_PIDMASK(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="PID" access="RW" reset_value="0" description="Process Identifier">
+      <alias type="CMSIS" value="MPU_WORD3_PID(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x450" width="32" name="RGD5_WORD0" description="Region Descriptor 5, Word 0">
+    <alias type="CMSIS" value="RGD[5].WORD0"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0"/>
+    <bit_field offset="5" width="27" name="SRTADDR" access="RW" reset_value="0" description="Start Address">
+      <alias type="CMSIS" value="MPU_WORD0_SRTADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x454" width="32" name="RGD5_WORD1" description="Region Descriptor 5, Word 1">
+    <alias type="CMSIS" value="RGD[5].WORD1"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0x1F"/>
+    <bit_field offset="5" width="27" name="ENDADDR" access="RW" reset_value="0" description="End Address">
+      <alias type="CMSIS" value="MPU_WORD1_ENDADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x458" width="32" name="RGD5_WORD2" description="Region Descriptor 5, Word 2">
+    <alias type="CMSIS" value="RGD[5].WORD2"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0SM(x)"/>
+      <bit_field_value name="RGD5_WORD2_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD5_WORD2_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD5_WORD2_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD5_WORD2_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M0PE(x)"/>
+      <bit_field_value name="RGD5_WORD2_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD5_WORD2_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1SM(x)"/>
+      <bit_field_value name="RGD5_WORD2_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD5_WORD2_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD5_WORD2_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD5_WORD2_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M1PE(x)"/>
+      <bit_field_value name="RGD5_WORD2_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD5_WORD2_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access control">
+      <alias type="CMSIS" value="MPU_WORD2_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M2SM(x)"/>
+      <bit_field_value name="RGD5_WORD2_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD5_WORD2_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD5_WORD2_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD5_WORD2_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3SM(x)"/>
+      <bit_field_value name="RGD5_WORD2_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD5_WORD2_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD5_WORD2_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD5_WORD2_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4WE(x)"/>
+      <bit_field_value name="RGD5_WORD2_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD5_WORD2_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4RE(x)"/>
+      <bit_field_value name="RGD5_WORD2_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD5_WORD2_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5WE(x)"/>
+      <bit_field_value name="RGD5_WORD2_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD5_WORD2_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5RE(x)"/>
+      <bit_field_value name="RGD5_WORD2_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD5_WORD2_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6WE(x)"/>
+      <bit_field_value name="RGD5_WORD2_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD5_WORD2_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6RE(x)"/>
+      <bit_field_value name="RGD5_WORD2_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD5_WORD2_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7WE(x)"/>
+      <bit_field_value name="RGD5_WORD2_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD5_WORD2_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7RE(x)"/>
+      <bit_field_value name="RGD5_WORD2_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD5_WORD2_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x45C" width="32" name="RGD5_WORD3" description="Region Descriptor 5, Word 3">
+    <alias type="CMSIS" value="RGD[5].WORD3"/>
+    <bit_field offset="0" width="1" name="VLD" access="RW" reset_value="0" description="Valid">
+      <alias type="CMSIS" value="MPU_WORD3_VLD(x)"/>
+      <bit_field_value name="RGD5_WORD3_VLD_0b0" value="0b0" description="Region descriptor is invalid"/>
+      <bit_field_value name="RGD5_WORD3_VLD_0b1" value="0b1" description="Region descriptor is valid"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="15" reset_value="0"/>
+    <bit_field offset="16" width="8" name="PIDMASK" access="RW" reset_value="0" description="Process Identifier Mask">
+      <alias type="CMSIS" value="MPU_WORD3_PIDMASK(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="PID" access="RW" reset_value="0" description="Process Identifier">
+      <alias type="CMSIS" value="MPU_WORD3_PID(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x460" width="32" name="RGD6_WORD0" description="Region Descriptor 6, Word 0">
+    <alias type="CMSIS" value="RGD[6].WORD0"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0"/>
+    <bit_field offset="5" width="27" name="SRTADDR" access="RW" reset_value="0" description="Start Address">
+      <alias type="CMSIS" value="MPU_WORD0_SRTADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x464" width="32" name="RGD6_WORD1" description="Region Descriptor 6, Word 1">
+    <alias type="CMSIS" value="RGD[6].WORD1"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0x1F"/>
+    <bit_field offset="5" width="27" name="ENDADDR" access="RW" reset_value="0" description="End Address">
+      <alias type="CMSIS" value="MPU_WORD1_ENDADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x468" width="32" name="RGD6_WORD2" description="Region Descriptor 6, Word 2">
+    <alias type="CMSIS" value="RGD[6].WORD2"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0SM(x)"/>
+      <bit_field_value name="RGD6_WORD2_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD6_WORD2_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD6_WORD2_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD6_WORD2_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M0PE(x)"/>
+      <bit_field_value name="RGD6_WORD2_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD6_WORD2_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1SM(x)"/>
+      <bit_field_value name="RGD6_WORD2_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD6_WORD2_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD6_WORD2_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD6_WORD2_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M1PE(x)"/>
+      <bit_field_value name="RGD6_WORD2_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD6_WORD2_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access control">
+      <alias type="CMSIS" value="MPU_WORD2_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M2SM(x)"/>
+      <bit_field_value name="RGD6_WORD2_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD6_WORD2_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD6_WORD2_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD6_WORD2_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3SM(x)"/>
+      <bit_field_value name="RGD6_WORD2_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD6_WORD2_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD6_WORD2_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD6_WORD2_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4WE(x)"/>
+      <bit_field_value name="RGD6_WORD2_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD6_WORD2_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4RE(x)"/>
+      <bit_field_value name="RGD6_WORD2_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD6_WORD2_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5WE(x)"/>
+      <bit_field_value name="RGD6_WORD2_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD6_WORD2_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5RE(x)"/>
+      <bit_field_value name="RGD6_WORD2_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD6_WORD2_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6WE(x)"/>
+      <bit_field_value name="RGD6_WORD2_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD6_WORD2_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6RE(x)"/>
+      <bit_field_value name="RGD6_WORD2_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD6_WORD2_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7WE(x)"/>
+      <bit_field_value name="RGD6_WORD2_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD6_WORD2_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7RE(x)"/>
+      <bit_field_value name="RGD6_WORD2_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD6_WORD2_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x46C" width="32" name="RGD6_WORD3" description="Region Descriptor 6, Word 3">
+    <alias type="CMSIS" value="RGD[6].WORD3"/>
+    <bit_field offset="0" width="1" name="VLD" access="RW" reset_value="0" description="Valid">
+      <alias type="CMSIS" value="MPU_WORD3_VLD(x)"/>
+      <bit_field_value name="RGD6_WORD3_VLD_0b0" value="0b0" description="Region descriptor is invalid"/>
+      <bit_field_value name="RGD6_WORD3_VLD_0b1" value="0b1" description="Region descriptor is valid"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="15" reset_value="0"/>
+    <bit_field offset="16" width="8" name="PIDMASK" access="RW" reset_value="0" description="Process Identifier Mask">
+      <alias type="CMSIS" value="MPU_WORD3_PIDMASK(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="PID" access="RW" reset_value="0" description="Process Identifier">
+      <alias type="CMSIS" value="MPU_WORD3_PID(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x470" width="32" name="RGD7_WORD0" description="Region Descriptor 7, Word 0">
+    <alias type="CMSIS" value="RGD[7].WORD0"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0"/>
+    <bit_field offset="5" width="27" name="SRTADDR" access="RW" reset_value="0" description="Start Address">
+      <alias type="CMSIS" value="MPU_WORD0_SRTADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x474" width="32" name="RGD7_WORD1" description="Region Descriptor 7, Word 1">
+    <alias type="CMSIS" value="RGD[7].WORD1"/>
+    <reserved_bit_field offset="0" width="5" reset_value="0x1F"/>
+    <bit_field offset="5" width="27" name="ENDADDR" access="RW" reset_value="0" description="End Address">
+      <alias type="CMSIS" value="MPU_WORD1_ENDADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x478" width="32" name="RGD7_WORD2" description="Region Descriptor 7, Word 2">
+    <alias type="CMSIS" value="RGD[7].WORD2"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M0SM(x)"/>
+      <bit_field_value name="RGD7_WORD2_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD7_WORD2_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD7_WORD2_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD7_WORD2_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M0PE(x)"/>
+      <bit_field_value name="RGD7_WORD2_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD7_WORD2_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M1SM(x)"/>
+      <bit_field_value name="RGD7_WORD2_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD7_WORD2_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD7_WORD2_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD7_WORD2_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier enable">
+      <alias type="CMSIS" value="MPU_WORD2_M1PE(x)"/>
+      <bit_field_value name="RGD7_WORD2_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGD7_WORD2_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access control">
+      <alias type="CMSIS" value="MPU_WORD2_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M2SM(x)"/>
+      <bit_field_value name="RGD7_WORD2_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD7_WORD2_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD7_WORD2_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD7_WORD2_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_WORD2_M3SM(x)"/>
+      <bit_field_value name="RGD7_WORD2_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGD7_WORD2_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGD7_WORD2_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGD7_WORD2_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4WE(x)"/>
+      <bit_field_value name="RGD7_WORD2_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD7_WORD2_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M4RE(x)"/>
+      <bit_field_value name="RGD7_WORD2_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD7_WORD2_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5WE(x)"/>
+      <bit_field_value name="RGD7_WORD2_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD7_WORD2_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M5RE(x)"/>
+      <bit_field_value name="RGD7_WORD2_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD7_WORD2_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6WE(x)"/>
+      <bit_field_value name="RGD7_WORD2_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD7_WORD2_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M6RE(x)"/>
+      <bit_field_value name="RGD7_WORD2_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD7_WORD2_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7WE(x)"/>
+      <bit_field_value name="RGD7_WORD2_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGD7_WORD2_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_WORD2_M7RE(x)"/>
+      <bit_field_value name="RGD7_WORD2_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGD7_WORD2_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x47C" width="32" name="RGD7_WORD3" description="Region Descriptor 7, Word 3">
+    <alias type="CMSIS" value="RGD[7].WORD3"/>
+    <bit_field offset="0" width="1" name="VLD" access="RW" reset_value="0" description="Valid">
+      <alias type="CMSIS" value="MPU_WORD3_VLD(x)"/>
+      <bit_field_value name="RGD7_WORD3_VLD_0b0" value="0b0" description="Region descriptor is invalid"/>
+      <bit_field_value name="RGD7_WORD3_VLD_0b1" value="0b1" description="Region descriptor is valid"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="15" reset_value="0"/>
+    <bit_field offset="16" width="8" name="PIDMASK" access="RW" reset_value="0" description="Process Identifier Mask">
+      <alias type="CMSIS" value="MPU_WORD3_PIDMASK(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="PID" access="RW" reset_value="0" description="Process Identifier">
+      <alias type="CMSIS" value="MPU_WORD3_PID(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x800" width="32" name="RGDAAC0" description="Region Descriptor Alternate Access Control 0">
+    <alias type="CMSIS" value="RGDAAC[0]"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0x7" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0x3" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0SM(x)"/>
+      <bit_field_value name="RGDAAC0_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC0_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC0_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC0_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0PE(x)"/>
+      <bit_field_value name="RGDAAC0_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC0_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0x7" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0x3" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1SM(x)"/>
+      <bit_field_value name="RGDAAC0_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC0_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC0_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC0_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1PE(x)"/>
+      <bit_field_value name="RGDAAC0_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC0_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0x7" description="Bus Master 2 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0x3" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2SM(x)"/>
+      <bit_field_value name="RGDAAC0_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC0_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC0_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC0_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0x3" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3SM(x)"/>
+      <bit_field_value name="RGDAAC0_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC0_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC0_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC0_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4WE(x)"/>
+      <bit_field_value name="RGDAAC0_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC0_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4RE(x)"/>
+      <bit_field_value name="RGDAAC0_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC0_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5WE(x)"/>
+      <bit_field_value name="RGDAAC0_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC0_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5RE(x)"/>
+      <bit_field_value name="RGDAAC0_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC0_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6WE(x)"/>
+      <bit_field_value name="RGDAAC0_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC0_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6RE(x)"/>
+      <bit_field_value name="RGDAAC0_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC0_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7WE(x)"/>
+      <bit_field_value name="RGDAAC0_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC0_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7RE(x)"/>
+      <bit_field_value name="RGDAAC0_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC0_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x804" width="32" name="RGDAAC1" description="Region Descriptor Alternate Access Control 1">
+    <alias type="CMSIS" value="RGDAAC[1]"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0SM(x)"/>
+      <bit_field_value name="RGDAAC1_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC1_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC1_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC1_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0PE(x)"/>
+      <bit_field_value name="RGDAAC1_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC1_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1SM(x)"/>
+      <bit_field_value name="RGDAAC1_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC1_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC1_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC1_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1PE(x)"/>
+      <bit_field_value name="RGDAAC1_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC1_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2SM(x)"/>
+      <bit_field_value name="RGDAAC1_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC1_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC1_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC1_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3SM(x)"/>
+      <bit_field_value name="RGDAAC1_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC1_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC1_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC1_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4WE(x)"/>
+      <bit_field_value name="RGDAAC1_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC1_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4RE(x)"/>
+      <bit_field_value name="RGDAAC1_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC1_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5WE(x)"/>
+      <bit_field_value name="RGDAAC1_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC1_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5RE(x)"/>
+      <bit_field_value name="RGDAAC1_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC1_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6WE(x)"/>
+      <bit_field_value name="RGDAAC1_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC1_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6RE(x)"/>
+      <bit_field_value name="RGDAAC1_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC1_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7WE(x)"/>
+      <bit_field_value name="RGDAAC1_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC1_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7RE(x)"/>
+      <bit_field_value name="RGDAAC1_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC1_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x808" width="32" name="RGDAAC2" description="Region Descriptor Alternate Access Control 2">
+    <alias type="CMSIS" value="RGDAAC[2]"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0SM(x)"/>
+      <bit_field_value name="RGDAAC2_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC2_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC2_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC2_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0PE(x)"/>
+      <bit_field_value name="RGDAAC2_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC2_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1SM(x)"/>
+      <bit_field_value name="RGDAAC2_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC2_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC2_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC2_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1PE(x)"/>
+      <bit_field_value name="RGDAAC2_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC2_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2SM(x)"/>
+      <bit_field_value name="RGDAAC2_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC2_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC2_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC2_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3SM(x)"/>
+      <bit_field_value name="RGDAAC2_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC2_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC2_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC2_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4WE(x)"/>
+      <bit_field_value name="RGDAAC2_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC2_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4RE(x)"/>
+      <bit_field_value name="RGDAAC2_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC2_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5WE(x)"/>
+      <bit_field_value name="RGDAAC2_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC2_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5RE(x)"/>
+      <bit_field_value name="RGDAAC2_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC2_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6WE(x)"/>
+      <bit_field_value name="RGDAAC2_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC2_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6RE(x)"/>
+      <bit_field_value name="RGDAAC2_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC2_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7WE(x)"/>
+      <bit_field_value name="RGDAAC2_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC2_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7RE(x)"/>
+      <bit_field_value name="RGDAAC2_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC2_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x80C" width="32" name="RGDAAC3" description="Region Descriptor Alternate Access Control 3">
+    <alias type="CMSIS" value="RGDAAC[3]"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0SM(x)"/>
+      <bit_field_value name="RGDAAC3_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC3_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC3_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC3_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0PE(x)"/>
+      <bit_field_value name="RGDAAC3_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC3_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1SM(x)"/>
+      <bit_field_value name="RGDAAC3_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC3_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC3_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC3_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1PE(x)"/>
+      <bit_field_value name="RGDAAC3_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC3_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2SM(x)"/>
+      <bit_field_value name="RGDAAC3_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC3_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC3_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC3_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3SM(x)"/>
+      <bit_field_value name="RGDAAC3_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC3_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC3_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC3_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4WE(x)"/>
+      <bit_field_value name="RGDAAC3_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC3_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4RE(x)"/>
+      <bit_field_value name="RGDAAC3_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC3_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5WE(x)"/>
+      <bit_field_value name="RGDAAC3_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC3_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5RE(x)"/>
+      <bit_field_value name="RGDAAC3_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC3_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6WE(x)"/>
+      <bit_field_value name="RGDAAC3_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC3_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6RE(x)"/>
+      <bit_field_value name="RGDAAC3_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC3_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7WE(x)"/>
+      <bit_field_value name="RGDAAC3_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC3_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7RE(x)"/>
+      <bit_field_value name="RGDAAC3_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC3_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x810" width="32" name="RGDAAC4" description="Region Descriptor Alternate Access Control 4">
+    <alias type="CMSIS" value="RGDAAC[4]"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0SM(x)"/>
+      <bit_field_value name="RGDAAC4_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC4_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC4_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC4_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0PE(x)"/>
+      <bit_field_value name="RGDAAC4_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC4_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1SM(x)"/>
+      <bit_field_value name="RGDAAC4_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC4_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC4_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC4_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1PE(x)"/>
+      <bit_field_value name="RGDAAC4_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC4_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2SM(x)"/>
+      <bit_field_value name="RGDAAC4_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC4_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC4_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC4_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3SM(x)"/>
+      <bit_field_value name="RGDAAC4_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC4_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC4_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC4_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4WE(x)"/>
+      <bit_field_value name="RGDAAC4_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC4_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4RE(x)"/>
+      <bit_field_value name="RGDAAC4_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC4_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5WE(x)"/>
+      <bit_field_value name="RGDAAC4_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC4_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5RE(x)"/>
+      <bit_field_value name="RGDAAC4_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC4_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6WE(x)"/>
+      <bit_field_value name="RGDAAC4_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC4_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6RE(x)"/>
+      <bit_field_value name="RGDAAC4_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC4_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7WE(x)"/>
+      <bit_field_value name="RGDAAC4_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC4_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7RE(x)"/>
+      <bit_field_value name="RGDAAC4_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC4_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x814" width="32" name="RGDAAC5" description="Region Descriptor Alternate Access Control 5">
+    <alias type="CMSIS" value="RGDAAC[5]"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0SM(x)"/>
+      <bit_field_value name="RGDAAC5_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC5_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC5_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC5_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0PE(x)"/>
+      <bit_field_value name="RGDAAC5_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC5_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1SM(x)"/>
+      <bit_field_value name="RGDAAC5_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC5_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC5_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC5_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1PE(x)"/>
+      <bit_field_value name="RGDAAC5_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC5_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2SM(x)"/>
+      <bit_field_value name="RGDAAC5_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC5_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC5_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC5_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3SM(x)"/>
+      <bit_field_value name="RGDAAC5_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC5_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC5_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC5_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4WE(x)"/>
+      <bit_field_value name="RGDAAC5_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC5_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4RE(x)"/>
+      <bit_field_value name="RGDAAC5_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC5_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5WE(x)"/>
+      <bit_field_value name="RGDAAC5_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC5_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5RE(x)"/>
+      <bit_field_value name="RGDAAC5_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC5_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6WE(x)"/>
+      <bit_field_value name="RGDAAC5_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC5_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6RE(x)"/>
+      <bit_field_value name="RGDAAC5_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC5_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7WE(x)"/>
+      <bit_field_value name="RGDAAC5_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC5_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7RE(x)"/>
+      <bit_field_value name="RGDAAC5_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC5_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x818" width="32" name="RGDAAC6" description="Region Descriptor Alternate Access Control 6">
+    <alias type="CMSIS" value="RGDAAC[6]"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0SM(x)"/>
+      <bit_field_value name="RGDAAC6_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC6_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC6_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC6_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0PE(x)"/>
+      <bit_field_value name="RGDAAC6_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC6_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1SM(x)"/>
+      <bit_field_value name="RGDAAC6_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC6_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC6_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC6_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1PE(x)"/>
+      <bit_field_value name="RGDAAC6_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC6_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2SM(x)"/>
+      <bit_field_value name="RGDAAC6_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC6_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC6_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC6_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3SM(x)"/>
+      <bit_field_value name="RGDAAC6_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC6_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC6_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC6_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4WE(x)"/>
+      <bit_field_value name="RGDAAC6_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC6_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4RE(x)"/>
+      <bit_field_value name="RGDAAC6_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC6_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5WE(x)"/>
+      <bit_field_value name="RGDAAC6_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC6_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5RE(x)"/>
+      <bit_field_value name="RGDAAC6_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC6_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6WE(x)"/>
+      <bit_field_value name="RGDAAC6_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC6_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6RE(x)"/>
+      <bit_field_value name="RGDAAC6_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC6_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7WE(x)"/>
+      <bit_field_value name="RGDAAC6_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC6_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7RE(x)"/>
+      <bit_field_value name="RGDAAC6_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC6_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+  <register offset="0x81C" width="32" name="RGDAAC7" description="Region Descriptor Alternate Access Control 7">
+    <alias type="CMSIS" value="RGDAAC[7]"/>
+    <bit_field offset="0" width="3" name="M0UM" access="RW" reset_value="0" description="Bus Master 0 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0UM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="M0SM" access="RW" reset_value="0" description="Bus Master 0 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0SM(x)"/>
+      <bit_field_value name="RGDAAC7_M0SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC7_M0SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC7_M0SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC7_M0SM_0b11" value="0b11" description="Same as User mode defined in M0UM"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="M0PE" access="RW" reset_value="0" description="Bus Master 0 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M0PE(x)"/>
+      <bit_field_value name="RGDAAC7_M0PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC7_M0PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="6" width="3" name="M1UM" access="RW" reset_value="0" description="Bus Master 1 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1UM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="2" name="M1SM" access="RW" reset_value="0" description="Bus Master 1 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1SM(x)"/>
+      <bit_field_value name="RGDAAC7_M1SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC7_M1SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC7_M1SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC7_M1SM_0b11" value="0b11" description="Same as User mode defined in M1UM"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="M1PE" access="RW" reset_value="0" description="Bus Master 1 Process Identifier Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M1PE(x)"/>
+      <bit_field_value name="RGDAAC7_M1PE_0b0" value="0b0" description="Do not include the process identifier in the evaluation"/>
+      <bit_field_value name="RGDAAC7_M1PE_0b1" value="0b1" description="Include the process identifier and mask (RGDn.RGDAAC) in the region hit evaluation"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="M2UM" access="RW" reset_value="0" description="Bus Master 2 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2UM(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="2" name="M2SM" access="RW" reset_value="0" description="Bus Master 2 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M2SM(x)"/>
+      <bit_field_value name="RGDAAC7_M2SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC7_M2SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC7_M2SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC7_M2SM_0b11" value="0b11" description="Same as User mode defined in M2UM"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="1" reset_value="0"/>
+    <bit_field offset="18" width="3" name="M3UM" access="RW" reset_value="0" description="Bus Master 3 User Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3UM(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="M3SM" access="RW" reset_value="0" description="Bus Master 3 Supervisor Mode Access Control">
+      <alias type="CMSIS" value="MPU_RGDAAC_M3SM(x)"/>
+      <bit_field_value name="RGDAAC7_M3SM_0b00" value="0b00" description="r/w/x; read, write and execute allowed"/>
+      <bit_field_value name="RGDAAC7_M3SM_0b01" value="0b01" description="r/x; read and execute allowed, but no write"/>
+      <bit_field_value name="RGDAAC7_M3SM_0b10" value="0b10" description="r/w; read and write allowed, but no execute"/>
+      <bit_field_value name="RGDAAC7_M3SM_0b11" value="0b11" description="Same as User mode defined in M3UM"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="M4WE" access="RW" reset_value="0" description="Bus Master 4 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4WE(x)"/>
+      <bit_field_value name="RGDAAC7_M4WE_0b0" value="0b0" description="Bus master 4 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC7_M4WE_0b1" value="0b1" description="Bus master 4 writes allowed"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="M4RE" access="RW" reset_value="0" description="Bus Master 4 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M4RE(x)"/>
+      <bit_field_value name="RGDAAC7_M4RE_0b0" value="0b0" description="Bus master 4 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC7_M4RE_0b1" value="0b1" description="Bus master 4 reads allowed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="M5WE" access="RW" reset_value="0" description="Bus Master 5 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5WE(x)"/>
+      <bit_field_value name="RGDAAC7_M5WE_0b0" value="0b0" description="Bus master 5 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC7_M5WE_0b1" value="0b1" description="Bus master 5 writes allowed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="M5RE" access="RW" reset_value="0" description="Bus Master 5 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M5RE(x)"/>
+      <bit_field_value name="RGDAAC7_M5RE_0b0" value="0b0" description="Bus master 5 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC7_M5RE_0b1" value="0b1" description="Bus master 5 reads allowed"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="M6WE" access="RW" reset_value="0" description="Bus Master 6 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6WE(x)"/>
+      <bit_field_value name="RGDAAC7_M6WE_0b0" value="0b0" description="Bus master 6 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC7_M6WE_0b1" value="0b1" description="Bus master 6 writes allowed"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="M6RE" access="RW" reset_value="0" description="Bus Master 6 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M6RE(x)"/>
+      <bit_field_value name="RGDAAC7_M6RE_0b0" value="0b0" description="Bus master 6 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC7_M6RE_0b1" value="0b1" description="Bus master 6 reads allowed"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="M7WE" access="RW" reset_value="0" description="Bus Master 7 Write Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7WE(x)"/>
+      <bit_field_value name="RGDAAC7_M7WE_0b0" value="0b0" description="Bus master 7 writes terminate with an access error and the write is not performed"/>
+      <bit_field_value name="RGDAAC7_M7WE_0b1" value="0b1" description="Bus master 7 writes allowed"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="M7RE" access="RW" reset_value="0" description="Bus Master 7 Read Enable">
+      <alias type="CMSIS" value="MPU_RGDAAC_M7RE(x)"/>
+      <bit_field_value name="RGDAAC7_M7RE_0b0" value="0b0" description="Bus master 7 reads terminate with an access error and the read is not performed"/>
+      <bit_field_value name="RGDAAC7_M7RE_0b1" value="0b1" description="Bus master 7 reads allowed"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

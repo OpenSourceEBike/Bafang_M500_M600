@@ -1,0 +1,158 @@
+/*!
+    @defgroup sbc_fs45 System Basis Chip Driver (SBC) - FS45xx Family 
+    @details
+    @brief System Basis Chip driver is a middleware driver for SBC settings and control.
+
+    ## Hardware background ##
+    The FS45xx system basis chip (SBC) family provides power to MCUs and optimizes energy consumption through
+    DC/DC switching regulators, linear regulators, and ultra-low-power saving modes. Featuring advanced functional
+    safety measures, serial peripheral interface (SPI) to allow control and diagnostics with the MCU, integration
+    of CAN FD and LIN physical interfaces compliant with the ISO 11898-2,-5, LIN 2.2, 2.1/J2602-2 standards
+    along with the latest automotive OEM standards for EMC and ESD, range of integrated safety features such as
+    monitoring of critical analog parameters, a failsafe state machine, and an advanced watchdog reduce software
+    complexity with dual-core lock-step MCUs.
+
+    ## How to use SBC driver in your application ##
+    In order to set up SBC device the user needs to configure fs45_drv_config_t structure in which structures
+    corresponding to individual init (configurable during initialization) and non-init (configuratble any time)
+    registers are included. The fs45_drv_config_t structure is passed as a parameter to Init function to initialize
+    SBC device. The rest of the functions are related to individual featuers and registers.
+
+    ### Initialization ###
+    The initialization function is responsible for setting up the FS45xx, according to user configuration data
+    which is passed as parameter. The initialization function takes another parameters which are an instance
+    of SPI used for communication with the SBC and SPI timeout in milliseconds. The initialization function
+    configures all SBC init registers and selected non-init registers.
+
+    ### Writing to registers ###
+    In order to write to registers, there are several functions dedicated to some specific registers. These
+    functions (with name containing the word Set) take a value or a pointer to structure containing values
+    to be written to particular registers as a parameter.
+    Besides these methods there is also a generic function FS45_WriteRegister which is for writing to any register.
+    It takes three parameters. The first one is an address of a register to be written. Addresses of registers
+    are defined in sbc_fs45_map.h. The second argument is a value which should be sent to a register. The last
+    argument is a pointer to structure for storing received diagnostics and data. NULL pointer can be used when
+    received data should be ignored.
+
+    ### Reading from registers ###
+    Several methods to reading specific control and status register are available similarly to the register writing.
+    Their names contain the word Get.
+    Content of any register can be read by function FS45_ReadRegister. This function has two arguments. The first
+    is an address of a register to be read from, the second is a pointer to a structure where the content
+    of a register and diagnostic data will be stored. Addresses of registers are defined in sbc_fs45_map.h.
+    
+    ### Watchdog refresh ###
+    The function FS45_WD_Refresh should be called periodically depending on watchdog window set. The function
+    reads watchdog seed from the device, calculates the answer and writes it back to WD_ANSWER register.
+
+    ### Low-power mode ###
+    The device has two low-power modes which can be entered using the FS45_SetLowPowerMode function.
+    Before entering LPOFF Sleep mode make sure some wake-up sources are enabled. The device can be woken up
+    by physical layer (CAN, LIN), timer (LDT), or IOs (IO_0 is enabled as wake-up source by default).
+    In LPOFF auto WU mode the device wakes up automatically after 1 ms, it allows restart of the state machine.
+
+    ### Setting regulator state ###
+    The function FS45_SetRegulatorState allows turning on and off of the device regulators. There are various
+    voltage regulators for different purposes.
+    VCORE is a high efficiency regulator for MCU.
+    VCCA is used to provide accurate voltage output (5.0 or 3.3 V) to MCU IOs, mainly ADC.
+    VAUX can be used to power other device in the ECU, or external sensors.
+    VCAN is a power supply dedicated to CAN transceiver.
+    VKAM provides keep alive memory supply in low-power mode.
+    Note that disabling the regulators might result in loss of some functionality, based on the regulator type
+    and your board design (for example loss of SPI communication, SPI MISO is powered by VDDIO internal regulator,
+    which is usually supplied from VCORE or VCCA - depends on board connections).
+
+    ### CAN and LIN transceivers mode ###
+    The functions FS45_CAN_SetMode and FS45_LIN_SetMode allow transition of the CAN and LIN transceivers between
+    various modes (normal, listen-only, sleep with/without wake-up capability) together with automatic transition
+    to listen only mode when there is a fault.
+    Transitions between the modes can alter the CAN/LIN frames currently being sent on the bus, a delay might
+    need to be added to allow settling after the transition.
+
+    ### Reading diagnostics ###
+    There are various diagnostics registers containing status of the voltage regulators (DIAG_VPRE, DIAG_VCORE,
+    DIAG_VCCA, DIAG_VAUX, DIAG_VSUP_VCAN), CAN/LIN (DIAG_CAN_FD, DIAG_CAN_LIN) and SPI (DIAG_SPI), as well as
+    general diagnostics returned on MISO with every read and write command. FS45_ReadRegister can be used
+    to gather the status.
+    
+    ### Error tracking ###
+    If an error during the R/W operations to FS45xx registers occurs, the driver keeps track of it. If a function
+    returns status different from STATUS_SUCCESS the status represents the type of error from status_t enum.
+
+    ## Example code snippets (for DEVKIT-MPC5744P board). ##
+
+    ### SBC initialization ###
+    This example source code snippet shows how to initialize the device.
+    During initialization the device registers are written with values in the main configuration structure.
+    The main register set is initialized only after power on reset. The first watchdog refresh is part
+    of the initialization function, the SBC should be in NORMAL mode upon the function exit. After FS45_Init
+    the watchdog refresh timer should be started with period set to 3/4 of the device watchdog period.
+  ~~~~~{.c}
+    /* SPI timeout. */
+    #define SPI_COMM_TIMEOUT_MS 5
+    
+    int main(void)
+    {  
+        /* Status return code. */
+        status_t status = STATUS_SUCCESS;
+        /* Pointer to store default values of non-init registers. */
+        fs45_reg_config_value_t nonInitConfig[5];
+        /* Device configuration - if PEx is not used, otherwise the config is generated. */
+        fs45_drv_config_t sbc_fs45_InitConfig;
+        
+        /* MCU peripherals initialization. */
+        ...
+        
+        /* Get default values of init registers - if PEx is not used, otherwise the config is generated. */
+        FS45_GetDefaultInitRegsConfig(&sbc_fs45_InitConfig);
+        
+        /* Change default init register values if needed. */
+        /* Change default configuration when FCCU is not used. */
+        sbc_fs45_InitConfig.fssmReg.io23Fs = FS45_R_FS_IO_23_FS_NOT_SAFETY;
+        
+        /* Get default values of non-init registers - only a subset can be configured too. */
+        FS45_GetDefaultNonInitRegsConfig(&sbc_fs45_InitConfig, nonInitConfig);
+        
+        /* Change default non-init register values if needed. */
+        /* Set watchdog window to 512 ms. */
+        sbc_fs45_InitConfig.nonInitRegs[3].value = FS45_R_FS_WD_WINDOW_512MS;
+        
+        /* Initialize the SBC. */
+        status = FS45_Init(&sbc_fs45_InitConfig, INST_LPSPICOM1, SPI_COMM_TIMEOUT_MS);
+        if (status != STATUS_SUCCESS)
+        {
+            /* Error. */
+        }
+
+        /* Start timer for watchdog refresh. */
+        WD_TIMER_START();
+        
+        ...
+    }
+  ~~~~~
+     ## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\middleware\sbc\sbc_fs45\source\sbc_fs45_driver.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\middleware\sbc\sbc_fs45\include
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref lpspi
+\ref osif
+@}*/

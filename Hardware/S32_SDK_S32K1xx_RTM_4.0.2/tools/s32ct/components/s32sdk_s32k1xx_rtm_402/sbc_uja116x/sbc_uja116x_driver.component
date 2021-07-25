@@ -1,0 +1,1809 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="sbc_uja116x_driver" label="sbc_uja116x_driver" category="middleware" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component-5.0.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <sw_comp_ref name="platform.middleware.sbc_uja116x_driver" version="1.0.0"/>
+    <description>UJA116xA SBC middleware configuration</description>
+    <mode id="general" label="General Mode" available="true">
+        <description>UJA116xA SBC General</description>
+        <config_set_refs>
+            <config_set_ref>sbc_uja116x_driver</config_set_ref>
+        </config_set_refs>
+    </mode>
+    <config_set label="UJA116xA SBC middleware configuration" id="sbc_uja116x_driver" from_source="sbc_uja116x_driver.h">
+        <description>UJA116xA SBC middleware configuration</description>
+        <generated_types>
+            <integer id="sbc_fail_safe_rcc_t" label="Fail-safe control register, reset counter control (0x02). incremented every time the SBC enters Reset mode while FNMC = 0; RCC overflows from 11 to 00; default at power-on is 00" type="uint8_t">
+                <description>Implements : sbc_fail_safe_rcc_t_Class</description>
+            </integer>
+            <integer id="sbc_identifier_t" label="ID registers, identifier format (0x27 to 0x2A). A valid WUF identifier is defined and stored in the ID registers" type="uint8_t">
+                <description>Implements : sbc_identifier_t_Class</description>
+            </integer>
+            <integer id="sbc_identif_mask_t" label="ID mask registers (0x2B to 0x2E). The identifier mask is defined in the ID mask registers, where a 1 means dont care" type="uint8_t">
+                <description>Implements : sbc_identif_mask_t_Class</description>
+            </integer>
+            <integer id="sbc_frame_ctr_dlc_t" label="Frame control register, number of data bytes expected in a CAN frame (0x2F)" type="uint8_t">
+                <description>Implements : sbc_frame_ctr_dlc_t_Class</description>
+            </integer>
+            <integer id="sbc_data_mask_t" label="Data mask registers" type="uint8_t">
+                <description>Implements : sbc_data_mask_t_Class</description>
+            </integer>
+            <integer id="sbc_mtpnv_stat_wrcnts_t" label="MTPNV status register, write counter status (0x70). 6-bits - contains the number of times the MTPNV cells were reprogrammed" type="uint8_t">
+                <description>Implements : sbc_mtpnv_stat_wrcnts_t_Class</description>
+            </integer>
+            <enum id="sbc_register_t" label="Register map" from="sbc_register_t">
+                <description>Implements : sbc_register_t_Class</description>
+                <item id="SBC_UJA_WTDOG_CTR" label="Watchdog control.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MODE" label="Mode control.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_FAIL_SAFE" label="Fail-safe control.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MAIN" label="Main status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_SYSTEM_EVNT" label="System event enable.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_WTDOG_STAT" label="Watchdog status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MEMORY_0" label="Memory 0.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MEMORY_1" label="Memory 1.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MEMORY_2" label="Memory 2.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MEMORY_3" label="Memory 3.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_LOCK" label="Lock control.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_REGULATOR" label="Regulator control.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_STAT" label="Supply status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_EVNT" label="Supply event enable.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_CAN" label="CAN control.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_TRANS_STAT" label="Transceiver status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT" label="Transceiver event enable.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE" label="Data rate.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_IDENTIF_0" label="Identifier 0.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_IDENTIF_1" label="Identifier 1.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_IDENTIF_2" label="Identifier 2.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_IDENTIF_3" label="Identifier 3.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MASK_0" label="Mask 0.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MASK_1" label="Mask 1.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MASK_2" label="Mask 2.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MASK_3" label="Mask 3.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_FRAME_CTR" label="Frame control.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_DAT_MASK_0" label="Data mask 0.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_DAT_MASK_1" label="Data mask 1.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_DAT_MASK_2" label="Data mask 2.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_DAT_MASK_3" label="Data mask 3.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_DAT_MASK_4" label="Data mask 4.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_DAT_MASK_5" label="Data mask 5.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_DAT_MASK_6" label="Data mask 6.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_DAT_MASK_7" label="Data mask 7.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_WAKE_STAT" label="WAKE pin status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_WAKE_EN" label="WAKE pin enable.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_GL_EVNT_STAT" label="Global event status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_SYS_EVNT_STAT" label="System event status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_SUP_EVNT_STAT" label="Supply event status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_STAT" label="Transceiver event status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_WAKE_EVNT_STAT" label="WAKE pin event status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MTPNV_STAT" label="MTPNV status.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_START_UP" label="Start-up control.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_SBC" label="SBC configuration control.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_MTPNV_CRC" label="MTPNV CRC control.">
+                    <description></description>
+                </item>
+                <item id="SBC_UJA_IDENTIF" label="Identification.">
+                    <description></description>
+                </item>
+            </enum>
+            <enum id="sbc_wtdog_ctr_wmc_t" label="Watchdog control register, watchdog mode control (0x00). The UJA116xA contains a watchdog that supports three operating modes: Window, Timeout and Autonomous" from="sbc_wtdog_ctr_wmc_t">
+                <description>Implements : sbc_wtdog_ctr_wmc_t_Class</description>
+                <item id="SBC_UJA_WTDOG_CTR_WMC_AUTO" label="Autonomous mode">
+                    <description>Autonomous mode.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_WMC_TIME" label="Timeout mode">
+                    <description>Timeout mode.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_WMC_WIND" label="Window mode (available only in SBC Normal mode)">
+                    <description>Window mode (available only in SBC Normal mode).</description>
+                </item>
+            </enum>
+            <enum id="sbc_wtdog_ctr_nwp_t" label="Watchdog control register, nominal watchdog period (0x00). Eight watchdog periods are supported, from 8 ms to 4096 ms" from="sbc_wtdog_ctr_nwp_t">
+                <description>Implements : sbc_wtdog_ctr_nwp_t_Class</description>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_8" label="8 ms">
+                    <description>8 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_16" label="16 ms">
+                    <description>16 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_32" label="32 ms">
+                    <description>32 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_64" label="64 ms">
+                    <description>64 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_128" label="128 ms">
+                    <description>128 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_256" label="256 ms">
+                    <description>256 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_1024" label="1024 ms">
+                    <description>1024 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_4096" label="4096 ms">
+                    <description>4096 ms.</description>
+                </item>
+            </enum>
+            <enum id="sbc_mode_mc_t" label="Mode control register, mode control (0x01)" from="sbc_mode_mc_t">
+                <description>Implements : sbc_mode_mc_t_Class</description>
+                <item id="SBC_UJA_MODE_MC_SLEEP" label="Sleep mode">
+                    <description>Sleep mode.</description>
+                </item>
+                <item id="SBC_UJA_MODE_MC_STANDBY" label="Standby mode">
+                    <description>Standby mode.</description>
+                </item>
+                <item id="SBC_UJA_MODE_MC_NORMAL" label="Normal mode">
+                    <description>Normal mode.</description>
+                </item>
+            </enum>
+            <enum id="sbc_fail_safe_lhc_t" label="Fail-safe control register, LIMP home control (0x02). The dedicated LIMP pin can be used to enable so called limp home hardware in the event of a serious ECU failure" from="sbc_fail_safe_lhc_t">
+                <description>Implements : sbc_fail_safe_lhc_t_Class</description>
+                <item id="SBC_UJA_FAIL_SAFE_LHC_FLOAT" label="LIMP pin is floating">
+                    <description>LIMP pin is floating.</description>
+                </item>
+                <item id="SBC_UJA_FAIL_SAFE_LHC_LOW" label="LIMP pin is driven LOW">
+                    <description>LIMP pin is driven LOW.</description>
+                </item>
+            </enum>
+            <enum id="sbc_main_otws_t" label="Main status register, Overtemperature warning status (0x03)" from="sbc_main_otws_t">
+                <description>Implements : sbc_main_otws_t_Class</description>
+                <item id="SBC_UJA_MAIN_OTWS_BELOW" label="IC temperature below overtemperature warning threshold">
+                    <description>IC temperature below overtemperature warning threshold.</description>
+                </item>
+                <item id="SBC_UJA_MAIN_OTWS_ABOVE" label="IC temperature above overtemperature warning threshold">
+                    <description>IC temperature above overtemperature warning threshold.</description>
+                </item>
+            </enum>
+            <enum id="sbc_main_nms_t" label="Main status register, normal mode status (0x03)" from="sbc_main_nms_t">
+                <description>Implements : sbc_main_nms_t_Class</description>
+                <item id="SBC_UJA_MAIN_NMS_NORMAL" label="UJA116xA has entered Normal mode (after power-up)">
+                    <description>UJA116xA has entered Normal mode (after power-up)</description>
+                </item>
+                <item id="SBC_UJA_MAIN_NMS_PWR_UP" label="UJA116xA has powered up but has not yet switched to Normal mode">
+                    <description>UJA116xA has powered up but has not yet switched to Normal mode.</description>
+                </item>
+            </enum>
+            <enum id="sbc_main_rss_t" label="Main status register, Reset source status (0x03)" from="sbc_main_rss_t">
+                <description>Implements : sbc_main_rss_t_Class</description>
+                <item id="SBC_UJA_MAIN_RSS_OFF_MODE" label="Left Off mode (power-on)">
+                    <description>Left Off mode (power-on).</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_CAN_WAKEUP" label="CAN wake-up in Sleep mode">
+                    <description>CAN wake-up in Sleep mode.</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_SLP_WAKEUP" label="Wake-up via WAKE pin in Sleep mode">
+                    <description>Wake-up via WAKE pin in Sleep mode.</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_OVF_SLP" label="Watchdog overflow in Sleep mode (Timeout mode)">
+                    <description>Watchdog overflow in Sleep mode (Timeout mode).</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_DIAG_WAKEUP" label="Diagnostic wake-up in Sleep mode">
+                    <description>Diagnostic wake-up in Sleep mode</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_WATCH_TRIG" label="Watchdog triggered too early (Window mode)">
+                    <description>Watchdog triggered too early (Window mode).</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_WATCH_OVF" label="Watchdog overflow (Window mode or Timeout mode with WDF = 1)">
+                    <description>Watchdog overflow (Window mode or Timeout mode with WDF = 1)</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_ILLEG_WATCH" label="Illegal watchdog mode control access">
+                    <description>Illegal watchdog mode control access.</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_RSTN_PULDW" label="RSTN pulled down externally">
+                    <description>RSTN pulled down externally.</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_LFT_OVERTM" label="Left Overtemp mode">
+                    <description>Left Overtemp mode.</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_V1_UNDERV" label="V1 undervoltage">
+                    <description>V1 undervoltage.</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_ILLEG_SLP" label="Illegal Sleep mode command received">
+                    <description>Illegal Sleep mode command received.</description>
+                </item>
+                <item id="SBC_UJA_MAIN_RSS_WAKE_SLP" label="Wake-up from Sleep mode due to a frame detect error">
+                    <description>Wake-up from Sleep mode due to a frame detect error</description>
+                </item>
+            </enum>
+            <enum id="sbc_sys_evnt_otwe_t" label="System event capture enable, overtemperature warning enable (0x04)" from="sbc_sys_evnt_otwe_t">
+                <description>Implements : sbc_sys_evnt_otwe_t_Class</description>
+                <item id="SBC_UJA_SYS_EVNT_OTWE_DIS" label="Overtemperature warning disabled">
+                    <description>Overtemperature warning disabled.</description>
+                </item>
+                <item id="SBC_UJA_SYS_EVNT_OTWE_EN" label="Overtemperature warning enabled">
+                    <description>Overtemperature warning enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_sys_evnt_spife_t" label="System event capture enable, SPI failure enable (0x04)" from="sbc_sys_evnt_spife_t">
+                <description>Implements : sbc_sys_evnt_spife_t_Class</description>
+                <item id="SBC_UJA_SYS_EVNT_SPIFE_DIS" label="SPI failure detection disabled">
+                    <description>SPI failure detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_SYS_EVNT_SPIFE_EN" label="SPI failure detection enabled">
+                    <description>SPI failure detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_wtdog_stat_fnms_t" label="Watchdog status register, forced Normal mode status (0x05)" from="sbc_wtdog_stat_fnms_t">
+                <description>Implements : sbc_wtdog_stat_fnms_t_Class</description>
+                <item id="SBC_UJA_WTDOG_STAT_FNMS_N_NORMAL" label="SBC is not in Forced Normal mode">
+                    <description>SBC is not in Forced Normal mode.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_STAT_FNMS_NORMAL" label="SBC is in Forced Normal mode">
+                    <description>SBC is in Forced Normal mode.</description>
+                </item>
+            </enum>
+            <enum id="sbc_wtdog_stat_sdms_t" label="Watchdog status register, Software Development mode status (0x05)" from="sbc_wtdog_stat_sdms_t">
+                <description>Implements : sbc_wtdog_stat_sdms_t_Class</description>
+                <item id="SBC_UJA_WTDOG_STAT_SDMS_N_NORMAL" label="SBC is not in Software Development mode">
+                    <description>SBC is not in Software Development mode.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_STAT_SDMS_NORMAL" label="SBC is in Software Development mode">
+                    <description>SBC is in Software Development mode.</description>
+                </item>
+            </enum>
+            <enum id="sbc_wtdog_stat_wds_t" label="Watchdog status register, watchdog status (0x05)" from="sbc_wtdog_stat_wds_t">
+                <description>Implements : sbc_wtdog_stat_wds_t_Class</description>
+                <item id="SBC_UJA_WTDOG_STAT_WDS_OFF" label="Watchdog is off">
+                    <description>Watchdog is off.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_STAT_WDS_FIH" label="Watchdog is in first half of the nominal period">
+                    <description>Watchdog is in first half of the nominal period.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_STAT_WDS_SEH" label="Watchdog is in second half of the nominal period">
+                    <description>Watchdog is in second half of the nominal period.</description>
+                </item>
+            </enum>
+            <enum id="sbc_lock_t" label="Lock control(0x0A). Sections of the register address area can be write-protected to protect against unintended modifications" from="sbc_lock_t">
+                <description>Implements : sbc_lock_t_Class</description>
+                <item id="LK0C" label="Lock control 0: address area 0x06 to 0x09 - general-purpose memory macros">
+                    <description>Lock control 0: address area 0x06 to 0x09 - general-purpose memory macros. Lock control 1: address area 0x10 to 0x1F - regulator control macros.</description>
+                </item>
+                <item id="LK1C" label="Lock control 2: address area 0x20 to 0x2F - transceiver control macros">
+                    <description>Lock control 2: address area 0x20 to 0x2F - transceiver control macros.</description>
+                </item>
+                <item id="LK2C" label="Lock control 3: address area 0x30 to 0x3F - unused register range macros">
+                    <description>Lock control 3: address area 0x30 to 0x3F - unused register range macros.</description>
+                </item>
+                <item id="LK3C" label="Lock control 4: address area 0x40 to 0x4F - WAKE pin control macros">
+                    <description>Lock control 4: address area 0x40 to 0x4F - WAKE pin control macros.</description>
+                </item>
+                <item id="LK4C" label="Lock control 5: address area 0x50 to 0x5F">
+                    <description>Lock control 5: address area 0x50 to 0x5F.</description>
+                </item>
+                <item id="LK5C" label="Lock control 6: address area 0x68 to 0x6F macros">
+                    <description>Lock control 6: address area 0x68 to 0x6F macros.</description>
+                </item>
+                <item id="LK6C" label="Lock control All: address area 0x10 to 0x6F macros">
+                    <description>Lock control All: address area 0x10 to 0x6F macros.</description>
+                </item>
+                <item id="LKAC" label="">
+                    <description></description>
+                </item>
+            </enum>
+            <enum id="sbc_regulator_pdc_t" label="Regulator control register, power distribution control (0x10). PDC is not available on UJA1168 device variants, use any of these two values, the value written to the device will be ignored" from="sbc_regulator_pdc_t">
+                <description>Implements : sbc_regulator_pdc_t_Class</description>
+                <item id="SBC_UJA_REGULATOR_PDC_HV" label="V1 threshold current for activating the external PNP transistor, load current rising; Ith(act)PNP (higher value) V1 threshold current for deactivating the external PNP transistor, load current falling; Ith(deact)PNP (higher value)">
+                    <description>V1 threshold current for activating the external PNP transistor, load current rising; Ith(act)PNP (higher value) V1 threshold current for deactivating the external PNP transistor, load current falling; Ith(deact)PNP (higher value).</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_PDC_LV" label="V1 threshold current for activating the external PNP transistor; load current rising; Ith(act)PNP (lower value) V1 threshold current for deactivating the external PNP transistor; load current falling; Ith(deact)PNP (lower value)">
+                    <description>V1 threshold current for activating the external PNP transistor; load current rising; Ith(act)PNP (lower value) V1 threshold current for deactivating the external PNP transistor; load current falling; Ith(deact)PNP (lower value).</description>
+                </item>
+            </enum>
+            <enum id="sbc_regulator_v2c_t" label="Regulator control register, V2/VEXT configuration (0x10)" from="sbc_regulator_v2c_t">
+                <description>Implements : sbc_regulator_v2c_t_Class</description>
+                <item id="SBC_UJA_REGULATOR_V2C_OFF" label="V2/VEXT off in all modes">
+                    <description>V2/VEXT off in all modes.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V2C_N" label="V2/VEXT on in Normal mode">
+                    <description>V2/VEXT on in Normal mode.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V2C_N_S_R" label="V2/VEXT on in Normal, Standby and Reset modes">
+                    <description>V2/VEXT on in Normal, Standby and Reset modes.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V2C_N_S_S_R" label="V2/VEXT on in Normal, Standby, Sleep and Reset modes">
+                    <description>V2/VEXT on in Normal, Standby, Sleep and Reset modes.</description>
+                </item>
+            </enum>
+            <enum id="sbc_regulator_v1rtc_t" label="Regulator control register, set V1 reset threshold (0x10)" from="sbc_regulator_v1rtc_t">
+                <description>Implements : sbc_regulator_v1rtc_t_Class</description>
+                <item id="SBC_UJA_REGULATOR_V1RTC_90" label="Reset threshold set to 90 % of V1 nominal output voltage">
+                    <description>Reset threshold set to 90 % of V1 nominal output voltage.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V1RTC_80" label="Reset threshold set to 80 % of V1 nominal output voltage">
+                    <description>Reset threshold set to 80 % of V1 nominal output voltage.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V1RTC_70" label="Reset threshold set to 70 % of V1 nominal output voltage">
+                    <description>Reset threshold set to 70 % of V1 nominal output voltage.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V1RTC_60" label="Reset threshold set to 60 % of V1 nominal output voltage">
+                    <description>Reset threshold set to 60 % of V1 nominal output voltage.</description>
+                </item>
+            </enum>
+            <enum id="sbc_supply_stat_v2s_t" label="Supply voltage status register, V2/VEXT status (0x1B)" from="sbc_supply_stat_v2s_t">
+                <description>Implements : sbc_supply_stat_v2s_t_Class</description>
+                <item id="SBC_UJA_SUPPLY_STAT_V2S_VOK" label="V2/VEXT voltage ok">
+                    <description>V2/VEXT voltage ok.</description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_STAT_V2S_VBE" label="V2/VEXT output voltage below undervoltage threshold">
+                    <description>V2/VEXT output voltage below undervoltage threshold</description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_STAT_V2S_VAB" label="V2/VEXT output voltage above overvoltage threshold">
+                    <description>V2/VEXT output voltage above overvoltage threshold</description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_STAT_V2S_DIS" label="V2/VEXT disabled">
+                    <description>V2/VEXT disabled</description>
+                </item>
+            </enum>
+            <enum id="sbc_supply_stat_v1s_t" label="Supply voltage status register, V1 status (0x1B)" from="sbc_supply_stat_v1s_t">
+                <description>Implements : sbc_supply_stat_v1s_t_Class</description>
+                <item id="SBC_UJA_SUPPLY_STAT_V1S_VAB" label="V1 output voltage above 90 % undervoltage threshold">
+                    <description>V1 output voltage above 90 % undervoltage threshold.</description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_STAT_V1S_VBE" label="V1 output voltage below 90 % undervoltage threshold">
+                    <description>V1 output voltage below 90 % undervoltage threshold.</description>
+                </item>
+            </enum>
+            <enum id="sbc_supply_evnt_v2oe_t" label="Supply event capture enable register, V2/VEXT overvoltage enable (0x1C)" from="sbc_supply_evnt_v2oe_t">
+                <description>Implements : sbc_supply_evnt_v2oe_t_Class</description>
+                <item id="SBC_UJA_SUPPLY_EVNT_V2OE_DIS" label="V2/VEXT overvoltage detection disabled">
+                    <description>V2/VEXT overvoltage detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_EVNT_V2OE_EN" label="V2/VEXT overvoltage detection enabled">
+                    <description>V2/VEXT overvoltage detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_supply_evnt_v2ue_t" label="Supply event capture enable register, V2/VEXT undervoltage enable (0x1C)" from="sbc_supply_evnt_v2ue_t">
+                <description>Implements : sbc_supply_evnt_v2ue_t_Class</description>
+                <item id="SBC_UJA_SUPPLY_EVNT_V2UE_DIS" label="V2/VEXT undervoltage detection disabled">
+                    <description>V2/VEXT undervoltage detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_EVNT_V2UE_EN" label="V2/VEXT undervoltage detection enabled">
+                    <description>V2/VEXT undervoltage detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_supply_evnt_v1ue_t" label="Supply event capture enable register, V1 undervoltage enable (0x1C)" from="sbc_supply_evnt_v1ue_t">
+                <description>Implements : sbc_supply_evnt_v1ue_t_Class</description>
+                <item id="SBC_UJA_SUPPLY_EVNT_V1UE_DIS" label="V1 undervoltage detection disabled">
+                    <description>V1 undervoltage detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_EVNT_V1UE_EN" label="V1 undervoltage detection enabled">
+                    <description>V1 undervoltage detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_can_cfdc_t" label="CAN control register, CAN FD control (0x20)" from="sbc_can_cfdc_t">
+                <description>Implements : sbc_can_cfdc_t_Class</description>
+                <item id="SBC_UJA_CAN_CFDC_DIS" label="CAN FD tolerance disabled">
+                    <description>CAN FD tolerance disabled.</description>
+                </item>
+                <item id="SBC_UJA_CAN_CFDC_EN" label="CAN FD tolerance enabled">
+                    <description>CAN FD tolerance enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_can_pncok_t" label="CAN control register, CAN partial networking configuration OK (0x20)" from="sbc_can_pncok_t">
+                <description>Implements : sbc_can_pncok_t_Class</description>
+                <item id="SBC_UJA_CAN_PNCOK_DIS" label="Partial networking register configuration invalid (wake-up via standard wake-up pattern only)">
+                    <description>Partial networking register configuration invalid (wake-up via standard wake-up pattern only).</description>
+                </item>
+                <item id="SBC_UJA_CAN_PNCOK_EN" label="Partial networking registers configured successfully">
+                    <description>Partial networking registers configured successfully.</description>
+                </item>
+            </enum>
+            <enum id="sbc_can_cpnc_t" label="CAN control register, CAN partial networking control (0x20)" from="sbc_can_cpnc_t">
+                <description>Implements : sbc_can_cpnc_t_Class</description>
+                <item id="SBC_UJA_CAN_CPNC_DIS" label="Disable CAN selective wake-up">
+                    <description>Disable CAN selective wake-up.</description>
+                </item>
+                <item id="SBC_UJA_CAN_CPNC_EN" label="Enable CAN selective wake-up">
+                    <description>Enable CAN selective wake-up.</description>
+                </item>
+            </enum>
+            <enum id="sbc_can_cmc_t" label="CAN control register, CAN mode control (0x20)" from="sbc_can_cmc_t">
+                <description>Implements : sbc_can_cmc_t_Class</description>
+                <item id="SBC_UJA_CAN_CMC_OFMODE" label="Offline mode">
+                    <description>Offline mode.</description>
+                </item>
+                <item id="SBC_UJA_CAN_CMC_ACMODE_DA" label="Active mode (when the SBC is in Normal mode); CAN supply undervoltage detection active">
+                    <description>Active mode (when the SBC is in Normal mode); CAN supply undervoltage detection active.</description>
+                </item>
+                <item id="SBC_UJA_CAN_CMC_ACMODE_DD" label="Active mode (when the SBC is in Normal mode); CAN supply undervoltage detection disabled">
+                    <description>Active mode (when the SBC is in Normal mode); CAN supply undervoltage detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_CAN_CMC_LISTEN" label="Listen-only mode">
+                    <description>Listen-only mode.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_stat_cts_t" label="Transceiver status register, CAN transceiver status (0x22)" from="sbc_trans_stat_cts_t">
+                <description>Implements : sbc_trans_stat_cts_t_Class</description>
+                <item id="SBC_UJA_TRANS_STAT_CTS_INACT" label="CAN transceiver not in Active mode">
+                    <description>CAN transceiver not in Active mode.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_STAT_CTS_ACT" label="CAN transceiver in Active mode">
+                    <description>CAN transceiver in Active mode.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_stat_cpnerr_t" label="Transceiver status register, CAN partial networking error (0x22)" from="sbc_trans_stat_cpnerr_t">
+                <description>Implements : sbc_trans_stat_cpnerr_t_Class</description>
+                <item id="SBC_UJA_TRANS_STAT_CPNERR_NO_DET" label="no CAN partial networking error detected (PNFDE = 0 AND PNCOK = 1)">
+                    <description>no CAN partial networking error detected (PNFDE = 0 AND PNCOK = 1).</description>
+                </item>
+                <item id="SBC_UJA_TRANS_STAT_CPNERR_DET" label="CAN partial networking error detected (PNFDE = 1OR PNCOK = 0; wake-up via standard wake-up pattern only)">
+                    <description>CAN partial networking error detected (PNFDE = 1OR PNCOK = 0; wake-up via standard wake-up pattern only).</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_stat_cpns_t" label="Transceiver status register, CAN partial networking status (0x22)" from="sbc_trans_stat_cpns_t">
+                <description>Implements : sbc_trans_stat_cpns_t_Class</description>
+                <item id="SBC_UJA_TRANS_STAT_CPNS_ERR" label="CAN partial networking configuration error detected(PNCOK = 0)">
+                    <description>CAN partial networking configuration error detected(PNCOK = 0).</description>
+                </item>
+                <item id="SBC_UJA_TRANS_STAT_CPNS_OK" label="CAN partial networking configuration ok (PNCOK = 1)">
+                    <description>CAN partial networking configuration ok (PNCOK = 1).</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_stat_coscs_t" label="Transceiver status register, CAN oscillator status (0x22)" from="sbc_trans_stat_coscs_t">
+                <description>Implements : sbc_trans_stat_coscs_t_Class</description>
+                <item id="SBC_UJA_TRANS_STAT_COSCS_NRUN" label="CAN partial networking oscillator not running at target frequency">
+                    <description>CAN partial networking oscillator not running at target frequency.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_STAT_COSCS_RUN" label="CAN partial networking oscillator running at target">
+                    <description>CAN partial networking oscillator running at target.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_stat_cbss_t" label="Transceiver status register, CAN-bus silence status (0x22)" from="sbc_trans_stat_cbss_t">
+                <description>Implements : sbc_trans_stat_cbss_t_Class</description>
+                <item id="SBC_UJA_TRANS_STAT_CBSS_ACT" label="CAN-bus active (communication detected on bus)">
+                    <description>CAN-bus active (communication detected on bus)</description>
+                </item>
+                <item id="SBC_UJA_TRANS_STAT_CBSS_INACT" label="CAN-bus inactive (for longer than t_to(silence))">
+                    <description>CAN-bus inactive (for longer than t_to(silence)).</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_stat_vcs_t" label="Transceiver status register, VCAN status (0x22)" from="sbc_trans_stat_vcs_t">
+                <description>Implements : sbc_trans_stat_vcs_t_Class</description>
+                <item id="SBC_UJA_TRANS_STAT_VCS_AB" label="CAN supply voltage is above the 90 % threshold">
+                    <description>CAN supply voltage is above the 90 % threshold.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_STAT_VCS_BE" label="CAN supply voltage is below the 90 % threshold">
+                    <description>CAN supply voltage is below the 90 % threshold</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_stat_cfs_t" label="Transceiver status register, CAN failure status (0x22)" from="sbc_trans_stat_cfs_t">
+                <description>Implements : sbc_trans_stat_cfs_t_Class</description>
+                <item id="SBC_UJA_TRANS_STAT_CFS_NO_TXD" label="No TXD dominant time-out event detected">
+                    <description>No TXD dominant time-out event detected.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_STAT_CFS_TXD" label="CAN transmitter disabled due to a TXD dominant time-out event">
+                    <description>CAN transmitter disabled due to a TXD dominant time-out event.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_evnt_cbse_t" label="Transceiver event capture enable register, CAN-bus silence enable (0x23)" from="sbc_trans_evnt_cbse_t">
+                <description>Implements : sbc_trans_evnt_cbse_t_Class</description>
+                <item id="SBC_UJA_TRANS_EVNT_CBSE_DIS" label="CAN-bus silence detection disabled">
+                    <description>CAN-bus silence detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_CBSE_EN" label="CAN-bus silence detection enabled">
+                    <description>CAN-bus silence detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_evnt_cfe_t" label="Transceiver event capture enable register, CAN failure enable (0x23)" from="sbc_trans_evnt_cfe_t">
+                <description>Implements : sbc_trans_evnt_cfe_t_Class</description>
+                <item id="SBC_UJA_TRANS_EVNT_CFE_DIS" label="CAN failure detection disabled">
+                    <description>CAN failure detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_CFE_EN" label="CAN failure detection enabled">
+                    <description>CAN failure detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_evnt_cwe_t" label="Transceiver event capture enable register, CAN wake-up enable (0x23)" from="sbc_trans_evnt_cwe_t">
+                <description>Implements : sbc_trans_evnt_cwe_t_Class</description>
+                <item id="SBC_UJA_TRANS_EVNT_CWE_DIS" label="CAN wake-up detection disabled">
+                    <description>CAN wake-up detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_CWE_EN" label="CAN wake-up detection enabled">
+                    <description>CAN wake-up detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_dat_rate_t" label="Data rate register, CAN data rate selection (0x26). CAN partial networking configuration registers" from="sbc_dat_rate_t">
+                <description>Implements : sbc_dat_rate_t_Class</description>
+                <item id="SBC_UJA_DAT_RATE_CDR_50KB" label="50 kbit/s">
+                    <description>50 kbit/s.</description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE_CDR_100KB" label="100 kbit/s">
+                    <description>100 kbit/s.</description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE_CDR_125KB" label="125 kbit/s">
+                    <description>125 kbit/s.</description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE_CDR_250KB" label="250 kbit/s">
+                    <description>250 kbit/s.</description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE_CDR_500KB" label="500 kbit/s">
+                    <description>500 kbit/s.</description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE_CDR_1000KB" label="1000 kbit/s">
+                    <description>1000 kbit/s.</description>
+                </item>
+            </enum>
+            <enum id="sbc_frame_ctr_ide_t" label="Frame control register, identifier format (0x2F). The wake-up frame format, standard (11-bit) or extended (29-bit) identifier, is selected via bit IDE in the Frame control register" from="sbc_frame_ctr_ide_t">
+                <description>Implements : sbc_frame_ctr_ide_t_Class</description>
+                <item id="SBC_UJA_FRAME_CTR_IDE_11B" label="Standard frame format (11-bit)">
+                    <description>Standard frame format (11-bit).</description>
+                </item>
+                <item id="SBC_UJA_FRAME_CTR_IDE_29B" label="Extended frame format (29-bit)">
+                    <description>Extended frame format (29-bit).</description>
+                </item>
+            </enum>
+            <enum id="sbc_frame_ctr_pndm_t" label="Frame control register, partial networking data mask (0x2F)" from="sbc_frame_ctr_pndm_t">
+                <description>Implements : sbc_frame_ctr_pndm_t_Class</description>
+                <item id="SBC_UJA_FRAME_CTR_PNDM_DCARE" label="Data length code and data field are do not care for wake-up">
+                    <description>Data length code and data field are do not care for wake-up.</description>
+                </item>
+                <item id="SBC_UJA_FRAME_CTR_PNDM_EVAL" label="Data length code and data field are evaluated at wake-up">
+                    <description>Data length code and data field are evaluated at wake-up.</description>
+                </item>
+            </enum>
+            <enum id="sbc_wake_stat_wpvs_t" label="WAKE pin status register, WAKE pin status (0x4B)" from="sbc_wake_stat_wpvs_t">
+                <description>Implements : sbc_wake_stat_wpvs_t_Class</description>
+                <item id="SBC_UJA_WAKE_STAT_WPVS_BE" label="Voltage on WAKE pin below switching threshold (Vth(sw))">
+                    <description>Voltage on WAKE pin below switching threshold (Vth(sw)).</description>
+                </item>
+                <item id="SBC_UJA_WAKE_STAT_WPVS_AB" label="voltage on WAKE pin above switching threshold (Vth(sw))">
+                    <description>voltage on WAKE pin above switching threshold (Vth(sw)).</description>
+                </item>
+            </enum>
+            <enum id="sbc_wake_en_wpre_t" label="WAKE pin event capture enable register, WAKE pin rising-edge enable (0x4C)" from="sbc_wake_en_wpre_t">
+                <description>Implements : sbc_wake_en_wpre_t_Class</description>
+                <item id="SBC_UJA_WAKE_EN_WPRE_DIS" label="Rising-edge detection on WAKE pin disabled">
+                    <description>Rising-edge detection on WAKE pin disabled.</description>
+                </item>
+                <item id="SBC_UJA_WAKE_EN_WPRE_EN" label="Rising-edge detection on WAKE pin enabled">
+                    <description>Rising-edge detection on WAKE pin enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_wake_en_wpfe_t" label="WAKE pin event capture enable register, WAKE pin falling-edge enable (0x4C)" from="sbc_wake_en_wpfe_t">
+                <description>Implements : sbc_wake_en_wpfe_t_Class</description>
+                <item id="SBC_UJA_WAKE_EN_WPFE_DIS" label="Falling-edge detection on WAKE pin disabled">
+                    <description>Falling-edge detection on WAKE pin disabled.</description>
+                </item>
+                <item id="SBC_UJA_WAKE_EN_WPFE_EN" label="Falling-edge detection on WAKE pin enabled">
+                    <description>Falling-edge detection on WAKE pin enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_gl_evnt_stat_wpe_t" label="Global event status register, WAKE pin event (0x60)" from="sbc_gl_evnt_stat_wpe_t">
+                <description>Implements : sbc_gl_evnt_stat_wpe_t_Class</description>
+                <item id="SBC_UJA_GL_EVNT_STAT_WPE_NO" label="No pending WAKE pin event">
+                    <description>No pending WAKE pin event.</description>
+                </item>
+                <item id="SBC_UJA_GL_EVNT_STAT_WPE" label="WAKE pin event pending at address 0x64">
+                    <description>WAKE pin event pending at address 0x64.</description>
+                </item>
+            </enum>
+            <enum id="sbc_gl_evnt_stat_trxe_t" label="Global event status register, transceiver event (0x60)" from="sbc_gl_evnt_stat_trxe_t">
+                <description>Implements : sbc_gl_evnt_stat_trxe_t_Class</description>
+                <item id="SBC_UJA_GL_EVNT_STAT_TRXE_NO" label="No pending transceiver event">
+                    <description>No pending transceiver event.</description>
+                </item>
+                <item id="SBC_UJA_GL_EVNT_STAT_TRXE" label="Transceiver event pending at address 0x63">
+                    <description>Transceiver event pending at address 0x63.</description>
+                </item>
+            </enum>
+            <enum id="sbc_gl_evnt_stat_supe_t" label="Global event status register, supply event (0x60)" from="sbc_gl_evnt_stat_supe_t">
+                <description>Implements : sbc_gl_evnt_stat_supe_t_Class</description>
+                <item id="SBC_UJA_GL_EVNT_STAT_SUPE_NO" label="No pending supply event">
+                    <description>No pending supply event.</description>
+                </item>
+                <item id="SBC_UJA_GL_EVNT_STAT_SUPE" label="Supply event pending at address 0x62 ">
+                    <description>Supply event pending at address 0x62 .</description>
+                </item>
+            </enum>
+            <enum id="sbc_gl_evnt_stat_syse_t" label="Global event status register, system event (0x60)" from="sbc_gl_evnt_stat_syse_t">
+                <description>Implements : sbc_gl_evnt_stat_syse_t_Class</description>
+                <item id="SBC_UJA_GL_EVNT_STAT_SYSE_NO" label="No pending system event">
+                    <description>No pending system event.</description>
+                </item>
+                <item id="SBC_UJA_GL_EVNT_STAT_SYSE" label="System event pending at address 0x61">
+                    <description>System event pending at address 0x61.</description>
+                </item>
+            </enum>
+            <enum id="sbc_sys_evnt_stat_po_t" label="System event status register, power-on (0x61)" from="sbc_sys_evnt_stat_po_t">
+                <description>Implements : sbc_sys_evnt_stat_po_t_Class</description>
+                <item id="SBC_UJA_SYS_EVNT_STAT_PO_NO" label="No recent battery power-on">
+                    <description>No recent battery power-on.</description>
+                </item>
+                <item id="SBC_UJA_SYS_EVNT_STAT_PO" label="The UJA116xA has left Off mode after battery power-on">
+                    <description>The UJA116xA has left Off mode after battery power-on.</description>
+                </item>
+            </enum>
+            <enum id="sbc_sys_evnt_stat_otw_t" label="System event status register, overtemperature warning (0x61)" from="sbc_sys_evnt_stat_otw_t">
+                <description>Implements : sbc_sys_evnt_stat_otw_t_Class</description>
+                <item id="SBC_UJA_SYS_EVNT_STAT_OTW_NO" label="Overtemperature not detected">
+                    <description>Overtemperature not detected.</description>
+                </item>
+                <item id="SBC_UJA_SYS_EVNT_STAT_OTW" label="The global chip temperature has exceeded the overtemperature warning threshold, Tth(warn)otp (not in Sleep mode)">
+                    <description>The global chip temperature has exceeded the overtemperature warning threshold, Tth(warn)otp (not in Sleep mode).</description>
+                </item>
+            </enum>
+            <enum id="sbc_sys_evnt_stat_spif_t" label="System event status register, SPI failure (0x61)" from="sbc_sys_evnt_stat_spif_t">
+                <description>Implements : sbc_sys_evnt_stat_spif_t_Class</description>
+                <item id="SBC_UJA_SYS_EVNT_STAT_SPIF_NO" label="No SPI failure detected">
+                    <description>No SPI failure detected</description>
+                </item>
+                <item id="SBC_UJA_SYS_EVNT_STAT_SPIF" label="SPI clock count error (only 16-, 24- and 32-bit commands are valid), illegal WMC, NWP or MC code or attempted write access to locked register (not in Sleep mode)">
+                    <description>SPI clock count error (only 16-, 24- and 32-bit commands are valid), illegal WMC, NWP or MC code or attempted write access to locked register (not in Sleep mode)</description>
+                </item>
+            </enum>
+            <enum id="sbc_sys_evnt_stat_wdf_t" label="System event status register, watchdog failure (0x61)" from="sbc_sys_evnt_stat_wdf_t">
+                <description>Implements : sbc_sys_evnt_stat_wdf_t_Class</description>
+                <item id="SBC_UJA_SYS_EVNT_STAT_WDF_NO" label="No watchdog failure event captured">
+                    <description>No watchdog failure event captured</description>
+                </item>
+                <item id="SBC_UJA_SYS_EVNT_STAT_WDF" label="Watchdog overflow in Window or Timeout mode or watchdog triggered too early in Window mode; a system reset is triggered immediately in response to a watchdog failure in Window mode; when the watchdog overflows in Timeout mode, a system reset is only performed if a WDF is already pending (WDF = 1)">
+                    <description>Watchdog overflow in Window or Timeout mode or watchdog triggered too early in Window mode; a system reset is triggered immediately in response to a watchdog failure in Window mode; when the watchdog overflows in Timeout mode, a system reset is only performed if a WDF is already pending (WDF = 1).</description>
+                </item>
+            </enum>
+            <enum id="sbc_sup_evnt_stat_v2o_t" label="Supply event status register, V2/VEXT overvoltage (0x62)" from="sbc_sup_evnt_stat_v2o_t">
+                <description>Implements : sbc_sup_evnt_stat_v2o_t_Class</description>
+                <item id="SBC_UJA_SUP_EVNT_STAT_V2O_NO" label="No V2/VEXT overvoltage event captured">
+                    <description>No V2/VEXT overvoltage event captured.</description>
+                </item>
+                <item id="SBC_UJA_SUP_EVNT_STAT_V2O" label="V2/VEXT overvoltage event captured">
+                    <description>V2/VEXT overvoltage event captured.</description>
+                </item>
+            </enum>
+            <enum id="sbc_sup_evnt_stat_v2u_t" label="Supply event status register, V2/VEXT undervoltage (0x62)" from="sbc_sup_evnt_stat_v2u_t">
+                <description>Implements : sbc_sup_evnt_stat_v2u_t_Class</description>
+                <item id="SBC_UJA_SUP_EVNT_STAT_V2U_NO" label="No V2/VEXT undervoltage event captured">
+                    <description>No V2/VEXT undervoltage event captured.</description>
+                </item>
+                <item id="SBC_UJA_SUP_EVNT_STAT_V2U" label="V2/VEXT undervoltage event captured">
+                    <description>V2/VEXT undervoltage event captured.</description>
+                </item>
+            </enum>
+            <enum id="sbc_sup_evnt_stat_v1u_t" label="Supply event status register, V1 undervoltage (0x62)" from="sbc_sup_evnt_stat_v1u_t">
+                <description>Implements : sbc_sup_evnt_stat_v1u_t_Class</description>
+                <item id="SBC_UJA_SUP_EVNT_STAT_V1U_NO" label="no V1 undervoltage event captured">
+                    <description>no V1 undervoltage event captured.</description>
+                </item>
+                <item id="SBC_UJA_SUP_EVNT_STAT_V1U" label="voltage on V1 has dropped below the 90 % undervoltage threshold while V1 is active (event is not captured in Sleep mode because V1 is off); V1U event capture is independent of the setting of bits V1RTC">
+                    <description>voltage on V1 has dropped below the 90 % undervoltage threshold while V1 is active (event is not captured in Sleep mode because V1 is off); V1U event capture is independent of the setting of bits V1RTC.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_evnt_stat_pnfde_t" label="Transceiver event status register,partial networking frame detection error (0x63)" from="sbc_trans_evnt_stat_pnfde_t">
+                <description>Implements : sbc_trans_evnt_stat_pnfde_t_Class</description>
+                <item id="SBC_UJA_TRANS_EVNT_STAT_PNFDE_NO" label="No partial networking frame detection error detected">
+                    <description>No partial networking frame detection error detected.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_STAT_PNFDE" label="Partial networking frame detection error detected">
+                    <description>Partial networking frame detection error detected.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_evnt_stat_cbs_t" label="Transceiver event status register, CAN-bus status (0x63)" from="sbc_trans_evnt_stat_cbs_t">
+                <description>Implements : sbc_trans_evnt_stat_cbs_t_Class</description>
+                <item id="SBC_UJA_TRANS_EVNT_STAT_CBS_NO" label="CAN-bus active">
+                    <description>CAN-bus active.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_STAT_CBS" label="No activity on CAN-bus for tto(silence) (detected only when CBSE = 1 while bus active)">
+                    <description>No activity on CAN-bus for tto(silence) (detected only when CBSE = 1 while bus active).</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_evnt_stat_cf_t" label="Transceiver event status register, CAN failure (0x63)" from="sbc_trans_evnt_stat_cf_t">
+                <description>Implements : sbc_trans_evnt_stat_cf_t_Class</description>
+                <item id="SBC_UJA_TRANS_EVNT_STAT_CF_NO" label="No CAN failure detected">
+                    <description>No CAN failure detected.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_STAT_CF" label="CAN transceiver deactivated due to VCAN undervoltage OR dominant clamped TXD (not in Sleep mode)">
+                    <description>CAN transceiver deactivated due to VCAN undervoltage OR dominant clamped TXD (not in Sleep mode)</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_evnt_stat_cw_t" label="Transceiver event status register, CAN wake-up (0x63)" from="sbc_trans_evnt_stat_cw_t">
+                <description>Implements : sbc_trans_evnt_stat_cw_t_Class</description>
+                <item id="SBC_UJA_TRANS_EVNT_STAT_CW_NO" label="No CAN wake-up event detected">
+                    <description>No CAN wake-up event detected.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_STAT_CW" label="CAN wake-up event detected while the transceiver is in CAN Offline Mode">
+                    <description>CAN wake-up event detected while the transceiver is in CAN Offline Mode.</description>
+                </item>
+            </enum>
+            <enum id="sbc_wake_evnt_stat_wpr_t" label="WAKE pin event status register, WAKE pin rising edge (0x64)" from="sbc_wake_evnt_stat_wpr_t">
+                <description>Implements : sbc_wake_evnt_stat_wpr_t_Class</description>
+                <item id="SBC_UJA_WAKE_EVNT_STAT_WPR_NO" label="No rising edge detected on WAKE pin">
+                    <description>No rising edge detected on WAKE pin.</description>
+                </item>
+                <item id="SBC_UJA_WAKE_EVNT_STAT_WPR" label="Rising edge detected on WAKE pin">
+                    <description>Rising edge detected on WAKE pin.</description>
+                </item>
+            </enum>
+            <enum id="sbc_wake_evnt_stat_wpf_t" label="WAKE pin event status register, WAKE pin falling edge (0x64)" from="sbc_wake_evnt_stat_wpf_t">
+                <description>Implements : sbc_wake_evnt_stat_wpf_t_Class</description>
+                <item id="SBC_UJA_WAKE_EVNT_STAT_WPF_NO" label="No falling edge detected on WAKE pin">
+                    <description>No falling edge detected on WAKE pin.</description>
+                </item>
+                <item id="SBC_UJA_WAKE_EVNT_STAT_WPF" label="Falling edge detected on WAKE pin">
+                    <description>Falling edge detected on WAKE pin.</description>
+                </item>
+            </enum>
+            <enum id="sbc_mtpnv_stat_eccs_t" label="MTPNV status register, error correction code status (0x70)" from="sbc_mtpnv_stat_eccs_t">
+                <description>Implements : sbc_mtpnv_stat_eccs_t_Class</description>
+                <item id="SBC_UJA_MTPNV_STAT_ECCS_NO" label="No bit failure detected in non-volatile memory">
+                    <description>No bit failure detected in non-volatile memory.</description>
+                </item>
+                <item id="SBC_UJA_MTPNV_STAT_ECCS" label="Bit failure detected and corrected in non-volatile memory">
+                    <description>Bit failure detected and corrected in non-volatile memory.</description>
+                </item>
+            </enum>
+            <enum id="sbc_mtpnv_stat_nvmps_t" label="MTPNV status register, non-volatile memory programming status (0x70)" from="sbc_mtpnv_stat_nvmps_t">
+                <description>Implements : sbc_mtpnv_stat_nvmps_t_Class</description>
+                <item id="SBC_UJA_MTPNV_STAT_NVMPS_NO" label="MTPNV memory cannot be overwritten">
+                    <description>MTPNV memory cannot be overwritten.</description>
+                </item>
+                <item id="SBC_UJA_MTPNV_STAT_NVMPS" label="MTPNV memory is ready to be reprogrammed">
+                    <description>MTPNV memory is ready to be reprogrammed.</description>
+                </item>
+            </enum>
+            <enum id="sbc_start_up_rlc_t" label="Start-up control register, RSTN output reset pulse width macros (0x73)" from="sbc_start_up_rlc_t">
+                <description>Implements : sbc_start_up_rlc_t_Class</description>
+                <item id="SBC_UJA_START_UP_RLC_20_25p0" label="Tw(rst) = 20 ms to 25 ms">
+                    <description>Tw(rst) = 20 ms to 25 ms.</description>
+                </item>
+                <item id="SBC_UJA_START_UP_RLC_10_12p5" label="Tw(rst) = 10 ms to 12.5 ms">
+                    <description>Tw(rst) = 10 ms to 12.5 ms.</description>
+                </item>
+                <item id="SBC_UJA_START_UP_RLC_03p6_05" label="Tw(rst) = 3.6 ms to 5 ms">
+                    <description>Tw(rst) = 3.6 ms to 5 ms.</description>
+                </item>
+                <item id="SBC_UJA_START_UP_RLC_01_01p5" label="Tw(rst) = 1 ms to 1.5 ms">
+                    <description>Tw(rst) = 1 ms to 1.5 ms.</description>
+                </item>
+            </enum>
+            <enum id="sbc_start_up_v2suc_t" label="Start-up control register, V2/VEXT start-up control (0x73)" from="sbc_start_up_v2suc_t">
+                <description>Implements : sbc_start_up_v2suc_t_Class</description>
+                <item id="SBC_UJA_START_UP_V2SUC_00" label="bits V2C/VEXTC set to 00 at power-up">
+                    <description>bits V2C/VEXTC set to 00 at power-up.</description>
+                </item>
+                <item id="SBC_UJA_START_UP_V2SUC_11" label="bits V2C/VEXTC set to 11 at power-up">
+                    <description>bits V2C/VEXTC set to 11 at power-up.</description>
+                </item>
+            </enum>
+            <enum id="sbc_sbc_v1rtsuc_t" label="SBC configuration control register, V1 undervoltage threshold (defined by bit V1RTC) at start-up (0x74)" from="sbc_sbc_v1rtsuc_t">
+                <description>Implements : sbc_sbc_v1rtsuc_t_Class</description>
+                <item id="SBC_UJA_SBC_V1RTSUC_90" label="V1 undervoltage detection at 90 % of nominal value at start-up (V1RTC = 00)">
+                    <description>V1 undervoltage detection at 90 % of nominal value at start-up (V1RTC = 00).</description>
+                </item>
+                <item id="SBC_UJA_SBC_V1RTSUC_80" label="V1 undervoltage detection at 80 % of nominal value at start-up (V1RTC = 01)">
+                    <description>V1 undervoltage detection at 80 % of nominal value at start-up (V1RTC = 01).</description>
+                </item>
+                <item id="SBC_UJA_SBC_V1RTSUC_70" label="V1 undervoltage detection at 70 % of nominal value at start-up V1RTC = 10)">
+                    <description>V1 undervoltage detection at 70 % of nominal value at start-up V1RTC = 10).</description>
+                </item>
+                <item id="SBC_UJA_SBC_V1RTSUC_60" label="V1 undervoltage detection at 60 % of nominal value at start-up (V1RTC = 11)">
+                    <description>V1 undervoltage detection at 60 % of nominal value at start-up (V1RTC = 11).</description>
+                </item>
+            </enum>
+            <enum id="sbc_sbc_fnmc_t" label="SBC configuration control register, Forced Normal mode control (0x74)" from="sbc_sbc_fnmc_t">
+                <description>Implements : sbc_sbc_fnmc_t_Class</description>
+                <item id="SBC_UJA_SBC_FNMC_DIS" label="Forced Normal mode disabled">
+                    <description>Forced Normal mode disabled.</description>
+                </item>
+                <item id="SBC_UJA_SBC_FNMC_EN" label="Forced Normal mode enabled">
+                    <description>Forced Normal mode enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_sbc_sdmc_t" label="SBC configuration control register, Software Development mode control (0x74)" from="sbc_sbc_sdmc_t">
+                <description>Implements : sbc_sbc_sdmc_t_Class</description>
+                <item id="SBC_UJA_SBC_SDMC_DIS" label="Software Development mode disabled">
+                    <description>Software Development mode disabled.</description>
+                </item>
+                <item id="SBC_UJA_SBC_SDMC_EN" label="Software Development mode enabled">
+                    <description>Software Development mode enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_sbc_slpc_t" label="SBC configuration control register, Sleep control (0x74)" from="sbc_sbc_slpc_t">
+                <description>Implements : sbc_sbc_slpc_t_Class</description>
+                <item id="SBC_UJA_SBC_SLPC_AC" label="Sleep mode commands accepted">
+                    <description>Sleep mode commands accepted. Factory preset value.</description>
+                </item>
+                <item id="SBC_UJA_SBC_SLPC_IG" label="Sleep mode commands ignored">
+                    <description>Sleep mode commands ignored.</description>
+                </item>
+            </enum>
+            <struct id="sbc_wtdog_ctr_t" label="Watchdog control register structure" from="sbc_wtdog_ctr_t">
+                <description>Implements : sbc_wtdog_ctr_t_Class</description>
+                <reference id="modeControl" label="Watchdog mode control" type="sbc_wtdog_ctr_wmc_t">
+                    <description>Watchdog mode control.</description>
+                </reference>
+                <reference id="nominalPeriod" label="Nominal watchdog period" type="sbc_wtdog_ctr_nwp_t">
+                    <description>Nominal watchdog period.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_sbc_t" label="SBC configuration control register structure" from="sbc_sbc_t">
+                <description>Implements : sbc_sbc_t_Class</description>
+                <reference id="v1rtsuc" label="V1 undervoltage threshold (defined by bit V1RTC) at start-up (0x74)" type="sbc_sbc_v1rtsuc_t">
+                    <description>V1 undervoltage threshold (defined by bit V1RTC) at start-up (0x74).</description>
+                </reference>
+                <reference id="fnmc" label="Forced Normal mode control" type="sbc_sbc_fnmc_t">
+                    <description>Forced Normal mode control.</description>
+                </reference>
+                <reference id="sdmc" label="Software Development mode control" type="sbc_sbc_sdmc_t">
+                    <description>Software Development mode control.</description>
+                </reference>
+                <reference id="slpc" label="Sleep control" type="sbc_sbc_slpc_t">
+                    <description>Sleep control.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_start_up_t" label="Start-up control register structure" from="sbc_start_up_t">
+                <description>Implements : sbc_start_up_t_Class</description>
+                <reference id="rlc" label="RSTN output reset pulse width macros" type="sbc_start_up_rlc_t">
+                    <description>RSTN output reset pulse width macros.</description>
+                </reference>
+                <reference id="v2suc" label="V2/VEXT start-up control" type="sbc_start_up_v2suc_t">
+                    <description>V2/VEXT start-up control.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_regulator_t" label="Regulator control register structure" from="sbc_regulator_t">
+                <description>Implements : sbc_regulator_t_Class</description>
+                <reference id="pdc" label="Power distribution control" type="sbc_regulator_pdc_t">
+                    <description>Power distribution control.</description>
+                </reference>
+                <reference id="v2c" label="V2/VEXT configuration" type="sbc_regulator_v2c_t">
+                    <description>V2/VEXT configuration.</description>
+                </reference>
+                <reference id="v1rtc" label="Set V1 reset threshold" type="sbc_regulator_v1rtc_t" available="contains($parent.getParent().getParent().getParent().getParent().getSetting(`sbcDevModel`).getValue(),`V`)">
+                    <description>Set V1 reset threshold.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_supply_evnt_t" label="Supply event capture enable register structure" from="sbc_supply_evnt_t">
+                <description>Implements : sbc_supply_evnt_t_Class</description>
+                <reference id="v2oe" label="V2/VEXT overvoltage enable" type="sbc_supply_evnt_v2oe_t">
+                    <description>V2/VEXT overvoltage enable.</description>
+                </reference>
+                <reference id="v2ue" label="V2/VEXT undervoltage enable" type="sbc_supply_evnt_v2ue_t">
+                    <description>V2/VEXT undervoltage enable.</description>
+                </reference>
+                <reference id="v1ue" label="V1 undervoltage enable" type="sbc_supply_evnt_v1ue_t">
+                    <description>V1 undervoltage enable.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_sys_evnt_t" label="System event capture enable register structure" from="sbc_sys_evnt_t">
+                <description>Implements : sbc_sys_evnt_t_Class</description>
+                <reference id="owte" label="Overtemperature warning enable" type="sbc_sys_evnt_otwe_t">
+                    <description>Overtemperature warning enable.</description>
+                </reference>
+                <reference id="spife" label="SPI failure enable" type="sbc_sys_evnt_spife_t">
+                    <description>SPI failure enable.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_can_ctr_t" label="CAN control register structure" from="sbc_can_ctr_t">
+                <description>Implements : sbc_can_ctr_t_Class</description>
+                <reference id="cfdc" label="CAN FD control" type="sbc_can_cfdc_t" available="contains($parent.getParent().getParent().getParent().getParent().getSetting(`sbcDevModel`).getValue(),`F`)">
+                    <description>CAN FD control.</description>
+                </reference>
+                <reference id="pncok" label="CAN partial networking" type="sbc_can_pncok_t" available="contains($parent.getParent().getParent().getParent().getParent().getSetting(`sbcDevModel`).getValue(),`P`)">
+                    <description>CAN partial networking configuration OK.</description>
+                </reference>
+                <reference id="cpnc" label="CAN partial" type="sbc_can_cpnc_t" available="contains($parent.getParent().getParent().getParent().getParent().getSetting(`sbcDevModel`).getValue(),`P`)">
+                    <description>CAN partial networking control.</description>
+                </reference>
+                <reference id="cmc" label="CAN mode control" type="sbc_can_cmc_t">
+                    <description>CAN mode control.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_trans_evnt_t" label="Transceiver event capture enable register structure" from="sbc_trans_evnt_t">
+                <description>Implements : sbc_trans_evnt_t_Class</description>
+                <reference id="cbse" label="CAN-bus silence enable" type="sbc_trans_evnt_cbse_t">
+                    <description>CAN-bus silence enable.</description>
+                </reference>
+                <reference id="cfe" label="CAN failure enable" type="sbc_trans_evnt_cfe_t">
+                    <description>CAN failure enable.</description>
+                </reference>
+                <reference id="cwe" label="CAN wake-up enable" type="sbc_trans_evnt_cwe_t">
+                    <description>CAN wake-up enable.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_frame_t" label="Frame control register structure" from="sbc_frame_t">
+                <description>Implements : sbc_frame_t_Class</description>
+                <reference id="ide" label="Identifier format" type="sbc_frame_ctr_ide_t">
+                    <description>Identifier format.</description>
+                </reference>
+                <reference id="pndm" label="Partial networking data mask" type="sbc_frame_ctr_pndm_t">
+                    <description>Partial networking data mask.</description>
+                </reference>
+                <reference id="dlc" label="Number of data bytes expected" type="sbc_frame_ctr_dlc_t">
+                    <description>Number of data bytes expected.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_can_conf_t" label="CAN configuration group structure" from="sbc_can_conf_t">
+                <description>Implements : sbc_can_conf_t_Class</description>
+                <reference id="canConf" label="CAN control register" type="sbc_can_ctr_t">
+                    <description>CAN control register.</description>
+                </reference>
+                <reference id="canTransEvnt" label="Transceiver event capture enable register" type="sbc_trans_evnt_t">
+                    <description>Transceiver event capture enable register.</description>
+                </reference>
+                <reference id="datRate" label="CAN data rate selection" type="sbc_dat_rate_t" available="contains($parent.getParent().getParent().getParent().getSetting(`sbcDevModel`).getValue(),`P`)">
+                    <description>CAN data rate selection.</description>
+                </reference>
+                <reference id="identif" label="ID registers" type="sbc_identifier_t" available="contains($parent.getParent().getParent().getParent().getSetting(`sbcDevModel`).getValue(),`P`)">
+                    <description>ID registers.</description>
+                </reference>
+                <reference id="mask" label="ID mask registers" type="sbc_identif_mask_t" available="contains($parent.getParent().getParent().getParent().getSetting(`sbcDevModel`).getValue(),`P`)">
+                    <description>ID mask registers.</description>
+                </reference>
+                <reference id="frame" label="Frame control register" type="sbc_frame_t" available="contains($parent.getParent().getParent().getParent().getSetting(`sbcDevModel`).getValue(),`P`)">
+                    <description>Frame control register.</description>
+                </reference>
+                <reference id="dataMask" label="Data mask 0 - 7 configuration" type="sbc_data_mask_t" available="contains($parent.getParent().getParent().getParent().getSetting(`sbcDevModel`).getValue(),`P`)">
+                    <description>Data mask 0 - 7 configuration.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_wake_t" label="WAKE pin event capture enable register structure" from="sbc_wake_t">
+                <description>Implements : sbc_wake_t_Class</description>
+                <reference id="wpre" label="WAKE pin rising-edge enable" type="sbc_wake_en_wpre_t">
+                    <description>WAKE pin rising-edge enable.</description>
+                </reference>
+                <reference id="wpfe" label="WAKE pin falling-edge enable" type="sbc_wake_en_wpfe_t">
+                    <description>WAKE pin falling-edge enable.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_regulator_ctr_t" label="Regulator control register group" from="sbc_regulator_ctr_t">
+                <description>Implements : sbc_regulator_ctr_t_Class</description>
+                <reference id="regulator" label="Regulator control register" type="sbc_regulator_t">
+                    <description>Regulator control register.</description>
+                </reference>
+                <reference id="supplyEvnt" label="Supply event capture enable register" type="sbc_supply_evnt_t">
+                    <description>Supply event capture enable register.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_int_config_t" label="Init configuration structure" from="sbc_int_config_t">
+                <string id="name" label="Name">
+                    <description>Configuration name</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="ro" label="Read only SBC configurations">
+                    <description>Specifies how the SBC configurations will be generated. Read only generated array of structures is declared with const qualifier. .</description>
+                </bool>
+                <description>Implements : sbc_int_config_t_Class</description>
+                <reference id="regulatorCtr" label="Regulator control register group" type="sbc_regulator_ctr_t">
+                    <description>Regulator control register group.</description>
+                </reference>
+                <reference id="watchdog" label="Watchdog control register" type="sbc_wtdog_ctr_t">
+                    <description>Watchdog control register.</description>
+                </reference>
+                <reference id="mode" label="Mode control register" type="sbc_mode_mc_t">
+                    <description>Mode control register.</description>
+                </reference>
+                <reference id="lhc" label="LIMP home control" type="sbc_fail_safe_lhc_t" available="contains($parent.getParent().getParent().getSetting(`sbcDevModel`).getValue(),`L`)">
+                    <description>LIMP home control.</description>
+                </reference>
+                <reference id="sysEvnt" label="System event capture enable registers" type="sbc_sys_evnt_t">
+                    <description>System event capture enable registers.</description>
+                </reference>
+                <reference id="lockMask" label="Lock control register" type="sbc_lock_t">
+                    <description>Lock control register.</description>
+                </reference>
+                <reference id="can" label="CAN configuration group" type="sbc_can_conf_t">
+                    <description>CAN configuration group.</description>
+                </reference>
+                <reference id="wakePin" label="WAKE pin event capture enable register" type="sbc_wake_t">
+                    <description>WAKE pin event capture enable register.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_factories_conf_t" label="Factory configuration structure" from="sbc_factories_conf_t">
+                <description>Implements : sbc_factories_conf_t_Class</description>
+                <reference id="startUp" label="Start-up control register" type="sbc_start_up_t">
+                    <description>Start-up control register.</description>
+                </reference>
+                <reference id="control" label="SBC configuration control register" type="sbc_sbc_t">
+                    <description>SBC configuration control register. Note that this register is located in the non-volatile memory area.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_main_status_t" label="Main status register structure" from="sbc_main_status_t">
+                <description>Implements : sbc_main_status_t_Class</description>
+                <reference id="otws" label="Overtemperature warning status" type="sbc_main_otws_t">
+                    <description>Overtemperature warning status.</description>
+                </reference>
+                <reference id="nms" label="Normal mode status" type="sbc_main_nms_t">
+                    <description>Normal mode status.</description>
+                </reference>
+                <reference id="rss" label="Reset source status" type="sbc_main_rss_t">
+                    <description>Reset source status.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_wtdog_status_t" label="Watchdog status register structure" from="sbc_wtdog_status_t">
+                <description>Implements : sbc_wtdog_status_t_Class</description>
+                <reference id="fnms" label="Forced Normal mode status" type="sbc_wtdog_stat_fnms_t">
+                    <description>Forced Normal mode status.</description>
+                </reference>
+                <reference id="sdms" label="Software Development mode status" type="sbc_wtdog_stat_sdms_t">
+                    <description>Software Development mode status.</description>
+                </reference>
+                <reference id="wds" label="Watchdog status" type="sbc_wtdog_stat_wds_t">
+                    <description>Watchdog status.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_supply_status_t" label="Supply voltage status register structure" from="sbc_supply_status_t">
+                <description>Implements : sbc_supply_status_t_Class</description>
+                <reference id="v2s" label="V2/VEXT status" type="sbc_supply_stat_v2s_t">
+                    <description>V2/VEXT status.</description>
+                </reference>
+                <reference id="v1s" label="V1 status" type="sbc_supply_stat_v1s_t">
+                    <description>V1 status.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_trans_stat_t" label="Transceiver status register structure" from="sbc_trans_stat_t">
+                <description>Implements : sbc_trans_stat_t_Class</description>
+                <reference id="cts" label="CAN transceiver status" type="sbc_trans_stat_cts_t">
+                    <description>CAN transceiver status.</description>
+                </reference>
+                <reference id="cpnerr" label="CAN partial networking error" type="sbc_trans_stat_cpnerr_t">
+                    <description>CAN partial networking error.</description>
+                </reference>
+                <reference id="cpns" label="CAN partial networking status" type="sbc_trans_stat_cpns_t">
+                    <description>CAN partial networking status.</description>
+                </reference>
+                <reference id="coscs" label="CAN oscillator status" type="sbc_trans_stat_coscs_t">
+                    <description>CAN oscillator status.</description>
+                </reference>
+                <reference id="cbss" label="CAN-bus silence status" type="sbc_trans_stat_cbss_t">
+                    <description>CAN-bus silence status.</description>
+                </reference>
+                <reference id="vcs" label="VCAN status" type="sbc_trans_stat_vcs_t">
+                    <description>VCAN status.</description>
+                </reference>
+                <reference id="cfs" label="CAN failure status" type="sbc_trans_stat_cfs_t">
+                    <description>CAN failure status.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_gl_evnt_stat_t" label="Global event status register" from="sbc_gl_evnt_stat_t">
+                <description>Implements : sbc_gl_evnt_stat_t_Class</description>
+                <reference id="wpe" label="WAKE pin event" type="sbc_gl_evnt_stat_wpe_t">
+                    <description>WAKE pin event.</description>
+                </reference>
+                <reference id="trxe" label="Transceiver event" type="sbc_gl_evnt_stat_trxe_t">
+                    <description>Transceiver event.</description>
+                </reference>
+                <reference id="supe" label="Supply event" type="sbc_gl_evnt_stat_supe_t">
+                    <description>Supply event.</description>
+                </reference>
+                <reference id="syse" label="System event" type="sbc_gl_evnt_stat_syse_t">
+                    <description>System event.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_sys_evnt_stat_t" label="System event status register" from="sbc_sys_evnt_stat_t">
+                <description>Implements : sbc_sys_evnt_stat_t_Class</description>
+                <reference id="po" label="Power-on" type="sbc_sys_evnt_stat_po_t">
+                    <description>Power-on.</description>
+                </reference>
+                <reference id="otw" label="Transceiver event, overtemperature warning" type="sbc_sys_evnt_stat_otw_t">
+                    <description>Transceiver event, overtemperature warning</description>
+                </reference>
+                <reference id="spif" label="SPI failure" type="sbc_sys_evnt_stat_spif_t">
+                    <description>SPI failure.</description>
+                </reference>
+                <reference id="wdf" label="Watchdog failure" type="sbc_sys_evnt_stat_wdf_t">
+                    <description>Watchdog failure.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_sup_evnt_stat_t" label="Supply event status register" from="sbc_sup_evnt_stat_t">
+                <description>Implements : sbc_sup_evnt_stat_t_Class</description>
+                <reference id="v2o" label="V2/VEXT overvoltage" type="sbc_sup_evnt_stat_v2o_t">
+                    <description>V2/VEXT overvoltage.</description>
+                </reference>
+                <reference id="v2u" label="V2/VEXT undervoltage" type="sbc_sup_evnt_stat_v2u_t">
+                    <description>V2/VEXT undervoltage.</description>
+                </reference>
+                <reference id="v1u" label="V1 undervoltage" type="sbc_sup_evnt_stat_v1u_t">
+                    <description>V1 undervoltage.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_trans_evnt_stat_t" label="Transceiver event status register" from="sbc_trans_evnt_stat_t">
+                <description>Implements : sbc_trans_evnt_stat_t_Class</description>
+                <reference id="pnfde" label="Partial networking frame detection error" type="sbc_trans_evnt_stat_pnfde_t">
+                    <description>Partial networking frame detection error.</description>
+                </reference>
+                <reference id="cbs" label="CAN-bus status" type="sbc_trans_evnt_stat_cbs_t">
+                    <description>CAN-bus status.</description>
+                </reference>
+                <reference id="cf" label="CAN failure" type="sbc_trans_evnt_stat_cf_t">
+                    <description>CAN failure.</description>
+                </reference>
+                <reference id="cw" label="CAN wake-up" type="sbc_trans_evnt_stat_cw_t">
+                    <description>CAN wake-up.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_wake_evnt_stat_t" label="WAKE pin event status register" from="sbc_wake_evnt_stat_t">
+                <description>Implements : sbc_wake_evnt_stat_t_Class</description>
+                <reference id="wpr" label="WAKE pin rising edge" type="sbc_wake_evnt_stat_wpr_t">
+                    <description>WAKE pin rising edge.</description>
+                </reference>
+                <reference id="wpf" label="WAKE pin falling edge" type="sbc_wake_evnt_stat_wpf_t">
+                    <description>WAKE pin falling edge.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_evn_capt_t" label="Event capture registers structure" from="sbc_evn_capt_t">
+                <description>Implements : sbc_evn_capt_t_Class</description>
+                <reference id="glEvnt" label="Global event status" type="sbc_gl_evnt_stat_t">
+                    <description>Global event status.</description>
+                </reference>
+                <reference id="sysEvnt" label="System event status" type="sbc_sys_evnt_stat_t">
+                    <description>System event status.</description>
+                </reference>
+                <reference id="supEvnt" label="Supply event status" type="sbc_sup_evnt_stat_t">
+                    <description>Supply event status.</description>
+                </reference>
+                <reference id="transEvnt" label="Transceiver event status" type="sbc_trans_evnt_stat_t">
+                    <description>Transceiver event status.</description>
+                </reference>
+                <reference id="wakePinEvnt" label="WAKE pin event status" type="sbc_wake_evnt_stat_t">
+                    <description>WAKE pin event status.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_mtpnv_stat_t" label="MTPNV status register" from="sbc_mtpnv_stat_t">
+                <description>Implements : sbc_mtpnv_stat_t_Class</description>
+                <reference id="wrcnts" label="Write counter status" type="sbc_mtpnv_stat_wrcnts_t">
+                    <description>Write counter status.</description>
+                </reference>
+                <reference id="eccs" label="Error correction code status" type="sbc_mtpnv_stat_eccs_t">
+                    <description>Error correction code status.</description>
+                </reference>
+                <reference id="nvmps" label="Non-volatile memory programming status" type="sbc_mtpnv_stat_nvmps_t">
+                    <description>Non-volatile memory programming status.</description>
+                </reference>
+            </struct>
+            <struct id="sbc_status_group_t" label="Status group structure" from="sbc_status_group_t">
+                <description>Implements : sbc_status_group_t_Class</description>
+                <reference id="mainS" label="Main status" type="sbc_main_status_t">
+                    <description>Main status.</description>
+                </reference>
+                <reference id="wtdog" label="Watchdog status" type="sbc_wtdog_status_t">
+                    <description>Watchdog status.</description>
+                </reference>
+                <reference id="supply" label="Supply voltage status" type="sbc_supply_status_t">
+                    <description>Supply voltage status.</description>
+                </reference>
+                <reference id="trans" label="Transceiver status" type="sbc_trans_stat_t">
+                    <description>Transceiver status.</description>
+                </reference>
+                <reference id="wakePin" label="WAKE pin status" type="sbc_wake_stat_wpvs_t">
+                    <description>WAKE pin status.</description>
+                </reference>
+                <reference id="events" label="Event capture registers" type="sbc_evn_capt_t">
+                    <description>Event capture registers.</description>
+                </reference>
+            </struct>
+        </generated_types>
+        <user_types>
+            <integer id="sbc_frame_ctr_dlc_t" label="Frame control register, number of data bytes expected in a CAN frame (0x2F)" type="uint8_t" min_expr="0" max_expr="255">
+                <description>Implements : sbc_frame_ctr_dlc_t_Class</description>
+            </integer>
+            <enum id="sbc_regulator_pdc_t" label="Regulator control register, power distribution control (0x10). PDC is not available on UJA1168 device variants, use any of these two values, the value written to the device will be ignored" from="sbc_regulator_pdc_t">
+                <description>Implements : sbc_regulator_pdc_t_Class</description>
+                <item id="SBC_UJA_REGULATOR_PDC_HV" label="higher value">
+                    <description>V1 threshold current for activating the external PNP transistor, load current rising; Ith(act)PNP (higher value) V1 threshold current for deactivating the external PNP transistor, load current falling; Ith(deact)PNP (higher value).</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_PDC_LV" label="lower value">
+                    <description>V1 threshold current for activating the external PNP transistor; load current rising; Ith(act)PNP (lower value) V1 threshold current for deactivating the external PNP transistor; load current falling; Ith(deact)PNP (lower value).</description>
+                </item>
+            </enum>
+            <enum id="sbc_regulator_v2c_t" label="Regulator control register, V2/VEXT configuration (0x10)" from="sbc_regulator_v2c_t">
+                <description>Implements : sbc_regulator_v2c_t_Class</description>
+                <item id="SBC_UJA_REGULATOR_V2C_OFF" label="V2/VEXT off">
+                    <description>V2/VEXT off in all modes.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V2C_N" label="V2/VEXT on in Normal">
+                    <description>V2/VEXT on in Normal mode.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V2C_N_S_R" label="V2/VEXT on in Normal, Standby and Reset">
+                    <description>V2/VEXT on in Normal, Standby and Reset modes.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V2C_N_S_S_R" label="V2/VEXT on in Normal, Standby, Sleep and Reset">
+                    <description>V2/VEXT on in Normal, Standby, Sleep and Reset modes.</description>
+                </item>
+            </enum>
+            <enum id="sbc_regulator_v1rtc_t" label="Regulator control register, set V1 reset threshold (0x10)" from="sbc_regulator_v1rtc_t">
+                <description>Implements : sbc_regulator_v1rtc_t_Class</description>
+                <item id="SBC_UJA_REGULATOR_V1RTC_90" label="90%">
+                    <description>Reset threshold set to 90 % of V1 nominal output voltage.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V1RTC_80" label="80%">
+                    <description>Reset threshold set to 80 % of V1 nominal output voltage.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V1RTC_70" label="70%">
+                    <description>Reset threshold set to 70 % of V1 nominal output voltage.</description>
+                </item>
+                <item id="SBC_UJA_REGULATOR_V1RTC_60" label="60%">
+                    <description>Reset threshold set to 60 % of V1 nominal output voltage.</description>
+                </item>
+            </enum>
+            <enum id="sbc_supply_evnt_v2oe_t" label="Supply event capture enable register, V2/VEXT overvoltage enable (0x1C)" from="sbc_supply_evnt_v2oe_t">
+                <description>Implements : sbc_supply_evnt_v2oe_t_Class</description>
+                <item id="SBC_UJA_SUPPLY_EVNT_V2OE_DIS" label="Disabled">
+                    <description>V2/VEXT overvoltage detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_EVNT_V2OE_EN" label="Enabled">
+                    <description>V2/VEXT overvoltage detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_supply_evnt_v2ue_t" label="Supply event capture enable register, V2/VEXT undervoltage enable (0x1C)" from="sbc_supply_evnt_v2ue_t">
+                <description>Implements : sbc_supply_evnt_v2ue_t_Class</description>
+                <item id="SBC_UJA_SUPPLY_EVNT_V2UE_DIS" label="V2/VEXT undervoltage detection disabled">
+                    <description>Disabled.</description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_EVNT_V2UE_EN" label="V2/VEXT undervoltage detection enabled">
+                    <description>Enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_supply_evnt_v1ue_t" label="Supply event capture enable register, V1 undervoltage enable (0x1C)" from="sbc_supply_evnt_v1ue_t">
+                <description>Implements : sbc_supply_evnt_v1ue_t_Class</description>
+                <item id="SBC_UJA_SUPPLY_EVNT_V1UE_DIS" label="V1 undervoltage detection disabled">
+                    <description>Disabled.</description>
+                </item>
+                <item id="SBC_UJA_SUPPLY_EVNT_V1UE_EN" label="V1 undervoltage detection enabled">
+                    <description>Enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_wtdog_ctr_wmc_t" label="Watchdog control register, watchdog mode control (0x00). The UJA116xA contains a watchdog that supports three operating modes: Window, Timeout and Autonomous" from="sbc_wtdog_ctr_wmc_t">
+                <description>Implements : sbc_wtdog_ctr_wmc_t_Class</description>
+                <item id="SBC_UJA_WTDOG_CTR_WMC_AUTO" label="Autonomous">
+                    <description>Autonomous mode.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_WMC_TIME" label="Timeout">
+                    <description>Timeout mode.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_WMC_WIND" label="Window">
+                    <description>Window mode (available only in SBC Normal mode).</description>
+                </item>
+            </enum>
+            <enum id="sbc_wtdog_ctr_nwp_t" label="Watchdog control register, nominal watchdog period (0x00). Eight watchdog periods are supported, from 8 ms to 4096 ms" from="sbc_wtdog_ctr_nwp_t">
+                <description>Implements : sbc_wtdog_ctr_nwp_t_Class</description>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_8" label="8 ms">
+                    <description>8 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_16" label="16 ms">
+                    <description>16 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_32" label="32 ms">
+                    <description>32 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_64" label="64 ms">
+                    <description>64 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_128" label="128 ms">
+                    <description>128 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_256" label="256 ms">
+                    <description>256 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_1024" label="1024 ms">
+                    <description>1024 ms.</description>
+                </item>
+                <item id="SBC_UJA_WTDOG_CTR_NWP_4096" label="4096 ms">
+                    <description>4096 ms.</description>
+                </item>
+            </enum>
+            <enum id="sbc_mode_mc_t" label="Mode control register, mode control (0x01)" from="sbc_mode_mc_t">
+                <description>Implements : sbc_mode_mc_t_Class</description>
+                <item id="SBC_UJA_MODE_MC_SLEEP" label="Sleep">
+                    <description>Sleep mode.</description>
+                </item>
+                <item id="SBC_UJA_MODE_MC_STANDBY" label="Standby">
+                    <description>Standby mode.</description>
+                </item>
+                <item id="SBC_UJA_MODE_MC_NORMAL" label="Normal">
+                    <description>Normal mode.</description>
+                </item>
+            </enum>
+            <enum id="sbc_fail_safe_lhc_t" label="Fail-safe control register, LIMP home control (0x02). The dedicated LIMP pin can be used to enable so called limp home hardware in the event of a serious ECU failure" from="sbc_fail_safe_lhc_t">
+                <description>Implements : sbc_fail_safe_lhc_t_Class</description>
+                <item id="SBC_UJA_FAIL_SAFE_LHC_FLOAT" label="Floating">
+                    <description>LIMP pin is floating.</description>
+                </item>
+                <item id="SBC_UJA_FAIL_SAFE_LHC_LOW" label="Low">
+                    <description>LIMP pin is driven LOW.</description>
+                </item>
+            </enum>
+            <enum id="sbc_sys_evnt_otwe_t" label="System event capture enable, overtemperature warning enable (0x04)" from="sbc_sys_evnt_otwe_t">
+                <description>Implements : sbc_sys_evnt_otwe_t_Class</description>
+                <item id="SBC_UJA_SYS_EVNT_OTWE_DIS" label="Disabled">
+                    <description>Overtemperature warning disabled.</description>
+                </item>
+                <item id="SBC_UJA_SYS_EVNT_OTWE_EN" label="Enabled">
+                    <description>Overtemperature warning enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_sys_evnt_spife_t" label="System event capture enable, SPI failure enable (0x04)" from="sbc_sys_evnt_spife_t">
+                <description>Implements : sbc_sys_evnt_spife_t_Class</description>
+                <item id="SBC_UJA_SYS_EVNT_SPIFE_DIS" label="Disabled">
+                    <description>SPI failure detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_SYS_EVNT_SPIFE_EN" label="Enabled">
+                    <description>SPI failure detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_can_cfdc_t" label="CAN control register, CAN FD control (0x20)" from="sbc_can_cfdc_t">
+                <description>Implements : sbc_can_cfdc_t_Class</description>
+                <item id="SBC_UJA_CAN_CFDC_DIS" label="Disabled">
+                    <description>CAN FD tolerance disabled.</description>
+                </item>
+                <item id="SBC_UJA_CAN_CFDC_EN" label="Enabled">
+                    <description>CAN FD tolerance enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_can_pncok_t" label="CAN control register, CAN partial networking configuration OK (0x20)" from="sbc_can_pncok_t">
+                <description>Implements : sbc_can_pncok_t_Class</description>
+                <item id="SBC_UJA_CAN_PNCOK_DIS" label="Disabled">
+                    <description>Partial networking register configuration invalid (wake-up via standard wake-up pattern only).</description>
+                </item>
+                <item id="SBC_UJA_CAN_PNCOK_EN" label="Enabled">
+                    <description>Partial networking registers configured successfully.</description>
+                </item>
+            </enum>
+            <enum id="sbc_can_cpnc_t" label="CAN control register, CAN partial networking control (0x20)" from="sbc_can_cpnc_t">
+                <description>Implements : sbc_can_cpnc_t_Class</description>
+                <item id="SBC_UJA_CAN_CPNC_DIS" label="Disabled">
+                    <description>Disable CAN selective wake-up.</description>
+                </item>
+                <item id="SBC_UJA_CAN_CPNC_EN" label="Enabled">
+                    <description>Enable CAN selective wake-up.</description>
+                </item>
+            </enum>
+            <enum id="sbc_can_cmc_t" label="CAN control register, CAN mode control (0x20)" from="sbc_can_cmc_t">
+                <description>Implements : sbc_can_cmc_t_Class</description>
+                <item id="SBC_UJA_CAN_CMC_OFMODE" label="Offline mode">
+                    <description>Offline mode.</description>
+                </item>
+                <item id="SBC_UJA_CAN_CMC_ACMODE_DA" label="Active mode, undervoltage detection">
+                    <description>Active mode (when the SBC is in Normal mode); CAN supply undervoltage detection active.</description>
+                </item>
+                <item id="SBC_UJA_CAN_CMC_ACMODE_DD" label="Active mode, no undervoltage detection">
+                    <description>Active mode (when the SBC is in Normal mode); CAN supply undervoltage detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_CAN_CMC_LISTEN" label="Listen-only mode">
+                    <description>Listen-only mode.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_evnt_cbse_t" label="Transceiver event capture enable register, CAN-bus silence enable (0x23)" from="sbc_trans_evnt_cbse_t">
+                <description>Implements : sbc_trans_evnt_cbse_t_Class</description>
+                <item id="SBC_UJA_TRANS_EVNT_CBSE_DIS" label="Disabled">
+                    <description>CAN-bus silence detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_CBSE_EN" label="Enabled">
+                    <description>CAN-bus silence detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_evnt_cfe_t" label="Transceiver event capture enable register, CAN failure enable (0x23)" from="sbc_trans_evnt_cfe_t">
+                <description>Implements : sbc_trans_evnt_cfe_t_Class</description>
+                <item id="SBC_UJA_TRANS_EVNT_CFE_DIS" label="Disabled">
+                    <description>CAN failure detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_CFE_EN" label="Enabled">
+                    <description>CAN failure detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_trans_evnt_cwe_t" label="Transceiver event capture enable register, CAN wake-up enable (0x23)" from="sbc_trans_evnt_cwe_t">
+                <description>Implements : sbc_trans_evnt_cwe_t_Class</description>
+                <item id="SBC_UJA_TRANS_EVNT_CWE_DIS" label="Disabled">
+                    <description>CAN wake-up detection disabled.</description>
+                </item>
+                <item id="SBC_UJA_TRANS_EVNT_CWE_EN" label="Enabled">
+                    <description>CAN wake-up detection enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_dat_rate_t" label="Data rate register, CAN data rate selection (0x26). CAN partial networking configuration registers" from="sbc_dat_rate_t">
+                <description>Implements : sbc_dat_rate_t_Class</description>
+                <item id="SBC_UJA_DAT_RATE_CDR_50KB" label="50 kbit/s">
+                    <description>50 kbit/s.</description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE_CDR_100KB" label="100 kbit/s">
+                    <description>100 kbit/s.</description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE_CDR_125KB" label="125 kbit/s">
+                    <description>125 kbit/s.</description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE_CDR_250KB" label="250 kbit/s">
+                    <description>250 kbit/s.</description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE_CDR_500KB" label="500 kbit/s">
+                    <description>500 kbit/s.</description>
+                </item>
+                <item id="SBC_UJA_DAT_RATE_CDR_1000KB" label="1000 kbit/s">
+                    <description>1000 kbit/s.</description>
+                </item>
+            </enum>
+            <enum id="sbc_frame_ctr_ide_t" label="Frame control register, identifier format (0x2F). The wake-up frame format, standard (11-bit) or extended (29-bit) identifier, is selected via bit IDE in the Frame control register" from="sbc_frame_ctr_ide_t">
+                <description>Implements : sbc_frame_ctr_ide_t_Class</description>
+                <item id="SBC_UJA_FRAME_CTR_IDE_11B" label="Standard">
+                    <description>Standard frame format (11-bit).</description>
+                </item>
+                <item id="SBC_UJA_FRAME_CTR_IDE_29B" label="Extended">
+                    <description>Extended frame format (29-bit).</description>
+                </item>
+            </enum>
+            <enum id="sbc_frame_ctr_pndm_t" label="Frame control register, partial networking data mask (0x2F)" from="sbc_frame_ctr_pndm_t">
+                <description>Implements : sbc_frame_ctr_pndm_t_Class</description>
+                <item id="SBC_UJA_FRAME_CTR_PNDM_DCARE" label="Do not care">
+                    <description>Data length code and data field are do not care for wake-up.</description>
+                </item>
+                <item id="SBC_UJA_FRAME_CTR_PNDM_EVAL" label="Evaluated">
+                    <description>Data length code and data field are evaluated at wake-up.</description>
+                </item>
+            </enum>
+            <enum id="sbc_wake_en_wpre_t" label="WAKE pin event capture enable register, WAKE pin rising-edge enable (0x4C)" from="sbc_wake_en_wpre_t">
+                <description>Implements : sbc_wake_en_wpre_t_Class</description>
+                <item id="SBC_UJA_WAKE_EN_WPRE_DIS" label="Disabled">
+                    <description>Rising-edge detection on WAKE pin disabled.</description>
+                </item>
+                <item id="SBC_UJA_WAKE_EN_WPRE_EN" label="Enabled">
+                    <description>Rising-edge detection on WAKE pin enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_wake_en_wpfe_t" label="WAKE pin event capture enable register, WAKE pin falling-edge enable (0x4C)" from="sbc_wake_en_wpfe_t">
+                <description>Implements : sbc_wake_en_wpfe_t_Class</description>
+                <item id="SBC_UJA_WAKE_EN_WPFE_DIS" label="Disabled">
+                    <description>Falling-edge detection on WAKE pin disabled.</description>
+                </item>
+                <item id="SBC_UJA_WAKE_EN_WPFE_EN" label="Enabled">
+                    <description>Falling-edge detection on WAKE pin enabled.</description>
+                </item>
+            </enum>
+            <enum id="sbc_part_number_t" label="SBC device model" from="sbc_part_number_t">
+                <description>SBC device model</description>
+                <item id="0_LV" label="UJA1169ATK">
+                    <description>UJA1169ATK - V1: 5 V,uC only, V2: 5 V, CAN + on-board loads.</description>
+                </item>
+                <item id="1_LV" label="UJA1169ATK/X">
+                    <description>UJA1169ATK/X - V1: 5 V, uC and CAN, VEXT: 5 V, external loads.</description>
+                </item>
+                <item id="2_LFPV" label="UJA1169ATK/F">
+                    <description>UJA1169ATK/F - V1: 5 V, uC only, V2: 5 V, CAN + on-board loads, CAN partial networking, CAN FD passive.</description>
+                </item>
+                <item id="3_LFPV" label="UJA1169ATK/X/F">
+                    <description>UJA1169ATK/X/F - V1: 5 V, uC and CAN, VEXT: 5 V, external loads, CAN partial networking, CAN FD passive.</description>
+                </item>
+                <item id="4_L" label="UJA1169ATK/3">
+                    <description>UJA1169ATK/3 - V1: 3.3 V, uC only, V2: 5 V, CAN + on-board loads.</description>
+                </item>
+                <item id="5_LFP" label="UJA1169ATK/F/3">
+                    <description>UJA1169ATK/F/3 - V1: 3.3 V, uC only, V2: 5 V, CAN + on-board loads, CAN partial networking, CAN FD passive.</description>
+                </item>
+                <item id="6_PV" label="UJA1168ATK">
+                    <description>UJA1168ATK - V1: 5 V, uC and CAN, INH output.</description>
+                </item>
+                <item id="7_PV" label="UJA1168ATK/VX">
+                    <description>UJA1168ATK/VX - V1: 5 V, uC and CAN, VEXT: 5 V, external loads.</description>
+                </item>
+                <item id="8_FPV" label="UJA1168ATK/FD">
+                    <description>UJA1168ATK/FD - V1: 5 V, uC and CAN, INH output, CAN partial networking, CAN FD passive.</description>
+                </item>
+                <item id="9_FPV" label="UJA1168ATK/VX/FD">
+                    <description>UJA1168ATK/VX/FD - V1: 5 V, uC and CAN, VEXT: 5 V, external loads, CAN partial networking, CAN FD passive.</description>
+                </item>
+            </enum>
+            <struct id="sbc_identifier_t" label="ID registers, identifier format (0x27 to 0x2A). A valid WUF identifier is defined and stored in the ID registers" from="sbc_identifier_t">
+                <description>Implements : sbc_identifier_t_Class</description>
+                <integer id="id0" label="ID (0x27)" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>ID (0x27).</description>
+                </integer>
+                <integer id="id1" label="ID (0x28)" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>ID (0x28).</description>
+                </integer>
+                <integer id="id2" label="ID (0x29)" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>ID (0x29).</description>
+                </integer>
+                <integer id="id3" label="ID (0x2A)" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>ID (0x2A).</description>
+                </integer>
+            </struct>
+            <struct id="sbc_identif_mask_t" label="ID mask registers (0x2B to 0x2E). The identifier mask is defined in the ID mask registers, where a 1 means dont care" from="sbc_identif_mask_t">
+                <description>Implements : sbc_identif_mask_t_Class</description>
+                <integer id="idMask0" label="ID mask (0x2B)" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>ID mask (0x2B).</description>
+                </integer>
+                <integer id="idMask1" label="ID mask (0x2C)" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>ID mask (0x2C).</description>
+                </integer>
+                <integer id="idMask2" label="ID mask (0x2D)" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>ID mask (0x2D).</description>
+                </integer>
+                <integer id="idMask3" label="ID mask (0x2E)" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>ID mask (0x2E).</description>
+                </integer>
+            </struct>
+            <struct id="sbc_data_mask_t" label="Data mask registers" from="sbc_data_mask_t">
+                <description>Implements : sbc_data_mask_t_Class</description>
+                <integer id="dataMask0" label="Data mask 0" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>Data mask 0.</description>
+                </integer>
+                <integer id="dataMask1" label="Data mask 1" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>Data mask 1.</description>
+                </integer>
+                <integer id="dataMask2" label="Data mask 2" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>Data mask 2.</description>
+                </integer>
+                <integer id="dataMask3" label="Data mask 3" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>Data mask 3.</description>
+                </integer>
+                <integer id="dataMask4" label="Data mask 4" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>Data mask 4.</description>
+                </integer>
+                <integer id="dataMask5" label="Data mask 5" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>Data mask 5.</description>
+                </integer>
+                <integer id="dataMask6" label="Data mask 6" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>Data mask 6.</description>
+                </integer>
+                <integer id="dataMask7" label="Data mask 7" type="uint8_t" min_expr="0" max_expr="255">
+                    <description>Data mask 7.</description>
+                </integer>
+            </struct>
+            <struct id="sbc_lock_t" label="Lock control(0x0A). Sections of the register address area can be write-protected to protect against unintended modifications" from="sbc_lock_t">
+                <description>Implements : sbc_lock_t_Class</description>
+                <bool id="LK0C" label="Memory lock (bit 0)">
+                    <description>Lock control 0: address area 0x06 to 0x09 - general-purpose memory macros.</description>
+                </bool>
+                <bool id="LK1C" label="Regulator lock (bit 1)">
+                    <description>Lock control 1: address area 0x10 to 0x1F - regulator control macros.</description>
+                </bool>
+                <bool id="LK2C" label="Transceiver lock (bit 2)">
+                    <description>Lock control 2: address area 0x20 to 0x2F - transceiver control macros.</description>
+                </bool>
+                <bool id="LK3C" label="Unused lock register range (bit 3)">
+                    <description>Lock control 3: address area 0x30 to 0x3F - unused register range macros.</description>
+                </bool>
+                <bool id="LK4C" label="WAKE pin lock (bit 4)">
+                    <description>Lock control 4: address area 0x40 to 0x4F - WAKE pin control macros.</description>
+                </bool>
+                <bool id="LK5C" label="Unused lock register range (bit 5)">
+                    <description>Lock control 5: address area 0x50 to 0x5F.</description>
+                </bool>
+                <bool id="LK6C" label="Data mask lock (bit 6)">
+                    <description>Lock control 6: address area 0x68 to 0x6F macros.</description>
+                </bool>
+            </struct>
+            <struct id="sbc_spi_t" label="SPI settings" from="sbc_spi_t">
+                <dynamic_enum id="spi_t" label="SPI controller" items="$root.flatMap(x->x.getChildren()).filter(y->y.getType() == `lpspi_config`)" options="FEATURE_COMPONENT_ADD=component_hidden, demo_gui_basic, lpspi_config">
+                    <description>Reference to SPI controller.</description>
+                    <validation>
+                        <constraint cond_expr="getComponentInstances($group,`lpspi_config`).size() != 0" level="error" description="The SBC component requires the LPSPI component to be added to the project. Please use the green plus (+) button on the right side to add the necessary component to the project."/>
+                    </validation>
+                </dynamic_enum>
+                <variable value="$root.flatMap(x->x.getChildren()).filter(x -> x.getID() == $parent.spi_t.getValue()).get(0).getSetting(`lpspi.lpspiMasterConfig`)" id="spiConfigs"></variable>
+                <dynamic_enum id="spiConfig" label="Index of SPI configuration" items="$parent.spiConfigs.getValue().getChildren().map(x -> x.getID())" available="($parent.spi_t.getEnumItemLabel() != ``)">
+                      <description>Index of the SPI configuration.</description>
+                </dynamic_enum>
+                <variable id="validDefEn" value="1"/>
+                <variable value="$configSet.execScriptFunction(`../sbc_uja116x/sbc_uja116x_driver_spi.js`, `runValidation`, $parent.validDefEn)" id="myValidation"></variable>
+                <info id="brate" label="Baudrate" value="$parent.myValidation.getValue().get(0).getValue()" available="($parent.spiConfig.getValue() != ``)">
+                    <options_expr>
+                        <option id="UI_SETTING_LINK" available="($parent.spiConfig.getValue() != ``)" expr="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`bitsPerSec`)"/>
+                    </options_expr>
+                    <description>SPI baudrate.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 4000001) &amp;&amp; ($this.getValue() &gt; 249999)" level="error" description="Admissible range is 250 kHz - 4 MHz!"/>
+                    </validation>
+                </info>
+                <info id="pcsPol" label="PCS polarity" value="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`pcsPolarity`).getValue()" available="($parent.spiConfig.getValue() != ``)">
+                    <options_expr>
+                        <option id="UI_SETTING_LINK" available="($parent.spiConfig.getValue() != ``)" expr="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`pcsPolarity`)"/>
+                    </options_expr>
+                    <description>PCS polarity.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() == `LPSPI_ACTIVE_LOW`)" level="error" description="Active low PCS required!"/>
+                    </validation>
+                </info>
+                <info id="isPcsCont" label="Continuous PCS" value="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`isPcsContinuous`).getValue()" available="($parent.spiConfig.getValue() != ``)">
+                    <options_expr>
+                        <option id="UI_SETTING_LINK" available="($parent.spiConfig.getValue() != ``)" expr="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`isPcsContinuous`)"/>
+                    </options_expr>
+                    <description>Continuous PCS.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() == `false`)" level="error" description="Continuous PCS should be disabled!"/>
+                    </validation>
+                </info>
+                <info id="bitsPerFrame" label="Bitcount" value="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`bitcount`).getValue()" available="($parent.spiConfig.getValue() != ``)">
+                    <options_expr>
+                        <option id="UI_SETTING_LINK" available="($parent.spiConfig.getValue() != ``)" expr="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`bitcount`)"/>
+                    </options_expr>
+                    <description>SPI bitcount.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() == 16)" level="error" description="16 bits per frame required!"/>
+                    </validation>
+                </info>
+                <info id="clockPhase" label="Clock phase" value="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`clkPhase`).getValue()" available="($parent.spiConfig.getValue() != ``)">
+                    <options_expr>
+                        <option id="UI_SETTING_LINK" available="($parent.spiConfig.getValue() != ``)" expr="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`clkPhase`)"/>
+                    </options_expr>
+                    <description>Clock phase.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() == `LPSPI_CLOCK_PHASE_2ND_EDGE`)" level="error" description="Capture on second edge required!"/>
+                    </validation>
+                </info>
+                <info id="clockPolarity" label="Clock polarity" value="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`clkPolarity`).getValue()" available="($parent.spiConfig.getValue() != ``)">
+                    <options_expr>
+                        <option id="UI_SETTING_LINK" available="($parent.spiConfig.getValue() != ``)" expr="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`clkPolarity`)"/>
+                    </options_expr>
+                    <description>Clock polarity.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() == `LPSPI_SCK_ACTIVE_HIGH`)" level="error" description="Active high clock required!"/>
+                    </validation>
+                </info>
+                <info id="lsbFrst" label="LSB first" value="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`lsbFirst`).getValue()" available="($parent.spiConfig.getValue() != ``)">
+                    <options_expr>
+                        <option id="UI_SETTING_LINK" available="($parent.spiConfig.getValue() != ``)" expr="$parent.spiConfigs.getValue().get(toInt($parent.spiConfig.getValue())).getSetting(`lsbFirst`)"/>
+                    </options_expr>
+                    <description>LSB first.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() == `false`)" level="error" description="MSB first required!"/>
+                    </validation>
+                </info>
+            </struct>
+        </user_types>
+        <settings>
+            <reference id="sbcDevModel" label="Device Model" type="sbc_part_number_t" available="true">
+                <description>Device model.</description>
+            </reference>
+            <reference id="sbcSpi" label="SPI Device" type="sbc_spi_t" available="true">
+                <description>SPI controller.</description>
+            </reference>
+            <array id="sbcCfgArray" label="Configurations list" type="sbc_int_config_t" options="ShowContentAs=MASTER_DETAIL;UI_ARRAY_REORDER">
+                <description>Defines a structure to initialize the SBC.</description>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> (`sbcInitConfig` + x.getID())"/>
+                    <set_default id="ro" value_expr="x -> (`true`)"/>
+                    <set_default id="regulatorCtr.regulator.pdc" value_expr="x -> (`SBC_UJA_REGULATOR_PDC_HV`)"/>
+                    <set_default id="regulatorCtr.regulator.v2c" value_expr="x -> (`SBC_UJA_REGULATOR_V2C_OFF`)"/>
+                    <set_default id="regulatorCtr.regulator.v1rtc" value_expr="x -> (`SBC_UJA_REGULATOR_V1RTC_90`)"/>
+                    <set_default id="regulatorCtr.supplyEvnt.v2oe" value_expr="x -> (`SBC_UJA_SUPPLY_EVNT_V2OE_DIS`)"/>
+                    <set_default id="regulatorCtr.supplyEvnt.v2ue" value_expr="x -> (`SBC_UJA_SUPPLY_EVNT_V2UE_DIS`)"/>
+                    <set_default id="regulatorCtr.supplyEvnt.v1ue" value_expr="x -> (`SBC_UJA_SUPPLY_EVNT_V1UE_DIS`)"/>
+                    <set_default id="watchdog.modeControl" value_expr="x -> (`SBC_UJA_WTDOG_CTR_WMC_AUTO`)"/>
+                    <set_default id="watchdog.nominalPeriod" value_expr="x -> (`SBC_UJA_WTDOG_CTR_NWP_128`)"/>
+                    <set_default id="mode" value_expr="x -> (`SBC_UJA_MODE_MC_NORMAL`)"/>
+                    <set_default id="lhc" value_expr="x -> (`SBC_UJA_FAIL_SAFE_LHC_FLOAT`)"/>
+                    <set_default id="sysEvnt.owte" value_expr="x -> (`SBC_UJA_SYS_EVNT_OTWE_DIS`)"/>
+                    <set_default id="sysEvnt.spife" value_expr="x -> (`SBC_UJA_SYS_EVNT_SPIFE_DIS`)"/>
+                    <set_default id="lockMask.LK0C" value_expr="x -> (`false`)"/>
+                    <set_default id="lockMask.LK1C" value_expr="x -> (`false`)"/>
+                    <set_default id="lockMask.LK2C" value_expr="x -> (`false`)"/>
+                    <set_default id="lockMask.LK3C" value_expr="x -> (`false`)"/>
+                    <set_default id="lockMask.LK4C" value_expr="x -> (`false`)"/>
+                    <set_default id="lockMask.LK5C" value_expr="x -> (`false`)"/>
+                    <set_default id="lockMask.LK6C" value_expr="x -> (`false`)"/>
+                    <set_default id="can.canConf.cfdc" value_expr="x -> (`SBC_UJA_CAN_CFDC_DIS`)"/>
+                    <set_default id="can.canConf.pncok" value_expr="x -> (`SBC_UJA_CAN_PNCOK_DIS`)"/>
+                    <set_default id="can.canConf.cpnc" value_expr="x -> (`SBC_UJA_CAN_CPNC_DIS`)"/>
+                    <set_default id="can.canConf.cmc" value_expr="x -> (`SBC_UJA_CAN_CMC_OFMODE`)"/>
+                    <set_default id="can.canTransEvnt.cbse" value_expr="x -> (`SBC_UJA_TRANS_EVNT_CBSE_DIS`)"/>
+                    <set_default id="can.canTransEvnt.cfe" value_expr="x -> (`SBC_UJA_TRANS_EVNT_CFE_DIS`)"/>
+                    <set_default id="can.canTransEvnt.cwe" value_expr="x -> (`SBC_UJA_TRANS_EVNT_CWE_EN`)"/>
+                    <set_default id="can.datRate" value_expr="x -> (`SBC_UJA_DAT_RATE_CDR_50KB`)"/>
+                    <set_default id="can.identif.id0" value_expr="x -> (`0`)"/>
+                    <set_default id="can.identif.id1" value_expr="x -> (`0`)"/>
+                    <set_default id="can.identif.id2" value_expr="x -> (`0`)"/>
+                    <set_default id="can.identif.id3" value_expr="x -> (`0`)"/>
+                    <set_default id="can.mask.idMask0" value_expr="x -> (`0`)"/>
+                    <set_default id="can.mask.idMask1" value_expr="x -> (`0`)"/>
+                    <set_default id="can.mask.idMask2" value_expr="x -> (`0`)"/>
+                    <set_default id="can.mask.idMask3" value_expr="x -> (`0`)"/>
+                    <set_default id="can.frame.ide" value_expr="x -> (`SBC_UJA_FRAME_CTR_IDE_11B`)"/>
+                    <set_default id="can.frame.pndm" value_expr="x -> (`SBC_UJA_FRAME_CTR_PNDM_DCARE`)"/>
+                    <set_default id="can.frame.dlc" value_expr="x -> (`0`)"/>
+                    <set_default id="can.dataMask.dataMask0" value_expr="x -> (`0`)"/>
+                    <set_default id="can.dataMask.dataMask1" value_expr="x -> (`0`)"/>
+                    <set_default id="can.dataMask.dataMask2" value_expr="x -> (`0`)"/>
+                    <set_default id="can.dataMask.dataMask3" value_expr="x -> (`0`)"/>
+                    <set_default id="can.dataMask.dataMask4" value_expr="x -> (`0`)"/>
+                    <set_default id="can.dataMask.dataMask5" value_expr="x -> (`0`)"/>
+                    <set_default id="can.dataMask.dataMask6" value_expr="x -> (`0`)"/>
+                    <set_default id="can.dataMask.dataMask7" value_expr="x -> (`0`)"/>
+                    <set_default id="wakePin.wpre" value_expr="x -> (`SBC_UJA_WAKE_EN_WPRE_EN`)"/>
+                    <set_default id="wakePin.wpfe" value_expr="x -> (`SBC_UJA_WAKE_EN_WPFE_EN`)"/>
+                </item_defaults>
+            </array>
+            <variable value="`../sbc_uja116x/sbc_uja116x_driver_codegen.js`" id="codegen_file"></variable>
+            <variable value="`SBC_UJA116X_DRIVER_CodeGenerator`" id="codegen_class"></variable>
+            <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+            <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+        </settings>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="sbc_uja116x_default" label="Default Values" available="true">
+                <description>SBC UJA116xA Default Configuration</description>
+                <set id="sbcSpi.spi_t">lpspi_1</set>
+                <set id="sbcSpi.spiConfig">0</set>
+                <set id="sbcCfgArray.0"></set>
+            </quick_selection>
+            <default>sbc_uja116x_default</default>
+        </quick_selections>
+    </config_set>
+</component:config_component>

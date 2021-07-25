@@ -1,0 +1,97 @@
+/** 
+ * @defgroup qspi_drv QuadSPI Driver
+ * @ingroup quadspi
+ * @brief Generic driver for the QuadSPI module.
+ * <p>
+ *   The QuadSPI driver offers support for QuadSPI features without making any assumptions about the type of serial flash 
+ *   which is used. Device-specific drivers can be developed on top of the QuadSPI driver to add support for device-specific
+ *   features.
+ * </p>
+ * 
+ *   ## Functionality ##
+ * 
+ *   ### Initialization ###
+ * <p>
+ *   The QuadSPI driver must be initialized by the application prior to initializing any serial flash driver, 
+ *   by calling QSPI_DRV_Init(). The configuration of the AHB buffers can also be set from the application by calling
+ *   QSPI_DRV_AhbSetup().
+ * </p>
+ * 
+ *   ### Configuration ###
+ * <p>
+ *   Other configuration functions are provided to be called from the serial flash driver, to customize the flash 
+ *   operations according to the particularities of a specific device. QSPI_DRV_SetLut() can be used to
+ *   configure the QuadSPI look-up table with the structure of the commands accepted by the device. QSPI_DRV_LockLut() and 
+ *   QSPI_DRV_UnlockLut() can optionally be used to secure the look-up table for protection against accidental writes.
+ *   QSPI_DRV_ClearIpSeqPointer() and QSPI_DRV_ClearAHBSeqPointer() can be useful for devices which support burst
+ *   modes for enhancing performance, by accepting a reduced command format for subsequent read accesses. 
+ *   QSPI_DRV_SetAhbSeqId() is needed to enable AHB operation by setting the sequence number for the read command.
+ * </p>
+ * 
+ *   ### Flash Commands ###
+ * <p>
+ *   The QuadSPI driver implements several types of flash commands:
+ *    - QSPI_DRV_IpCommand() implements simple commands which do not require additional parameters. Due to the fact
+ *    that these commands are very short and they are sometime used by serial flash drivers inside bigger state machines,
+ *    this function only offers synchronous functionality.
+ *    - QSPI_DRV_IpErase() implements an erase operation, which only requires an address parameter. Since these 
+ *    operations take a very long time, the function only offers asynchronous functionality. After calling this function 
+ *    the serial flash drivers have to poll the serial flash device in order to detect the end of the operation.
+ *    - QSPI_DRV_IpRead() implements a read operation. This function can work in 3 modes: normal read, program verify and 
+ *    blank check. Please see the function description for more details on the usage of these modes. The QSPI_DRV_IpRead()
+ *    function can work in synchronous mode (recommended for short operations like reading a status or control register)
+ *    or asynchronous mode (recommended for reading large amounts of data). Only normal reads can work in DMA mode, other
+ *    read modes must use synchronous mode or asynchronous interrupt mode.
+ *    - QSPI_DRV_IpWrite() implements a write operation. This function can work in synchronous mode (recommended for 
+ *    short operations like writing a status or control register) or asynchronous mode (recommended for writing 
+ *    large amounts of data). Asynchronous transfer can be either in interrupt or DMA modes, depending on the driver 
+ *    initialization settings.
+ * </p>
+ * <p>
+ *   The status of the asynchronous commands can be determined by calling QSPI_DRV_IpGetStatus(). Please note that this 
+ *   does not necessarily mean that the command is completed. Write and erase operations may require additional time to 
+ *   complete in the serial flash device. The serial flash driver must poll the device to get the status of the operation.
+ * </p>
+ *   ## Important Notes ##
+ * <p>
+ *   - Some of the initialization settings must be configured according to the needs of serial flash driver being used. 
+ *   See the documentation of the serial flash driver for information about the configuration needs of each driver.
+ *   If the configuration tool is used, it will indicate required settings by making them read-only in the QuadSPI component.
+ *   - Due to the high speed of the communication interrupt mode only works for amounts of data which can fit in the 
+ *   module's Rx/Tx FIFOs. For S32K148 this size is 128 bytes. For larger data sizes DMA mode can be used.
+ *   - The driver should only be used with SPLL as system clock source. This is a hardware restriction from the QSPI module.
+ *   - When switching the system modes between HSRUN and RUN, the driver should be de-initialized and re-initialized.
+ *   - Reading in DMA mode is restricted to buffer sizes multiple of 4
+ *   - All writes bigger than the Tx FIFO size are restricted to buffer sizes multiple of 16.
+ *   - In DMA mode the buffers used for read and write operations must be aligned to 4 bytes.
+ * </p>
+
+  ## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\quadspi\quadspi_driver.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc
+${S32SDK_PATH}\platform\drivers\src\quadspi\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref osif
+\ref interrupt_manager
+\ref edma
+
+ */

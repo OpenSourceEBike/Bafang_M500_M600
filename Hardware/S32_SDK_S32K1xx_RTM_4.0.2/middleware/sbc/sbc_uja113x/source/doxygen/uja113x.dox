@@ -1,0 +1,81 @@
+/**
+    @defgroup sbc_uja113x System Basis Chip library (SBC) - UJA113x Family
+    @{
+    @brief System Basis Chip library for configuration and control.
+
+ @section intro Introduction
+ @{
+The SBC is quite complex device with many features (CAN/CAN FD & LIN 
+transceivers, Buck/boost driver, watchdog etc.), several modes (Normal, Standby,
+Sleep, Forced normal mode, Software Development mode etc.) and provides 
+interrupt/polling based error reporting mechanism to the Host MCU. Different 
+applications require different functionalities ranging from a single feature 
+usage to a complete SBC functionality. From this perspective it's not possible 
+to provide a driver, which would satisfy the needs of all the applications. 
+The driver would become to complicated with a large code footprint and the user 
+will use it as a guide how to create his own application at the end instead.\n
+From the abovementioned reasons the library is not a driver and should not be 
+understood that way. It's a library which in conjunction with the S32 SDK provides 
+a low level API allowing the user fast product evaluation in the first step. 
+After becoming familiar with the device, the API can be used as a basis for a 
+more complex application, where the user determines, whether interrupt based 
+error handling or polling is sufficient, which errors to handle, how and when
+to switch between modes etc.\n
+
+From programming perspective the chip is divided into following register groups:
+<ul>
+<li>@ref pcr registers</li>
+<li>@ref scr registers</li>
+<li>@ref tcr registers</li>
+<li>@ref hviocr registers</li>
+<li>@ref timcr registers</li>
+<li>@ref isr</li>
+<li>@ref mtpnvr registers</li>
+</ul>
+Each group represents a set of registers for configuring different 
+part/functionality of the SBC.  For instance the Primary control registers can 
+be used to configure the Watchdog, SBC mode, Fail-safe behavior, 
+General-purpose user memory etc.  The API is designed that way to facilitate 
+the users chip configuration by allowing the user to configure the chip per 
+functionality.
+
+For library internals description and how to start using this library, proceed 
+to @ref internals section.
+
+ @}
+
+  @defgroup internals 00. Library internals
+  @defgroup pcr 01. Primary control
+  @defgroup scr 02. Supply control
+  @defgroup tcr 03. Transceiver control
+  @defgroup hviocr 04. HVIO bank 0 & 1 control
+  @defgroup timcr 05. Timer control
+  @defgroup isr 06. Interrupts
+  @defgroup mtpnvr 07. MTPNV and ID
+
+## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\middleware\sbc\sbc_uja113x\source\sbc_uja113x.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\middleware\sbc\sbc_uja113x\include
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref lpspi
+\ref osif
+  @}
+*/

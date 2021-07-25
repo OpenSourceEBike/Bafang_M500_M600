@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="DATA" description="CRC Data register">
+    <alias type="CMSIS" value="DATA"/>
+    <bit_field offset="0" width="8" name="LL" access="RW" reset_value="0xFF" description="CRC Low Lower Byte">
+      <alias type="CMSIS" value="CRC_DATA_LL(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="LU" access="RW" reset_value="0xFF" description="CRC Low Upper Byte">
+      <alias type="CMSIS" value="CRC_DATA_LU(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="HL" access="RW" reset_value="0xFF" description="CRC High Lower Byte">
+      <alias type="CMSIS" value="CRC_DATA_HL(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="HU" access="RW" reset_value="0xFF" description="CRC High Upper Byte">
+      <alias type="CMSIS" value="CRC_DATA_HU(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="GPOLY" description="CRC Polynomial register">
+    <alias type="CMSIS" value="GPOLY"/>
+    <bit_field offset="0" width="16" name="LOW" access="RW" reset_value="0x1021" description="Low Polynominal Half-word">
+      <alias type="CMSIS" value="CRC_GPOLY_LOW(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="16" name="HIGH" access="RW" reset_value="0" description="High Polynominal Half-word">
+      <alias type="CMSIS" value="CRC_GPOLY_HIGH(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8" width="32" name="CTRL" description="CRC Control register">
+    <alias type="CMSIS" value="CTRL"/>
+    <reserved_bit_field offset="0" width="24" reset_value="0"/>
+    <bit_field offset="24" width="1" name="TCRC" access="RW" reset_value="0" description="TCRC">
+      <alias type="CMSIS" value="CRC_CTRL_TCRC(x)"/>
+      <bit_field_value name="CTRL_TCRC_0b0" value="0b0" description="16-bit CRC protocol."/>
+      <bit_field_value name="CTRL_TCRC_0b1" value="0b1" description="32-bit CRC protocol."/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="WAS" access="RW" reset_value="0" description="Write CRC Data Register As Seed">
+      <alias type="CMSIS" value="CRC_CTRL_WAS(x)"/>
+      <bit_field_value name="CTRL_WAS_0b0" value="0b0" description="Writes to the CRC data register are data values."/>
+      <bit_field_value name="CTRL_WAS_0b1" value="0b1" description="Writes to the CRC data register are seed values."/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="FXOR" access="RW" reset_value="0" description="Complement Read Of CRC Data Register">
+      <alias type="CMSIS" value="CRC_CTRL_FXOR(x)"/>
+      <bit_field_value name="CTRL_FXOR_0b0" value="0b0" description="No XOR on reading."/>
+      <bit_field_value name="CTRL_FXOR_0b1" value="0b1" description="Invert or complement the read value of the CRC Data register."/>
+    </bit_field>
+    <reserved_bit_field offset="27" width="1" reset_value="0"/>
+    <bit_field offset="28" width="2" name="TOTR" access="RW" reset_value="0" description="Type Of Transpose For Read">
+      <alias type="CMSIS" value="CRC_CTRL_TOTR(x)"/>
+      <bit_field_value name="CTRL_TOTR_0b00" value="0b00" description="No transposition."/>
+      <bit_field_value name="CTRL_TOTR_0b01" value="0b01" description="Bits in bytes are transposed; bytes are not transposed."/>
+      <bit_field_value name="CTRL_TOTR_0b10" value="0b10" description="Both bits in bytes and bytes are transposed."/>
+      <bit_field_value name="CTRL_TOTR_0b11" value="0b11" description="Only bytes are transposed; no bits in a byte are transposed."/>
+    </bit_field>
+    <bit_field offset="30" width="2" name="TOT" access="RW" reset_value="0" description="Type Of Transpose For Writes">
+      <alias type="CMSIS" value="CRC_CTRL_TOT(x)"/>
+      <bit_field_value name="CTRL_TOT_0b00" value="0b00" description="No transposition."/>
+      <bit_field_value name="CTRL_TOT_0b01" value="0b01" description="Bits in bytes are transposed; bytes are not transposed."/>
+      <bit_field_value name="CTRL_TOT_0b10" value="0b10" description="Both bits in bytes and bytes are transposed."/>
+      <bit_field_value name="CTRL_TOT_0b11" value="0b11" description="Only bytes are transposed; no bits in a byte are transposed."/>
+    </bit_field>
+  </register>
+</regs:peripheral>

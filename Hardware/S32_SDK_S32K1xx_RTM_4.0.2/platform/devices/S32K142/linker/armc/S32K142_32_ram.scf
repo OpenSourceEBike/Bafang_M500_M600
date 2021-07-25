@@ -1,0 +1,85 @@
+#! armclang --target=arm-arm-none-eabi -xc -E
+/*
+** ###################################################################
+**     Processor:           S32K142 with 32 KB SRAM
+**     Compiler:            ARM Compiler
+**
+**     Abstract:
+**         Linker file for the ARM Compiler
+**
+**     Copyright (c) 2015-2016 Freescale Semiconductor, Inc.
+**     Copyright 2017 NXP
+**     All rights reserved.
+**
+**     NXP Confidential. This software is owned or controlled by NXP and may only be
+**     used strictly in accordance with the applicable license terms. By expressly
+**     accepting such terms or by downloading, installing, activating and/or otherwise
+**     using the software, you are agreeing that you have read, and that you agree to
+**     comply with and are bound by, such license terms. If you do not agree to be
+**     bound by the applicable license terms, then you may not retain, install,
+**     activate or otherwise use the software. The production use license in
+**     Section 2.3 is expressly granted for this software.
+**
+**     http:                 www.nxp.com
+**
+** ###################################################################
+*/
+#define m_interrupts_start             0x1FFFC000
+#define m_interrupts_size              0x00000400
+
+#define m_text_start                   0x1FFFC000
+#define m_text_size                    0x00004000
+
+#define m_data_2_start                 0x20000000
+#define m_data_2_size                  0x00003000
+
+/* Sizes */
+#if (defined(__stack_size__))
+  #define Stack_Size                   __stack_size__
+#else
+  #define Stack_Size                   0x0400
+#endif
+
+#if (defined(__heap_size__))
+  #define Heap_Size                    __heap_size__
+#else
+  #define Heap_Size                    0x0400
+#endif
+
+LR_m_text m_interrupts_start m_data_2_start+m_data_2_size-m_interrupts_start 
+{ ; load region size_region
+  VECTOR_ROM m_interrupts_start 0x0 {
+    /* Added to keep compatibility with flash linker */
+   .ANY(.dummy)
+ }
+  ER_m_text_const m_text_start  { ; load address = execution address
+  /* Added to keep compatibility with flash linker */
+	.ANY(.dummy)
+  }
+
+
+  VECTOR_RAM m_interrupts_start m_interrupts_size {
+    startup_S32K1*.o (RESET +First)
+  }
+  ER_m_text +0 { ; load address = execution address
+    .ANY (+RO)
+  }
+  RW_m_code +0 m_text_size { ; RW data
+   .ANY (.code_ram)
+  }
+  RW_m_custom_section m_data_2_start ALIGN 0x4
+  {
+    .ANY(.customSection)  /* Keep section even if not referenced. */
+  }
+  RW_m_data +0 { ; RW data
+    .ANY (+RW)
+  }
+  RW_m_data_2 +0 m_data_2_size-Stack_Size-Heap_Size { ; RW data
+    .ANY (+ZI)
+  }
+  ARM_LIB_HEAP ((ImageLimit(RW_m_data_2) == m_data_2_start) ? m_data_2_start : +0) EMPTY Heap_Size { ; Heap region growing up
+}
+  ARM_LIB_STACK m_data_2_start+m_data_2_size EMPTY -Stack_Size { ; Stack region growing down
+  }
+}
+

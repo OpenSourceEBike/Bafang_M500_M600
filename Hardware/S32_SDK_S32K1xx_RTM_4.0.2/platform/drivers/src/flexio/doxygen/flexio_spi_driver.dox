@@ -1,0 +1,128 @@
+/** 
+@defgroup flexio_spi_drv FlexIO SPI Driver
+@ingroup flexio
+@brief SPI communication over FlexIO module (FLEXIO_SPI)
+<p>
+  The FLEXIO_SPI Driver allows communication on an SPI bus using the FlexIO module in the S32K1xx processors.
+</p>
+  ## Features ##
+   - Master or slave operation
+   - Interrupt, DMA or polling mode
+   - Provides blocking and non-blocking transfer functions
+   - Configurable baud rate
+   - Configurable clock polarity and phase
+   - Configurable bit order and data size
+
+  ## Functionality ##
+<p>
+  Before using any Flexio driver the device must first be initialized using function FLEXIO_DRV_InitDevice.
+  Then the FLEXIO_SPI Driver must be initialized, using functions FLEXIO_SPI_DRV_MasterInit() or 
+  FLEXIO_SPI_DRV_SlaveInit(). It is possible to use more driver instances on the same FlexIO device, 
+  as long as sufficient resources are available. Different driver instances on the same FlexIO device 
+  can function independently of each other. When it is no longer needed, the driver can be de-initialized, using 
+  FLEXIO_SPI_DRV_MasterDeinit() or FLEXIO_SPI_DRV_SlaveDeinit(). This will release the hardware resources, 
+  allowing other driver instances to be initialized other.
+</p>
+
+  ### Master Mode ###
+<p>
+  Master Mode provides functions for transmitting or receiving data to/from an SPI slave. Baud rate is provided at 
+  initialization time through the master configuration structure, 
+  but can be changed at runtime by using FLEXIO_SPI_DRV_MasterSetBaudRate() function. 
+  Note that due to module limitation not any baud rate can be achieved. The driver will set a baud rate as 
+  close as possible to the requested baud rate, but there may still be substantial differences, for example 
+  if requesting a high baud rate while using a low-frequency FlexIO clock. The 
+  application should call FLEXIO_SPI_DRV_MasterGetBaudRate() after FLEXIO_SPI_DRV_MasterSetBaudRate() to check what 
+  baud rate was actually set.
+</p>
+<p>
+  To send or receive data, use function FLEXIO_SPI_DRV_MasterTransfer(). The transmit and receive buffers, together with 
+  parameters for the transfer are provided through the \ref flexio_spi_transfer_t structure. If only transmit or receive is 
+  desired, any one of the Rx/Tx buffers can be set to NULL.
+  This driver does not support continuous send/receive using a user callback function. The callback function is only 
+  used to signal the end of a transfer.
+</p>
+<p>
+  Blocking operations will return only when the transfer is completed, either successfully or with error. 
+  Non-blocking operations will initiate the transfer and return \ref STATUS_SUCCESS, but the module is still 
+  busy with the transfer and another transfer can't be initiated until the current transfer is complete. The 
+  application will be notified through the user callback when the transfer completes, or it can check the 
+  status of the current transfer by calling FLEXIO_SPI_DRV_MasterGetStatus(). 
+  If the transfer is still ongoing this function will return 
+  \ref STATUS_BUSY. If the transfer is completed, the function will return either \ref STATUS_SUCCESS 
+  or an error code, depending on the outcome of the last transfer.
+</p>
+<p>
+  The driver supports interrupt, DMA and polling mode. In polling mode the function FLEXIO_SPI_DRV_MasterGetStatus()
+  ensures the progress of the transfer by checking and handling transmit and receive events reported by the
+  FlexIO module. The application should ensure that this function is called often enough (at least once per 
+  transferred byte)to avoid Tx underflows or Rx overflows. In DMA mode the DMA channels that will be used by the 
+  driver are received through the configuration structure. The channels must be initialized by the 
+  application before the flexio_spi driver is initialized. The flexio_spi driver will only set the DMA request source.
+</p>
+
+  ### Slave Mode ###
+<p>
+  Slave Mode is very similar to master mode, the main difference being that the FLEXIO_SPI_DRV_SlaveInit() function
+  initializes the FlexIO module to use the clock signal received from the master instead of generating it. Consequently,
+  there is no <tt>SetBaudRate</tt> function in slave mode. Other than that, the slave mode offers a similar interface
+  to the master mode. FLEXIO_SPI_DRV_MasterTransfer() can be used to initiate transfers, and FLEXIO_SPI_DRV_SlaveGetStatus()
+  is used to check the status of the transfer and advance the transfer in polling mode. All other specifications from the 
+  Master Mode description apply for Slave Mode too
+</p>
+
+
+  ## Important Notes ##
+<p>
+  - Before using the FLEXIO_SPI Driver the protocol clock of the module must be configured. Refer 
+  to Clock Manager for clock configuration.
+  - Before using the FLEXIO_SPI Driver the pins must be routed to the FlexIO module. Refer to PINS Driver for pin 
+  routing configuration. Note that any of the available FlexIO pins can be used for MOSI, MISO, SCK and SS 
+  (configurable at initialization time).
+  - The driver enables the interrupts for the corresponding FlexIO module, but any interrupt priority 
+  setting must be done by the application.
+  - The driver does not support back-to-back transmission mode for CPHA = 1
+  - The driver does not support configurable polarity for SS signal (only active-low is supported)
+  - Timeout feature for blocking transfers does not work in polling mode.
+  - This driver needs two shifters and two timers for its operation. Initialization will fail if there are 
+  not enough shifters and timers available on the FlexIO device.
+  - This driver needs two DMA channels for its operation when it is initialized in DMA mode. The DMA channels must be 
+  initialized by the application before initializing the driver. Refer to EDMA driver for DMA channels initialization.
+  - If the application uses an RTOS, this driver uses a semaphore for blocking transfers. Initialization will 
+  fail if the semaphore cannot be created. If the driver uses polling mode no semaphore is used.
+  - If the application uses an RTOS, the FlexIO drivers use a mutex for channel allocation. Only one mutex per device
+  is needed, not per driver instance. Device initialization will fail if the mutex cannot be created.
+  - For transfers where the data size is more than 1 byte (transferSize is 2 or 4) the driver assumes that the data 
+  buffers are defined with the proper type (uint16_t or uint32_t) and are properly aligned.
+</p>
+
+  ## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\flexio\flexio_common.c
+${S32SDK_PATH}\platform\drivers\src\flexio\flexio_spi_driver.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc
+${S32SDK_PATH}\platform\drivers\src\flexio
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref osif
+\ref interrupt_manager
+\ref edma
+
+*/

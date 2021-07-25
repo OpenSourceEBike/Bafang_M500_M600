@@ -1,0 +1,2061 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="PCR0" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[0]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <bit_field offset="6" width="1" name="DSE" access="RW" reset_value="0" description="Drive Strength Enable">
+      <alias type="CMSIS" value="PORT_PCR_DSE(x)"/>
+      <bit_field_value name="PCR_DSE_0b0" value="0b0" description="Low drive strength is configured on the corresponding pin, if pin is configured as a digital output."/>
+      <bit_field_value name="PCR_DSE_0b1" value="0b1" description="High drive strength is configured on the corresponding pin, if pin is configured as a digital output."/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x4" width="32" name="PCR1" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[1]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <bit_field offset="6" width="1" name="DSE" access="RW" reset_value="0" description="Drive Strength Enable">
+      <alias type="CMSIS" value="PORT_PCR_DSE(x)"/>
+      <bit_field_value name="PCR_DSE_0b0" value="0b0" description="Low drive strength is configured on the corresponding pin, if pin is configured as a digital output."/>
+      <bit_field_value name="PCR_DSE_0b1" value="0b1" description="High drive strength is configured on the corresponding pin, if pin is configured as a digital output."/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="PCR2" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[2]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="PCR3" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[3]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <bit_field offset="4" width="1" name="PFE" access="RW" reset_value="0" description="Passive Filter Enable">
+      <alias type="CMSIS" value="PORT_PCR_PFE(x)"/>
+      <bit_field_value name="PCR_PFE_0b0" value="0b0" description="Passive input filter is disabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PFE_0b1" value="0b1" description="Passive input filter is enabled on the corresponding pin, if the pin is configured as a digital input. Refer to the device data sheet for filter characteristics."/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="PCR4" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[4]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="PCR5" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[5]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="PCR6" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[6]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="PCR7" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[7]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="PCR8" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[8]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x24" width="32" name="PCR9" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[9]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x28" width="32" name="PCR10" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[10]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x2C" width="32" name="PCR11" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[11]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="PCR12" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[12]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x34" width="32" name="PCR13" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[13]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x38" width="32" name="PCR14" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[14]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x3C" width="32" name="PCR15" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[15]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <bit_field offset="6" width="1" name="DSE" access="RW" reset_value="0" description="Drive Strength Enable">
+      <alias type="CMSIS" value="PORT_PCR_DSE(x)"/>
+      <bit_field_value name="PCR_DSE_0b0" value="0b0" description="Low drive strength is configured on the corresponding pin, if pin is configured as a digital output."/>
+      <bit_field_value name="PCR_DSE_0b1" value="0b1" description="High drive strength is configured on the corresponding pin, if pin is configured as a digital output."/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x40" width="32" name="PCR16" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[16]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <bit_field offset="6" width="1" name="DSE" access="RW" reset_value="0" description="Drive Strength Enable">
+      <alias type="CMSIS" value="PORT_PCR_DSE(x)"/>
+      <bit_field_value name="PCR_DSE_0b0" value="0b0" description="Low drive strength is configured on the corresponding pin, if pin is configured as a digital output."/>
+      <bit_field_value name="PCR_DSE_0b1" value="0b1" description="High drive strength is configured on the corresponding pin, if pin is configured as a digital output."/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x44" width="32" name="PCR17" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[17]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x48" width="32" name="PCR18" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[18]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x4C" width="32" name="PCR19" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[19]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x50" width="32" name="PCR20" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[20]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x54" width="32" name="PCR21" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[21]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x58" width="32" name="PCR22" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[22]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x5C" width="32" name="PCR23" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[23]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x60" width="32" name="PCR24" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[24]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x64" width="32" name="PCR25" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[25]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x68" width="32" name="PCR26" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[26]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x6C" width="32" name="PCR27" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[27]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x70" width="32" name="PCR28" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[28]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x74" width="32" name="PCR29" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[29]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x78" width="32" name="PCR30" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[30]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x7C" width="32" name="PCR31" description="Pin Control Register n">
+    <alias type="CMSIS" value="PCR[31]"/>
+    <bit_field offset="0" width="1" name="PS" access="RW" reset_value="0" description="Pull Select">
+      <alias type="CMSIS" value="PORT_PCR_PS(x)"/>
+      <bit_field_value name="PCR_PS_0b0" value="0b0" description="Internal pulldown resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+      <bit_field_value name="PCR_PS_0b1" value="0b1" description="Internal pullup resistor is enabled on the corresponding pin, if the corresponding PE field is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="PE" access="RW" reset_value="0" description="Pull Enable">
+      <alias type="CMSIS" value="PORT_PCR_PE(x)"/>
+      <bit_field_value name="PCR_PE_0b0" value="0b0" description="Internal pullup or pulldown resistor is not enabled on the corresponding pin."/>
+      <bit_field_value name="PCR_PE_0b1" value="0b1" description="Internal pullup or pulldown resistor is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="MUX" access="RW" reset_value="0" description="Pin Mux Control">
+      <alias type="CMSIS" value="PORT_PCR_MUX(x)"/>
+      <bit_field_value name="PCR_MUX_0b000" value="0b000" description="Pin disabled (Alternative 0) (analog)."/>
+      <bit_field_value name="PCR_MUX_0b001" value="0b001" description="Alternative 1 (GPIO)."/>
+      <bit_field_value name="PCR_MUX_0b010" value="0b010" description="Alternative 2 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b011" value="0b011" description="Alternative 3 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b100" value="0b100" description="Alternative 4 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b101" value="0b101" description="Alternative 5 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b110" value="0b110" description="Alternative 6 (chip-specific)."/>
+      <bit_field_value name="PCR_MUX_0b111" value="0b111" description="Alternative 7 (chip-specific)."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="4" reset_value="0"/>
+    <bit_field offset="15" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="PORT_PCR_LK(x)"/>
+      <bit_field_value name="PCR_LK_0b0" value="0b0" description="Pin Control Register fields [15:0] are not locked."/>
+      <bit_field_value name="PCR_LK_0b1" value="0b1" description="Pin Control Register fields [15:0] are locked and cannot be updated until the next system reset."/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="IRQC" access="RW" reset_value="0" description="Interrupt Configuration">
+      <alias type="CMSIS" value="PORT_PCR_IRQC(x)"/>
+      <bit_field_value name="PCR_IRQC_0b0000" value="0b0000" description="Interrupt Status Flag (ISF) is disabled."/>
+      <bit_field_value name="PCR_IRQC_0b0001" value="0b0001" description="ISF flag and DMA request on rising edge."/>
+      <bit_field_value name="PCR_IRQC_0b0010" value="0b0010" description="ISF flag and DMA request on falling edge."/>
+      <bit_field_value name="PCR_IRQC_0b0011" value="0b0011" description="ISF flag and DMA request on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b0100" value="0b0100" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0101" value="0b0101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0110" value="0b0110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b0111" value="0b0111" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1000" value="0b1000" description="ISF flag and Interrupt when logic 0."/>
+      <bit_field_value name="PCR_IRQC_0b1001" value="0b1001" description="ISF flag and Interrupt on rising-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1010" value="0b1010" description="ISF flag and Interrupt on falling-edge."/>
+      <bit_field_value name="PCR_IRQC_0b1011" value="0b1011" description="ISF flag and Interrupt on either edge."/>
+      <bit_field_value name="PCR_IRQC_0b1100" value="0b1100" description="ISF flag and Interrupt when logic 1."/>
+      <bit_field_value name="PCR_IRQC_0b1101" value="0b1101" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1110" value="0b1110" description="Reserved."/>
+      <bit_field_value name="PCR_IRQC_0b1111" value="0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_PCR_ISF(x)"/>
+      <bit_field_value name="PCR_ISF_0b0" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="PCR_ISF_0b1" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x80" width="32" name="GPCLR" description="Global Pin Control Low Register">
+    <alias type="CMSIS" value="GPCLR"/>
+    <bit_field offset="0" width="16" name="GPWD" access="WORZ" reset_value="0" description="Global Pin Write Data">
+      <alias type="CMSIS" value="PORT_GPCLR_GPWD(x)"/>
+    </bit_field>
+    <bit_field_array offset="16" width="16" item_width="1" name="GPWE" access="WORZ" reset_value="0" description="Global Pin Write Enable">
+      <alias type="CMSIS" value="PORT_GPCLR_GPWE(x)"/>
+      <bit_field_value name="GPCLR_GPWE_0b0000000000000000" value="0b0" description="Corresponding Pin Control Register is not updated with the value in GPWD."/>
+      <bit_field_value name="GPCLR_GPWE_0b0000000000000001" value="0b1" description="Corresponding Pin Control Register is updated with the value in GPWD."/>
+    </bit_field_array>
+  </register>
+  <register offset="0x84" width="32" name="GPCHR" description="Global Pin Control High Register">
+    <alias type="CMSIS" value="GPCHR"/>
+    <bit_field offset="0" width="16" name="GPWD" access="WORZ" reset_value="0" description="Global Pin Write Data">
+      <alias type="CMSIS" value="PORT_GPCHR_GPWD(x)"/>
+    </bit_field>
+    <bit_field_array offset="16" width="16" item_width="1" name="GPWE" access="WORZ" reset_value="0" description="Global Pin Write Enable">
+      <alias type="CMSIS" value="PORT_GPCHR_GPWE(x)"/>
+      <bit_field_value name="GPCHR_GPWE_0b0000000000000000" value="0b0" description="Corresponding Pin Control Register is not updated with the value in GPWD."/>
+      <bit_field_value name="GPCHR_GPWE_0b0000000000000001" value="0b1" description="Corresponding Pin Control Register is updated with the value in GPWD."/>
+    </bit_field_array>
+  </register>
+  <register offset="0xA0" width="32" name="ISFR" description="Interrupt Status Flag Register">
+    <alias type="CMSIS" value="ISFR"/>
+    <bit_field_array offset="0" width="32" item_width="1" name="ISF" access="W1C" reset_value="0" description="Interrupt Status Flag">
+      <alias type="CMSIS" value="PORT_ISFR_ISF(x)"/>
+      <bit_field_value name="ISFR_ISF_0b00000000000000000000000000000000" value="0b0" description="Configured interrupt is not detected."/>
+      <bit_field_value name="ISFR_ISF_0b00000000000000000000000000000001" value="0b1" description="Configured interrupt is detected. If the pin is configured to generate a DMA request, then the corresponding flag will be cleared automatically at the completion of the requested DMA transfer. Otherwise, the flag remains set until a logic 1 is written to the flag. If the pin is configured for a level sensitive interrupt and the pin remains asserted, then the flag is set again immediately after it is cleared."/>
+    </bit_field_array>
+  </register>
+  <register offset="0xC0" width="32" name="DFER" description="Digital Filter Enable Register">
+    <alias type="CMSIS" value="DFER"/>
+    <bit_field_array offset="0" width="32" item_width="1" name="DFE" access="RW" reset_value="0" description="Digital Filter Enable">
+      <alias type="CMSIS" value="PORT_DFER_DFE(x)"/>
+      <bit_field_value name="DFER_DFE_0b00000000000000000000000000000000" value="0b0" description="Digital filter is disabled on the corresponding pin and output of the digital filter is reset to zero."/>
+      <bit_field_value name="DFER_DFE_0b00000000000000000000000000000001" value="0b1" description="Digital filter is enabled on the corresponding pin, if the pin is configured as a digital input."/>
+    </bit_field_array>
+  </register>
+  <register offset="0xC4" width="32" name="DFCR" description="Digital Filter Clock Register">
+    <alias type="CMSIS" value="DFCR"/>
+    <bit_field offset="0" width="1" name="CS" access="RW" reset_value="0" description="Clock Source">
+      <alias type="CMSIS" value="PORT_DFCR_CS(x)"/>
+      <bit_field_value name="DFCR_CS_0b0" value="0b0" description="Digital filters are clocked by the bus clock."/>
+      <bit_field_value name="DFCR_CS_0b1" value="0b1" description="Digital filters are clocked by the LPO clock."/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0xC8" width="32" name="DFWR" description="Digital Filter Width Register">
+    <alias type="CMSIS" value="DFWR"/>
+    <bit_field offset="0" width="5" name="FILT" access="RW" reset_value="0" description="Filter Length">
+      <alias type="CMSIS" value="PORT_DFWR_FILT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="27" reset_value="0"/>
+  </register>
+</regs:peripheral>

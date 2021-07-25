@@ -1,0 +1,157 @@
+/*!
+  
+   @defgroup spi_pal Serial Peripheral Interface - Peripheral Abstraction Layer(SPI PAL) 
+   @brief Serial Peripheral Interface - Peripheral Abstraction Layer
+   <p>
+    The SPI PAL driver allows communication on an SPI bus. It was designed to be portable across all 
+    platforms and IPs which support SPI communication.
+   </p>
+
+   ## How to integrate DSPI in your application ##
+<p>
+  Unlike the other drivers, SPI PAL modules need to include a configuration
+  file named spi_pal_cfg.h, which allows the user to specify which IPSs are used
+  and how many resources are allocated for each of them (state structures).
+  The following code example shows how to configure one instance for each
+  available SPI IPs. 
+
+ @code
+ #ifndef SPI_PAL_cfg_H
+ #define SPI_PAL_cfg_H
+
+ /* Define which IP instance will be used in current project */
+ #define SPI_OVER_LPSPI
+ #define SPI_OVER_FLEXIO
+ #define SPI_OVER_DSPI
+
+ /* Define the resources necessary for current project */
+ #define NO_OF_LPSPI_INSTS_FOR_SPI       1U
+ #define NO_OF_FLEXIO_INSTS_FOR_SPI      1U
+ #define NO_OF_DSPI_INSTS_FOR_SPI        1U
+ #endif /* SPI_PAL_cfg_H */
+ @endcode
+ 
+ The following table contains the matching between platforms and available IPs
+    IP/MCU|S32K118|S32K116|S32K142|S32K144|S32K146|S32K148|S32K142W|S32K144W|MPC5748G|MPC5746C|MPC5744P|S32R274|S32R372|
+ --------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:------:|:-------|:-------|:------|:------|
+   FLEXIO |  YES  |  YES  |  YES  |  YES  |  YES  |  YES  |  YES  |  YES  |   NO   |   NO   |   NO   |   NO  |   NO  |
+    LPSPI |  YES  |  YES  |  YES  |  YES  |  YES  |  YES  |  YES  |  YES  |   NO   |   NO   |   NO   |   NO  |   NO  |
+ DSPI/SPI |  NO   |  NO   |  NO   |  NO   |  NO   |  NO   |  NO   |  NO   |   YES  |   YES  |   YES  |   YES |   YES |
+<p>
+<p>
+  In order to use the SPI driver it must be first initialized in either master or slave mode, 
+  using functions SPI_MasterInit() or SPI_SlaveInit(). Once initialized, it cannot 
+  be initialized again for the same SPI module instance until it is de-initialized, using 
+  SPI_SlaveDeinit() or SPI_MasterDeinit. Different SPI module instances can work independently 
+  of each other.
+</p>
+
+<p>
+  In each mode (master/slave) are available two types of transfers: blocking and non-blocking. 
+  The functions which initiate blocking transfers will configure the time out for transmission. If 
+  time expires SPI_MasterTransferBlocking() or SPI_SlaveTransferBlocking() will return error and the
+  transmission will be aborted.
+</p>
+
+<p>
+  The configuration structure includes a special field named extension. It will be used only for SPI
+  transfers over FLEXIO and should contain a pointer to extension_flexio_for_spi_t structure.
+  The purpose of this structure is to configure which FLEXIO pins are used by the applications and
+  their functionality (MISO, MOSI, SCK, SS).
+  One FLEXIO hardware instance can implements spi, so if instType is SPI_INST_TYPE_FLEXIO instIdx can 
+  be 0 or 1.
+<p>
+
+<p>
+  If device name is from MPC574xP and S32Rx7x families it can't be used as master in DMA mode and PAL will automatically
+  switch the functionality to interrupt mode. If DMA mode is mandatory please use DSPI driver.
+<p>
+ 
+
+  ## Important Notes ##
+<p>
+  - The driver enables the interrupts for the corresponding module, but any interrupt priority 
+  setting must be done by the application.
+  </p>
+ ## Example code ##
+ @code
+ /* Configure SPI master */
+spi_master_t spi10_MasterConfig0 =
+{
+    .baudRate      = 100000,
+    .ssPolarity    = SPI_ACTIVE_HIGH,
+    .frameSize     = 8,
+    .clockPhase    = READ_ON_ODD_EDGE,
+    .clockPolarity = SPI_ACTIVE_HIGH,
+    .bitOrder      = SPI_TRANSFER_MSB_FIRST,
+    .transferType  = SPI_USING_INTERRUPTS,
+    .rxDMAChannel  = 255,
+    .txDMAChannel  = 255,
+    .callback      = NULL,
+    .callbackParam = NULL,
+    .ssPin         = 0,
+    .extension     = NULL 
+};
+
+ /* Configure FLEXIO pins routing */
+ extension_flexio_for_spi_t extension;
+ extension.misoPin = 0;
+ extension.mosiPin = 1;
+ extension.sckPin = 2;
+ extension.ssPin = 3;
+ spi0_MasterConfig0.extension = &extension;
+ 
+  /* Configure instances used in this example */
+ spi_instance_t lpspiInstance, flexioInstance;
+ lpspiInstance.instIdx = 0U;
+ lpspiInstance.instType = SPI_INST_TYPE_LPSPI;
+ flexioInstance.instIdx = 1U;
+ lpspiInstance.instType = SPI_INST_TYPE_FLEXIO;
+ 
+ /* Buffers */
+ uint8_t tx[5] = {1,2,3,4,5};
+ uint8_t rx[5];
+ 
+
+ 
+ /* Initializes SPI master for LPSPI 0 and send 5 frames */
+ SPI_MasterInit(&lpspiInstance, &spi0_MasterConfig0);
+ SPI_MasterTransfer(&lpspiInstance, tx, rx, 5);
+ /* Initializes SPI master for FLEXIO 0 and send 5 frames */
+ SPI_MasterInit(&flexioInstance, &spi1_MasterConfig0);
+ SPI_MasterTransfer(&flexioInstance, tx, rx, 5);
+    
+    
+ @endcode
+ 
+## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\pal\src\spi\spi_pal.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\pal\inc
+spi_pal_cfg.h path
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref lpspi
+\ref flexio_spi
+\ref clock_manager
+\ref osif
+\ref interrupt_manager
+\ref edma
+
+@}*/

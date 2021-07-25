@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="i2s_pal" label="i2s_pal" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+   <sw_comp_ref name="platform.pal.i2s" version="1.0.0"/>
+   <description>I2S_PAL Component</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>I2S PAL General</description>
+      <config_set_refs>
+         <config_set_ref>i2s_pal</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>FLEXIO</peripheral_type>
+         <peripheral_type>SAI</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="i2s_pal" label="I2S_PAL Configuration Set" from_source="i2s_pal.h">
+      <description>I2S PAL</description>
+      <fragment_defs/>
+      <code/>
+      <validation>
+      </validation>
+      <quick_selections>
+         <quick_selection id="def_i2s" label="Default Values for I2S PAL for Flexio" available="getPeripheral($instance) == `FLEXIO`">
+            <description>I2S PAL configuration</description>
+            <set id="i2sPalInst.name">i2sOverFlexio0Instance</set>
+            <set id="i2sPalInst.instType">I2S_INST_TYPE_FLEXIO</set>
+            <set id="i2sCfgArray.0.i2sCommonConfig.baudRate">1000000</set>
+            <set id="i2sCfgArray.0.i2sCommonConfig.readonly">false</set>
+            <set id="i2sCfgArray.0.i2sCommonConfig.callback">NULL</set>
+         </quick_selection>
+         <quick_selection id="def_i2s2" label="Default Values for I2S PAL for SAI0" available="getPeripheral($instance) == `SAI0`">
+            <description>I2S PAL configuration</description>
+            <set id="i2sPalInst.name">i2sOverSai0Instance</set>
+            <set id="i2sPalInst.instType">I2S_INST_TYPE_SAI</set>
+            <set id="i2sCfgArray.0.i2sCommonConfig.baudRate">1000000</set>
+            <set id="i2sCfgArray.0.i2sCommonConfig.readonly">false</set>
+            <set id="i2sCfgArray.0.i2sCommonConfig.callback">NULL</set>
+         </quick_selection>
+         <quick_selection id="def_i2s3" label="Default Values for I2S PAL for SAI1" available="getPeripheral($instance) == `SAI1`">
+            <description>I2S PAL configuration</description>
+            <set id="i2sPalInst.name">i2sOverSai1Instance</set>
+            <set id="i2sPalInst.instType">I2S_INST_TYPE_SAI</set>
+            <set id="i2sCfgArray.0.i2sCommonConfig.baudRate">1000000</set>
+            <set id="i2sCfgArray.0.i2sCommonConfig.readonly">false</set>
+            <set id="i2sCfgArray.0.i2sCommonConfig.callback">NULL</set>
+         </quick_selection>
+         <default>def_i2s</default>
+      </quick_selections>
+      <generated_types/>
+      <user_types>
+         <enum id="i2s_inst_type_t" label="Enumeration with the types of peripherals supported by I2S PAL" from="i2s_inst_type_t">
+            <description>This enumeration contains the types of peripherals supported by I2S PAL. Implements : i2s_inst_type_t_Class</description>
+            <item id="I2S_INST_TYPE_FLEXIO" available="featureDefined(`I2S_PAL_SUPPORTS_FLEXIO`)" label="I2S PAL over FLEXIO"/>
+            <item id="I2S_INST_TYPE_SAI" available="featureDefined(`I2S_PAL_SUPPORTS_SAI`)" label="I2S PAL over SAI"/>
+         </enum>
+         <enum id="i2s_mode_t" label="Mode" from="i2s_mode_t">
+            <description>Implements : i2s_mode_t_Class</description>
+            <item id="I2S_MASTER" label="Master"/>
+            <item id="I2S_SLAVE"  label="Slave"/>
+         </enum>
+         <enum id="i2s_transfer_type_t" label="Transfer type" from="i2s_transfer_type_t">
+            <description>Implements : i2s_transfer_type_t_Class</description>
+            <item id="I2S_USING_INTERRUPT" label="Interrupt"/>
+            <item id="I2S_USING_DMA"       label="DMA"/>
+         </enum>
+         <enum id="i2s_word_width_t" label="Word width" from="i2s_word_width_t">
+            <description>Word width</description>
+            <item id="8"        label="8 Bits"/>
+            <item id="16"       label="16 Bits"/>
+            <item id="32"       label="32 Bits"/>
+         </enum>
+         <string id="i2s_callback_t" label="I2S callback function" >
+            <description>Name of callback function registered in the i2s_common_config_t structure.</description>
+            <validation>
+               <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="'Callback function name is a C identifier!'"/>
+            </validation>
+         </string>
+         <struct id="i2s_instance_t" label="Structure storing PAL instance information" from="i2s_instance_t">
+            <description>This structure is used for storing PAL instance information. Implements : i2s_instance_t_Class</description>
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <reference id="instType" label="Peripheral over which the PAL is used" type="i2s_inst_type_t" options="cStructField">
+               <description>Peripheral over which the PAL is used</description>
+            </reference>
+            <info id="instIdx" label="Instance Of The Peripheral Is Used" value="$instance.getPeripheral()" options="cStructField" />
+         </struct>
+         <struct id="i2s_common_config_t" label="Defines the I2S configuration structure" from="i2s_common_config_t">
+            <description>Implements : i2s_common_config_t_Class</description>
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readonly" label="Read-only">
+               <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+            </bool>
+            <reference id="mode" label="Mode" type="i2s_mode_t" options="cStructField">
+               <description>Slave or Master</description>
+            </reference>
+            <reference id="transferType" label="Transfer type" type="i2s_transfer_type_t" options="cStructField">
+               <description>Transfer type (Interrupt or DMA base)</description>
+            </reference>
+            <integer id="baudRate" label="Baud rate" type="uint32_t" available="true" enable="$parent.mode.getValue() == `I2S_MASTER`" options="cStructField">
+               <description>I2S bit clock frequency</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue() &gt; 1) &amp;&amp; ($this.getValue() &lt; 4294967296))" level="error" description="Baudrate must be more than 0"/>
+               </validation>
+           </integer>
+            <reference id="wordWidth" label="Word width" type="i2s_word_width_t" options="cStructField">
+               <description>I2S word width in bit</description>
+            </reference>
+            <integer id="rxDMAChannel" label="RX DMA Channel" type="uint32_t" available="true" enable="$parent.transferType.getValue() == `I2S_USING_DMA`" options="cStructField">
+               <description>DMA channel used for reception.</description>
+               <validation>
+                  <constraint cond_expr="($parent.transferType.getValue() == `I2S_USING_DMA`) &amp;&amp; ($this.getValue() != $parent.txDMAChannel.getValue())" level="error" description="Please use different channels for RX and TX!"/>
+                  <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> (((x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER0`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER1`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER2`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER3`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER2_SAI1_RX`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER3_SAI1_TX`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_SAI0_RX`)) &amp;&amp; (x.getSetting(`virtCh`).value() == $this.getValue())))), true) &gt; 0)" level="warning" description="Please configure the correct source for this channel, from the DMA component!"/>
+               </validation>
+            </integer>
+            <integer id="txDMAChannel" label="TX DMA Channel" type="uint32_t" available="true" enable="$parent.transferType.getValue() == `I2S_USING_DMA`" options="cStructField">
+               <description>DMA channel used for transmission.</description>
+               <validation>
+                  <constraint cond_expr="($parent.transferType.getValue() == `I2S_USING_DMA`) &amp;&amp; ($this.getValue() != $parent.rxDMAChannel.getValue())" level="error" description="Please use different channels for RX and TX!"/>
+                  <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> (((x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER0`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER1`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER2`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER3`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER2_SAI1_RX`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER3_SAI1_TX`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_SAI0_TX`)) &amp;&amp; (x.getSetting(`virtCh`).value() == $this.getValue())))), true) &gt; 0)" level="warning" description="Please configure the correct source for this channel, from the DMA component!"/>
+               </validation>
+            </integer>
+            <reference id="callback" label="Callback" type="i2s_callback_t" options="cStructField">
+               <description>Callback(a pointer void*)</description>
+            </reference>
+         </struct>
+         <struct id="i2s_user_config_t" label="I2S PAL User Configuration">
+            <reference id="i2sCommonConfig" label="I2S PAL Common Configuration" type="i2s_common_config_t">
+               <description>I2S PAL Common Configuration</description>
+            </reference>
+         </struct>
+         <array id="i2sConfigArray" label="I2S PAL configuration array" type="i2s_user_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`i2sCommonConfig.name`).value())">
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`i2sCommonConfig.name`).value()).length() == 0" level="error" description="There are some duplicated `Name user configuration` fields in the configuration"/>
+            </validation>
+            <item_defaults>
+               <set_default id="i2sCommonConfig.name" value_expr="x -> (`i2s_pal1` + `_Config` + x.getID())"/>
+               <set_default id="i2sCommonConfig.readonly" value_expr="x -> (`true`)"/>
+               <set_default id="i2sCommonConfig.baudRate" value_expr="x -> (`1000000`)"/>
+               <set_default id="i2sCommonConfig.callback" value_expr="x -> (`NULL`)"/>
+            </item_defaults>
+         </array>
+      </user_types>
+      <settings>
+         <reference id="i2sPalInst" label="I2S PAL Instance Configuration" type="i2s_instance_t">
+            <description>I2S PAL Instance Configuration</description>
+         </reference>
+         <reference id="i2sCfgArray" label="I2S PAL User Configuration" type="i2sConfigArray">
+            <description>I2S PAL User Configuration</description>
+         </reference>
+         <variable value="`../i2s_pal/i2s_pal_codegen.js`" id="codegen_file"></variable>
+         <variable value="`I2S_PAL_CodeGenerator`" id="codegen_class"></variable>
+         <variable value="`I2sPalToolchainSettings`" id="toolchain_settings_class"></variable>
+         <variable value="`../i2s_pal/i2s_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

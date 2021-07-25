@@ -1,0 +1,174 @@
+/** 
+@defgroup flash_mx25l6433f_drv MX25L6433F Serial Flash Driver
+@ingroup quadspi
+@brief Driver for the Macronix MX25L6433F Serial Flash.
+<p>
+  The MX25L6433F Serial Flash Driver offers specific support for the Macronix MX25L6433F Serial Flash. It runs on top
+  of the QuadSPI driver and adds device-specific features.
+</p>
+
+  ## Functionality ##
+
+  ### Initialization ###
+<p>
+  The QuadSPI driver must be initialized by the application prior to initializing the flash_mx25l6433f driver, 
+  by calling QSPI_DRV_Init(). Then the flash_mx25l6433f driver is initialized by calling FLASH_MX25L6433F_DRV_Init().
+  The FLASH_MX25L6433F_DRV_Init() function initializes the driver and ensures that the serial device is properly 
+  configured for operation, launching QuadSPI commands to change the device settings if necessary. After the call of
+  this function the driver is available for read/write/erase operations on the serial flash device.
+</p>
+
+  ### Read operations ###
+
+<p>
+  Read operations are asynchronous, the function FLASH_MX25L6433F_DRV_Read starts the read operations and then 
+  immediately returns, leaving the QuadSPI module to handle the rest of the operation. 
+  The callback offered by the QuadSPI driver may be used to signal the end of the operation to the application,
+  or FLASH_MX25L6433F_DRV_GetStatus() can be called to check the operation status.
+</p>
+<p>
+  The read operations can be performed in dma mode, if DMA was enabled at initialization time, or in interrupt mode.
+</p>
+
+  ### Write operations ###
+
+<p>
+  Write operations are asynchronous, the function FLASH_MX25L6433F_DRV_Program starts the write operation 
+  and then immediately returns, leaving the QuadSPI module to handle the rest of the operation. 
+  The callback offered by the QuadSPI driver may be used to signal the end of the QuadSpi command to the application,
+  however the write operations is still not completed in the serial flash device and FLASH_MX25L6433F_DRV_GetStatus() 
+  must be called to check the operation status. Only when FLASH_MX25L6433F_DRV_GetStatus() returns a code other than
+  STATUS_BUSY the operation is completed and the driver can accept other commands.
+</p>
+<p>
+  The write operations can be performed in dma mode, if DMA was enabled at initialization time, or in interrupt mode.
+</p>
+<p>
+  Due to device limitations write operations are possible only inside a 256 bytes data page, with the start address
+  aligned to 256 bytes. Bytes that exceed the end of the page will wrap to the beginning of the page.
+</p>
+
+  ### Erase operations ###
+
+<p>
+  Erase operations are asynchronous, the erase functions start the erase operation 
+  and then immediately return, leaving the QuadSPI module to handle the rest of the operation. 
+  There are 4 erase functions, one for each erase command supported by the device: FLASH_MX25L6433F_DRV_Erase4K(), 
+  FLASH_MX25L6433F_DRV_Erase32K(), FLASH_MX25L6433F_DRV_Erase64K() and FLASH_MX25L6433F_DRV_EraseAll().
+</p>
+<p>
+  After the completion of an erase function, FLASH_MX25L6433F_DRV_GetStatus() must be periodically called to
+  check the operation status. Only when FLASH_MX25L6433F_DRV_GetStatus() returns a code other than
+  STATUS_BUSY the operation is completed and the driver can accept other commands.
+</p>
+
+  ### Program Verify and Blank Check  operations ###
+
+<p>
+  Program Verify and Blank Check operations are asynchronous, the functions FLASH_MX25L6433F_DRV_EraseVerify() 
+  and FLASH_MX25L6433F_DRV_ProgramVerify() start the operation and then immediately return, 
+  leaving the QuadSPI module to handle the rest of the operation. These functions internally use the QuadSPI read 
+  feature, and can only function in interrupt mode, even if the driver uses DMA.
+  The callback offered by the QuadSPI driver may be used to signal the end of the operation to the application,
+  or FLASH_MX25L6433F_DRV_GetStatus() can be called to check the operation status.
+</p>
+
+  ### Other operations ###
+
+<p>
+  The driver also offers other functionalities, mapping to the other features of the module, like setting
+  the write protection or entering the special One Time Program or Deep Power Down modes. Please check the description
+  of the respective functions for more information.
+</p>
+  
+
+  ## Important Notes ##
+<p>
+  - This driver relies on the services of the QuadSPI driver, so please observe the restrictions from the Important Notes 
+  section in the QuadSPI driver documentation.
+  - The following QuadSPI initialization settings must be used when using this driver, or else the driver may not be able 
+  to communicate with the device:
+    - dataRate = QSPI_DATE_RATE_SDR;
+    - readMode = QSPI_READ_MODE_INTERNAL_SAMPLING;
+    - memSize = 0x7FFFFFU;
+    - csHoldTime = 1U;
+    - csSetupTime = 1U;
+    - columnAddr = 0U;
+    - wordAddresable = false;
+    - sampleDelay = QSPI_SAMPLE_DELAY_1;
+    - clockPhase = QSPI_SAMPLE_PHASE_NON_INVERTED;
+    - endianess = QSPI_END_64BIT_LE;
+    - io2IdleValue = 1U;
+    - io3IdleValue = 1U;
+  If the configuration tool is used these settings will be enforced by the tool.
+</p>
+
+  ## Code example ##
+
+@code
+    status_t status;
+    #define INSTANCE 0
+    #define BUFFER_SIZE 10
+    #define SECTOR_ADDR 0x1000U
+    uint8_t txBuffer[BUFFER_SIZE] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    uint8_t rxBuffer[BUFFER_SIZE];
+    /* QuadSPI configuration and state structures */
+    qspi_user_config_t qspiConfig;
+    qspi_state_t qspiState;
+    /* Serial flash configuration and state structures */
+    flash_mx25l6433f_user_config_t flashConfig = {
+      .dmaSupport = false,
+      .outputDriverStrength = FLASH_MX25L6433F_DRV_STRENGTH_LOW,
+    };
+    flash_mx25l6433f_state_t flashState;
+
+    /* Initialize QuadSPI driver */
+    status = QSPI_DRV_GetDefaultConfig(&qspiConfig);
+    status = QSPI_DRV_Init(INSTANCE, &qspiConfig, &qspiState);
+    /* Initialize serial flash driver */
+    status = FLASH_MX25L6433F_DRV_Init(INSTANCE, &flashConfig, &flashState);
+
+    /* erase one sector */
+    status = FLASH_MX25L6433F_DRV_Erase4K(INSTANCE, SECTOR_ADDR);
+    while ((status = FLASH_MX25L6433F_DRV_GetStatus(INSTANCE)) == STATUS_BUSY);
+  
+    /* program BUFFER_SIZE bytes */
+    FLASH_MX25L6433F_DRV_Program(INSTANCE, SECTOR_ADDR, txBuffer, BUFFER_SIZE);
+    while ((status = FLASH_MX25L6433F_DRV_GetStatus(INSTANCE)) == STATUS_BUSY);
+
+    /* read BUFFER_SIZE bytes */
+    FLASH_MX25L6433F_DRV_Read(INSTANCE, SECTOR_ADDR, rxBuffer, BUFFER_SIZE);
+    while ((status = FLASH_MX25L6433F_DRV_GetStatus(INSTANCE)) == STATUS_BUSY);
+
+    /* Deinit drivers */
+    status = FLASH_MX25L6433F_DRV_Deinit(INSTANCE);
+    status = QSPI_DRV_Deinit(INSTANCE);
+@endcode
+
+
+  ## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\flash_mx25l6433f\flash_mx25l6433f_driver.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc
+${S32SDK_PATH}\platform\drivers\src\flash_mx25l6433f
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref quadspi
+
+*/

@@ -1,0 +1,159 @@
+/*---------GLOBAL DEFINITIONS-----------*/
+LIN_description_file;
+LIN_protocol_version             = "2.1";
+LIN_language_version             = "2.1";
+LIN_speed                        = 19.2 kbps;
+/* ----------NODE DEFINITIONS---------- */
+Nodes {
+   Master:
+      SeatECU,                                               /* Master node name */
+      5 ms,                                                  /* Time base */
+      0.1 ms;                                                /* Jitter */
+   Slaves:
+      Motor1,
+      Motor2;
+}
+/* ----------SIGNAL DEFINITIONS---------- */
+Signals {
+   /* Signal_name                : Size,                              Init,            Publisher, Subscriber(s) */
+   Motor1ErrorCode               :  8,                                0x05,               Motor1, SeatECU;
+   Motor1ErrorValue              :  8,                                0x01,               Motor1, SeatECU;
+   Motor1LinError                :  1,                                0x00,               Motor1, SeatECU;
+   Motor1Selection               :  2,                                0x00,              SeatECU, Motor1;
+   Motor1Temp                    :  8,                                0x05,               Motor1, SeatECU;
+   Motor2ErrorCode               :  8,                                0x02,               Motor2, SeatECU;
+   Motor2ErrorValue              :  8,                                0x04,               Motor2, SeatECU;
+   Motor2LinError                :  1,                                0x00,               Motor2, SeatECU;
+   Motor2Selection               :  2,                                0x00,              SeatECU, Motor2;
+   Motor2Temp                    :  8,                                0x00,               Motor2, SeatECU;
+   MotorDirection                :  2,                                0x00,              SeatECU, Motor1,Motor2;
+   MotorSpeed                    : 10,                                0x00,              SeatECU, Motor1,Motor2;
+   Motor1Position                : 32,               {0x00,0x00,0x00,0x00},               Motor1, SeatECU;
+   Motor2Position                : 32,               {0x00,0x00,0x00,0x00},               Motor2, SeatECU;
+}
+/* ----------DIAGNOSTIC SIGNAL DEFINITIONS---------- */
+Diagnostic_signals {
+   /* MasterReq Reserved Signals */
+   MasterReqB0         :    8,   0;
+   MasterReqB1         :    8,   0;
+   MasterReqB2         :    8,   0;
+   MasterReqB3         :    8,   0;
+   MasterReqB4         :    8,   0;
+   MasterReqB5         :    8,   0;
+   MasterReqB6         :    8,   0;
+   MasterReqB7         :    8,   0;
+   /* SlaveResp Reserved Signals */
+   SlaveRespB0         :    8,   0;
+   SlaveRespB1         :    8,   0;
+   SlaveRespB2         :    8,   0;
+   SlaveRespB3         :    8,   0;
+   SlaveRespB4         :    8,   0;
+   SlaveRespB5         :    8,   0;
+   SlaveRespB6         :    8,   0;
+   SlaveRespB7         :    8,   0;
+}
+/* ----------UNCONDITIONAL FRAME DEFINITIONS---------- */
+Frames {
+   Motor1Control       : 0x30, SeatECU             ,    1 {
+      Motor1Selection     , 0;
+   }
+   Motor1State_Cycl    : 0x33, Motor1              ,    6 {
+      Motor1Temp          , 0;
+      Motor1Position      , 8;
+      Motor1LinError      , 40;
+   }
+   Motor1State_Event   : 0x36, Motor1              ,    3 {
+      Motor1ErrorCode     , 8;
+      Motor1ErrorValue    , 16;
+   }
+   Motor2Control       : 0x31, SeatECU             ,    1 {
+      Motor2Selection     , 0;
+   }
+   Motor2State_Cycl    : 0x34, Motor2              ,    6 {
+      Motor2Temp          , 0;
+      Motor2Position      , 8;
+      Motor2LinError      , 40;
+   }
+   Motor2State_Event   : 0x37, Motor2              ,    3 {
+      Motor2ErrorCode     , 8;
+      Motor2ErrorValue    , 16;
+   }
+   MotorsControl       : 0x2D, SeatECU             ,    8 {
+      MotorDirection      , 0;
+      MotorSpeed          , 2;
+   }
+}
+/* ----------SPORADIC FRAME DEFINITIONS---------- */
+Sporadic_frames {
+   SporadicControlFrame: Motor1Control, Motor2Control;
+}
+/* ----------DIAGNOSTIC FRAME DEFINITIONS---------- */
+Diagnostic_frames {
+   MasterReq           : 0x3C {
+      MasterReqB0         , 0;
+      MasterReqB1         , 8;
+      MasterReqB2         , 16;
+      MasterReqB3         , 24;
+      MasterReqB4         , 32;
+      MasterReqB5         , 40;
+      MasterReqB6         , 48;
+      MasterReqB7         , 56;
+   }
+   SlaveResp           : 0x3D {
+      SlaveRespB0         , 0;
+      SlaveRespB1         , 8;
+      SlaveRespB2         , 16;
+      SlaveRespB3         , 24;
+      SlaveRespB4         , 32;
+      SlaveRespB5         , 40;
+      SlaveRespB6         , 48;
+      SlaveRespB7         , 56;
+   }
+}
+/* ----------NODE ATTRIBUTE DEFINITIONS---------- */
+Node_attributes {
+   Motor1 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x02;                     /* configured NAD of node */
+      initial_NAD                = 0x0A;                     /* initial NAD of node */
+      product_id                 = 0x1E, 0x01, 0x00;         /* Product id */
+      response_error             = Motor1LinError;           /* Response error signal */
+      P2_min                     = 100 ms;                   /* P2_min */
+      ST_min                     = 20 ms;                    /* ST_min */
+      N_As_timeout               = 1000 ms;                  /* N_As_timeout */
+      N_Cr_timeout               = 1000 ms;                  /* N_As_timeout */
+      configurable_frames {
+         Motor1Control;
+         Motor1State_Cycl;
+         Motor1State_Event;
+         MotorsControl;
+         SporadicControlFrame;
+      }
+   }
+   Motor2 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x03;                     /* configured NAD of node */
+      initial_NAD                = 0x0C;                     /* initial NAD of node */
+      product_id                 = 0x2E, 0x0B, 0x01;         /* Product id */
+      response_error             = Motor2LinError;           /* Response error signal */
+      P2_min                     = 50 ms;                    /* P2_min */
+      ST_min                     = 0 ms;                     /* ST_min */
+      N_As_timeout               = 1000 ms;                  /* N_As_timeout */
+      N_Cr_timeout               = 1000 ms;                  /* N_As_timeout */
+      configurable_frames {
+         Motor2Control;
+         Motor2State_Cycl;
+         Motor2State_Event;
+         MotorsControl;
+         SporadicControlFrame;
+      }
+   }
+}
+/* ----------SCHEDULE TABLE DEFINITIONS---------- */
+Schedule_tables {
+   NormalTable {
+      Motor1Control                                      delay 50 ms;
+      Motor1State_Cycl                                   delay 50 ms;
+   }
+}
+

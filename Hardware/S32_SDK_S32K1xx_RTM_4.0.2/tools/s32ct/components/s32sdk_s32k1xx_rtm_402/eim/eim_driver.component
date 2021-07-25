@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="eim_config" label="eim_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.eim" version="1.0.0"/>
+   <description>Error Injection Module</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>EIM general mode</description>
+      <config_set_refs>
+         <config_set_ref>eim</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>EIM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="eim" label="EIM Configuration" from_source="eim_driver.h">
+      <description>Error Injection Module Configuration</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="eim_default" label="Default Values" available="true">
+            <description>EIM Default Configuration</description>
+            <set id="eimConfig.0.name">eim_InitConfig0</set>
+            <set id="eimConfig.0.readOnly">true</set>
+            <set id="eimConfig.0.channelConfig.0.channel">0</set>
+            <set id="eimConfig.0.channelConfig.0.checkBitMask">0</set>
+            <set id="eimConfig.0.channelConfig.0.dataMask">0</set>
+            <set id="eimConfig.0.channelConfig.0.dataMask1">0</set>
+            <set id="eimConfig.0.channelConfig.0.enable">true</set>
+         </quick_selection>
+         <default>eim_default</default>
+      </quick_selections>
+      <settings>
+         <array id="eimConfig" label="User Configuration" type="eimConfigStruct" config_set_id="eim" component_id="eim_config" available="true" options="ShowContentAs=MasterDetail" key_selector_expr="x -> (x.getSetting(`name`).value())">
+            <description>EIM User Configuration Structure List</description>
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+               <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+            </validation>
+            <item_defaults>
+               <set_default id="name" value_expr="x -> (`eim_InitConfig` + x.getID())"/>
+               <set_default id="readOnly" value_expr="x -> (`true`)"/>
+               <set_default id="channelConfig.0.channel" value_expr="x -> (`0`)"/>
+               <set_default id="channelConfig.0.checkBitMask" value_expr="x -> (`0`)"/>
+               <set_default id="channelConfig.0.dataMask" value_expr="x -> (`0`)"/>
+               <set_default id="channelConfig.0.dataMask1" value_expr="x -> (`0`)"/>
+               <set_default id="channelConfig.0.enable" value_expr="x -> (`true`)"/>
+            </item_defaults>
+         </array>
+         <variable value="`../eim/eim_codegen.js`" id="codegen_file"></variable>
+         <variable value="`EIM_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+      <user_types>
+         <struct id="eimConfigStruct" label="EIM user configuration" from="eimConfigStruct">
+            <string id="name" label="Name">
+               <description>Configuration name</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readOnly" label="Read-only">
+                <description>Specifies how the configuration will be generated. Read-only structures are declared with const qualifier.</description>
+            </bool>
+            <info id="channelCount" label="Channel count" value="$parent.channelConfig.getSize()">
+               <description>Number of configured EIM channels</description>
+            </info>
+            <array id="channelConfig" label="Channels configuration" type="eim_user_channel_config_t" options="ShowContentAs=Table">
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`channel`).value()).length() == 0" level="error" description="There are some duplicated 'Channel number' values in the configuration"/>
+               </validation>
+               <item_defaults>
+                  <set_default id="channel" value_expr="x -> (`0`)"/>
+                  <set_default id="checkBitMask" value_expr="x -> (`0`)"/>
+                  <set_default id="dataMask" value_expr="x -> (`0`)"/>
+                  <set_default id="dataMask1" value_expr="x -> (`0`)"/>
+                  <set_default id="enable" value_expr="x -> (`true`)"/>
+               </item_defaults>
+            </array>
+         </struct>
+         <struct id="eim_user_channel_config_t" label="EIM channel configuration structure" from="eim_user_channel_config_t">
+            <integer id="channel" label="Channel number" type="uint8_t">
+                <validation>
+                    <constraint cond_expr="$this.getValue() &lt;getFeature(`FEATURE_EIM_NUM_OF_CHANNELS`)" level="error" description_expr="`Channel number unavailable for this device. It must be less than ` + getFeature(`FEATURE_EIM_NUM_OF_CHANNELS`)"/>
+                </validation>
+               <description>Selected EIM channel number</description>
+            </integer>
+            <integer id="checkBitMask" label="Checkbit mask" type="uint32_t" enable="true">
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt;= getFeature(`FEATURE_EIM_CH` + $parent.channel.getValue() + `_CBMASK`)"  level="error" description="Value out of range for checkbit mask"/>
+               </validation>
+               <description>Specifies whether the corresponding bit of the checkbit bus from the target RAM should be inverted or remain unmodified</description>
+            </integer>
+            <integer id="dataMask" label="Data mask 0" type="uint32_t" enable="true">
+               <description>Specifies whether the corresponding bit of the read data bus from the target RAM should be inverted or remain unmodified</description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt;= 0xFFFFFFFF" level="error" description="Value out of range for data mask 0"/>
+               </validation>
+            </integer>
+            <integer id="dataMask1" label="Data mask 1" type="uint32_t" enable="(($parent.channel.getValue() == 6) || ($parent.channel.getValue() == 7) || ($parent.channel.getValue() == 10) || ($parent.channel.getValue() == 11) || ($parent.channel.getValue() == 12))">
+               <description>Specifies whether the corresponding bit of the read data bus from the target RAM should be inverted or remain unmodified</description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt;= 0xFFFFFFFF" level="error" description="Value out of range for data mask 1"/>
+               </validation>
+            </integer>
+            <bool id="enable" label="Enable channel">
+               <description>true : EIM channel operation is enabled;  false : EIM channel operation is disabled</description>
+            </bool>
+         </struct>
+      </user_types>
+      <generated_types>
+         <struct id="eim_user_channel_config_t" label="EIM channel configuration structure" from="eim_user_channel_config_t">
+            <description>This structure holds the configuration settings for the EIM channel Implements : eim_user_channel_config_t_Class</description>
+            <integer id="channel" label="EIM channel number" type="uint8_t">
+               <description>EIM channel number</description>
+            </integer>
+            <integer id="checkBitMask" label="Checkbit mask" type="uint32_t">
+               <description>Specifies whether the corresponding bit of the checkbit bus from the target RAM should be inverted or remain unmodified</description>
+            </integer>
+            <integer id="dataMask" label="Data mask 0" type="uint32_t">
+               <description>Specifies whether the corresponding bit of the read data bus from the target RAM should be inverted or remain unmodified</description>
+            </integer>
+            <integer id="dataMask1" label="Data mask 1" type="uint32_t">
+               <description>Specifies whether the corresponding bit of the read data bus from the target RAM should be inverted or remain unmodified</description>
+            </integer>
+            <bool id="enable" label="true : EIM channel operation is enabled false : EIM channel operation is disabled">
+               <description>true : EIM channel operation is enabled;  false : EIM channel operation is disabled</description>
+            </bool>
+         </struct>
+      </generated_types>
+   </config_set>
+</component:config_component>

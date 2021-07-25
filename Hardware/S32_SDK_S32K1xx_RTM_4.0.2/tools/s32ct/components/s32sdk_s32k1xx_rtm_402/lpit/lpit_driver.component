@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="lpit_config" label="lpit_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.lpit" version="1.0.0"/>
+   <description>Low Power Periodic Interrupt Timer</description>
+   <mode id="general" label="General_Mode" available="true">
+      <description>LPIT general mode</description>
+      <config_set_refs>
+         <config_set_ref>lpit</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>LPIT</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="lpit" label="LPIT Configuration" from_source="lpit_driver.h">
+      <description>Low Power Interrupt Timer Driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="lpit_default" label="Default Values" available="true">
+            <description>LPIT Configuration</description>
+            <set id="lpitConfig.name">lpit1_InitConfig</set>
+            <set id="lpitChannelConfig.0.name">lpit1_ChnConfig0</set>
+            <set id="lpitChannelConfig.0.periodUnits">LPIT_PERIOD_UNITS_MICROSECONDS</set>
+            <set id="lpitChannelConfig.0.period">1000</set>
+         </quick_selection>
+      </quick_selections>
+
+      <settings>
+         <reference id="lpitConfig" label="LPIT Global Configuration" type="lpitGlobalConfig" config_set_id="lpit" component_id="lpit_config" available="true">
+            <description>LPIT global configuration</description>
+         </reference>
+         <array id="lpitChannelConfig" label="LPIT Channel Configuration" type="lpitChanConfig" options="ShowContentAs=MasterDetail;UI_ARRAY_INDICES_HIDDEN">
+            <description>LPIT Channel Configuration Structure</description>
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+               <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+            </validation>
+            <item_defaults>
+               <set_default id="name" value_expr="x -> (`lpit1_ChnConfig` + x.getID())"/>
+            </item_defaults>
+         </array>
+         <variable value="`../lpit/lpit_codegen.js`" id="codegen_file"></variable>
+         <variable value="`LPIT_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+
+      <user_types>
+         <struct id="lpitGlobalConfig" label="PIT Configuration" from="lpitGlobalConfig">
+            <string id="name" label="Name">
+               <description>Configuration name</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="enableRunInDebug" label="Timer Run In Debug Mode" options="cStructField">
+               <description>If true, enable debug mode</description>
+            </bool>
+            <bool id="enableRunInDoze" label="Timer Run In Doze Mode"  options="cStructField">
+               <description>If true, enable doze mode</description>
+            </bool>
+         </struct>
+
+         <struct id="lpitChanConfig" label="PIT Configuration" from="lpitChanConfig">
+            <string id="name" label="Name">
+               <description>Channel configuration name</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="cfgReadOnly" label="Read Only" >
+               <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+            </bool>
+            <reference id="timerMode" label="Timer Mode" type="lpit_timer_modes_t" enable="($parent.chainChannel.getValue() != `true`)" options="cStructField">
+               <description>Configures the timer channel mode of operation which controls how the timer channel decrements&lt;br/&gt;NOTE:&lt;br&gt;&lt;ul&gt;&lt;li&gt;If selecting "32 bit trigger input capture", then "Period Unit", "Timer Period" and "Start On Trigger" have no effect, so will not be configurable from the interface.&lt;li&gt;If selecting "32 bit trigger accumulator", then "Reload On Trigger" and "Start On Trigger" will have no effect, so will not be configurable from the interface.</description>
+            </reference>
+            <reference id="periodUnits" label="Period Unit" type="lpit_period_unit_t" enable="($parent.timerMode.getValue() != `LPIT_INPUT_CAPTURE`)&amp;&amp; ($parent.chainChannel.getValue() != `true`)" options="cStructField">
+               <description>Configures the period value unit</description>
+            </reference>
+            <variable id="lpitClocks" value="getClockFunctionalGroups()"/>
+            <info id="clk_info_id" label="Clock Frequency" value="frequencyToString(getPeripheralClockFrequency(`LPIT`, `LPIT0_CLK`, $parent.lpitClocks.getValue().get(0)))"><description>Clock frequency</description>
+            </info>
+            <info id="time_unit" label="Tick duration" value="timeToString(1000000.0/getPeripheralClockFrequency(`LPIT`, `LPIT0_CLK`, $parent.lpitClocks.getValue().get(0)))" available="($parent.periodUnits.getValue() == `LPIT_PERIOD_UNITS_COUNTS`)"><description>Clock frequency</description>
+            </info>
+            <integer id="period" label="Timer Period" type="uint32_t" enable="$parent.timerMode.getValue() != `LPIT_INPUT_CAPTURE`" options="cStructField">
+               <description>Timer channel period(compare value)</description>
+               <validation>
+                  <constraint when_expr="($parent.timerMode.getValue() == `LPIT_DUAL_PERIODIC_COUNTER`)" cond_expr="(($this.getValue() &lt;= 65535) &amp;&amp; ($this.getValue() &gt;= 1))" level="error" description="Value is out of range. Value must be in range: 1 - 65535"/>
+               </validation>
+            </integer>
+            <reference id="triggerSource" label="Trigger Source" type="lpit_trigger_source_t" enable="true" options="cStructField">
+               <description>Selects between internal or external trigger sources. The final trigger is selected by Trigger Select depending on which trigger source out of internal triggers or external triggers are selected by Trigger Source</description>
+            </reference>
+            <reference id="triggerSelect" enable="true" label="Trigger Select" type="lpit_trigger_select_internal_t" options="cStructField">
+               <description>Selects one trigger from the set of internal triggers selected by Trigger Source. The selected trigger is used for starting and/or reloading the timer channel</description>
+            </reference>
+            <bool id="enableReloadOnTrigger" enable="$parent.timerMode.getValue() != `LPIT_TRIGGER_ACCUMULATOR`" label="Reload On Trigger" options="cStructField" >
+               <description>Controls whether the timer channel will reload when a rising edge is detected on the selected trigger input.&lt;br/&gt;&lt;ul&gt;&lt;li&gt;True(tick): Timer channel will reload on selected trigger&lt;li&gt;False(untick): Timer channel will not reload on selected trigger</description>
+            </bool>
+            <bool id="enableStopOnInterrupt" label="Stop On Interrupt" options="cStructField">
+               <description>Controls whether the timer channel will stop after it times out and when it can restart (when Timer Start On Trigger is disable). If Timer Start On Trigger is enable, then the timer channel will stop on timeout and will restart after a rising edge on the selected trigger is detected.&lt;br/&gt;&lt;ul&gt;&lt;li&gt;True(tick): Timer channel will stop after timeout and will restart after rising edge on the Timer Enable(T_EN) bit is detected (i.e. timer channel is disabled and then enabled)&lt;li&gt;False(untick): Timer channel does not stop after timeout</description>
+               </bool>
+            <bool id="enableStartOnTrigger" enable="($parent.timerMode.getValue() != `LPIT_TRIGGER_ACCUMULATOR`) &amp;&amp; ($parent.timerMode.getValue() != `LPIT_INPUT_CAPTURE`) &amp;&amp; ($parent.chainChannel.getValue() != `true`)" label="Start On Trigger" options="cStructField">
+               <description>Controls when the timer channel will start decrementing.&lt;br/&gt;&lt;ul&gt;&lt;li&gt;True(tick): Timer channel starts to decrement when rising edge on selected trigger is detected. &lt;li&gt;False(untick): Timer channel starts to decrement immediately based on restart condition (controlled by Timer Stop On Interrupt)</description>
+            </bool>
+            <bool id="chainChannel" label="Channel Chain" options="cStructField">
+               <description>Controls the timer channel chaining. The timer channel 0 cannot be chained.&lt;br&gt;&lt;ul&gt;&lt;li&gt;True(tick): Timer channel is chained. Timer channel decrements on previous channel's timeout&lt;li&gt;False(untick): Timer channel is not chained. Timer channel runs independently&lt;br/&gt;NOTE:&lt;li&gt;If selecting "Channel Chain" mode, then "Timer Mode", "Period Unit" and "Start On Trigger" have no effect, so will not be configurable from the interface.</description>
+            </bool>
+            <bool id="isInterruptEnabled" label="Interrupt Enable" options="cStructField">
+               <description>Enables interrupt generation when corresponding timer channel interrupt flag is asserted.&lt;br&gt;&lt;ul&gt;&lt;li&gt;True(tick): Interrupt generation is enabled.&lt;li&gt;False(untick): Interrupt generation is disabled</description>
+            </bool>
+         </struct>
+      </user_types>
+
+      <generated_types>
+         <enum id="lpit_timer_modes_t" label="Timer Mode settings Implements: lpit_timer_modes_t_Class" from="lpit_timer_modes_t">
+            <item id="LPIT_PERIODIC_COUNTER" label="32 bit periodic counter"/>
+            <item id="LPIT_DUAL_PERIODIC_COUNTER" label="Dual 16 bit periodic counter"/>
+            <item id="LPIT_TRIGGER_ACCUMULATOR" label="32 bit trigger accumulator"/>
+            <item id="LPIT_INPUT_CAPTURE" label="32 bit trigger input capture"/>
+         </enum>
+         <enum id="lpit_period_unit_t" label="Period unit settings Implements: lpit_period_unit_t_Class" from="lpit_period_unit_t">
+            <item id="LPIT_PERIOD_UNITS_COUNTS" label="Count Unit"/>
+            <item id="LPIT_PERIOD_UNITS_MICROSECONDS" label="Microsecond Unit"/>
+         </enum>
+         <enum id="lpit_trigger_source_t" label="trigger source settings Implements: lpit_trigger_source_t_Class" from="lpit_trigger_source_t">
+            <item id="LPIT_TRIGGER_SOURCE_EXTERNAL" label="External Trigger"/>
+            <item id="LPIT_TRIGGER_SOURCE_INTERNAL" label="Internal Trigger"/>
+         </enum>
+         <enum id="lpit_trigger_select_internal_t" label="trigger source settings Implements: lpit_trigger_select_internal_t_Class" from="lpit_trigger_select_internal_t">
+            <item id="0U" label="Channel 0"/>
+            <item id="1U" label="Channel 1"/>
+            <item id="2U" label="Channel 2"/>
+            <item id="3U" label="Channel 3"/>
+         </enum>
+      </generated_types>
+   </config_set>
+   <global_config_set_ref></global_config_set_ref>
+</component:config_component>

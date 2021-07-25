@@ -1,0 +1,417 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="VERID" description="Version ID Register">
+    <alias type="CMSIS" value="VERID"/>
+    <bit_field offset="0" width="16" name="FEATURE" access="RO" reset_value="0" description="Feature Number">
+      <alias type="CMSIS" value="LPIT_VERID_FEATURE(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="MINOR" access="RO" reset_value="0" description="Minor Version Number">
+      <alias type="CMSIS" value="LPIT_VERID_MINOR(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="MAJOR" access="RO" reset_value="0x1" description="Major Version Number">
+      <alias type="CMSIS" value="LPIT_VERID_MAJOR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="PARAM" description="Parameter Register">
+    <alias type="CMSIS" value="PARAM"/>
+    <bit_field offset="0" width="8" name="CHANNEL" access="RO" reset_value="0x4" description="Number of Timer Channels">
+      <alias type="CMSIS" value="LPIT_PARAM_CHANNEL(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="EXT_TRIG" access="RO" reset_value="0x4" description="Number of External Trigger Inputs">
+      <alias type="CMSIS" value="LPIT_PARAM_EXT_TRIG(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="MCR" description="Module Control Register">
+    <alias type="CMSIS" value="MCR"/>
+    <bit_field offset="0" width="1" name="M_CEN" access="RW" reset_value="0" description="Module Clock Enable">
+      <alias type="CMSIS" value="LPIT_MCR_M_CEN(x)"/>
+      <bit_field_value name="MCR_M_CEN_0b0" value="0b0" description="Peripheral clock to timers is disabled"/>
+      <bit_field_value name="MCR_M_CEN_0b1" value="0b1" description="Peripheral clock to timers is enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SW_RST" access="RW" reset_value="0" description="Software Reset Bit">
+      <alias type="CMSIS" value="LPIT_MCR_SW_RST(x)"/>
+      <bit_field_value name="MCR_SW_RST_0b0" value="0b0" description="Timer channels and registers are not reset"/>
+      <bit_field_value name="MCR_SW_RST_0b1" value="0b1" description="Timer channels and registers are reset"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="DOZE_EN" access="RW" reset_value="0" description="DOZE Mode Enable Bit">
+      <alias type="CMSIS" value="LPIT_MCR_DOZE_EN(x)"/>
+      <bit_field_value name="MCR_DOZE_EN_0b0" value="0b0" description="Timer channels are stopped in DOZE mode"/>
+      <bit_field_value name="MCR_DOZE_EN_0b1" value="0b1" description="Timer channels continue to run in DOZE mode"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="DBG_EN" access="RW" reset_value="0" description="Debug Enable Bit">
+      <alias type="CMSIS" value="LPIT_MCR_DBG_EN(x)"/>
+      <bit_field_value name="MCR_DBG_EN_0b0" value="0b0" description="Timer channels are stopped in Debug mode"/>
+      <bit_field_value name="MCR_DBG_EN_0b1" value="0b1" description="Timer channels continue to run in Debug mode"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="MSR" description="Module Status Register">
+    <alias type="CMSIS" value="MSR"/>
+    <bit_field offset="0" width="1" name="TIF0" access="W1C" reset_value="0" description="Channel 0 Timer Interrupt Flag">
+      <alias type="CMSIS" value="LPIT_MSR_TIF0(x)"/>
+      <bit_field_value name="MSR_TIF0_0b0" value="0b0" description="Timer has not timed out"/>
+      <bit_field_value name="MSR_TIF0_0b1" value="0b1" description="Timeout has occurred"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="TIF1" access="W1C" reset_value="0" description="Channel 1 Timer Interrupt Flag">
+      <alias type="CMSIS" value="LPIT_MSR_TIF1(x)"/>
+      <bit_field_value name="MSR_TIF1_0b0" value="0b0" description="Timer has not timed out"/>
+      <bit_field_value name="MSR_TIF1_0b1" value="0b1" description="Timeout has occurred"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TIF2" access="W1C" reset_value="0" description="Channel 2 Timer Interrupt Flag">
+      <alias type="CMSIS" value="LPIT_MSR_TIF2(x)"/>
+      <bit_field_value name="MSR_TIF2_0b0" value="0b0" description="Timer has not timed out"/>
+      <bit_field_value name="MSR_TIF2_0b1" value="0b1" description="Timeout has occurred"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TIF3" access="W1C" reset_value="0" description="Channel 3 Timer Interrupt Flag">
+      <alias type="CMSIS" value="LPIT_MSR_TIF3(x)"/>
+      <bit_field_value name="MSR_TIF3_0b0" value="0b0" description="Timer has not timed out"/>
+      <bit_field_value name="MSR_TIF3_0b1" value="0b1" description="Timeout has occurred"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="MIER" description="Module Interrupt Enable Register">
+    <alias type="CMSIS" value="MIER"/>
+    <bit_field offset="0" width="1" name="TIE0" access="RW" reset_value="0" description="Channel 0 Timer Interrupt Enable">
+      <alias type="CMSIS" value="LPIT_MIER_TIE0(x)"/>
+      <bit_field_value name="MIER_TIE0_0b0" value="0b0" description="Interrupt generation is disabled"/>
+      <bit_field_value name="MIER_TIE0_0b1" value="0b1" description="Interrupt generation is enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="TIE1" access="RW" reset_value="0" description="Channel 1 Timer Interrupt Enable">
+      <alias type="CMSIS" value="LPIT_MIER_TIE1(x)"/>
+      <bit_field_value name="MIER_TIE1_0b0" value="0b0" description="Interrupt generation is disabled"/>
+      <bit_field_value name="MIER_TIE1_0b1" value="0b1" description="Interrupt generation is enabled"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TIE2" access="RW" reset_value="0" description="Channel 2 Timer Interrupt Enable">
+      <alias type="CMSIS" value="LPIT_MIER_TIE2(x)"/>
+      <bit_field_value name="MIER_TIE2_0b0" value="0b0" description="Interrupt generation is disabled"/>
+      <bit_field_value name="MIER_TIE2_0b1" value="0b1" description="Interrupt generation is enabled"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TIE3" access="RW" reset_value="0" description="Channel 3 Timer Interrupt Enable">
+      <alias type="CMSIS" value="LPIT_MIER_TIE3(x)"/>
+      <bit_field_value name="MIER_TIE3_0b0" value="0b0" description="Interrupt generation is disabled"/>
+      <bit_field_value name="MIER_TIE3_0b1" value="0b1" description="Interrupt generation is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="SETTEN" description="Set Timer Enable Register">
+    <alias type="CMSIS" value="SETTEN"/>
+    <bit_field offset="0" width="1" name="SET_T_EN_0" access="RW" reset_value="0" description="Set Timer 0 Enable">
+      <alias type="CMSIS" value="LPIT_SETTEN_SET_T_EN_0(x)"/>
+      <bit_field_value name="SETTEN_SET_T_EN_0_0b0" value="0b0" description="No effect"/>
+      <bit_field_value name="SETTEN_SET_T_EN_0_0b1" value="0b1" description="Enables the Timer Channel 0"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SET_T_EN_1" access="RW" reset_value="0" description="Set Timer 1 Enable">
+      <alias type="CMSIS" value="LPIT_SETTEN_SET_T_EN_1(x)"/>
+      <bit_field_value name="SETTEN_SET_T_EN_1_0b0" value="0b0" description="No Effect"/>
+      <bit_field_value name="SETTEN_SET_T_EN_1_0b1" value="0b1" description="Enables the Timer Channel 1"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="SET_T_EN_2" access="RW" reset_value="0" description="Set Timer 2 Enable">
+      <alias type="CMSIS" value="LPIT_SETTEN_SET_T_EN_2(x)"/>
+      <bit_field_value name="SETTEN_SET_T_EN_2_0b0" value="0b0" description="No Effect"/>
+      <bit_field_value name="SETTEN_SET_T_EN_2_0b1" value="0b1" description="Enables the Timer Channel 2"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="SET_T_EN_3" access="RW" reset_value="0" description="Set Timer 3 Enable">
+      <alias type="CMSIS" value="LPIT_SETTEN_SET_T_EN_3(x)"/>
+      <bit_field_value name="SETTEN_SET_T_EN_3_0b0" value="0b0" description="No effect"/>
+      <bit_field_value name="SETTEN_SET_T_EN_3_0b1" value="0b1" description="Enables the Timer Channel 3"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="CLRTEN" description="Clear Timer Enable Register">
+    <alias type="CMSIS" value="CLRTEN"/>
+    <bit_field offset="0" width="1" name="CLR_T_EN_0" access="WORZ" reset_value="0" description="Clear Timer 0 Enable">
+      <alias type="CMSIS" value="LPIT_CLRTEN_CLR_T_EN_0(x)"/>
+      <bit_field_value name="CLRTEN_CLR_T_EN_0_0b0" value="0b0" description="No action"/>
+      <bit_field_value name="CLRTEN_CLR_T_EN_0_0b1" value="0b1" description="Clear T_EN bit for Timer Channel 0"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CLR_T_EN_1" access="WORZ" reset_value="0" description="Clear Timer 1 Enable">
+      <alias type="CMSIS" value="LPIT_CLRTEN_CLR_T_EN_1(x)"/>
+      <bit_field_value name="CLRTEN_CLR_T_EN_1_0b0" value="0b0" description="No Action"/>
+      <bit_field_value name="CLRTEN_CLR_T_EN_1_0b1" value="0b1" description="Clear T_EN bit for Timer Channel 1"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CLR_T_EN_2" access="WORZ" reset_value="0" description="Clear Timer 2 Enable">
+      <alias type="CMSIS" value="LPIT_CLRTEN_CLR_T_EN_2(x)"/>
+      <bit_field_value name="CLRTEN_CLR_T_EN_2_0b0" value="0b0" description="No Action"/>
+      <bit_field_value name="CLRTEN_CLR_T_EN_2_0b1" value="0b1" description="Clear T_EN bit for Timer Channel 2"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CLR_T_EN_3" access="WORZ" reset_value="0" description="Clear Timer 3 Enable">
+      <alias type="CMSIS" value="LPIT_CLRTEN_CLR_T_EN_3(x)"/>
+      <bit_field_value name="CLRTEN_CLR_T_EN_3_0b0" value="0b0" description="No Action"/>
+      <bit_field_value name="CLRTEN_CLR_T_EN_3_0b1" value="0b1" description="Clear T_EN bit for Timer Channel 3"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="RSVD" description="Reserved Register">
+    <alias type="CMSIS" value="RSVD"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="TVAL0" description="Timer Value Register">
+    <alias type="CMSIS" value="CHANNEL[0].TVAL"/>
+    <bit_field offset="0" width="32" name="TMR_VAL" access="RW" reset_value="0" description="Timer Value">
+      <alias type="CMSIS" value="LPIT_TVAL_TMR_VAL(x)"/>
+      <bit_field_value name="TVAL0_TMR_VAL_0b00000000000000000000000000000000" value="0b00000000000000000000000000000000" description="Invalid load value in compare modes."/>
+      <bit_field_value name="TVAL0_TMR_VAL_0b00000000000000000000000000000001" value="0b00000000000000000000000000000001" description="Invalid load value in compare modes."/>
+      <bit_field_value name="TVAL0_TMR_VAL_0b00000000000000000000000000000010to0b11111111111111111111111111111111" value="0b00000000000000000000000000000010-0b11111111111111111111111111111111" description="Value to be loaded (Compare Mode) or Value of Timer (Capture Mode)"/>
+    </bit_field>
+  </register>
+  <register offset="0x24" width="32" name="CVAL0" description="Current Timer Value">
+    <alias type="CMSIS" value="CHANNEL[0].CVAL"/>
+    <bit_field offset="0" width="32" name="TMR_CUR_VAL" access="RO" reset_value="0xFFFFFFFF" description="Current Timer Value">
+      <alias type="CMSIS" value="LPIT_CVAL_TMR_CUR_VAL(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x28" width="32" name="TCTRL0" description="Timer Control Register">
+    <alias type="CMSIS" value="CHANNEL[0].TCTRL"/>
+    <bit_field offset="0" width="1" name="T_EN" access="RW" reset_value="0" description="Timer Enable">
+      <alias type="CMSIS" value="LPIT_TCTRL_T_EN(x)"/>
+      <bit_field_value name="TCTRL0_T_EN_0b0" value="0b0" description="Timer Channel is disabled"/>
+      <bit_field_value name="TCTRL0_T_EN_0b1" value="0b1" description="Timer Channel is enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CHAIN" access="RW" reset_value="0" description="Chain Channel">
+      <alias type="CMSIS" value="LPIT_TCTRL_CHAIN(x)"/>
+      <bit_field_value name="TCTRL0_CHAIN_0b0" value="0b0" description="Channel Chaining is disabled. Channel Timer runs independently."/>
+      <bit_field_value name="TCTRL0_CHAIN_0b1" value="0b1" description="Channel Chaining is enabled. Timer decrements on previous channel's timeout"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="MODE" access="RW" reset_value="0" description="Timer Operation Mode">
+      <alias type="CMSIS" value="LPIT_TCTRL_MODE(x)"/>
+      <bit_field_value name="TCTRL0_MODE_0b00" value="0b00" description="32-bit Periodic Counter"/>
+      <bit_field_value name="TCTRL0_MODE_0b01" value="0b01" description="Dual 16-bit Periodic Counter"/>
+      <bit_field_value name="TCTRL0_MODE_0b10" value="0b10" description="32-bit Trigger Accumulator"/>
+      <bit_field_value name="TCTRL0_MODE_0b11" value="0b11" description="32-bit Trigger Input Capture"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="12" reset_value="0"/>
+    <bit_field offset="16" width="1" name="TSOT" access="RW" reset_value="0" description="Timer Start On Trigger">
+      <alias type="CMSIS" value="LPIT_TCTRL_TSOT(x)"/>
+      <bit_field_value name="TCTRL0_TSOT_0b0" value="0b0" description="Timer starts to decrement immediately based on restart condition (controlled by TSOI bit)"/>
+      <bit_field_value name="TCTRL0_TSOT_0b1" value="0b1" description="Timer starts to decrement when rising edge on selected trigger is detected"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="TSOI" access="RW" reset_value="0" description="Timer Stop On Interrupt">
+      <alias type="CMSIS" value="LPIT_TCTRL_TSOI(x)"/>
+      <bit_field_value name="TCTRL0_TSOI_0b0" value="0b0" description="The channel timer does not stop after timeout."/>
+      <bit_field_value name="TCTRL0_TSOI_0b1" value="0b1" description="The channel timer will stop after a timeout, and the channel timer will restart based on TSOT. When TSOT = 0, the channel timer will restart after a rising edge on the T_EN bit is detected (which means that the timer channel is disabled and then enabled); when TSOT = 1, the channel timer will restart after a rising edge on the selected trigger is detected."/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="TROT" access="RW" reset_value="0" description="Timer Reload On Trigger">
+      <alias type="CMSIS" value="LPIT_TCTRL_TROT(x)"/>
+      <bit_field_value name="TCTRL0_TROT_0b0" value="0b0" description="Timer will not reload on selected trigger"/>
+      <bit_field_value name="TCTRL0_TROT_0b1" value="0b1" description="Timer will reload on selected trigger"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="4" reset_value="0"/>
+    <bit_field offset="23" width="1" name="TRG_SRC" access="RW" reset_value="0" description="Trigger Source">
+      <alias type="CMSIS" value="LPIT_TCTRL_TRG_SRC(x)"/>
+      <bit_field_value name="TCTRL0_TRG_SRC_0b0" value="0b0" description="Trigger source selected in external"/>
+      <bit_field_value name="TCTRL0_TRG_SRC_0b1" value="0b1" description="Trigger source selected is the internal trigger"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="TRG_SEL" access="RW" reset_value="0" description="Trigger Select">
+      <alias type="CMSIS" value="LPIT_TCTRL_TRG_SEL(x)"/>
+      <bit_field_value name="TCTRL0_TRG_SEL_0b0000to0b0011" value="0b0000-0b0011" description="Timer channel 0 - 3 trigger source is selected."/>
+      <bit_field_value name="TCTRL0_TRG_SEL_0b0100to0b1111" value="0b0100-0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x2C" width="32" name="RFU0" description="Reserved for Future Use">
+    <alias type="CMSIS" value="CHANNEL[0].RFU"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="TVAL1" description="Timer Value Register">
+    <alias type="CMSIS" value="CHANNEL[1].TVAL"/>
+    <bit_field offset="0" width="32" name="TMR_VAL" access="RW" reset_value="0" description="Timer Value">
+      <alias type="CMSIS" value="LPIT_TVAL_TMR_VAL(x)"/>
+      <bit_field_value name="TVAL1_TMR_VAL_0b00000000000000000000000000000000" value="0b00000000000000000000000000000000" description="Invalid load value in compare modes."/>
+      <bit_field_value name="TVAL1_TMR_VAL_0b00000000000000000000000000000001" value="0b00000000000000000000000000000001" description="Invalid load value in compare modes."/>
+      <bit_field_value name="TVAL1_TMR_VAL_0b00000000000000000000000000000010to0b11111111111111111111111111111111" value="0b00000000000000000000000000000010-0b11111111111111111111111111111111" description="Value to be loaded (Compare Mode) or Value of Timer (Capture Mode)"/>
+    </bit_field>
+  </register>
+  <register offset="0x34" width="32" name="CVAL1" description="Current Timer Value">
+    <alias type="CMSIS" value="CHANNEL[1].CVAL"/>
+    <bit_field offset="0" width="32" name="TMR_CUR_VAL" access="RO" reset_value="0xFFFFFFFF" description="Current Timer Value">
+      <alias type="CMSIS" value="LPIT_CVAL_TMR_CUR_VAL(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x38" width="32" name="TCTRL1" description="Timer Control Register">
+    <alias type="CMSIS" value="CHANNEL[1].TCTRL"/>
+    <bit_field offset="0" width="1" name="T_EN" access="RW" reset_value="0" description="Timer Enable">
+      <alias type="CMSIS" value="LPIT_TCTRL_T_EN(x)"/>
+      <bit_field_value name="TCTRL1_T_EN_0b0" value="0b0" description="Timer Channel is disabled"/>
+      <bit_field_value name="TCTRL1_T_EN_0b1" value="0b1" description="Timer Channel is enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CHAIN" access="RW" reset_value="0" description="Chain Channel">
+      <alias type="CMSIS" value="LPIT_TCTRL_CHAIN(x)"/>
+      <bit_field_value name="TCTRL1_CHAIN_0b0" value="0b0" description="Channel Chaining is disabled. Channel Timer runs independently."/>
+      <bit_field_value name="TCTRL1_CHAIN_0b1" value="0b1" description="Channel Chaining is enabled. Timer decrements on previous channel's timeout"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="MODE" access="RW" reset_value="0" description="Timer Operation Mode">
+      <alias type="CMSIS" value="LPIT_TCTRL_MODE(x)"/>
+      <bit_field_value name="TCTRL1_MODE_0b00" value="0b00" description="32-bit Periodic Counter"/>
+      <bit_field_value name="TCTRL1_MODE_0b01" value="0b01" description="Dual 16-bit Periodic Counter"/>
+      <bit_field_value name="TCTRL1_MODE_0b10" value="0b10" description="32-bit Trigger Accumulator"/>
+      <bit_field_value name="TCTRL1_MODE_0b11" value="0b11" description="32-bit Trigger Input Capture"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="12" reset_value="0"/>
+    <bit_field offset="16" width="1" name="TSOT" access="RW" reset_value="0" description="Timer Start On Trigger">
+      <alias type="CMSIS" value="LPIT_TCTRL_TSOT(x)"/>
+      <bit_field_value name="TCTRL1_TSOT_0b0" value="0b0" description="Timer starts to decrement immediately based on restart condition (controlled by TSOI bit)"/>
+      <bit_field_value name="TCTRL1_TSOT_0b1" value="0b1" description="Timer starts to decrement when rising edge on selected trigger is detected"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="TSOI" access="RW" reset_value="0" description="Timer Stop On Interrupt">
+      <alias type="CMSIS" value="LPIT_TCTRL_TSOI(x)"/>
+      <bit_field_value name="TCTRL1_TSOI_0b0" value="0b0" description="The channel timer does not stop after timeout."/>
+      <bit_field_value name="TCTRL1_TSOI_0b1" value="0b1" description="The channel timer will stop after a timeout, and the channel timer will restart based on TSOT. When TSOT = 0, the channel timer will restart after a rising edge on the T_EN bit is detected (which means that the timer channel is disabled and then enabled); when TSOT = 1, the channel timer will restart after a rising edge on the selected trigger is detected."/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="TROT" access="RW" reset_value="0" description="Timer Reload On Trigger">
+      <alias type="CMSIS" value="LPIT_TCTRL_TROT(x)"/>
+      <bit_field_value name="TCTRL1_TROT_0b0" value="0b0" description="Timer will not reload on selected trigger"/>
+      <bit_field_value name="TCTRL1_TROT_0b1" value="0b1" description="Timer will reload on selected trigger"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="4" reset_value="0"/>
+    <bit_field offset="23" width="1" name="TRG_SRC" access="RW" reset_value="0" description="Trigger Source">
+      <alias type="CMSIS" value="LPIT_TCTRL_TRG_SRC(x)"/>
+      <bit_field_value name="TCTRL1_TRG_SRC_0b0" value="0b0" description="Trigger source selected in external"/>
+      <bit_field_value name="TCTRL1_TRG_SRC_0b1" value="0b1" description="Trigger source selected is the internal trigger"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="TRG_SEL" access="RW" reset_value="0" description="Trigger Select">
+      <alias type="CMSIS" value="LPIT_TCTRL_TRG_SEL(x)"/>
+      <bit_field_value name="TCTRL1_TRG_SEL_0b0000to0b0011" value="0b0000-0b0011" description="Timer channel 0 - 3 trigger source is selected."/>
+      <bit_field_value name="TCTRL1_TRG_SEL_0b0100to0b1111" value="0b0100-0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x3C" width="32" name="RFU1" description="Reserved for Future Use">
+    <alias type="CMSIS" value="CHANNEL[1].RFU"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x40" width="32" name="TVAL2" description="Timer Value Register">
+    <alias type="CMSIS" value="CHANNEL[2].TVAL"/>
+    <bit_field offset="0" width="32" name="TMR_VAL" access="RW" reset_value="0" description="Timer Value">
+      <alias type="CMSIS" value="LPIT_TVAL_TMR_VAL(x)"/>
+      <bit_field_value name="TVAL2_TMR_VAL_0b00000000000000000000000000000000" value="0b00000000000000000000000000000000" description="Invalid load value in compare modes."/>
+      <bit_field_value name="TVAL2_TMR_VAL_0b00000000000000000000000000000001" value="0b00000000000000000000000000000001" description="Invalid load value in compare modes."/>
+      <bit_field_value name="TVAL2_TMR_VAL_0b00000000000000000000000000000010to0b11111111111111111111111111111111" value="0b00000000000000000000000000000010-0b11111111111111111111111111111111" description="Value to be loaded (Compare Mode) or Value of Timer (Capture Mode)"/>
+    </bit_field>
+  </register>
+  <register offset="0x44" width="32" name="CVAL2" description="Current Timer Value">
+    <alias type="CMSIS" value="CHANNEL[2].CVAL"/>
+    <bit_field offset="0" width="32" name="TMR_CUR_VAL" access="RO" reset_value="0xFFFFFFFF" description="Current Timer Value">
+      <alias type="CMSIS" value="LPIT_CVAL_TMR_CUR_VAL(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x48" width="32" name="TCTRL2" description="Timer Control Register">
+    <alias type="CMSIS" value="CHANNEL[2].TCTRL"/>
+    <bit_field offset="0" width="1" name="T_EN" access="RW" reset_value="0" description="Timer Enable">
+      <alias type="CMSIS" value="LPIT_TCTRL_T_EN(x)"/>
+      <bit_field_value name="TCTRL2_T_EN_0b0" value="0b0" description="Timer Channel is disabled"/>
+      <bit_field_value name="TCTRL2_T_EN_0b1" value="0b1" description="Timer Channel is enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CHAIN" access="RW" reset_value="0" description="Chain Channel">
+      <alias type="CMSIS" value="LPIT_TCTRL_CHAIN(x)"/>
+      <bit_field_value name="TCTRL2_CHAIN_0b0" value="0b0" description="Channel Chaining is disabled. Channel Timer runs independently."/>
+      <bit_field_value name="TCTRL2_CHAIN_0b1" value="0b1" description="Channel Chaining is enabled. Timer decrements on previous channel's timeout"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="MODE" access="RW" reset_value="0" description="Timer Operation Mode">
+      <alias type="CMSIS" value="LPIT_TCTRL_MODE(x)"/>
+      <bit_field_value name="TCTRL2_MODE_0b00" value="0b00" description="32-bit Periodic Counter"/>
+      <bit_field_value name="TCTRL2_MODE_0b01" value="0b01" description="Dual 16-bit Periodic Counter"/>
+      <bit_field_value name="TCTRL2_MODE_0b10" value="0b10" description="32-bit Trigger Accumulator"/>
+      <bit_field_value name="TCTRL2_MODE_0b11" value="0b11" description="32-bit Trigger Input Capture"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="12" reset_value="0"/>
+    <bit_field offset="16" width="1" name="TSOT" access="RW" reset_value="0" description="Timer Start On Trigger">
+      <alias type="CMSIS" value="LPIT_TCTRL_TSOT(x)"/>
+      <bit_field_value name="TCTRL2_TSOT_0b0" value="0b0" description="Timer starts to decrement immediately based on restart condition (controlled by TSOI bit)"/>
+      <bit_field_value name="TCTRL2_TSOT_0b1" value="0b1" description="Timer starts to decrement when rising edge on selected trigger is detected"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="TSOI" access="RW" reset_value="0" description="Timer Stop On Interrupt">
+      <alias type="CMSIS" value="LPIT_TCTRL_TSOI(x)"/>
+      <bit_field_value name="TCTRL2_TSOI_0b0" value="0b0" description="The channel timer does not stop after timeout."/>
+      <bit_field_value name="TCTRL2_TSOI_0b1" value="0b1" description="The channel timer will stop after a timeout, and the channel timer will restart based on TSOT. When TSOT = 0, the channel timer will restart after a rising edge on the T_EN bit is detected (which means that the timer channel is disabled and then enabled); when TSOT = 1, the channel timer will restart after a rising edge on the selected trigger is detected."/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="TROT" access="RW" reset_value="0" description="Timer Reload On Trigger">
+      <alias type="CMSIS" value="LPIT_TCTRL_TROT(x)"/>
+      <bit_field_value name="TCTRL2_TROT_0b0" value="0b0" description="Timer will not reload on selected trigger"/>
+      <bit_field_value name="TCTRL2_TROT_0b1" value="0b1" description="Timer will reload on selected trigger"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="4" reset_value="0"/>
+    <bit_field offset="23" width="1" name="TRG_SRC" access="RW" reset_value="0" description="Trigger Source">
+      <alias type="CMSIS" value="LPIT_TCTRL_TRG_SRC(x)"/>
+      <bit_field_value name="TCTRL2_TRG_SRC_0b0" value="0b0" description="Trigger source selected in external"/>
+      <bit_field_value name="TCTRL2_TRG_SRC_0b1" value="0b1" description="Trigger source selected is the internal trigger"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="TRG_SEL" access="RW" reset_value="0" description="Trigger Select">
+      <alias type="CMSIS" value="LPIT_TCTRL_TRG_SEL(x)"/>
+      <bit_field_value name="TCTRL2_TRG_SEL_0b0000to0b0011" value="0b0000-0b0011" description="Timer channel 0 - 3 trigger source is selected."/>
+      <bit_field_value name="TCTRL2_TRG_SEL_0b0100to0b1111" value="0b0100-0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x4C" width="32" name="RFU2" description="Reserved for Future Use">
+    <alias type="CMSIS" value="CHANNEL[2].RFU"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x50" width="32" name="TVAL3" description="Timer Value Register">
+    <alias type="CMSIS" value="CHANNEL[3].TVAL"/>
+    <bit_field offset="0" width="32" name="TMR_VAL" access="RW" reset_value="0" description="Timer Value">
+      <alias type="CMSIS" value="LPIT_TVAL_TMR_VAL(x)"/>
+      <bit_field_value name="TVAL3_TMR_VAL_0b00000000000000000000000000000000" value="0b00000000000000000000000000000000" description="Invalid load value in compare modes."/>
+      <bit_field_value name="TVAL3_TMR_VAL_0b00000000000000000000000000000001" value="0b00000000000000000000000000000001" description="Invalid load value in compare modes."/>
+      <bit_field_value name="TVAL3_TMR_VAL_0b00000000000000000000000000000010to0b11111111111111111111111111111111" value="0b00000000000000000000000000000010-0b11111111111111111111111111111111" description="Value to be loaded (Compare Mode) or Value of Timer (Capture Mode)"/>
+    </bit_field>
+  </register>
+  <register offset="0x54" width="32" name="CVAL3" description="Current Timer Value">
+    <alias type="CMSIS" value="CHANNEL[3].CVAL"/>
+    <bit_field offset="0" width="32" name="TMR_CUR_VAL" access="RO" reset_value="0xFFFFFFFF" description="Current Timer Value">
+      <alias type="CMSIS" value="LPIT_CVAL_TMR_CUR_VAL(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x58" width="32" name="TCTRL3" description="Timer Control Register">
+    <alias type="CMSIS" value="CHANNEL[3].TCTRL"/>
+    <bit_field offset="0" width="1" name="T_EN" access="RW" reset_value="0" description="Timer Enable">
+      <alias type="CMSIS" value="LPIT_TCTRL_T_EN(x)"/>
+      <bit_field_value name="TCTRL3_T_EN_0b0" value="0b0" description="Timer Channel is disabled"/>
+      <bit_field_value name="TCTRL3_T_EN_0b1" value="0b1" description="Timer Channel is enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CHAIN" access="RW" reset_value="0" description="Chain Channel">
+      <alias type="CMSIS" value="LPIT_TCTRL_CHAIN(x)"/>
+      <bit_field_value name="TCTRL3_CHAIN_0b0" value="0b0" description="Channel Chaining is disabled. Channel Timer runs independently."/>
+      <bit_field_value name="TCTRL3_CHAIN_0b1" value="0b1" description="Channel Chaining is enabled. Timer decrements on previous channel's timeout"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="MODE" access="RW" reset_value="0" description="Timer Operation Mode">
+      <alias type="CMSIS" value="LPIT_TCTRL_MODE(x)"/>
+      <bit_field_value name="TCTRL3_MODE_0b00" value="0b00" description="32-bit Periodic Counter"/>
+      <bit_field_value name="TCTRL3_MODE_0b01" value="0b01" description="Dual 16-bit Periodic Counter"/>
+      <bit_field_value name="TCTRL3_MODE_0b10" value="0b10" description="32-bit Trigger Accumulator"/>
+      <bit_field_value name="TCTRL3_MODE_0b11" value="0b11" description="32-bit Trigger Input Capture"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="12" reset_value="0"/>
+    <bit_field offset="16" width="1" name="TSOT" access="RW" reset_value="0" description="Timer Start On Trigger">
+      <alias type="CMSIS" value="LPIT_TCTRL_TSOT(x)"/>
+      <bit_field_value name="TCTRL3_TSOT_0b0" value="0b0" description="Timer starts to decrement immediately based on restart condition (controlled by TSOI bit)"/>
+      <bit_field_value name="TCTRL3_TSOT_0b1" value="0b1" description="Timer starts to decrement when rising edge on selected trigger is detected"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="TSOI" access="RW" reset_value="0" description="Timer Stop On Interrupt">
+      <alias type="CMSIS" value="LPIT_TCTRL_TSOI(x)"/>
+      <bit_field_value name="TCTRL3_TSOI_0b0" value="0b0" description="The channel timer does not stop after timeout."/>
+      <bit_field_value name="TCTRL3_TSOI_0b1" value="0b1" description="The channel timer will stop after a timeout, and the channel timer will restart based on TSOT. When TSOT = 0, the channel timer will restart after a rising edge on the T_EN bit is detected (which means that the timer channel is disabled and then enabled); when TSOT = 1, the channel timer will restart after a rising edge on the selected trigger is detected."/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="TROT" access="RW" reset_value="0" description="Timer Reload On Trigger">
+      <alias type="CMSIS" value="LPIT_TCTRL_TROT(x)"/>
+      <bit_field_value name="TCTRL3_TROT_0b0" value="0b0" description="Timer will not reload on selected trigger"/>
+      <bit_field_value name="TCTRL3_TROT_0b1" value="0b1" description="Timer will reload on selected trigger"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="4" reset_value="0"/>
+    <bit_field offset="23" width="1" name="TRG_SRC" access="RW" reset_value="0" description="Trigger Source">
+      <alias type="CMSIS" value="LPIT_TCTRL_TRG_SRC(x)"/>
+      <bit_field_value name="TCTRL3_TRG_SRC_0b0" value="0b0" description="Trigger source selected in external"/>
+      <bit_field_value name="TCTRL3_TRG_SRC_0b1" value="0b1" description="Trigger source selected is the internal trigger"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="TRG_SEL" access="RW" reset_value="0" description="Trigger Select">
+      <alias type="CMSIS" value="LPIT_TCTRL_TRG_SEL(x)"/>
+      <bit_field_value name="TCTRL3_TRG_SEL_0b0000to0b0011" value="0b0000-0b0011" description="Timer channel 0 - 3 trigger source is selected."/>
+      <bit_field_value name="TCTRL3_TRG_SEL_0b0100to0b1111" value="0b0100-0b1111" description="Reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x5C" width="32" name="RFU3" description="Reserved for Future Use">
+    <alias type="CMSIS" value="CHANNEL[3].RFU"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+</regs:peripheral>

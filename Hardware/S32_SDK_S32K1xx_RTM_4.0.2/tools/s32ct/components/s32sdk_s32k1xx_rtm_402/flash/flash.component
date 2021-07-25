@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="flash" label="flash" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.flash" version="1.0.0"/>
+   <description>FLASH</description>
+   <mode id="general" label="General" available="true">
+      <description>Flash general mode</description>
+      <config_set_refs>
+         <config_set_ref>flash_driver</config_set_ref>
+      </config_set_refs>
+      <master_peripheral exclusive="false">
+         <peripheral_type>FTFC</peripheral_type>
+         <peripheral_type>FTFM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="flash_driver" label="FLASH Configuration" from_source="flash_driver.h">
+      <description>Flash Configuration</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="flash_default" label="Default Values" available="true">
+            <description>FLASH Default Configuration</description>
+            <set id="flashConfig.0.Configuration">Flash_InitConfig0</set>
+            <set id="flashConfig.0.readOnly">true</set>
+            <set id="FlashConfig.0.PFlashBase">0x00000000</set>
+            <set id="FlashConfig.0.DFlashBase">0x10000000</set>
+            <set id="FlashConfig.0.EERAMBase">0x14000000</set>
+            <set id="FlashConfig.0.CallBack">NULL_CALLBACK</set>
+         </quick_selection>
+         <default>flash_default</default>
+      </quick_selections>
+      <user_types>
+         <array id="flashConfigArray" label="FLASH Configuration List" type="flash_user_config_t" options="ShowContentAs=Table">
+            <item_defaults>
+            <set_default id="Configuration" value_expr="x -> (`Flash_InitConfig` + x.getID())"/>
+            <set_default id="readOnly" value_expr="x -> (`true`)"/>
+            <set_default id="PFlashBase" value_expr="x -> (`0x00000000`)"/>
+            <set_default id="PFlashSize" value_expr="x -> (getFeature(`FEATURE_FLASH_DEFAULT_NUM_PFLASH_SIZE`).toString())"/>
+            <set_default id="DFlashBase" value_expr="x -> (`0x10000000`)"/>
+            <set_default id="EERAMBase" value_expr="x -> (`0x14000000`)"/>
+            <set_default id="CallBack" value_expr="x -> (`NULL_CALLBACK`)"/>
+            </item_defaults>
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+               <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+            </validation>
+         </array>
+         <struct id="flash_user_config_t" label="FLASH configuration structure" from="flash_user_config_t">
+            <string id="Configuration" label="Configuration     ">
+               <description>Configuration name</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readOnly" label="Read-only" >
+               <description>Specifies how the configuration will be generated. Read-only structures are declared with const qualifier.</description>
+            </bool>
+            <integer id="PFlashBase" label="PFlash base address" type="uint32_t">
+               <description>
+               The base address of P-Flash memory.
+               Admissible range for this item: from 0x00000000 to 0xFFFFFFFF
+               </description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt;=0xFFFFFFFF" level="error" description="Value is above admissible range."/>
+                  <constraint cond_expr="$this.getValue() &gt;=0x00000000" level="error" description="Value is below admissible range."/>
+               </validation>
+            </integer>
+            <integer id="PFlashSize" label="PFlash size" type="uint32_t">
+               <description>
+               The size in byte of P-Flash memory.
+               Admissible range for this item: from 0x1 to PFlash sise default Values.
+               </description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt;=(getFeature(`FEATURE_FLASH_MAX_NUM_PFLASH_SIZE`))" level="error" description="Value is above admissible range."/>
+                  <constraint cond_expr="$this.getValue() &gt;=0x1" level="error" description="Value is below admissible range."/>
+               </validation>
+            </integer>
+            <integer id="DFlashBase" label="DFlash base address" type="uint32_t">
+               <description>
+               For FlexNVM device, this is the base address of D-Flash memory (FlexNVM memory); For non-FlexNVM device, this field is unused.
+               Admissible range for this item: from 0x00000000 to 0xFFFFFFFF
+               </description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt;=0xFFFFFFFF" level="error" description="Value is above admissible range."/>
+                  <constraint cond_expr="$this.getValue() &gt;=0x00000000" level="error" description="Value is below admissible range."/>
+               </validation>
+            </integer>
+            <integer id="EERAMBase" label="EERAMBase address" type="uint32_t">
+               <description>
+               The base address of FlexRAM (for FlexNVM device) or acceleration RAM memory (for non-FlexNVM device).
+               Admissible range for this item: from 0x00000000 to 0xFFFFFFFF
+               </description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt;=0xFFFFFFFF" level="error" description="Value is above admissible range."/>
+                  <constraint cond_expr="$this.getValue() &gt;=0x00000000" level="error" description="Value is below admissible range."/>
+               </validation>
+            </integer>
+            <string id="CallBack" label="Callback" type="flash_callback_t">
+               <description>
+               Call back function to service the time critical events. Any code reachable from this function must not be placed in a Flash block targeted for a program/erase operation
+               </description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Callback function name must be a valid C identifier!"/>
+               </validation>
+            </string>
+         </struct>
+         <enum id="flash_flexRam_function_control_code_t" label="FlexRAM Function control Code" from="flash_flexRam_function_control_code_t">
+            <description>Implements : flash_flexRAM_function_control_code_t_Class</description>
+            <item id="EEE_ENABLE" label="Make FlexRAM available for emulated EEPROM"/>
+            <item id="EEE_QUICK_WRITE" label="Make FlexRAM available for EEPROM quick writes"/>
+            <item id="EEE_STATUS_QUERY" label="EEPROM quick write status query"/>
+            <item id="EEE_COMPLETE_INTERRUPT_QUICK_WRITE" label="Complete interrupted EEPROM quick write process"/>
+            <item id="EEE_DISABLE" label="Make FlexRAM available as RAM"/>
+         </enum>
+      </user_types>
+      <settings>
+         <reference id="flashConfig" label="User Configuration List" type="flashConfigArray" config_set_id="flash_driver" component_id="flash" available="true">
+            <description>Flash User Configuration List</description>
+         </reference>
+         <variable value="`../flash/flash.js`" id="codegen_file"></variable>
+         <variable value="`flash_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+      <generated_types>
+      </generated_types>
+   </config_set>
+</component:config_component>

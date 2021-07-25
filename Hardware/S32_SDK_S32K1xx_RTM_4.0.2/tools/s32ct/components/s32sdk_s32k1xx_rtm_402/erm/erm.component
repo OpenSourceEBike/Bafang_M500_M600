@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="erm_config" label="erm_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.erm" version="1.0.0"/>
+   <description>Error Reporting Module</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>ERM General Mode</description>
+      <config_set_refs>
+         <config_set_ref>erm</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>ERM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="erm" label="ERM Configuration" from_source="erm_driver.h">
+      <description>Error Reporting Module Configuration</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="erm_default" label="Default Values" available="true">
+            <description>ERM Default Configuration</description>
+            <set id="ermConfigArray.0.name">erm_InitConfig0</set>
+            <set id="ermConfigArray.0.userConfigReadOnly">true</set>
+            <set id="ermConfigArray.0.ermChannelConfigArray.0.channel">0</set>
+            <set id="ermConfigArray.0.ermChannelConfigArray.0.interruptCfg">erm_Interrupt0</set>
+            <set id="ermInterruptConfigArray.0.name">erm_Interrupt0</set>
+            <set id="ermInterruptConfigArray.0.interruptConfigReadOnly">true</set>
+            <set id="ermInterruptConfigArray.0.singleBitInterruptEnable">true</set>
+            <set id="ermInterruptConfigArray.0.nonCorrectableInterruptEnable">true</set>
+         </quick_selection>
+         <default>erm_default</default>
+      </quick_selections>
+      <settings>
+            <array id="ermConfigArray" label="User Configuration List" type="ermConfig_userConfig" available="true" config_set_id="erm" component_id="erm_config" options="ShowContentAs=MasterDetail" key_selector_expr="x -> (x.getSetting(`name`).value())">
+               <description>ERM User Configuration Structure List</description>
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                  <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+               </validation>
+               <item_defaults>
+                  <set_default id="name" value_expr= "x -> (`erm_InitConfig` + x.getID())"/>
+                  <set_default id="userConfigReadOnly" value_expr=" x -> (`true`)"/>
+                  <set_default id="channelCount" value_expr="x -> (`0`)"/>
+                  <set_default id="ermChannelConfigArray.0.channel" value_expr="x -> (`0`)"/>
+                  <set_default id="ermChannelConfigArray.0.interruptCfg" value_expr="x -> (`erm_Interrupt0`)"/>
+               </item_defaults>
+            </array>
+            <array id="ermInterruptConfigArray" label="Interrupt configuration list" type="ermInterruptConfig" config_set_id="erm" component_id="erm_config" options="ShowContentAs=Table">
+               <item_defaults>
+                  <set_default id="name" value_expr="x -> (`erm_Interrupt` + x.getID())"/>
+                  <set_default id="interruptConfigReadOnly" value_expr="x -> (`true`)"/>
+                  <set_default id="singleBitInterruptEnable" value_expr="x -> (`true`)"/>
+                  <set_default id="nonCorrectableInterruptEnable" value_expr="x -> (`true`)"/>
+               </item_defaults>
+               <validation>
+                  <constraint cond_expr="$this.getSize() != 0" level="error" description="At least one interrupt configuration should be added"/>
+               </validation>
+            </array>
+         <variable value="`../erm/erm_codegen.js`" id="codegen_file"></variable>
+         <variable value="`ERM_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+      <user_types>
+         <!-- User configuration -->
+         <struct id="ermConfig_userConfig" label="ERM user configuration">
+            <string id="name" label="Name">
+               <description>Configuration name</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="userConfigReadOnly" label="Read-only" >
+               <description>Specifies how the configuration will be generated. Read-only structures are declared with const qualifier.</description>
+            </bool>
+            <info id="channelCount" label="Channel count" value="$parent.ermChannelConfigArray.getSize()">
+               <description>Number of configured EIM channels</description>
+            </info>
+            <array id="ermChannelConfigArray" label="Channel configuration list" type="ermChannelConfig" options="ShowContentAs=Table">
+               <item_defaults>
+                  <set_default id="channel" value_expr="x -> (`0`)"/>
+                  <!-- Leave first interrupt config struct as default -->
+                  <set_default id="interruptCfg" value_expr="x -> (`erm_Interrupt0`)"/>
+               </item_defaults>
+               <validation>
+                  <constraint cond_expr="$this.length() &lt; 8" level="error" description="Only a maximum of 7 channels can be configured"/>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`channel`).value()).length() == 0" level="error" description="There are some duplicated `Channel number` values in the configuration"/>
+               </validation>
+            </array>
+         </struct>
+         <!-- Channel configuration -->
+         <struct id="ermChannelConfig" label="Channel configuration list" type="erm_user_config_t">
+               <integer id="channel" label="Channel number" type="uint8_t" min_expr="0" max_expr="6">
+                  <description>The number of configured ERM channel</description>
+                  <validation>
+                     <constraint cond_expr="$this.getValue() &lt; getFeature(`FEATURE_ERM_NUM_OF_CHANNELS`)" level="error" description_expr="`Channel number unavailable for this device. It must be less than ` + getFeature(`FEATURE_ERM_NUM_OF_CHANNELS`)"/>
+                  </validation>
+               </integer>
+               <dynamic_enum id="interruptCfg" label="Interrupt Configuration" items="createArray().merge($configSet.ermInterruptConfigArray.arrayToEnumItems(
+                              enumItem -&gt; true,
+                              enumItem -&gt; enumItem.getSetting(`name`).getValue(),             
+                              enumItem -&gt; enumItem.getSetting(`name`).getValue(),             
+                              enumItem -&gt; enumItem.getSetting(`name`).getValue()))" options="cStructField">
+                  <description>Interrupt Configuration assigned for the channel</description>
+               </dynamic_enum>
+         </struct>
+         <!-- Interrupt configuration -->
+         <struct id="ermInterruptConfig" label="Interrupt configuration list">
+               <string id="name" label="Name">
+                  <description>Configuration name</description>
+                  <validation>
+                     <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Interrupt configuration name must be a valid C identifier!"/>
+                  </validation>
+               </string>
+               <bool id="interruptConfigReadOnly" label="Read-only" >
+                  <description>Specifies how the configuration will be generated. Read-only structures are declared with const qualifier.</description>
+               </bool>
+               <bool id="singleBitInterruptEnable" label="Single-bit correction interrupt">
+                  <description>Single-bit correction ECC events</description>
+               </bool>
+               <bool id="nonCorrectableInterruptEnable" label="Non-correctable interrupt">
+                  <description>Non-correctable events</description>
+               </bool>
+         </struct>
+      </user_types>
+      <generated_types>
+         <enum id="erm_ecc_event_t" label="ERM types of ECC events Implements : erm_ecc_event_t_Class" from="erm_ecc_event_t">
+            <item id="ERM_EVENT_NONE" label="None events"/>
+            <item id="ERM_EVENT_SINGLE_BIT" label="Single-bit correction ECC events"/>
+            <item id="ERM_EVENT_NON_CORRECTABLE" label="Non-correctable ECC events"/>
+         </enum>
+         <struct id="erm_interrupt_config_t" label="ERM interrupt notification configuration structure Implements : erm_interrupt_config_t_Class" from="erm_interrupt_config_t">
+            <bool id="enableSingleCorrection" label="Enable Single Correction Interrupt Notification">
+               <description>Enable Single Correction Interrupt Notification</description>
+            </bool>
+            <bool id="enableNonCorrectable" label="Enable Non-Correctable Interrupt Notification">
+               <description>Enable Non-Correctable Interrupt Notification</description>
+            </bool>
+         </struct>
+         <struct id="erm_user_config_t" label="ERM user configuration structure Implements : erm_user_config_t_Class" from="erm_user_config_t">
+            <integer id="channel" label="Channel number" type="uint8_t">
+               <description>The number of configured ERM channel</description>
+            </integer>
+            <reference id="interruptCfg" label="Interrupt configuration" type="erm_interrupt_config_t *">
+               <description>Interrupt configuration assigned for the channel</description>
+            </reference>
+         </struct>
+      </generated_types>
+   </config_set>
+</component:config_component>

@@ -1,0 +1,28 @@
+var struct_s32___s_c_b___type =
+[
+    [ "ACTLR", "struct_s32___s_c_b___type.html#aaeddf37501b77a9840058e3aea6d8619", null ],
+    [ "AFSR", "struct_s32___s_c_b___type.html#aab42122603060e9d11b3bd54b7a371fa", null ],
+    [ "AIRCR", "struct_s32___s_c_b___type.html#a7d93b23abf0d31434a64075472c3c17a", null ],
+    [ "BFAR", "struct_s32___s_c_b___type.html#ac27f26d05653fd0b4804f41cfce68aca", null ],
+    [ "CCR", "struct_s32___s_c_b___type.html#ad0a7561ce407ad052568fc58f2e9f546", null ],
+    [ "CFSR", "struct_s32___s_c_b___type.html#a286fb3fad9077f9c1e637ded2902d8d2", null ],
+    [ "CPACR", "struct_s32___s_c_b___type.html#a80c19da1cd4893b5f10a8f84d29f66e5", null ],
+    [ "CPUID", "struct_s32___s_c_b___type.html#a737aa0f12ddcde2b848708ee6673ac77", null ],
+    [ "DFSR", "struct_s32___s_c_b___type.html#a20d6aa8a8d2cd4a160c9d4a5a2c41863", null ],
+    [ "FPCAR", "struct_s32___s_c_b___type.html#a1f0b1755e53d42e230ff5bc0c2f8d640", null ],
+    [ "FPCCR", "struct_s32___s_c_b___type.html#afad7be4e8a40c4f0b3b709814ee88a3e", null ],
+    [ "FPDSCR", "struct_s32___s_c_b___type.html#ae14d0e4515a5a07073d35d75c07866f2", null ],
+    [ "HFSR", "struct_s32___s_c_b___type.html#a7b32cd234ba4a96c61d74b0bf618c2d6", null ],
+    [ "ICSR", "struct_s32___s_c_b___type.html#ac6951d0cf6fd1cb046eb05cebd1d0ecd", null ],
+    [ "MMFAR", "struct_s32___s_c_b___type.html#af45e56f3921355afc079ccc8655a0915", null ],
+    [ "RESERVED_0", "struct_s32___s_c_b___type.html#ab5b3e978eb3ceb8a2aadaeeab28db00b", null ],
+    [ "RESERVED_1", "struct_s32___s_c_b___type.html#ab9f88fe5f82d75e61ca9e017c80bcca7", null ],
+    [ "RESERVED_2", "struct_s32___s_c_b___type.html#aa7cd5770466bb027d93892d03e7a1672", null ],
+    [ "RESERVED_3", "struct_s32___s_c_b___type.html#a5a576827a629dc0a1cadd1f148f7a896", null ],
+    [ "SCR", "struct_s32___s_c_b___type.html#aa95c758c7bb3f33e36288bdda2a19e38", null ],
+    [ "SHCSR", "struct_s32___s_c_b___type.html#a59e287a993a9a536affdfff96bf1052f", null ],
+    [ "SHPR1", "struct_s32___s_c_b___type.html#a2d40beb0a85783e8e1a441b426dc33b1", null ],
+    [ "SHPR2", "struct_s32___s_c_b___type.html#a87a4e54d043a761ed8d26a669971169a", null ],
+    [ "SHPR3", "struct_s32___s_c_b___type.html#ae424c80843c26ca6750524d3cb4bdc62", null ],
+    [ "VTOR", "struct_s32___s_c_b___type.html#a073fd51f685033fe60d20f1a299d6560", null ]
+];

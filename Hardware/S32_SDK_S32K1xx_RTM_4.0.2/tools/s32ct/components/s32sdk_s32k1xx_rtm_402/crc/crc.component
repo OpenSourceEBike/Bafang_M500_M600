@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="crc_config" label="crc" category="driver"
+    global_only="false"
+    xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component-7.0.xsd"
+    xmlns:component="http://swtools.freescale.net/XSD/component/1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    options="UI_COMPONENT_MODE_HIDDEN"
+    >
+    <sw_comp_ref name="platform.driver.crc" version="1.0.0"/>
+    <description>Cyclic Redundancy Check Driver</description>
+    <mode id="general_soft" label="Software Polynomial CRC"
+        available="(featureDefined(`FEATURE_CRC_MODE`) == true) &amp;&amp; (getFeature(`FEATURE_CRC_MODE`) == `SOFTWARE`)"
+        >
+        <description>CRC general mode</description>
+        <config_set_refs>
+            <config_set_ref>crc_soft</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>CRC</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <mode id="general_hard" label="Hardware Polynomial CRC"
+        available="(featureDefined(`FEATURE_CRC_MODE`) == true) &amp;&amp; (getFeature(`FEATURE_CRC_MODE`) == `HARDWARE`)"
+        >
+        <description>CRC general mode</description>
+        <config_set_refs>
+            <config_set_ref>crc_hard</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>CRC</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set id="crc_hard" label="CRC Configuration" from_source="crc_driver.h">
+        <description>Cyclic Redundancy Check Driver Configuration</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="default_crc" label="Default Configuration" available="true">
+                <description>Default Configuration</description>
+                <set id="crcConfig.0.polyRepresentation">`x^16+x^12+x^5+x^0`</set>
+            </quick_selection>
+            <default>default_crc</default>
+        </quick_selections>
+        <settings>
+            <reference id="crcConfig" label="User Configuration" type="crcConfigArray" config_set_id="crc_hard" component_id="crc_config" available="true">
+                <description>CRC User Configuration Structure</description>
+            </reference>
+            <variable value="`../crc/crc_hw_codegen.js`" id="codegen_file"></variable>
+            <variable value="`CRC_CodeGenerator`" id="codegen_class"></variable>
+        </settings>
+        <user_types>
+            <array id="crcConfigArray" label="CRC configuration array" type="crc_user_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                    <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `_Cfg` + x.getID())"/>
+                    <set_default id="readonly" value_expr="x -> (`true`)"/>
+                    <set_default id="polynomial" value_expr="x -> (`CRC_BITS_16_CCITT`)"/>
+                    <set_default id="readTranspose" value_expr="x -> (`false`)"/>
+                    <set_default id="writeTranspose" value_expr="x -> (`CRC_TRANSPOSE_BITS`)"/>
+                    <set_default id="complement" value_expr="x -> (`false`)"/>
+                    <set_default id="seed" value_expr="x -> (`0xFFFF`)"/>
+                </item_defaults>
+            </array>
+            <struct id="crc_user_config_t" label="CRC configuration structure" from="crc_user_config_t">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readonly" label="Read Only">
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+                </bool>
+                <reference id="polynomial" label="Polynomial" type="crc_mode_polynomial_t" options="cStructField">
+                    <description>Selects 8-bit, 8 bit H2F, 16-bit or 32-bit CRC protocol.</description>
+                </reference>
+                <bool id="readTranspose" label="Read Transpose" options="cStructField">
+                    <description>Swap content when reading CRC result.</description>
+                </bool>
+                <reference id="writeTranspose" label="Write Transpose" type="crc_transpose_t" options="cStructField">
+                    <description>Type of transpose when writing CRC input data.</description>
+                </reference>
+                <bool id="complementChecksum" label="Complement" options="cStructField">
+                    <description>True if the result shall be complement of the actual checksum.</description>
+                </bool>
+                <integer id="seed" label="Seed" type="uint32_t" options="cStructField">
+                    <description>Starting checksum value.</description>
+                    <validation>
+                        <constraint
+                            cond_expr="$this.getValue() &gt;= 0x0"
+                            level="error"
+                            description="Seed value must be positive."></constraint>
+                        <constraint
+                            cond_expr="$this.getValue() &lt;= 0xFF"
+                            when_expr="($parent.polynomial.getValue() == `CRC_BITS_8`) || ($parent.polynomial.getValue() == `CRC_BITS_8_H2F`)"
+                            level="error"
+                            description="Seed value must be in range [0x00 - 0xFF]."></constraint>
+                        <constraint
+                            cond_expr="$this.getValue() &lt;= 0xFFFF"
+                            when_expr="$parent.polynomial.getValue() == `CRC_BITS_16_CCITT`"
+                            level="error"
+                            description="Seed value must be in range [0x0000 - 0xFFFF]."></constraint>
+                        <constraint
+                            cond_expr="$this.getValue() &lt;= 0xFFFFFFFF"
+                            when_expr="$parent.polynomial.getValue() == `CRC_BITS_32`"
+                            level="error"
+                            description="Seed value must be in range [0x00000000 - 0xFFFFFFFF]."></constraint>
+                    </validation>
+                </integer>
+                <info id="polyRepresentation" label="Polynomial Representation" value="`x^16+x^12+x^5+x^0`"/>
+            </struct>
+            <enum id="crc_mode_polynomial_t" from="crc_mode_polynomial_t">
+                <item id="CRC_BITS_8" label="8-bit CRC"/>
+                <item id="CRC_BITS_8_H2F" label="8-bit H2F CRC"/>
+                <item id="CRC_BITS_16_CCITT" label="16-bit CCITT CRC"/>
+                <item id="CRC_BITS_32" label="32-bit CRC"/>
+            </enum>
+            <enum id="crc_transpose_t" from="crc_transpose_t">
+                <item id="CRC_TRANSPOSE_NONE" label="No transpose"/>
+                <item id="CRC_TRANSPOSE_BITS" label="Transpose bits"/>
+                <item id="CRC_TRANSPOSE_BYTES" label="Transpose bytes"/>
+            </enum>
+        </user_types>
+        <generated_types>
+            <enum id="crc_transpose_t" label="CRC type of transpose of read write data Implements : crc_transpose_t_Class" from="crc_transpose_t">
+                <item id="CRC_TRANSPOSE_NONE" label="No transpose"/>
+                <item id="CRC_TRANSPOSE_BITS" label="Transpose bits in bytes"/>
+                <item id="CRC_TRANSPOSE_BITS_AND_BYTES" label="Transpose bytes and bits in bytes"/>
+                <item id="CRC_TRANSPOSE_BYTES" label="Transpose bytes"/>
+            </enum>
+            <enum id="crc_bit_width_t" label="CRC bit width Implements : crc_bit_width_t_Class" from="crc_bit_width_t">
+                <item id="CRC_BITS_16" label="Generate 16-bit CRC code"/>
+                <item id="CRC_BITS_32" label="Generate 32-bit CRC code"/>
+            </enum>
+            <enum id="crc_mode_polynomial_t" label="CRC mode polynomial Implements : crc_mode_polynomial_t_Class" from="crc_mode_polynomial_t">
+                <item id="CRC_BITS_16_CCITT" label="Generate 16-bit CRC code"/>
+                <item id="CRC_BITS_32" label="Generate 32-bit CRC code"/>
+                <item id="CRC_BITS_8" label="Generate 8-bit CRC code"/>
+                <item id="CRC_BITS_8_H2F" label="Generate 8-bit H2F CRC code"/>
+            </enum>
+            <struct id="crc_user_config_t" label="CRC configuration structure" from="crc_user_config_t">
+                <reference id="crcWidth" label="Selects 16-bit or 32-bit CRC protocol" type="crc_bit_width_t">
+                    <description>Selects 16-bit or 32-bit CRC protocol.</description>
+                </reference>
+                <reference id="polynomial" label="Selects 8-bit, 8 bit H2F, 16-bit or 32-bit CRC protocol" type="crc_mode_polynomial_t">
+                    <description>Selects 8-bit, 8 bit H2F, 16-bit or 32-bit CRC protocol.</description>
+                </reference>
+                <bool id="readTranspose" label="Swap on the CRC_OUTP content">
+                    <description>Swap on the CRC_OUTP content.</description>
+                </bool>
+                <reference id="writeTranspose" label="Type of transpose when writing CRC input data" type="crc_transpose_t">
+                    <description>Type of transpose when writing CRC input data.</description>
+                </reference>
+                <bool id="complementChecksum" label="True if the result shall be complement of the actual checksum">
+                    <description>True if the result shall be complement of the actual checksum.</description>
+                </bool>
+                <integer id="seed" label="Starting checksum value" type="uint32_t">
+                    <description>Starting checksum value.</description>
+                </integer>
+            </struct>
+        </generated_types>
+    </config_set>
+    <config_set id="crc_soft" label="CRC Configuration" from_source="crc_driver.h">
+        <description>Cyclic Redundancy Check Driver Configuration</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="dv_crc" label="Default Configuration" available="true">
+                <description>Default Configuration</description>
+                <set id="crcConfig.0.polyRepresentation">`x^12+x^5+x^0`</set>
+            </quick_selection>
+            <default>dv_crc</default>
+        </quick_selections>
+        <settings>
+            <reference id="crcConfig" label="User Configuration" type="crcConfigArray" config_set_id="crc_soft" component_id="crc_config" available="true">
+                <description>CRC User Configuration Structure</description>
+            </reference>
+            <variable value="`../crc/crc_sw_codegen.js`" id="codegen_file"></variable>
+            <variable value="`CRC_CodeGenerator`" id="codegen_class"></variable>
+        </settings>
+        <user_types>
+            <array id="crcConfigArray" label="CRC configuration array" type="crc_user_config_t"
+                options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN"
+                key_selector_expr="x -> (x.getSetting(`name`).value())"
+                min_expr="1"
+                >
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                    <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `_Cfg` + x.getID())"/>
+                    <set_default id="readonly" value_expr="x -> (`true`)"/>
+                    <set_default id="readTranspose" value_expr="x -> (`CRC_TRANSPOSE_NONE`)"/>
+                    <set_default id="writeTranspose" value_expr="x -> (`CRC_TRANSPOSE_NONE`)"/>
+                    <set_default id="complementChecksum" value_expr="x -> (`false`)"/>
+                    <set_default id="polynomial" value_expr="x -> (`0x1021`)"/>
+                    <set_default id="polyRepresentation" value_expr="x -> (`x^16+x^12+x^5+x^0`)"/>
+                    <set_default id="seed" value_expr="x -> (`0xFFFF`)"/>
+                </item_defaults>
+            </array>
+            <struct id="crc_user_config_t" label="CRC configuration structure" from="crc_user_config_t">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readonly" label="Read Only">
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+                </bool>
+                <reference id="crcWidth" label="Width" type="crc_bit_width_t" options="cStructField">
+                    <description>Selects 16-bit or 32-bit CRC protocol.</description>
+                </reference>
+                <reference id="readTranspose" label="Read Transpose" type="crc_transpose_t" options="cStructField">
+                    <description>Type of transpose when reading CRC result.</description>
+                </reference>
+                <reference id="writeTranspose" label="Write Transpose" type="crc_transpose_t" options="cStructField">
+                    <description>Type of transpose when writing CRC input data.</description>
+                </reference>
+                <bool id="complementChecksum" label="Complement" options="cStructField">
+                    <description>True if the result shall be complement of the actual checksum.</description>
+                </bool>
+                <!-- Variable that calculates maximum value supported by the current polynomial -->
+                <variable id="maxValue" value="toArray(0xFFFF, 0xFFFFFFFF).get($parent.crcWidth.enumItemsOf().searchInArray(x -> (x.getId() == $parent.crcWidth.getValue())))"/>
+                <integer id="polynomial" label="Polynomial" type="uint32_t" options="cStructField" min_expr="0x0" max_expr="$parent.maxValue.getValue()">
+                    <description>Selects 16-bit or 32-bit CRC protocol.</description>
+                </integer>
+                <info id="polyRepresentation" label="Polynomial Representation" value="`x^16+x^12+x^5+x^0`"/>
+                <integer id="seed" label="Seed" type="uint32_t" options="cStructField" min_expr="0x0" max_expr="$parent.maxValue.getValue()">
+                    <description>Starting checksum value.</description>
+                </integer>
+            </struct>
+            <enum id="crc_bit_width_t" label="CRC bit width Implements : crc_bit_width_t_Class" from="crc_bit_width_t">
+                <item id="CRC_BITS_16" label="16-bit CRC"/>
+                <item id="CRC_BITS_32" label="32-bit CRC"/>
+            </enum>
+        </user_types>
+        <generated_types>
+            <enum id="crc_transpose_t" label="CRC type of transpose of read write data Implements : crc_transpose_t_Class" from="crc_transpose_t">
+                <item id="CRC_TRANSPOSE_NONE" label="No transpose"/>
+                <item id="CRC_TRANSPOSE_BITS" label="Transpose bits in bytes"/>
+                <item id="CRC_TRANSPOSE_BITS_AND_BYTES" label="Transpose bytes and bits in bytes"/>
+                <item id="CRC_TRANSPOSE_BYTES" label="Transpose bytes"/>
+            </enum>
+            <enum id="crc_bit_width_t" label="CRC bit width Implements : crc_bit_width_t_Class" from="crc_bit_width_t">
+                <item id="CRC_BITS_16" label="Generate 16-bit CRC code"/>
+                <item id="CRC_BITS_32" label="Generate 32-bit CRC code"/>
+            </enum>
+            <enum id="crc_mode_polynomial_t" label="CRC mode polynomial Implements : crc_mode_polynomial_t_Class" from="crc_mode_polynomial_t">
+                <item id="CRC_BITS_16_CCITT" label="Generate 16-bit CRC code"/>
+                <item id="CRC_BITS_32" label="Generate 32-bit CRC code"/>
+                <item id="CRC_BITS_8" label="Generate 8-bit CRC code"/>
+                <item id="CRC_BITS_8_H2F" label="Generate 8-bit H2F CRC code"/>
+            </enum>
+            <struct id="crc_user_config_t" label="CRC configuration structure" from="crc_user_config_t">
+                <reference id="crcWidth" label="Selects 16-bit or 32-bit CRC protocol" type="crc_bit_width_t">
+                    <description>Selects 16-bit or 32-bit CRC protocol.</description>
+                </reference>
+                <reference id="polynomial" label="Selects 8-bit, 8 bit H2F, 16-bit or 32-bit CRC protocol" type="crc_mode_polynomial_t">
+                    <description>Selects 8-bit, 8 bit H2F, 16-bit or 32-bit CRC protocol.</description>
+                </reference>
+                <bool id="readTranspose" label="Swap on the CRC_OUTP content">
+                    <description>Swap on the CRC_OUTP content.</description>
+                </bool>
+                <reference id="writeTranspose" label="Type of transpose when writing CRC input data" type="crc_transpose_t">
+                    <description>Type of transpose when writing CRC input data.</description>
+                </reference>
+                <bool id="complementChecksum" label="True if the result shall be complement of the actual checksum">
+                    <description>True if the result shall be complement of the actual checksum.</description>
+                </bool>
+                <integer id="seed" label="Starting checksum value" type="uint32_t">
+                    <description>Starting checksum value.</description>
+                </integer>
+            </struct>
+        </generated_types>
+    </config_set>
+</component:config_component>

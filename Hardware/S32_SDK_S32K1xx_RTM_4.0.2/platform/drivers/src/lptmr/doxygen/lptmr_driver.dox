@@ -1,0 +1,103 @@
+/**
+@defgroup lptmr_driver LPTMR Driver
+@ingroup lptmr
+@brief Low Power Timer Peripheral Driver
+<p>
+The LPTMR is a configurable general-purpose 16-bit counter that has two
+operational modes: Timer and Pulse-Counter.
+
+Depending on the configured operational mode, the counter in the LPTMR can
+be incremented using a clock input (Timer mode) or an event counter (external
+events like button presses or internal events from different trigger sources).
+
+## Timer Mode ##
+In Timer mode, the LPTMR increments the internal counter from a selectable
+clock source. An optional 16-bit prescaler can be configured.
+
+## Pulse-Counter Mode ##
+In Pulse-Counter Mode, the LPTMR counter increments from a selectable
+trigger source, input pin, which can be an external event (like a button
+press) or internal events (like triggers from TRGMUX).
+
+An optional 16-bit glitch-filter can be configured to reject events that have
+a duration below a set period.
+
+## Initialization prerequisites ##
+Before configuring the LPTMR, the peripheral clock must be enabled
+from the PCC module.
+
+The peripheral clock must not be confused with the counter clock, which is selectable
+within the LPTMR.
+
+## Driver configuration ##
+The LPTMR driver allows configuring the LPTMR for Pulse-Counter Mode or Timer Mode
+via the general configuration structure.
+
+Configurable options:
+    - work mode (timer or pulse-counter)
+    - enable interrupts and DMA requests
+    - free running mode (overflow mode of the counter)
+    - compare value (interrupt generation on counter value)
+    - compare value measurement units (counter ticks or microseconds)
+    - input clock selection
+    - prescaler/glitch filter configuration
+    - enable bypass prescaler
+    - pin select (for pulse-counter mode)
+    - input pin and polarity (for pulse-counter mode)
+~~~~~{.c}
+/* LPTMR initialization of config structure */
+lptmr_config_t config = {
+  .workMode = LPTMR_WORKMODE_TIMER,
+  .dmaRequest = false,
+  .interruptEnable = false,
+  .freeRun = false,
+  .compareValue = 1000U,
+  .counterUnits = LPTMR_COUNTER_UNITS_TICKS,
+  .clockSelect = LPTMR_CLOCKSOURCE_SIRCDIV2,
+  .prescaler = LPTMR_PRESCALE_2,
+  .bypassPrescaler = false,
+  .pinSelect = LPTMR_PINSELECT_TRGMUX,
+  .pinPolarity = LPTMR_PINPOLARITY_RISING,
+};
+
+/* Initialize the LPTMR and start the counter in a separate operation */
+status = LPTMR_DRV_Init(0, &config, false);
+/* Start timer counting */
+LPTMR_DRV_StartCounter(0);
+~~~~~
+</p>
+<p>
+## API ##
+Some of the features exposed by the API are targeted specifically for Timer Mode or
+Pulse-Counter Mode. For example, configuring the Compare Value in microseconds makes sense
+only for Timer Mode, so therefor it is restricted for use in Pulse-Counter mode.
+
+For any invalid configuration the functions will either return an error code or trigger DEV_ASSERT (if enabled).
+For more details, please refer to each function description.
+</p>
+
+## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\lptmr_driver.c
+${S32SDK_PATH}\platform\drivers\src\lptmr_hw_access.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+\ref clock_manager
+
+*/

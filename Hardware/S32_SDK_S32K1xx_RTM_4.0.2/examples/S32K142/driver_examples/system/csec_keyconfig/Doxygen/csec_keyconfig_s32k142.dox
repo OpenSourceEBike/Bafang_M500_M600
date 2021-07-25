@@ -1,0 +1,84 @@
+/*!
+    @page csec_keyconfig_s32k142_group CSEc key configuration
+    @brief Basic application that presents basic usecases for the CSEc driver
+
+    @note <b>This example works only for CSEc enabled parts.</b> SIM_SDID indicates whether CSEc is available on your device.
+    @note <b>The first time when running the example on the board, or after a key erase, this example should be ran from RAM.</b>
+    @note <b>The user keys are non-volatile.</b> Once the key was loaded, in order to update it, the counter should be increased.
+    @note <b>After the user key was loaded using this example, any further full erase of the Flash requires a Challenge-Authentication process.</b> This can be done by setting the ERASE_ALL_KEYS macro to 1.
+    @note <b>After partitioning Flash for CSEc operation, using the JLink Flash configuration of any other project will not work anymore.</b> Workaround:
+    - Run csec_keyconfig example with ERASE_ALL_KEYS 1, using PEmicro Flash debug configuration
+
+    ## Application description ##
+    _____
+    The purpose of this demo application is to show the user how to use the Cryptographic Services Engine module from the S32K142 MCU with the S32 SDK API.
+
+    The implementation demonstrates the following:
+        - the enablement of the CSEc module, by showing how the Flash should be partitioned (using the Flash driver);
+        - configuring the MASTER_ECU key;
+        - configuring the first user key, using the MASTER_ECU key as an authorization;
+        - using the user key for an encryption.
+    In order to update the user key after they were configured using the example, the user should increase the counter used for loading the key. Please note that user should increase counter in order to keep the encryption take its place successfully for 2 cases:
+        - The user key was already loaded by previous run.
+        - The example already ran from RAM for CSEc partition.
+    Erasing all the configured keys (including the MASTER_ECU key) can be done by changing the value of the ERASE_ALL_KEYS macro to 1. This will place the part back into factory status (the partition command will need to be run again).
+    Please note that when the Flash is partitioned (the first time running the example on the board, or after a key erase), the example should not be run
+    from Flash (please use the RAM configuration).
+
+    ## Prerequisites ##
+    _____
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board cannot be powered from the USB port)
+    - 1 Personal Computer
+    - 1 PEmicro/Jlink Lite Debugger (optional, users can use Open SDA)
+
+    ## Boards supported ##
+    _____
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+    - S32K142-MB
+
+    ## Hardware Wiring ##
+    _____
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION         | S32K142EVB-Q100                | S32K142-MB
+    ---------------------|--------------------------------|-----------
+    RED_LED (\b PTD15)   | RGB_RED - wired on the board   | J12.17 - J11.31
+    GREEN_LED (\b PTD16) | RGB_GREEN - wired on the board | J12.16 - J11.30
+
+    ## How to run ##
+    _____
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New \b S32DS \b Project \b From \bExample and select \b csec_keyconfig_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    Wait for the S32 Configuration was initialized and ready.
+
+    #### 2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    Left click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar).
+    In S32 Configuration menu, click on the desired configurator (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components.
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user.
+    Make the desired changes (if any) then click "Update Code".
+
+    #### 3. Building the project ####
+    Select the configuration to be built \b RAM (Debug_RAM) or \b FLASH (Debug_FLASH) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be four debug configurations for this project:
+     Configuration Name | Description
+     -------------------|------------
+     \b csec_keyconfig_s32k142_debug_ram_jlink | Debug the RAM configuration using Segger Jlink debuggers
+     \b csec_keyconfig_s32k142_debug_flash_jlink | Debug the FLASH configuration using Segger Jlink debuggers
+     \b csec_keyconfig_s32k142_debug_ram_pemicro | Debug the RAM configuration using PEMicro debuggers
+     \b csec_keyconfig_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+
+*/
+

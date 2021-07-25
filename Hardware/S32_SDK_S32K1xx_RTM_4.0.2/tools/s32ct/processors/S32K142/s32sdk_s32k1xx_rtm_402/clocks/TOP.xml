@@ -1,0 +1,408 @@
+<?xml version="1.0"?>
+<clocks:top_level xmlns:clocks="http://apif.freescale.net/schemas/clocks/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://apif.freescale.net/schemas/clocks/1.1 http://apif.freescale.net/schemas/clocks/1.1/clocks.xsd">
+  <diagram file="S32K1xx.dsn"/>
+  <power_modes file="POWER_MODES.xml"/>
+  <component id="s32k_top_level">
+    <instance_header>
+      <instance_description>Clock model for the SCG module (parameterized, shared accross all S32K parts)</instance_description>
+    </instance_header>
+    <interface>
+      <output_clock_signal id="SPLL_CLK_OUT" name="SPLL_CLK_OUT" description="SPLL clock source."/>
+      <output_clock_signal id="CORE_CLK" name="Core clock" description="Clocks the ARM core, divided by DIVCORE bits inside SCG."/>
+      <output_clock_signal id="SYS_CLK" name="System clock" description="System clock."/>
+      <output_clock_signal id="BUS_CLK" name="Bus clock" description="Clocks the chip peripherals."/>
+      <output_clock_signal id="FLASH_CLK" name="Flash clock" description="Clocks the flash module."/>
+      <output_clock_signal id="SPLLDIV1_CLK" name="Divided SPLL1_CLK" description="This should be configured to 80MHz or less in RUN mode and 112 MHz or less in HSRUN mode." group="peripheral"/>
+      <output_clock_signal id="SPLLDIV2_CLK" name="Divided SPLL2_CLK" description="This should be configured to 40 MHz or less in RUN mode and 56 MHz or less in HSRUN mode." group="peripheral"/>
+      <output_clock_signal id="FIRCDIV1_CLK" name="Divided FIRC1_CLK" description="This should be configured to 48 MHz or less in RUN mode." group="peripheral"/>
+      <output_clock_signal id="FIRCDIV2_CLK" name="Divided FIRC2_CLK" description="This should be configured to 48 MHz or less in RUN mode." group="peripheral"/>
+      <output_clock_signal id="SIRCDIV1_CLK" name="Divided SIRC1_CLK" description="This should be configured to 8 MHz or less in RUN mode and to 4 MHz or less in VLPR/VLPS mode." group="peripheral"/>
+      <output_clock_signal id="SIRCDIV2_CLK" name="Divided SIRC2_CLK" description="This should be configured to 8 MHz or less in RUN mode and to 4 MHz or less in VLPR/VLPS mode." group="peripheral"/>
+      <output_clock_signal id="SOSCDIV1_CLK" name="Divided SOSC1_CLK" description="This should be configured to 40 MHz or less in RUN mode." group="peripheral"/>
+      <output_clock_signal id="SOSCDIV2_CLK" name="Divided SOSC2_CLK" description="This should be configured to 40 MHz or less in RUN mode." group="peripheral"/>
+      <output_clock_signal id="SCGCLKOUT" name="SCGCLKOUT" description="SCG clock output"/>
+      <output_clock_signal id="CLKOUT" name="CLKOUT" description="Selected from one of eight internal clock sources."/>
+      <output_clock_signal id="LPO_CLK" name="LPO_CLK" description="Clock output generated from one of three LPO clocks sources (LPO128K_CLK, LPO32K_CLK, LPO1K_CLK)."/>
+      <output_clock_signal id="LPO_1K_CLK" name="LPO_1K_CLK" description="LPO 1K Clock."/>
+      <output_clock_signal id="RTC_CLK" name="RTC_CLK" description="RTC Clock."/>
+      <output_clock_signal id="LPSPI0_CLK" name="LPSPI0_CLK" description="LPSPI0 clock output signal."/>
+      <output_clock_signal id="LPSPI1_CLK" name="LPSPI1_CLK" description="LPSPI1 clock output signal."/>
+      <output_clock_signal id="LPUART0_CLK" name="LPUART0_CLK" description="LPUART0 clock output signal."/>
+      <output_clock_signal id="LPUART1_CLK" name="LPUART1_CLK" description="LPUART1 clock output signal."/>
+      <output_clock_signal id="LPI2C0_CLK" name="LPI2C0_CLK" description="LPI2C0 clock output signal."/>
+      <output_clock_signal id="LPTMR0_CLK" name="LPTMR0_CLK" description="LPTMR0 clock output signal."/>
+      <output_clock_signal id="LPIT0_CLK" name="LPIT0_CLK" description="LPIT0 clock output signal."/>
+      <output_clock_signal id="FlexIO0_CLK" name="FlexIO0_CLK" description="FlexIO0 clock output signal."/>
+      <output_clock_signal id="ADC0_CLK" name="ADC0_CLK" description="ADC0 clock output signal."/>
+      <output_clock_signal id="ADC1_CLK" name="ADC1_CLK" description="ADC1 clock output signal."/>
+      <output_clock_signal id="FTM0_CLK" name="FTM0_CLK" description="FTM0 clock output signal."/>
+      <output_clock_signal id="FTM1_CLK" name="FTM1_CLK" description="FTM1 clock output signal."/>
+      <output_clock_signal id="FTM2_CLK" name="FTM2_CLK" description="FTM2 clock output signal."/>
+      <output_clock_signal id="FTM3_CLK" name="FTM3_CLK" description="FTM3 clock output signal."/>
+      <output_clock_signal id="CMP0_CLK" name="CMP0_CLK" description="CMP0 clock output signal."/>
+      <output_clock_signal id="CRC0_CLK" name="CRC0_CLK" description="CRC0 clock output signal."/>
+      <output_clock_signal id="DMAMUX0_CLK" name="DMAMUX0_CLK" description="DMAMUX0 clock output signal."/>
+      <output_clock_signal id="EWM0_CLK" name="EWM0_CLK" description="EWM0 clock output signal."/>
+      <output_clock_signal id="FTFC0_CLK" name="FTFC0_CLK" description="FTFC0 clock output signal."/>
+      <output_clock_signal id="PDB0_CLK" name="PDB0_CLK" description="PDB0 clock output signal."/>
+      <output_clock_signal id="PDB1_CLK" name="PDB1_CLK" description="PDB1 clock output signal."/>
+      <output_clock_signal id="FLEXCAN0_CLK" name="FLEXCAN0_CLK" description="FLEXCAN0 clock output signal."/>
+      <output_clock_signal id="FLEXCAN1_CLK" name="FLEXCAN1_CLK" description="FLEXCAN1 clock output signal."/>
+      <output_clock_signal id="RTC0_CLK" name="RTC0_CLK" description="RTC0 clock output signal."/>
+      <output_clock_signal id="EIM0_CLK" name="EIM0_CLK" description="EIM0 clock output signal."/>
+      <output_clock_signal id="ERM0_CLK" name="ERM0_CLK" description="ERM0 clock output signal."/>
+      <output_clock_signal id="DMA0_CLK" name="DMA0_CLK" description="DMA0 clock output signal."/>
+      <output_clock_signal id="MPU0_CLK" name="MPU0_CLK" description="MPU0 clock output signal."/>
+      <output_clock_signal id="MSCM0_CLK" name="MSCM0_CLK" description="MSCM0 clock output signal."/>
+      <output_clock_signal id="TRACE_CLK" name="TRACE_CLK" description="TRACE clock output signal."/>
+      <output_clock_signal id="PORTA_CLK" name="PORTA_CLK" description="PORTA clock output signal."/>
+      <output_clock_signal id="PORTB_CLK" name="PORTB_CLK" description="PORTB clock output signal."/>
+      <output_clock_signal id="PORTC_CLK" name="PORTC_CLK" description="PORTC clock output signal."/>
+      <output_clock_signal id="PORTD_CLK" name="PORTD_CLK" description="PORTD clock output signal."/>
+      <output_clock_signal id="PORTE_CLK" name="PORTE_CLK" description="PORTE clock output signal."/>
+      <output_clock_signal id="TCLK_0_EXT_REF" name="TCLK_0 EXT REF clock" description="TCLK_0 EXT REF clock"/>
+      <output_clock_signal id="TCLK_1_EXT_REF" name="TCLK_1 EXT REF clock" description="TCLK_1 EXT REF clock"/>
+      <output_clock_signal id="TCLK_2_EXT_REF" name="TCLK_2 EXT REF clock" description="TCLK_2 EXT REF clock"/>
+      <output_clock_signal id="FTM0_EXT_PIN_CLK" name="FTM0 PIN Clock" description="FTM0 PIN Clock"/>
+      <output_clock_signal id="FTM1_EXT_PIN_CLK" name="FTM1 PIN Clock" description="FTM1 PIN Clock"/>
+      <output_clock_signal id="FTM2_EXT_PIN_CLK" name="FTM2 PIN Clock" description="FTM2 PIN Clock"/>
+      <output_clock_signal id="FTM3_EXT_PIN_CLK" name="FTM3 PIN Clock" description="FTM3 PIN Clock"/>
+    </interface>
+    <implementation>
+      <component_instance id="PCC" name="PCC" component="PCC" peripheral="PCC" file="PCC.xml">
+        <signal_map>
+          <input signal="SCG.BUS_CLK" component_signal="BUS_CLK"/>
+          <input signal="SCG.SYS_CLK" component_signal="SYS_CLK"/>
+          <input signal="SCG.CORE_CLK" component_signal="CORE_CLK"/>
+          <input signal="SCG.FLASH_CLK" component_signal="FLASH_CLK"/>
+          <input signal="SCG.SOSCDIV1_CLK" component_signal="SOSCDIV1_CLK_IN"/>
+          <input signal="SCG.SIRCDIV1_CLK" component_signal="SIRCDIV1_CLK_IN"/>
+          <input signal="SCG.FIRCDIV1_CLK" component_signal="FIRCDIV1_CLK_IN"/>
+          <input signal="SCG.SPLLDIV1_CLK" component_signal="SPLLDIV1_CLK_IN"/>
+          <input signal="SCG.SOSCDIV2_CLK" component_signal="SOSCDIV2_CLK_IN"/>
+          <input signal="SCG.SIRCDIV2_CLK" component_signal="SIRCDIV2_CLK_IN"/>
+          <input signal="SCG.FIRCDIV2_CLK" component_signal="FIRCDIV2_CLK_IN"/>
+          <input signal="SCG.SPLLDIV2_CLK" component_signal="SPLLDIV2_CLK_IN"/>
+          <input signal="LPOCLKSEL.clk" component_signal="LPO_CLK_IN"/>
+          <input signal="FTM0_EXT_CLK_SEL.clk" component_signal="FTM0_EXT_PIN_CLK_IN"/>
+          <input signal="FTM1_EXT_CLK_SEL.clk" component_signal="FTM1_EXT_PIN_CLK_IN"/>
+          <input signal="FTM2_EXT_CLK_SEL.clk" component_signal="FTM2_EXT_PIN_CLK_IN"/>
+          <input signal="FTM3_EXT_CLK_SEL.clk" component_signal="FTM3_EXT_PIN_CLK_IN"/>
+        </signal_map>
+      </component_instance>
+      <component_instance id="SCG" name="SCG" component="SCG" peripheral="SCG" file="SCG.xml">
+        <signal_map/>
+      </component_instance>
+      <clock_select id="SIM_CLKOUTSEL" name="SIM_CLKOUTSEL" description="Selects the clock to output on the CLKOUT pin.">
+        <value_map expr="SIM::CHIPCTL[CLKOUTSEL]">
+          <input ctrl_value="0" signal="SCG.SCGCLKOUT_CLK" name="SCG clock output" description="SCGCLKOUT"/>
+          <input ctrl_value="2" signal="SCG.SOSCDIV2_CLK" name="Divided SOSC2_CLK" description="SOSCDIV2CLK"/>
+          <input ctrl_value="4" signal="SCG.SIRCDIV2_CLK" name="Divided SIRC2_CLK" description="SIRCDIV2CLK"/>
+          <input ctrl_value="6" signal="SCG.FIRCDIV2_CLK" name="Divided FIRC2_CLK" description="FIRCDIV2CLK"/>
+          <input ctrl_value="7" signal="SCG.CORE_CLK" name="HCLK" description="HCLK"/>
+          <input ctrl_value="8" signal="SCG.SPLLDIV2_CLK" name="Divided SPLL2_CLK" description="SPLLDIV2CLK"/>
+          <input ctrl_value="9" signal="SCG.BUS_CLK" name="BUS_CLK" description="BUS_CLK"/>
+          <input ctrl_value="10" signal="PMC.LPO128k_CLK" name="LPO 128kHz clock" description="The Low Power Oscillator (LPO) is an internal 128 KHz RC oscillator."/>
+          <input ctrl_value="12" signal="LPOCLKSEL.clk" name="LPO clock selection." description="LPO_CLK"/>
+          <input ctrl_value="14" signal="RTCCLKSEL.clk" name="RTC clock selection." description="RTCCLKSEL"/>
+        </value_map>
+      </clock_select>
+      <prescaler id="CLKOUTDIV" name="CLKOUTDIV" description="CLKOUT Divide Ratio" min="0">
+        <input signal="SIM_CLKOUTSEL.clk"/>
+        <value_map expr="SIM::CHIPCTL[CLKOUTDIV]">
+          <divide expr="1" ctrl_value="0b000"/>
+          <divide expr="2" ctrl_value="0b001"/>
+          <divide expr="3" ctrl_value="0b010"/>
+          <divide expr="4" ctrl_value="0b011"/>
+          <divide expr="5" ctrl_value="0b100"/>
+          <divide expr="6" ctrl_value="0b101"/>
+          <divide expr="7" ctrl_value="0b110"/>
+          <divide expr="8" ctrl_value="0b111"/>
+        </value_map>
+      </prescaler>
+      <component_instance id="PMC" name="PMC" component="PMC" peripheral="PMC" file="PMC.xml">
+        <signal_map/>
+      </component_instance>
+      <component_instance id="RTC" name="RTC" component="RTC" peripheral="RTC" file="RTC.xml">
+        <signal_map/>
+      </component_instance>
+      <component_instance id="external_clocks" name="external_clocks" component="external_clocks" peripheral="" file="external_clocks.xml">
+        <signal_map/>
+      </component_instance>
+      <clock_select id="RTCCLKSEL" name="RTCCLKSEL" description="RTC clock selection.">
+        <value_map expr="SIM::LPOCLKS[RTCCLKSEL]">
+          <input ctrl_value="0" signal="SCG.SOSCDIV1_CLK" name="System oscillator clock"/>
+          <input ctrl_value="1" signal="LPO32K_CLK.clk" name="LPO32K_CLK IRC clock"/>
+          <input ctrl_value="2" signal="RTC.RTC_CLKIN" name="RTC_CLKIN IRC clock"/>
+          <input ctrl_value="3" signal="SCG.FIRCDIV1_CLK" name="FIRCDIV1_CLK IRC clock"/>
+        </value_map>
+      </clock_select>
+      <clock_select id="LPOCLKSEL" name="LPOCLKSEL" description="LPO clock selection.">
+        <value_map expr="SIM::LPOCLKS[LPOCLKSEL]">
+          <input ctrl_value="0" signal="PMC.LPO128k_CLK" name="LPO 128 KHz"/>
+          <input ctrl_value="2" signal="LPO32K_CLK.clk" name="LPO 32 KHz"/>
+          <input ctrl_value="3" signal="LPO1K_CLK.clk" name="LPO 1 KHz"/>
+          <no_clock ctrl_value="1" name="No clock"/>
+        </value_map>
+      </clock_select>
+      <prescaler id="LPO32K_CLK" name="Divider LPO32k" description="LPO second counter divider (fixed)">
+        <input signal="PMC.LPO128k_CLK"/>
+        <enable cond_expr="(SIM::LPOCLKS[LPO32KCLKEN] == 1)" description="This output can be enable/disabled by the {{lpoClockConfig}} settings."/>
+        <divide expr="4"/>
+      </prescaler>
+      <prescaler id="LPO1K_CLK" name="LPO1K Clock" description="LPO second counter divider (fixed)">
+        <input signal="LPO32K_CLK.clk"/>
+        <enable cond_expr="(SIM::LPOCLKS[LPO32KCLKEN] == 1 &amp;&amp; SIM::LPOCLKS[LPO1KCLKEN] == 1)" description="This output can be enable/disabled by the {{lpoClockConfig}} settings."/>
+        <divide expr="32"/>
+      </prescaler>
+      <clock_select id="FTM0_EXT_CLK_SEL" name="FTM0_EXT_CLK_SEL" description="FTM0 External Clock Pin Select.">
+        <value_map expr="SIM::FTMOPT0[FTM0CLKSEL]">
+          <input ctrl_value="0" signal="external_clocks.TCLK0EXTREFOUT.clk" name="FTM0 external clock driven by TCLK0 pin"/>
+          <input ctrl_value="1" signal="external_clocks.TCLK1EXTREFOUT.clk" name="FTM0 external clock driven by TCLK1 pin"/>
+          <input ctrl_value="2" signal="external_clocks.TCLK2EXTREFOUT.clk" name="FTM0 external clock driven by TCLK2 pin"/>
+          <no_clock ctrl_value="3" name="no clock"/>
+        </value_map>
+      </clock_select>
+      <clock_select id="FTM1_EXT_CLK_SEL" name="FTM1_EXT_CLK_SEL" description="FTM1 External Clock Pin Select.">
+        <value_map expr="SIM::FTMOPT0[FTM1CLKSEL]">
+          <input ctrl_value="0" signal="external_clocks.TCLK0EXTREFOUT.clk" name="FTM1 external clock driven by TCLK0 pin"/>
+          <input ctrl_value="1" signal="external_clocks.TCLK1EXTREFOUT.clk" name="FTM1 external clock driven by TCLK1 pin"/>
+          <input ctrl_value="2" signal="external_clocks.TCLK2EXTREFOUT.clk" name="FTM1 external clock driven by TCLK2 pin"/>
+          <no_clock ctrl_value="3" name="no clock"/>
+        </value_map>
+      </clock_select>
+      <clock_select id="FTM2_EXT_CLK_SEL" name="FTM2_EXT_CLK_SEL" description="FTM2 External Clock Pin Select.">
+        <value_map expr="SIM::FTMOPT0[FTM2CLKSEL]">
+          <input ctrl_value="0" signal="external_clocks.TCLK0EXTREFOUT.clk" name="FTM2 external clock driven by TCLK0 pin"/>
+          <input ctrl_value="1" signal="external_clocks.TCLK1EXTREFOUT.clk" name="FTM2 external clock driven by TCLK1 pin"/>
+          <input ctrl_value="2" signal="external_clocks.TCLK2EXTREFOUT.clk" name="FTM2 external clock driven by TCLK2 pin"/>
+          <no_clock ctrl_value="3" name="no clock"/>
+        </value_map>
+      </clock_select>
+      <clock_select id="FTM3_EXT_CLK_SEL" name="FTM3_EXT_CLK_SEL" description="FTM3 External Clock Pin Select.">
+        <value_map expr="SIM::FTMOPT0[FTM3CLKSEL]">
+          <input ctrl_value="0" signal="external_clocks.TCLK0EXTREFOUT.clk" name="FTM3 external clock driven by TCLK0 pin"/>
+          <input ctrl_value="1" signal="external_clocks.TCLK1EXTREFOUT.clk" name="FTM3 external clock driven by TCLK1 pin"/>
+          <input ctrl_value="2" signal="external_clocks.TCLK2EXTREFOUT.clk" name="FTM3 external clock driven by TCLK2 pin"/>
+          <no_clock ctrl_value="3" name="no clock"/>
+        </value_map>
+      </clock_select>
+      <map_output id="SPLL_CLK_OUT">
+        <input signal="SCG.SPLL_CLK_OUT"/>
+      </map_output>
+      <map_output id="CORE_CLK">
+        <input signal="SCG.CORE_CLK"/>
+      </map_output>
+      <map_output id="SYS_CLK">
+        <input signal="SCG.SYS_CLK"/>
+      </map_output>
+      <map_output id="BUS_CLK">
+        <input signal="SCG.BUS_CLK"/>
+      </map_output>
+      <map_output id="FLASH_CLK">
+        <input signal="SCG.FLASH_CLK"/>
+      </map_output>
+      <map_output id="SPLLDIV1_CLK">
+        <input signal="SCG.SPLLDIV1_CLK"/>
+      </map_output>
+      <map_output id="SPLLDIV2_CLK">
+        <input signal="SCG.SPLLDIV2_CLK"/>
+      </map_output>
+      <map_output id="FIRCDIV1_CLK">
+        <input signal="SCG.FIRCDIV1_CLK"/>
+      </map_output>
+      <map_output id="FIRCDIV2_CLK">
+        <input signal="SCG.FIRCDIV2_CLK"/>
+      </map_output>
+      <map_output id="SIRCDIV1_CLK">
+        <input signal="SCG.SIRCDIV1_CLK"/>
+      </map_output>
+      <map_output id="SIRCDIV2_CLK">
+        <input signal="SCG.SIRCDIV2_CLK"/>
+      </map_output>
+      <map_output id="SOSCDIV1_CLK">
+        <input signal="SCG.SOSCDIV1_CLK"/>
+      </map_output>
+      <map_output id="SOSCDIV2_CLK">
+        <input signal="SCG.SOSCDIV2_CLK"/>
+      </map_output>
+      <map_output id="SCGCLKOUT">
+        <input signal="SCG.SCGCLKOUT_CLK"/>
+      </map_output>
+      <map_output id="LPO_CLK">
+        <input signal="LPOCLKSEL.clk"/>
+      </map_output>
+      <map_output id="LPO_1K_CLK">
+        <input signal="LPO1K_CLK.clk"/>
+      </map_output>
+      <map_output id="RTC_CLK">
+        <input signal="RTCCLKSEL.clk"/>
+      </map_output>
+      <map_output id="LPSPI0_CLK">
+        <input signal="PCC.LPSPI0_CLK"/>
+        <!-- <constraint cond_expr="LPSPI0_CLK.outFreq &lt;= BUS_CLK.outFreq" description="LPSPI0 frequency must be less than BUS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="LPSPI1_CLK">
+        <input signal="PCC.LPSPI1_CLK"/>
+        <!-- <constraint cond_expr="LPSPI1_CLK.outFreq &lt;= BUS_CLK.outFreq" description="LPSPI1 frequency must be less than BUS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="LPUART0_CLK">
+        <input signal="PCC.LPUART0_CLK"/>
+        <!-- <constraint cond_expr="LPUART0_CLK.outFreq &lt;= BUS_CLK.outFreq" description="LPUART0 frequency must be less than BUS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="LPUART1_CLK">
+        <input signal="PCC.LPUART1_CLK"/>
+        <!-- <constraint cond_expr="LPUART1_CLK.outFreq &lt;= BUS_CLK.outFreq" description="LPUART1 frequency must be less than BUS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="LPI2C0_CLK">
+        <input signal="PCC.LPI2C0_CLK"/>
+        <!-- <constraint cond_expr="LPI2C0_CLK.outFreq &lt;= BUS_CLK.outFreq" description="LPI2C0 frequency must be less than BUS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="LPTMR0_CLK">
+        <input signal="PCC.LPTMR0_CLK"/>
+        <!-- <constraint cond_expr="LPTMR0_CLK.outFreq &lt;= BUS_CLK.outFreq" description="LPTMR0 frequency must be less than BUS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="LPIT0_CLK">
+        <input signal="PCC.LPIT0_CLK"/>
+        <!-- <constraint cond_expr="LPIT0_CLK.outFreq &lt;= BUS_CLK.outFreq" description="LPIT frequency must be less than BUS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="FlexIO0_CLK">
+        <input signal="PCC.FlexIO0_CLK"/>
+        <!-- <constraint cond_expr="FlexIO_CLK.outFreq &lt;= BUS_CLK.outFreq" description="LPIT frequency must be less than BUS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="ADC0_CLK">
+        <input signal="PCC.ADC0_CLK"/>
+        <!-- <constraint cond_expr="ADC0_CLK.outFreq &lt;= BUS_CLK.outFreq" description="ADC0 frequency must be less than BUS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="ADC1_CLK">
+        <input signal="PCC.ADC1_CLK"/>
+        <!-- <constraint cond_expr="ADC1_CLK.outFreq &lt;= BUS_CLK.outFreq" description="ADC1 frequency must be less than BUS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="FTM0_CLK">
+        <input signal="PCC.FTM0_CLK"/>
+        <!-- <constraint cond_expr="FTM0_CLK.outFreq &lt;= SYS_CLK.outFreq" description="FTM0 frequency must be less than SYS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="FTM1_CLK">
+        <input signal="PCC.FTM1_CLK"/>
+        <!-- <constraint cond_expr="FTM1_CLK.outFreq &lt;= SYS_CLK.outFreq" description="FTM1 frequency must be less than SYS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="FTM2_CLK">
+        <input signal="PCC.FTM2_CLK"/>
+        <!-- <constraint cond_expr="FTM2_CLK.outFreq &lt;= SYS_CLK.outFreq" description="FTM2 frequency must be less than SYS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="FTM3_CLK">
+        <input signal="PCC.FTM3_CLK"/>
+        <!-- <constraint cond_expr="FTM3_CLK.outFreq &lt;= SYS_CLK.outFreq" description="FTM3 frequency must be less than SYS_CLK frequency"/> -->
+      </map_output>
+      <map_output id="CMP0_CLK">
+        <input signal="PCC.CMP0_CLK"/>
+      </map_output>
+      <map_output id="CRC0_CLK">
+        <input signal="PCC.CRC0_CLK"/>
+      </map_output>
+      <map_output id="DMAMUX0_CLK">
+        <input signal="PCC.DMAMUX0_CLK"/>
+      </map_output>
+      <map_output id="EWM0_CLK">
+        <input signal="PCC.EWM0_CLK"/>
+      </map_output>
+      <map_output id="FTFC0_CLK">
+        <input signal="PCC.FTFC0_CLK"/>
+      </map_output>
+      <map_output id="PDB0_CLK">
+        <input signal="PCC.PDB0_CLK"/>
+      </map_output>
+      <map_output id="PDB1_CLK">
+        <input signal="PCC.PDB1_CLK"/>
+      </map_output>
+      <map_output id="FLEXCAN0_CLK">
+        <input signal="PCC.FLEXCAN0_CLK"/>
+      </map_output>
+      <map_output id="FLEXCAN1_CLK">
+        <input signal="PCC.FLEXCAN1_CLK"/>
+      </map_output>
+      <map_output id="RTC0_CLK">
+        <input signal="PCC.RTC0_CLK"/>
+      </map_output>
+      <map_output id="EIM0_CLK">
+        <input signal="PCC.EIM0_CLK"/>
+      </map_output>
+      <map_output id="ERM0_CLK">
+        <input signal="PCC.ERM0_CLK"/>
+      </map_output>
+      <map_output id="DMA0_CLK">
+        <input signal="PCC.DMA0_CLK"/>
+      </map_output>
+      <map_output id="MPU0_CLK">
+        <input signal="PCC.MPU0_CLK"/>
+      </map_output>
+      <map_output id="MSCM0_CLK">
+        <input signal="PCC.MSCM0_CLK"/>
+      </map_output>
+      <map_output id="TRACE_CLK">
+        <input signal="PCC.TRACE_CLK"/>
+      </map_output>
+      <map_output id="PORTA_CLK">
+        <input signal="PCC.PORTA_CLK"/>
+      </map_output>
+      <map_output id="PORTB_CLK">
+        <input signal="PCC.PORTB_CLK"/>
+      </map_output>
+      <map_output id="PORTC_CLK">
+        <input signal="PCC.PORTC_CLK"/>
+      </map_output>
+      <map_output id="PORTD_CLK">
+        <input signal="PCC.PORTD_CLK"/>
+      </map_output>
+      <map_output id="PORTE_CLK">
+        <input signal="PCC.PORTE_CLK"/>
+      </map_output>
+      <map_output id="TCLK_0_EXT_REF">
+        <input signal="external_clocks.TCLK0EXTREFOUT"/>
+      </map_output>
+      <map_output id="TCLK_1_EXT_REF">
+        <input signal="external_clocks.TCLK1EXTREFOUT"/>
+      </map_output>
+      <map_output id="TCLK_2_EXT_REF">
+        <input signal="external_clocks.TCLK2EXTREFOUT"/>
+      </map_output>
+      <map_output id="FTM0_EXT_PIN_CLK">
+        <input signal="FTM0_EXT_CLK_SEL.clk"/>
+      </map_output>
+      <map_output id="FTM1_EXT_PIN_CLK">
+        <input signal="FTM1_EXT_CLK_SEL.clk"/>
+      </map_output>
+      <map_output id="FTM2_EXT_PIN_CLK">
+        <input signal="FTM2_EXT_CLK_SEL.clk"/>
+      </map_output>
+      <map_output id="FTM3_EXT_PIN_CLK">
+        <input signal="FTM3_EXT_CLK_SEL.clk"/>
+      </map_output>
+      <map_output id="CLKOUT">
+        <input signal="CLKOUTDIV.clk"/>
+        <enable cond_expr="(CLKOUTConfig == `yes` &amp;&amp; CLKOUTEnable == `Enabled`)" description="This output can be enabled/disabled by the {{CLKOUTConfig}} settings."/>
+        <configuration_element id="CLKOUTConfig" name="Initialize CLKOUT clock" description="The CLKOUT clock selector initialization">
+          <default value="yes"/>
+          <item id="yes" description="yes">
+          </item>
+          <item id="no" description="no">
+          </item>
+        </configuration_element>
+        <configuration_element id="CLKOUTEnable" name="Enable CLKOUT clock" description="Enable the CLKOUT clock">
+          <enable cond_expr="CLKOUTConfig == `yes`" description="This output can be enabled/disabled by the {{CLKOUTConfig}} settings."/>
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="SIM::CHIPCTL" bit_field="CLKOUTEN" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="SIM::CHIPCTL" bit_field="CLKOUTEN" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+      </map_output>
+    </implementation>
+  </component>
+</clocks:top_level>

@@ -1,0 +1,509 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="CPxTYPE" description="Processor X Type Register">
+    <alias type="CMSIS" value="CPXTYPE"/>
+    <bit_field offset="0" width="8" name="RYPZ" access="RO" reset_value="0" reset_mask="0" description="Processor x Revision">
+      <alias type="CMSIS" value="MSCM_CPXTYPE_RYPZ(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="24" name="PERSONALITY" access="RO" reset_value="0" reset_mask="0" description="Processor x Personality">
+      <alias type="CMSIS" value="MSCM_CPXTYPE_PERSONALITY(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="CPxNUM" description="Processor X Number Register">
+    <alias type="CMSIS" value="CPXNUM"/>
+    <bit_field offset="0" width="1" name="CPN" access="RO" reset_value="0" reset_mask="0" description="Processor x Number">
+      <alias type="CMSIS" value="MSCM_CPXNUM_CPN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="CPxMASTER" description="Processor X Master Register">
+    <alias type="CMSIS" value="CPXMASTER"/>
+    <bit_field offset="0" width="6" name="PPMN" access="RO" reset_value="0" reset_mask="0" description="Processor x Physical Master Number">
+      <alias type="CMSIS" value="MSCM_CPXMASTER_PPMN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="26" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="CPxCOUNT" description="Processor X Count Register">
+    <alias type="CMSIS" value="CPXCOUNT"/>
+    <bit_field offset="0" width="2" name="PCNT" access="RO" reset_value="0" description="Processor Count">
+      <alias type="CMSIS" value="MSCM_CPXCOUNT_PCNT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="CPxCFG0" description="Processor X Configuration Register 0">
+    <alias type="CMSIS" value="CPXCFG0"/>
+    <bit_field offset="0" width="8" name="DCWY" access="RO" reset_value="0" reset_mask="0" description="Level 1 Data Cache Ways">
+      <alias type="CMSIS" value="MSCM_CPXCFG0_DCWY(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="DCSZ" access="RO" reset_value="0" reset_mask="0" description="Level 1 Data Cache Size">
+      <alias type="CMSIS" value="MSCM_CPXCFG0_DCSZ(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="ICWY" access="RO" reset_value="0" reset_mask="0" description="Level 1 Instruction Cache Ways">
+      <alias type="CMSIS" value="MSCM_CPXCFG0_ICWY(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="ICSZ" access="RO" reset_value="0" reset_mask="0" description="Level 1 Instruction Cache Size">
+      <alias type="CMSIS" value="MSCM_CPXCFG0_ICSZ(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x14" width="32" name="CPxCFG1" description="Processor X Configuration Register 1">
+    <alias type="CMSIS" value="CPXCFG1"/>
+    <reserved_bit_field offset="0" width="16" reset_value="0"/>
+    <bit_field offset="16" width="8" name="L2WY" access="RO" reset_value="0" reset_mask="0" description="Level 2 Instruction Cache Ways">
+      <alias type="CMSIS" value="MSCM_CPXCFG1_L2WY(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="L2SZ" access="RO" reset_value="0" reset_mask="0" description="Level 2 Instruction Cache Size">
+      <alias type="CMSIS" value="MSCM_CPXCFG1_L2SZ(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x18" width="32" name="CPxCFG2" description="Processor X Configuration Register 2">
+    <alias type="CMSIS" value="CPXCFG2"/>
+    <reserved_bit_field offset="0" width="8" reset_value="0x1"/>
+    <bit_field offset="8" width="8" name="TMUSZ" access="RO" reset_value="0" reset_mask="0" description="Tightly-coupled Memory Upper Size">
+      <alias type="CMSIS" value="MSCM_CPXCFG2_TMUSZ(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="8" reset_value="0x1"/>
+    <bit_field offset="24" width="8" name="TMLSZ" access="RO" reset_value="0" reset_mask="0" description="Tightly-coupled Memory Lower Size">
+      <alias type="CMSIS" value="MSCM_CPXCFG2_TMLSZ(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x1C" width="32" name="CPxCFG3" description="Processor X Configuration Register 3">
+    <alias type="CMSIS" value="CPXCFG3"/>
+    <bit_field offset="0" width="1" name="FPU" access="RO" reset_value="0" reset_mask="0" description="Floating Point Unit">
+      <alias type="CMSIS" value="MSCM_CPXCFG3_FPU(x)"/>
+      <bit_field_value name="CPxCFG3_FPU_0b0" value="0b0" description="FPU support is not included."/>
+      <bit_field_value name="CPxCFG3_FPU_0b1" value="0b1" description="FPU support is included."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SIMD" access="RO" reset_value="0" reset_mask="0" description="SIMD/NEON instruction support">
+      <alias type="CMSIS" value="MSCM_CPXCFG3_SIMD(x)"/>
+      <bit_field_value name="CPxCFG3_SIMD_0b0" value="0b0" description="SIMD/NEON support is not included."/>
+      <bit_field_value name="CPxCFG3_SIMD_0b1" value="0b1" description="SIMD/NEON support is included."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="JAZ" access="RO" reset_value="0" reset_mask="0" description="Jazelle support">
+      <alias type="CMSIS" value="MSCM_CPXCFG3_JAZ(x)"/>
+      <bit_field_value name="CPxCFG3_JAZ_0b0" value="0b0" description="Jazelle support is not included."/>
+      <bit_field_value name="CPxCFG3_JAZ_0b1" value="0b1" description="Jazelle support is included."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="MMU" access="RO" reset_value="0" reset_mask="0" description="Memory Management Unit">
+      <alias type="CMSIS" value="MSCM_CPXCFG3_MMU(x)"/>
+      <bit_field_value name="CPxCFG3_MMU_0b0" value="0b0" description="MMU support is not included."/>
+      <bit_field_value name="CPxCFG3_MMU_0b1" value="0b1" description="MMU support is included."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="TZ" access="RO" reset_value="0" reset_mask="0" description="Trust Zone">
+      <alias type="CMSIS" value="MSCM_CPXCFG3_TZ(x)"/>
+      <bit_field_value name="CPxCFG3_TZ_0b0" value="0b0" description="Trust Zone support is not included."/>
+      <bit_field_value name="CPxCFG3_TZ_0b1" value="0b1" description="Trust Zone support is included."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CMP" access="RO" reset_value="0" reset_mask="0" description="Core Memory Protection unit">
+      <alias type="CMSIS" value="MSCM_CPXCFG3_CMP(x)"/>
+      <bit_field_value name="CPxCFG3_CMP_0b0" value="0b0" description="Core Memory Protection is not included."/>
+      <bit_field_value name="CPxCFG3_CMP_0b1" value="0b1" description="Core Memory Protection is included."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="BB" access="RO" reset_value="0" reset_mask="0" description="Bit Banding">
+      <alias type="CMSIS" value="MSCM_CPXCFG3_BB(x)"/>
+      <bit_field_value name="CPxCFG3_BB_0b0" value="0b0" description="Bit Banding is not supported."/>
+      <bit_field_value name="CPxCFG3_BB_0b1" value="0b1" description="Bit Banding is supported."/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="2" name="SBP" access="RO" reset_value="0" reset_mask="0" description="System Bus Ports">
+      <alias type="CMSIS" value="MSCM_CPXCFG3_SBP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="22" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="CP0TYPE" description="Processor 0 Type Register">
+    <alias type="CMSIS" value="CP0TYPE"/>
+    <bit_field offset="0" width="8" name="RYPZ" access="RO" reset_value="0x1" description="Processor 0 Revision">
+      <alias type="CMSIS" value="MSCM_CP0TYPE_RYPZ(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="24" name="PERSONALITY" access="RO" reset_value="0x434D34" description="Processor 0 Personality">
+      <alias type="CMSIS" value="MSCM_CP0TYPE_PERSONALITY(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x24" width="32" name="CP0NUM" description="Processor 0 Number Register">
+    <alias type="CMSIS" value="CP0NUM"/>
+    <bit_field offset="0" width="1" name="CPN" access="RO" reset_value="0" description="Processor 0 Number">
+      <alias type="CMSIS" value="MSCM_CP0NUM_CPN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x28" width="32" name="CP0MASTER" description="Processor 0 Master Register">
+    <alias type="CMSIS" value="CP0MASTER"/>
+    <bit_field offset="0" width="6" name="PPMN" access="RO" reset_value="0" description="Processor 0 Physical Master Number">
+      <alias type="CMSIS" value="MSCM_CP0MASTER_PPMN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="26" reset_value="0"/>
+  </register>
+  <register offset="0x2C" width="32" name="CP0COUNT" description="Processor 0 Count Register">
+    <alias type="CMSIS" value="CP0COUNT"/>
+    <bit_field offset="0" width="2" name="PCNT" access="RO" reset_value="0" description="Processor Count">
+      <alias type="CMSIS" value="MSCM_CP0COUNT_PCNT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="CP0CFG0" description="Processor 0 Configuration Register 0">
+    <alias type="CMSIS" value="CP0CFG0"/>
+    <bit_field offset="0" width="8" name="DCWY" access="RO" reset_value="0" description="Level 1 Data Cache Ways">
+      <alias type="CMSIS" value="MSCM_CP0CFG0_DCWY(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="DCSZ" access="RO" reset_value="0" description="Level 1 Data Cache Size">
+      <alias type="CMSIS" value="MSCM_CP0CFG0_DCSZ(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="ICWY" access="RO" reset_value="0" description="Level 1 Instruction Cache Ways">
+      <alias type="CMSIS" value="MSCM_CP0CFG0_ICWY(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="ICSZ" access="RO" reset_value="0x4" description="Level 1 Instruction Cache Size">
+      <alias type="CMSIS" value="MSCM_CP0CFG0_ICSZ(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x34" width="32" name="CP0CFG1" description="Processor 0 Configuration Register 1">
+    <alias type="CMSIS" value="CP0CFG1"/>
+    <reserved_bit_field offset="0" width="16" reset_value="0"/>
+    <bit_field offset="16" width="8" name="L2WY" access="RO" reset_value="0" description="Level 2 Instruction Cache Ways">
+      <alias type="CMSIS" value="MSCM_CP0CFG1_L2WY(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="L2SZ" access="RO" reset_value="0" description="Level 2 Instruction Cache Size">
+      <alias type="CMSIS" value="MSCM_CP0CFG1_L2SZ(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x38" width="32" name="CP0CFG2" description="Processor 0 Configuration Register 2">
+    <alias type="CMSIS" value="CP0CFG2"/>
+    <reserved_bit_field offset="0" width="8" reset_value="0x1"/>
+    <bit_field offset="8" width="8" name="TMUSZ" access="RO" reset_value="0x7" description="Tightly-coupled Memory Upper Size">
+      <alias type="CMSIS" value="MSCM_CP0CFG2_TMUSZ(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="8" reset_value="0x1"/>
+    <bit_field offset="24" width="8" name="TMLSZ" access="RO" reset_value="0x7" description="Tightly-coupled Memory Lower Size">
+      <alias type="CMSIS" value="MSCM_CP0CFG2_TMLSZ(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x3C" width="32" name="CP0CFG3" description="Processor 0 Configuration Register 3">
+    <alias type="CMSIS" value="CP0CFG3"/>
+    <bit_field offset="0" width="1" name="FPU" access="RO" reset_value="0x1" description="Floating Point Unit">
+      <alias type="CMSIS" value="MSCM_CP0CFG3_FPU(x)"/>
+      <bit_field_value name="CP0CFG3_FPU_0b0" value="0b0" description="FPU support is not included."/>
+      <bit_field_value name="CP0CFG3_FPU_0b1" value="0b1" description="FPU support is included."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SIMD" access="RO" reset_value="0" description="SIMD/NEON instruction support">
+      <alias type="CMSIS" value="MSCM_CP0CFG3_SIMD(x)"/>
+      <bit_field_value name="CP0CFG3_SIMD_0b0" value="0b0" description="SIMD/NEON support is not included."/>
+      <bit_field_value name="CP0CFG3_SIMD_0b1" value="0b1" description="SIMD/NEON support is included."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="JAZ" access="RO" reset_value="0" description="Jazelle support">
+      <alias type="CMSIS" value="MSCM_CP0CFG3_JAZ(x)"/>
+      <bit_field_value name="CP0CFG3_JAZ_0b0" value="0b0" description="Jazelle support is not included."/>
+      <bit_field_value name="CP0CFG3_JAZ_0b1" value="0b1" description="Jazelle support is included."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="MMU" access="RO" reset_value="0" description="Memory Management Unit">
+      <alias type="CMSIS" value="MSCM_CP0CFG3_MMU(x)"/>
+      <bit_field_value name="CP0CFG3_MMU_0b0" value="0b0" description="MMU support is not included."/>
+      <bit_field_value name="CP0CFG3_MMU_0b1" value="0b1" description="MMU support is included."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="TZ" access="RO" reset_value="0" description="Trust Zone">
+      <alias type="CMSIS" value="MSCM_CP0CFG3_TZ(x)"/>
+      <bit_field_value name="CP0CFG3_TZ_0b0" value="0b0" description="Trust Zone support is not included."/>
+      <bit_field_value name="CP0CFG3_TZ_0b1" value="0b1" description="Trust Zone support is included."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CMP" access="RO" reset_value="0" description="Core Memory Protection unit">
+      <alias type="CMSIS" value="MSCM_CP0CFG3_CMP(x)"/>
+      <bit_field_value name="CP0CFG3_CMP_0b0" value="0b0" description="Core Memory Protection is not included."/>
+      <bit_field_value name="CP0CFG3_CMP_0b1" value="0b1" description="Core Memory Protection is included."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="BB" access="RO" reset_value="0" description="Bit Banding">
+      <alias type="CMSIS" value="MSCM_CP0CFG3_BB(x)"/>
+      <bit_field_value name="CP0CFG3_BB_0b0" value="0b0" description="Bit Banding is not supported."/>
+      <bit_field_value name="CP0CFG3_BB_0b1" value="0b1" description="Bit Banding is supported."/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="2" name="SBP" access="RO" reset_value="0x1" description="System Bus Ports">
+      <alias type="CMSIS" value="MSCM_CP0CFG3_SBP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="22" reset_value="0"/>
+  </register>
+  <register offset="0x400" width="32" name="OCMDR0" description="On-Chip Memory Descriptor Register">
+    <alias type="CMSIS" value="OCMDR[0]"/>
+    <bit_field offset="0" width="4" name="OCM0" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 0">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM0(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="OCM1" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 1">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM1(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="OCM2" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 2">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM2(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="OCMPU" access="RO" reset_value="0" reset_mask="0" description="OCMPU">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMPU(x)"/>
+    </bit_field>
+    <bit_field offset="13" width="3" name="OCMT" access="RO" reset_value="0" reset_mask="0" description="OCMT">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMT(x)"/>
+      <bit_field_value name="OCMDR0_OCMT_0b000" value="0b000" description="OCMEMn is a System RAM."/>
+      <bit_field_value name="OCMDR0_OCMT_0b001" value="0b001" description="OCMEMn is a Graphics RAM."/>
+      <bit_field_value name="OCMDR0_OCMT_0b010" value="0b010" description="Reserved"/>
+      <bit_field_value name="OCMDR0_OCMT_0b011" value="0b011" description="OCMEMn is a ROM."/>
+      <bit_field_value name="OCMDR0_OCMT_0b100" value="0b100" description="OCMEMn is a Program Flash."/>
+      <bit_field_value name="OCMDR0_OCMT_0b101" value="0b101" description="OCMEMn is a Data Flash."/>
+      <bit_field_value name="OCMDR0_OCMT_0b110" value="0b110" description="OCMEMn is an EEE."/>
+      <bit_field_value name="OCMDR0_OCMT_0b111" value="0b111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="RO" access="RW" reset_value="0" reset_mask="0" description="RO">
+      <alias type="CMSIS" value="MSCM_OCMDR_RO(x)"/>
+      <bit_field_value name="OCMDR0_RO_0b0" value="0b0" description="Writes to the OCMDRn[11:0] are allowed"/>
+      <bit_field_value name="OCMDR0_RO_0b1" value="0b1" description="Writes to the OCMDRn[11:0] are ignored"/>
+    </bit_field>
+    <bit_field offset="17" width="3" name="OCMW" access="RO" reset_value="0" reset_mask="0" description="OCMW">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMW(x)"/>
+      <bit_field_value name="OCMDR0_OCMW_0b000to0b001" value="0b000-0b001" description="Reserved"/>
+      <bit_field_value name="OCMDR0_OCMW_0b010" value="0b010" description="OCMEMn 32-bits wide"/>
+      <bit_field_value name="OCMDR0_OCMW_0b011" value="0b011" description="OCMEMn 64-bits wide"/>
+      <bit_field_value name="OCMDR0_OCMW_0b100" value="0b100" description="OCMEMn 128-bits wide"/>
+      <bit_field_value name="OCMDR0_OCMW_0b101" value="0b101" description="OCMEMn 256-bits wide"/>
+      <bit_field_value name="OCMDR0_OCMW_0b110to0b111" value="0b110-0b111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0" reset_mask="0"/>
+    <bit_field offset="24" width="4" name="OCMSZ" access="RO" reset_value="0" reset_mask="0" description="OCMSZ">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMSZ(x)"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b0000" value="0b0000" description="no OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b0001" value="0b0001" description="1KB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b0010" value="0b0010" description="2KB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b0011" value="0b0011" description="4KB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b0100" value="0b0100" description="8KB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b0101" value="0b0101" description="16KB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b0110" value="0b0110" description="32KB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b0111" value="0b0111" description="64KB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b1000" value="0b1000" description="128KB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b1001" value="0b1001" description="256KB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b1010" value="0b1010" description="512KB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b1011" value="0b1011" description="1MB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b1100" value="0b1100" description="2MB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b1101" value="0b1101" description="4MB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b1110" value="0b1110" description="8MB OCMEMn"/>
+      <bit_field_value name="OCMDR0_OCMSZ_0b1111" value="0b1111" description="16MB OCMEMn"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="OCMSZH" access="RO" reset_value="0" reset_mask="0" description="OCMSZH">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMSZH(x)"/>
+      <bit_field_value name="OCMDR0_OCMSZH_0b0" value="0b0" description="OCMEMn is a power-of-2 capacity."/>
+      <bit_field_value name="OCMDR0_OCMSZH_0b1" value="0b1" description="OCMEMn is not a power-of-2, with a capacity is 0.75 * OCMSZ."/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="1" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="30" width="1" reset_value="0x1"/>
+    <bit_field offset="31" width="1" name="V" access="RO" reset_value="0" reset_mask="0" description="V">
+      <alias type="CMSIS" value="MSCM_OCMDR_V(x)"/>
+      <bit_field_value name="OCMDR0_V_0b0" value="0b0" description="OCMEMn is not present."/>
+      <bit_field_value name="OCMDR0_V_0b1" value="0b1" description="OCMEMn is present."/>
+    </bit_field>
+  </register>
+  <register offset="0x404" width="32" name="OCMDR1" description="On-Chip Memory Descriptor Register">
+    <alias type="CMSIS" value="OCMDR[1]"/>
+    <bit_field offset="0" width="4" name="OCM0" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 0">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM0(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="OCM1" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 1">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM1(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="OCM2" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 2">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM2(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="OCMPU" access="RO" reset_value="0" reset_mask="0" description="OCMPU">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMPU(x)"/>
+    </bit_field>
+    <bit_field offset="13" width="3" name="OCMT" access="RO" reset_value="0" reset_mask="0" description="OCMT">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMT(x)"/>
+      <bit_field_value name="OCMDR1_OCMT_0b000" value="0b000" description="OCMEMn is a System RAM."/>
+      <bit_field_value name="OCMDR1_OCMT_0b001" value="0b001" description="OCMEMn is a Graphics RAM."/>
+      <bit_field_value name="OCMDR1_OCMT_0b010" value="0b010" description="Reserved"/>
+      <bit_field_value name="OCMDR1_OCMT_0b011" value="0b011" description="OCMEMn is a ROM."/>
+      <bit_field_value name="OCMDR1_OCMT_0b100" value="0b100" description="OCMEMn is a Program Flash."/>
+      <bit_field_value name="OCMDR1_OCMT_0b101" value="0b101" description="OCMEMn is a Data Flash."/>
+      <bit_field_value name="OCMDR1_OCMT_0b110" value="0b110" description="OCMEMn is an EEE."/>
+      <bit_field_value name="OCMDR1_OCMT_0b111" value="0b111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="RO" access="RW" reset_value="0" reset_mask="0" description="RO">
+      <alias type="CMSIS" value="MSCM_OCMDR_RO(x)"/>
+      <bit_field_value name="OCMDR1_RO_0b0" value="0b0" description="Writes to the OCMDRn[11:0] are allowed"/>
+      <bit_field_value name="OCMDR1_RO_0b1" value="0b1" description="Writes to the OCMDRn[11:0] are ignored"/>
+    </bit_field>
+    <bit_field offset="17" width="3" name="OCMW" access="RO" reset_value="0" reset_mask="0" description="OCMW">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMW(x)"/>
+      <bit_field_value name="OCMDR1_OCMW_0b000to0b001" value="0b000-0b001" description="Reserved"/>
+      <bit_field_value name="OCMDR1_OCMW_0b010" value="0b010" description="OCMEMn 32-bits wide"/>
+      <bit_field_value name="OCMDR1_OCMW_0b011" value="0b011" description="OCMEMn 64-bits wide"/>
+      <bit_field_value name="OCMDR1_OCMW_0b100" value="0b100" description="OCMEMn 128-bits wide"/>
+      <bit_field_value name="OCMDR1_OCMW_0b101" value="0b101" description="OCMEMn 256-bits wide"/>
+      <bit_field_value name="OCMDR1_OCMW_0b110to0b111" value="0b110-0b111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0" reset_mask="0"/>
+    <bit_field offset="24" width="4" name="OCMSZ" access="RO" reset_value="0" reset_mask="0" description="OCMSZ">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMSZ(x)"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b0000" value="0b0000" description="no OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b0001" value="0b0001" description="1KB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b0010" value="0b0010" description="2KB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b0011" value="0b0011" description="4KB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b0100" value="0b0100" description="8KB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b0101" value="0b0101" description="16KB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b0110" value="0b0110" description="32KB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b0111" value="0b0111" description="64KB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b1000" value="0b1000" description="128KB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b1001" value="0b1001" description="256KB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b1010" value="0b1010" description="512KB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b1011" value="0b1011" description="1MB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b1100" value="0b1100" description="2MB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b1101" value="0b1101" description="4MB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b1110" value="0b1110" description="8MB OCMEMn"/>
+      <bit_field_value name="OCMDR1_OCMSZ_0b1111" value="0b1111" description="16MB OCMEMn"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="OCMSZH" access="RO" reset_value="0" reset_mask="0" description="OCMSZH">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMSZH(x)"/>
+      <bit_field_value name="OCMDR1_OCMSZH_0b0" value="0b0" description="OCMEMn is a power-of-2 capacity."/>
+      <bit_field_value name="OCMDR1_OCMSZH_0b1" value="0b1" description="OCMEMn is not a power-of-2, with a capacity is 0.75 * OCMSZ."/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="1" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="30" width="1" reset_value="0x1"/>
+    <bit_field offset="31" width="1" name="V" access="RO" reset_value="0" reset_mask="0" description="V">
+      <alias type="CMSIS" value="MSCM_OCMDR_V(x)"/>
+      <bit_field_value name="OCMDR1_V_0b0" value="0b0" description="OCMEMn is not present."/>
+      <bit_field_value name="OCMDR1_V_0b1" value="0b1" description="OCMEMn is present."/>
+    </bit_field>
+  </register>
+  <register offset="0x408" width="32" name="OCMDR2" description="On-Chip Memory Descriptor Register">
+    <alias type="CMSIS" value="OCMDR[2]"/>
+    <bit_field offset="0" width="4" name="OCM0" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 0">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM0(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="OCM1" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 1">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM1(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="OCM2" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 2">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM2(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="OCMPU" access="RO" reset_value="0" reset_mask="0" description="OCMPU">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMPU(x)"/>
+    </bit_field>
+    <bit_field offset="13" width="3" name="OCMT" access="RO" reset_value="0" reset_mask="0" description="OCMT">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMT(x)"/>
+      <bit_field_value name="OCMDR2_OCMT_0b000" value="0b000" description="OCMEMn is a System RAM."/>
+      <bit_field_value name="OCMDR2_OCMT_0b001" value="0b001" description="OCMEMn is a Graphics RAM."/>
+      <bit_field_value name="OCMDR2_OCMT_0b010" value="0b010" description="Reserved"/>
+      <bit_field_value name="OCMDR2_OCMT_0b011" value="0b011" description="OCMEMn is a ROM."/>
+      <bit_field_value name="OCMDR2_OCMT_0b100" value="0b100" description="OCMEMn is a Program Flash."/>
+      <bit_field_value name="OCMDR2_OCMT_0b101" value="0b101" description="OCMEMn is a Data Flash."/>
+      <bit_field_value name="OCMDR2_OCMT_0b110" value="0b110" description="OCMEMn is an EEE."/>
+      <bit_field_value name="OCMDR2_OCMT_0b111" value="0b111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="RO" access="RW" reset_value="0" reset_mask="0" description="RO">
+      <alias type="CMSIS" value="MSCM_OCMDR_RO(x)"/>
+      <bit_field_value name="OCMDR2_RO_0b0" value="0b0" description="Writes to the OCMDRn[11:0] are allowed"/>
+      <bit_field_value name="OCMDR2_RO_0b1" value="0b1" description="Writes to the OCMDRn[11:0] are ignored"/>
+    </bit_field>
+    <bit_field offset="17" width="3" name="OCMW" access="RO" reset_value="0" reset_mask="0" description="OCMW">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMW(x)"/>
+      <bit_field_value name="OCMDR2_OCMW_0b000to0b001" value="0b000-0b001" description="Reserved"/>
+      <bit_field_value name="OCMDR2_OCMW_0b010" value="0b010" description="OCMEMn 32-bits wide"/>
+      <bit_field_value name="OCMDR2_OCMW_0b011" value="0b011" description="OCMEMn 64-bits wide"/>
+      <bit_field_value name="OCMDR2_OCMW_0b100" value="0b100" description="OCMEMn 128-bits wide"/>
+      <bit_field_value name="OCMDR2_OCMW_0b101" value="0b101" description="OCMEMn 256-bits wide"/>
+      <bit_field_value name="OCMDR2_OCMW_0b110to0b111" value="0b110-0b111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0" reset_mask="0"/>
+    <bit_field offset="24" width="4" name="OCMSZ" access="RO" reset_value="0" reset_mask="0" description="OCMSZ">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMSZ(x)"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b0000" value="0b0000" description="no OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b0001" value="0b0001" description="1KB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b0010" value="0b0010" description="2KB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b0011" value="0b0011" description="4KB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b0100" value="0b0100" description="8KB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b0101" value="0b0101" description="16KB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b0110" value="0b0110" description="32KB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b0111" value="0b0111" description="64KB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b1000" value="0b1000" description="128KB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b1001" value="0b1001" description="256KB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b1010" value="0b1010" description="512KB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b1011" value="0b1011" description="1MB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b1100" value="0b1100" description="2MB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b1101" value="0b1101" description="4MB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b1110" value="0b1110" description="8MB OCMEMn"/>
+      <bit_field_value name="OCMDR2_OCMSZ_0b1111" value="0b1111" description="16MB OCMEMn"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="OCMSZH" access="RO" reset_value="0" reset_mask="0" description="OCMSZH">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMSZH(x)"/>
+      <bit_field_value name="OCMDR2_OCMSZH_0b0" value="0b0" description="OCMEMn is a power-of-2 capacity."/>
+      <bit_field_value name="OCMDR2_OCMSZH_0b1" value="0b1" description="OCMEMn is not a power-of-2, with a capacity is 0.75 * OCMSZ."/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="1" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="30" width="1" reset_value="0x1"/>
+    <bit_field offset="31" width="1" name="V" access="RO" reset_value="0" reset_mask="0" description="V">
+      <alias type="CMSIS" value="MSCM_OCMDR_V(x)"/>
+      <bit_field_value name="OCMDR2_V_0b0" value="0b0" description="OCMEMn is not present."/>
+      <bit_field_value name="OCMDR2_V_0b1" value="0b1" description="OCMEMn is present."/>
+    </bit_field>
+  </register>
+  <register offset="0x40C" width="32" name="OCMDR3" description="On-Chip Memory Descriptor Register">
+    <alias type="CMSIS" value="OCMDR[3]"/>
+    <bit_field offset="0" width="4" name="OCM0" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 0">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM0(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="OCM1" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 1">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM1(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="OCM2" access="RW" reset_value="0" reset_mask="0" description="OCMEM Control Field 2">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCM2(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="OCMPU" access="RO" reset_value="0" reset_mask="0" description="OCMPU">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMPU(x)"/>
+    </bit_field>
+    <bit_field offset="13" width="3" name="OCMT" access="RO" reset_value="0" reset_mask="0" description="OCMT">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMT(x)"/>
+      <bit_field_value name="OCMDR3_OCMT_0b000" value="0b000" description="OCMEMn is a System RAM."/>
+      <bit_field_value name="OCMDR3_OCMT_0b001" value="0b001" description="OCMEMn is a Graphics RAM."/>
+      <bit_field_value name="OCMDR3_OCMT_0b010" value="0b010" description="Reserved"/>
+      <bit_field_value name="OCMDR3_OCMT_0b011" value="0b011" description="OCMEMn is a ROM."/>
+      <bit_field_value name="OCMDR3_OCMT_0b100" value="0b100" description="OCMEMn is a Program Flash."/>
+      <bit_field_value name="OCMDR3_OCMT_0b101" value="0b101" description="OCMEMn is a Data Flash."/>
+      <bit_field_value name="OCMDR3_OCMT_0b110" value="0b110" description="OCMEMn is an EEE."/>
+      <bit_field_value name="OCMDR3_OCMT_0b111" value="0b111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="RO" access="RW" reset_value="0" reset_mask="0" description="RO">
+      <alias type="CMSIS" value="MSCM_OCMDR_RO(x)"/>
+      <bit_field_value name="OCMDR3_RO_0b0" value="0b0" description="Writes to the OCMDRn[11:0] are allowed"/>
+      <bit_field_value name="OCMDR3_RO_0b1" value="0b1" description="Writes to the OCMDRn[11:0] are ignored"/>
+    </bit_field>
+    <bit_field offset="17" width="3" name="OCMW" access="RO" reset_value="0" reset_mask="0" description="OCMW">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMW(x)"/>
+      <bit_field_value name="OCMDR3_OCMW_0b000to0b001" value="0b000-0b001" description="Reserved"/>
+      <bit_field_value name="OCMDR3_OCMW_0b010" value="0b010" description="OCMEMn 32-bits wide"/>
+      <bit_field_value name="OCMDR3_OCMW_0b011" value="0b011" description="OCMEMn 64-bits wide"/>
+      <bit_field_value name="OCMDR3_OCMW_0b100" value="0b100" description="OCMEMn 128-bits wide"/>
+      <bit_field_value name="OCMDR3_OCMW_0b101" value="0b101" description="OCMEMn 256-bits wide"/>
+      <bit_field_value name="OCMDR3_OCMW_0b110to0b111" value="0b110-0b111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0" reset_mask="0"/>
+    <bit_field offset="24" width="4" name="OCMSZ" access="RO" reset_value="0" reset_mask="0" description="OCMSZ">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMSZ(x)"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b0000" value="0b0000" description="no OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b0001" value="0b0001" description="1KB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b0010" value="0b0010" description="2KB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b0011" value="0b0011" description="4KB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b0100" value="0b0100" description="8KB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b0101" value="0b0101" description="16KB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b0110" value="0b0110" description="32KB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b0111" value="0b0111" description="64KB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b1000" value="0b1000" description="128KB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b1001" value="0b1001" description="256KB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b1010" value="0b1010" description="512KB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b1011" value="0b1011" description="1MB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b1100" value="0b1100" description="2MB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b1101" value="0b1101" description="4MB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b1110" value="0b1110" description="8MB OCMEMn"/>
+      <bit_field_value name="OCMDR3_OCMSZ_0b1111" value="0b1111" description="16MB OCMEMn"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="OCMSZH" access="RO" reset_value="0" reset_mask="0" description="OCMSZH">
+      <alias type="CMSIS" value="MSCM_OCMDR_OCMSZH(x)"/>
+      <bit_field_value name="OCMDR3_OCMSZH_0b0" value="0b0" description="OCMEMn is a power-of-2 capacity."/>
+      <bit_field_value name="OCMDR3_OCMSZH_0b1" value="0b1" description="OCMEMn is not a power-of-2, with a capacity is 0.75 * OCMSZ."/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="1" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="30" width="1" reset_value="0x1"/>
+    <bit_field offset="31" width="1" name="V" access="RO" reset_value="0" reset_mask="0" description="V">
+      <alias type="CMSIS" value="MSCM_OCMDR_V(x)"/>
+      <bit_field_value name="OCMDR3_V_0b0" value="0b0" description="OCMEMn is not present."/>
+      <bit_field_value name="OCMDR3_V_0b1" value="0b1" description="OCMEMn is present."/>
+    </bit_field>
+  </register>
+</regs:peripheral>

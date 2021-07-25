@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<clocks:component xmlns:clocks="http://apif.freescale.net/schemas/clocks/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://apif.freescale.net/schemas/clocks/1.1 http://apif.freescale.net/schemas/clocks/1.1/clocks.xsd" id="external_clocks">
+  <instance_header>
+    <instance_description>Clock model for external clock sources</instance_description>
+  </instance_header>
+  <interface>
+    <output_clock_signal id="TCLK0EXTREFOUT" name="TCLK0_EXT_REF clock output" description="TCLK0_EXT_REF clock output"/>
+    <output_clock_signal id="TCLK1EXTREFOUT" name="TCLK1_EXT_REF clock output" description="TCLK1_EXT_REF clock output"/>
+    <output_clock_signal id="TCLK2EXTREFOUT" name="TCLK2_EXT_REF clock output" description="TCLK2_EXT_REF clock output"/>
+    <pin id="TCLK_0_EXT_REF" name="External pin" direction="in">
+      <peripheral_signal_ref signal="TCLK_0_EXT_REF"/>
+    </pin>
+    <pin id="TCLK_1_EXT_REF" name="External pin" direction="in">
+      <peripheral_signal_ref signal="TCLK_1_EXT_REF"/>
+    </pin>
+    <pin id="TCLK_2_EXT_REF" name="External pin" direction="in">
+      <peripheral_signal_ref signal="TCLK_2_EXT_REF"/>
+    </pin>
+  </interface>
+  <implementation>
+    <clock_source id="tclk_0_ext_ref" name="tclk_0_ext_ref external reference clock">
+    <enable cond_expr="TCLKConfig == `yes`" description="This output can be enabled/disabled by the {{TCLKConfig}} settings."/>
+    <configuration_element id="TCLKConfig" name="Initialize TCLK clock" description="The TCLK clock selector initialization">
+      <default value="no"/>
+      <item id="yes" description="yes">
+      </item>
+      <item id="no" description="no">
+      </item>
+    </configuration_element>
+      <external_source default_freq="0 MHz">
+        <pin id="TCLK_0_EXT_REF"/>
+      </external_source>
+    </clock_source>
+    <clock_source id="tclk_1_ext_ref" name="tclk_1_ext_ref external reference clock">
+      <enable cond_expr="TCLKConfig == `yes`" description="This output can be enabled/disabled by the {{TCLKConfig}} settings."/>
+      <external_source default_freq="0 MHz">
+        <pin id="TCLK_1_EXT_REF"/>
+      </external_source>
+    </clock_source>
+    <clock_source id="tclk_2_ext_ref" name="tclk_2_ext_ref external reference clock">
+        <enable cond_expr="TCLKConfig == `yes`" description="This output can be enabled/disabled by the {{TCLKConfig}} settings."/>
+      <external_source default_freq="0 MHz">
+        <pin id="TCLK_2_EXT_REF"/>
+      </external_source>
+    </clock_source>
+    <map_output id="TCLK0EXTREFOUT">
+      <input signal="tclk_0_ext_ref.clk"/>
+    </map_output>
+    <map_output id="TCLK1EXTREFOUT">
+      <input signal="tclk_1_ext_ref.clk"/>
+    </map_output>
+    <map_output id="TCLK2EXTREFOUT">
+      <input signal="tclk_2_ext_ref.clk"/>
+    </map_output>
+  </implementation>
+</clocks:component>

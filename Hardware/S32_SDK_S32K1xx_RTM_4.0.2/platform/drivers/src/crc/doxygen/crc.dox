@@ -1,0 +1,127 @@
+/*!
+@defgroup crc Cyclic Redundancy Check (CRC)
+@brief The S32 SDK provides Peripheral Drivers for the Cyclic Redundancy Check (CRC) module.
+
+-# CRC with S32K1xx and \b S32K1xxW:
+    - Generate 16/32-bit CRC code for error detection.
+    - Provides a programmable polynomial, seed, and other parameters required to implement 16/32-bit CRC standard.
+    - Calculate 16/32-bit code for 32 bits of data at a time.
+-# CRC with MPC574x and S32Rx7x:
+    - Generate 8/16/32-bit CRC code for error detection.
+    - Provides a programmable polynomial, seed, and other parameters required to implement 8/16/32-bit CRC standard.
+    - Calculate 8/16/32-bit code for 32 bits of data at a time.
+.
+### Important note when use CRC module with MPC574x and S32Rx7x devices: ###
+- When generating CRC-32 for the ITU-T V.42 standard the user needs to set
+   SWAP_BYTEWISE together with INV and SWAP.
+- When generating CRC-16-CCITT(0x1021) standard the user needs to set SWAP_BITWISE bit.
+.
+
+# Basic Operations of CRC
+___________
+1. To initialize the CRC module, call CRC_DRV_Init() function and pass
+   the user configuration data structure to it.
+    This is example code to configure the CRC driver using CRC_DRV_GetDefaultConfig() function:
+~~~~~{.c}
+    #define INST_CRC1 (0U)
+
+    /* Configuration structure crc1_InitConfig0 */
+    crc_user_config_t crc1_InitConfig0;
+
+    /* Get default configuration for CRC module: CRC-16-CCITT (0x1021) standard */
+    CRC_DRV_GetDefaultConfig(&crc1_InitConfig0);
+
+    /* Initializes the CRC */
+    CRC_DRV_Init(INST_CRC1, &crc1_InitConfig0);
+~~~~~
+2. To configure and operate the CRC module:
+    Function CRC_DRV_Configure() shall be used to write user configuration to CRC
+    hardware module before starting operation by calling CRC_DRV_WriteData().
+    Finally, using CRC_DRV_GetCrcResult() function to get the result of CRC calculation.
+    This is example code to configure and get CRC block for S32K1xx:
+~~~~~{.c}
+    #define INST_CRC1 (0U)
+
+    uint8_t buffer[] = { 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x30 };
+    uint32_t result;
+
+    /* Set the CRC configuration: CRC-16-CCITT (0x1021) standard */
+    CRC_DRV_Configure(INST_CRC1, &crc1_InitConfig0);
+    /* Write data to the current CRC calculation */
+    CRC_DRV_WriteData(INST_CRC1, buffer, 10U);
+    /* Get result of CRC calculation (0x3218U) */
+    result = CRC_DRV_GetCrcResult(INST_CRC1);
+
+    /* De-init */
+    CRC_DRV_Deinit(INST_CRC1);
+~~~~~
+3. To get result of 32-bit data call CRC_DRV_GetCrc32() function.
+~~~~~{.c}
+    #define INST_CRC1 (0U)
+
+    uint32_t seed = 0xFFFFU;
+    uint32_t data = 0x12345678U;
+    uint32_t result;
+
+    /* Get result of 32-bit data (0x30EC) at CRC-16-CCITT (0x1021) standard configuration mode */
+    result = CRC_DRV_GetCrc32(INST_CRC1, data, true, seed);
+~~~~~
+4. To get result of 16-bit data call CRC_DRV_GetCrc16() function.
+~~~~~{.c}
+    #define INST_CRC1 (0U)
+
+    uint32_t seed = 0xFFFFU;
+    uint16_t data = 0x1234U;
+    uint32_t result;
+
+    /* Get result of 16-bit data (0x0EC9) at CRC-16-CCITT (0x1021) standard configuration mode */
+    result = CRC_DRV_GetCrc16(INST_CRC1, data, true, seed);
+~~~~~
+5. To get current configuration of the CRC module, just call CRC_DRV_GetConfig() function.
+~~~~~{.c}
+    #define INST_CRC1 (0U)
+    crc_user_config_t crc1_InitConfig0;
+
+    /* Get current configuration of the CRC module */
+    CRC_DRV_GetConfig(INST_CRC1, &crc1_InitConfig0);
+~~~~~
+6. To Get default configuration of the CRC module, just call CRC_DRV_GetDefaultConfig() function.
+~~~~~{.c}
+    #define INST_CRC1 (0U)
+    crc_user_config_t crc1_InitConfig0;
+
+    /* Get default configuration of the CRC module */
+    CRC_DRV_GetDefaultConfig(&crc1_InitConfig0);
+~~~~~
+
+## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+For \b S32K1xx and \b S32K1xxW:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\crc\crc_driver.c
+${S32SDK_PATH}\platform\drivers\src\crc\crc_hw_access.c
+\endverbatim
+For \b MPC574x and \b S32Rx7x:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\crc\crc_driver.c
+${S32SDK_PATH}\platform\drivers\src\crc\crc_c55_hw_access.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+*/

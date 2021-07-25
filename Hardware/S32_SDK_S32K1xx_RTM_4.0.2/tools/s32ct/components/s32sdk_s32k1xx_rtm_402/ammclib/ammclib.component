@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="ammclib" label="ammclib" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="lib">
+   <sw_comp_ref name="platform.lib.ammclib" version="1.0.0"/>
+   <description>Automotive Math and Motor Control Library</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>AMMCLib general mode</description>
+      <config_set_refs>
+         <config_set_ref>ammclib_cfg_set</config_set_ref>
+      </config_set_refs>
+   </mode>
+   <config_set id="ammclib_cfg_set" label="AMMCLib Configuration">
+      <description>AMMCLib configuration set</description>
+      <fragment_defs />
+      <code />
+      <validation>
+         <constraint
+            cond_expr="$group.flatMap(x->x).filter(x -> (x.isEnabled() == true) &amp;&amp; (x.getID() == `ammclib_cfg_set`)).length() == 1"
+            level="error"
+            description="Only one active AMMCLib instance allowed."
+         ></constraint>
+      </validation>
+      <quick_selections>
+         <quick_selection id="ammclib_default" label="Default Configuration for AMMCLib" available="(featureDefined(`FEATURE_AMMCLIB_HAS_FIXED_POINT`)==true) &amp;&amp; (featureDefined(`FEATURE_AMMCLIB_HAS_FLOAT`)==true)">
+            <description>Default configuration for AMMCLib</description>
+            <set id="ammclib_fixedPoint">true</set>
+            <set id="ammclib_float">true</set>
+            <set id="ammclib_defaultImpl">SWLIBS_DEFAULT_IMPLEMENTATION_F16</set>
+         </quick_selection>
+         <quick_selection id="ammclib_default_fixedPoint_only" label="Default Configuration for AMMCLib " available="(featureDefined(`FEATURE_AMMCLIB_HAS_FIXED_POINT`)==true) &amp;&amp; (featureDefined(`FEATURE_AMMCLIB_HAS_FLOAT`)==false)">
+            <description>Default configuration for AMMCLib</description>
+            <set id="ammclib_fixedPoint">true</set>
+            <set id="ammclib_float">false</set>
+            <set id="ammclib_defaultImpl">SWLIBS_DEFAULT_IMPLEMENTATION_F16</set>
+         </quick_selection>
+         <quick_selection id="ammclib_default_float_only" label="Default Configuration for AMMCLib  " available="(featureDefined(`FEATURE_AMMCLIB_HAS_FIXED_POINT`)==false) &amp;&amp; (featureDefined(`FEATURE_AMMCLIB_HAS_FLOAT`)==true)">
+            <description>Default configuration for AMMCLib</description>
+            <set id="ammclib_fixedPoint">false</set>
+            <set id="ammclib_float">true</set>
+            <set id="ammclib_defaultImpl">SWLIBS_DEFAULT_IMPLEMENTATION_FLT</set>
+         </quick_selection>
+         <default>ammclib_default</default>
+      </quick_selections>
+      <settings>
+         <bool id="ammclib_fixedPoint" label="Fixed Point" enable="(featureDefined(`FEATURE_AMMCLIB_HAS_FIXED_POINT`)==true) &amp;&amp; (featureDefined(`FEATURE_AMMCLIB_HAS_FLOAT`)==true) &amp;&amp; !(featureDefined(`FEATURE_AMMCLIB_FIXED_POINT_ALWAYS_ENABLE`)==true)">
+            <description>Specifies if the 16 and 32 bit fixed point support is enabled in the library</description>
+            <validation>
+               <constraint
+                  cond_expr="($parent.ammclib_defaultImpl.getValue() == `SWLIBS_DEFAULT_IMPLEMENTATION_FLT`) || ($this.getValue() == true)"
+                  level="error"
+                  description="Fixed Point must be true if using Default Implementation Fixed 16/32 bit"
+               ></constraint>
+               </validation>
+         </bool>
+         <bool id="ammclib_float" label="Float" enable="(featureDefined(`FEATURE_AMMCLIB_HAS_FIXED_POINT`)==true) &amp;&amp; (featureDefined(`FEATURE_AMMCLIB_HAS_FLOAT`)==true)">
+            <description>Specifies if the floating point support is enabled in the library</description>
+            <validation>
+               <constraint
+                  cond_expr="($parent.ammclib_defaultImpl.getValue() != `SWLIBS_DEFAULT_IMPLEMENTATION_FLT`) || ($this.getValue() == true)"
+                  level="error"
+                  description="Float must be true if using Default Implementation Floating"
+               ></constraint>
+            </validation>
+         </bool>
+         <enum id="ammclib_defaultImpl" label="Default Implementation" from="phy_speed_t">
+            <description>Specifies the type of arithmetic used as the default implementation</description>
+            <item id="SWLIBS_DEFAULT_IMPLEMENTATION_F16" label="Fixed 16 bit" available="$parent.ammclib_fixedPoint.getValue() == true"/>
+            <item id="SWLIBS_DEFAULT_IMPLEMENTATION_F32" label="Fixed 32 bit" available="$parent.ammclib_fixedPoint.getValue() == true"/>
+            <item id="SWLIBS_DEFAULT_IMPLEMENTATION_FLT" label="Floating" available="$parent.ammclib_float.getValue() == true"/>
+         </enum>
+         <variable value="`../ammclib/ammclib_codegen.js`" id="codegen_file"></variable>
+         <variable value="`ammclib_CodeGenerator`" id="codegen_class"></variable>
+         <variable value="`../ammclib/ammclib_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+         <variable value="`ammclibToolchainSettings`" id="toolchain_settings_class"></variable>
+      </settings>
+      <user_types />
+      <generated_types />
+
+   </config_set>
+</component:config_component>

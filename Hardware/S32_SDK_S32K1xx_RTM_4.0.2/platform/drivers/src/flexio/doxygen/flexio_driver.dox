@@ -1,0 +1,26 @@
+/** 
+@defgroup flexio_drv FlexIO Common Driver
+@ingroup flexio
+@brief Common services for FlexIO drivers
+<p>
+  The Flexio Common driver layer contains services used by all Flexio drivers. The need for this layer derives from 
+  the requirement to allow multiple Flexio drivers to run in parallel on the same device, to the extent that 
+  enough hardware resources (shifters and timers) are available.
+</p>
+
+  ## Functionality ##
+
+<p>
+  The Flexio Common driver layer provides functions for device initialization and reset.
+  Before using any Flexio driver the device must first be initialized using function FLEXIO_DRV_InitDevice().
+  Then any number of Flexio drivers can be initialized on the same device, to the extent that 
+  enough hardware resources (shifters and timers) are available. Driver initialization functions will return 
+  STATUS_ERROR if not enough resources are available for a new driver.
+</p>
+
+  ## Important Notes ##
+<p>
+  Calling any Flexio common function will destroy any driver that is active on that device. Normally 
+  these functions should be called only when there are no active driver instances on the device. 
+</p>
+*/

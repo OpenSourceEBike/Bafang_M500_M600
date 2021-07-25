@@ -1,0 +1,608 @@
+<?xml version="1.0"?>
+<clocks:component xmlns:clocks="http://apif.freescale.net/schemas/clocks/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://apif.freescale.net/schemas/clocks/1.1 http://apif.freescale.net/schemas/clocks/1.1/clocks.xsd" id="SCG">
+  <instance_header>
+    <instance_description>Clock model for the SCG module (parameterized, shared accross all S32K parts)</instance_description>
+  </instance_header>
+  <interface>
+    <output_clock_signal id="SPLL_CLK_OUT" name="SPLL_CLK_OUT" description="SPLL clock source."/>
+    <output_clock_signal id="CORE_CLK" name="Core clock" description="Clocks the ARM core, divided by DIVCORE bits inside SCG."/>
+    <output_clock_signal id="SYS_CLK" name="System clock" description="System clock."/>
+    <output_clock_signal id="BUS_CLK" name="Bus clock" description="Clocks the chip peripherals."/>
+    <output_clock_signal id="FLASH_CLK" name="Flash clock" description="Clocks the flash module."/>
+    <output_clock_signal id="SPLLDIV1_CLK" name="Divided SPLL1_CLK" description="The SPLL divider 1 clock" group="peripheral"/>
+    <output_clock_signal id="SPLLDIV2_CLK" name="Divided SPLL2_CLK" description="The SPLL divider 2 clock" group="peripheral"/>
+    <output_clock_signal id="FIRCDIV1_CLK" name="Divided FIRC1_CLK" description="The FIRC divider 1 clock" group="peripheral"/>
+    <output_clock_signal id="FIRCDIV2_CLK" name="Divided FIRC2_CLK" description="The FIRC divider 2 clock" group="peripheral"/>
+    <output_clock_signal id="SIRCDIV1_CLK" name="Divided SIRC1_CLK" description="The SIRC divider 1 clock" group="peripheral"/>
+    <output_clock_signal id="SIRCDIV2_CLK" name="Divided SIRC2_CLK" description="The SIRC divider 2 clock" group="peripheral"/>
+    <output_clock_signal id="SOSCDIV1_CLK" name="Divided SOSC1_CLK" description="The SOSC divider 1 clock" group="peripheral"/>
+    <output_clock_signal id="SOSCDIV2_CLK" name="Divided SOSC2_CLK" description="The SOSC divider 2 clock" group="peripheral"/>
+    <output_clock_signal id="SCGCLKOUT_CLK" name="SCGCLKOUT" description="SCG clock output"/>
+    <pin id="EXTAL" name="EXTAL" direction="in">
+      <peripheral_signal_ref signal="SCG.EXTAL"/>
+    </pin>
+    <pin id="XTAL" name="XTAL" direction="out">
+      <peripheral_signal_ref signal="SCG.XTAL"/>
+    </pin>
+  </interface>
+  <implementation>
+    <clock_source id="SOSC" name="SOSC (System Oscillator)" description="System Oscillator clock from the OSC module. External crystal oscillator or an external squarewave input on MCU pins. Configure the value of OSC according to connected crystal or external reference clock.">
+      <enable cond_expr="(SOSCCSR[SOSCEN] == 1) &amp;&amp; powerMode != `VLPR`"/>
+      <external_source default_connected="true" default_freq="8 MHz">
+        <pin id="EXTAL"/>
+        <pin id="XTAL">
+          <enable cond_expr="(SOSCCFG[EREFS] == 1)"/>
+        </pin>
+        <conditional_range>
+          <case cond_expr="SOSCCFG[EREFS] == 0">
+            <range min_freq="4 MHz" max_freq="40 MHZ" description="Up to 40 MHZ for external reference clock mode."/>
+          </case>
+<!--           <otherwise>
+            <value_map expr="SOSCCFG[RANGE]">
+              <range min_freq="8 MHz" max_freq="40 MHz" description="Range 8-40 MHz for high frequency range crystal. The range depends on SCG_SOSCCFG[RANGE] bitfield." ctrl_value="3"/>
+              <range min_freq="4 MHz" max_freq="8 MHz" description="Range 4-8 MHz for medium frequency range crystal. The range depends on SCG_SOSCCFG[RANGE] bitfield." ctrl_value="2"/>
+            </value_map>
+          </otherwise> -->
+        </conditional_range>
+      </external_source>
+      <constraint min_freq="8 MHz" max_freq="40 MHz" when="SCG_SOSCCFG_OSC_MODE_CFG == `ModeOscInternalClock` &amp;&amp; SCG_SOSCCFG_RANGE_CFG == `High`" description="Range 8-40 MHz for high frequency range crystal. The range depends on SCG_SOSCCFG[RANGE] bitfield."/>
+      <constraint min_freq="4 MHz" max_freq="8 MHz" when="SCG_SOSCCFG_OSC_MODE_CFG == `ModeOscInternalClock` &amp;&amp; SCG_SOSCCFG_RANGE_CFG == `Medium`" description="Range 4-8 MHz for medium frequency range crystal. The range depends on SCG_SOSCCFG[RANGE] bitfield."/>
+      <conditional_block>
+        <case power_modes="RUN"/>
+        <case power_modes="STOP"/>
+      </conditional_block>
+      <configuration_element id="SCG_SOSCCSR_SOSCEN_CFG" name="SOSC enable" description="Enable system oscillator.">
+        <default value="Enabled"/>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SOSCCSR" bit_field="SOSCEN" value="1"/>
+          </assigns>
+        </item>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SOSCCSR" bit_field="SOSCEN" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SOSCCSR_MONITOR_CFG" name="SOSC monitor mode selection" description="Configuration of SOSC monitor mode (disabled, interrupt when the SOSC error is detected. or reset when error detected).">
+        <default value="Disabled"/>
+        <item id="Disabled" description="Disabled">
+          <long_description>
+            SOSC Clock Monitor is disabled(SOSCCSR[SOSCCMRE] is not used).
+          </long_description>
+          <assigns>
+            <assign register="SOSCCSR" bit_field="SOSCCM" value="0"/>
+            <assign register="SOSCCSR" bit_field="SOSCCMRE" value="0"/>
+          </assigns>
+        </item>
+        <item id="Interrupt" description="Interrupt when the SOSC error">
+          <long_description>
+            SOSC Clock Monitor is enabled, clock Monitor generates interrupt when error detected.
+          </long_description>
+          <assigns>
+            <assign register="SOSCCSR" bit_field="SOSCCM" value="1"/>
+            <assign register="SOSCCSR" bit_field="SOSCCMRE" value="0"/>
+          </assigns>
+        </item>
+        <item id="Reset" description="Reset when the SOSC error">
+          <long_description>
+            SOSC Clock Monitor is enabled, clock Monitor generates reset when error detected.
+          </long_description>
+          <assigns>
+            <assign register="SOSCCSR" bit_field="SOSCCM" value="1"/>
+            <assign register="SOSCCSR" bit_field="SOSCCMRE" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SOSCCSR_LK_CSR" name="SOSC lock register" description="Enable system oscillator lock register.">
+        <default value="Unlock"/>
+        <item id="Unlock" description="Unlock">
+          <assigns>
+            <assign register="SOSCCSR" bit_field="LK" value="0"/>
+          </assigns>
+        </item>
+        <item id="Lock" description="Lock">
+          <assigns>
+            <assign register="SOSCCSR" bit_field="LK" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SOSCCFG_OSC_MODE_CFG" name="External reference select" description="External reference select">
+        <default value="ModeOscInternalClock"/>
+        <item id="ModeOscExtClock" description="External reference clock">
+          <long_description>
+            External reference clock is connected to the EXTAL pin of the MCU.
+          </long_description>
+          <assigns>
+            <assign register="SOSCCFG" bit_field="EREFS" value="0"/>
+          </assigns>
+        </item>
+        <item id="ModeOscInternalClock" description="Internal crystal oscillator">
+          <long_description>
+           Internal crystal oscillator of OSC selected
+          </long_description>
+          <assigns>
+            <assign register="SOSCCFG" bit_field="EREFS" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SOSCCFG_OSC_HGO_CFG" name="High Gain Oscillator Select" description="High Gain Oscillator Select">
+        <default value="Low-gain"/>
+        <item id="Low-gain" description="Low-gain">
+          <assigns>
+            <assign register="SOSCCFG" bit_field="HGO" value="0"/>
+          </assigns>
+        </item>
+        <item id="High-gain" description="High-gain">
+          <assigns>
+            <assign register="SOSCCFG" bit_field="HGO" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SOSCCFG_RANGE_CFG" name="System OSC Range Select" description="Frequency range of the system oscillator. The range impact the range of the crystal oscillator, see SCG_SOSCCFG[RANGE] for details.">
+        <default value="High"/>
+        <item id="High" description="High (8 MHz - 40 MHz)">
+          <assigns>
+            <assign register="SOSCCFG" bit_field="RANGE" value="3"/>
+          </assigns>
+        </item>
+        <item id="Medium" description="Medium (4 MHz - 8MHz)">
+          <assigns>
+            <assign register="SOSCCFG" bit_field="RANGE" value="2"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_source>
+    <clock_source id="FIRC" name="Fast IRC" description="Fast internal reference clock">
+      <internal_source>
+        <fixed_frequency freq="48 MHz"/>
+      </internal_source>
+      <enable cond_expr="((powerMode == `RUN` || powerMode == `HSRUN` || powerMode == `STOP`) &amp;&amp; (FIRCCSR[FIRCEN] == 1))" description="When power mode is RUN, HSRUN (if supported), STOP the fast internal reference clock can be enabled."/>
+      <configuration_element id="SCG_FIRCCSR_FIRCEN_CFG" name="FIRC enable" description="Enable Fast IRC.">
+        <default value="Enabled"/>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="FIRCCSR" bit_field="FIRCEN" value="1"/>
+          </assigns>
+        </item>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="FIRCCSR" bit_field="FIRCEN" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_FIRCCSR_FIRCREGOFF_CFG" name="Fast IRC Regulator" description="Enable Fast IRC Regulator.">
+        <default value="Enabled"/>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="FIRCCSR" bit_field="FIRCREGOFF" value="1"/>
+          </assigns>
+        </item>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="FIRCCSR" bit_field="FIRCREGOFF" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_FIRCCSR_FIRCLK_CFG" name="FIRC Lock" description="Lock register.">
+        <default value="Unlock"/>
+        <item id="Lock" description="Lock">
+          <assigns>
+            <assign register="FIRCCSR" bit_field="LK" value="1"/>
+          </assigns>
+        </item>
+        <item id="Unlock" description="Unlock">
+          <assigns>
+            <assign register="FIRCCSR" bit_field="LK" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_source>
+    <clock_source id="SIRC" name="Slow IRC" description="Slow internal reference clock (8MHz)">
+      <internal_source>
+        <fixed_frequency freq="8 MHz"/>
+      </internal_source>
+      <enable cond_expr="(((powerMode == `RUN` || powerMode == `HSRUN` || powerMode == `WAIT`) || ((powerMode == `STOP` || powerMode == `PSTOP1` || powerMode == `PSTOP2`) &amp;&amp; SIRCCSR[SIRCSTEN] == 1) || (powerMode == `VLPR` &amp;&amp; (SIRCCSR[SIRCLPEN] == 1)) || ((powerMode == `VLPS`) &amp;&amp; (SIRCCSR[SIRCSTEN] == 1) &amp;&amp; (SIRCCSR[SIRCLPEN] == 1))) &amp;&amp; (SIRCCSR[SIRCEN] == 1))" description="When power mode is RUN, HSRUN (if supported), STOP, VLPR, VLPS the slow internal reference clock can be enabled."/>
+      <configuration_element id="SCG_SIRCCSR_SIRCEN_CFG" name="SIRC enable" description="Enable Slow IRC.">
+        <default value="Enabled"/>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIRCCSR" bit_field="SIRCEN" value="1"/>
+          </assigns>
+        </item>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIRCCSR" bit_field="SIRCEN" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SIRCCSR_SIRCSTEN_CFG" name="SIRC Stop enable" description="Enable Slow IRC in stop modes.">
+        <default value="Enabled"/>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIRCCSR" bit_field="SIRCSTEN" value="1"/>
+          </assigns>
+        </item>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIRCCSR" bit_field="SIRCSTEN" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SIRCCSR_SIRCLPEN_CFG" name="SIRC Low Power modes enable" description="Enable Slow IRC in low power modes (VLPR and VLPS).">
+        <default value="Enabled"/>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIRCCSR" bit_field="SIRCLPEN" value="1"/>
+          </assigns>
+        </item>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIRCCSR" bit_field="SIRCLPEN" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SIRCCFG_SIRCRANGE_CFG" name="SIRC Range Select" description="Frequency range of the SIRC, see SCG_SIRCCFG[RANGE] for details.">
+        <default value="High"/>
+        <item id="High" description="High 8 MHz">
+          <assigns>
+            <assign register="SIRCCFG" bit_field="RANGE" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SIRCCSR_SIRCLK_CSR" name="SIRC Lock" description="Lock register.">
+        <default value="Unlock"/>
+        <item id="Lock" description="Lock">
+          <assigns>
+            <assign register="SIRCCSR" bit_field="LK" value="1"/>
+          </assigns>
+        </item>
+        <item id="Unlock" description="Unlock">
+          <assigns>
+            <assign register="SIRCCSR" bit_field="LK" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_source>
+    <pll id="SPLL_VCO" name="SPLL_VCO" description="System PLL (Phase-locked loop)">
+      <input signal="SOSC.clk"/>
+      <enable cond_expr="((powerMode == `RUN` || powerMode == `HSRUN`) &amp;&amp; (SPLLCSR[SPLLEN] == 1))" description="SPLL clock can be enabled in RUN, HSRUN(if supported), STOP power mode (see SCG mode settigns of SPLL enable settings)"/>
+      <constraint cond_expr="SCG_SOSCCFG_RANGE_CFG == `High`" description="The SOSC range must be `High` when SPLL reference select SOSC source. Please check SOSC setting"/>
+      <prescaler id="PREDIV" name="SPLL Prediv" description="PLL reference clock divider">
+        <divide expr="SPLLCFG[PREDIV]+1"/>
+      </prescaler>
+      <prescaler id="SPLL_mul" name="SPLL Factor" description="SPLL internal multiplier">
+        <multiply expr="SPLLCFG[MULT]+16"/>
+        <constraint min_freq="180 MHz" max_freq="320 MHz" description="PLL VCO output frequency must be in range 180 - 320MHz."/>
+      </prescaler>
+      <configuration_element id="SCG_SPLLCSR_SPLLEN_CFG" name="SPLL enable" description="System PLL Enable.">
+        <default value="Enabled"/>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SCG::SPLLCSR" bit_field="SPLLEN" value="1"/>
+          </assigns>
+        </item>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SCG::SPLLCSR" bit_field="SPLLEN" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SPLLCSR_MONITOR_CFG" name="SPLL monitor mode selection" description="Configuration of System PLL monitor mode (disabled, interrupt when the SPLL error is detected. or reset when error detected).">
+        <default value="Disabled"/>
+        <item id="Disabled" description="Disabled">
+          <long_description>
+            System PLL Clock Monitor is disabled(SPLLCSR[SPLLCMRE] is not used).
+          </long_description>
+          <assigns>
+            <assign register="SPLLCSR" bit_field="SPLLCM" value="0"/>
+            <assign register="SPLLCSR" bit_field="SPLLCMRE" value="0"/>
+          </assigns>
+        </item>
+        <item id="Interrupt" description="Interrupt when the system PLL error is detected.">
+          <long_description>
+            System PLL Clock Monitor is enabled, clock Monitor generates interrupt when error detected.
+          </long_description>
+          <assigns>
+            <assign register="SPLLCSR" bit_field="SPLLCM" value="1"/>
+            <assign register="SPLLCSR" bit_field="SPLLCMRE" value="0"/>
+          </assigns>
+        </item>
+        <item id="Reset" description="Reset when the system PLL error is detected.">
+          <long_description>
+            System PLL Clock Monitor is enabled, clock Monitor generates reset when error detected.
+          </long_description>
+          <assigns>
+            <assign register="SPLLCSR" bit_field="SPLLCM" value="1"/>
+            <assign register="SPLLCSR" bit_field="SPLLCMRE" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="SCG_SPLLCSR_LK" name="SPLL Lock" description="Enable SPLL lock register.">
+        <default value="Unlock"/>
+        <item id="Unlock" description="Unlock">
+          <assigns>
+            <assign register="SPLLCSR" bit_field="LK" value="0"/>
+          </assigns>
+        </item>
+        <item id="Lock" description="Lock">
+          <assigns>
+            <assign register="SPLLCSR" bit_field="LK" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </pll>
+      <prescaler id="SPLL_CLK" name="SPLL_CLK" description="SPLL VCO divider 2">
+        <input signal="SPLL_VCO.clk"/>
+        <divide expr="2"/>
+        <constraint min_freq="90 MHz" max_freq="160 MHz" description="SPLL clock frequency must be in range 90 - 160MHz."/>
+      </prescaler>
+    <clock_select id="SCSSEL" name="System Clock Source selector" description="System clock source selector. The values is defined for each power mode separately (HSRUN(if supported), RUN and VLPR specific register)"  power_mode_specific="true">
+      <conditional_select>
+        <case cond_expr="powerMode == `HSRUN`">
+          <value_map expr="HCCR[SCS]">
+<!--             <input ctrl_value="1" signal="SOSC.clk" name="System oscillator clock"/>
+            <input ctrl_value="2" signal="SIRC.clk" name="Slow IRC clock"/> -->
+            <input ctrl_value="3" signal="FIRC.clk" name="Fast IRC clock"/>
+            <input ctrl_value="6" signal="SPLL_CLK.clk" name="SPLL clock"/>
+          </value_map>
+        </case>
+        <case cond_expr="powerMode == `VLPR`">
+          <value_map expr="VCCR[SCS]">
+            <!-- <input ctrl_value="1" signal="SOSC.clk" name="System oscillator clock"/> -->
+            <input ctrl_value="2" signal="SIRC.clk" name="Slow IRC clock"/>
+            <!-- <input ctrl_value="3" signal="FIRC.clk" name="Fast IRC clock"/> -->
+            <!-- <input ctrl_value="6" signal="SPLL_CLK.clk" name="SPLL clock"/> -->
+          </value_map>
+        </case>
+        <otherwise>
+          <value_map expr="RCCR[SCS]">
+            <input ctrl_value="1" signal="SOSC.clk" name="System oscillator clock"/>
+            <input ctrl_value="2" signal="SIRC.clk" name="Slow IRC clock"/>
+            <input ctrl_value="3" signal="FIRC.clk" name="Fast IRC clock"/>
+            <input ctrl_value="6" signal="SPLL_CLK.clk" name="SPLL clock"/>
+          </value_map>
+        </otherwise>
+      </conditional_select>
+      <constraint cond_expr="VCCR[SCS] == 2" when="powerMode == `VLPR`" description="The Slow IRC clock can be selected only in the VLPR mode"/>
+      <constraint cond_expr="DIVCORE.outFreq != 0" description="The reference clock source for SCSSEL must be enabled"/>
+    </clock_select>
+    <prescaler id="DIVCORE" name="DIVCORE" description="Core and system clock divider" power_mode_specific="true">
+      <input signal="SCSSEL.clk"/>
+      <conditional_block>
+        <case cond_expr="powerMode == `HSRUN`">
+          <divide expr="HCCR[DIVCORE]+1"/>
+        </case>
+        <case cond_expr="powerMode == `VLPR`">
+            <divide expr="VCCR[DIVCORE]+1"/>
+        </case>
+        <otherwise>
+          <divide expr="RCCR[DIVCORE]+1"/>
+        </otherwise>
+      </conditional_block>
+      <constraint cond_expr="DIVCORE.outFreq &lt;= 112000000" when="powerMode==`HSRUN`" description="Max frequency is 112 MHz in HSRUN mode"/>
+      <constraint cond_expr="DIVCORE.outFreq &lt;= 4000000" when="powerMode==`VLPR`" description="Max frequency is 4 MHz in VLPR mode"/>
+      <constraint cond_expr="DIVCORE.outFreq &lt;= 80000000" when="powerMode==`RUN`" description="Max frequency is 80 MHz in RUN mode"/>
+    </prescaler>
+    <prescaler id="DIVBUS" name="DIVBUS" description="Bus clock divider" power_mode_specific="true">
+      <input signal="DIVCORE.clk"/>
+      <conditional_block>
+        <case cond_expr="powerMode == `HSRUN`">
+          <divide expr="HCCR[DIVBUS]+1"/>
+        </case>
+        <case cond_expr="powerMode == `VLPR`">
+          <divide expr="VCCR[DIVBUS]+1"/>
+        </case>
+        <otherwise>
+          <divide expr="RCCR[DIVBUS]+1"/>
+        </otherwise>
+      </conditional_block>
+      <constraint cond_expr="DIVBUS.outFreq &lt;= 56000000" when="powerMode==`HSRUN`" description="Max frequency is 56 MHz in HSRUN mode"/>
+      <constraint cond_expr="DIVBUS.outFreq &lt;= 4000000" when="powerMode==`VLPR`" description="Max frequency is 4 MHz in VLPR mode"/>
+      <constraint cond_expr="DIVBUS.outFreq &lt;= 40000000" when="powerMode==`RUN` &amp;&amp; RCCR[SCS] == 6" description="Max frequency is 40 MHz in RUN mode with SPLL as source"/>
+      <constraint cond_expr="DIVBUS.outFreq &lt;= 48000000" when="powerMode==`RUN` &amp;&amp; RCCR[SCS] == 3" description="Max frequency is 48 MHz in RUN mode"/>
+    </prescaler>
+    <prescaler id="DIVSLOW" name="DIVSLOW" description="Slow clock divider" min="1" max="8" power_mode_specific="true">
+      <input signal="DIVCORE.clk"/>
+      <conditional_block>
+        <case cond_expr="powerMode == `HSRUN`">
+          <divide expr="HCCR[DIVSLOW]+1"/>
+        </case>
+        <case cond_expr="powerMode == `VLPR`">
+          <divide expr="VCCR[DIVSLOW]+1"/>
+        </case>
+        <otherwise>
+          <divide expr="RCCR[DIVSLOW]+1"/>
+        </otherwise>
+      </conditional_block>
+      <constraint cond_expr="DIVSLOW.outFreq &lt;= 1000000" when="powerMode==`VLPR`" description="Max frequency is 1 MHz in VLPR mode"/>
+      <constraint cond_expr="DIVSLOW.outFreq &lt;= 26670000" when="powerMode==`RUN`" description="Max frequency is 26.67 MHz in RUN mode"/>
+      <constraint cond_expr="DIVSLOW.outFreq &lt;= 28000000" when="powerMode==`HSRUN`" description="Max frequency is 28 MHz in VLPR mode"/>
+    </prescaler>
+    <clock_select id="CLKOUTSEL" name="CLKOUT select" description="Selects the clock to output on the CLKOUT pin.">
+      <value_map expr="CLKOUTCNFG[CLKOUTSEL]">
+        <input ctrl_value="0" signal="DIVSLOW.clk" name="Slow clock" description="SCG Slow clock"/>
+        <input ctrl_value="1" signal="SOSC.clk" name="SOSC clock" description="System oscillator clock"/>
+        <input ctrl_value="2" signal="SIRC.clk" name="SIRC clock" description="Slow internal reference clock"/>
+        <input ctrl_value="3" signal="FIRC.clk" name="FIRC clock" description="Fast internal reference clock"/>
+        <input ctrl_value="6" signal="SPLL_CLK.clk" name="SPLL clock" description="PLL clock"/>
+      </value_map>
+    </clock_select>
+    <prescaler id="SOSCDIV1" name="SOSCDIV1" description="System oscillator DIV1 divider" min="0">
+      <input signal="SOSC.clk"/>
+      <value_map expr="SOSCDIV[SOSCDIV1]">
+        <divide expr="0" ctrl_value="0b000"/>
+        <divide expr="1" ctrl_value="0b001"/>
+        <divide expr="2" ctrl_value="0b010"/>
+        <divide expr="4" ctrl_value="0b011"/>
+        <divide expr="8" ctrl_value="0b100"/>
+        <divide expr="16" ctrl_value="0b101"/>
+        <divide expr="32" ctrl_value="0b110"/>
+        <divide expr="64" ctrl_value="0b111"/>
+      </value_map>
+      <enable cond_expr="SOSCDIV[SOSCDIV1] != 0" description="When the SOSCDIV1 divider is set to zero the output is disabled"/>
+      <constraint cond_expr="SOSCDIV2.outFreq &lt;= 40000000" description="Max frequency is 40 MHz"/>
+    </prescaler>
+    <prescaler id="SOSCDIV2" name="SOSCDIV2" description="System oscillator DIV2 divider" min="0">
+      <input signal="SOSC.clk"/>
+      <value_map expr="SOSCDIV[SOSCDIV2]">
+        <divide expr="0" ctrl_value="0b000"/>
+        <divide expr="1" ctrl_value="0b001"/>
+        <divide expr="2" ctrl_value="0b010"/>
+        <divide expr="4" ctrl_value="0b011"/>
+        <divide expr="8" ctrl_value="0b100"/>
+        <divide expr="16" ctrl_value="0b101"/>
+        <divide expr="32" ctrl_value="0b110"/>
+        <divide expr="64" ctrl_value="0b111"/>
+      </value_map>
+      <enable cond_expr="SOSCDIV[SOSCDIV2] != 0" description="When the SOSCDIV2 divider is set to zero the output is disabled"/>
+      <constraint cond_expr="SOSCDIV2.outFreq &lt;= 40000000" description="Max frequency is 40 MHz"/>
+    </prescaler>
+    <prescaler id="SIRCDIV1" name="SIRCDIV1" description="Slow internal reference clock DIV1 divider" min="0">
+      <input signal="SIRC.clk"/>
+      <value_map expr="SIRCDIV[SIRCDIV1]">
+        <divide expr="0" ctrl_value="0b000"/>
+        <divide expr="1" ctrl_value="0b001"/>
+        <divide expr="2" ctrl_value="0b010"/>
+        <divide expr="4" ctrl_value="0b011"/>
+        <divide expr="8" ctrl_value="0b100"/>
+        <divide expr="16" ctrl_value="0b101"/>
+        <divide expr="32" ctrl_value="0b110"/>
+        <divide expr="64" ctrl_value="0b111"/>
+      </value_map>
+      <enable cond_expr="SIRCDIV[SIRCDIV1] != 0" description="When the SIRCDIV1 divider is set to zero the output is disabled"/>
+      <!-- <constraint cond_expr="SIRCDIV1.outFreq &lt;= 4000000" when="powerMode==`VLPR`" description="Max frequency is 4 MHz in VLPR mode"/> -->
+    </prescaler>
+    <prescaler id="SIRCDIV2" name="SIRCDIV2" description="Slow internal reference clock DIV2 divider" min="0">
+      <input signal="SIRC.clk"/>
+      <value_map expr="SIRCDIV[SIRCDIV2]">
+        <divide expr="0" ctrl_value="0b000"/>
+        <divide expr="1" ctrl_value="0b001"/>
+        <divide expr="2" ctrl_value="0b010"/>
+        <divide expr="4" ctrl_value="0b011"/>
+        <divide expr="8" ctrl_value="0b100"/>
+        <divide expr="16" ctrl_value="0b101"/>
+        <divide expr="32" ctrl_value="0b110"/>
+        <divide expr="64" ctrl_value="0b111"/>
+      </value_map>
+      <enable cond_expr="SIRCDIV[SIRCDIV2] != 0" description="When the SIRCDIV2 divider is set to zero the output is disabled"/>
+      <!-- <constraint cond_expr="SIRCDIV2.outFreq &lt;= 4000000" when="powerMode==`VLPR`" description="Max frequency is 4 MHz in VLPR mode"/> -->
+    </prescaler>
+    <prescaler id="FIRCDIV1" name="FIRCDIV1" description="Fast internal reference clock DIV1 divider" min="0">
+      <input signal="FIRC.clk"/>
+      <value_map expr="FIRCDIV[FIRCDIV1]">
+        <divide expr="0" ctrl_value="0b000"/>
+        <divide expr="1" ctrl_value="0b001"/>
+        <divide expr="2" ctrl_value="0b010"/>
+        <divide expr="4" ctrl_value="0b011"/>
+        <divide expr="8" ctrl_value="0b100"/>
+        <divide expr="16" ctrl_value="0b101"/>
+        <divide expr="32" ctrl_value="0b110"/>
+        <divide expr="64" ctrl_value="0b111"/>
+      </value_map>
+      <enable cond_expr="FIRCDIV[FIRCDIV1] != 0" description="When the FIRCDIV1 divider is set to zero the output is disabled"/>
+    </prescaler>
+    <prescaler id="FIRCDIV2" name="FIRCDIV2" description="Fast internal reference clock DIV2 divider" min="0">
+      <input signal="FIRC.clk"/>
+      <value_map expr="FIRCDIV[FIRCDIV2]">
+        <divide expr="0" ctrl_value="0b000"/>
+        <divide expr="1" ctrl_value="0b001"/>
+        <divide expr="2" ctrl_value="0b010"/>
+        <divide expr="4" ctrl_value="0b011"/>
+        <divide expr="8" ctrl_value="0b100"/>
+        <divide expr="16" ctrl_value="0b101"/>
+        <divide expr="32" ctrl_value="0b110"/>
+        <divide expr="64" ctrl_value="0b111"/>
+      </value_map>
+      <enable cond_expr="FIRCDIV[FIRCDIV2] != 0" description="When the FIRCDIV2 divider is set to zero the output is disabled"/>
+    </prescaler>
+    <prescaler id="SPLLDIV1" name="SPLLDIV1" description="System PLL clock DIV1 divider" min="0">
+      <input signal="SPLL_CLK.clk"/>
+      <value_map expr="SPLLDIV[SPLLDIV1]">
+        <divide expr="0" ctrl_value="0b000"/>
+        <divide expr="1" ctrl_value="0b001"/>
+        <divide expr="2" ctrl_value="0b010"/>
+        <divide expr="4" ctrl_value="0b011"/>
+        <divide expr="8" ctrl_value="0b100"/>
+        <divide expr="16" ctrl_value="0b101"/>
+        <divide expr="32" ctrl_value="0b110"/>
+        <divide expr="64" ctrl_value="0b111"/>
+      </value_map>
+      <enable cond_expr="SPLLDIV[SPLLDIV1] != 0" description="When the SPLLDIV1 divider is set to zero the output is disabled"/>
+<!--       <constraint cond_expr="SPLLDIV1.outFreq &lt;= 80000000" when="powerMode==`RUN`" description="Max frequency is 80 MHz in RUN mode"/>
+      <constraint cond_expr="SPLLDIV1.outFreq &lt;= 112000000" when="powerMode==`HSRUN`" description="Max frequency is 112 MHz in HSRUN mode"/> -->
+    </prescaler>
+    <prescaler id="SPLLDIV2" name="SPLLDIV2" description="System PLL clock DIV2 divider" min="0">
+      <input signal="SPLL_CLK.clk"/>
+      <value_map expr="SPLLDIV[SPLLDIV2]">
+        <divide expr="0" ctrl_value="0b000"/>
+        <divide expr="1" ctrl_value="0b001"/>
+        <divide expr="2" ctrl_value="0b010"/>
+        <divide expr="4" ctrl_value="0b011"/>
+        <divide expr="8" ctrl_value="0b100"/>
+        <divide expr="16" ctrl_value="0b101"/>
+        <divide expr="32" ctrl_value="0b110"/>
+        <divide expr="64" ctrl_value="0b111"/>
+      </value_map>
+      <enable cond_expr="SPLLDIV[SPLLDIV2] != 0" description="When the SPLLDIV2 divider is set to zero the output is disabled"/>
+<!--       <constraint cond_expr="SPLLDIV2.outFreq &lt;= 40000000" when="powerMode==`RUN`" description="Max frequency is 40 MHz in RUN mode"/>
+      <constraint cond_expr="SPLLDIV2.outFreq &lt;= 56000000" when="powerMode==`HRUN`" description="Max frequency is 56 MHz in HSRUN mode"/> -->
+    </prescaler>
+    <map_output id="SCGCLKOUT_CLK">
+      <input signal="CLKOUTSEL.clk"/>
+    </map_output>
+    <map_output id="SPLL_CLK_OUT">
+      <input signal="SPLL_CLK.clk"/>
+    </map_output>
+    <map_output id="CORE_CLK">
+      <input signal="DIVCORE.clk"/>
+      <disable cond_expr="powerMode==`STOP` || powerMode==`PSTOP1` || powerMode==`PSTOP2` || powerMode==`VLPS`  || powerMode==`LLS`  || powerMode==`VLLS0`  || powerMode==`VLLS1`  || powerMode==`VLLS2` || powerMode==`VLLS3` || powerMode==`BAT`" description="Core clock is disabled in all wait and stop modes"/>
+    </map_output>
+    <map_output id="SYS_CLK">
+      <input signal="DIVCORE.clk"/>
+      <disable cond_expr="powerMode==`STOP` || powerMode==`PSTOP1` || powerMode==`PSTOP2` || powerMode==`VLPS`  || powerMode==`LLS`  || powerMode==`VLLS0`  || powerMode==`VLLS1`  || powerMode==`VLLS2` || powerMode==`VLLS3` || powerMode==`BAT`" description="System clock is disabled in Very Low Power Mode and all stop modes"/>
+    </map_output>
+    <map_output id="BUS_CLK">
+      <input signal="DIVBUS.clk"/>
+    </map_output>
+    <map_output id="FLASH_CLK">
+      <input signal="DIVSLOW.clk"/>
+      <disable cond_expr="powerMode==`LLS`  || powerMode==`VLLS0`  || powerMode==`VLLS1`  || powerMode==`VLLS2` || powerMode==`VLLS3` || powerMode==`BAT`" description="Bus clock is disabled in all low leakge stop modes."/>
+    </map_output>
+    <map_output id="SIRCDIV1_CLK">
+      <input signal="SIRCDIV1.clk"/>
+      <!-- <constraint max_freq="8 Mhz" when="powerMode==`RUN` || powerMode==`HSRUN`"/> -->
+      <!-- <constraint max_freq="4 Mhz" when="powerMode==`VLPR`"/> -->
+    </map_output>
+    <map_output id="SIRCDIV2_CLK">
+      <input signal="SIRCDIV2.clk"/>
+      <!-- <constraint max_freq="8 Mhz" when="powerMode==`RUN` || powerMode==`HSRUN`"/> -->
+      <!-- <constraint max_freq="4 Mhz" when="powerMode==`VLPR`"/> -->
+    </map_output>
+    <map_output id="FIRCDIV1_CLK">
+      <input signal="FIRCDIV1.clk"/>
+      <!-- <constraint max_freq="48 Mhz" when="powerMode==`RUN` || powerMode==`HSRUN`"/> -->
+    </map_output>
+    <map_output id="FIRCDIV2_CLK">
+      <input signal="FIRCDIV2.clk"/>
+      <!-- <constraint max_freq="48 Mhz" when="powerMode==`RUN` || powerMode==`HSRUN`"/> -->
+    </map_output>
+    <map_output id="SOSCDIV1_CLK">
+      <input signal="SOSCDIV1.clk"/>
+      <!-- <constraint max_freq="40 Mhz" when="powerMode==`RUN` || powerMode==`HSRUN`"/> -->
+    </map_output>
+    <map_output id="SOSCDIV2_CLK">
+      <input signal="SOSCDIV2.clk"/>
+    </map_output>
+    <map_output id="SPLLDIV1_CLK">
+      <input signal="SPLLDIV1.clk"/>
+      <!-- <constraint max_freq="80 Mhz" when="powerMode==`RUN`"/> -->
+      <!-- <constraint max_freq="112 Mhz" when="powerMode==`HSRUN`"/> -->
+    </map_output>
+    <map_output id="SPLLDIV2_CLK">
+      <input signal="SPLLDIV2.clk"/>
+      <!-- <constraint max_freq="40 Mhz" when="powerMode==`RUN`"/> -->
+      <!-- <constraint max_freq="56 Mhz" when="powerMode==`HSRUN`"/> -->
+    </map_output>
+  </implementation>
+</clocks:component>

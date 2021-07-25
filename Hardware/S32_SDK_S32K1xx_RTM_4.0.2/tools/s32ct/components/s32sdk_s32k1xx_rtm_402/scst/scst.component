@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="scst" label="scst" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="lib">
+   <sw_comp_ref name="platform.lib.scst" version="1.0.0"/>
+   <description>Structural Core Selft Test Library</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>sCST general mode</description>
+      <config_set_refs>
+         <config_set_ref>scst_cfg_set</config_set_ref>
+      </config_set_refs>
+   </mode>
+   <config_set id="scst_cfg_set" label="SCST" options="UI_BORDER_HIDDEN;UI_LABEL_HIDDEN">
+      <description>sCST configuration</description>
+      <fragment_defs />
+      <code />
+      <validation>
+         <constraint
+            cond_expr="$group.flatMap(x->x).filter(x -> (x.isEnabled() == true) &amp;&amp; (x.getID() == `scst_cfg_set`)).length() == 1"
+            level="error"
+            description="Only one active sCST instance allowed."
+         ></constraint>
+      </validation>
+      <quick_selections />
+      <settings>
+         <variable value="`../scst/scst_codegen.js`" id="codegen_file"></variable>
+         <variable value="`scst_CodeGenerator`" id="codegen_class"></variable>
+         <variable value="`../scst/scst_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+         <variable value="`scstToolchainSettings`" id="toolchain_settings_class"></variable>
+      </settings>
+      <user_types />
+      <generated_types />
+
+   </config_set>
+</component:config_component>

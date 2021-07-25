@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="pwm_pal_config" label="pwm_pal" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+   <sw_comp_ref name="platform.pal.pwm_pal" version="1.0.0"/>
+   <description>PWM_PAL configuration</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>PWM PAL General Mode</description>
+      <config_set_refs>
+         <config_set_ref>pwm_pal</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>FTM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="pwm_pal" label="PWM PAL Configuration settings" from_source="pwm_pal.h">
+      <description>PWM PAL</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+            <quick_selection available="true" id="default_pwm_pal" label="Default values for PWM_PAL">
+                <description>PWM_PAL configuration</description>
+                <set id="pwmGlobalConfigArray.0.channel">0</set>
+                <set id="pwmTimebaseConfigArray.0.sourceClock">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            </quick_selection>
+            <default>default_pwm_pal</default>
+      </quick_selections>
+      <settings>
+            <variable value="$parent.pwmGlobalConfigArray.map(item -> item.getSetting(`channel`).getValue()).filter(item -> item % 2 != 0)" id="complementary_channels"></variable>
+            <variable value="$parent.pwmGlobalConfigArray.filter(item -> ((item.getSetting(`insertDeadtime`).getValue()) &amp;&amp; item.getSetting(`insertDeadtime`).isEnabled())).length() &gt; 0"  id="allInsertDeadtime"></variable>
+            <reference id="pwmGlobalDeadtimeConfig" label="Global deadtime configuration" type="deadtime_config_t" available="true">
+                <description>PWM PAL deadtime configuration</description>
+            </reference>
+            <reference id="pwmGlobalConfigArray" label="Global channel configuration" type="pwm_global_config_t" available="true">
+                <description>PWM PAL global configuration</description>
+            </reference>
+            <reference id="pwmTimebaseConfigArray" label="Timebases configuration" type="pwmTimebaseArray" available="true">
+                <description>PWM PAL timebase configuration</description>
+            </reference>
+             <variable value="`../pwm_pal/pwm_pal_codegen.js`" id="codegen_file"></variable>
+             <variable value="`../pwm_pal/pwm_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+             <variable value="`PWM_PAL_CodeGenerator`" id="codegen_class"></variable>
+             <variable value="`PwmpalToolchainSettings`" id="toolchain_settings_class"></variable>
+      </settings>
+      <user_types>
+         
+         <enum id="pwm_channel_type_t" label="Defines the channel types Implements : pwm_channel_type_t_Class" from="pwm_channel_type_t">
+            <item id="PWM_EDGE_ALIGNED" label="Edge Aligned"/>
+            <item id="PWM_CENTER_ALIGNED" label="Center Aligned"/>
+         </enum>
+         <enum id="pwm_complementary_mode_t" label="Defines the polarity of complementary pwm channels relative to main channel Implements : pwm_complementary_mode_t_Class" from="pwm_complementary_mode_t">
+            <item id="PWM_DUPLICATED" label="Complementary channel is the same as main channel"/>
+            <item id="PWM_INVERTED" label="Complementary channel is inverted relative to main channel"/>
+         </enum>
+         <struct id="pwm_ftm_timebase_t" label="This structure is specific for platforms where FTM is available" from="pwm_ftm_timebase_t"> 
+            
+            <enum id="sourceClock" label="Clock source for FTM timebase" type="ftm_clock_source_t">
+               <description>Clock source for FTM timebase</description>
+               <item id="FTM_CLOCK_SOURCE_NONE" label="No clock"/>
+               <item id="FTM_CLOCK_SOURCE_SYSTEMCLK" label="System clock"/>
+               <item id="FTM_CLOCK_SOURCE_FIXEDCLK" label="Fixed clock"/>
+               <item id="FTM_CLOCK_SOURCE_EXTERNALCLK" label="External clock"/>
+            </enum>
+            <enum id="prescaler" label="Prescaler for FTM timebase" type="ftm_clock_ps_t">
+               <description>Prescaler for FTM timebase</description>
+               <item id="FTM_CLOCK_DIVID_BY_1" label="Divide by 1"/>
+               <item id="FTM_CLOCK_DIVID_BY_2" label="Divide by 2"/>
+               <item id="FTM_CLOCK_DIVID_BY_4" label="Divide by 4"/>
+               <item id="FTM_CLOCK_DIVID_BY_8" label="Divide by 8"/>
+               <item id="FTM_CLOCK_DIVID_BY_16" label="Divide by 16"/>
+               <item id="FTM_CLOCK_DIVID_BY_32" label="Divide by 32"/>
+               <item id="FTM_CLOCK_DIVID_BY_64" label="Divide by 64"/>
+               <item id="FTM_CLOCK_DIVID_BY_128" label="Divide by 128"/>
+            </enum>
+            <enum id="deadtimePrescaler" label="Prescaler for FTM dead-time insertion" type="ftm_deadtime_ps_t">
+               <description>Prescaler for FTM dead-time insertion</description>
+               <item id="FTM_DEADTIME_DIVID_BY_1" label="Divide by 1"/>
+               <item id="FTM_DEADTIME_DIVID_BY_4" label="Divide by 4"/>
+               <item id="FTM_DEADTIME_DIVID_BY_16" label="Divide by 16"/>
+            </enum>
+            <info id="Name_ModuleClock"
+                  value="getFeature(`FEATURE_FTM_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="Name_ExternalClock"
+                  value="getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="SystemClockFrequency"
+                  label="System Clock(Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_SYS_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="false">
+            </info>
+            <info id="DisplaySystemClock"
+                  label="Frequency of source clock (Hz)"
+                  value="$parent.SystemClockFrequency.getValue()"
+                  available="($parent.sourceClock.getValue() == `FTM_CLOCK_SOURCE_SYSTEMCLK`)">
+            </info>
+            <info id="DisplayExternalClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               $parent.Name_ExternalClock.getValue(),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.sourceClock.getValue() == `FTM_CLOCK_SOURCE_EXTERNALCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 4))"
+                              level="error"
+                              description="The frequency of the external clock source must not exceed 1/4 of the FTM input clock frequency"/>
+               </validation>
+            </info>
+            <info id="Display_FixedClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_FIX_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.sourceClock.getValue() == `FTM_CLOCK_SOURCE_FIXEDCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 2))"
+                              level="error"
+                              description="The frequency of the fixed frequency clock must not exceed 1/2 of the FTM input clock frequency"/>
+               </validation>
+            </info>
+         </struct>
+         <array id="pwmTimebaseArray" label="This structure is the configuration for initialization of PWM channels" type="pwm_ftm_timebase_t">
+            <description>Configured timebases</description>
+         </array>
+
+         <struct id="deadtime_config_t" label="This structures contains the deadtime configuration" from="deadtime_config_t">
+            <integer id="deadtime" label="Dead-time value in ticks" type="uint8_t" max_expr="63" enable="$configSet.allInsertDeadtime.getValue()">
+               <description>Dead-time value in ticks.</description>
+            </integer>
+            <item_defaults>
+               <set_default id="deadtime" value_expr="x -> 0"/>
+            </item_defaults>
+         </struct>
+         
+         <struct id="pwm_channel_t" label="This structure includes the configuration for each channel Implements : pwm_channel_t_Class" from="pwm_channel_t">          
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Configuration name must be a valid C identifier!"/>                  
+               </validation>
+            </string>
+            <integer id="channel" label="Channel number" type="uint8_t" max_expr="7">
+               <description>Channel number</description>
+            </integer>
+            <reference id="channelType" label="Channel waveform type" type="pwm_channel_type_t">
+               <description>Channel waveform type</description>
+            </reference>
+            <integer id="period" label="Period of the PWM signal in ticks" type="uint32_t" max_expr="65535">
+               <description>Period of the PWM signal in ticks</description>
+            </integer>
+            <integer id="duty" label="Duty cycle in ticks" type="uint32_t" max_expr="65535">
+               <description>Duty cycle in ticks</description>
+               <validation>
+                    <constraint cond_expr="($parent.period.getValue() >= $this.getValue())" level="error" description="Duty cycle must not be grater than the period"/>
+               </validation>
+            </integer>
+            <reference id="polarity" label="Channel polarity" type="pwm_polarity_t">
+               <description>Channel polarity</description>
+            </reference>
+            <bool id="insertDeadtime" label="Enable dead-time" enable="($parent.channel.getValue() % 2 == 0)" >
+               <description>Enable/disable dead-time insertion. This feature is available only if complementary mode is enabled</description>
+               <validation>
+                    <constraint cond_expr="( !(($parent.enableComplementaryChannel.getValue() == false) &amp;&amp; ($this.getValue() == true)) )" level="error" description="Enable complementary channel must be also selected"/>
+               </validation>                              
+            </bool>
+            <bool id="enableComplementaryChannel" label="Enable a complementary channel" enable="($parent.channel.getValue() % 2 == 0)" >
+               <description>Enable a complementary channel. This option can take control over other channel than the channel configured in this structure.</description>
+               <validation>
+                    <constraint cond_expr="( !(($parent.insertDeadtime.getValue() == true) &amp;&amp; ($this.getValue() == false)) )" level="error" description="Enable complementary channel must be also selected"/>
+               </validation>
+            </bool>
+            <reference id="complementaryChannelPolarity" label="Complementary channel polarity" type="pwm_complementary_mode_t" enable="($parent.channel.getValue() % 2 == 0)">
+               <description>Configure the polarity of the complementary channel relative to the main channel</description>
+               <validation>
+                    <constraint cond_expr="( !(($parent.insertDeadtime.getValue() == true) &amp;&amp; ($this.getValue() == `PWM_DUPLICATED`)) )" level="error" description="Cannot use deadtime with the same channel polarity" />
+               </validation>
+            </reference>
+
+            <dynamic_enum id="timebase" label="Timebase" items="createArray().merge($configSet.pwmTimebaseConfigArray.arrayToEnumItems(
+                enumItem -> true,
+                enumItem -> `Timebase ` + (enumItem.getId()),
+                enumItem -> `Timebase ` + (enumItem.getId()),
+                enumItem -> true))"/>
+            <!--<reference id="timebase" label="Timebase" type="pwmTimebaseArray">
+               <description>This field is platform specific and it&apos;s used to configure the clocking tree for different time-bases. If FTM is use this field must be filled by a pointer to pwm_ftm_timebase_t</description>
+            </reference>-->
+         </struct>
+         <array id="pwm_global_config_t" label="This structure is the configuration for initialization of PWM channels" type="pwm_channel_t">
+            <description>PWM PAL global configuration structure</description>            
+            <validation>
+                  <constraint cond_expr="($this.findDuplicates(item -> item.getSetting(`channel`).getValue()).length() == 0)" level="error" description="There are some duplicated PWM channels in the configuration"/>
+                  <constraint cond_expr="!($this.length()  &gt; 1) || ($this.findDuplicates(item -> item.getSetting(`timebase`).getValue()).length() == $this.length())" level="error" description="Must be same timebase"/>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).getValue()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                  <constraint cond_expr="($parent.pwmGlobalConfigArray.filter(item -> item.getSetting(`enableComplementaryChannel`).getValue() == `true` &amp;&amp; anyMatch($parent.complementary_channels.getValue(), item2 -> (item.getSetting(`channel`).getValue()+1) == item2) ).length() == 0)"  level="error" description="Channel n+1 cant be configure when using complementary channel"/>
+            </validation>
+            <item_defaults>
+                 <set_default id="name" value_expr="x -> (`config_` + $parent.getID()+ `_` + x.getID())"/>                 
+                 <set_default id="channel" value_expr="x -> ($this.length()-1)"/>
+                 <set_default id="channelType" value_expr="x -> `PWM_EDGE_ALIGNED`"/>
+                 <set_default id="period" value_expr="x -> 10000"/>
+                 <set_default id="duty" value_expr="x -> 5000"/>
+                 <set_default id="polarity" value_expr="x -> `PWM_ACTIVE_HIGH`"/>
+                 <set_default id="insertDeadtime" value_expr="x -> false"/>
+                 <set_default id="enableComplementaryChannel" value_expr="x -> false"/>
+                 <set_default id="complementaryChannelPolarity" value_expr="x -> `PWM_DUPLICATED`"/>
+                 <set_default id="timebase" value_expr="x -> `Timebase 0`"/>
+            </item_defaults>
+         </array>
+         
+      </user_types>
+      <generated_types>
+         <fixme id="pwm_emios_timebase_name_t" label="This enumeration contains all clock buses available for EMIOS" type="emios_counter_bus_driven_t"/>
+         <enum id="pwm_channel_type_t" label="Defines the channel types Implements : pwm_channel_type_t_Class" from="pwm_channel_type_t">
+            <item id="PWM_EDGE_ALIGNED" label="Counter used by this type of channel is in up counting mode and the edge is aligned to PWM period"/>
+            <item id="PWM_CENTER_ALIGNED" label="Counter used by this type of channel is in up-down counting mode and the duty is inserted in center of PWM period"/>
+         </enum>
+         <enum id="pwm_polarity_t" label="Defines the polarity of pwm channels Implements : pwm_polarity_t_Class" from="pwm_polarity_t">
+            <item id="PWM_ACTIVE_HIGH" label="Polarity is active high"/>
+            <item id="PWM_ACTIVE_LOW" label="Polarity is active low"/>
+         </enum>
+         <enum id="pwm_complementary_mode_t" label="Defines the polarity of complementary pwm channels relative to main channel Implements : pwm_complementary_mode_t_Class" from="pwm_complementary_mode_t">
+            <item id="PWM_DUPLICATED" label="Complementary channel is the same as main channel"/>
+            <item id="PWM_INVERTED" label="Complementary channel is inverted relative to main channel"/>
+         </enum>
+         <struct id="pwm_ftm_timebase_t" label="This structure is specific for platforms where FTM is available" from="pwm_ftm_timebase_t">
+            <fixme id="sourceClock" label="Clock source for FTM timebase" type="ftm_clock_source_t">
+               <description>Clock source for FTM timebase</description>
+            </fixme>
+            <fixme id="prescaler" label="Prescaler for FTM timebase" type="ftm_clock_ps_t">
+               <description>Prescaler for FTM timebase</description>
+            </fixme>
+            <fixme id="deadtimePrescaler" label="Prescaler for FTM dead-time insertion" type="ftm_deadtime_ps_t">
+               <description>Prescaler for FTM dead-time insertion</description>
+            </fixme>
+         </struct>
+         <struct id="pwm_emios_timebase_t" label="This structure is specific for platforms where EMIOS is available and it contains the configuration of a single timebase" from="pwm_emios_timebase_t">
+            <reference id="name" label="Timebase name" type="pwm_emios_timebase_name_t">
+               <description>Timebase name</description>
+            </reference>
+            <fixme id="internalPrescaler" label="Internal prescaler, pre-scale channel clock by internalPrescaler +1" type="emios_clock_internal_ps_t">
+               <description>Internal prescaler, pre-scale channel clock by internalPrescaler +1</description>
+            </fixme>
+         </struct>
+         <struct id="pwm_etimer_timebase_t" label="This structure is specific for platforms where ETIMER is available and it contains the configuration of a single timebase" from="pwm_etimer_timebase_t">
+            <bool id="halfClkPeriod" label="Automatically half the input clock period, effectively double the running frequency">
+               <description>Automatically half the input clock period, effectively double the running frequency</description>
+            </bool>
+            <fixme id="pwmClkSrc" label="Clock source of PWM channel" type="etimer_input_config_t">
+               <description>Clock source of PWM channel</description>
+            </fixme>
+            <bool id="enableOutSig" label="Enable the PWM signal on the output pin">
+               <description>Enable the PWM signal on the output pin</description>
+            </bool>
+         </struct>
+         <struct id="pwm_flexpwm_timebase_t" label="This structure is specific for platforms where FLEXPWM is available and it contains the configuration of a single timebase" from="pwm_flexpwm_timebase_t">
+            <fixme id="pwmClkSrc" label="Clock source for PWM channel" type="flexpwm_clock_src_t">
+               <description>Clock source for PWM channel</description>
+            </fixme>
+            <fixme id="pwmClkPrsc" label="Clock prescaler for selected source" type="flexpwm_clock_ps_t">
+               <description>Clock prescaler for selected source</description>
+            </fixme>
+         </struct>
+         <struct id="pwm_channel_t" label="This structure includes the configuration for each channel Implements : pwm_channel_t_Class" from="pwm_channel_t">
+            <integer id="channel" label="Channel number" type="uint8_t">
+               <description>Channel number</description>
+            </integer>
+            <reference id="channelType" label="Channel waveform type" type="pwm_channel_type_t">
+               <description>Channel waveform type</description>
+            </reference>
+            <integer id="period" label="Period of the PWM signal in ticks" type="uint32_t">
+               <description>Period of the PWM signal in ticks</description>
+            </integer>
+            <integer id="duty" label="Duty cycle in ticks" type="uint32_t">
+               <description>Duty cycle in ticks</description>
+            </integer>
+            <reference id="polarity" label="Channel polarity" type="pwm_polarity_t">
+               <description>Channel polarity</description>
+            </reference>
+            <bool id="insertDeadtime" label="Enable/disable dead-time insertion">
+               <description>Enable/disable dead-time insertion. This feature is available only if complementary mode is enabled</description>
+            </bool>
+            <integer id="deadtime" label="Dead-time value in ticks" type="uint8_t">
+               <description>Dead-time value in ticks</description>
+            </integer>
+            <bool id="enableComplementaryChannel" label="Enable a complementary channel">
+               <description>Enable a complementary channel. This option can take control over other channel than the channel configured in this structure.</description>
+            </bool>
+            <reference id="complementaryChannelPolarity" label="Configure the polarity of the complementary channel relative to the main channel" type="pwm_complementary_mode_t">
+               <description>Configure the polarity of the complementary channel relative to the main channel</description>
+            </reference>
+            <reference id="timebase" label="This field is platform specific and it&apos;s used to configure the clocking tree for different time-bases" type="void *">
+               <description>This field is platform specific and it&apos;s used to configure the clocking tree for different time-bases. If FTM is use this field must be filled by a pointer to pwm_ftm_timebase_t</description>
+            </reference>
+         </struct>
+         <struct id="pwm_global_config_t" label="This structure is the configuration for initialization of PWM channels" from="pwm_global_config_t">
+            <fixme id="pwmChannels" label="Pointer to channels configurations" type="pwm_channel_t *">
+               <description>Pointer to channels configurations</description>
+            </fixme>
+            <integer id="numberOfPwmChannels" label="Number of channels which are configured" type="uint8_t">
+               <description>Number of channels which are configured</description>
+            </integer>
+         </struct>
+      </generated_types>
+   </config_set>
+</component:config_component>

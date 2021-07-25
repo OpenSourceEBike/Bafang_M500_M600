@@ -1,0 +1,166 @@
+/*
+** ###################################################################
+**     Processor:           S32K142 with 16 KB SRAM
+**     Compiler:            Windriver Diab Compiler
+**
+**     Abstract:
+**         Linker file for the Windriver Diab Compiler
+**
+**     Copyright (c) 2015-2016 Freescale Semiconductor, Inc.
+**     Copyright 2017-2018 NXP
+**     All rights reserved.
+**
+**     NXP Confidential. This software is owned or controlled by NXP and may only be
+**     used strictly in accordance with the applicable license terms. By expressly
+**     accepting such terms or by downloading, installing, activating and/or otherwise
+**     using the software, you are agreeing that you have read, and that you agree to
+**     comply with and are bound by, such license terms. If you do not agree to be
+**     bound by the applicable license terms, then you may not retain, install,
+**     activate or otherwise use the software. The production use license in
+**     Section 2.3 is expressly granted for this software.
+**
+**     http:                 www.nxp.com
+**
+** ###################################################################
+*/
+
+HEAP_SIZE  = 0x00000400;
+STACK_SIZE = 0x00000400;
+
+/* Linker symbols for __flash_vector_table__ can be 
+ * modified by using -MD as parameter when linker 
+ * is called. This requires the preprocessor to be enabled
+ * for linker scripts - "-Xpreprocess-lecl" parameter 
+ * must be added to the linker command line 
+ */
+#ifdef __flash_vector_table__
+M_VECTOR_RAM_SIZE = 0x0;
+#else
+M_VECTOR_RAM_SIZE = 0x00000400;
+#endif
+
+/* Specify the memory areas */
+MEMORY
+{
+  /* Flash */
+  m_interrupts          (RX)  : ORIGIN = 0x00000000, LENGTH = 0x00000400
+  m_flash_config        (RX)  : ORIGIN = 0x00000400, LENGTH = 0x00000010
+  m_text                (RX)  : ORIGIN = 0x00000410, LENGTH = 0x0003FBF0
+
+  /* SRAM_L */
+  m_data                (RW)  : ORIGIN = 0x1FFFE000, LENGTH = 0x00002000
+
+  /* SRAM_U */
+  m_data_2              (RW)  : ORIGIN = 0x20000000, LENGTH = 0x00001000
+}
+
+/* Define output sections */
+SECTIONS
+{
+    /* The startup code goes first into internal flash */
+    GROUP ALIGN(4) : {
+        .interrupts : {
+            __interrupts_start__ = .;
+            KEEP(*(.isr_vector))
+            __interrupts_end__ = .;
+        }
+    } > m_interrupts
+
+    GROUP ALIGN(4) : {
+        .flash_config : {
+            KEEP(*(.FlashConfig))
+        }
+    } > m_flash_config
+
+    /* Collect all code sections from all input files to make a single output
+     * .text section and locate it in "m_text" memory
+     */
+    GROUP ALIGN(4) : {
+        .text (TEXT) : {
+            *(.text)        /* .text sections (code) */
+            *(.rodata)      /* .rodata sections (constants, strings, etc.) */
+        }
+        __DATA_ROM = .;
+    } > m_text
+
+    GROUP : {
+        /* With the COPYTABLE specification on the GROUP,
+         * .data section is placed at the .text2 section in "m_text"
+         * (the "physical" address) but will be at the beginning of
+         * "m_data" (the "logical" address) at run time.
+         * The linker links for "logical" address in "m_data".
+         * .bss do not occupy any space in "m_text" and
+         * it is linked for "logical" address in "m_data".
+         */
+
+        .interrupts_ram : {
+            . = ALIGN(4);
+            __VECTOR_RAM__ = .;
+            KEEP(*(.m_interrupts_ram))     /* This is a user defined section */
+            . += M_VECTOR_RAM_SIZE;
+            . = ALIGN(4);
+        }
+
+        .data (DATA) LOAD (__DATA_ROM): {
+            . = ALIGN(4);
+            __DATA_RAM = .;
+            __data_start__ = .;      /* Create a global symbol at data start. */
+            *(.data)                 /* .data sections */
+            . = ALIGN(4);
+            __data_end__ = .;
+            __DATA_END = __DATA_ROM + (__data_end__ - __data_start__);
+        }
+
+        __CODE_ROM = __DATA_END; /* Symbol is used by code initialization. */
+        .code (TEXT) LOAD (__CODE_ROM): {
+            . = ALIGN(4);
+            __CODE_RAM = .;
+            __code_ram_start__ = .;
+            __code_start__ = .;      /* Create a global symbol at code start. */
+            *(.code_ram)           /* Custom section for storing code in RAM */
+            __code_ram_end__ = .;
+            . = ALIGN(4);
+            __code_end__ = .;        /* Define a global symbol at code end. */
+        }
+        __CODE_END = __CODE_ROM + (__code_end__ - __code_start__);
+    } > m_data
+
+    GROUP : {
+        __CUSTOM_ROM = __CODE_END;
+        /* Custom Section Block that can be used to place data at absolute address. */
+        /* Use #pragma section to place data here. */
+        .customSectionBlock LOAD (__CUSTOM_ROM): {
+            __customSection_start__ = .;
+            KEEP(*(.customSection))  /* Keep section even if not referenced. */
+            __customSection_end__ = .;
+        }
+        __CUSTOM_END = __CUSTOM_ROM + (__customSection_end__ - __customSection_start__);
+        __rom_end = __CUSTOM_END;
+
+        /* Allocate uninitialized sections. */
+        __BSS_START = .;
+        __bss_start__ = .;
+        .bss (BSS) : {}
+        __bss_end__ = .;
+        __BSS_END = .;
+
+        /* Any remaining space will be used as a heap. */
+        __HEAP_START = .;
+    } > m_data_2
+
+    __StackTop   = ADDR(m_data_2) + SIZEOF(m_data_2);
+
+    __VECTOR_TABLE = ADDR(m_interrupts);
+    __RAM_START = ADDR(m_data);
+    #ifdef __flash_vector_table__
+    __VECTOR_RAM = ADDR(m_interrupts);
+    #else
+    __VECTOR_RAM = ADDR(m_data);
+    #endif
+    __RAM_VECTOR_TABLE_SIZE = M_VECTOR_RAM_SIZE;
+    __RAM_END = __StackTop;
+    
+    /* Memory validation */
+    ASSERT(__rom_end <= (ADDR(m_text) + SIZEOF(m_text)), "Region m_text overflowed!")
+}
+

@@ -1,0 +1,53 @@
+/**
+ @addtogroup hviocr
+ @section Introduction
+<p>
+The HVIO control registers (0x30 - 0x3A / 0x40 - 0x4A) allow:
+<ul>
+<li>Configuring the HVIOn pin behaviour (0x30 - 0x33 / 0x40 - 0x43)</li>
+<li>Configuring the Bank N wake-up threshold (0x34 - 0x44)</li>
+<li>Read Bank N wake-up status (0x35 / 0x45)</li>
+<li>Read Bank N driver status (0x36 / 0x46)</li>
+<li>Configuring Bank N short-circuit detection threshold (0x39 / 0x49)</li>
+<li>Configuring Bank N open-load detection threshold (0x3A / 0x4A)</li>
+<li>Enabling/disabling HVIO N high-/low-side driver in non-volatile memory 
+(0x71 / 0x72) (see @ref mtpnvhsc_group & @ref mtpnvlsc_group for details)
+</ul>
+ @note Please, consult the details of HVIO capabilities with the reference 
+manual, as this is out of the scope of this documentation.
+</p>
+
+ @subsection short_handling Short-circuit handling
+<p>
+Every HVIO pin can be configured separately in it's dedicated HVIO control register
+(0x30 - 0x33 / 0x40 - 0x43) by setting the IOnCC (HVIOn configuration control) 
+bit and IOnAC (HVIOn activation control). The HVIO can be disabled by either
+setting the IOnAC bit to deactivated (see @ref uja113x_hvion_ionac_t) or by 
+IOnCC to HVIOn off state (see @ref uja113x_hvion_ioncc_t).\n
+However, during short circuit, to reset the function of the HVIO pin, the
+IOnAC bit has to be set to deactivated and afterwards a corresponding
+active mode set again. Resetting the HVIO pin by IOnCC will have no effect!
+</p>
+
+ @subsubsection short_handl_example Example
+<p>
+ @code
+/* Configuring the HVIOn */
+uja113x_hvio_cfg_t hvio1Config;
+hvio1Config.ionShutdownCtrl = IONSC_OVERVOLTAGE;
+hvio1Config.ionActivateCtrl = IONAC_ENABLED;
+hvio1Config.ionConfCtrl     = IONCC_HS_SLOPE;
+UJA113X_SetHvio(SBC_INSTANCE_0, &hvio1Config, HVIO1);
+
+/* Short-circuit detected on HVIO 1 */
+hvio1Config.ionActivateCtrl = IONAC_DEACTIVATED;
+UJA113X_SetHvio(SBC_INSTANCE_0, &hvio1Config; HVIO1);
+
+/* delay/manage short-circuit etc. if necessary */
+...
+/* Activate HVIO again */
+hvio1Config.ionActivateCtrl = IONAC_ENABLED;
+UJA113X_SetHvio(SBC_INSTANCE_0, &hvio1Config; HVIO1);
+ @endcode
+<p>
+ */

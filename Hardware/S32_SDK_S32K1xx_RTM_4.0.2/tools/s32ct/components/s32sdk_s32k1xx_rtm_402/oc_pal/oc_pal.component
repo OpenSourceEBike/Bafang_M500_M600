@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="ocPal" label="oc_pal" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+   <sw_comp_ref name="platform.pal.oc_pal" version="1.0.0"/>
+   <description>OC_PAL Component</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>OC PAL General</description>
+      <config_set_refs>
+         <config_set_ref>oc_pal</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>FTM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="oc_pal" label="OC PAL configuration settings" from_source="oc_pal.h">
+      <description>OC PAL</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="def_oc_pal" label="Default Values for OC PAL" available="true">
+            <description>OC PAL default configuration</description>
+            <set id="ocPalInstanceCfg.name">oc_pal</set>
+            <set id="ocPalInstanceCfg.readonly">true</set>
+            <set id="ocPalInstanceCfg.instType">OC_INST_TYPE_FTM</set>
+            <set id="ocPalClockConfig.ocPalInputClkSrc">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <set id="ocPalClockConfig.ocPalPrescaler">FTM_CLOCK_DIVID_BY_8</set>
+            <set id="ocPalConfig.ocPalMaxCountValue">65000</set>
+            <set id="ocPalConfig.ocPalChnConfigList.0.hwChannelId">0U</set>
+         </quick_selection>
+         <default>def_oc_pal</default>
+      </quick_selections>
+      <generated_types>
+         <enum id="oc_option_mode_t" label="The measurement type for output compare mode" from="oc_option_mode_t">
+            <description>Implements : oc_option_mode_t_Class</description>
+            <item id="OC_DISABLE_OUTPUT" label="No action on output pin"/>
+            <item id="OC_TOGGLE_ON_MATCH" label="Toggle on match"/>
+            <item id="OC_CLEAR_ON_MATCH" label="Clear on match"/>
+            <item id="OC_SET_ON_MATCH" label="Set on match"/>
+         </enum>
+         <enum id="oc_pal_channel_t" label="Hardware channel list" from="oc_pal_channel_t">
+            <description>Channel ID</description>
+            <item id="0U" label="Channel 0"/>
+            <item id="1U" label="Channel 1"/>
+            <item id="2U" label="Channel 2"/>
+            <item id="3U" label="Channel 3"/>
+            <item id="4U" label="Channel 4"/>
+            <item id="5U" label="Channel 5"/>
+            <item id="6U" label="Channel 6"/>
+            <item id="7U" label="Channel 7"/>
+          </enum>
+         <struct id="oc_output_ch_param_t" label="The configuration structure of output compare parameters for each channel" from="oc_output_ch_param_t">
+            <description>Implements : oc_output_ch_param_t_Class</description>
+            <reference id="hwChannelId" label="Channel ID" type="oc_pal_channel_t">
+               <description>Physical hardware channel ID</description>
+            </reference>
+            <reference id="chMode" label="Operation Mode" type="oc_option_mode_t">
+               <description>Output compare mode of operation</description>
+            <validation/>
+            </reference>
+            <integer id="comparedValue" label="Output Compared Value" type="uint16_t" min_expr="0" max_expr="65535">
+               <description>Output Compare Value</description>
+            </integer>
+            <string id="channelCallbacks" label="Callback Function" value="NULL" options="cStructField">
+               <description>The callback function for channels event</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue()) || ($this.getValue() == `NULL`)" level="error" description="The name of callback function must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <string id="channelCallbackParams" label="Callback Parameter" value="NULL" options="cStructField">
+               <description>Parameter for callback</description>
+               <validation>
+                 <constraint cond_expr="isCIdentifier($this.getValue()) || ($this.getValue() == `NULL`)" level="error" description="Parameter must be a valid C identifier!"/>
+                 <constraint cond_expr="(!($parent.channelCallbacks.getValue() == `NULL` &amp;&amp; $parent.channelCallbackParams.getValue() != `NULL`) || $parent.channelCallbackParams.getValue() == ``)" level="error" description="Error: Make sure the callback parameter will be used."/>
+                 <constraint cond_expr="(!($parent.channelCallbacks.getValue() != `NULL` &amp;&amp; $parent.channelCallbackParams.getValue() == `NULL`))" level="info" description="Make sure the parameter is defined. Otherwise compilation errors may appear."/>
+               </validation>
+            </string>
+         </struct>
+      </generated_types>
+      <user_types>
+          <enum id="oc_pal_clk_src_type" label="" from="oc_pal_clk_src_type">
+                <description></description>
+                <item id="FTM_CLOCK_SOURCE_SYSTEMCLK" label="System clock"/>
+                <item id="FTM_CLOCK_SOURCE_EXTERNALCLK" label="External clock" available="featureDefined(`FEATURE_FTM_HAS_EXT_CLOCK_SOURCE`)"/>
+                <item id="FTM_CLOCK_SOURCE_FIXEDCLK" label="Fixed clock" available="featureDefined(`FEATURE_FTM_HAS_FIXED_CLOCK_SOURCE`)"/>
+          </enum>
+          <enum id="oc_pal_clock_ps_type" label="" from="oc_pal_clock_ps_type">
+                <description></description>
+                <item id="FTM_CLOCK_DIVID_BY_1" label="Divided by 1"/>
+                <item id="FTM_CLOCK_DIVID_BY_2" label="Divided by 2"/>
+                <item id="FTM_CLOCK_DIVID_BY_4" label="Divided by 4"/>
+                <item id="FTM_CLOCK_DIVID_BY_8" label="Divided by 8"/>
+                <item id="FTM_CLOCK_DIVID_BY_16" label="Divided by 16"/>
+                <item id="FTM_CLOCK_DIVID_BY_32" label="Divided by 32"/>
+                <item id="FTM_CLOCK_DIVID_BY_64" label="Divided by 64"/>
+                <item id="FTM_CLOCK_DIVID_BY_128" label="Divided by 128"/>
+          </enum>
+         <enum id="oc_inst_type" label="Instance types" from="oc_inst_type">
+            <item id="OC_INST_TYPE_FTM" label="OC PAL over FTM"/>
+         </enum>
+        <struct id="oc_pal_inst_config_t" label="Structure storing PAL instance information" from="oc_pal_inst_config_t">
+            <description>This structure is used for storing PAL instance information.</description>
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readOnly" label="Read-only">
+               <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+            </bool>
+            <reference id="instType" label="Peripheral Over Which The PAL Is Used" type="oc_inst_type" options="cStructField">
+               <description>Peripheral over which the PAL is used</description>
+            </reference>
+            <info id="instIdx" label="Instance Of The Peripheral Is Used" value="$instance.getPeripheral()" options="cStructField" />
+         </struct>
+         <struct id="oc_pal_clock_config_t" label="Initialization Clock Config" from="oc_pal_clock_config_t">
+            <reference id="ocPalInputClkSrc" label="Input Clock Source" type="oc_pal_clk_src_type">
+               <description>Select the clock source for OC PAL</description>
+            </reference>
+            <reference id="ocPalPrescaler" label="Prescaler" type="oc_pal_clock_ps_type">
+               <description>The prescaler value</description>
+            </reference>
+            <info id="Name_ModuleClock"
+                  value="getFeature(`FEATURE_FTM_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="Name_ExternalClock"
+                  value="getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="SystemClockFrequency"
+                  label="System Clock(Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_SYS_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="false">
+            </info>
+            <info id="DisplaySystemClock"
+                  label="Frequency of source clock (Hz)"
+                  value="$parent.SystemClockFrequency.getValue()"
+                  available="($parent.ocPalInputClkSrc.getValue() == `FTM_CLOCK_SOURCE_SYSTEMCLK`)">
+                  <description>Frequency of System Clock. This value is based on the frequency from the first clock configuration.</description>
+            </info>
+            <info id="DisplayExternalClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               $parent.Name_ExternalClock.getValue(),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.ocPalInputClkSrc.getValue() == `FTM_CLOCK_SOURCE_EXTERNALCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 4))"
+                              level="error"
+                              description="The frequency of the external clock source must not exceed 1/4 of the FTM input clock frequency"/>
+               </validation>
+               <description>Frequency of External Clock. This value is based on the frequency from the first clock configuration.</description>
+            </info>
+            <info id="Display_FixedClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_FIX_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.ocPalInputClkSrc.getValue() == `FTM_CLOCK_SOURCE_FIXEDCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 2))"
+                              level="error"
+                              description="The frequency of the fixed frequency clock must not exceed 1/2 of the FTM input clock frequency"/>
+               </validation>
+               <description>Frequency of Fixed Clock. This value is based on the frequency from the first clock configuration.</description>
+            </info>
+         </struct>
+        <struct id="oc_pal_config_t" label="Configurations" from="oc_pal_config_t">
+            <description>OC PAL Configurations</description>
+            <info id="ocPalNumOfChnConfig" label="Number Of Channels: " value="$parent.ocPalChnConfigList.getSize()" options="cStructField"/>
+          <integer id="ocPalMaxCountValue" label="Max Count Value" type="uint16_t" min_expr="0" max_expr="65535">
+               <description>Max Count Value</description>
+          </integer>
+          <array id="ocPalChnConfigList" label="Chanels Configuration List" type="oc_output_ch_param_t" options="ShowContentAs=MasterDetail">
+            <description>Configuration for independent PWM channels</description>
+            <item_defaults>
+                <set_default id="channelCallbacks" value_expr="x.channelCallbacks -> (`NULL`)"/>
+                <set_default id="channelCallbackParams" value_expr="x.channelCallbackParams -> (`NULL`)"/>
+            </item_defaults>
+            <validation>
+                <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`hwChannelId`).value()).length() == 0" level="error" description="There are some duplicated `hw Channel Id` in the configuration"/>
+            </validation>
+          </array>
+        </struct>
+      </user_types>
+      <settings>
+            <reference id="ocPalInstanceCfg" label="PAL Instance Config" type="oc_pal_inst_config_t" available="true">
+            <description>OC PAL instance Configuration</description>
+            </reference>
+            <reference id="ocPalClockConfig" label="Clock Configuration" type="oc_pal_clock_config_t" available="true">
+                <description>OC PAL clock Configuration.</description>
+            </reference>
+            <reference id="ocPalConfig" label="OC PAL User Configuration" type="oc_pal_config_t" available="true">
+                <description>OC PAL User Configuration.</description>
+            </reference>
+             <variable value="`../oc_pal/oc_pal_codegen.js`" id="codegen_file"></variable>
+             <variable value="`OC_PAL_CodeGenerator`" id="codegen_class"></variable>
+             <variable value="`OcToolchainSettings`" id="toolchain_settings_class"></variable>
+             <variable value="`../oc_pal/OcToolchainSettings.js`" id="toolchain_settings_file"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

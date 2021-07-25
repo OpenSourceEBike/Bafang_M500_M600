@@ -1,0 +1,213 @@
+/**
+@defgroup wdg_pal Watchdog Peripheral Abstraction Layer (WDG PAL)
+@brief The S32 SDK provides a Peripheral Abstraction Layer for Watchdog (WDG PAL) modules of S32 SDK devices.
+<p>
+  The Watchdog PAL driver allows to generate interrupt event to reset CPU or external circuit.
+  It was designed to be portable across all platforms and IPs which support Watchdog Timer.
+</p>
+
+## Integration guideline ##
+
+### Define IPs specification ###
+
+<p>
+  Unlike the other drivers, WDG PAL modules need to include a configuration file named wdg_pal_cfg.h,
+  which allows the user to specify which IPSs are used and how many resources are allocated for each
+  of them (state structures). The following code example shows how to configure one instance for each
+  available WDG IPs.
+</p>
+
+ @code
+ #ifndef WDG_PAL_CFG_H
+ #define WDG_PAL_CFG_H
+
+ /* Define which IP instance will be used in current project */
+ #define WDG_OVER_WDOG
+ #define WDG_OVER_EWM
+ #define WDG_OVER_SWT
+
+ /* Define the resources necessary for current project */
+ #define WDG_OVER_WDOG_INSTANCE_COUNT    1U
+ #define WDG_OVER_EWM_INSTANCE_COUNT     1U
+ #define WDG_OVER_SWT_INSTANCE_COUNT     0U
+
+ #endif /* WDG_PAL_CFG_H */
+ @endcode
+
+  The following table contains the matching between platforms and available IPs
+    IP/MCU     |S32K11x|S32K14x|MPC574x|S32Rx7x|
+ :------------:|:-----:|:-----:|:-----:|:-----:|
+     WDOG      |  YES  |  YES  |  NO   | NO    |
+     EWM       |  NO   |  YES  |  NO   | NO    |
+     SWT       |  NO   |  NO   |  YES  | YES   |
+
+  ### Compilation units ###
+
+  The following files need to be compiled in the project:
+  \verbatim
+  ${S32SDK_PATH}\platform\pal\src\wdg\wdg_pal.c
+  \endverbatim
+
+  ### Include path ###
+
+  The following paths need to be added to the include path of the toolchain:
+  \verbatim
+  ${S32SDK_PATH}\platform\pal\inc
+  \endverbatim
+
+  ### Compile symbols ###
+
+  No special symbols are required for this component
+
+  ### Dependencies ###
+
+  - \ref clock_manager @n
+  - \ref interrupt_manager @n
+  - \ref ewm @n
+  - \ref wdog @n
+  - \ref swt
+
+  ## Functionality ##
+
+  ### Initialization ###
+<p>
+  In order to use the WDG PAL driver it must be first initialized, using WDG_Init() function.
+  Once initialized, it cannot be initialized again for the same WDG module instance until it is
+  de-initialized, using WDG_Deinit(). Different WDG modules instances can function independently of each other.
+</p>
+
+  ### Interrupt event ###
+<p>
+  After initialization, WDG PAL counter will count to timeout value. In window mode, when WDG PAL counter is refreshed,
+  it will reset count to default value and count again. If WDG PAL counter count to timeout value, CPU or the external
+  circuit will be reseted or placed  into safe mode.
+</p>
+
+<p>
+  The configuration structure includes a special field named extension. It will be used only for WDG PAL
+  over EWM peripheral and should contain a pointer to extension_ewm_for_wdg_t structure.
+  The purpose of this structure is to configure which EWM_OUT pins and clock prescaler are used by the applications.
+</p>
+
+  ### WDG PAL internal counter ###
+<p>
+  WDG PAL internal counter is
+    - 8 bit if WDG PAL uses EWM
+    - 16 bit if WDG PAL uses WDOG
+    - 32 bit if WDG PAL uses SWT
+</p>
+
+<p>
+  WDG PAL's counter over EWM and WDOG will start to count from 0 to timeout value.
+  WDG PAL's counter over SWT will start to count from timeout value to 0.
+</p>
+
+  ## Important Notes ##
+<p>
+  - Before using the WDG PAL driver the module clock must be configured. Refer to Clock Manager for clock configuration.
+  - The driver enables the interrupts for the corresponding WDG PAL module, but any interrupt priority
+    must be done by the application
+  - For WDG PAL over SWT, if the counter clock is slow, the software needs a wait time (inversely proportional to counter clock frequency) to synchronization completed.
+</p>
+  </p>
+ ## Example code ##
+ @code
+ /*! @brief WDG PAL instance information */
+ const wdg_instance_t wdg_pal1_Instance =
+ {
+     .instType = WDG_INST_TYPE_WDOG,
+     .instIdx  = 0U
+ };
+
+ const wdg_instance_t wdg_pal2_Instance =
+ {
+     .instType = WDG_INST_TYPE_EWM,
+     .instIdx  = 0U
+ };
+
+ const wdg_instance_t wdg_pal3_Instance =
+ {
+     .instType = WDG_INST_TYPE_SWT,
+     .instIdx  = 0U
+ };
+
+ /* Serial User Configurations */
+
+ /*! @brief User Configurations 0 */
+ const wdg_config_t wdg_pal1_Config0 =
+ {
+     .clkSource       = WDG_PAL_LPO_CLOCK,
+     .opMode          =
+     {
+         .wait        = false,
+         .stop        = false,
+         .debug       = false
+     },
+     .timeoutValue    = 1024,
+     .percentWindow   = 50,
+     .intEnable       = true,
+     .winEnable       = true,
+     .prescalerEnable = true
+ };
+
+ /*! @brief User Configurations 0 */
+ const wdg_config_t wdg_pal2_Config0 =
+ {
+     .clkSource       = WDG_PAL_LPO_CLOCK,
+     .opMode          =
+     {
+         .wait        = false,
+         .stop        = false,
+         .debug       = false
+     },
+     .timeoutValue    = 254,
+     .percentWindow   = 100,
+     .intEnable       = true,
+     .winEnable       = true,
+     .prescalerEnable = true,
+     .extension       = &wdg_pal2_Extension0
+ };
+
+ /*! @brief Extension configurations 0 for EWM peripheral */
+ extension_ewm_for_wdg_t wdg_pal2_Extension0 =
+ {
+     .assertLogic     = WDG_IN_ASSERT_ON_LOGIC_ZERO,
+     .prescalerValue  = 251
+ };
+
+ /*! @brief User Configurations 0 */
+ const wdg_config_t wdg_pal3_Config0 =
+ {
+     .clkSource       = WDG_PAL_LPO_CLOCK,
+     .opMode          =
+     {
+         .wait        = false,
+         .stop        = false,
+         .debug       = false
+     },
+     .timeoutValue    = 2560,
+     .percentWindow   = 50,
+     .intEnable       = true,
+     .winEnable       = true,
+     .prescalerEnable = false
+ };
+
+ int main()
+ {
+     /* Init clocks, pins, led and other modules */
+     ...
+
+     /* Initialize WDG PAL */
+     WDG_Init(&wdg_pal1_Instance, &wdg_pal1_Config0);
+
+     /* Infinite loop*/
+     while(1)
+     {
+         /* Do something until the counter needs to be refreshed */
+         ...
+         /* Reset WDG PAL counter */
+         WDG_Refresh(&wdg_pal1_Instance);
+     }
+ }
+ @endcode
+@}*/

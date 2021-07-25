@@ -1,0 +1,186 @@
+/*!
+@defgroup erm Error Reporting Module (ERM)
+@brief The S32 SDK provides Peripheral Drivers for the Error Reporting Module (ERM) module of S32 SDK devices.
+@details
+<p>
+    The Error Reporting Module (ERM) provides information and optional interrupt
+    notification on memory errors events associated with ECC (Error Correction Code).
+</p>
+<p>
+    The ERM includes the following features:
+    - Capture of address information on single-bit correction and non-correctable ECC events.
+    - Optional interrupt notification on captured ECC events.
+    - Support for ECC event capturing for memory sources, with individual reporting
+    fields and interrupt configuration per memory channel.
+</p>
+
+<p>
+    Each ERM channel n corresponds to a source of potential memory error events. 
+    The following table shows the channel assignments:
+
+|   ERM channel n |      S32K14x     |      S32K14xW    |       S32K11x      |      MPC5777C     |             S32V23x           |
+|:---------------:|:----------------:|:----------------:|:------------------:|:-----------------:|:-----------------------------:|
+|        0        |      SRAM_L      |      SRAM_L      |       SRAM_U       |       PRAMC_0     |     Cortex-M4 TCM upper       |
+|        1        |      SRAM_U      |      SRAM_U      |       Reserved     |       PRAMC_1     |     Cortex-M4 TCM lower       |
+|        2        |      Reserved    |      Reserved    |       Reserved     |   eDMA_0 TCD RAM  |  Cortex-M4 Code Cache Tag     |
+|        3        |      Reserved    |      Reserved    |       Reserved     |   eDMA_1 TCD RAM  |  Cortex-M4 Code Cache Data    |
+|        4        |      Reserved    |      Reserved    |       Reserved     |       FEC MIB     |  Cortex-M4 System Cache Tag   |
+|        5        |      Reserved    |      Reserved    |       Reserved     |       FEC RIF     |  Cortex-M4 System Cache Data  |
+|        6        |      Reserved    |      Reserved    |       Reserved     |    PFLASH port 0  |          DMA TCD RAM          |
+|        7        |      Reserved    |      Reserved    |       Reserved     |    PFLASH port 1  |            Reserved           |
+|        8        |      Reserved    |      Reserved    |       Reserved     |       AIPS_0      |            Reserved           |
+|        9        |      Reserved    |      Reserved    |       Reserved     |       AIPS_1      |            Reserved           |
+|       10        |      Reserved    |      Reserved    |       Reserved     |      FEC e2eECC   |            Reserved           |
+|       11        |      Reserved    |      Reserved    |       Reserved     |        CSE        |            Reserved           |
+|       12        |      Reserved    |      Reserved    |       Reserved     |        SIPI       |            Reserved           |
+|       13        |      Reserved    |      Reserved    |       Reserved     | Core0 instruction |            Reserved           |
+|       14        |      Reserved    |      Reserved    |       Reserved     |     Core0 data    |            Reserved           |
+|       15        |      Reserved    |      Reserved    |       Reserved     | Core1 instruction |            Reserved           |
+|       16        |      Reserved    |      Reserved    |       Reserved     |     Core1 data    |            Reserved           |
+|       17        |      Reserved    |      Reserved    |       Reserved     |    eDMA_0 e2eECC  |            Reserved           |
+|       18        |      Reserved    |      Reserved    |       Reserved     |    eDMA_1 e2eECC  |            Reserved           |
+|       19        |      Reserved    |      Reserved    |       Reserved     |       EBI e2eECC  |            Reserved           |
+
+## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\erm\erm_driver.c
+${S32SDK_PATH}\platform\drivers\src\erm\erm_hw_access.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+No special dependencies are required for this component
+
+ */
+
+/*!
+@addtogroup erm_driver
+@ingroup erm
+
+@n
+
+# ERM Driver Initialization {#ERMInit}
+
+In order to be able to use the error reporting in your application, the first thing to do is
+ initializing it with user configuration input. This is done by calling the <b>ERM_DRV_Init</b> function.
+Note that: channelCnt takes values between 1 and the maximum channel count supported by the hardware.
+
+# ERM Driver Operation {#ERMOp}
+
+After ERM initialization, the ERM_DRV_SetInterruptConfig() shall be used to set interrupt notification based on interrupt notification configuration. @n
+
+The ERM_DRV_GetInterruptConfig() shall be used to get the current interrupt configuration of the available events (which interrupts are enabled/disabled).
+
+The ERM_DRV_GetErrorDetail() shall be used to get the address of the last ECC event in Memory n and ECC event.
+
+The ERM_DRV_ClearEvent() shall be used to clear both the record of an event and the corresponding interrupt notification.
+
+This is example code to configure the ERM driver:
+
+~~~~~{.c}
+/* Device instance number */
+#define INST_ERM1 (0U)
+
+/* 1.1 With instance for S32K14x: */
+    /* The number of configured channel(s) */
+    #define ERM_NUM_OF_CFG_CHANNEL (2U)
+
+    /* Interrupt configuration 0 */
+    const erm_interrupt_config_t erm1_Interrupt0 =
+    {
+        .enableSingleCorrection = false,        /*!< Single correction interrupt disabled        */
+        .enableNonCorrectable   = true         /*!< Non-correctable error interrupt enabled     */
+    };
+
+    /* Interrupt configuration 1 */
+    const erm_interrupt_config_t erm1_Interrupt1 =
+    {
+        .enableSingleCorrection = true,         /*!< Single correction interrupt enabled         */
+        .enableNonCorrectable   = true         /*!< Non-correctable error interrupt enabled     */
+    };
+
+
+    /* User configuration */
+    const erm_user_config_t erm1_InitConfig[] =
+    {
+        /* Channel 0U */
+        {
+            .channel      = 0U,
+            .interruptCfg = &erm1_Interrupt0
+        },
+
+        /* Channel 1U */
+        {
+            .channel      = 1U,
+            .interruptCfg = &erm1_Interrupt1
+        }
+    };
+
+    /*  1.2 With instance for S32K11x: */
+    /* The number of configured channel(s) */
+    #define ERM_NUM_OF_CFG_CHANNEL (1U)
+
+    /* Interrupt configuration 0 */
+    const erm_interrupt_config_t erm1_Interrupt0 =
+    {
+        .enableSingleCorrection = false,        /*!< Single correction interrupt disabled        */
+        .enableNonCorrectable   = true         /*!< Non-correctable error interrupt enabled     */
+    };
+
+
+    /* User configuration */
+    const erm_user_config_t erm1_InitConfig[] =
+    {
+        /* Channel 0U */
+        {
+            .channel      = 0U,
+            .interruptCfg = &erm1_Interrupt0
+        }
+    };
+
+int main()
+{
+    /* Initializes the ERM module */
+    ERM_DRV_Init(INST_ERM1, ERM_NUM_OF_CFG_CHANNEL, erm1_InitConfig);
+    ...
+    /* De-Initializes the ERM module */
+    ERM_DRV_Deinit(INST_ERM1);
+    ...
+    return 0;
+}
+
+/* Interrupt handler */
+/* Interrupt handler for single bit */
+void ERM_single_fault_IRQHandler()
+{
+    /* Clears the event for channel 1 */
+    ERM_DRV_ClearEvent(INST_ERM1, 1U, ERM_EVENT_SINGLE_BIT);
+    ...
+}
+
+/* Interrupt handler for non correctable */
+void ERM_double_fault_IRQHandler()
+{
+    /* Clears the event for channel 0 */
+    ERM_DRV_ClearEvent(INST_ERM1, 0U, ERM_EVENT_NON_CORRECTABLE);
+    /* Clears the event for channel 1 */
+    ERM_DRV_ClearEvent(INST_ERM1, 1U, ERM_EVENT_NON_CORRECTABLE);
+    ...
+}
+~~~~~
+*/

@@ -1,0 +1,127 @@
+/*!
+    @page ftm_signal_measurement_s32k142_group FTM Signal Measurement
+    @brief Example application showing the FTM's Signal Measurement functionality
+
+    ## Application description ##
+    ______
+    The purpose of this demo application is to show you the usage of the FlexTimer's Signal Measurement functionality
+    on S32K142 using S32 SDK API
+
+    - The application is configured to generate a PWM signal with a variable frequency which will be measured by another FTM instance
+      The frequency will range from 1000 Hz to 3000 Hz. Each step changes 100 Hz
+      The measurement results will be sent to the host PC via LPUART
+      User is able to compare pwm frequency and measurement frequency
+
+      The pwm frequency must be in measurable frequency range of FTM_IC.
+      For example, here are the measurable ranges corresponding to the clock source = System clock (48 MHz)
+      Clock source prescaler | Maximum frequency (Hz) | Minimum frequency (Hz) |
+      -----------------------|------------------------|------------------------|
+                 1           |         48,000,000     |          732.42        |
+                 2           |         24,000,000     |          366.21        |
+                 4           |         12,000,000     |          183.10        |
+                 8           |          6,000,000     |           91.55        |
+                16           |          3,000,000     |           45.77        |
+                32           |          1,500,000     |           22.88        |
+                64           |            750,000     |           11.44        |
+               128           |            375,000     |            5.72        |
+
+    @note Due to limited RAM size, this example contains only one build configuration for target flash memory
+    (and the associated debug configuration)
+
+    ## Prerequisites ##
+    ______
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board cannot be powered from the USB port)
+    - 1 Personal Computer
+    - 1 Jlink Lite Debugger (optional, users can use Open SDA)
+    - 1 microUSB cable
+
+    ## Boards supported ##
+    ______
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+    - S32K142-MB
+
+    ## Hardware Wiring ##
+    ______
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION                    | S32K142EVB-Q100               | S32K142-MB      |
+    --------------------------------|-------------------------------|-----------------|
+    FTM0 Out Channel 0 (\b PTC0)    | J4.11   - J2.11               | J11.31 - J10.29 |
+    FTM1 Input Channel 0 (\b PTB2)  | J2.11   - J4.11               | J10.29 - J11.31 |
+    LPUART1 TX (\b PTC7)            | UART_TX - wired on the board  | J11.26 - J20.2  |
+    LPUART1 RX (\b PTC6)            | UART_RX - wired on the board  | J11.25 - J20.5  |
+
+    ## Notes ##
+    ______
+    For this example it is necessary to open a terminal emulator and configure it with:
+    - 9600 baud
+    - One stop bit
+    - No parity
+    - No flow control
+    - '\\n' line ending
+
+    ## How to run ##
+    ______
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New \b S32DS \b Project \b From... and select \b ftm_signal_measurement_s32k142. Then click on \b Finish. \n
+    The project should now be copied into your current workspace.
+
+    #### 2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    First go to \b Project \b Explorer View in S32 DS and select the current project(\b ftm_signal_measurement_s32k142).
+    Right click on the current project ->" S32 Configuration Tool" menu then click on the desired configuration (Pins, Cocks, Peripherals etc...).
+    Clicking on any one of those will generate all the components.
+    Make the desired changes(if any) then click on the "ConfigTools->Update Code" button.
+
+    #### 3. Building the project ####
+    Select the configuration \b FLASH (Debug_FLASH) to be built by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There are two debug configurations for this project:
+     Configuration Name                                    | Description                                               |
+     ------------------------------------------------------|-----------------------------------------------------------|
+     \b ftm_signal_measurement_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debugger      |
+     \b ftm_signal_measurement_s32k142_debug_flash_jlink   | Debug the FLASH configuration using Segger Jlink debugger |
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    #### 5. Output display on Terminal ####
+    Welcome message:
+
+        This example will show you how to use FTM's signal measurement feature.
+        To achieve that we will generate a modifiable frequency PWM and read
+        it with Input Capture
+        Press any key to initiate a new conversion...
+
+    Expected output:
+
+        PWM frequency:  1000      Measured frequency:   1000    [Hz]
+        PWM frequency:  1100      Measured frequency:   1100    [Hz]
+        PWM frequency:  1200      Measured frequency:   1200    [Hz]
+        PWM frequency:  1300      Measured frequency:   1300    [Hz]
+        PWM frequency:  1400      Measured frequency:   1400    [Hz]
+        PWM frequency:  1500      Measured frequency:   1500    [Hz]
+        PWM frequency:  1600      Measured frequency:   1600    [Hz]
+        PWM frequency:  1700      Measured frequency:   1700    [Hz]
+        PWM frequency:  1800      Measured frequency:   1800    [Hz]
+        PWM frequency:  1900      Measured frequency:   1900    [Hz]
+        PWM frequency:  2000      Measured frequency:   2000    [Hz]
+        PWM frequency:  2100      Measured frequency:   2100    [Hz]
+        PWM frequency:  2200      Measured frequency:   2200    [Hz]
+        PWM frequency:  2300      Measured frequency:   2300    [Hz]
+        PWM frequency:  2400      Measured frequency:   2400    [Hz]
+        PWM frequency:  2500      Measured frequency:   2500    [Hz]
+        PWM frequency:  2600      Measured frequency:   2600    [Hz]
+        PWM frequency:  2700      Measured frequency:   2700    [Hz]
+        PWM frequency:  2800      Measured frequency:   2800    [Hz]
+        PWM frequency:  2900      Measured frequency:   2900    [Hz]
+        PWM frequency:  3000      Measured frequency:   3000    [Hz]
+        Press any key to initiate a new conversion...
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+*/

@@ -1,0 +1,100 @@
+/*!
+    @page adc_pal_s32k142_group ADC PAL example
+    @brief Example for ADC PAL usage
+
+    ## Application description ##
+    ______
+    The purpose of this demo application is to present the basic functionality of the Analog to Digital Converter Peripheral Abstraction Layer (ADC PAL) on S32K14x MCU.
+
+    The application uses ADC PAL to trigger multiple executions of two groups of ADC conversions: first group configured for SW triggering and second group for HW triggering.
+    For each execution of a group of conversions, an average conversion value is computed in SW, and the average value is printed on UART. \n
+
+    \nThe example is divided in 2 parts:
+    - Part 1: SW triggered group of conversions \n
+    After each complete execution of the group, results are read, the average value is calculated and printed to console.
+    A delay is inserted and then the SW group is triggered again.
+    The process is repeated for a fixed number of iterations.
+
+    - Part 2: HW triggered group of conversions \n
+    LPTMR is configured to provide a trigger event with a fixed periodicity.
+    The selected HW group is enabled.
+    After each complete execution of the group, results are read, the average value is calculated and printed to console.
+    After a fixed number of iterations, the HW trigger group of conversions is disabled, and the LPTMR is stopped.
+
+    ______
+    Note: both HW and SW triggered groups are configured to run all conversions on a single ADC InputChannel, because the development board contains only a single potentiometer connected to the MCU.
+    However, the ADC PAL supports different InputChannels to be used in the same group. For more details please refer to the ADC PAL documentation.
+
+
+    ## Prerequisites ##
+    ______
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board cannot be powered from the USB port)
+    - 1 Personal Computer
+    - 1 Jlink Lite Debugger (optional, users can use Open SDA)
+    - UART to USB converter if it is not included on the target board. (Please consult your boards documentation to check if UART-USB converter is present).
+
+    ## Boards supported ##
+    ______
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+    - S32K142-MB
+
+    ## Hardware Wiring ##
+    ______
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION                |	S32K142EVB-Q100	            |	S32K142-MB
+    ----------------------------|-------------------------------|-----------------
+    LPUART1 TX (\b PTC7)	    | UART_TX - wired on the board 	|	J11.26 - J20.2
+    LPUART1 RX (\b PTC6)        | UART_RX - wired on the board  |	J11.25 - J20.5
+    ADC0 Input 12 (\b PTC14)    | POT - wired on the board      |   J21.1 - J11.18
+
+    Make sure the following jumpers are set:
+
+    Jumper Name |       S32K142EVB-Q100
+    ------------|----------------------------
+    J10         | Set jumper on position 2-3
+
+    ## How to run ##
+    ______
+
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New -> \b S32DS \b Project \b From \bExample and select \b adc_pal_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    Wait for the S32 Configuration to be initialized and ready.
+
+    #### 2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    Left click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar).
+    In S32 Configuration menu, click on the desired configurator (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components.
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user.
+    Make the desired changes (if any) then click "Update Code".
+
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be two debug configurations for this project:
+     Configuration Name | Description
+     -------------------|------------
+     \b adc_pal_s32k142_debug_flash_jlink | Debug the FLASH configuration using Segger Jlink debuggers
+     \b adc_pal_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note The Debug_RAM configuration could not be accommodated for the current example, due to the small RAM footprint present on S32K142.
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+    ## Notes ##
+    ______
+
+    For this example it is necessary to open a terminal emulator and configure it with:
+        -   115200 baud
+        -   One stop bit
+        -   No parity
+        -   No flow control
+*/
+

@@ -1,0 +1,73 @@
+/*!
+* @defgroup scst Structural Core Self Test
+* @brief Structural Core Self Test integration with S32 SDK @n
+* 
+* ## General Information ##
+* - The SCST library provides tests to achieve the claimed diagnostic coverage
+* (analytically estimated).
+* - The SCST library can be executed periodically at run time. This way, it contributes to
+* a Single-Point Fault metric. The library preserves execution context of application and
+* device configuration.
+* - The included tests cover most of the core instructions, as well as the tests targeting
+* specific IP blocks of the core:
+*   - Core control logic (branch control, exception control);
+*   - Core data path including:
+*       - Register file and register multiplexing;
+*       - ALU, multiplier, divider, load/store, and other execution units;
+*       - SIMDSAT;
+*       - Instruction decoder,16-Bit,32-Bit;
+* - Interrupts can be enabled during execution of the most of the tests. SCST library
+* provides its own interrupt vector table and wrappers for interrupt service routines,
+* which in case of unexpected for the library interrupt, forwards it to the corresponding
+* interrupt handler of the OS / user application. SCST library supports nested interrupts
+* without any limitations.
+* - SCST library can be compiled and linked with other SCST libraries (e.g. SCST library
+* for Cortex A5 core) within the same application for which a single .elf file is
+* generated.
+* @note This is just a brief description of the Structural Core Self Test Library, for more information please check the full library documentation found in <a href="../../lib/S32K14x/SCST/User_Documentation/M4_S32K144_SCST_User_Manual.pdf">&lt;SDK_Location&gt;/lib/&lt;CPU_Family&gt;/SCST/User_Documentation/&lt;CoreType>&gt;_&lt;CPU_Name&gt;_SCST_User_Manual.pdf</a>
+* @note The library is provided in binary format, compiled using GCC and for evaluation purposes only. Please consult license.txt file for more information found in <a href="../../lib/S32K14x/SCST/license.txt">&lt;SDK_Location&gt;/lib/&lt;CPU_Family&gt;/SCST/license.txt</a>
+* @note The library was built with FPU(hard) enabled, so it must be enabled also in the application which will use it.
+*
+* ## How to use ##
+* To add SCST in your application you need to follow four steps:
+*  - 1) Add sCST S32CT component into your project. The component will automatically add the required include paths and library files to the compilation.
+*  - 2) Check that <b>_m4_scst</b> is added to Libraries under Linker build settings. If it is not present add a new entry with text <b>:lib_m4_scst.a</b>
+*  - 3) Check that <b>"${workspace_loc:/${ProjName}/SDK/lib/SCST/SCST/src/lib}"</b> is added to Library search paths under Linker build settings. If it is not present add a new entry with following text (include the quotes as well) <b>"${workspace_loc:/${ProjName}/SDK/lib/SCST/SCST/src/lib}"</b> or add the path to the folder where the library is located.
+*  - 4) Add sCST code and data section to the linker file
+*   - Example(for GCC linker file):
+*   @code
+*   .m4_scst :
+*   {
+*     *(.m4_scst_test_code)
+*     *(.m4_scst_test_code_unprivileged)
+*     *(.m4_scst_test_code1_unprivileged)
+*     *(.m4_scst_test_shell_code)
+*     *(.m4_scst_rom_data)
+*     . = ALIGN(4);
+*     *(.m4_scst_exception_wrappers)
+*     *(.m4_scst_vector_table)
+*     . = ALIGN(4);
+*   } > m_text
+*
+*   .m4_scst2 :
+*   {
+*     __SCST_DATA_ROM = .;
+*     __scst_data_start__ = .;
+*     *(.m4_scst_test_shell_data)
+*     . = ALIGN(4);
+*     *(.m4_scst_ram_data)
+*     . = ALIGN(4);
+*     *(.m4_scst_ram_data_target0)
+*     . = ALIGN(4);
+*     *(.m4_scst_ram_data_target1)
+*     . = ALIGN(4);
+*     *(.m4_scst_ram_test_code)
+*     . = ALIGN(4);
+*     __scst_data_end__ = .;
+*   } > m_data
+*   @endcode
+*  - 5) Use the library API to execute the required tests.
+*
+* You can use the sCST example as a practical implementation of the steps described above.
+* @Note SCST can not be used with RAM debug configuration due to RAM memory being to small.
+*/

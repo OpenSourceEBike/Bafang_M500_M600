@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="power_manager" label="power_manager" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.powerS32K1xx" version="1.0.0"/>
+   <description>Power Configuration</description>
+   <mode id="general" label="General" available="true">
+      <description>Power general mode</description>
+      <config_set_refs>
+         <config_set_ref>power_manager</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>POWER_MANAGER</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="power_manager" label="Power Manager Configuration set" from_source="power_manager.h">
+      <description>Power manager driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="power_default" label="Default Values" available="true">
+            <description>POWER Default Configuration</description>
+            <set id="POWER_CONFIGURATIONS.Rgm.0.powerModeRgmConfig">power_manager_rgmExtentionInitConfig</set>
+            <set id="POWER_CONFIGURATIONS.powerModeConfiguration.0.powerModeConfig">power_manager_InitConfig0</set>
+            <set id="POWER_CONFIGURATIONS.powerModeConfiguration.0.sleepOnExitValue">false</set>
+         </quick_selection>
+         <default>power_default</default>
+      </quick_selections>
+      <settings>
+         <reference id="POWER_CONFIGURATIONS" label=" Power Configurations" type="config" options="ShowContentAs=Tabs">
+         </reference>
+         <variable value="`../power_manager/power_manager_codegen.js`" id="codegen_file"></variable>
+         <variable value="`POWER_MANAGER_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+      <generated_types>
+         <struct id="config" label=" " type="config">
+            <array id="powerModeConfiguration" label="Power Mode Configuration" type="power_manager_user_config_t">
+            <description>Power mode configuration</description>
+                <item_defaults>
+                    <set_default id="powerModeConfig" value_expr="x -> `power_manager_InitConfig` + x.getID()"/>
+                    <set_default id="sleepOnExitValue" value_expr="x -> `false`"/>
+                </item_defaults>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`powerModeConfig`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`powerMode`).value()).length() == 0" level="error" description="There are some duplicated `MODE` in the configuration"/>
+                </validation>
+            </array>
+            <array id="Callback" type="power_manager_callback_user_config_t" label="Static Callbacks Configurations">
+                <item_defaults>
+                    <set_default id="NameCallbackConfig" value_expr="x -> `power_manager_CallbackConfig` + x.getID()"/>
+                    <set_default id="NameCallbackFunction" value_expr="x -> `power_manager_StaticCallback` + x.getID()"/>
+                    <set_default id="callbackType" value_expr="x -> `POWER_MANAGER_CALLBACK_BEFORE`"/>
+                    <set_default id="prameterEnable" value_expr="x -> false"/>
+                </item_defaults>
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`NameCallbackConfig`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`NameCallbackFunction`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+               </validation>
+            </array>
+            <array id="Rgm" type="power_manager_mc_rgm_extention_t" label="Reset Generation Configurations" available="(featureDefined(`FEATURE_POWER_SUPPORT_MC_RGM`)==true)">
+                <item_defaults>
+                    <set_default id="powerModeRgmConfig" value_expr="x -> `power_manager_rgmExtentionInitConfig` + x.getID()"/>
+                    <set_default id="rsSourceRequest" value_expr="x -> `POWER_MANAGER_FUNCTIONAL_RESET`"/>
+                    <set_default id="escalationThreshold" value_expr="x -> `15`"/>
+                    <set_default id="prameterEnable" value_expr="x -> false" />
+                </item_defaults>
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`powerModeRgmConfig`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+               </validation>
+            </array>
+         </struct>
+         <fixme id="power_manager_callback_data_t" label="Callback-specific data" type="void">
+            <description>Pointer to data of this type is passed during callback registration. The pointer is part of the power_manager_callback_user_config_t structure and is passed to the callback during power mode change notifications. Implements power_manager_callback_data_t_Class</description>
+         </fixme>
+
+         <enum id="power_manager_reset_request_t" label="Defines the type of reset request " from="power_manager_reset_request_t">
+            <description>This enum is used to define the the type of reset request : power_manager_reset_request_t</description>
+            <item id="POWER_MANAGER_FUNCTIONAL_RESET" label="Functional reset request"/>
+            <item id="POWER_MANAGER_DESTRUCTIVE_RESET" label="Destructive reset request"/>
+         </enum>
+
+         <enum id="power_manager_callback_type_t" label="The callback type indicates when a callback will be invoked" from="power_manager_callback_type_t">
+            <description>Used in the callback configuration structures (power_manager_callback_user_config_t) to specify when the registered callback will be called during power mode change initiated by POWER_SYS_SetMode().Implements power_manager_callback_type_t_Class</description>
+            <item id="POWER_MANAGER_CALLBACK_BEFORE" label="Before"/>
+            <item id="POWER_MANAGER_CALLBACK_AFTER" label="After"/>
+            <item id="POWER_MANAGER_CALLBACK_BEFORE_AFTER" label="Before-After"/>
+         </enum>
+
+         <struct id="power_manager_callback_user_config_t" label="callback configuration structure" from="power_manager_callback_user_config_t">
+            <description>This structure holds configuration of callbacks passed to the Power manager during its initialization. Structures of this type are expected to be statically allocated. This structure contains following application-defined data: callback - pointer to the callback function callbackType - specifies when the callback is called callbackData - pointer to the data passed to the callback Implements power_manager_callback_user_config_t_Class</description>
+            <string id="NameCallbackConfig" label="Name of Callback Configuration         "/>
+            <string id="NameCallbackFunction" label="Name of Callback function            "/>
+            <reference id="callbackType" label="Type of the static callback" type="power_manager_callback_type_t"/>
+            <bool id="prameterEnable" label="User Parameter">
+               <description>Enables user parameter to callback functions. The use can pass point to user data as a parameter callback function.</description>
+            </bool>
+            <string id="callbackData" label="Parameter" type="power_manager_callback_data_t *" enable="($parent.prameterEnable.getValue()==true)">
+              <validation>
+                <constraint cond_expr="((($this.getValue() != ``) || isCIdentifier($this.getValue())) &amp;&amp; ($parent.prameterEnable.getValue() == true))" level="error" description="Error: Parameter wrong name! Wrong C identifier."/>
+                <constraint cond_expr="(($this.getValue() == ``) &amp;&amp; ($parent.prameterEnable.getValue() == true))" level="warning" description="Warning: Make sure the parameter is defined. Otherwise compilation errors may appear."/>
+               </validation>
+               <description>Pointer to use parameter </description>
+            </string>
+         </struct>
+
+        <struct id="power_manager_mc_rgm_extention_t" label="Defines the reset generation Configuration" from="power_manager_mc_rgm_extention_t" available="(featureDefined(`FEATURE_POWER_SUPPORT_MC_RGM`)==true)" >
+            <description>This structure is used to configure the reset generation module . It stores information about reset type and escalation threshold : power_manager_mc_rgm_extention_t_Class</description>
+            <string id="powerModeRgmConfig" label="Name" available="(featureDefined(`FEATURE_POWER_SUPPORT_MC_RGM`)==true)" >
+               <description>Configuration name.</description>
+            </string>
+            <reference id="rsSourceRequest" label="Reset request" type="power_manager_reset_request_t">
+               <description>Power manager reset request type</description>
+            </reference>
+            <integer id="escalationThreshold" label="Escalation threshold" type="uint32_t" min_expr="0" max_expr="15">
+               <description>Threshold for escalation value can be used</description>
+            </integer>
+         </struct>
+
+         <enum id="power_manager_modes_t" label="Power modes enumeration" from="power_manager_modes_t">
+            <description>Defines power mode. Used in the power mode configuration structure (power_manager_user_config_t). List of power modes supported by specific chip along with requirements for entering and exiting of these modes can be found in chip documentation. List of all supported power modes:
+            POWER_MANAGER_RESET - RESET (system mode)
+            POWER_MANAGER_SAFE - SAFE (system mode)
+            POWER_MANAGER_DRUN - DRUN (system mode)
+            POWER_MANAGER_RUN0 - RUN0 (user mode)
+            POWER_MANAGER_RUN1 - RUN1 (user mode)
+            POWER_MANAGER_RUN2 - RUN2 (user mode)
+            POWER_MANAGER_RUN3 - RUN3 (user mode)
+            POWER_MANAGER_STANDBY - STANDBY (system mode)
+
+            POWER_MANAGER_ACTIVE - ACTIVE (system mode)
+            POWER_MANAGER_SLEEP  - SLEEP (system mode)
+            POWER_MANAGER_DEEP_SLEEP - DEEP_SLEEP (system mode)
+            POWER_MANAGER_STOP - STOP (system mode)
+
+            POWER_MANAGER_HSRUN - HSRUN(Power mode)
+            POWER_MANAGER_RUN   - RUN(Power mode)
+            POWER_MANAGER_VLPR  - VLPR(Power mode)
+            POWER_MANAGER_STOP1 - STOP1(Power mode)
+            POWER_MANAGER_STOP2 - STOP2(Power mode)
+            POWER_MANAGER_VLPS  - VLPS(Power mode)
+            </description>
+            <item id="POWER_MANAGER_RESET" label="RESET (system mode)" available="(featureDefined(`FEATURE_POWER_HAS_RESET_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_RESET_MODE`)==1)"/>
+            <item id="POWER_MANAGER_SAFE" label="SAFE (system mode)" available="(featureDefined(`FEATURE_POWER_HAS_SAFE_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_SAFE_MODE`)==1)"/>
+            <item id="POWER_MANAGER_DRUN" label="DRUN (system mode)" available="(featureDefined(`FEATURE_POWER_HAS_DRUN_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_DRUN_MODE`)==1)"/>
+            <item id="POWER_MANAGER_RUN0" label="RUN0 (user mode)" available="(featureDefined(`FEATURE_POWER_HAS_RUN0_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_RUN0_MODE`)==1)"/>
+            <item id="POWER_MANAGER_RUN1" label="RUN1 (user mode)" available="(featureDefined(`FEATURE_POWER_HAS_RUN1_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_RUN1_MODE`)==1)"/>
+            <item id="POWER_MANAGER_RUN2" label="RUN2 (user mode)" available="(featureDefined(`FEATURE_POWER_HAS_RUN2_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_RUN2_MODE`)==1)"/>
+            <item id="POWER_MANAGER_RUN3" label="RUN3 (user mode)" available="(featureDefined(`FEATURE_POWER_HAS_RUN3_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_RUN3_MODE`)==1)"/>
+
+            <item id="POWER_MANAGER_ACTIVE" label="ACTIVE (system mode)" available="(featureDefined(`FEATURE_POWER_HAS_ACTIVE_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_ACTIVE_MODE`)==1)"/>
+            <item id="POWER_MANAGER_SLEEP" label="SLEEP (system mode)" available="(featureDefined(`FEATURE_POWER_HAS_SLEEP_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_SLEEP_MODE`)==1)"/>
+            <item id="POWER_MANAGER_DEEP_SLEEP" label="DEEP_SLEEP (system mode)" available="(featureDefined(`FEATURE_POWER_HAS_DEEP_SLEEP_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_DEEP_SLEEP_MODE`)==1)"/>
+            <item id="POWER_MANAGER_STOP" label="STOP (system mode)" available="(featureDefined(`FEATURE_POWER_HAS_STOP_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_STOP_MODE`)==1)"/>
+
+            <item id="POWER_MANAGER_RUN"   label="RUN   (Power mode)" available="(featureDefined(`FEATURE_POWER_HAS_RUN_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_RUN_MODE`)==1)"/>
+            <item id="POWER_MANAGER_HSRUN"   label="HSRUN   (Power mode)" available="(featureDefined(`FEATURE_POWER_HAS_HSRUN_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_HSRUN_MODE`)==1)"/>
+            <item id="POWER_MANAGER_VLPR"  label="VLPR  (Power mode)" available="(featureDefined(`FEATURE_POWER_HAS_VLPR_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_VLPR_MODE`)==1)"/>
+            <item id="POWER_MANAGER_STOP1" label="STOP1 (Power mode)" available="(featureDefined(`FEATURE_POWER_HAS_STOP1_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_STOP1_MODE`)==1)"/>
+            <item id="POWER_MANAGER_STOP2" label="STOP2 (Power mode)" available="(featureDefined(`FEATURE_POWER_HAS_STOP2_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_STOP2_MODE`)==1)"/>
+            <item id="POWER_MANAGER_VLPS"  label="VLPS  (Power mode)" available="(featureDefined(`FEATURE_POWER_HAS_VLPS_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_VLPS_MODE`)==1)"/>
+
+            <item id="POWER_MANAGER_STANDBY" label="STANDBY (system mode)" available="(featureDefined(`FEATURE_POWER_HAS_STANDBY_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_STANDBY_MODE`)==1)"/>
+
+         </enum>
+         <enum id="mc_me_power_level_t" label="Power level enumeration" from="mc_me_power_level_t">
+            <description>Indicates the relative power consumption level of a mode with respect to that of other modes. When switching between two modes with differing power levels, system clock progressive switching is enabled. Used in the power mode configuration structure (power_manager_user_config_t). Implements mc_me_power_level_t_Class</description>
+            <item id="MC_ME_PWRLVL_0" label="Power Level 0" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==0)"/>
+            <item id="MC_ME_PWRLVL_1" label="Power Level 1" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==0)"/>
+            <item id="MC_ME_PWRLVL_2" label="Power Level 2" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==0)"/>
+            <item id="MC_ME_PWRLVL_3" label="Power Level 3" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==0)"/>
+            <item id="MC_ME_PWRLVL_4" label="Power Level 4" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==0)"/>
+            <item id="MC_ME_PWRLVL_5" label="Power Level 5" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==0)"/>
+            <item id="MC_ME_PWRLVL_6" label="Power Level 6" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==0)"/>
+            <item id="MC_ME_PWRLVL_7" label="Power Level 7" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==0)"/>
+            <item id="MC_ME_AE_PWRLVL_0" label="Power Level 0" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==1)"/>
+            <item id="MC_ME_AE_PWRLVL_1" label="Power Level 1" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==1)"/>
+            <item id="MC_ME_AE_PWRLVL_2" label="Power Level 2" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==1)"/>
+            <item id="MC_ME_AE_PWRLVL_3" label="Power Level 3" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==1)"/>
+            <item id="MC_ME_AE_PWRLVL_4" label="Power Level 4" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==1)"/>
+            <item id="MC_ME_AE_PWRLVL_5" label="Power Level 5" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==1)"/>
+            <item id="MC_ME_AE_PWRLVL_6" label="Power Level 6" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==1)"/>
+            <item id="MC_ME_AE_PWRLVL_7" label="Power Level 7" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)&amp;&amp;(getFeature(`FEATURE_POWER_HAS_MC_ME_AE`)==1)"/>
+         </enum>
+         <struct id="power_manager_user_config_t" label="Run mode configuration structure Implements power_manager_user_config_t_Class" from="power_manager_user_config_t">
+            <string id="powerModeConfig" label="Name">
+               <description>Configuration name.</description>
+            </string>
+            <bool id="sleepOnExitValue" label="Sleep on exit value" enable="($parent.powerMode.getValue() != `POWER_MANAGER_ACTIVE`)&amp;&amp;($parent.powerMode.getValue() != `POWER_MANAGER_RUN`) &amp;&amp;($parent.powerMode.getValue() != `POWER_MANAGER_VLPR`) &amp;&amp;($parent.powerMode.getValue() != `POWER_MANAGER_HSRUN`)" available="(featureDefined(`FEATURE_POWER_HAS_SET_SLEEP_ON_EXIT`)==true)">
+               <description>When set as true, core ARM will return to sleep(S32K wait modes) or deep sleep state(S32K stop mode) after interrupt service finishes and when set to false, core will stay waken-up</description>
+            </bool>
+            <reference id="powerMode" label="Power mode" type="power_manager_modes_t">
+               <description>Power mode</description>
+            </reference>
+            <reference id="powerLevel" label="Power level" type="mc_me_power_level_t" enable="!($parent.powerMode.getValue() == `POWER_MANAGER_RESET`)" available="(featureDefined(`FEATURE_POWER_HAS_MC_ME_AE`)==true)">
+               <description>Power level</description>
+            </reference>
+            <string id="extentionRgmcfg" label="Reset generation configuration " type="void *" enable="false" available="(featureDefined(`FEATURE_POWER_SUPPORT_MC_RGM`)==true)">
+               <description>Reset generation configuration</description>
+            </string>
+         </struct>
+      </generated_types>
+   </config_set>
+</component:config_component>

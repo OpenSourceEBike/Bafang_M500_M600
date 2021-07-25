@@ -1,0 +1,131 @@
+/**
+@defgroup flexio_i2c_drv FlexIO I2C Driver
+@ingroup flexio
+@brief I2C communication over FlexIO module (FLEXIO_I2C)
+<p>
+  The FLEXIO_I2C Driver allows communication on an I2C bus using the FlexIO module in the S32K1xx processors.
+</p>
+  ## Features ##
+   - Master operation only
+   - Interrupt, DMA or polling mode
+   - Provides blocking and non-blocking transmit and receive functions
+   - 7-bit addressing
+   - Clock stretching
+   - Configurable baud rate
+
+  ## Functionality ##
+<p>
+  Before using any Flexio driver the device must first be initialized using function FLEXIO_DRV_InitDevice.
+  Then the FLEXIO_I2C Driver must be initialized using functions FLEXIO_I2C_DRV_MasterInit().
+  It is possible to use more driver instances on the same FlexIO device,
+  as long as sufficient resources are available. Different driver instances on the same FlexIO device
+  can function independently of each other. When it is no longer needed, the driver can be de-initialized, using
+  FLEXIO_I2C_DRV_MasterDeinit(). This will release the hardware resources,
+  allowing other driver instances to be initialized.
+</p>
+
+  ### Master Mode ###
+<p>
+  Master Mode provides functions for transmitting or receiving data to/from any I2C slave. Slave
+  address and baud rate are provided at initialization time through the master configuration structure,
+  but they can be changed at runtime by using FLEXIO_I2C_DRV_MasterSetBaudRate() or FLEXIO_I2C_DRV_MasterSetSlaveAddr().
+  Note that due to module limitation not any baud rate can be achieved. The driver will set a baud rate as
+  close as possible to the requested baud rate, but there may still be substantial differences, for example
+  if requesting a high baud rate while using a low-frequency FlexIO clock. The
+  application should call FLEXIO_I2C_DRV_MasterGetBaudRate() after FLEXIO_I2C_DRV_MasterSetBaudRate() to check what
+  baud rate was actually set.
+</p>
+<p>
+  To send or receive data to/from the currently configured slave address, use functions FLEXIO_I2C_DRV_MasterSendData()
+  or FLEXIO_I2C_DRV_MasterReceiveData() (or their blocking counterparts). Parameter <tt>sendStop</tt> can be
+  used to chain multiple transfers with repeated START condition between them, for example when sending a command
+  and then immediately receiving a response. The application should ensure that any send or receive transfer with
+  <tt>sendStop</tt> set to <tt>false</tt> is followed by another transfer. The last transfer from a chain should
+  always have <tt>sendStop</tt> set to <tt>true</tt>.
+  This driver does not support continuous send/receive using a user callback function. The callback function is only
+  used to signal the end of a transfer.
+</p>
+<p>
+  Blocking operations will return only when the transfer is completed, either successfully or with error.
+  Non-blocking operations will initiate the transfer and return \ref STATUS_SUCCESS, but the module is still
+  busy with the transfer and another transfer can't be initiated until the current transfer is complete. The
+  application will be notified through the user callback when the transfer completes, or it can check the
+  status of the current transfer by calling FLEXIO_I2C_DRV_MasterGetStatus().
+  If the transfer is still ongoing this function will return
+  \ref STATUS_BUSY. If the transfer is completed, the function will return either \ref STATUS_SUCCESS
+  or an error code, depending on the outcome of the last transfer.
+</p>
+<p>
+  The driver supports interrupt, DMA and polling mode. In polling mode the function FLEXIO_I2C_DRV_MasterGetStatus()
+  ensures the progress of the transfer by checking and handling transmit and receive events reported by the
+  FlexIO module. The application should ensure that this function is called often enough (at least once per
+  transferred byte) to avoid Tx underflows or Rx overflows. In DMA mode the DMA channels that will be used by the
+  driver are received through the configuration structure. The channels must be initialized by the
+  application before the flexio_i2c driver is initialized. The flexio_i2c driver will only set the DMA request source.
+</p>
+
+  ## Important Notes ##
+<p>
+  - There is one limitation of flexio_i2c which no Stop condition is generated when aborting a transfer due to NACK reception.
+  - Before using the FLEXIO_I2C Driver the FlexIO clock must be configured. Refer
+  to Clock Manager for clock configuration.
+  - Before using the FLEXIO_I2C Driver the pins must be routed to the FlexIO module. Refer to PINS Driver for pin
+  routing configuration. Note that any of the available FlexIO pins can be used for SDA and SCL (configurable
+  at initialization time).
+  - The driver enables the interrupts for the corresponding FlexIO module, but any interrupt priority
+  setting must be done by the application.
+  - Aborting a transfer with the function FLEXIO_I2C_DRV_MasterTransferAbort() can't generally be done safely due to
+  device limitation; there is no way to know the exact stage of the transfer, and if we disable the module
+  during the ACK bit (transmit) or during a 0 data bit (receive) the slave will hold the SDA line low forever
+  and block the I2C bus. Therefore this function should only be used in extreme circumstances, and the application
+  must have a way to reset the I2C slave.
+  NACK reception is the only exception, as there is no slave to hold the line low, so in this case the driver
+  will automatically abort the transfer.
+  - The module can handle clock stretching done by the slave, but will not do clock stretching when the application
+  does not provide data fast enough, so Tx underflows and Rx overflows are possible. This can be an issue especially
+  in polling mode if the function FLEXIO_I2C_DRV_MasterGetStatus() is not called often enough.
+  - Due to device limitations it is not always possible to tell the difference between NACK reception and receiver
+  overflow. When in doubt, the driver will treat these events as overflow and continue the transfer, in order to
+  avoid the risk of blocking the i2c bus.
+  - The driver does not support multi-master mode. It does not detect arbitration loss condition.
+  - Timeout feature for blocking transfers does not work in polling mode.
+  - This driver needs two shifters and two timers for its operation. Initialization will fail if there are
+  not enough shifters and timers available on the FlexIO device.
+  - This driver needs two DMA channels for its operation when it is initialized in DMA mode. The DMA channels must be
+  initialized by the application before initializing the driver. Refer to EDMA driver for DMA channels initialization.
+  - If the application uses an RTOS, this driver uses a semaphore for blocking transfers. Initialization will
+  fail if the semaphore cannot be created. If the driver uses polling mode no semaphore is used.
+  - If the application uses an RTOS, the FlexIO drivers use a mutex for channel allocation. Only one mutex per device
+  is needed, not per driver instance. Device initialization will fail if the mutex cannot be created.
+</p>
+
+  ## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\flexio\flexio_common.c
+${S32SDK_PATH}\platform\drivers\src\flexio\flexio_i2c_driver.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc
+${S32SDK_PATH}\platform\drivers\src\flexio
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref osif
+\ref interrupt_manager
+\ref edma
+
+*/

@@ -1,0 +1,168 @@
+/**
+@defgroup edma Enhanced Direct Memory Access (eDMA)
+@brief The S32 SDK provides Peripheral Driver for the Enhanced Direct Memory Access (eDMA) module.
+@n
+ The direct memory access engine features are used for performing complex data transfers with minimal intervention 
+ from the host processor. These sections describe the S32 SDK software modules API that can be used for initializing,
+ configuring and triggering eDMA transfers.
+*/
+
+/**
+ ## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32KSDK_PATH}\platform\drivers\src\edma\edma_driver.c
+${S32KSDK_PATH}\platform\drivers\src\edma\edma_hw_access.c
+${S32KSDK_PATH}\platform\drivers\src\edma\edma_irq.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32KSDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref interrupt_manager
+*/
+
+/**
+@defgroup edma_driver EDMA Driver
+@ingroup edma
+@brief This module covers the functionality of the Enhanced Direct Memory Access (eDMA) peripheral driver
+<p>
+  The eDMA driver implements direct memory access functionality with multiple features:
+  (single block/multi block/loop/scatter-gather transfers); 
+  the main usage of this module is to offload the bus read/write accesses from the core to the eDMA engine.
+</p>
+  ## Features ##
+   - Memory-to-memory, peripheral-to-memory, memory-to-peripheral transfers
+   - Simple single-block transfers with minimum configuration
+   - Multi-block transfers with minimum configuration (based on subsequent requests)
+   - Loop transfers for complex use-cases (e.g. double buffering)
+   - Scatter/gather
+   - Dynamic channel allocation
+
+  ## Functionality ##
+
+  ### Initialization ###
+<p>
+  In order to use the eDMA driver, the module must be first initialized, using EDMA_DRV_Init() function.
+  Once initialized, it cannot be initialized again until it is de-initialized, using EDMA_DRV_Deinit(). 
+  The initialization function does the following operations:
+    - resets eDMA and DMAMUX modules
+    - clears the eDMA driver state structure
+    - sets the arbitration mode and halt settings
+    - enables error and channel interrupts
+</p>
+<p>
+  Upon module initialization, the application must initialize the channel(s) to be used, using EDMA_DRV_ChannelInit()
+  function. This operation means enabling an eDMA channel number (or dynamically allocating one), selecting a 
+  source trigger (eDMA request multiplexed via DMAMUX) and setting the channel priority. Additionally, a user callback 
+  can be installed for each channel, which will be called when the corresponding interrupt is triggered.
+</p>
+
+  ### Transfer Configuration ###
+<p>
+  After initialization, the transfer control descriptor for the selected channel must be configured before use.
+  Depending on the application use-case, on of the three transfer configuration methods should be called.
+</p>
+<p>
+  #### Single-block transfer ####
+  For the simplest use-case where a contiguous chunk of data must be transferred, the most suitable function is
+  EDMA_DRV_ConfigSingleBlockTransfer(). This takes the source/destination addresses as parameters, as well as transfer
+  type/size and data buffer size, and configures the channel TCD to read/write the data in a single request. The
+  looping and scatter/gather features are not used in this scenario. The driver computes the appropriate offsets for
+  source/destination addresses and set the other TCD fields.
+</p><p>
+  #### Multi-block transfer ####
+  This type of transfer can be seen as a sequence of single-block transfers, as described above, which are triggered
+  by subsequent requests. This configuration is suitable for contiguous chunks of data which need to be transferred in
+  multiple steps (e.g. writing one/several bytes from a memory buffer to a peripheral data register each time the module
+  is free - eDMA-based communication). In order to configure this kind of transfer, EDMA_DRV_ConfigMultiBlockTransfer 
+  function should be used; aside from the EDMA_DRV_ConfigSingleBlockTransfer parameters, this function also takes two
+  additional parameters: the number of transfer loops (expected number of requests to finish the data) and a boolean 
+  variable configuring whether requests should be disabled for the current channel upon transfer completion.
+</p>
+<p>
+  #### Loop transfer ####
+  The eDMA IP supports complex addressing modes. One of the methods to configure complex transfers in
+  multiple requests is using the minor/major loop support. The EDMA_DRV_ConfigLoopTransfer() function sets up the
+  transfer control descriptor for subsequent requests to trigger multiple transfers. The addresses are adjusted after
+  each minor/major loop, according to user setup. This method takes a transfer configuration structure as parameter,
+  with settings for all the fields that control addressing mode (source/destination offsets, minor loop offset, channel
+  linking, minor/major loop count, address last adjustments). It is the responsibility of the application to correctly
+  initialize the configuration structure passed to this function, according to the addressed use-case.
+</p>
+<p>
+  #### Scatter/gather ####
+  The eDMA driver also supports scatter/gather feature, which allows various transfer scenarios. When scatter/gather
+  is enabled, a new TCD structure is automatically loaded in the current channel's TCD registers when a transfer is
+  complete, allowing the application to define multiple different subsequent transfers. 
+  The EDMA_DRV_ConfigScatterGatherTransfer() function sets up a list of TCD structures based on the parameters received 
+  and configures the eDMA channel for the first transfer; upon completion, the second TCD from the list will be loaded 
+  and the channel will be ready to start the new transfer when a new request is received.<br/>
+  The application must allocate memory for the TCD list passed to this function (with an extra 32-bytes buffer, as the
+  TCD structures need to be 32 bytes aligned); nevertheless, the driver will take care of initializing the array of 
+  descriptors, based on the other parameters passed. The function also received two lists of scatter/gather configuration
+  structures (for source and destination, respectively), which define the address, length and type for each transfer.
+  Besides these, the other parameters received are the transfer size, the number of bytes to be transferred on each request and
+  the number of TCD structures to be used. This method will initialize all the descriptors according to user input and
+  link them together; the linkage is done by writing the address of the next descriptor in the appropriate field of each one,
+  similar to a linked-list data structure. The first descriptor is also copied to the TCD registers of the selected channel; 
+  if no errors are returned, after calling this function the channel is configured for the transfer defined by the first 
+  descriptor.
+</p>
+
+  ### Virtual Channel Definition ###
+<p>
+  The virtual channel is used to map multiple hardware channels across multiple eDMA instances.
+  If only one eDMA instance is available, then the virtual channels will map one-on-one with the hardware channels.
+  If more than one eDMA instance is available, then the virtual channels will map continuously and linearly over all 
+  of the harware channels.
+  Example: If the SOC has 4 eDMA modules, each with 32 channels, then the user will be able to address a total of 128
+  virtual channels, that seamlessly map onto the hardware channels.
+</p>
+
+  ### Virtual Channel Control ###
+<p>
+  The eDMA driver provides functions that allow the user to start, stop, allocate and release an eDMA virtual channel.<br/>
+  The EDMA_DRV_StartChannel() enables the eDMA requests for a virtual channel; this function should be called when the 
+  virtual channel is already initialized, as the first request received after the function call will trigger the transfer 
+  based on the current values of the virtual channel's TCD registers.<br/>
+  The EDMA_DRV_StopChannel() function disables requests for the selected virtual channel; this function should be called 
+  whenever the application needs to ignore eDMA requests for a virtual channel. It is automatically called when the virtual 
+  channel is released.<br/>
+  The EDMA_DRV_SetChannelRequestAndTrigger() function configures the selected virtual channel request and also configures
+  the periodic trigger functionality of the eDMA channel.<br/>
+  Periodic triggering is used by an internal timer to control an eDMA channel.  
+</p>
+<p>
+  The EDMA_DRV_ReleaseChannel() function frees the hardware and software resources allocated for that virtual channel; 
+  it clears the virtual channel state structure, updates the driver state and disables requests for that virtual channel.
+</p>
+
+  ## Important Notes ##
+<p>
+  - Before using the eDMA driver the clock for eDMA and DMAMUX modules must be configured
+  - The driver enables the interrupts for the eDMA module, but any interrupt priority must be done by the application
+  - When using the modulo feature, application is responsible with ensuring that the source/destination address is properly aligned
+  on a modulo-size boudary.
+  - The source/destination address must be aligned with transfer size. Ex: With transfer size is 8 bytes, the source/destination
+  address is multiple of 8.
+  - When using Single-block transfer or Multi-block transfer, NBYTES (Number of bytes to be transferred in each service request of 
+  the channel) shall be always configurable on 30 bits instead of 32 bits. This is a limitation only on EDMA Hardware version 2 
+  (S32K1xx platform).
+  - Limitation of IAR compiler: function alignment is not supported using ALIGNED() macro.
+</p>
+*/

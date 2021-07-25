@@ -1,0 +1,313 @@
+/*!
+    @defgroup enet Ethernet MAC (ENET)
+    The S32 SDK provides a peripheral driver for the Ethernet MAC (ENET) module of S32 SDK devices.
+
+    The core implements a dual-speed 10/100-Mbit/s (some platforms might also support 1000Mbit/s) Ethernet MAC
+	compliant with the IEEE802.3-2002 standard.
+    The MAC layer provides compatibility with half- or fullduplex 10/100-Mbit/s Ethernet LANs (and full-duplex
+	gigabit for some platforms).
+    
+    The MAC operation is fully programmable and can be used in Network Interface Card (NIC), bridging, or
+    switching applications. The core implements the remote network monitoring (RMON) counters according
+    to IETF RFC 2819.
+    
+    The core also implements a hardware acceleration block to optimize the performance of network controllers
+    providing TCP/IP, UDP, and ICMP protocol services. The acceleration block performs critical functions in
+    hardware, which are typically implemented with large software overhead.
+
+    The core implements programmable embedded FIFOs that can provide buffering on the receive path for lossless
+    flow control.
+
+    Advanced power management features are available with magic packet detection and programmable power-down modes.
+
+    A unified DMA (uDMA), internal to the ENET module, optimizes data transfer between the ENET core and the SoC,
+    and supports an enhanced buffer descriptor programming model to support IEEE 1588 functionality.
+
+    The programmable Ethernet MAC with IEEE 1588 integrates a standard IEEE 802.3 Ethernet MAC with a time-stamping
+    module. The IEEE 1588 standard provides accurate clock synchronization for distributed control nodes for industrial
+    automation applications.
+    
+    ## Hardware background ##
+
+    Features of the ENET module include:
+        - Implements the full 802.3 specification with preamble/SFD generation, frame
+        padding generation, CRC generation and checking
+        - Supports zero-length preamble
+        - Dynamically configurable to support 10/100-Mbit/s operation
+        - Supports 10/100 Mbit/s full-duplex and configurable half-duplex operation
+        - Compliant with the AMD magic packet detection with interrupt for node remote
+        power management
+        - Seamless interface to commercial ethernet PHY devices via one of the following:
+            - 4-bit Media Independent Interface (MII) operating at 2.5/25 MHz.
+            - 4-bit non-standard MII-Lite (MII without the CRS and COL signals) operating
+            at 2.5/25 MHz.
+            - 2-bit Reduced MII (RMII) operating at 50 MHz.
+        - Simple 64-Bit FIFO user-application interface
+        - CRC-32 checking at full speed with optional forwarding of the frame check sequence
+        (FCS) field to the client
+        - CRC-32 generation and append on transmit or forwarding of user application
+        provided FCS selectable on a per-frame basis
+        - In full-duplex mode:
+            - Implements automated pause frame (802.3 x31A) generation and termination,
+            providing flow control without user application intervention
+            - Pause quanta used to form pause frames — dynamically programmable
+            - Pause frame generation additionally controllable by user application offering
+            flexible traffic flow control
+            - Optional forwarding of received pause frames to the user application
+            - Implements standard flow-control mechanism
+        - In half-duplex mode: provides full collision support, including jamming, backoff,
+        and automatic retransmission
+        - Supports VLAN-tagged frames according to IEEE 802.1Q
+        - Programmable MAC address: Insertion on transmit; discards frames with
+        mismatching destination address on receive (except broadcast and pause frames)
+        - Programmable promiscuous mode support to omit MAC destination address
+        checking on receive
+        - Multicast and unicast address filtering on receive based on 64-entry hash table,
+        reducing higher layer processing load
+        - Programmable frame maximum length providing support for any standard or
+        proprietary frame length
+        - Statistics indicators for frame traffic and errors (alignment, CRC, length) and pause
+        frames providing for IEEE 802.3 basic and mandatory management information
+        database (MIB) package and remote network monitoring (RFC 2819)
+        - Simple handshake user application FIFO interface with fully programmable depth
+        and threshold levels
+        - Provides separate status word for each received frame on the user interface providing
+        information such as frame length, frame type, VLAN tag, and error information
+        - Multiple internal loopback options
+        - MDIO master interface for PHY device configuration and management
+        - Supports legacy FEC buffer descriptors
+    
+    IP protocol performance optimization features:
+        - Operates on TCP/IP and UDP/IP and ICMP/IP protocol data or IP header only
+        - Enables wire-speed processing
+        - Supports IPv4 and IPv6
+        - Transparent passing of frames of other types and protocols
+        - Supports VLAN tagged frames according to IEEE 802.1q with transparent
+        forwarding of VLAN tag and control field
+        - Automatic IP-header and payload (protocol specific) checksum calculation and
+        verification on receive
+        - Automatic IP-header and payload (protocol specific) checksum generation and
+        automatic insertion on transmit configurable on a per-frame basis
+        - Supports IP and TCP, UDP, ICMP data for checksum generation and checking
+        - Supports full header options for IPv4 and TCP protocol headers
+        - Provides IPv6 support to datagrams with base header only — datagrams with
+        extension headers are passed transparently unmodifed/unchecked
+        - Provides statistics information for received IP and protocol errors
+        - Configurable automatic discard of erroneous frames
+        - Configurable automatic host-to-network (RX) and network-to-host (TX) byte order
+        conversion for IP and TCP/UDP/ICMP headers within the frame
+        - Configurable padding remove for short IP datagrams on receive
+        - Configurable Ethernet payload alignment to allow for 32-bit word-aligned header
+        and payload processing
+        - Programmable store-and-forward operation with clock and rate decoupling FIFOs
+
+    Platform-dependent features (not be available on some platforms, see chip-specific ENET information for details):
+		- Gigabit full-duplex operation (actual throughput is greater than 100 Mbit/s but significantly less than 1000 Mbit/s)
+        - Interrupt coalescing reduces the number of interrupts generated by the MAC, reducing CPU loading
+        - Traffic-shaping bandwidth distribution supports credit-based and round-robin-based
+        policies. Either policy can be combined with time-based shaping.
+        - AVB (Audio Video Bridging, IEEE 802.1Qav) features:
+            - Credit-based bandwidth distribution policy can be combined with time-basedshaping
+            - AVB endpoint talker and listener support
+            - Support for arbitration between different priority traffic (for example, AVB class A, AVB class B, and non-AVB)
+        - Receive frame parser enables flexible Ethernet frame pattern matching in order to finally accept or reject a frame.
+
+    @addtogroup enet_driver
+    @ingroup enet
+    
+    ## How to use the ENET driver in your application ##
+    
+    In order to use the ENET driver in your application, the <b>ENET_DRV_Init()</b> function
+    should be called prior to using the rest of the API. The parameters of this function specify:
+        - the ENET instance to be initialized
+        - a structure which will hold the internal state of the driver
+        - a structure specifying the configuration of the ENET module
+        - an array of structures specifying the configuration of the buffers (one structure for each pair of Rx and Tx rings)
+        - the MAC address to be configured for the module
+    
+    The configuration of the module is specified through the <b>enet_config_t</b> structure and contains:
+        - MII-related configurations (mode, speed, duplex)
+        - acceleation options for the receive and transmit path
+        - the maximum frame length
+        - the MAC interrupt sources which should be enabled
+        - other special configurations of the receive and transmit path
+        - a callback function to be invoked on events
+        - the number of Rx and Tx pairs of rings used by the driver
+    
+    The buffers configuration is specified through the <b>enet_buffer_config_t</b> structure and contains:
+        - the size of the Rx and Tx rings
+        - pointers to the beginning of the Rx and Tx buffer descriptors rings (should be 64-bit aligned)
+        - pointer to the beginning of the memory area where the received data shall be saved (should be 64-bit aligned)
+    
+    In order to de-initialize the driver, the ENET_DRV_Deinit() function shall be used. This function will disable the ENET interrupts
+    and the module, so calling other ENET driver functions after de-initializing the driver will have undefined behavior. In order to
+    use the driver again, ENET_DRV_Init() should be called.
+
+## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\enet\enet_driver.c
+${S32SDK_PATH}\platform\drivers\src\enet\enet_irq.c
+${S32SDK_PATH}\platform\drivers\src\enet\enet_hw_access.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref interrupt_manager
+\ref osif
+
+<b>Examples:</b>
+
+<b>Initializing the module</b>
+@code
+
+    /*! @brief Device instance number */
+    #define INST_ETHERNET1 (0U)
+
+    /*! @brief Number of receive buffer descriptors for ring 0 */
+    #define ENET_RXBD_NUM0_0 (5U)
+    /*! @brief Number of transmit buffer descriptors for ring 0 */
+    #define ENET_TXBD_NUM0_0 (5U)
+    /*! @brief Number of receive buffer descriptors for ring 1 */
+    #define ENET_RXBD_NUM0_1 (3U)
+    /*! @brief Number of transmit buffer descriptors for ring 1 */
+    #define ENET_TXBD_NUM0_1 (4U)
+
+    enet_state_t ethernet1_State; 
+
+    /*! @brief The MAC address of the module */
+    uint8_t ethernet1_MacAddr[6] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
+
+    /*! @brief Module configuration structures */
+    enet_config_t ethernet1_InitConfig0 =
+    {
+        .interrupts = ENET_RX_FRAME_INTERRUPT,
+        .maxFrameLen = 1518U,
+        .miiMode = ENET_MII_MODE,
+        .miiSpeed = ENET_MII_SPEED_100M,
+        .miiDuplex = ENET_MII_FULL_DUPLEX,
+        .rxAccelerConfig = 0,
+        .txAccelerConfig = ENET_TX_ACCEL_INSERT_IP_CHECKSUM | ENET_TX_ACCEL_INSERT_PROTO_CHECKSUM,
+        .rxConfig = 0,
+        .txConfig = ENET_TX_CONFIG_ENABLE_MAC_ADDR_INSERTION,
+        .ringCount = 2,
+        .callback = rx_callback
+    };
+
+    /*! @brief Receive buffer descriptors for ring 0 */
+    ALIGNED(FEATURE_ENET_BUFFDESCR_ALIGNMENT) enet_buffer_descriptor_t ethernet1_rxBuffDescrip0_0[ENET_RXBD_NUM0_0];
+    /*! @brief Transmit buffer descriptors for ring 0 */
+    ALIGNED(FEATURE_ENET_BUFFDESCR_ALIGNMENT) enet_buffer_descriptor_t ethernet1_txBuffDescrip0_0[ENET_TXBD_NUM0_0];
+    /*! @brief Receive buffer descriptors for ring 1 */
+    ALIGNED(FEATURE_ENET_BUFFDESCR_ALIGNMENT) enet_buffer_descriptor_t ethernet1_rxBuffDescrip0_1[ENET_RXBD_NUM0_1];
+    /*! @brief Transmit buffer descriptors for ring 1 */
+    ALIGNED(FEATURE_ENET_BUFFDESCR_ALIGNMENT) enet_buffer_descriptor_t ethernet1_txBuffDescrip0_1[ENET_TXBD_NUM0_1];
+
+    /*! @brief Receive data buffers for ring 0 */
+    ALIGNED(FEATURE_ENET_BUFF_ALIGNMENT) uint8_t ethernet1_rxDataBuff0_0[ENET_RXBD_NUM0_0 * ENET_BUFF_ALIGN(1518U)];
+    /*! @brief Receive data buffers for ring 1 */
+    ALIGNED(FEATURE_ENET_BUFF_ALIGNMENT) uint8_t ethernet1_rxDataBuff0_1[ENET_RXBD_NUM0_1 * ENET_BUFF_ALIGN(1518U)];
+
+    /*! @brief Buffer configuration structures */
+    const enet_buffer_config_t ethernet1_buffConfigArr0[] = {
+        {
+            ENET_RXBD_NUM0_0,
+            ENET_TXBD_NUM0_0,
+            &ethernet1_rxBuffDescrip0_0[0],
+            &ethernet1_txBuffDescrip0_0[0],
+            &ethernet1_rxDataBuff0_0[0]
+        },
+        {
+            ENET_RXBD_NUM0_1,
+            ENET_TXBD_NUM0_1,
+            &ethernet1_rxBuffDescrip0_1[0],
+            &ethernet1_txBuffDescrip0_1[0],
+            &ethernet1_rxDataBuff0_1[0]
+        },
+    };
+    
+    ENET_DRV_Init(INST_ETHERNET1, &ethernet1_State, &ethernet1_InitConfig0, ethernet1_buffConfigArr0, ethernet1_MacAddr);
+    
+    /* ... */
+    
+    ENET_DRV_Deinit(INST_ETHERNET1);
+@endcode
+
+<b>Sending a frame</b>
+@code
+    enet_buffer_t buff;
+    uint8_t data[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+
+    buff.data = data;
+    buff.length = 8;
+
+    ENET_DRV_SendFrame(INST_ETHERNET1, 0, &buff, NULL);
+@endcode
+
+<b>Receiving a frame - polling method</b>
+@code
+    enet_buffer_t buff;
+    status_t status;
+    
+    for (;;)
+    {
+        status = ENET_DRV_ReadFrame(INST_ETHERNET1, 0, &buff, NULL);
+        if (status == STATUS_SUCCESS)
+        {
+            /* Process buff */
+            
+            /* buff is no longer needed, provide it to the driver in order to be 
+            used by the reception mechanism */
+            ENET_DRV_ProvideRxBuff(INST_ETHERNET1, 0, &buff);
+        }
+    }
+@endcode
+
+<b>Receiving a frame - interrupt method</b>
+@code
+void rx_callback(uint8_t instance, enet_event_t event)
+{
+	if (event == ENET_RX_EVENT)
+	{
+        enet_buffer_t buff;
+
+        status = ENET_DRV_ReadFrame(INST_ETHERNET1, 0, &buff, NULL);
+        if (status == STATUS_SUCCESS)
+        {
+            /* Process buff */
+            
+            /* buff is no longer needed, provide it to the driver in order to be 
+            used by the reception mechanism */
+            ENET_DRV_ProvideRxBuff(INST_ETHERNET1, 0, &buff);
+        }
+	}
+}
+
+int main(void)
+{
+    /* ... */
+  
+    /* The ethernet1_InitConfig0 shall enable the receive interrupts and shall specify the callback - see the
+    configuration example above */
+    ENET_DRV_Init(INST_ETHERNET1, &ethernet1_State, &ethernet1_InitConfig0, ethernet1_buffConfigArr0, ethernet1_MacAddr);
+
+    /* ... */
+}
+@endcode
+
+@}*/

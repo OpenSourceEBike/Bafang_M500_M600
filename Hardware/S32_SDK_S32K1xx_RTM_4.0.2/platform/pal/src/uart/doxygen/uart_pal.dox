@@ -1,0 +1,213 @@
+/**
+@defgroup uart_pal Universal Asynchronous Receiver/Transmitter - Peripheral Abstraction Layer (UART PAL)
+@brief The S32 SDK provides a Peripheral Abstraction Layer for Universal Asynchronous
+Receiver-Transmitter (UART) modules of S32 SDK devices.
+<p>
+  The UART PAL driver allows communication over a serial port. It was designed to be portable across all
+  platforms and IPs which support UART communication.
+</p>
+
+  ## How to integrate UART PAL in your application ##
+<p>
+  Unlike the other drivers, UART PAL modules need to include a configuration
+  file named uart_pal_cfg.h, which allows the user to specify which IPSs are used
+  and how many resources are allocated for each of them (state structures).
+  The following code example shows how to configure one instance for each
+  available UART IPs.
+</p>
+
+ @code
+ #ifndef uart_pal_cfg_H
+ #define uart_pal_cfg_H
+
+ /* Define which IP instance will be used in current project */
+ #define UART_OVER_LPUART
+ #define UART_OVER_FLEXIO
+ #define UART_OVER_LINFLEXD
+
+ /* Define the resources necessary for current project */
+ #define NO_OF_LPUART_INSTS_FOR_UART    1U
+ #define NO_OF_FLEXIO_INSTS_FOR_UART    1U
+ #define NO_OF_LINFLEXD_INSTS_FOR_UART  1U
+
+ #endif /* uart_pal_cfg_H */
+ @endcode
+
+ The following table contains the matching between platforms and available IPs
+    IP/MCU     |S32K116|S32K118|S32K142|S32K144|S32K146|S32K148|S32V234|MPC5748G|MPC5746C|MPC5744P|S32R274|S32R372|MPC5746R|MPC5777C|S32R294|S32G274A| S32R45 |S32K144W|
+ -------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:------:|:-------|:-------|:------|:------|:-------|:-------|:------|:-------|:-------|:-------|
+    LPUART     |  YES  |  YES  |  YES  |  YES  |  YES  |  YES  |   NO  |   NO   |   NO   |   NO   |   NO  |   NO  |   NO   |   NO   |   NO  |   NO   |   NO   |   YES  |
+ FLEXIO_UART   |  YES  |  YES  |  YES  |  YES  |  YES  |  YES  |   NO  |   NO   |   NO   |   NO   |   NO  |   NO  |   NO   |   NO   |   NO  |   NO   |   NO   |   YES  |
+ LINFlexD_UART |  NO   |  NO   |  NO   |  NO   |  NO   |  NO   |   YES |   YES  |   YES  |   YES  |   YES |   YES |   YES  |   NO   |   YES |   YES  |   YES  |   NO   |
+   eSCI_UART   |  NO   |  NO   |  NO   |  NO   |  NO   |  NO   |   NO  |   NO   |   NO   |   NO   |   NO  |   NO  |   NO   |   YES  |   NO  |   NO   |   NO   |   NO   |
+<p>
+
+  ## Features ##
+   - Interrupt or DMA mode
+   - Provides blocking and non-blocking transmit and receive functions
+   - Configurable baud rate and number of bits per char
+
+   The following table contains the matching between IPs and available features
+    IP/FEATURE     |    Bits per char    |        Parity       |Stop Bits|
+ -----------------:|:-------------------:|:-------------------:|:-------:|
+       LPUART      | 8, 9, 10            | Disabled, Even, Odd | 1, 2    |
+    FLEXIO_UART    | 7, 8, 9, 10, 15, 16 | Disabled            | 1       |
+   LINFlexD_UART   | 7, 8, 15, 16        | Disabled, Even, Odd | 1, 2    |
+
+  ## Functionality ##
+
+  ### Initialization ###
+<p>
+  In order to use the UART PAL driver it must be first initialized, using UART_Init() function.
+  Once initialized, it cannot be initialized again for the same UART module instance until it is
+  de-initialized, using UART_Deinit(). The initialization function does the following operations:
+    - sets the baud rate
+    - sets parity/bit count/stop bits count
+    - initializes the state structure for the current instance
+    - enables receiver/transmitter for the current instance
+  Different UART modules instances can function independently of each other.
+</p>
+
+  ### Interrupt-based communication ###
+<p>
+  After initialization, a serial communication can be triggered by calling UART_SendData function.
+  The driver interrupt handler takes care of transmitting all bytes in the TX buffer.
+  Similarly, data reception is triggered by calling UART_ReceiveData function, passing the RX buffer as
+  parameter. The driver interrupt handler reads the received byte and saves them in the RX buffer.
+  Non-blocking operations will initiate the transfer and return \ref STATUS_SUCCESS, but the module is still
+  busy with the transfer and another transfer can't be initiated until the current transfer is complete. The
+  application can check the status of the current transfer by calling UART_GetTransmitStatus() / UART_GetReceiveStatus().
+</p>
+<p>
+  The workflow applies to send/receive operations using blocking method (triggered by UART_SendDataBlocking()
+  and UART_ReceiveDataBlocking()), with the single difference that the send/receive function will not return
+  until the send/receive operation is complete (all bytes are successfully transferred or a timeout occurred).
+  The timeout for the blocking method is passed as parameter by the user.
+</p>
+<p>
+  When configured to use the LPUART or LINFlexD peripherals, if a user callback is installed for RX/TX, the
+  callback has to take care of data handling and aborting the transfer when complete; the driver interrupt
+  handler does not manipulate the buffers in this case.
+  When using the UART PAL over FLEXIO, when the driver completes the transmission or reception of the current
+  buffer, it will invoke the user callback (if installed) with an appropriate event.
+</p>
+
+  ### DMA-based communication ###
+<p>
+  In DMA operation, both blocking and non-blocking transmission methods configure a DMA channel to copy data
+  to/from the buffer. The driver assumes the DMA channel is already allocated. In case of LPUART and LINFlexD,
+  the application also assumes that the proper requests are routed to it via DMAMUX. The FLEXIO driver will
+  set the DMA request source. After configuring the DMA channel, the driver enables DMA requests for RX/TX,
+  then the DMA engine takes care of moving data to/from the data buffer.
+  In this scenario, the callback is only called when the full transmission is done, that is when the DMA channel
+  finishes the number of loops configured in the transfer descriptor.
+</p>
+
+  ## Important Notes ##
+<p>
+  - Before using the UART PAL driver the module clock must be configured. Refer to Clock Manager for clock configuration.
+  - The driver enables the interrupts for the corresponding UART module, but any interrupt priority
+    must be done by the application
+  - The board specific configurations must be done prior to driver calls; the driver has no influence on the
+    functionality of the TX/RX pins - they must be configured by application
+  - DMA module has to be initialized prior to UART usage in DMA mode; also, DMA channels need to be allocated
+    for UART usage by the application (the driver only takes care of configuring the DMA channels received in
+    the configuration structure)
+  - Some features are not available for all UART IPs and incorrect parameters will be handled by DEV_ASSERT
+  - The UART_SetBaudRate() function attempts to configure the requested baud rate for the selected UART peripheral.
+    Note that due to module limitation not any baud rate can be achieved. The driver will set a baud rate as close
+    as possible to the requested baud rate, but there may still be substantial differences. The application should
+    call UART_GetBaudRate() after UART_SetBaudRate() to check what baud rate was actually set.
+  - Due to different implementation of drivers, callback parameters in case of errors during reception may be different.
+    LPUART and LINFLEXD_UART will pass UART_EVENT_ERROR as the event parameter for callbacks, whereas
+    FLEXIO_UART will pass UART_EVENT_END_TRANSFER. In both cases, in order to retrieve the exact status of the latest reception,
+    users can call the appropriate functions in the (UART_GetReceiveStatus).
+  - Due to DMA mechanism, bit character length should be recommended multiple by 8. So, LPUART only supports 8 bit chars while
+    FLEXIO_UART supports 8 and 16 bit chars in DMA module. Specially, LINFLEXD_UART can process with all character lengths currently
+    because it takes care of parity bit handling internally.
+</p>
+</p>
+
+  ## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\pal\src\uart\uart_pal.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc
+${S32SDK_PATH}\platform\pal\inc
+${S32_SDK_PATH}\rtos\osif
+\endverbatim
+
+### Preprocessor symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref interrupt_manager
+\ref edma
+\ref osif
+
+ ## Example code ##
+ @code
+  uint32_t bytesRemaining;
+
+/* Instance information structure */
+uart_instance_t uart_pal1_instance = {
+    .instType = UART_INST_TYPE_FLEXIO_UART,
+    .instIdx = 0U
+};
+
+  /* Configure UART */
+  uart_user_config_t uart_pal1_Config0 = {
+    .baudRate         = 600U,
+    .bitCount         = UART_7_BITS_PER_CHAR,
+    .parityMode       = UART_PARITY_DISABLED,
+    .stopBitCount     = UART_ONE_STOP_BIT,
+    .transferType     = UART_USING_INTERRUPTS,
+    .rxDMAChannel     = 0U,
+    .txDMAChannel     = 0U,
+    .rxCallback       = NULL,
+    .rxCallbackParam  = NULL,
+    .txCallback       = NULL,
+    .txCallbackParam  = NULL,
+    .extension        = NULL
+  };
+
+  /* Configure FLEXIO pins routing */
+  extension_flexio_for_uart_t extension = {
+	.dataPinTx = 0U,
+	.dataPinRx = 1U,
+  };
+  uart_pal1_Config0.extension = &extension;
+
+  /* Buffers */
+  uint8_t tx[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+  uint8_t rx[8];
+
+  /* Initialize UART */
+  UART_Init(&uart_pal1_instance, &uart_pal1_Config0);
+
+  /* Send 8 frames */
+  UART_SendData(&uart_pal1_instance, tx, 8U);
+  while(UART_GetTransmitStatus(&uart_pal1_instance, &bytesRemaining) != STATUS_SUCCESS);
+
+  /* Receive 8 frames */
+  UART_ReceiveData(&uart_pal1_instance, rx, 8UL);
+  /* Wait for transfer to be completed */
+  while(UART_GetReceiveStatus(&uart_pal1_instance, &bytesRemaining) != STATUS_SUCCESS);
+
+  /* De-initialize UART */
+  UART_Deinit(&uart_pal1_instance);
+
+ @endcode
+@}*/

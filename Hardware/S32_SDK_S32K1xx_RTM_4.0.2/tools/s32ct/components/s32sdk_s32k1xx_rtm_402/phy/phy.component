@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="phy" label="phy" global_only="false" max_instances="1" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+    <sw_comp_ref name="platform.driver.phy" version="1.0.0"/>
+    <description>Ethernet Transceiver Configuration</description>
+	<mode id="general" label="General Mode" available="true">
+      <description>Ethernet PHY general mode</description>
+      <config_set_refs>
+         <config_set_ref>phy</config_set_ref>
+      </config_set_refs>
+   </mode>
+    <config_set id="phy" label="PHY configuration set" from_source="phy.h">
+      <description>PHY Driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="dv_phy" label="Default Values for PHY" available="true">
+            <description>PHY configuration</description>
+            <set id="phy_configs.0.phyStdCfg.name">PHY_INSTANCE_0</set>
+            <set id="phy_configs.0.phyStdCfg.type">PHY_TYPE_GENERIC</set>
+            <set id="phy_configs.0.phyStdCfg.addr">0</set>
+            <set id="phy_configs.0.phyStdCfg.location">PHY_LOCATION_EXTERNAL</set>
+            <set id="phy_configs.0.phyStdCfg.speed">PHY_SPEED_AUTONEG</set>
+            <set id="phy_configs.0.phyStdCfg.role">PHY_ROLE_AUTO</set>
+            <set id="phy_configs.0.phyStdCfg.clause45">0</set>
+            <set id="phy_configs.0.phyStdCfg.enetInstance">0</set>
+            <set id="phy_configs.0.phyStdCfg.linkUpEventCB">NULL</set>
+            <set id="phy_configs.0.phyStdCfg.linkDownEventCB">NULL</set>
+            <set id="phy_configs.0.phyStdCfg.autonegCompleteCB">NULL</set>
+            <set id="phy_configs.0.phyStdCfg.autonegFailedCB">NULL</set>
+            <set id="phy_configs.0.phyStdCfg.sleepRequestCB">NULL</set>
+         </quick_selection>
+         <default>dv_phy</default>
+      </quick_selections>
+      <generated_types>
+         <enum id="phy_speed_t" label="Link speed" from="phy_speed_t">
+            <description>Implements : phy_speed_t_Class</description>
+            <item id="PHY_SPEED_10_GBPS" label="10 Gbps"/>
+            <item id="PHY_SPEED_5_GBPS" label="5 Gbps"/>
+            <item id="PHY_SPEED_2P5_GBPS" label="2.5 Gbps"/>
+            <item id="PHY_SPEED_1_GBPS" label="1 Gbps"/>
+            <item id="PHY_SPEED_100_MBPS" label="100 Mbps"/>
+            <item id="PHY_SPEED_10_MBPS" label="10 Mbps"/>
+            <item id="PHY_SPEED_AUTONEG" label="Auto-negotiation"/>
+            <item id="PHY_SPEED_RESERVED" label="Reserved"/>
+         </enum>
+         <enum id="phy_state_t" label="PHY state" from="phy_state_t">
+            <description>Implements : phy_state_t_Class</description>
+            <item id="PHY_STATE_DISABLED" label="PHY disabled"/>
+            <item id="PHY_STATE_SILENT" label="PHY in silent mode"/>
+            <item id="PHY_STATE_SLEEPREQ" label="PHY in sleep request state"/>
+            <item id="PHY_STATE_SLEEP" label="PHY in low power sleep mode"/>
+            <item id="PHY_STATE_ACTIVE" label="PHY active/normal mode"/>
+            <item id="PHY_STATE_OFF" label="PHY switched off/standby/power down"/>
+            <item id="PHY_STATE_UNKNOWN" label="PHY state unkown"/>
+         </enum>
+         <enum id="phy_role_t" label="PHY role" from="phy_role_t">
+            <description>Implements : phy_role_t_Class</description>
+            <item id="PHY_ROLE_AUTO" label="Automatic configuration, i.e"/>
+            <item id="PHY_ROLE_MASTER" label="Master"/>
+            <item id="PHY_ROLE_SLAVE" label="Slave"/>
+         </enum>
+         <enum id="phy_location_t" label="PHY location" from="phy_location_t">
+            <description>Implements : phy_location_t_Class</description>
+            <item id="PHY_LOCATION_EXTERNAL" label="External PHY"/>
+            <item id="PHY_LOCATION_INTERNAL" label="Internal PHY"/>
+         </enum>
+         <enum id="phy_loopback_t" label="Loopback modes" from="phy_loopback_t">
+            <description>Implements : phy_loopback_t_Class</description>
+            <item id="PHY_LOOPBACK_REMOTE" label="Remote loopback"/>
+            <item id="PHY_LOOPBACK_EXTERNAL" label="External loopback"/>
+            <item id="PHY_LOOPBACK_INTERNAL" label="Internal loopback"/>
+            <item id="PHY_LOOPBACK_NONE" label="No loopback"/>
+         </enum>
+         <struct id="phy_id_t" label="PHY ID" from="phy_id_t">
+            <description>Implements : phy_id_t_Class</description>
+            <integer id="oui" label="24-bit Organizationally Unique Identifier (OUI)" type="uint32_t">
+               <description>24-bit Organizationally Unique Identifier (OUI)</description>
+            </integer>
+            <integer id="typeNo" label="6-bit manufacturer type number" type="uint8_t">
+               <description>6-bit manufacturer type number</description>
+            </integer>
+            <integer id="revisionNo" label="Four-bit manufacturer revision number" type="uint8_t">
+               <description>Four-bit manufacturer revision number</description>
+            </integer>
+         </struct>
+         <struct id="phy_config_t" label="PHY configuration structure" from="phy_config_t">
+            <description>Implements : phy_config_t_Class</description>
+            <integer id="type" label="type of driver used for this PHY instance" type="uint8_t">
+               <description>type of driver used for this PHY instance. Will refer to an index in ::gap_phyDrivers</description>
+            </integer>
+            <integer id="addr" label="SMI/MDIO Address for external PHY, Base register address for internal PHY" type="uint32_t">
+               <description>SMI/MDIO Address for external PHY, Base register address for internal PHY</description>
+            </integer>
+            <reference id="location" label="Internal: PHY integrated with host device and addressable via memory mapped IO" type="phy_location_t">
+               <description>Internal: PHY integrated with host device and addressable via memory mapped IO. External: PHY outside of device and addressable via MDIO/SMI</description>
+            </reference>
+            <reference id="speed" label="Initial speed setting for the PHY" type="phy_speed_t">
+               <description>Initial speed setting for the PHY</description>
+            </reference>
+            <reference id="role" label="Role of the PHY, e.g" type="phy_role_t">
+               <description>Role of the PHY, e.g. Master or Slave</description>
+            </reference>
+            <integer id="enetInstance" label="The instance number of the ENET module connected to this PHY" type="uint8_t">
+               <description>The instance number of the ENET module connected to this PHY</description>
+            </integer>
+            <fixme id="linkUpEventCB" label="Callback for the link up event" type="void(*">
+               <description>Callback for the link up event</description>
+            </fixme>
+            <fixme id="linkDownEventCB" label="Callback for the link down event" type="void(*">
+               <description>Callback for the link down event</description>
+            </fixme>
+            <fixme id="sleepRequestCB" label="Callback for the sleep request event" type="void(*">
+               <description>Callback for the sleep request event</description>
+            </fixme>
+            <fixme id="autonegCompleteCB" label="Callback for the auto-negotiation complete event" type="void(*">
+               <description>Callback for the auto-negotiation complete event</description>
+            </fixme>
+            <fixme id="autonegFailedCB" label="Callback for the auto-negotiation failed event" type="void(*">
+               <description>Callback for the auto-negotiation failed event</description>
+            </fixme>
+            <integer id="privateData" label="Private data which can be used by the driver" type="uint32_t">
+               <description>Private data which can be used by the driver</description>
+            </integer>
+            <fixme id="extendedConfig" label="Extended configuration (PHY specific)" type="void *">
+               <description>Extended configuration (PHY specific)</description>
+            </fixme>
+         </struct>
+         <struct id="phy_driver_t" label="Structure containing the APIs of a driver compatible with this PHY framework" from="phy_driver_t">
+            <description>Implements : phy_driver_t_Class</description>
+            <fixme id="init" label="" type="status_t(*"/>
+            <fixme id="reset" label="" type="status_t(*"/>
+            <fixme id="mainFunction" label="" type="status_t(*"/>
+            <fixme id="getId" label="" type="status_t(*"/>
+            <fixme id="getState" label="" type="status_t(*"/>
+            <fixme id="getLinkStatus" label="" type="status_t(*"/>
+            <fixme id="getLinkSpeed" label="" type="status_t(*"/>
+            <fixme id="suspend" label="" type="status_t(*"/>
+            <fixme id="resume" label="" type="status_t(*"/>
+            <fixme id="sleepAbortReject" label="" type="status_t(*"/>
+            <fixme id="sleep" label="" type="status_t(*"/>
+            <fixme id="wakeup" label="" type="status_t(*"/>
+            <fixme id="setRole" label="" type="status_t(*"/>
+            <fixme id="setLoopback" label="" type="status_t(*"/>
+            <fixme id="selectTestMode" label="" type="status_t(*"/>
+            <fixme id="enableInterrupts" label="" type="status_t(*"/>
+            <fixme id="handleInterrupt" label="" type="status_t(*"/>
+            <fixme id="enableAutoneg" label="" type="status_t(*"/>
+            <fixme id="disableAutoneg" label="" type="status_t(*"/>
+            <fixme id="restartAutoneg" label="" type="status_t(*"/>
+            <fixme id="write" label="" type="status_t(*"/>
+            <fixme id="read" label="" type="status_t(*"/>
+            <fixme id="rmw" label="" type="status_t(*"/>
+            <fixme id="writeMMD" label="" type="status_t(*"/>
+            <fixme id="readMMD" label="" type="status_t(*"/>
+            <fixme id="rmwMMD" label="" type="status_t(*"/>
+         </struct>
+      </generated_types>
+      <user_types>
+	     <enum id="phy_speed_t" label="Link speed" from="phy_speed_t">
+            <description>Link speed of the PHY.</description>
+            <item id="PHY_SPEED_1_GBPS" label="1 Gbps"/>
+            <item id="PHY_SPEED_100_MBPS" label="100 Mbps"/>
+            <item id="PHY_SPEED_10_MBPS" label="10 Mbps"/>
+            <item id="PHY_SPEED_AUTONEG" label="Auto-negotiation"/>
+         </enum>
+	     <enum id="phy_type_t" label="PHY Type" from="phy_type_t">
+            <description>Type of the PHY.</description>
+            <item id="PHY_TYPE_GENERIC" label="Generic"/>
+            <item id="PHY_TYPE_TJA110X" label="TJA110x"/>
+         </enum>
+		 <enum id="phy_role_t" label="PHY role" from="phy_role_t">
+            <description>Role of the PHY.</description>
+            <item id="PHY_ROLE_AUTO" label="Automatic"/>
+            <item id="PHY_ROLE_MASTER" label="Master"/>
+            <item id="PHY_ROLE_SLAVE" label="Slave"/>
+         </enum>
+		 <enum id="phy_location_t" label="PHY location" from="phy_location_t">
+            <description>Location of the PHY (internal/external).</description>
+            <item id="PHY_LOCATION_EXTERNAL" label="External"/>
+            <item id="PHY_LOCATION_INTERNAL" label="Internal"/>
+         </enum>
+		 <enum id="phy_subtype_t" label="PHY Subtype">
+            <description>Represents the type of the transceiver.</description>
+            <item id="PHY_TJA1101_2" label="TJA1101/TJA1102 P0/TJA1102S"/>
+            <item id="PHY_TJA1102_P1" label="TJA1102 P1"/>
+         </enum>
+		 <enum id="phy_tja110x_localWuTime_t" label="Local wake-up timer">
+            <description>Wake-Up time on local wake pin.</description>
+            <item id="PHY_TJA110X_LOCALWUTIME_LONGEST" label="10 ms to 20 ms"/>
+            <item id="PHY_TJA110X_LOCALWUTIME_LONG" label="250 us to 500 us"/>
+            <item id="PHY_TJA110X_LOCALWUTIME_SHORT" label="100 us to 200 us"/>
+            <item id="PHY_TJA110X_LOCALWUTIME_SHORTEST" label="10 us to 40 us"/>
+         </enum>
+         <struct id="phy_config_t" label="PHY configuration structure" from="phy_config_t">
+            <description>PHY configuration structure</description>
+            <reference id="phyStdCfg" label="Standard Configuration" type="phy_standard_t">
+               <description>Defines a structure to initialize the selected module.</description>
+            </reference>
+            <bool id="phyExtCfg_enable" label="Enable Extended Configuration" available="(getFeature(`FEATURE_PHY_EXTEND_CONFIG`) == `1`)" enable="getValue($parent.phyStdCfg.type)==`PHY_TYPE_TJA110X`">
+               <description>Enables/Disables the extended configuration.</description>
+            </bool>
+            <reference id="phyExtCfg" label="Extended Configuration" type="phy_extended_t" available="(getFeature(`FEATURE_PHY_EXTEND_CONFIG`) == `1`)" enable="isEnabled($parent.phyExtCfg_enable) &amp;&amp; getValue($parent.phyExtCfg_enable)">
+               <description>Defines an extended structure to initialize the selected module.</description>
+            </reference>
+         </struct>
+         <struct id="phy_standard_t" label="Standard Configuration">
+            <description>Defines a structure to initialize the selected module.</description>
+            <string id="name" label="PHY Name">
+               <description>An unique name for referring to the PHY instance.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="PHY name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <reference id="type" label="PHY Type" type="phy_type_t"  options="cStructField">
+               <description>Type of driver used for this PHY instance. Will refer to an index in ::gap_phyDrivers</description>
+            </reference>
+            <reference id="speed" label="PHY Speed" type="phy_speed_t"  available="(getFeature(`FEATURE_PHY_SPEED_CONFIG`) == `1`)" options="cStructField">
+               <description>Initial speed setting for the PHY</description>
+            </reference>
+            <reference id="location" label="PHY Location" type="phy_location_t"  options="cStructField">
+               <description>Internal: PHY integrated with host device and addressable via memory mapped IO. External: PHY outside of device and addressable via MDIO/SMI</description>
+            </reference>
+            <integer id="enetInstance" label="ENET instance" type="uint8_t"  options="cStructField">
+               <description>The instance number of the ENET module connected to this PHY</description>
+            </integer>
+            <integer id="addr" label="PHY Address" type="uint32_t"  options="cStructField">
+               <description>SMI/MDIO Address for external PHY, Base register address for internal PHY</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 256) || ($parent.location.getValue() == `PHY_LOCATION_INTERNAL`)" level="error" description="Maximum PHY address for internal PHY is 255."/>
+               </validation>
+            </integer>
+            <bool id="clause45" label="Clause 45" available="(getFeature(`FEATURE_PHY_CLAUSE_CONFIG`) == `1`)" options="cStructField">
+               <description>If ture, access is perfomed using IEEE 802.3 Clause 45 MDIO frames. If false, using IEEE 802.3 Clause 22 MDIO frame.</description>
+            </bool>
+            <reference id="role" label="PHY Role" type="phy_role_t"  options="cStructField">
+               <description>Role of the PHY, e.g. Master or Slave or Automatic configuration. Regarding to Automatic mode will use the default of the device, could be pin strapping or auto-negotiation of master/slave parameter.</description>
+            </reference>
+			<string id="linkUpEventCB" label="Link Up Event Callback" options="cStructField">
+               <description>Callback for the link up event.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+               </validation>
+            </string>
+			<string id="linkDownEventCB" label="Link Down Event Callback" options="cStructField">
+               <description>Callback for the link down event.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+               </validation>
+            </string>
+			<string id="autonegCompleteCB" label="Auto-negotiation Complete Event Callback" options="cStructField">
+               <description>Callback for the auto-negotiation complete event.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+               </validation>
+            </string>
+			<string id="autonegFailedCB" label="Auto-negotiation Failed Event Callback" options="cStructField">
+               <description>Callback for the auto-negotiation failed event.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+               </validation>
+            </string>
+			<string id="sleepRequestCB" label="Sleep Request Event Callback" available="(getFeature(`FEATURE_PHY_SLEEP_EVENT`) == `1`)" options="cStructField">
+               <description>Callback for the Sleep request event.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+               </validation>
+            </string>
+			<info id="extendedConfig" label="Extended Configuration Settings" available="(getFeature(`FEATURE_PHY_EXTEND_CONFIG`) == `1`)" options="cStructField"  value="(getSetting(getParent($parent),`phyExtCfg_enable`).isEnabled() &amp;&amp; getSetting(getParent($parent),`phyExtCfg_enable`).getValue()) ? (`&amp;extendedConfig` + getParent($parent).getID()) : `NULL`"/>
+         </struct>
+         <struct id="phy_extended_t" label="Extended Configuration">
+            <description>Defines an extended structure to initialize the selected module</description>
+            <string id="name" label="Extended Configuration Name" value="" available="false"/>
+            <reference id="extSubtype" label="PHY Subtype" type="phy_subtype_t">
+               <description>Represents the type of the transceiver.</description>
+            </reference>
+            <reference id="extSpecificConfig" label="PHY specific configuration" enable="(getValue($parent.extSubtype)==`PHY_TJA1101_2`) || (getValue($parent.extSubtype)==`PHY_TJA1102_P1`)" type="phy_specific_t">
+               <description>Configuration of registers specific to individual PHY instance</description>
+            </reference>
+            <reference id="extDeviceConfig" label="Device configuration" enable="getValue($parent.extSubtype)==`PHY_TJA1101_2`" type="phy_device_config_t">
+               <description>Device configuration</description>
+            </reference>
+         </struct>
+         <struct id="phy_specific_t" label="PHY Specific Configuration">
+            <description>Configuration of registers specific to individual PHY instance</description>
+            <bool id="phyExtCfgTJA110x_fwdPhyLocal" label="Forward WU Local" options="cStructField">
+               <description>Enable/disable local wake-up forwarding.</description>
+            </bool>
+            <bool id="phyExtCfgTJA110x_fwdPhyRemote" label="Forward WU" options="cStructField">
+               <description>Enable/disable remote wake-up forwarding.</description>
+            </bool>
+            <bool id="phyExtCfgTJA110x_localWakeupPhy" label="Local WU" options="cStructField">
+               <description>Enable/disable local wake-up.</description>
+            </bool>
+            <bool id="phyExtCfgTJA110x_remoteWakeupPhy" label="Remote WU" options="cStructField">
+               <description>Enable/disable remote wake-up.</description>
+            </bool>
+            <bool id="phyExtCfgTJA110x_reducedMiiDriveStrength" label="Reduced MII driver strength" options="cStructField">
+               <description>Reduce MII driver strength.</description>
+            </bool>
+         </struct>
+         <struct id="phy_device_config_t" label="Device Configuration">
+            <description>Device configuration</description>
+            <bool id="phyExtCfgTJA110x_reducedClkDriveStrength" label="Reduced CLK_IN_OUT driver strength" options="cStructField">
+               <description>Reduce CLK_IN_OUT pins driver strength.</description>
+            </bool>
+            <bool id="phyExtCfgTJA110x_clkHold" label="Clock Hold" options="cStructField">
+               <description>XTAL and CLK_IN_OUT output remain active until device switched to Sleep mode via SMI.</description>
+            </bool>
+            <bool id="phyExtCfgTJA110x_wakeInRatiometricThreshold" label="WAKE_IN Ratiometric Threshold" options="cStructField">
+               <description>Local wake configuration: ratiometric input threshold.</description>
+            </bool>
+            <reference id="phyExtCfgTJA110x_localWuTimer" label="Local wake-up timer" type="phy_tja110x_localWuTime_t"  options="cStructField">
+               <description>Wake-Up time on local wake pin.</description>
+            </reference>
+         </struct>
+      </user_types>
+      <settings>
+	     <array id="phy_configs" label="Configuration Structures" type="phy_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`phyStdCfg.name`).value())">
+           <description>PHYs configurations</description>
+		   <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`phyStdCfg.name`).value()).length() == 0" level="error" description="There are some duplicated `PHY Name` fields in the configuration"/>
+           </validation>
+		   <item_defaults>
+                <set_default id="phyStdCfg.name" value_expr="x -> `PHY_INSTANCE_` + x.getID()"/>
+                <set_default id="phyStdCfg.type" value_expr="x -> `PHY_TYPE_GENERIC`"/>
+                <set_default id="phyStdCfg.addr" value_expr="x -> 0"/>
+                <set_default id="phyStdCfg.clause45" value_expr="x -> 0"/>
+                <set_default id="phyStdCfg.location" value_expr="x -> `PHY_LOCATION_EXTERNAL`"/>
+                <set_default id="phyStdCfg.speed" value_expr="x -> `PHY_SPEED_AUTONEG`"/>
+                <set_default id="phyStdCfg.role" value_expr="x -> `PHY_ROLE_AUTO`"/>
+                <set_default id="phyStdCfg.enetInstance" value_expr="x -> 0"/>
+                <set_default id="phyStdCfg.linkUpEventCB" value_expr="x -> `NULL`"/>
+                <set_default id="phyStdCfg.linkDownEventCB" value_expr="x -> `NULL`"/>
+                <set_default id="phyStdCfg.autonegCompleteCB" value_expr="x -> `NULL`"/>
+                <set_default id="phyStdCfg.autonegFailedCB" value_expr="x -> `NULL`"/>
+                <set_default id="phyStdCfg.sleepRequestCB" value_expr="x -> `NULL`"/>
+                <set_default id="phyStdCfg.extendedConfig" value_expr="x -> `NULL`"/>
+            </item_defaults>
+         </array>
+		 <variable value="`../phy/phy_codegen.js`" id="codegen_file"></variable>
+         <variable value="`PHYCodeGen`" id="codegen_class"></variable>
+         <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+         <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

@@ -1,0 +1,151 @@
+/*!
+  
+    @defgroup security_pal Security Peripheral Abstraction Layer - SECURITY PAL 
+    @details 
+    The SECURITY PAL provides security features over specific modules like:<br/>
+    -> Cryptographic Services Engine (CSEc)<br/>
+    -> Hardware Security Module (HSM)
+
+    ## Features ##
+    - Secure cryptographic key storage
+    - AES-128 encryption and decryption
+    - AES-128 CMAC (Cipher-based Message Authentication Code) calculation and authentication
+    - ECB (Electronic Cypher Book) Mode - encryption and decryption
+    - CBC (Cipher Block Chaining) Mode - encryption and decryption
+    - True and Pseudo random number generation   
+    - Miyaguchi-Prenell compression function
+    - Secure Boot Mode (user configurable)
+
+    ## How to use the SECURITY PAL in your application ##    
+    The SECURITY PAL is designed to be used in conjunction with CSEc driver or HSM driver,
+    based on hardware platform. The SECURITY PAL can't be used simultaneously over different
+    driver types.
+    
+    The following table contains the matching between platforms and available IPs:
+    IP/MCU|S32K116|S32K118|S32K142|S32K144|S32K142W|S32K144W|S32K146|S32K148| S32MTV |MPC5746C|MPC5748G|
+    -----:|:-----:|:-----:|:-----:|:-----:|:------:|:------:|:-----:|:-----:|:-------|:-------|:-------|
+    CSEC  |  YES  |  YES  |  YES  |  YES  |   YES  |  YES   |  YES  |  YES  |  YES   |   NO   |   NO   |
+    HSM   |  NO   |  NO   |  NO   |  NO   |   NO   |  NO    |  NO   |   NO  |   NO   |  YES   |  YES   |    
+    
+    The SECURITY PAL includes file security_pal_cfg.h, which allows the user to specify
+    which IP is used and how many resources are allocated (state structure).
+    The following code example shows how to configure one instance for one available
+    security module.
+    
+@code
+ #ifndef SECURITY_PAL_CFG_H
+ #define SECURITY_PAL_CFG_H
+
+ /* Define which IP instance will be used in current project */
+ #define SECURITY_OVER_CSEC
+ #define NO_OF_CSEC_INSTS_FOR_SECURITY 1
+
+ #endif /* SECURITY_PAL_CFG_H */ 
+@endcode
+
+<p>    
+    In order to use the SECURITY modules, the initialization procedure must be completed.
+    Using the SECURITY_Init() function, the instance of the module is selected and 
+    configured using the user configuration structure.
+</p>  
+
+<p>    
+    The security features are available in two types: blocking and non-blocking.
+    The blocking features have specified in their naming the 'blocking' attribute. 
+    All other functions are considered to be non-blocking.
+    The blocking functions use the osif layer, providing timeout feature.
+</p>  
+     
+    ## Important Notes ##    
+<p>    
+    - For advanced usage, user must verify the specific drivers documentation for
+    CSEc or HSM.
+    - The SECURITY PAL enables the interrupts for the corresponding module. The 
+    application must configure the interrupts priorities.
+    - The SECURITY PAL API offers a "timeout" parameter for a number of functions.
+    If "timeout" value is set to value '0', the returned status shall not be assumed
+    as "STATUS_TIMEOUT". This behaviour is given by the response time of the OS
+    system tick and the execution time of the called function.
+    Example: 
+    If OS system tick is set to 1ms, then the response time for a timeout
+    set to '0', is between 0ms and 0.99ms.
+    If the execution time of the functon is 10us, then there is a high probability
+    that the returned status shall be "STATUS_SUCCESS".
+</p>
+
+<p>
+  ## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\pal\src\security\security_pal.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc
+${S32SDK_PATH}\platform\pal\inc
+${S32_SDK_PATH}\rtos\osif
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref interrupt_manager
+\ref osif
+</p>
+
+    ## Example code ##
+@code
+static security_user_config_t g_SecurityUserConfig;
+ 
+void SecurityCallback(uint32_t completedCmd, void *callbackParam)
+{
+    security_cmd_t securityCmd = (security_cmd_t)completedCmd;
+    switch (securityCmd)
+    {
+        case SECURITY_CMD_ENC_ECB:
+            /* Do something... */
+            break;
+        default:
+            /* Error... */
+            break;
+    }
+}
+    
+void main()
+{
+    static status_t status = STATUS_SUCCESS;
+    static uint8_t rndBuf[16];
+
+    g_SecurityUserConfig.callback = SecurityCallback;
+
+    status = SECURITY_Init(SECURITY_INSTANCE0, &g_SecurityUserConfig);
+    if(status != STATUS_SUCCESS)
+    {
+        /* Error... */
+    }
+    status = SECURITY_InitRng(SECURITY_INSTANCE0, TIMEOUT);
+    if(status != STATUS_SUCCESS)
+    {
+        /* Error... */
+    }
+    status = SECURITY_GenerateRnd(SECURITY_INSTANCE0, rndBuf, TIMEOUT);
+    if(status != STATUS_SUCCESS)
+    {
+        /* Error... */
+    }   
+    
+    while(1);    
+}    
+@endcode
+    
+@}*/

@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="cmp_config" label="cmp" options="UI_COMPONENT_MODE_HIDDEN" category="driver" global_only="false" hidden="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component-5.0.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <sw_comp_ref name="platform.driver.cmp" version="1.0.0"/>
+    <description>Comparator configuration</description>
+    <mode id="general_soft" label="Comparator" available="true">
+        <description>CMP driver</description>
+        <config_set_refs>
+            <config_set_ref>cmp</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>CMP</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set label="" id="cmp" from_source="cmp_driver.h">
+        <description>CMP driver</description>
+        <generated_types>
+            <integer id="cmp_ch_list_t" label="Comparator channels list (1bit/channel) |------|------|--|------|------| |CH7_state|CH6_state|.....|CH1_state|CH0_state| |------|------|--|------|------| Implements : cmp_ch_list_t_Class" type="uint8_t">
+                <description></description>
+            </integer>
+            <integer id="cmp_ch_number_t" label="Number of channel Implements : cmp_ch_number_t_Class" type="uint8_t">
+                <description></description>
+            </integer>
+            <enum id="cmp_power_mode_t" label="Power Modes selection Implements : cmp_power_mode_t_Class" from="cmp_power_mode_t">
+                <description></description>
+                <item id="CMP_LOW_SPEED" label="Module in low speed mode">
+                    <description>Module in low speed mode.</description>
+                </item>
+                <item id="CMP_HIGH_SPEED" label="Module in high speed mode">
+                    <description>Module in high speed mode.</description>
+                </item>
+            </enum>
+            <enum id="cmp_voltage_reference_t" label="Voltage Reference selection Implements : cmp_voltage_reference_t_Class" from="cmp_voltage_reference_t">
+                <description></description>
+                <item id="CMP_VIN1" label="Use Vin1 as supply reference source for DAC">
+                    <description>Use Vin1 as supply reference source for DAC.</description>
+                </item>
+                <item id="CMP_VIN2" label="Use Vin2 as supply reference source for DAC">
+                    <description>Use Vin2 as supply reference source for DAC.</description>
+                </item>
+            </enum>
+            <enum id="cmp_port_mux_t" label="Port Mux Source selection Implements : cmp_port_mux_t_Class" from="cmp_port_mux_t">
+                <description></description>
+                <item id="CMP_DAC" label="Select DAC as source for the comparator port">
+                    <description>Select DAC as source for the comparator port.</description>
+                </item>
+                <item id="CMP_MUX" label="Select MUX8 as source for the comparator port">
+                    <description>Select MUX8 as source for the comparator port.</description>
+                </item>
+            </enum>
+            <enum id="cmp_inverter_t" label="Comparator output invert selection Implements : cmp_inverter_t_Class" from="cmp_inverter_t">
+                <description></description>
+                <item id="CMP_NORMAL" label="Output signal isn&apos;t inverted">
+                    <description>Output signal isn&apos;t inverted.</description>
+                </item>
+                <item id="CMP_INVERT" label="Output signal is inverted">
+                    <description>Output signal is inverted.</description>
+                </item>
+            </enum>
+            <enum id="cmp_output_select_t" label="Comparator output select selection Implements : cmp_output_select_t_Class" from="cmp_output_select_t">
+                <description></description>
+                <item id="CMP_COUT" label="Select COUT as comparator output signal">
+                    <description>Select COUT as comparator output signal.</description>
+                </item>
+                <item id="CMP_COUTA" label="Select COUTA as comparator output signal">
+                    <description>Select COUTA as comparator output signal.</description>
+                </item>
+            </enum>
+            <enum id="cmp_output_enable_t" label="Comparator output pin enable selection Implements : cmp_output_enable_t_Class" from="cmp_output_enable_t">
+                <description></description>
+                <item id="CMP_UNAVAILABLE" label="Comparator output isn&apos;t available to a specific pin">
+                    <description>Comparator output isn&apos;t available to a specific pin</description>
+                </item>
+                <item id="CMP_AVAILABLE" label="Comparator output is available to a specific pin">
+                    <description>Comparator output is available to a specific pin</description>
+                </item>
+            </enum>
+            <enum id="cmp_offset_t" label="Comparator hard block offset control Implements : cmp_offset_t_Class" from="cmp_offset_t">
+                <description></description>
+                <item id="CMP_LEVEL_OFFSET_0" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_LEVEL_OFFSET_1" label="">
+                    <description></description>
+                </item>
+            </enum>
+            <enum id="cmp_hysteresis_t" label="Comparator hysteresis control Implements : cmp_hysteresis_t_Class" from="cmp_hysteresis_t">
+                <description></description>
+                <item id="CMP_LEVEL_HYS_0" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_LEVEL_HYS_1" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_LEVEL_HYS_2" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_LEVEL_HYS_3" label="">
+                    <description></description>
+                </item>
+            </enum>
+            <enum id="cmp_fixed_port_t" label="Comparator Round-Robin fixed port Implements : cmp_fixed_port_t_Class" from="cmp_fixed_port_t">
+                <description></description>
+                <item id="CMP_PLUS_FIXED" label="The Plus port is fixed">
+                    <description>The Plus port is fixed. Only the inputs to the Minus port are swept in each round.</description>
+                </item>
+                <item id="CMP_MINUS_FIXED" label="The Minus port is fixed">
+                    <description>The Minus port is fixed. Only the inputs to the Plus port are swept in each round.</description>
+                </item>
+            </enum>
+            <enum id="cmp_output_trigger_t" label="Comparator output interrupt configuration Implements : cmp_output_trigger_t_Class" from="cmp_output_trigger_t">
+                <description></description>
+                <item id="CMP_NO_EVENT" label="Comparator output interrupts are disabled OR no event occurred">
+                    <description>Comparator output interrupts are disabled OR no event occurred.</description>
+                </item>
+                <item id="CMP_FALLING_EDGE" label="Comparator output interrupts will be generated only on falling edge OR only falling edge event occurred">
+                    <description>Comparator output interrupts will be generated only on falling edge OR only falling edge event occurred.</description>
+                </item>
+                <item id="CMP_RISING_EDGE" label="Comparator output interrupts will be generated only on rising edge OR only rising edge event occurred">
+                    <description>Comparator output interrupts will be generated only on rising edge OR only rising edge event occurred.</description>
+                </item>
+                <item id="CMP_BOTH_EDGES" label="Comparator output interrupts will be generated on both edges OR both edges event occurred">
+                    <description>Comparator output interrupts will be generated on both edges OR both edges event occurred.</description>
+                </item>
+            </enum>
+            <enum id="cmp_mode_t" label="Comparator functional modes Implements : cmp_mode_t_Class" from="cmp_mode_t">
+                <description></description>
+                <item id="CMP_DISABLED" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_CONTINUOUS" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_SAMPLED_NONFILTRED_INT_CLK" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_SAMPLED_NONFILTRED_EXT_CLK" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_SAMPLED_FILTRED_INT_CLK" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_SAMPLED_FILTRED_EXT_CLK" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_WINDOWED" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_WINDOWED_RESAMPLED" label="">
+                    <description></description>
+                </item>
+                <item id="CMP_WINDOWED_FILTRED" label="">
+                    <description></description>
+                </item>
+            </enum>
+            <struct id="cmp_comparator_t" label="Defines the block configuration" from="cmp_comparator_t">
+                <description>This structure is used to configure only comparator block module(filtering, sampling, power_mode etc.) Implements : cmp_comparator_t_Class</description>
+                <bool id="dmaTriggerState" label="DMA enable">
+                    <description>True if DMA transfer trigger from comparator is enable.</description>
+                </bool>
+                <reference id="outputInterruptTrigger" label="Interrupt source" type="cmp_output_trigger_t">
+                    <description>CMP_NO_INTERRUPT comparator output would not trigger any interrupt. CMP_FALLING_EDGE comparator output would trigger an interrupt on falling edge. CMP_RISING_EDGE comparator output would trigger an interrupt on rising edge. CMP_BOTH_EDGES comparator output would trigger an interrupt on rising and falling edges.</description>
+                </reference>
+                <reference id="mode" label="Functional mode" type="cmp_mode_t">
+                    <description>Configuration structure which define: the comparator functional mode, sample period and sample count.</description>
+                </reference>
+                <integer id="filterSamplePeriod" label="Filter sample period" type="uint8_t">
+                    <description>Filter sample period.</description>
+                </integer>
+                <integer id="filterSampleCount" label="Filter sample count" type="uint8_t">
+                    <description>Number of sample count for filtering.</description>
+                </integer>
+                <reference id="powerMode" label="Power mode" type="cmp_power_mode_t">
+                    <description>CMP_LOW_SPEED if low speed mode is selected. CMP_HIGH_SPEED if high speed mode is selected</description>
+                </reference>
+                <reference id="inverterState" label="Inverter mode" type="cmp_inverter_t">
+                    <description>CMP_NORMAL if does not invert the comparator output. CMP_INVERT if inverts the comparator output.</description>
+                </reference>
+                <reference id="pinState" label="Comparator output" type="cmp_output_enable_t">
+                    <description>CMP_UNAVAILABLE if comparator output is not available to package pin. CMP_AVAILABLE if comparator output is available to package pin.</description>
+                </reference>
+                <reference id="outputSelect" label="Comparator output source" type="cmp_output_select_t">
+                    <description>CMP_COUT if output signal is equal to COUT(filtered). CMP_COUTA if output signal is equal to COUTA(unfiltered).</description>
+                </reference>
+                <reference id="offsetLevel" label="Comparator offset level" type="cmp_offset_t">
+                    <description>CMP_LEVEL_OFFSET_0 if hard block output has level 0 offset. CMP_LEVEL_OFFSET_1 if hard block output has level 1 offset.</description>
+                </reference>
+                <reference id="hysteresisLevel" label="Comparator hysteresis level" type="cmp_hysteresis_t">
+                    <description>CMP_LEVEL_HYS_0 if hard block output has level 0 hysteresis. CMP_LEVEL_HYS_1 if hard block output has level 1 hysteresis. CMP_LEVEL_HYS_2 if hard block output has level 2 hysteresis. CMP_LEVEL_HYS_3 if hard block output has level 3 hysteresis.</description>
+                </reference>
+            </struct>
+            <struct id="cmp_anmux_t" label="Defines the analog mux" from="cmp_anmux_t">
+                <description>This structure is used to configure the analog multiplexor to select compared signals Implements : cmp_anmux_t_Class</description>
+                <reference id="positivePortMux" label="Positive port signal source" type="cmp_port_mux_t">
+                    <description>Select positive port signal. CMP_DAC if source is digital to analog converter. CMP_MUX if source is 8 ch MUX</description>
+                </reference>
+                <reference id="negativePortMux" label="Negative port signal source" type="cmp_port_mux_t">
+                    <description>Select negative port signal. CMP_DAC if source is digital to analog converter. CMP_MUX if source is 8 ch MUX</description>
+                </reference>
+                <reference id="positiveInputMux" label="Channel source for positive port" type="cmp_ch_number_t">
+                    <description>Select which channel is selected for the plus mux.</description>
+                </reference>
+                <reference id="negativeInputMux" label="Channel source for negative port" type="cmp_ch_number_t">
+                    <description>Select which channel is selected for the minus mux.</description>
+                </reference>
+            </struct>
+            <struct id="cmp_dac_t" label="Defines the DAC block" from="cmp_dac_t">
+                <description>This structure is used to configure the DAC block integrated in comparator module Implements : cmp_dac_t_Class</description>
+                <bool id="state" label="DAC enable">
+                    <description>True if DAC is enabled.</description>
+                </bool>
+                <reference id="voltageReferenceSource" label="Voltage reference source" type="cmp_voltage_reference_t">
+                    <description>CMP_VIN1 if selected voltage reference is VIN1. CMP_VIN2 if selected voltage reference is VIN2.</description>
+                </reference>
+                <integer id="voltage" label="Digital value" type="uint8_t">
+                    <description>The digital value which is converted to analog signal.</description>
+                </integer>
+            </struct>
+            <struct id="cmp_trigger_mode_t" label="Defines the trigger mode" from="cmp_trigger_mode_t">
+                <description>This structure is used to configure the trigger mode operation when MCU enters STOP modes Implements : cmp_trigger_mode_t_Class</description>
+                <bool id="roundRobinState" label="Round-robin enable">
+                    <description>True if Round-Robin is enabled.</description>
+                </bool>
+                <bool id="roundRobinInterruptState" label="Round-robin interrupt enable">
+                    <description>True if Round-Robin interrupt is enabled.</description>
+                </bool>
+                <reference id="fixedPort" label="Fixed port" type="cmp_fixed_port_t">
+                    <description>CMP_PLUS_FIXED if plus port is fixed. CMP_MINUS_FIXED if minus port is fixed.</description>
+                </reference>
+                <reference id="fixedChannel" label="Fixed channel" type="cmp_ch_number_t">
+                    <description>Select which channel would be assigned to the fixed port.</description>
+                </reference>
+                <integer id="samples" label="Number of sample clocks" type="uint8_t">
+                    <description>Select number of round-robin clock cycles for a given channel.</description>
+                </integer>
+                <integer id="initializationDelay" label="Initialization delay" type="uint8_t">
+                    <description>Select dac and comparator initialization delay(clock cycles).</description>
+                </integer>
+                <reference id="roundRobinChannelsState" label="Channels list" type="cmp_ch_list_t">
+                    <description>One bite for each channel state. |||||| |CH7_state|CH6_state|.....|CH1_state|CH0_state| |------|------|--|------|------|</description>
+                </reference>
+                <reference id="programedState" label="Channels pre-state" type="cmp_ch_list_t">
+                    <description>Pre-programmed state for comparison result.</description>
+                </reference>
+            </struct>
+            <struct id="cmp_module_t" label="Defines the comparator module configuration" from="cmp_module_t">
+                <description>This structure is used to configure all components of comparator module Implements : cmp_module_t_Class</description>
+                <reference id="Comparator" label="" type="cmp_comparator_t">
+                    <description></description>
+                </reference>
+                <reference id="MUX" label="" type="cmp_anmux_t">
+                    <description></description>
+                </reference>
+                <reference id="DAC" label="" type="cmp_dac_t">
+                    <description></description>
+                </reference>
+                <reference id="Trigger Mode" label="" type="cmp_trigger_mode_t">
+                    <description></description>
+                </reference>
+            </struct>
+        </generated_types>
+        <user_types>
+            <integer id="cmp_ch_list_t" label="Comparator channels list (1bit/channel) |------|------|--|------|------| |CH7_state|CH6_state|.....|CH1_state|CH0_state| |------|------|--|------|------| Implements : cmp_ch_list_t_Class" type="uint8_t">
+                <description></description>
+            </integer>
+            <integer id="cmp_ch_number_t" label="Number of channel Implements : cmp_ch_number_t_Class" type="uint8_t">
+                <description></description>
+            </integer>
+            <enum id="cmp_power_mode_t" label="Power Modes selection Implements : cmp_power_mode_t_Class" from="cmp_power_mode_t">
+                <description></description>
+                <item id="CMP_LOW_SPEED" label="Low speed">
+                    <description>Module in low speed mode.</description>
+                </item>
+                <item id="CMP_HIGH_SPEED" label="High speed">
+                    <description>Module in high speed mode.</description>
+                </item>
+            </enum>
+            <enum id="cmp_voltage_reference_t" label="Voltage Reference selection Implements : cmp_voltage_reference_t_Class" from="cmp_voltage_reference_t">
+                <description></description>
+                <item id="CMP_VIN1" label="VIN1">
+                    <description>Use Vin1 as supply reference source for DAC.</description>
+                </item>
+                <item id="CMP_VIN2" label="VIN2">
+                    <description>Use Vin2 as supply reference source for DAC.</description>
+                </item>
+            </enum>
+            <enum id="cmp_port_mux_t" label="Port Mux Source selection Implements : cmp_port_mux_t_Class" from="cmp_port_mux_t">
+                <description></description>
+                <item id="CMP_DAC" label="DAC">
+                    <description>Select DAC as source for the comparator port.</description>
+                </item>
+                <item id="CMP_MUX" label="MUX">
+                    <description>Select MUX8 as source for the comparator port.</description>
+                </item>
+            </enum>
+            <enum id="cmp_inverter_t" label="Comparator output invert selection Implements : cmp_inverter_t_Class" from="cmp_inverter_t">
+                <description></description>
+                <item id="CMP_NORMAL" label="Normal">
+                    <description>Output signal isn&apos;t inverted.</description>
+                </item>
+                <item id="CMP_INVERT" label="Inverted">
+                    <description>Output signal is inverted.</description>
+                </item>
+            </enum>
+            <enum id="cmp_output_select_t" label="Comparator output select selection Implements : cmp_output_select_t_Class" from="cmp_output_select_t">
+                <description></description>
+                <item id="CMP_COUT" label="COUT">
+                    <description>Select COUT as comparator output signal.</description>
+                </item>
+                <item id="CMP_COUTA" label="COUTA">
+                    <description>Select COUTA as comparator output signal.</description>
+                </item>
+            </enum>
+            <enum id="cmp_output_enable_t" label="Comparator output pin enable selection Implements : cmp_output_enable_t_Class" from="cmp_output_enable_t">
+                <description></description>
+                <item id="CMP_UNAVAILABLE" label="Unavailable">
+                    <description>Comparator output isn&apos;t available to a specific pin</description>
+                </item>
+                <item id="CMP_AVAILABLE" label="Available">
+                    <description>Comparator output is available to a specific pin</description>
+                </item>
+            </enum>
+            <enum id="cmp_offset_t" label="Comparator hard block offset control Implements : cmp_offset_t_Class" from="cmp_offset_t">
+                <description></description>
+                <item id="CMP_LEVEL_OFFSET_0" label="Level 0">
+                    <description></description>
+                </item>
+                <item id="CMP_LEVEL_OFFSET_1" label="Level 1">
+                    <description></description>
+                </item>
+            </enum>
+            <enum id="cmp_hysteresis_t" label="Comparator hysteresis control Implements : cmp_hysteresis_t_Class" from="cmp_hysteresis_t">
+                <description></description>
+                <item id="CMP_LEVEL_HYS_0" label="Level 0">
+                    <description></description>
+                </item>
+                <item id="CMP_LEVEL_HYS_1" label="Level 1">
+                    <description></description>
+                </item>
+                <item id="CMP_LEVEL_HYS_2" label="Level 2">
+                    <description></description>
+                </item>
+                <item id="CMP_LEVEL_HYS_3" label="Level 3">
+                    <description></description>
+                </item>
+            </enum>
+            <enum id="cmp_fixed_port_t" label="Comparator Round-Robin fixed port Implements : cmp_fixed_port_t_Class" from="cmp_fixed_port_t">
+                <description></description>
+                <item id="CMP_PLUS_FIXED" label="Plus port">
+                    <description>The Plus port is fixed. Only the inputs to the Minus port are swept in each round.</description>
+                </item>
+                <item id="CMP_MINUS_FIXED" label="Minus port">
+                    <description>The Minus port is fixed. Only the inputs to the Plus port are swept in each round.</description>
+                </item>
+            </enum>
+            <enum id="cmp_output_trigger_t" label="Comparator output interrupt configuration Implements : cmp_output_trigger_t_Class" from="cmp_output_trigger_t">
+                <description></description>
+                <item id="CMP_NO_EVENT" label="No interrupt">
+                    <description>Comparator output interrupts are disabled OR no event occurred.</description>
+                </item>
+                <item id="CMP_FALLING_EDGE" label="Falling edge">
+                    <description>Comparator output interrupts will be generated only on falling edge OR only falling edge event occurred.</description>
+                </item>
+                <item id="CMP_RISING_EDGE" label="Rising edge">
+                    <description>Comparator output interrupts will be generated only on rising edge OR only rising edge event occurred.</description>
+                </item>
+                <item id="CMP_BOTH_EDGES" label="Both edges">
+                    <description>Comparator output interrupts will be generated on both edges OR both edges event occurred.</description>
+                </item>
+            </enum>
+            <enum id="cmp_mode_t" label="Comparator functional modes Implements : cmp_mode_t_Class" from="cmp_mode_t">
+                <description></description>
+                <item id="CMP_DISABLED" label="Disabled">
+                    <description></description>
+                </item>
+                <item id="CMP_CONTINUOUS" label="Continuous">
+                    <description></description>
+                </item>
+                <item id="CMP_SAMPLED_NONFILTRED_INT_CLK" label="Sampled nonfiltred with internal clock">
+                    <description></description>
+                </item>
+                <item id="CMP_SAMPLED_NONFILTRED_EXT_CLK" label="Sampled nonfiltred with external clock">
+                    <description></description>
+                </item>
+                <item id="CMP_SAMPLED_FILTRED_INT_CLK" label="Sampled and filtred with internal clock">
+                    <description></description>
+                </item>
+                <item id="CMP_SAMPLED_FILTRED_EXT_CLK" label="Sampled and filtred with external clock">
+                    <description></description>
+                </item>
+                <item id="CMP_WINDOWED" label="Windowed">
+                    <description></description>
+                </item>
+                <item id="CMP_WINDOWED_RESAMPLED" label="Windowed and resampled">
+                    <description></description>
+                </item>
+                <item id="CMP_WINDOWED_FILTRED" label="Windowed and filtered">
+                    <description></description>
+                </item>
+            </enum>
+            <struct id="cmp_comparator_t" label="Defines the block configuration" from="cmp_comparator_t">
+                <description>This structure is used to configure only comparator block module(filtering, sampling, power_mode etc.) Implements : cmp_comparator_t_Class</description>
+                <reference id="mode" label="Functional mode" type="cmp_mode_t">
+                    <description>Configuration structure which define: the comparator functional mode, sample period and sample count.</description>
+                </reference>
+                <bool id="dmaTriggerState" label="DMA enable" enable="$parent.mode.getValue() != `CMP_DISABLED`">
+                    <description>True if DMA transfer trigger from comparator is enable.</description>
+                </bool>
+                <reference id="outputInterruptTrigger" label="Interrupt source" type="cmp_output_trigger_t" enable="$parent.mode.getValue() != `CMP_DISABLED`">
+                    <description>CMP_NO_INTERRUPT comparator output would not trigger any interrupt. CMP_FALLING_EDGE comparator output would trigger an interrupt on falling edge. CMP_RISING_EDGE comparator output would trigger an interrupt on rising edge. CMP_BOTH_EDGES comparator output would trigger an interrupt on rising and falling edges.</description>
+                </reference>
+                <integer id="filterSamplePeriod" label="Filter sample period" type="uint8_t" enable="$parent.mode.getValue() != `CMP_DISABLED`">
+                    <description>Filter sample period.</description>
+                    <validation>
+                       <constraint when_expr="($parent.mode.getValue() == `CMP_SAMPLED_NONFILTRED_INT_CLK`) || ($parent.mode.getValue() == `CMP_WINDOWED_RESAMPLED`) || ($parent.mode.getValue() == `CMP_WINDOWED_FILTRED`)" cond_expr="($this.getValue() &gt;= 1)" level="error" description="Value is out of range. Value must be in range 1-255"/>
+                       <constraint when_expr="($parent.mode.getValue() == `CMP_SAMPLED_FILTRED_INT_CLK`)" cond_expr="($this.getValue() &gt;= 5)" level="error" description="Value is out of range. Value must be in range 5-255"/>
+                    </validation>
+                </integer>
+                <integer id="filterSampleCount" label="Filter sample count" type="uint8_t" max_expr="7" enable="$parent.mode.getValue() != `CMP_DISABLED`">
+                    <description>Number of sample count for filtering.</description>
+                    <validation>
+                       <constraint when_expr="($parent.mode.getValue() == `CMP_SAMPLED_NONFILTRED_INT_CLK`) || ($parent.mode.getValue() == `CMP_SAMPLED_NONFILTRED_EXT_CLK`) || ($parent.mode.getValue() == `CMP_WINDOWED_RESAMPLED`)" cond_expr="($this.getValue() == 1)" level="error" description="Value must be 1 in the current mode"/>
+                       <constraint when_expr="($parent.mode.getValue() == `CMP_SAMPLED_FILTRED_INT_CLK`) || ($parent.mode.getValue() == `CMP_SAMPLED_FILTRED_EXT_CLK`) || ($parent.mode.getValue() == `CMP_WINDOWED_FILTRED`)" cond_expr="($this.getValue() &gt;= 2)" level="error" description="Value is out of range. Value must be in range 2-7"/>
+                    </validation>
+                </integer>
+                <reference id="powerMode" label="Power mode" type="cmp_power_mode_t" enable="$parent.mode.getValue() != `CMP_DISABLED`">
+                    <description>CMP_LOW_SPEED if low speed mode is selected. CMP_HIGH_SPEED if high speed mode is selected</description>
+                </reference>
+                <reference id="inverterState" label="Inverter mode" type="cmp_inverter_t" enable="$parent.mode.getValue() != `CMP_DISABLED`">
+                    <description>CMP_NORMAL if does not invert the comparator output. CMP_INVERT if inverts the comparator output.</description>
+                </reference>
+                <reference id="pinState" label="Comparator output" type="cmp_output_enable_t" enable="$parent.mode.getValue() != `CMP_DISABLED`">
+                    <description>CMP_UNAVAILABLE if comparator output is not available to package pin. CMP_AVAILABLE if comparator output is available to package pin.</description>
+                </reference>
+                <reference id="outputSelect" label="Comparator output source" type="cmp_output_select_t" enable="$parent.mode.getValue() != `CMP_DISABLED`">
+                    <description>CMP_COUT if output signal is equal to COUT(filtered). CMP_COUTA if output signal is equal to COUTA(unfiltered).</description>
+                </reference>
+                <reference id="offsetLevel" label="Comparator offset level" type="cmp_offset_t" enable="$parent.mode.getValue() != `CMP_DISABLED`">
+                    <description>CMP_LEVEL_OFFSET_0 if hard block output has level 0 offset. CMP_LEVEL_OFFSET_1 if hard block output has level 1 offset.</description>
+                </reference>
+                <reference id="hysteresisLevel" label="Comparator hysteresis level" type="cmp_hysteresis_t" enable="$parent.mode.getValue() != `CMP_DISABLED`">
+                    <description>CMP_LEVEL_HYS_0 if hard block output has level 0 hysteresis. CMP_LEVEL_HYS_1 if hard block output has level 1 hysteresis. CMP_LEVEL_HYS_2 if hard block output has level 2 hysteresis. CMP_LEVEL_HYS_3 if hard block output has level 3 hysteresis.</description>
+                </reference>
+            </struct>
+            <struct id="cmp_anmux_t" label="Defines the analog mux" from="cmp_anmux_t">
+                <description>This structure is used to configure the analog multiplexor to select compared signals Implements : cmp_anmux_t_Class</description>
+                <reference id="positivePortMux" label="Positive port signal source" type="cmp_port_mux_t">
+                    <description>Select positive port signal. CMP_DAC if source is digital to analog converter. CMP_MUX if source is 8 ch MUX</description>
+                </reference>
+                <reference id="negativePortMux" label="Negative port signal source" type="cmp_port_mux_t">
+                    <description>Select negative port signal. CMP_DAC if source is digital to analog converter. CMP_MUX if source is 8 ch MUX</description>
+                </reference>
+                <reference id="positiveInputMux" label="Channel source for positive port" type="cmp_ch_number_t" enable="$parent.positivePortMux.getValue() == `CMP_MUX`">
+                    <description>Select which channel is selected for the plus mux.</description>
+                </reference>
+                <reference id="negativeInputMux" label="Channel source for negative port" type="cmp_ch_number_t" enable="$parent.negativePortMux.getValue() == `CMP_MUX`">
+                    <description>Select which channel is selected for the minus mux.</description>
+                </reference>
+            </struct>
+            <struct id="cmp_dac_t" label="Defines the DAC block" from="cmp_dac_t">
+                <description>This structure is used to configure the DAC block integrated in comparator module Implements : cmp_dac_t_Class</description>
+                <bool id="state" label="DAC enable">
+                    <description>True if DAC is enabled.</description>
+                </bool>
+                <reference id="voltageReferenceSource" label="Voltage reference source" type="cmp_voltage_reference_t" enable="($parent.state.getValue() == `true`)">
+                    <description>CMP_VIN1 if selected voltage reference is VIN1. CMP_VIN2 if selected voltage reference is VIN2.</description>
+                </reference>
+                <integer id="voltage" label="Digital value" type="uint8_t" enable="($parent.state.getValue() == `true`)">
+                    <description>The digital value which is converted to analog signal.</description>
+                </integer>
+            </struct>
+            <struct id="rr_channels_t" label="round_robin_channels" from="rr_channels_t">
+                <description>Channels used in round robin checker</description>
+                <bool id="rr_channel0" label="Channel 0">
+                    <description>Channel 0.</description>
+                </bool>
+                <bool id="rr_channel1" label="Channel 1">
+                    <description>Channel 1.</description>
+                </bool>
+                <bool id="rr_channel2" label="Channel 2">
+                    <description>Channel 2.</description>
+                </bool>
+                <bool id="rr_channel3" label="Channel 3">
+                    <description>Channel 3.</description>
+                </bool>
+                <bool id="rr_channel4" label="Channel 4">
+                    <description>Channel 4.</description>
+                </bool>
+                <bool id="rr_channel5" label="Channel 5">
+                    <description>Channel 5.</description>
+                </bool>
+                <bool id="rr_channel6" label="Channel 6">
+                    <description>Channel 6.</description>
+                </bool>
+                <bool id="rr_channel7" label="Channel 7">
+                    <description>Channel 7.</description>
+                </bool>
+            </struct>
+            <struct id="state_channels_t" label="Channels pre-state for round robin check" from="state_channels_t">
+                <description>Channels pre-state</description>
+                <bool id="state_channel0" label="Channel 0">
+                    <description>Channel 0.</description>
+                </bool>
+                <bool id="state_channel1" label="Channel 1">
+                    <description>Channel 1.</description>
+                </bool>
+                <bool id="state_channel2" label="Channel 2">
+                    <description>Channel 2.</description>
+                </bool>
+                <bool id="state_channel3" label="Channel 3">
+                    <description>Channel 3.</description>
+                </bool>
+                <bool id="state_channel4" label="Channel 4">
+                    <description>Channel 4.</description>
+                </bool>
+                <bool id="state_channel5" label="Channel 5">
+                    <description>Channel 5.</description>
+                </bool>
+                <bool id="state_channel6" label="Channel 6">
+                    <description>Channel 6.</description>
+                </bool>
+                <bool id="state_channel7" label="Channel 7">
+                    <description>Channel 7.</description>
+                </bool>
+            </struct>
+            <struct id="cmp_trigger_mode_t" label="Defines the trigger mode" from="cmp_trigger_mode_t">
+                <description>This structure is used to configure the trigger mode operation when MCU enters STOP modes Implements : cmp_trigger_mode_t_Class</description>
+                <bool id="roundRobinState" label="Round-robin enable">
+                    <description>True if Round-Robin is enabled.</description>
+                </bool>
+                <bool id="roundRobinInterruptState" label="Round-robin interrupt enable" enable="($parent.roundRobinState.getValue() == `true`)">
+                    <description>True if Round-Robin interrupt is enabled.</description>
+                </bool>
+                <reference id="fixedPort" label="Fixed port" type="cmp_fixed_port_t" enable="($parent.roundRobinState.getValue() == `true`)">
+                    <description>CMP_PLUS_FIXED if plus port is fixed. CMP_MINUS_FIXED if minus port is fixed.</description>
+                </reference>
+                <reference id="fixedChannel" label="Fixed channel" type="cmp_ch_number_t" enable="($parent.roundRobinState.getValue() == `true`)">
+                    <description>Select which channel would be assigned to the fixed port.</description>
+                </reference>
+                <integer id="samples" label="Number of sample clocks" type="uint8_t" enable="($parent.roundRobinState.getValue() == `true`)">
+                    <description>Select number of round-robin clock cycles for a given channel.</description>
+                </integer>
+                <integer id="initializationDelay" label="Initialization delay" type="uint8_t" enable="($parent.roundRobinState.getValue() == `true`)">
+                    <description>Select dac and comparator initialization delay(clock cycles).</description>
+                </integer>
+                <reference id="roundRobinChannelsState" label="Channels used in round robin checker" type="rr_channels_t" enable="($parent.roundRobinState.getValue() == `true`)">
+                    <description>One bite for each channel state. |||||| |CH7_state|CH6_state|.....|CH1_state|CH0_state| |------|------|--|------|------|</description>
+                </reference>
+                <reference id="programedState" label="Channels pre-state for round-robin check" type="state_channels_t" enable="($parent.roundRobinState.getValue() == `true`)">
+                    <description>Pre-programmed state for comparison result.</description>
+                </reference>
+            </struct>
+            <struct id="cmp_module_t" label="Defines the comparator module configuration" from="cmp_module_t">
+                <description>This structure is used to configure all components of comparator module Implements : cmp_module_t_Class</description>
+                <string id="name" label="Name">
+                    <description>Configuration name</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read-only">
+                    <description>Specifies how the configuration will be generated. Read-only structures are declared with const qualifier.</description>
+                </bool>
+                <reference id="Comparator" label="" type="cmp_comparator_t">
+                    <description></description>
+                </reference>
+                <reference id="MUX" label="" type="cmp_anmux_t">
+                    <description></description>
+                </reference>
+                <reference id="DAC" label="" type="cmp_dac_t">
+                    <description></description>
+                </reference>
+                <reference id="TriggerMode" label="" type="cmp_trigger_mode_t">
+                    <description></description>
+                </reference>
+            </struct>
+        </user_types>
+        <quick_selections>
+            <quick_selection id="cmp_default" label="Default Values" available="true">
+                <description>CMP Default Configuration</description>
+                <set id="cmpConfig.0.name">cmp_InitConfig0</set>
+                <set id="cmpConfig.0.readOnly">true</set>
+            </quick_selection>
+            <default>cmp_default</default>
+        </quick_selections>
+        <settings>
+            <array id="cmpConfig" label="User Configuration" type="cmp_module_t" config_set_id="cmp" component_id="cmp_config" available="true" options="ShowContentAs=MasterDetail" >
+                <description>CMP User Configuration Structure List</description>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> (`cmp_InitConfig` + x.getID())"/>
+                    <set_default id="readOnly" value_expr="x -> (`true`)"/>
+                </item_defaults>
+            </array>
+            <variable value="`../cmp/cmp_codegen.js`" id="codegen_file"></variable>
+            <variable value="`CMP_CodeGenerator`" id="codegen_class"></variable>
+        </settings>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+    </config_set>
+</component:config_component>

@@ -1,0 +1,1158 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="flexcan_config" label="flexcan_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+    <sw_comp_ref name="platform.driver.flexcan" version="1.0.0" />
+    <description>FlexCAN Configuration</description>
+    <mode id="general" label="General Mode" available="true">
+        <description>FlexCAN general mode</description>
+        <config_set_refs>
+            <config_set_ref>flexcan</config_set_ref>
+        </config_set_refs>
+        <master_peripheral exclusive="true">
+            <peripheral_type>CAN</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set id="flexcan" label="FlexCAN configuration set" options="ShowContentAs=Tabs" from_source="flexcan_driver.h">
+        <description>FlexCAN Driver</description>
+        <fragment_defs />
+        <code />
+        <validation />
+        <quick_selections>
+            <quick_selection id="dv_flexcan0" label="Default Values for FlexCAN0" available="getPeriphInstanceIndex($instance.getPeripheral()) == 0">
+                <description>FlexCAN configuration</description>
+                <set id="flexcan_state_name">flexcanState0</set>
+                <set id="flexcanCfg.name">flexcanInitConfig0</set>
+                <set id="flexcanCfg.flexcan_cfg_max_num_mb">16</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_propSeg">7</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg1">4</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg2">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_preDivider">5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_bitrate">500</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_propSeg">23</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg1">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg2">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_preDivider">2</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_bitrate">1000</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_num_enhanced_ext_id_filters">1</set>
+                <set id="flexcanCfg.flexcan_cfg_num_words_to_transfer">4</set>
+                <set id="flexcanPN.name">PNConfig0</set>
+                <set id="flexcanPN.flexcan_pn_config.payloadFilter.dlcHigh">1</set>
+                <set id="flexcanPN.flexcan_pn_config.numMatches">1</set>
+            </quick_selection>
+            <quick_selection id="dv_flexcan1" label="Default Values for FlexCAN1" available="getPeriphInstanceIndex($instance.getPeripheral()) == 1">
+                <description>FlexCAN configuration</description>
+                <set id="flexcan_state_name">flexcanState1</set>
+                <set id="flexcanCfg.name">flexcanInitConfig1</set>
+                <set id="flexcanCfg.flexcan_cfg_max_num_mb">16</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_propSeg">7</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg1">4</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg2">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_preDivider">5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_bitrate">500</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_propSeg">23</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg1">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg2">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_preDivider">2</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_bitrate">1000</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_num_enhanced_ext_id_filters">1</set>
+                <set id="flexcanCfg.flexcan_cfg_num_words_to_transfer">4</set>
+                <set id="flexcanPN.name">PNConfig1</set>
+                <set id="flexcanPN.flexcan_pn_config.payloadFilter.dlcHigh">1</set>
+                <set id="flexcanPN.flexcan_pn_config.numMatches">1</set>
+            </quick_selection>
+            <quick_selection id="dv_flexcan2" label="Default Values for FlexCAN2" available="getPeriphInstanceIndex($instance.getPeripheral()) == 2">
+                <description>FlexCAN configuration</description>
+                <set id="flexcan_state_name">flexcanState2</set>
+                <set id="flexcanCfg.name">flexcanInitConfig2</set>
+                <set id="flexcanCfg.flexcan_cfg_max_num_mb">16</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_propSeg">7</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg1">4</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg2">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_preDivider">5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_bitrate">500</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_propSeg">23</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg1">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg2">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_preDivider">2</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_bitrate">1000</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_num_enhanced_ext_id_filters">1</set>
+                <set id="flexcanCfg.flexcan_cfg_num_words_to_transfer">4</set>
+                <set id="flexcanPN.name">PNConfig2</set>
+                <set id="flexcanPN.flexcan_pn_config.payloadFilter.dlcHigh">1</set>
+                <set id="flexcanPN.flexcan_pn_config.numMatches">1</set>
+            </quick_selection>
+            <quick_selection id="dv_flexcan3" label="Default Values for FlexCAN3" available="getPeriphInstanceIndex($instance.getPeripheral()) == 3">
+                <description>FlexCAN configuration</description>
+                <set id="flexcan_state_name">flexcanState3</set>
+                <set id="flexcanCfg.name">flexcanInitConfig3</set>
+                <set id="flexcanCfg.flexcan_cfg_max_num_mb">16</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_propSeg">7</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg1">4</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg2">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_preDivider">5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_bitrate">500</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_propSeg">23</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg1">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg2">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_preDivider">2</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_bitrate">1000</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_num_enhanced_ext_id_filters">1</set>
+                <set id="flexcanCfg.flexcan_cfg_num_words_to_transfer">4</set>
+                <set id="flexcanPN.name">PNConfig3</set>
+                <set id="flexcanPN.flexcan_pn_config.payloadFilter.dlcHigh">1</set>
+                <set id="flexcanPN.flexcan_pn_config.numMatches">1</set>
+            </quick_selection>
+            <quick_selection id="dv_flexcan4" label="Default Values for FlexCAN4" available="getPeriphInstanceIndex($instance.getPeripheral()) == 4">
+                <description>FlexCAN configuration</description>
+                <set id="flexcan_state_name">flexcanState4</set>
+                <set id="flexcanCfg.name">flexcanInitConfig4</set>
+                <set id="flexcanCfg.flexcan_cfg_max_num_mb">16</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_propSeg">7</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg1">4</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg2">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_preDivider">5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_bitrate">500</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_propSeg">23</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg1">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg2">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_preDivider">2</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_bitrate">1000</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_num_enhanced_ext_id_filters">1</set>
+                <set id="flexcanCfg.flexcan_cfg_num_words_to_transfer">4</set>
+                <set id="flexcanPN.name">PNConfig4</set>
+                <set id="flexcanPN.flexcan_pn_config.payloadFilter.dlcHigh">1</set>
+                <set id="flexcanPN.flexcan_pn_config.numMatches">1</set>
+            </quick_selection>
+            <quick_selection id="dv_flexcan5" label="Default Values for FlexCAN5" available="getPeriphInstanceIndex($instance.getPeripheral()) == 5">
+                <description>FlexCAN configuration</description>
+                <set id="flexcan_state_name">flexcanState5</set>
+                <set id="flexcanCfg.name">flexcanInitConfig5</set>
+                <set id="flexcanCfg.flexcan_cfg_max_num_mb">16</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_propSeg">7</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg1">4</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg2">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_preDivider">5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_bitrate">500</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_propSeg">23</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg1">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg2">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_preDivider">2</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_bitrate">1000</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_num_enhanced_ext_id_filters">1</set>
+                <set id="flexcanCfg.flexcan_cfg_num_words_to_transfer">4</set>
+                <set id="flexcanPN.name">PNConfig5</set>
+                <set id="flexcanPN.flexcan_pn_config.payloadFilter.dlcHigh">1</set>
+                <set id="flexcanPN.flexcan_pn_config.numMatches">1</set>
+            </quick_selection>
+            <quick_selection id="dv_flexcan6" label="Default Values for FlexCAN6" available="getPeriphInstanceIndex($instance.getPeripheral()) == 6">
+                <description>FlexCAN configuration</description>
+                <set id="flexcan_state_name">flexcanState6</set>
+                <set id="flexcanCfg.name">flexcanInitConfig6</set>
+                <set id="flexcanCfg.flexcan_cfg_max_num_mb">16</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_propSeg">7</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg1">4</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg2">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_preDivider">5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_bitrate">500</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_propSeg">23</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg1">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg2">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_preDivider">2</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_bitrate">1000</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_num_enhanced_ext_id_filters">1</set>
+                <set id="flexcanCfg.flexcan_cfg_num_words_to_transfer">4</set>
+                <set id="flexcanPN.name">PNConfig6</set>
+                <set id="flexcanPN.flexcan_pn_config.payloadFilter.dlcHigh">1</set>
+                <set id="flexcanPN.flexcan_pn_config.numMatches">1</set>
+            </quick_selection>
+            <quick_selection id="dv_flexcan7" label="Default Values for FlexCAN7" available="getPeriphInstanceIndex($instance.getPeripheral()) == 7">
+                <description>FlexCAN configuration</description>
+                <set id="flexcan_state_name">flexcanState7</set>
+                <set id="flexcanCfg.name">flexcanInitConfig7</set>
+                <set id="flexcanCfg.flexcan_cfg_max_num_mb">16</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_propSeg">7</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg1">4</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_phaseSeg2">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_preDivider">5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_bitrate">500</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate.input_nominal_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_propSeg">23</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg1">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_phaseSeg2">3</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_preDivider">2</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments1.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.flexcan_cfg_rJumpwidth">1</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_bitrate">1000</set>
+                <set id="flexcanCfg.flexcan_cfg_time_segments2.flexcan_cfg_bitrate_cbt.input_data_sampling">87.5</set>
+                <set id="flexcanCfg.flexcan_cfg_num_enhanced_ext_id_filters">1</set>
+                <set id="flexcanCfg.flexcan_cfg_num_words_to_transfer">4</set>
+                <set id="flexcanPN.name">PNConfig7</set>
+                <set id="flexcanPN.flexcan_pn_config.payloadFilter.dlcHigh">1</set>
+                <set id="flexcanPN.flexcan_pn_config.numMatches">1</set>
+            </quick_selection>
+            <default>dv_flexcan</default>
+        </quick_selections>
+        <generated_types>
+            <struct id="flexcan_state_t" label="Internal driver state information" from="FlexCANState">
+                <description>The contents of this structure are internal to the driver and should not be modified by users. Also, contents of the structure are subject to change in future releases. Implements : flexcan_state_t_Class</description>
+                <reference id="mbs" label="Array containing information related to each MB" type="flexcan_mb_handle_t">
+                    <description>Array containing information related to each MB</description>
+                </reference>
+                <fixme id="callback" label="IRQ handler callback function" type="void(*">
+                    <description>IRQ handler callback function.</description>
+                </fixme>
+                <fixme id="callbackParam" label="Parameter used to pass user data when invoking the callback function" type="void *">
+                    <description>Parameter used to pass user data when invoking the callback function.</description>
+                </fixme>
+                <integer id="rxFifoDMAChannel" label="DMA channel number used for transfers" type="uint8_t">
+                    <description>DMA channel number used for transfers.</description>
+                </integer>
+                <reference id="transferType" label="Type of RxFIFO transfer" type="flexcan_rxfifo_transfer_type_t">
+                    <description>Type of RxFIFO transfer.</description>
+                </reference>
+            </struct>
+            <fixme id="flexcan_callback_t" label="FlexCAN Driver callback function type Implements : flexcan_callback_t_Class" type="void(*" />
+            <enum id="flexcan_rxfifo_transfer_type_t" label="The type of the RxFIFO transfer (interrupts/DMA). Implements : flexcan_rxfifo_transfer_type_t_Class" from="flexcan_rxfifo_transfer_type_t">
+                <item id="FLEXCAN_RXFIFO_USING_INTERRUPTS" label="Use interrupts for RxFIFO" />
+                <item id="FLEXCAN_RXFIFO_USING_DMA" label="Use DMA for RxFIFO" />
+            </enum>
+            <enum id="flexcan_event_type_t" label="The type of the event which occurred when the callback was invoked" from="flexcan_event_type_t">
+                <item id="FLEXCAN_EVENT_RX_COMPLETE" label="A frame was received in the configured Rx MB" />
+                <item id="FLEXCAN_EVENT_RXFIFO_COMPLETE" label="A frame was received in the RxFIFO" />
+                <item id="FLEXCAN_EVENT_TX_COMPLETE" label="A frame was sent from the configured Tx MB" />
+                <item id="FLEXCAN_EVENT_WAKEUP_TIMEOUT" label="An wake up event occurred due to timeout" />
+                <item id="FLEXCAN_EVENT_WAKEUP_MATCH" label="An wake up event occurred due to matching" />
+                <item id="FLEXCAN_EVENT_SELF_WAKEUP" label="A self wake up event occurred" />
+            </enum>
+            <enum id="flexcan_mb_state_t" label="The state of a given MB (idle/Rx busy/Tx busy). Implements : flexcan_mb_state_t_Class" from="flexcan_mb_state_t">
+                <item id="FLEXCAN_MB_IDLE" label="The MB is not used by any transfer" />
+                <item id="FLEXCAN_MB_RX_BUSY" label="The MB is used for a reception" />
+                <item id="FLEXCAN_MB_TX_BUSY" label="The MB is used for a transmission" />
+            </enum>
+            <enum id="flexcan_msgbuff_id_type_t" label="FlexCAN Message Buffer ID type Implements : flexcan_msgbuff_id_type_t_Class" from="flexcan_msgbuff_id_type_t">
+                <item id="FLEXCAN_MSG_ID_STD" label="Standard ID" />
+                <item id="FLEXCAN_MSG_ID_EXT" label="Extended ID" />
+            </enum>
+            <enum id="can_clk_source_t" label="CAN PE clock sources Implements : can_clk_source_t_Class" from="can_clk_source_t">
+                <item id="FLEXCAN_CLK_SOURCE_OSC" label="Oscillator clock" />
+                <item id="FLEXCAN_CLK_SOURCE_PERIPH" label="Peripheral clock" available="featureDefined(`FEATURE_CAN_HAS_PE_CLKSRC_SELECT`)" />
+            </enum>
+            <enum id="flexcan_rx_fifo_id_filter_num_t" label="FlexCAN Rx FIFO filters number Implements : flexcan_rx_fifo_id_filter_num_t_Class" from="flexcan_rx_fifo_id_filter_num_t">
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_8" label="8 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_16" label="16 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_24" label="24 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_32" label="32 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_40" label="40 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_48" label="48 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_56" label="56 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_64" label="64 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_72" label="72 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_80" label="80 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_88" label="88 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_96" label="96 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_104" label="104 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_112" label="112 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_120" label="120 Rx FIFO Filters" />
+                <item id="FLEXCAN_RX_FIFO_ID_FILTERS_128" label="128 Rx FIFO Filters" />
+            </enum>
+            <enum id="flexcan_rx_mask_type_t" label="FlexCAN Rx mask type" from="flexcan_rx_mask_type_t">
+                <item id="FLEXCAN_RX_MASK_GLOBAL" label="Rx global mask" />
+                <item id="FLEXCAN_RX_MASK_INDIVIDUAL" label="Rx individual mask" />
+            </enum>
+            <enum id="flexcan_rx_fifo_id_element_format_t" label="ID formats for Rx FIFO Implements : flexcan_rx_fifo_id_element_format_t_Class" from="flexcan_rx_fifo_id_element_format_t">
+                <item id="FLEXCAN_RX_FIFO_ID_FORMAT_A" label="One full ID (standard and extended) per ID Filter Table element" />
+                <item id="FLEXCAN_RX_FIFO_ID_FORMAT_B" label="Two full standard IDs or two partial 14-bit (standard and extended) IDs per ID Filter Table element" />
+                <item id="FLEXCAN_RX_FIFO_ID_FORMAT_C" label="Four partial 8-bit Standard IDs per ID Filter Table element" />
+                <item id="FLEXCAN_RX_FIFO_ID_FORMAT_D" label="All frames rejected" />
+            </enum>
+            <enum id="flexcan_operation_modes_t" label="FlexCAN operation modes Implements : flexcan_operation_modes_t_Class" from="flexcan_operation_modes_t">
+                <item id="FLEXCAN_NORMAL_MODE" label="Normal mode or user mode" />
+                <item id="FLEXCAN_LISTEN_ONLY_MODE" label="Listen-only mode" />
+                <item id="FLEXCAN_LOOPBACK_MODE" label="Loop-back mode" />
+                <item id="FLEXCAN_FREEZE_MODE" label="Freeze mode" />
+                <item id="FLEXCAN_DISABLE_MODE" label="Module disable mode" />
+            </enum>
+            <enum id="flexcan_fd_payload_size_t" label="FlexCAN payload sizes Implements : flexcan_fd_payload_size_t_Class" from="flexcan_fd_payload_size_t">
+                <item id="FLEXCAN_PAYLOAD_SIZE_8" label="FlexCAN message buffer payload size in bytes" />
+                <item id="FLEXCAN_PAYLOAD_SIZE_16" label="FlexCAN message buffer payload size in bytes" available="$configSet.instGet.getValue().get(0)"/>
+                <item id="FLEXCAN_PAYLOAD_SIZE_32" label="FlexCAN message buffer payload size in bytes" available="$configSet.instGet.getValue().get(0)"/>
+                <item id="FLEXCAN_PAYLOAD_SIZE_64" label="FlexCAN message buffer payload size in bytes" available="$configSet.instGet.getValue().get(0)"/>
+            </enum>
+            <enum id="flexcan_pn_filter_combination_t" label="Pretended Networking filtering combinations" from="flexcan_pn_filter_combination_t">
+                <item id="FLEXCAN_FILTER_ID" label="Message ID filtering only" />
+                <item id="FLEXCAN_FILTER_ID_PAYLOAD" label="Message ID and payload filtering" />
+                <item id="FLEXCAN_FILTER_ID_NTIMES" label="Message ID filtering occurring a specified number of times" />
+                <item id="FLEXCAN_FILTER_ID_PAYLOAD_NTIMES" label="Message ID and payload filtering occurring a specified number of times" />
+            </enum>
+            <enum id="flexcan_pn_filter_selection_t" label="Pretended Networking matching schemes" from="flexcan_pn_filter_selection_t">
+                <item id="FLEXCAN_FILTER_MATCH_EXACT" label="Match an exact target value" />
+                <item id="FLEXCAN_FILTER_MATCH_GEQ" label="Match greater than or equal to a specified target value" />
+                <item id="FLEXCAN_FILTER_MATCH_LEQ" label="Match less than or equal to a specified target value" />
+                <item id="FLEXCAN_FILTER_MATCH_RANGE" label="Match inside a range, greater than or equal to a specified lower limit and smaller than or equal to a specified upper limit" />
+            </enum>
+            <enum id="flexcan_time_stamp_config_t" label="Free Running Counter Time Stamp Types" from="flexcan_time_stamp_config_t" available="featureDefined(`FEATURE_CAN_HAS_ENHANCED_RX_FIFO`)">
+                <item id="FLEXCAN_CAN_CLK_AND_SECOND_BIT_OF_ID" label="Captured time base is CAN bit clock and capture point is second bit of ID field" />
+                <item id="FLEXCAN_ONCHIP_CLK_AND_SECOND_BIT_OF_ID" label="Captured time base is on-chip timer clock and capture point is second bit of ID field" />
+                <item id="FLEXCAN_LOWER_BITS_AND_END_OF_FRAME" label="Captured time base is lower bits of HR on-chip timer and capture point is the end of the CAN frame" />
+                <item id="FLEXCAN_UPPER_BITS_AND_END_OF_FRAME" label="Captured time base is upper bits of HR on-chip timer and capture point is the end of the CAN frame" />
+                <item id="FLEXCAN_LOWER_BITS_AND_START_OF_FRAME" label="Captured time base is lower bits of HR on-chip timer and capture point is the start of the CAN frame" />
+                <item id="FLEXCAN_UPPER_BITS_AND_START_OF_FRAME" label="Captured time base is upper bits of HR on-chip timer and capture point is the start of the CAN frame" />
+                <item id="FLEXCAN_LOWER_BITS_AND_RES_BIT" label="Captured time base is lower bits of HR on-chip timer and capture point is the start of the classical CAN frame or res bit for CAN FD frame" />
+                <item id="FLEXCAN_UPPER_BITS_AND_RES_BIT" label="Captured time base is upper bits of HR on-chip timer and capture point is the start of the classical CAN frame or res bit for CAN FD frame" />
+            </enum>
+            <enum id="flexcan_enhanced_filter_type_t" label="FlexCAN Enhanced Rx FIFO Filter Types" from="flexcan_enhanced_filter_type_t" available="featureDefined(`FEATURE_CAN_HAS_ENHANCED_RX_FIFO`)">
+                <item id="FLEXCAN_ENHANCED_RX_FIFO_ONE_ID_FILTER" label="Filter element with filter + mask scheme" />
+                <item id="FLEXCAN_ENHANCED_RX_FIFO_RANGE_ID_FILTER" label="Filter element with range scheme" />
+                <item id="FLEXCAN_ENHANCED_RX_FIFO_TWO_ID_FILTER" label="Filter element with 2-filter scheme" />
+            </enum>
+            <struct id="flexcan_msgbuff_t" label="FlexCAN message buffer structure Implements : flexcan_msgbuff_t_Class" from="flexcan_msgbuff_t">
+                <integer id="cs" label="Code and Status" type="uint32_t">
+                    <description>Code and Status</description>
+                </integer>
+                <integer id="msgId" label="Message Buffer ID" type="uint32_t">
+                    <description>Message Buffer ID</description>
+                </integer>
+                <integer id="data" label="Data bytes of the FlexCAN message" type="uint8_t">
+                    <description>Data bytes of the FlexCAN message</description>
+                </integer>
+                <integer id="dataLen" label="Length of data in bytes" type="uint8_t">
+                    <description>Length of data in bytes</description>
+                </integer>
+            </struct>
+            <struct id="flexcan_mb_handle_t" label="Information needed for internal handling of a given MB" from="flexcan_mb_handle_t">
+                <fixme id="mb_message" label="The FlexCAN MB structure" type="flexcan_msgbuff_t *">
+                    <description>The FlexCAN MB structure</description>
+                </fixme>
+                <fixme id="mbSema" label="Semaphore used for signaling completion of a blocking transfer" type="semaphore_t">
+                    <description>Semaphore used for signaling completion of a blocking transfer</description>
+                </fixme>
+                <reference id="state" label="The state of the current MB (idle/Rx busy/Tx busy)" type="flexcan_mb_state_t">
+                    <description>The state of the current MB (idle/Rx busy/Tx busy)</description>
+                </reference>
+                <bool id="isBlocking" label="True if the transfer is blocking">
+                    <description>True if the transfer is blocking</description>
+                </bool>
+                <bool id="isRemote" label="True if the frame is a remote frame">
+                    <description>True if the frame is a remote frame</description>
+                </bool>
+            </struct>
+            <struct id="flexcan_data_info_t" label="FlexCAN data info from user Implements : flexcan_data_info_t_Class" from="flexcan_data_info_t">
+                <reference id="msg_id_type" label="Type of message ID (standard or extended)" type="flexcan_msgbuff_id_type_t">
+                    <description>Type of message ID (standard or extended)</description>
+                </reference>
+                <integer id="data_length" label="Length of Data in Bytes" type="uint32_t">
+                    <description>Length of Data in Bytes</description>
+                </integer>
+                <bool id="fd_enable" label="Enable or disable FD">
+                    <description>Enable or disable FD</description>
+                </bool>
+                <integer id="fd_padding" label="Set a value for padding" type="uint8_t">
+                    <description>Set a value for padding. It will be used when the data length code (DLC) specifies a bigger payload size than data_length to fill the MB</description>
+                </integer>
+                <bool id="enable_brs" label="Enable bit rate switch inside a CAN FD format frame">
+                    <description>Enable bit rate switch inside a CAN FD format frame</description>
+                </bool>
+                <bool id="is_remote" label="Specifies if the frame is standard or remote">
+                    <description>Specifies if the frame is standard or remote</description>
+                </bool>
+            </struct>
+            <struct id="flexcan_id_table_t" label="FlexCAN Rx FIFO ID filter table structure Implements : flexcan_id_table_t_Class" from="flexcan_id_table_t">
+                <bool id="isRemoteFrame" label="Remote frame">
+                    <description>Remote frame</description>
+                </bool>
+                <bool id="isExtendedFrame" label="Extended frame">
+                    <description>Extended frame</description>
+                </bool>
+                <fixme id="idFilter" label="Rx FIFO ID filter elements" type="uint32_t *">
+                    <description>Rx FIFO ID filter elements</description>
+                </fixme>
+            </struct>
+            <struct id="flexcan_time_segment_t" label="FlexCAN bitrate related structures Implements : flexcan_time_segment_t_Class" from="flexcan_time_segment_t">
+                <integer id="propSeg" label="Propagation segment" type="uint32_t">
+                    <description>Propagation segment</description>
+                </integer>
+                <integer id="phaseSeg1" label="Phase segment 1" type="uint32_t">
+                    <description>Phase segment 1</description>
+                </integer>
+                <integer id="phaseSeg2" label="Phase segment 2" type="uint32_t">
+                    <description>Phase segment 2</description>
+                </integer>
+                <integer id="preDivider" label="Clock prescaler division factor" type="uint32_t">
+                    <description>Clock prescaler division factor</description>
+                </integer>
+                <integer id="rJumpwidth" label="Resync jump width" type="uint32_t">
+                    <description>Resync jump width</description>
+                </integer>
+            </struct>
+            <enum id="flexcan_clk_source_t" label="" from="flexcan_clk_source_t" from_source="S32K144_features.h">
+                <item id="CAN_CLK_SOURCE_OSC" label="Clock divider 2 for System OSC" />
+                <item id="CAN_CLK_SOURCE_PERIPH" label="Sys clock" />
+            </enum>
+            <struct id="flexcan_user_config_t" label="FlexCAN configuration" from="flexcan_user_config_t">
+                <integer id="max_num_mb" label="The maximum number of Message Buffers" type="uint32_t">
+                    <description>The maximum number of Message Buffers</description>
+                </integer>
+                <reference id="num_id_filters" label="The number of RX FIFO ID filters needed" type="flexcan_rx_fifo_id_filter_num_t">
+                    <description>The number of RX FIFO ID filters needed</description>
+                </reference>
+                <bool id="is_rx_fifo_needed" label="1 if needed; 0 if not">
+                    <description>1 if needed; 0 if not. This controls whether the Rx FIFO feature is enabled or not.</description>
+                </bool>
+                <integer id="num_enhanced_std_id_filters" label="The number of enhanced ID filter elements" type="uint32_t" available="featureDefined(`FEATURE_CAN_HAS_ENHANCED_RX_FIFO`)">
+                    <description>The number of enhanced ID filter elements</description>
+                </integer>
+                <integer id="num_enhanced_ext_id_filters" label="The number of extended ID filter elements" type="uint32_t" available="featureDefined(`FEATURE_CAN_HAS_ENHANCED_RX_FIFO`)">
+                    <description>The number of extended ID filter elements</description>
+                </integer>
+                <integer id="num_enhanced_watermark" label="The number of enhanced Rx FIFO watermarks" type="uint32_t" available="featureDefined(`FEATURE_CAN_HAS_ENHANCED_RX_FIFO`)">
+                    <description>The number of enhanced Rx FIFO watermark</description>
+                </integer>
+                <bool id="is_enhanced_rx_fifo_needed" label="Enable/Disable the Enhanced Rx FIFO feature" available="featureDefined(`FEATURE_CAN_HAS_ENHANCED_RX_FIFO`)">
+                    <description>Enable/Disable the Enhanced Rx FIFO feature</description>
+                </bool>
+                <reference id="flexcanMode" label="User configurable FlexCAN operation modes" type="flexcan_operation_modes_t">
+                    <description>User configurable FlexCAN operation modes.</description>
+                </reference>
+                <reference id="payload" label="The payload size of the mailboxes specified in bytes" type="flexcan_fd_payload_size_t">
+                    <description>The payload size of the mailboxes specified in bytes.</description>
+                </reference>
+                <bool id="fd_enable" label="Enable/Disable the Flexible Data Rate feature">
+                    <description>Enable/Disable the Flexible Data Rate feature.</description>
+                </bool>
+                <reference id="pe_clock" label="The clock source of the CAN Protocol Engine (PE)" type="flexcan_clk_source_t">
+                    <description>The clock source of the CAN Protocol Engine (PE).</description>
+                </reference>
+                <reference id="bitrate" label="The bitrate used for standard frames or for the arbitration phase of FD frames" type="flexcan_time_segment_t">
+                    <description>The bitrate used for standard frames or for the arbitration phase of FD frames.</description>
+                </reference>
+                <reference id="bitrate_cbt" label="The bitrate used for the data phase of FD frames" type="flexcan_time_segment_t">
+                    <description>The bitrate used for the data phase of FD frames.</description>
+                </reference>
+                <reference id="transfer_type" label="Specifies if the Rx FIFO uses interrupts or DMA" type="flexcan_rxfifo_transfer_type_t">
+                    <description>Specifies if the Rx FIFO uses interrupts or DMA.</description>
+                </reference>
+                <integer id="rxFifoDMAChannel" label="Specifies the DMA channel number to be used for DMA transfers" type="uint8_t">
+                    <description>Specifies the DMA channel number to be used for DMA transfers.</description>
+                </integer>
+                <integer id="num_words_to_transfer" label="The number of words to transfer for each Enhanced Rx FIFO data element" type="uint32_t" available="featureDefined(`FEATURE_CAN_HAS_ENHANCED_RX_FIFO`)">
+                    <description>The number of words to transfer for each Enhanced Rx FIFO data element</description>
+                </integer>
+            </struct>
+            <struct id="flexcan_pn_id_filter_t" label="Pretended Networking ID filter" from="flexcan_pn_id_filter_t">
+                <bool id="extendedId" label="Specifies if the ID is standard or extended">
+                    <description>Specifies if the ID is standard or extended.</description>
+                </bool>
+                <bool id="remoteFrame" label="Specifies if the frame is standard or remote">
+                    <description>Specifies if the frame is standard or remote.</description>
+                </bool>
+                <integer id="id" label="Specifies the ID value" type="uint32_t">
+                    <description>Specifies the ID value.</description>
+                </integer>
+            </struct>
+            <struct id="flexcan_pn_payload_filter_t" label="Pretended Networking payload filter" from="flexcan_pn_payload_filter_t">
+                <integer id="dlcLow" label="Specifies the lower limit of the payload size" type="uint8_t">
+                    <description>Specifies the lower limit of the payload size.</description>
+                </integer>
+                <integer id="dlcHigh" label="Specifies the upper limit of the payload size" type="uint8_t">
+                    <description>Specifies the upper limit of the payload size.</description>
+                </integer>
+                <integer id="payload1" label="Specifies the payload to be matched (for MATCH_EXACT), the lower limit (for MATCH_GEQ and MATCH_RANGE) or the upper limit (for MATCH_LEQ)" type="uint8_t">
+                    <description>Specifies the payload to be matched (for MATCH_EXACT), the lower limit (for MATCH_GEQ and MATCH_RANGE) or the upper limit (for MATCH_LEQ).</description>
+                </integer>
+                <integer id="payload2" label="Specifies the mask (for MATCH_EXACT) or the upper limit (for MATCH_RANGE)" type="uint8_t">
+                    <description>Specifies the mask (for MATCH_EXACT) or the upper limit (for MATCH_RANGE).</description>
+                </integer>
+            </struct>
+            <struct id="flexcan_pn_config_t" label="Pretended Networking configuration" from="flexcan_pn_config_t">
+                <bool id="readonly" label="Read-only">
+                    <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+                </bool>
+                <bool id="wakeUpTimeout" label="Timeout">
+                    <description>Specifies if an wake up event is triggered on timeout.</description>
+                </bool>
+                <bool id="wakeUpMatch" label="Match">
+                    <description>Specifies if an wake up event is triggered on match.</description>
+                </bool>
+                <integer id="numMatches" label="Needed Matches" type="uint16_t">
+                    <description>The number of matches needed before generating an wake up event.</description>
+                </integer>
+                <integer id="matchTimeout" label="Timeout Value" type="uint16_t">
+                    <description>Defines a timeout value that generates an wake up event if wakeUpTimeout is true.</description>
+                </integer>
+                <reference id="filterComb" label="Defines the filtering scheme used" type="flexcan_pn_filter_combination_t">
+                    <description>Defines the filtering scheme used.</description>
+                </reference>
+                <reference id="idFilter1" label="The configuration of the first ID filter (match exact / lower limit / upper limit)" type="flexcan_pn_id_filter_t">
+                    <description>The configuration of the first ID filter (match exact / lower limit / upper limit).</description>
+                </reference>
+                <reference id="idFilter2" label="The configuration of the second ID filter (mask / upper limit)" type="flexcan_pn_id_filter_t">
+                    <description>The configuration of the second ID filter (mask / upper limit).</description>
+                </reference>
+                <reference id="idFilterType" label="Defines the ID filtering scheme" type="flexcan_pn_filter_selection_t">
+                    <description>Defines the ID filtering scheme.</description>
+                </reference>
+                <reference id="payloadFilterType" label="Defines the payload filtering scheme" type="flexcan_pn_filter_selection_t">
+                    <description>Defines the payload filtering scheme.</description>
+                </reference>
+                <reference id="payloadFilter" label="The configuration of the payload filter" type="flexcan_pn_payload_filter_t">
+                    <description>The configuration of the payload filter.</description>
+                </reference>
+            </struct>
+            <struct id="flexcan_enhanced_id_table_t" label="Enhanced Rx FIFO ID filter table structure implements" from="flexcan_enhanced_id_table_t" available="featureDefined(`FEATURE_CAN_HAS_ENHANCED_RX_FIFO`)">
+                <reference id="filterType" label="Enhanced Rx FIFO filter type" type="flexcan_enhanced_filter_type_t">
+                    <description>Configurable Enhanced Rx FIFO filter type.</description>
+                </reference>
+                <bool id="isExtendedFrame" label="Specifies if the frame is standard or extended">
+                    <description>Specifies if the frame is standard or extended.</description>
+                </bool>
+                <bool id="rtr2" label="Specifies rtr2 if the frame is standard or remote">
+                    <description>Specifies rtr2 if the frame is standard or remote.</description>
+                </bool>
+                <bool id="rtr1" label="Specifies rtr1 if the frame is standard or remote">
+                    <description>Specifies rtr1 if the frame is standard or remote.</description>
+                </bool>
+                <integer id="id2" label="Specifies the ID2 value" type="uint32_t">
+                    <description>Specifies the ID2 value.</description>
+                </integer>
+                <integer id="id1" label="Specifies the ID1 value" type="uint32_t">
+                    <description>Specifies the ID1 value.</description>
+                </integer>
+            </struct>
+        </generated_types>
+        <settings>
+            <reference id="flexcanCfg" label="FlexCAN Configuration" type="flexcan_user_config" config_set_id="flexcan" component_id="flexcan_config" available="true">
+                <description>FlexCAN configuration</description>
+            </reference>
+            <reference id="flexcanPN" lable="Pretended Networking Config" type="flexcan_pn_structure" available="featureDefined(`FEATURE_CAN_HAS_PRETENDED_NETWORKING`)">
+                <description>FlexCAN Pretended Network configuration</description>
+            </reference>
+            <string id="flexcan_state_name" label="Driver State Structure Name">
+                <description>Driver state structure name.</description>
+                <validation>
+                    <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="State structure name must be a valid C identifier!" />
+                </validation>
+            </string>
+            <variable value="$configSet.execScript(`../flexcan/platforms.js`)" id="instGet"></variable>
+            <variable value="$configSet.execScript(`../flexcan/bitrateCalc.js`)" id="bitrateCalc"></variable>
+            <variable value="`../flexcan/flexcan_codegen.js`" id="codegen_file"></variable>
+            <variable value="`FLEXCANCodeGen`" id="codegen_class"></variable>
+            <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+            <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+        </settings>
+        <user_types>
+            <enum id="flexcan_rxfifo_transfer_type" label="Rx FIFO Transfer Type" from="flexcan_rxfifo_transfer_type">
+                <item id="FLEXCAN_RXFIFO_USING_INTERRUPTS" label="Using interrupts" />
+                <item id="FLEXCAN_RXFIFO_USING_DMA" label="Using DMA" />
+            </enum>
+            <enum id="flexcan_fd_payload_size" label="Payload Size" from="flexcan_fd_payload_size">
+                <item id="FLEXCAN_PAYLOAD_SIZE_8" label="8" />
+                <item id="FLEXCAN_PAYLOAD_SIZE_16" label="16" />
+                <item id="FLEXCAN_PAYLOAD_SIZE_32" label="32" />
+                <item id="FLEXCAN_PAYLOAD_SIZE_64" label="64" />
+            </enum>
+            <enum id="flexcan_operation_modes" label="Operation Mode" from="flexcan_operation_modes">
+                <item id="FLEXCAN_NORMAL_MODE" label="Normal" />
+                <item id="FLEXCAN_LISTEN_ONLY_MODE" label="Listen-only" />
+                <item id="FLEXCAN_LOOPBACK_MODE" label="Loop-back" />
+                <item id="FLEXCAN_FREEZE_MODE" label="Freeze" />
+                <item id="FLEXCAN_DISABLE_MODE" label="Disabled" />
+            </enum>
+            <enum id="flexcan_clk_source" label="PE Clock Source" from="flexcan_clk_source">
+                <item id="FLEXCAN_CLK_SOURCE_OSC" label="Oscillator clock" />
+                <item id="FLEXCAN_CLK_SOURCE_PERIPH" label="Peripheral clock" />
+            </enum>
+            <enum id="flexcan_rxfifo_dma_channel" label="Rx FIFO DMA Channel" from="flexcan_rxfifo_dma_channel">
+                <item id="0U" label="Channel 0" />
+                <item id="1U" label="Channel 1" />
+                <item id="2U" label="Channel 2" />
+                <item id="3U" label="Channel 3" />
+                <item id="4U" label="Channel 4" />
+                <item id="5U" label="Channel 5" />
+                <item id="6U" label="Channel 6" />
+                <item id="7U" label="Channel 7" />
+                <item id="8U" label="Channel 8" />
+                <item id="9U" label="Channel 9" />
+                <item id="10U" label="Channel 10" />
+                <item id="11U" label="Channel 11" />
+                <item id="12U" label="Channel 12" />
+                <item id="13U" label="Channel 13" />
+                <item id="14U" label="Channel 14" />
+                <item id="15U" label="Channel 15" />
+                <item id="16U" label="Channel 16" />
+                <item id="17U" label="Channel 17" />
+                <item id="18U" label="Channel 18" />
+                <item id="18U" label="Channel 19" />
+                <item id="20U" label="Channel 20" />
+                <item id="21U" label="Channel 21" />
+                <item id="22U" label="Channel 22" />
+                <item id="23U" label="Channel 23" />
+                <item id="24U" label="Channel 24" />
+                <item id="25U" label="Channel 25" />
+                <item id="26U" label="Channel 26" />
+                <item id="27U" label="Channel 27" />
+                <item id="28U" label="Channel 28" />
+                <item id="29U" label="Channel 29" />
+                <item id="30U" label="Channel 30" />
+                <item id="31U" label="Channel 31" />
+            </enum>
+            <enum id="flexcan_time_stamp_config" label="Free Running Counter Time Stamp Types" from="flexcan_time_stamp_config" available="featureDefined(`FEATURE_CAN_HAS_ENHANCED_RX_FIFO`)">
+                <item id="FLEXCAN_CAN_CLK_AND_SECOND_BIT_OF_ID" label="CAN bit clock and second bit of ID field" />
+                <item id="FLEXCAN_ONCHIP_CLK_AND_SECOND_BIT_OF_ID" label="On-chip timer clock and second bit of ID field" />
+                <item id="FLEXCAN_LOWER_BITS_AND_END_OF_FRAME" label="Lower bits of HR time stamp and end of the CAN frame" />
+                <item id="FLEXCAN_UPPER_BITS_AND_END_OF_FRAME" label="Upper bits of HR timer stampand end of the CAN frame" />
+                <item id="FLEXCAN_LOWER_BITS_AND_START_OF_FRAME" label="Lower bits of HR time stamp and start of the CAN frame" />
+                <item id="FLEXCAN_UPPER_BITS_AND_START_OF_FRAME" label="Upper bits of HR time stamp and start of the CAN frame" />
+                <item id="FLEXCAN_LOWER_BITS_AND_RES_BIT" label="Lower bits of HR time stamp and res bit for CAN FD frame" />
+                <item id="FLEXCAN_UPPER_BITS_AND_RES_BIT" label="Upper bits of HR time stamp and res bit for CAN FD frame" />
+            </enum>
+            <struct id="flexcan_bitrate" label="FlexCAN bitrate" options="ShowContentAs=Table" from="flexcan_bitrate">
+                <info id="flexcan_cfg_propSeg" label="Propagation segment" value="$configSet.bitrateCalc.getValue().get(3)" options="cStructField"/>
+                <info id="flexcan_cfg_phaseSeg1" label="Phase segment 1" value="$configSet.bitrateCalc.getValue().get(1)" options="cStructField"/>
+                <info id="flexcan_cfg_phaseSeg2" label="Phase segment 2" value="$configSet.bitrateCalc.getValue().get(2)" options="cStructField"/>
+                <info id="flexcan_cfg_preDivider" label="Prescaler division factor" value="$configSet.bitrateCalc.getValue().get(0)" options="cStructField"/>
+                <integer id="flexcan_cfg_rJumpwidth" label="Resync jump width" value="1" type="uint32_t" options="cStructField">
+                    <description>Resync jump width</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 4)" level="error" description="Value above admissible range! Max 3"/>
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0"/>
+                    </validation>
+                </integer>
+                <float id="input_nominal_bitrate" label="Bitrate (Kbps)" type="double_precision">
+                    <description>Bitrate</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 1001)" level="error" description="Value above admissible range! Max 1000"/>
+                        <constraint cond_expr="($this.getValue() > 0)" level="error" description="Value below admissible range! Min 1"/>
+                    </validation>
+                </float>
+                <float id="input_nominal_sampling" label="Sampling point (%)" type="single_precision">
+                    <description>Sampling point</description>
+                </float>
+                <info id="flexcan_cf_realbitrate" label="Real bitrate (Kbps)" value="$configSet.bitrateCalc.getValue().get(4)" />
+                <info id="flexcan_cf_realsample" label="Real samplepoint (%)" value="$configSet.bitrateCalc.getValue().get(5)" />
+            </struct>
+            <struct id="flexcan_bitrate_cbt" label="FlexCAN bitrate" options="ShowContentAs=Table" from="flexcan_bitrate">
+                <info id="flexcan_cfg_propSeg" label="Propagation segment" value="$configSet.bitrateCalc.getValue().get(9)" options="cStructField"/>
+                <info id="flexcan_cfg_phaseSeg1" label="Phase segment 1" value="$configSet.bitrateCalc.getValue().get(7)" options="cStructField"/>
+                <info id="flexcan_cfg_phaseSeg2" label="Phase segment 2" value="$configSet.bitrateCalc.getValue().get(8)" options="cStructField"/>
+                <info id="flexcan_cfg_preDivider" label="Prescaler division factor" value="$configSet.bitrateCalc.getValue().get(6)" options="cStructField"/>
+                <integer id="flexcan_cfg_rJumpwidth" label="Resync jump width" value="1" type="uint32_t" options="cStructField">
+                    <description>Resync jump width</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 4)" level="error" description="Value above admissible range, Max 3!"/>
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0"/>
+                    </validation>
+                </integer>
+                <float id="input_data_bitrate" label="Bitrate (Kbps)" type="double_precision">
+                    <description>Bitrate</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 8001)" level="error" description="Value above admissible range! Max 8000"/>
+                        <constraint cond_expr="($this.getValue() > 0)" level="error" description="Value below admissible range! Min 1"/>
+                        <constraint cond_expr="$configSet.bitrateCalc.getValue().get(12)" level="warning" description="This bitrate is not able to be calculated because PE Clock frequency is too low! Max configurable data bitrate is (PE Clock frequency)/5."/>
+                    </validation>
+                </float>
+                <float id="input_data_sampling" label="Sampling point (%)" type="single_precision">
+                    <description>Sampling point</description>
+                </float>
+                <info id="flexcan_cf_realbitrate" label="Real CBT bitrate (Kbps)" value="$configSet.bitrateCalc.getValue().get(10)" />
+                <info id="flexcan_cf_realsample" label="Real CBT samplepoint (%)" value="$configSet.bitrateCalc.getValue().get(11)" />
+            </struct>
+            <struct id="flexcan_time_segment_cbt" label="FlexCAN CBT bitrate" options="ShowContentAs=Table" from="flexcan_time_segment">
+                <integer id="flexcan_cfg_propSeg" label="Propagation segment" type="uint32_t" options="cStructField">
+                    <description>Propagation segment</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 32)" level="error" description="Value above admissible range! Max 31" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0" />
+                        <constraint cond_expr="($this.getValue() + $parent.flexcan_cfg_phaseSeg1.getValue() >= 1)" level="error" description="Sum of Propagation and Phase Segment from Data Phase need to be greater than 0" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_phaseSeg1" label="Phase segment 1" type="uint32_t" options="cStructField">
+                    <description>Phase segment 1</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 8)" level="error" description="Value above admissible range! Max 7" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_phaseSeg2" label="Phase segment 2" type="uint32_t" options="cStructField">
+                    <description>Phase segment 2</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 8)" level="error" description="Value above admissible range! Max 7" />
+                        <constraint cond_expr="($this.getValue() > 0)" level="error" description="Value below admissible range! Min 1" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_preDivider" label="Prescaler division factor" type="uint32_t" options="cStructField">
+                    <description>Clock prescaler division factor</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 1024)" level="error" description="Value above admissible range! Max 1023" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_rJumpwidth" label="Resync jump width" type="uint32_t" options="cStructField">
+                    <description>Resync jump width</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 8)" level="error" description="Value above admissible range! Max 7" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0" />
+                    </validation>
+                </integer>
+                <variable id="pattern" label="String pattern" value="`{0}`" />
+                <info id="bitrate" label="Bitrate (Kbps)" value="$parent.pattern.getValue().toString().formatMessage($configSet.flexcanCfg.pe_clock_frequency.getValue()/(($parent.flexcan_cfg_preDivider.getValue()+1)*(3+$parent.flexcan_cfg_propSeg.getValue()+$parent.flexcan_cfg_phaseSeg1.getValue()+$parent.flexcan_cfg_phaseSeg2.getValue())*1000.0))"/>
+                <info id="samplingPoint" label="Sampling point (%)" value="$parent.pattern.getValue().toString().formatMessage((100.0*(2+$parent.flexcan_cfg_propSeg.getValue()+$parent.flexcan_cfg_phaseSeg1.getValue())/(3+$parent.flexcan_cfg_propSeg.getValue()+$parent.flexcan_cfg_phaseSeg1.getValue()+$parent.flexcan_cfg_phaseSeg2.getValue())))"/>
+            </struct>
+            <struct id="flexcan_time_segment" label="FlexCAN bitrate" options="ShowContentAs=Table" from="flexcan_time_segment">
+                <integer id="flexcan_cfg_propSeg" label="Propagation segment" type="uint32_t" options="cStructField">
+                    <description>Propagation segment</description>
+                    <validation>
+                        <constraint cond_expr="!(($this.getValue() > 7) &amp;&amp; $configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue()==`false`)" level="error" description="Value above admissible range! Max 7" />
+                        <constraint cond_expr="!(($this.getValue() > 63) &amp;&amp; $configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue())" level="error" description="Value above admissible range! Max 63" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_phaseSeg1" label="Phase segment 1" type="uint32_t" options="cStructField">
+                    <description>Phase segment 1</description>
+                    <validation>
+                        <constraint cond_expr="!(($this.getValue() > 7) &amp;&amp; $configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue()==`false`)" level="error" description="Value above admissible range! Max 7" />
+                        <constraint cond_expr="!(($this.getValue() > 31) &amp;&amp; $configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue())" level="error" description="Value above admissible range! Max 31" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_phaseSeg2" label="Phase segment 2" type="uint32_t" options="cStructField">
+                    <description>Phase segment 2</description>
+                    <validation>
+                        <constraint cond_expr="!(($this.getValue() > 7) &amp;&amp; $configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue()==`false`)" level="error" description="Value above admissible range! Max 7" />
+                        <constraint cond_expr="!(($this.getValue() > 31) &amp;&amp; $configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue())" level="error" description="Value above admissible range! Max 31" />
+                        <constraint cond_expr="!($this.getValue() == 0)" level="error" description="Value below admissible range! Min 1" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_preDivider" label="Prescaler division factor" type="uint32_t" options="cStructField">
+                    <description>Clock prescaler division factor</description>
+                    <validation>
+                        <constraint cond_expr="!(($this.getValue() > 255) &amp;&amp; $configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue()==`false`)" level="error" description="Value above admissible range! Max 255" />
+                        <constraint cond_expr="!(($this.getValue() > 1023) &amp;&amp; $configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue())" level="error" description="Value above admissible range! Max 1023" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0" />
+                        <constraint cond_expr="$configSet.flexcanCfg.pe_clock_frequency.getValue()/(($parent.flexcan_cfg_preDivider.getValue()+1)*(4+$parent.flexcan_cfg_propSeg.getValue()+$parent.flexcan_cfg_phaseSeg1.getValue()+$parent.flexcan_cfg_phaseSeg2.getValue())*1000.0) &lt; 1001" level="warning" description="This bitrate beyond maximum value for arbitration bitrate! Max 1Mbps" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_rJumpwidth" label="Resync jump width" type="uint32_t" options="cStructField">
+                    <description>Resync jump width</description>
+                    <validation>
+                        <constraint cond_expr="!(($this.getValue() > 3) &amp;&amp; $configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue()==`false`)" level="error" description="Value above admissible range! Max 3" />
+                        <constraint cond_expr="!(($this.getValue() > 31) &amp;&amp; $configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue())" level="error" description="Value above admissible range! Max 31" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0" />
+                    </validation>
+                </integer>
+                <variable id="pattern" label="String pattern" value="`{0}`" />
+                <info id="bitrate" label="Bitrate (Kbps)" value="$parent.pattern.getValue().toString().formatMessage($configSet.flexcanCfg.pe_clock_frequency.getValue()/(($parent.flexcan_cfg_preDivider.getValue()+1)*(4+$parent.flexcan_cfg_propSeg.getValue()+$parent.flexcan_cfg_phaseSeg1.getValue()+$parent.flexcan_cfg_phaseSeg2.getValue())*1000.0))"/>
+                <info id="samplingPoint" label="Sampling point (%)" value="$parent.pattern.getValue().toString().formatMessage((100.0*(3+$parent.flexcan_cfg_propSeg.getValue()+$parent.flexcan_cfg_phaseSeg1.getValue())/(4+$parent.flexcan_cfg_propSeg.getValue()+$parent.flexcan_cfg_phaseSeg1.getValue()+$parent.flexcan_cfg_phaseSeg2.getValue())))"/>
+            </struct>
+            <struct id="flexcan_user_config" label="FlexCAN configuration" from="flexcan_user_config">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!" />
+                    </validation>
+                </string>
+                <bool id="readonly" label="Read-only">
+                    <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+                </bool>
+                <reference id="flexcan_cfg_flexcanMode" label="Operation Mode" type="flexcan_operation_modes" options="cStructField">
+                    <description>User configurable FlexCAN operation modes.</description>
+                </reference>
+                <bool id="flexcan_cfg_fd_enable" label="Enable FD" options="cStructField" enable="$configSet.instGet.getValue().get(0)">
+                    <description>Enable/Disable the Flexible Data Rate feature.</description>
+                </bool>
+                <reference id="flexcan_cfg_payload" label="Payload Size (bytes)" type="flexcan_fd_payload_size" options="cStructField">
+                    <description>The payload size of the mailboxes specified in bytes.</description>
+                    <validation>
+                        <constraint cond_expr="!(($this.getValue() != `FLEXCAN_PAYLOAD_SIZE_8`) &amp;&amp; ($parent.flexcan_cfg_fd_enable.getValue() == `false`))" level="error" description="Payload size can be only 8 bytes if Flexible Data Rate not enabled" />
+                    </validation>
+                </reference>
+
+                <variable id="payload_size" label="Message Buffer payload size" type="uint32_t" value="$parent.flexcan_cfg_payload.getValue().replaceText(`FLEXCAN_PAYLOAD_SIZE_`, ``).toInt()" />
+                <variable id="instance_max_mb_num" label="Instance's maximum number of MBs" type="uint32_t" value="$configSet.instGet.getValue().get(7)" />
+                <variable id="instance_max_extended_mb_num" label="Instance's maximum number of Extended MBs" type="uint32_t" value="$configSet.instGet.getValue().get(8)" />
+                <variable id="mbs_per_block" label="Number of MBs per RAM Block" type="uint32_t" value="512.0/($parent.payload_size.getValue().toInt()+8)/1" />
+
+                <integer id="flexcan_cfg_max_num_mb" label="MBs Number" type="uint32_t" options="cStructField">
+                    <description>The maximum number of Message Buffers</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() > 0)" level="error" description="Value below admissible range! Min 1"/>
+                        <constraint cond_expr="!$parent.flexcan_cfg_is_rx_fifo_needed.getValue() || ($this.getValue() >= $parent.flexcan_cfg_recommendedMb.getValue().toInt())" level="error" description="Increase 'MBs Number' (at least the value recommended below) or decrease number of Rx FIFO filters."/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 64" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_64`) &amp;&amp; ($this.getValue() > 14))" level="error" description="Value above admissible range, max allowed MBs 14!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 64" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_32`) &amp;&amp; ($this.getValue() > 24))" level="error" description="Value above admissible range, max allowed MBs 24!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 64" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_16`) &amp;&amp; ($this.getValue() > 42))" level="error" description="Value above admissible range, max allowed MBs 42!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 64" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_8`) &amp;&amp; ($this.getValue() > 64))" level="error" description="Value above admissible range, max allowed MBs 64!"/>
+                        <constraint when_expr="($configSet.instGet.getValue().get(7).toInt() == 128) &amp;&amp; ($configSet.instGet.getValue().get(8).toInt() == 128)" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_64`) &amp;&amp; ($this.getValue() > 56))" level="error" description="Value above admissible range, max allowed MBs 56!"/>
+                        <constraint when_expr="($configSet.instGet.getValue().get(7).toInt() == 128) &amp;&amp; ($configSet.instGet.getValue().get(8).toInt() != 128)" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_64`) &amp;&amp; ($this.getValue() > 28))" level="error" description="Value above admissible range, max allowed MBs 28!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 128" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_32`) &amp;&amp; ($this.getValue() > 48))" level="error" description="Value above admissible range, max allowed MBs 48!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 128" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_16`) &amp;&amp; ($this.getValue() > 84))" level="error" description="Value above admissible range, max allowed MBs 84!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 128" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_8`) &amp;&amp; ($this.getValue() > 128))" level="error" description="Value above admissible range, max allowed MBs 128!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 32" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_64`) &amp;&amp; ($this.getValue() > 7))" level="error" description="Value above admissible range, max allowed MBs 7!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 32" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_32`) &amp;&amp; ($this.getValue() > 12))" level="error" description="Value above admissible range, max allowed MBs 12!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 32" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_16`) &amp;&amp; ($this.getValue() > 21))" level="error" description="Value above admissible range, max allowed MBs 21!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 32" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_8`) &amp;&amp; ($this.getValue() > 32))" level="error" description="Value above admissible range, max allowed MBs 32!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 16" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_64`) &amp;&amp; ($this.getValue() > 3))" level="error" description="Value above admissible range, max allowed MBs 3!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 16" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_32`) &amp;&amp; ($this.getValue() > 6))" level="error" description="Value above admissible range, max allowed MBs 6!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 16" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_16`) &amp;&amp; ($this.getValue() > 10))" level="error" description="Value above admissible range, max allowed MBs 10!"/>
+                        <constraint when_expr="$configSet.instGet.getValue().get(7).toInt() == 16" cond_expr="!(($parent.flexcan_cfg_payload.getValue() == `FLEXCAN_PAYLOAD_SIZE_8`) &amp;&amp; ($this.getValue() > 16))" level="error" description="Value above admissible range, max allowed MBs 16!"/>
+                    </validation>
+                </integer>
+                <reference id="flexcan_cfg_num_id_filters" label="Rx FIFO ID Filters Number" type="flexcan_rx_fifo_id_filter_num_t" enable="$parent.flexcan_cfg_is_rx_fifo_needed.getValue()" options="cStructField">
+                    <description>The number of RX FIFO ID filters needed</description>
+                </reference>
+
+                <variable id="filter_num" label="RxFIFO Filter numbers" type="uint32_t" value="$parent.flexcan_cfg_num_id_filters.getValue().replaceText(`FLEXCAN_RX_FIFO_ID_FILTERS_`, ``).toInt()" />
+                <variable id="rxfifo_mb_space_occupied" label="Number of MBs that FIFO occupied" type="uint32_t" value="$parent.filter_num.getValue()/4 + 6" />
+                <variable id="max_allowed_mb_num" label="Maximum number of MBs" type="uint32_t" value="($parent.instance_max_mb_num.getValue().toInt()) - ($parent.rxfifo_mb_space_occupied.getValue().toInt())" />
+
+                <info id="flexcan_cfg_recommendedMb" label="No. of MBs needed" value="$parent.rxfifo_mb_space_occupied.getValue()" available="$parent.flexcan_cfg_is_rx_fifo_needed.getValue()"/>
+                <bool id="flexcan_cfg_is_rx_fifo_needed" label="Use Rx FIFO" options="cStructField">
+                    <description>Enable/Disable Rx FIFO feature.</description>
+                    <validation>
+                        <constraint cond_expr="!$this.getValue() || !$parent.flexcan_cfg_fd_enable.getValue()" level="error" description="RX FIFO feature is not available when FD is enabled." />
+                    </validation>
+                </bool>
+                <bool id="flexcan_cfg_is_enhanced_rx_fifo_needed" label="Use Enhanced Rx FIFO" available="$configSet.instGet.getValue().get(2)" options="cStructField">
+                    <description>Enable/Disable Rx FIFO feature.</description>
+                    <validation>
+                        <constraint cond_expr="!$this.getValue() || !$parent.flexcan_cfg_is_rx_fifo_needed.getValue()" level="error" description="Enhanced RX FIFO feature is not available when RxFIFO is available." />
+                    </validation>
+                </bool>
+                <integer id="flexcan_cfg_enhanced_fifo_depth" label="Enhanced RxFIFO Depth" type="uint32_t" available="$parent.flexcan_cfg_is_enhanced_rx_fifo_needed.getValue()" options="cStructField">
+                    <description>Number of frames that Enhanced Rx FIFO could contain</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 33" level="error" description="Value above admissible range! Max 32" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_num_enhanced_std_id_filters" label="Enhanced StdID Filters Number" type="uint32_t" available="$parent.flexcan_cfg_is_enhanced_rx_fifo_needed.getValue() &amp;&amp; $configSet.instGet.getValue().get(2)" options="cStructField">
+                    <description>The maximum number of Number of Enhanced Rx FIFO filter elements</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 129)" level="error" description="Value above admissible range! Max 128" />
+                        <constraint cond_expr="($this.getValue() % 2) == 0" level="error" description="Value needed is an even number" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_num_enhanced_ext_id_filters" label="Enhanced ExtID Filters Number" type="uint32_t" available="$parent.flexcan_cfg_is_enhanced_rx_fifo_needed.getValue() &amp;&amp; $configSet.instGet.getValue().get(2)" options="cStructField">
+                    <description>The maximum number of Extended ID filter elements</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 65)" level="error" description="Value above admissible range! Max 64" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0" />
+                        <constraint cond_expr="((($parent.flexcan_cfg_num_enhanced_std_id_filters.getValue().toInt() / 2) + $this.getValue()) &lt; 65)" level="error" description="64 >=(Number of Standard ID Filter Elements / 2) + Number of Extended ID Filter Elements" />
+                        <constraint cond_expr="((($parent.flexcan_cfg_num_enhanced_std_id_filters.getValue().toInt() / 2) + $this.getValue()) > 0)" level="error" description="(Number of Standard ID Filter Elements / 2) + Number of Extended ID Filter Elements > 0" />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_num_enhanced_watermark" label="Enhanced Rx FIFO Watermark" type="uint32_t" available="$parent.flexcan_cfg_is_enhanced_rx_fifo_needed.getValue() &amp;&amp; $configSet.instGet.getValue().get(2)" options="cStructField">
+                    <description>The maximum number of Enhanced Rx FIFO watermark</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 32)" level="error" description="Value above admissible range! Max 31" />
+                        <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range!" />
+                    </validation>
+                </integer>
+                <reference id="flexcan_cfg_time_stamp" label="Time Stamp Type" type="flexcan_time_stamp_config" available="$configSet.instGet.getValue().get(2)" options="cStructField">
+                    <description>Configure the free-running counter time stamp.</description>
+                    <validation>
+                        <constraint cond_expr="!(!$configSet.instGet.getValue().get(2) &amp;&amp; !(($this.getValue() == `FLEXCAN_CAN_CLK_AND_SECOND_BIT_OF_ID`) || ($this.getValue() == `FLEXCAN_ONCHIP_CLK_AND_SECOND_BIT_OF_ID`)))" level="error" description="This instance does not support!" />
+                    </validation>
+                </reference>
+                <reference id="flexcan_cfg_transfer_type" label="Rx FIFO Transfer Type" type="flexcan_rxfifo_transfer_type" enable="($parent.flexcan_cfg_is_rx_fifo_needed.getValue() || $parent.flexcan_cfg_is_enhanced_rx_fifo_needed.getValue()) &amp;&amp; $configSet.instGet.getValue().get(9)" options="cStructField">
+                    <description>Specifies if the Rx FIFO uses interrupts or DMA.</description>
+                </reference>
+                <integer id="flexcan_cfg_rxFifoDMAChannel" label="Rx FIFO DMA Channel" type="uint8_t" enable="($parent.flexcan_cfg_transfer_type.getValue() == `FLEXCAN_RXFIFO_USING_DMA`) &amp;&amp; ($parent.flexcan_cfg_is_rx_fifo_needed.getValue() || $parent.flexcan_cfg_is_enhanced_rx_fifo_needed.getValue())" available="$configSet.instGet.getValue().get(9)" options="cStructField">
+                    <description>Specifies the DMA channel number to be used for DMA transfers.</description>
+                    <validation>
+                        <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> (regexMatch(x.getSetting(`chReq`).getValue(), `.*?CAN.*` + toString(getPeriphInstanceIndex(getPeripheral($instance)))) &amp;&amp; (x.getSetting(`virtCh`).value() == $this.getValue())))), true) > 0)" level="warning" description="Please configure the correct source (CAN_x) for this channel, from the DMA component!" />
+                        <constraint cond_expr="($this.getValue() &gt; $configSet.instGet.getValue().get(10).get(0)) &amp;&amp; ($this.getValue() &lt; $configSet.instGet.getValue().get(10).get(1))" level="warning" description="This DMA Channel is not available for routing." />
+                    </validation>
+                </integer>
+                <integer id="flexcan_cfg_num_words_to_transfer" label="Num of words to transfer" type="uint32_t" available="$parent.flexcan_cfg_is_enhanced_rx_fifo_needed.getValue() &amp;&amp; $configSet.instGet.getValue().get(2)" enable="$parent.flexcan_cfg_transfer_type.getValue() == `FLEXCAN_RXFIFO_USING_DMA`" options="cStructField">
+                    <description>The num of words to transfer for each Enhanced RX FIFO element using DMA.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; 21)" level="error" description="Value above admissible range! Max 20" />
+                        <constraint cond_expr="($this.getValue() > 3)" level="error" description="Value below admissible range! Min 4" />
+                    </validation>
+                </integer>
+                <info id="flexcan_cfg_max_payload" label="Max of Data Length received" value="($parent.flexcan_cfg_num_words_to_transfer.getValue() - 4) * 4" available="($parent.flexcan_cfg_num_words_to_transfer.getValue() > 3) &amp;&amp; $parent.flexcan_cfg_is_enhanced_rx_fifo_needed.getValue() &amp;&amp; $configSet.instGet.getValue().get(2)" enable="$parent.flexcan_cfg_transfer_type.getValue() == `FLEXCAN_RXFIFO_USING_DMA`" />
+
+                <reference id="flexcan_cfg_pe_clock" label="PE clock source" type="can_clk_source_t" available="$configSet.instGet.getValue().get(1)" options="cStructField">
+                    <description>The clock source of the CAN Protocol Engine (PE).</description>
+                </reference>
+                <reference id="pe_clock" label="PE clock source" type="can_clk_source_t" enable="false" available="!($configSet.instGet.getValue().get(1))">
+                    <description>The clock source of the CAN Protocol Engine (PE).</description>
+                </reference>
+
+                <variable id="cpu_name" label="CPU name" value="getPartNumber()" />
+                <variable id="clk_type" label="Clock type" value="$configSet.instGet.getValue().get(4)" />
+                <variable id="inst_num" label="Instance number" value="getPeriphInstanceIndex($instance.getPeripheral())" />
+                <variable id="module_clock_name" label="CHI Clock name" value="$parent.clk_type.getValue().toString().formatMessage($parent.inst_num.getValue().toString())" />
+                <variable id="pe_clock_name" label="PE Clock name" value="$configSet.instGet.getValue().get(6).get($parent.id_to_idx.getValue()).toString().formatMessage($parent.inst_num.getValue().toString())" />
+                <variable id="id_to_idx" value="$parent.flexcan_cfg_pe_clock.enumItemsOf().searchInArray(x->x.getID()==$parent.flexcan_cfg_pe_clock.getValue())" />
+
+                <!-- Get clock frequency of FLEXCAN -->
+                <info id="module_clock_frequency" label="Module Clock (Hz)" value="getPeripheralClockFrequency($parent.module_clock_name.getValue(), $configSet.instGet.getValue().get(5), getClockFunctionalGroups().get(0))"/>
+                <info id="pe_clock_frequency" label="PE Clock (Hz)" value="getPeripheralClockFrequency($parent.module_clock_name.getValue(), $parent.pe_clock_name.getValue(), getClockFunctionalGroups().get(0))">
+                    <description>Protocol Clock frequency</description>
+                    <validation>
+                        <constraint cond_expr="($parent.module_clock_frequency.getValue() >= $this.getValue())" level="error" description="Module Clock must be greater or equal with PE Clock!" />
+                        <constraint cond_expr="($this.getValue() > 0)" level="error" description="PE Clock must be enabled!" />
+                    </validation>
+                </info>
+                <bool id="flexcan_bitrate2ts" label="Bitrate to time segments">
+                    <description>Select whether to configure the bitrate and the sampling point or directly the time segments.</description>
+                </bool>
+                <struct id="flexcan_cfg_time_segments1" label="Bitrate Configuration" from="flexcan_cfg_time_segments1" available="!$parent.flexcan_bitrate2ts.getValue()">
+                    <reference id="flexcan_cfg_bitrate" label="Arbitration Phase" type="flexcan_time_segment" options="cStructField">
+                        <description>Time segments for arbitration phase.</description>
+                    </reference>
+                    <reference id="flexcan_cfg_bitrate_cbt" label="Data Phase" type="flexcan_time_segment_cbt" options="cStructField" available="$configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue() &amp;&amp; $configSet.instGet.getValue().get(0)">
+                        <description>Time segments for data phase.</description>
+                    </reference>
+                </struct>
+                <struct id="flexcan_cfg_time_segments2" label="Bitrate Configuration" from="flexcan_cfg_time_segments2" available="$parent.flexcan_bitrate2ts.getValue()">
+                    <reference id="flexcan_cfg_bitrate" label="Arbitration Phase" type="flexcan_bitrate" options="cStructField">
+                        <description>Time segments for arbitration phase.</description>
+                    </reference>
+                    <reference id="flexcan_cfg_bitrate_cbt" label="Data Phase" type="flexcan_bitrate_cbt" options="cStructField" available="$configSet.flexcanCfg.flexcan_cfg_fd_enable.getValue() &amp;&amp; $configSet.instGet.getValue().get(0)">
+                        <description>Time segments for data phase.</description>
+                    </reference>
+                </struct>
+            </struct>
+            <enum id="ID_Pn_Type" label="The message ID types accepted by the filter" from="ID_Pn_Type">
+                <item id="Standard" label="Standard IDs Type Accepted" />
+                <item id="Extended" label="Extended IDs Type Accepted" />
+                <item id="Any" label="Standard and Extended IDs Accepted" />
+            </enum>
+            <enum id="Frame_Pn_Type" label="The frame types accepted by the filter" from="Frame_Pn_Type">
+                <item id="Data Frame" label="Data Type Accepted" />
+                <item id="Remote Frame" label="Remote Type Accepted" />
+                <item id="Any" label="Any Type Accepted" />
+            </enum>
+            <struct id="Payload1" label="Payload">
+                <integer id="B0" label="B0" type="uint8_t">
+                    <description>One Byte of Payload</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 256" level="warning" description="Max size 255" />
+                        <constraint cond_expr="$this.getValue() >= 0" level="error" description="Min size 0" />
+                    </validation>
+                </integer>
+                <integer id="B1" label="B1" type="uint8_t">
+                    <description>One Byte of Payload</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 256" level="warning" description="Max size 255" />
+                        <constraint cond_expr="$this.getValue() >= 0" level="error" description="Min size 0" />
+                    </validation>
+                </integer>
+                <integer id="B2" label="B2" type="uint8_t">
+                    <description>One Byte of Payload</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 256" level="warning" description="Max size 255" />
+                        <constraint cond_expr="$this.getValue() >= 0" level="error" description="Min size 0" />
+                    </validation>
+                </integer>
+                <integer id="B3" label="B3" type="uint8_t">
+                    <description>One Byte of Payload</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 256" level="warning" description="Max size 255" />
+                        <constraint cond_expr="$this.getValue() >= 0" level="error" description="Min size 0" />
+                    </validation>
+                </integer>
+                <integer id="B4" label="B4" type="uint8_t">
+                    <description>One Byte of Payload</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 256" level="warning" description="Max size 255" />
+                        <constraint cond_expr="$this.getValue() >= 0" level="error" description="Min size 0" />
+                    </validation>
+                </integer>
+                <integer id="B5" label="B5" type="uint8_t">
+                    <description>One Byte of Payload</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 256" level="warning" description="Max size 255" />
+                        <constraint cond_expr="$this.getValue() >= 0" level="error" description="Min size 0" />
+                    </validation>
+                </integer>
+                <integer id="B6" label="B6" type="uint8_t">
+                    <description>One Byte of Payload</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 256" level="warning" description="Max size 255" />
+                        <constraint cond_expr="$this.getValue() >= 0" level="error" description="Min size 0" />
+                    </validation>
+                </integer>
+                <integer id="B7" label="B7" type="uint8_t">
+                    <description>One Byte of Payload</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 256" level="warning" description="Max size 255" />
+                        <constraint cond_expr="$this.getValue() >= 0" level="error" description="Min size 0" />
+                    </validation>
+                </integer>
+            </struct>
+            <struct id="PayloadStruct" label="Payload Filtering" from="PayloadStruct">
+                <integer id="dlcLow" label="Min payload size" type="uint8_t" options="cStructField">
+                    <description>Specifies the lower limit of the payload size.</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 9" level="error" description="Max size 8" />
+                        <constraint cond_expr="$this.getValue() >= 0" level="error" description="Min size 0" />
+                    </validation>
+                </integer>
+                <integer id="dlcHigh" label="Max payload size" min_expr="1" type="uint8_t" options="cStructField">
+                    <description>Specifies the upper limit of the payload size.</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; 9" level="warning" description="Max size 8" />
+                        <constraint cond_expr="$this.getValue() > 0" level="error" description="Min size 1" />
+                    </validation>
+                </integer>
+                <reference id="PayloadFilterType" label="Defines the ID filtering scheme" type="flexcan_pn_filter_selection_t" options="cStructField">
+                    <description>Defines the ID filtering scheme.</description>
+                </reference>
+                <variable id="AuxVar" value="$parent.PayloadFilterType.enumItemsOf().searchInArray(x->x.getID()==$parent.PayloadFilterType.getValue())" />
+            <array id="Payload_1" label="Payload1 Label" label_expr="toArray(`Payload Value`, `Payload Lower Limit`, `Payload Upper Limit`,`Payload Value Lower Limit`).get(toInt($parent.AuxVar.getValue()))"
+            type="Payload1" options="ShowContentAs=Table;UI_ARRAY_INDICES_HIDDEN;UI_TABLE_COLUMN_WIDTHS=10,10,10,10,10,10,10,10,10" min_expr="1" max_expr="1" size="1">
+                    <description>Payload Data</description>
+                    <item_defaults>
+                        <set_default id="B0" value_expr="x -> 0" />
+                        <set_default id="B1" value_expr="x -> 0" />
+                        <set_default id="B2" value_expr="x -> 0" />
+                        <set_default id="B3" value_expr="x -> 0" />
+                        <set_default id="B4" value_expr="x -> 0" />
+                        <set_default id="B5" value_expr="x -> 0" />
+                        <set_default id="B6" value_expr="x -> 0" />
+                        <set_default id="B7" value_expr="x -> 0" />
+                    </item_defaults>
+                </array>
+            <array id="Payload_2" label="Payload2 Label" label_expr="toArray(`Payload Mask`, `Not Used`, `Not Used`,`Payload Value Upper Limit`).get(toInt($parent.AuxVar.getValue()))"
+            type="Payload1" options="ShowContentAs=Table;UI_ARRAY_INDICES_HIDDEN;UI_TABLE_COLUMN_WIDTHS=10,10,10,10,10,10,10,10,10" min_expr="1" max_expr="1" size="1" available="($parent.PayloadFilterType.getValue()==`FLEXCAN_FILTER_MATCH_EXACT`) || ($parent.PayloadFilterType.getValue()==`FLEXCAN_FILTER_MATCH_RANGE`)">
+                    <description>Payload Data</description>
+                    <item_defaults>
+                        <set_default id="B0" value_expr="x -> 0" />
+                        <set_default id="B1" value_expr="x -> 0" />
+                        <set_default id="B2" value_expr="x -> 0" />
+                        <set_default id="B3" value_expr="x -> 0" />
+                        <set_default id="B4" value_expr="x -> 0" />
+                        <set_default id="B5" value_expr="x -> 0" />
+                        <set_default id="B6" value_expr="x -> 0" />
+                        <set_default id="B7" value_expr="x -> 0" />
+                    </item_defaults>
+                </array>
+            </struct>
+            <struct id="idFilterStruct" label="ID Filtering" from="idFilterStruct">
+                <enum id="ID_Pn_Type" label="The message ID types accepted by the filter" from="ID_Pn_Type">
+                    <item id="Standard" label="Standard" />
+                    <item id="Extended" label="Extended" />
+                    <item id="Any" label="Any" />
+                </enum>
+                <enum id="Frame_Pn_Type" label="The frame types accepted by the filter" from="Frame_Pn_Type">
+                    <item id="Data Frame" label="Data" />
+                    <item id="Remote Frame" label="Remote" />
+                    <item id="Any" label="Any" />
+                </enum>
+                <reference id="idFilterType" label="Defines the ID filtering scheme" type="flexcan_pn_filter_selection_t">
+                    <description>Defines the ID filtering scheme.</description>
+                </reference>
+                <variable id="AuxVar" value="$parent.idFilterType.enumItemsOf().searchInArray(x->x.getID()==$parent.idFilterType.getValue())" />
+                <integer id="id1" label="ID1" label_expr="toArray(`ID Value`, `ID Value Lower Limit`, `ID Value Upper Limit`,`ID Value Lower Limit`).get(toInt($parent.AuxVar.getValue()))" type="uint32_t">
+               <description>Specifies the ID lower limit</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 0x20000000)" level="error" description="Value above admissible range! Max 0x1FFFFFFFU/536870911UL"/>
+                  <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0"/>
+                  <constraint cond_expr="!(($this.getValue() > $parent.id2.getValue()) &amp;&amp; ($parent.idFilterType.getValue()==`FLEXCAN_FILTER_MATCH_RANGE`))" level="error" description="Lower ID must be smaller than or equal to upper ID!"/>
+               </validation>
+                </integer>
+                <integer id="id2" label="ID2" label_expr="toArray(`ID Mask`, `ID2 Value`, `ID2 Value`,`ID Value Upper Limit`).get(toInt($parent.AuxVar.getValue()))" type="uint32_t" available="($parent.idFilterType.getValue()==`FLEXCAN_FILTER_MATCH_EXACT`) || ($parent.idFilterType.getValue()==`FLEXCAN_FILTER_MATCH_RANGE`)">
+               <description>ID Mask\Upper Value</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 0x20000000)" level="error" description="Value above admissible range! Max 0x1FFFFFFFU/536870911UL"/>
+                  <constraint cond_expr="($this.getValue() >= 0)" level="error" description="Value below admissible range! Min 0"/>
+               </validation>
+                </integer>
+                <info id="id2_i" label="ID Value" value="0" available="($parent.idFilterType.getValue()==`FLEXCAN_FILTER_MATCH_GEQ`) || ($parent.idFilterType.getValue()==`FLEXCAN_FILTER_MATCH_LEQ`)">
+                    <description>Not used by this filter type</description>
+                </info>
+            </struct>
+            <struct id="flexcan_pn_config_user" label="Pretended Networking configuration" from="flexcan_pn_config_t">
+                <bool id="readonly" label="Read-only">
+                    <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+                </bool>
+                <bool id="wakeUpTimeout" label="Timeout" options="cStructField">
+                    <description>Specifies if an wake up event is triggered on timeout.</description>
+                </bool>
+                <bool id="wakeUpMatch" label="Match" options="cStructField">
+                    <description>Specifies if an wake up event is triggered on match.</description>
+                </bool>
+                <integer id="numMatches" label="Needed Matches" type="uint16_t" options="cStructField">
+                    <description>The number of matches needed before generating an wake up event.</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 256)" level="error" description="Value above admissible range! Max 255"/>
+               </validation>
+                </integer>
+                <integer id="matchTimeout" label="Timeout Value" type="uint16_t" options="cStructField">
+                    <description>Defines a timeout value that generates an wake up event if wakeUpTimeout is true.</description>
+                    <validation>
+                        <constraint cond_expr="!($this.getValue()>0 &amp;&amp; ($parent.wakeUpTimeout.getValue()==`false`))" level="error" description="Must enable Timeout" />
+                    </validation>
+                </integer>
+                <reference id="idFilter" label="ID Filtering" type="idFilterStruct" available="true">
+                    <description>Defines the IDs filtering scheme.</description>
+                </reference>
+                <bool id="Ena_Payload" label="Enable Payload Filtering">
+                    <description>Enable Payload Filter</description>
+                </bool>
+            <reference id="payloadFilter" label="The configuration of the payload filter" type="PayloadStruct" available="$configSet.flexcanPN.flexcan_pn_config.Ena_Payload.getValue() == `true`">
+                    <description>The configuration of the payload filter.</description>
+                </reference>
+            </struct>
+            <struct id="flexcan_pn_structure" label="Pretended Networking Struct" from="flexcan_pn_structure" available="$configSet.instGet.getValue().get(3)">
+                <bool id="pnOn" label="Pretended Network Enable">
+                    <description>Enable PN Generation</description>
+                </bool>
+                <string id="name" label="Pretended Network Configuration Name" available="$parent.pnOn.getValue()">
+                    <description>PN Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!" />
+                    </validation>
+                </string>
+                <reference id="flexcan_pn_config" label="Pretended Network Configuration" type="flexcan_pn_config_user" available="$parent.pnOn.getValue()">
+                    <description>Pretended Network Config.</description>
+                </reference>
+            </struct>
+        </user_types>
+    </config_set>
+</component:config_component>

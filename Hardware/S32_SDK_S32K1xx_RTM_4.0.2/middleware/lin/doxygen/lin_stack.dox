@@ -1,0 +1,294 @@
+/*!
+@defgroup lin Local Interconnect Network (LIN)
+@brief The S32 SDK provides both driver and middleware layers for the Local Interconnect Network (LIN) protocol,
+ emulated on top of LPUART serial communication IP.
+*/
+
+/*!
+ * @defgroup lin_stack LIN Stack
+ * @ingroup lin
+ * @brief This section covers the functionality of the LIN Stack middleware layer in S32 SDK.
+ * <h1>Introduction</h1>
+ * <ul style="list-style-type:none">
+ * <li><h2>LIN Stack Package Components</h2></li>
+ * <p>LIN Stack is a Middleware package that supports the LIN 1.3, 2.0, 2.1 and above, <a href="group___l_i_n21__core__api__group.html">LIN2.1</a> and <a href="group___j2602__core__api__group.html">J2602</a> specifications.</p>
+ * <p> In LIN Stack, LIN 2.1 covers all LIN 2.1, LIN 2.2 and LIN 2.2A specifications, as the changes following LIN 2.1 are only spelling corrections and clarifications.</p>
+ *
+ * <p style="padding-left:20px">
+ *
+ * <ol>
+ * <li><b>LIN Stack:</b></li><br>
+ * <p>
+ * The layered architecture of the LIN Stack is shown on <a HREF="#figure1">Figure 1</a>. Such architecture aims maximum reusability of
+ * common code base for <a href="group___l_i_n21__core__api__group.html">LIN2.1</a> and <a href="group___j2602__core__api__group.html">J2602</a> specifications for S32 Freescale automotive MCU portfolio. </P>
+ * <p>The core API layer of <a href="group___l_i_n21__core__api__group.html">LIN2.1</a>/ <a href="group___j2602__core__api__group.html">J2602</a> handles initialization, processing and signal based interaction between applications and LIN Core.</p>
+ * <p>The <a href="group___l_i_n21__core__api__group.html">LIN2.1</a> TL (Transport Layer) provides methods for diagnostic services. </P>
+ * <p>The low level layer offers methods for handling signal transmission between user applications and hardware such as interface initialization and deinitialization, frame header sending, response receiving, etc. The low level layer is builded on top of <a href="group__lin__driver.html">LIN Driver</a> which is builded on top of LPUART HAL layer in the current release.</p>
+ * <a NAME="figure1"></a>
+ * @image html LIN_Stack_Architecture.png
+ * @latexonly
+ * \begin{center}
+ * \includegraphics{LIN_Stack_Architecture.png}
+ * \end{center}
+ * @endlatexonly
+ *
+ * <center><i>Figure 1. LIN Stack Architecture diagram</i></center>
+ *
+ * <li><b>Node Configuration Tool:</b></li><br>
+ * <p> To generate configuration files, users can use the Node Configuration Tool that is LIN Stack PEX component which allows to parse existed LDF files and reflect their contents to LIN Stack component GUI, to create new LDF files, to configure LIN cluster definitions and Node definitions. Using LIN Stack PEX component, users can easily generate the node
+ * configuration files (lin_cfg.h and lin_cfg.c)  that are needed for LIN Stack to work properly.</p>
+ * <a HREF="#figure2">Figure 2</a>. Shows the diagram of configuration data flow.
+ * <a NAME="figure2"></a>
+ * @image html LIN_Stack_Configuration_Data.png
+ * @latexonly
+ * \begin{center}
+ * \includegraphics{LIN_Stack_Configuration_Data.png}
+ * \end{center}
+ * @endlatexonly
+ * <center><i>Figure 2. Configuration data</i></center>
+ *
+ * The LDF files describe complete LIN cluster definition including Master/slave mode definition, signals, frames, schedules, timing, etc.<BR>
+ *
+ * </ol>
+ * <p>
+ *  ## Integration guideline ##
+ * 
+ * ### Compilation units ###
+ * 
+ * The following files need to be compiled in the project:
+ * \verbatim
+ * ${S32SDK_PATH}\middleware\lin\coreapi\lin_common_api.c
+ * ${S32SDK_PATH}\middleware\lin\coreapi\lin_common_proto.c
+ * ${S32SDK_PATH}\middleware\lin\coreapi\lin_j2602_proto.c
+ * ${S32SDK_PATH}\middleware\lin\coreapi\lin_lin21_proto.c
+ * ${S32SDK_PATH}\middleware\lin\diagnostic\lin_diagnostic_service.c
+ * ${S32SDK_PATH}\middleware\lin\lowlevel\lin.c
+ * ${S32SDK_PATH}\middleware\lin\transport\lin_commontl_api.c
+ * ${S32SDK_PATH}\middleware\lin\transport\lin_commontl_proto.c
+ * \endverbatim
+ * 
+ * ### Include path ###
+ * 
+ * The following paths need to be added to the include path of the toolchain:
+ * \verbatim
+ * ${S32SDK_PATH}\rtos\osif
+ * ${S32SDK_PATH}\platform\drivers\inc
+ * ${S32SDK_PATH}\platform\drivers\src\lin
+ * ${S32SDK_PATH}\platform\drivers\src\lpuart
+ * ${S32SDK_PATH}\middleware\lin\include
+ * ${S32SDK_PATH}\middleware\lin\lowlevel
+ * ${S32SDK_PATH}\middleware\lin\coreapi
+ * ${S32SDK_PATH}\middleware\lin\transport
+ * \endverbatim
+ * 
+ * ### Compile symbols ###
+ * 
+ * No special symbols are required for this component
+ * 
+ * ### Dependencies ###
+ * 
+ * \ref clock_manager
+ * \ref pins
+ * \ref lin_driver
+ * \ref lpuart
+ * 
+ * </p>
+ * </p>
+ */
+ 
+
+
+/*!
+ * @defgroup diagnostic_group Diagnostic services
+ * @ingroup lin_stack
+ * @brief Diagnostic services defines methods to implement diagnostic data transfer between a master node connected with a diagnostic tester and the slave nodes.
+ * @details Three different classes of diagnostic nodes are supported. <br><br>
+ * The master node and the diagnostic tester are connected via a back-bone bus (e.g. CAN). The master node shall receive all diagnostic requests addressed to the slave nodes from the
+ * back-bone bus, and gateway them to the correct LIN cluster(s). Responses from the
+ * slave nodes shall be gatewayed back to the back-bone bus through the master node. <br><br>
+ * All diagnostic requests and responses (services) addressed to the slave nodes can be
+ * routed in the network layer (i.e. no application layer routing). In this case, the master node must implement the LIN transport protocol, see Transport Layer Specification, as well as the transport protocols used on the back-
+ * bone busses (e.g. ISO15765-2 on CAN). <br><br>
+ * Currently, LinStack support some service. With other service which LinStack doesn't support or user want to add action when any service is received, user can choose or create service in supported services of PEX GUI and use API of transport layer to implement it.
+ * in application. <br><br>
+ * Example in slave node:
+  ~~~~~{.c}
+  for(;;)
+  {
+       /* length shall specify the maximum length allowed */
+       length = 106;
+       ld_receive_message(LI0,&length, &nad, req_data);
+       /* if receive READ_DATA_BY_IDENTIFIER master request successfully */
+       if(diag_get_flag(LI0, LI0_DIAGSRV_READ_DATA_BY_IDENTIFIER_ORDER))
+       {
+            diag_clear_flag(LI0, LI0_DIAGSRV_READ_DATA_BY_IDENTIFIER_ORDER);
+            /* implement what you want to do when receive this message
+             * length will return real length of this message
+             * req_data will contain SID and data of this message */
+            /* send back response data */
+            ld_send_message(LI0,17,nad, res_data);
+       }
+  }
+  ~~~~~
+ */
+/*!
+ * @defgroup diag_node_configuration_group Node configuration
+ * @ingroup diagnostic_group
+ * @brief This group contains APIs that used for node configuration purpose.
+ * @details
+ * With protocol lin2.1 in slave node, some service like (Data dump, Conditional change nad with id from 2 to 255) are not supported by LinStack but user can implement
+ * it in application by use function ld_receive_message and ld_send_message in transport layer. <br><br>
+ * With protocol J2602 in slave node, some service like (Data dump, Assign NAD, Conditional change NAD) are not supported by LinStack but user can implement
+ * it in application by choosing these services in supported_sid in PEX GUI and use function ld_receive_message and ld_send_message in transport layer.
+ * When received target reset master request slave node just update status_byte and send response positive message.
+*/
+/*!
+ * @defgroup diag_node_identification_group Node identification
+ * @ingroup diagnostic_group
+ * @brief This group contains API that used for node identification purpose.
+ * @details
+ * Read by identifier service  just support id 0 and 1. User can implement for other id by modify function ld_read_by_id_callout in generated file lin_cfg.c.
+*/
+
+/*!
+ * @defgroup transport_group Transport layer API
+ * @ingroup lin_stack
+ * @brief Transport layer stands between the application layer and the core API layer.
+ * @details
+ * This layer consists the implementation of data transportation which contains one or more LIN frames. It is situated between the application layer and the core API layer including LIN2.1 TL API and LIN TL J2602.
+ * This layer provides APIs for the transport protocol, node configuration and diagnostic services.
+ * For LIN 2.1, all components will be extended from LIN 2.0 specification.
+ * The node configuration for J2602 implements only some functions of LIN 2.0 specification.
+ */
+/*!
+ * @defgroup coreapi_group LIN Core API
+ * @ingroup lin_stack
+ * @brief The LIN core API handles initialization, processing and a signal based interaction
+between the application and the LIN core. Refer to chapter 7, LIN 2.2A specification
+ * @details
+ *   - Core API layer consists of API functions as defined by the LIN2.1/J2602 specifications.
+ *   - Enabling the user to utilize the LIN2.1/J2602 communication within the user application.
+ *   - Both the static and dynamic modes for calling the API functions are supported.
+ *   - The core API layer interacts with the low level layer and can be called by such upper layers as LIN2.1 TL API,
+ *     LIN TL J2602 or application for diagnostic implementation.
+ */
+/*!
+ * @defgroup lowlevel_group Low level API
+ * @ingroup lin_stack
+ * @brief  Low level layer consists of functions that call LIN driver API.
+ * @details This layer contains the implementation of LIN hardware initialization and deinitialization, getting LIN node's current state, sending wakeup signals, enabling and disabling interrupts, sending frame data from a buffer, receiving frame data into a buffer, handling timeout and callbacks from LIN driver.
+ */
+
+
+/*!
+ * @defgroup common_core_api_group Common Core API.
+ * @ingroup coreapi_group
+ * This group contains general core APIs that used for both protocol LIN 2.1 and J2602.
+ */
+/*!
+ * @defgroup LIN21_core_api_group LIN 2.1 Specific API
+ * @ingroup coreapi_group
+ * LIN 2.1 is extended from in LIN 2.0 specification through diagnostic services and few functions were removed as obsolete.
+ * <ol>
+ * <li>LIN 2.1 is compatible with LIN 2.0:
+ *
+ * <ul>
+ * <li>A LIN 2.1 master node may handle a LIN 2.0 slave node if the master node also contains
+ * all functionality of a LIN 2.0 master node, e.g. obsolete functions like Assign frame Id. </li>
+ * <li>A LIN 2.1 slave node can be used in a cluster with a LIN 2.0 master node if the LIN 2.1 slave node
+ * is pre-configured, i.e. the LIN 2.1 slave node has a valid configuration after reset.</li>
+ * </ul>
+ * </li>
+ *
+ * <li>Changes between LIN 2.0 and LIN 2.1:
+ *
+ * <ul>
+ * <li>LIN2.1 enhance the capacity of LIN2.0 on event-triggered frame collision handling and diagnostic services supported.
+ * Besides, several features are added to fulfill powerful capacity of LIN network such as configuration service,
+ *  assign frame ID range configuration, etc.</li>
+ * </ul>
+ * </li>
+ * </ol>
+ */
+/*!
+ * @defgroup J2602_core_api_group J2602 Specific API
+ * @ingroup coreapi_group
+ * J2602 protocol is LIN 2.0 based. It contains LIN 2.0's modules to support Signal management,
+ *  network management, scheduler and J2602 status management.
+ * The goal of J2602 is to improve the interoperability and interchangeability of LIN devices
+ *  within a network by resolving those LIN2.0 requirements that are ambiguous, conflicting, or optional.
+ * Moreover, J2602 provides additional requirements that are not present in LIN2.0. For example: fault tolerant, operation, network topology, etc.
+ * Different to LIN2.1 protocol, J2602 does not support sporadic and event trigger frames in communication.
+ */
+
+
+/*!
+ * @defgroup driver_cluster_group Driver and cluster management
+ * @ingroup common_core_api_group
+ * @brief API perform the initialization of the LIN core.
+ * @details
+ */
+/*!
+ * @defgroup signal_interract_group Signal interaction
+ * @ingroup common_core_api_group
+ * @brief This group contains APIs that help users interract with signals of LIN node.
+ * @details
+ */
+/*!
+ * @defgroup notification_group Notification
+ * @ingroup common_core_api_group
+ * @brief This group contains APIs that let users know when a signal's value changed.
+ * @details
+ */
+/*!
+ * @defgroup schedule_management_group Schedule management
+ * @ingroup common_core_api_group
+ * @brief This group contains APIs that help users manage schedule tables in master node only.
+ * @details
+ */
+/*!
+ * @defgroup interface_management_group Interface management
+ * @ingroup common_core_api_group
+ * @brief This group contains APIs that help users manage interface(s) in LIN node.
+ * @details
+ */
+/*!
+ * @defgroup call_out_group User provided call-outs
+ * @ingroup common_core_api_group
+ * @brief This group contains APIs which may be called from within the LIN module in order to enable/disable LIN communication interrupts.
+ * @details
+ */
+/*!
+ * @defgroup commontl_api_group Common Transport Layer API
+ * @ingroup transport_group
+ * @brief Contains Transport Layer APIs that used for both protocols LIN 2.1 and J2602
+ */
+/*!
+ * @defgroup j2602tl_api_group J2602 Transport Layer specific API
+ * @ingroup transport_group
+ * @brief Contains Transport Layer APIs that only used for J2602 protocol
+ */
+
+ /*!
+ * @defgroup j2602tl_node_configuration_group Node configuration
+ * @ingroup j2602tl_api_group
+ * @brief This group contains APIs that used for node configuration purpose.
+ */
+
+/*!
+ * @defgroup initialization_group Initialization
+ * @ingroup commontl_api_group
+ * @brief Initialize transport layer (queues, status, ...).
+ * @details
+ */
+/*!
+ * @defgroup raw_api_group Raw API
+ * @ingroup commontl_api_group
+ * @brief The raw API is operating on PDU level and it is typically used to gateway PDUs between CAN and LIN.
+ * @details  Usually, a FIFO is used to buffer PDUs in order to handle the different bus speeds.
+ */
+/*!
+ * @defgroup cooked_api_group Cooked API
+ * @ingroup commontl_api_group
+ * @brief Cooked processing of diagnostic messages manages one complete message at a time.
+ */

@@ -1,0 +1,315 @@
+/*!
+    @defgroup sbc_uja116x System Basis Chip Driver (SBC) - UJA116xA Family 
+    @details
+    @brief System Basis Chip driver is a middleware driver for SBC settings and control.
+
+    ## Hardware background ##
+    The UJA116xA is a mini high-speed CAN System Basis Chip (SBC) containing an
+    ISO 11898-2:201x compliant HS-CAN transceiver and an integrated
+    5 V or 3.3 V 250 mA scalable supply (V1) for a microcontroller and/or
+    other loads. It also features a watchdog and a Serial Peripheral Interface (SPI). The
+    UJA116xA can be operated in very low-current Standby and Sleep modes with bus and
+    local wake-up capability.
+    The UJA1169A comes in six variants. The UJA1169ATK, UJA1169ATK/F, UJA1169ATK/X and
+    UJA1169ATK/X/F contain a 5 V regulator (V1). V1 is a 3.3 V regulator in the UJA1169ATK/3
+    and the UJA1169ATK/F/3.
+    The UJA1169ATK, UJA1169ATK/F, UJA1169ATK/3 and UJA1169ATK/F/3 variants feature a
+    second on-board 5 V regulator (V2) that supplies the internal CAN transceiver and can
+    also be used to supply additional on-board hardware.
+    The UJA1169ATK/X and UJA1169ATK/X/F are equipped with a 5 V supply (VEXT) for
+    off-board components. VEXT is short-circuit proof to the battery, ground and negative
+    voltages. The integrated CAN transceiver is supplied internally via V1, in parallel with the
+    microcontroller.
+    The UJA1168 comes in four variants. The UJA1168ATK, UJA1168ATK/FD, UJA1168ATK/VX and
+    UJA1168ATK/VX/FD contain a 5 V regulator (V1).
+    The UJA1168ATK and UJA1168ATK/FD versions contain a battery-related
+    high-voltage output (INH) for controlling an external voltage regulator, while the
+    UJA1168ATK/VX and UJA1168ATK/VX/FD are equipped with a 5 V sensor supply (VEXT).
+    The UJA1169xx/F and UJA1168xx/FD variants support ISO 11898 compliant CAN partial
+    networking with a selective wake-up function incorporating CAN FD-passive.
+    CAN FD-passive is a feature that allows CAN FD bus traffic to be ignored in
+    Sleep/Standby mode. CAN FD-passive partial networking is the perfect fit for networks
+    that support both CAN FD and classic CAN communications. It allows normal CAN
+    controllers that do not need to communicate CAN FD messages to remain in partial
+    networking Sleep/Standby mode during CAN FD communication without generating bus
+    errors.
+    The UJA116xA implements the standard CAN physical layer as defined in the current
+    ISO11898 standard (-2:2003, -5:2007, -6:2013).
+    A dedicated LIMP output pin is provided to flag system failures on UJA1169 variants.
+    A number of configuration settings are stored in non-volatile memory. This arrangement
+    makes it possible to configure the power-on and limp-home behavior of the UJA116xA to
+    meet the requirements of different applications.
+
+    ## How to use SBC driver in your application ##
+    In order to set up SBC device the user needs to configure sbc_int_config_t structure in which 
+    are included following structures: sbc_regulator_ctr_t, sbc_wtdog_ctr_t, 
+    sbc_mode_mc_t, sbc_fail_safe_lhc_t, sbc_sys_evnt_t, sbc_lock_t, sbc_can_conf_t, sbc_wake_t
+    These nested structures correspond to individual registers.
+    The sbc_int_config_t structure is passed as a parameter to Init function to initialize SBC device. 
+    The rest of the functions are related to individual registers.
+
+    ### Initialization ###
+    The SBC_InitDriver function takes a parameter which is an instance of SPI used for communication with UJA116xA.
+    The SBC_InitDevice function is responsible for setting up the UJA116xA, according to user configuration data which is passed as parameter. The SBC_InitDevice function configures all SBC registers except factories configuration set up in non volatile memory, (Start up control and SBC configuration register.)
+    The SBC_InitDevice function transitions the SBC to standby mode, where the configuration is performed, and then to a mode selected in the main configuration structure. Before the transition to standby mode all event capture registers are cleared. In order to read the pre-reset or wake-up events, use SBC_GetEventsStatus between SBC_InitDriver and SBC_InitDevice.
+
+    ### Mode transition ###
+    SBC_SetMode performs software transition from one mode to another. The transition is achieved by writing to mode control register. The event capture registers are cleared before device is moved to standby and sleep mode.
+
+    ### Writing to registers ###
+    In order to write to registers, there are several methods dedicated to some specific registers. These methods (names starting with SBC_Set) take a value or a pointer to structure containing values to be written to particular registers as a parameter.
+    Besides these methods there is also a method SBC_DataTransfer which is common to reading and writing to all registers. It takes three parameters. The first one is an address of a register to be written. Addresses of registers are defined in sbc_register_ t enum. The second argument is pointer to a value which should be sent to a register. The last argument is used for register reading only and its value is unused in this case.  NULL pointer is used when parameter is unused.
+
+    ### Reading from registers ###
+    Content of a register is read by method SBC_DataTransfer, which provides both reading and writing to all registers. This method has three arguments. The first one is an address of a register to be read from, the third one is a pointer to a variable where the content of a register will be stored. Second argument is used for the register writing only and it should be NULL in this case. Addresses of registers are defined in enum sbc_register_t.
+    Several methods to reading specific control and status register are available similarly to the register writing. Their names start with SBC_Get.
+
+    ### Reading status registers ###
+    Content of status register can be read by method SBC_DataTransfer or using appropriate function which starts with SBC_Get and finishes with Status. 
+    Event capture registers must be cleared using SBC_CleanEvents by setting to 1 appropriate status. For clear all events set all statuses to 1 or reading all event capture statuses using SBC_GetEventsStatus before.
+
+    There are several functions which read status and store it to structure. The Table 3 sumarize which function reads appropriate status register. 
+    
+    Function name        | Status register
+    -------------------- | ---------------
+    SBC_GetMainStatus    | Main status, Watchdog status
+    SBC_GetSupplyStatus  | V2/VEXT status, V1 status
+    SBC_GetCanStatus     | CAN transceiver status, CAN partial networking error, CAN partial networking status, CAN oscillator status, CAN-bus silence status, VCAN status, CAN failure status
+    SBC_GetWakeStatus    | WAKE pin status
+    SBC_GetEventsStatus  | Global event status, System event status, Supply event status, Transceiver event status, WAKE pin event status
+    SBC_GetAllStatus     | Read all statuses from this table
+
+    ### Reading and writing non-volatile SBC configuration ###
+    The UJA116xA contains Multiple Time Programmable Non-Volatile (MTPNV) memory cells that allow some of the default device settings to be reconfigured. This non-volatile memory has limited write access. Programming of the NVM registers is performed in two steps. First, the required values are written. In the second step, reprogramming is confirmed by writing the correct CRC value to the MTPNV CRC control register.
+    This memory is accessed by SBC_GetFactoriesSettings and SBC_ChangeFactoriesSettings methods. The only parameter is a pointer to sbc_factories_conf_t data structure, which should be written to NTPNVM or where should be stored data read out from the NTPNVM. If the device has been programmed previously, the factory presets may need to be restored before reprogramming can begin. When the factory presets have been restored successfully, a system reset is generated automatically and UJA116xA switches back to Forced Normal mode.
+    If SBC_ChangeFactoriesSettings method returns an error “SBC_UJA_NVN_ERROR” it means device was preconfigured from default settings and it is not possible to write to non-volatile memory. Restore factory preset values is needed. 
+    Factory preset values are restored if the following conditions apply continuously for at least td(MTPNV) during battery power-up: 
+    • pin RSTN is held LOW 
+    • CANH is pulled up to VBAT 
+    • CANL is pulled down to GND
+    Now SBC_ChangeFactoriesSettings can be used for change factory preset values to custom configuration.
+
+    ### Error tracking ###
+    If an error during the R/W operations to UJA116xA registers occurs, the driver keeps track of it. If a method returns status different from STATUS_SUCCESS the status represents the type of error from sbc_status_t enum.
+
+    ## Example code snippets (for FRDM PK144-Q100 freedom board). ##
+
+    ### Initialization example ###
+    This example source code snippet shows how to initialize SPI and the SBC.
+    The SPI instance used in this example is LPSPICOM1.
+    The following structures are generated by the configuration tool or need to be created by the user: lpspiCom1_MasterConfig0, lpspiCom1State, sbc_uja116x_InitConfig0.
+  ~~~~~{.c}
+    int main(void)
+    {  
+        ...
+        
+        sbc_status_t status = STATUS_SUCCESS;
+        
+        /* Initialization clocks. */
+        ...
+
+        /* Initialize pins. */
+        ...
+
+        /* Initialize LPSPI. */
+        LPSPI_DRV_MasterInit(LPSPICOM1, &lpspiCom1State, &lpspiCom1_MasterConfig0);
+
+        /* Initialize SBC. */
+        status = SBC_InitDriver(LPSPICOM1);
+        status |= SBC_InitDevice(&sbc_uja116x_InitConfig0);
+
+        if(status != STATUS_SUCCESS)
+        {
+            /* Do something here. */
+        }
+        
+        ...
+    }
+  ~~~~~
+  
+    ### Write to Regulator control registers example ###
+    This example source code snippet shows how to configure Regulator control register.
+    Power distribution control (PDC), V2/VEXT configuration (V2C/ VETXT), V1 reset threshold can be 
+    configured by writing to Regulator Control register.
+    Note: PDC can be set for UJA1169 variants (not UJA1168),
+    V2 can be set for models UJA1169ATK, UJA1169ATK/3, UJA1169ATK/F and UJA1169ATK/F/3,
+    VEXT can be set for models UJA1169ATK/X and UJA1169ATK/X/F. For more info read function description.
+  ~~~~~{.c}
+    int main(void)
+    {  
+        ...
+        
+        sbc_status_t status = STATUS_SUCCESS;
+        sbc_regulator_ctr_t regulator;
+        regulator.regulator.pdc = SBC_UJA_REGULATOR_PDC_HV;
+        regulator.regulator.v2c = SBC_UJA_REGULATOR_V2C_OFF;
+        regulator.regulator.v1rtc = SBC_UJA_REGULATOR_V1RTC_80;
+         
+        regulator.supplyEvnt.v2oe = SBC_UJA_SUPPLY_EVNT_V2OE_EN;
+        regulator.supplyEvnt.v2ue = SBC_UJA_SUPPLY_EVNT_V2UE_EN;
+        regulator.supplyEvnt.v1ue = SBC_UJA_SUPPLY_EVNT_V1UE_DIS;
+
+        status = SBC_SetVreg(&regulator);
+        
+        if(status != STATUS_SUCCESS)
+        {
+            /* Do something here. */
+        }
+        
+        ...
+    }
+  ~~~~~
+  
+  ### Read from Regulator control registers example ###
+  This example source code snippet shows how to read from Regulator control registers.
+  Reading Regulator control register gives information about Power distribution control (PDC), 
+  V2/VEXT configuration (V2C/ VETXT), V1 reset threshold current configuration. Using this method
+  can be useful for check if the Regulator control register is configured correctly. 
+  For more info read function description.
+  ~~~~~{.c}
+    int main(void)
+    {  
+        ...
+        
+        sbc_status_t status = STATUS_SUCCESS;
+        sbc_regulator_ctr_t regulator;
+        
+        status = SBC_GetVreg(&regulator);
+        
+        if(status == STATUS_SUCCESS)
+        {
+            if(regulator.supplyEvnt.v2oe == SBC_UJA_SUPPLY_EVNT_V2OE_EN)
+            {
+                /* Do something here. */
+            }
+        }
+        
+        ...
+    }
+  ~~~~~
+  
+  ### Reading all device status example ###
+  This example source code snippet shows how to read all SBC device statuses in one function.
+  Variable allStatuses contains these registers: Main status register, Watchdog status register, 
+  Supply voltage status register, Transceiver status register, WAKE pin status register, 
+  Event capture registers. For more info read function description.
+  ~~~~~{.c}
+    int main(void)
+    {  
+        ...
+        
+        sbc_status_t status = STATUS_SUCCESS;
+        sbc_status_group_t allStatuses;
+        
+        while(1){
+            
+            status = SBC_GetAllStatus(&allStatuses);
+                
+            if(status == STATUS_SUCCESS)
+            {
+                
+                if(allStatuses.trans.cbss == SBC_UJA_TRANS_STAT_CBSS_ACT)
+                {
+                    /* Do something here. */
+                }
+                
+                if(allStatuses.supply.v1s == SBC_UJA_SUPPLY_STAT_V1S_VAB)
+                {
+                    /* Do something here. */
+                }
+                
+                ...
+
+                /* Periodically feed watchdog (anytime in watchdog period in case of timeout watchdog mode). */
+                SBC_FeedWatchdog();
+            }
+        } 
+    }
+  ~~~~~
+  ### Reading Transceiver device status example ###
+  This example source code snippet shows how to read Transceiver device status from SBC.
+  It contains CAN transceiver status, CAN partial networking error,
+  CAN partial networking status, CAN oscillator status, CAN-bus silence status,
+  VCAN status, CAN failure status. For more info read function description.
+  Note similar approach can be used for reading other status using different SBC_Get*Status.
+  ~~~~~{.c}
+    int main(void)
+    {  
+        ...
+        
+        sbc_status_t status = STATUS_SUCCESS;
+        sbc_trans_stat_t transStatus;
+        
+        while(1){
+            
+            status = SBC_GetCanStatus(&transStatus);
+                
+            if(status == STATUS_SUCCESS)
+            {
+                
+                if(transStatus.cbss == SBC_UJA_TRANS_STAT_CBSS_ACT)
+                {
+                    /* Do something here. */
+                }
+                
+                ...
+
+                /* Periodically feed watchdog (anytime in watchdog period in case of timeout watchdog mode). */
+                SBC_FeedWatchdog();
+            }
+        } 
+    }
+  ~~~~~
+  ### Change factories settings  ###
+  This example source code snippet shows how to change factory preset value of non-volatile memmory. 
+  Device must be set to fatory preset. For more info read function description.
+  ~~~~~{.c}
+    int main(void)
+    {  
+        ...
+        
+        sbc_status_t status = STATUS_SUCCESS;
+        sbc_factories_conf_t factories;
+        
+        status = SBC_GetFactoriesSettings(&factories);
+        
+        factories.control.fnmc = SBC_UJA_SBC_SDMC_EN;
+        factories.control.sdmc = SBC_UJA_SBC_SDMC_DIS;
+        factories.startUp.rlc = SBC_UJA_START_UP_RLC_20_25p0;
+        
+        if(status == STATUS_SUCCESS)
+        {
+            status = SBC_ChangeFactoriesSettings(&factories);
+        }
+        
+        if(status != STATUS_SUCCESS)
+        {
+            /* Do something here. */
+        }
+    }
+  ~~~~~
+     ## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\middleware\sbc\sbc_uja116x\source\sbc_uja116x_driver.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\middleware\sbc\sbc_uja116x\include
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref lpspi
+\ref osif
+@}*/

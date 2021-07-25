@@ -1,0 +1,110 @@
+/*!
+    @defgroup ftm_ic_driver FlexTimer Input Capture Driver (FTM_IC)
+    @ingroup ftm
+    @details
+    @brief FlexTimer Input Capture Peripheral Driver.
+
+    ## Hardware background ##
+    The FTM of the S32K1xx is based on a 16 bits counter and supports: input capture, output compare, PWM and some instances
+    include quadrature decoder.
+
+    ## How to use FTM driver in your application ##
+    For all operation modes (without Quadrature Decoder mode) the user need to configure ftm_user_config_t. This structure will be used for initialization
+    (FTM_DRV_Init). The next functions used are specific for each operation mode.
+
+    ### Single edge input capture mode ###
+    For this mode the user needs to configure parameters such: maximum counter value, number of channels, input capture operation mode
+    (for single edge input are used edge detect mode) and edge alignment. All this information is included in the ftm_input_param_t structure.
+
+    ## Integration guideline ##
+
+    ### Compilation units ###
+
+    The following files need to be compiled in the project:
+    \verbatim
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_ic_driver.c
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_common.c
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_hw_access.c
+    \endverbatim
+
+    ### Include path ###
+
+    The following paths need to be added to the include path of the toolchain:
+    \verbatim
+    ${S32SDK_PATH}\platform\drivers\inc\
+    ${S32SDK_PATH}\platform\drivers\src\ftm\
+    \endverbatim
+
+    ### Compile symbols ###
+
+    No special symbols are required for this component
+
+    ### Dependencies ###
+
+    \ref clock_manager
+    \ref interrupt_manager
+
+   Example:
+    @code
+    /* The state structure of instance in the input capture mode */
+    ftm_state_t stateInputCapture;
+    #define FTM_IC_INSTANCE        0UL
+    /* Channels configuration structure for inputCapture input capture */
+    ftm_input_ch_param_t inputCapture_InputCaptureChannelConfig[1] =
+    {
+        {
+        0U,                             /* Channel Id */
+        FTM_EDGE_DETECT,                /* Input capture operation Mode */
+        FTM_RISING_EDGE,                /* Edge alignment Mode */
+        FTM_NO_MEASUREMENT,             /* Signal measurement operation type */
+        0U,                             /* Filter value */
+        false,                          /* Filter disabled */
+        true                            /* Continuous mode measurement */
+        NULL,                           /* Vector of callbacks  parameters for channels events */
+        NULL                            /* Vector of callbacks for channels events */
+        }
+    };
+    /* Input capture configuration for inputCapture */
+    ftm_input_param_t inputCapture_InputCaptureConfig =
+    {
+        1U,                                     /* Number of channels */
+        65535U,                                 /* Maximum count value */
+        inputCapture_InputCaptureChannelConfig  /* Channels configuration */
+    };
+    /* Timer mode configuration for inputCapture */
+    /* Global configuration of inputCapture */
+    ftm_user_config_t  inputCapture_InitConfig =
+    {
+        {
+            false,                      /* Software trigger state */
+            false,                      /* Hardware trigger 1 state */
+            false,                      /* Hardware trigger 2 state */
+            false,                      /* Hardware trigger 3 state */
+            false,                      /* Maximum loading point state */
+            false,                      /* Min loading point state */
+            FTM_SYSTEM_CLOCK,           /* Update mode for INVCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for SWOCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for OUTMASK register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for CNTIN register */
+            false,                      /* Auto clear trigger state for hardware trigger */
+            FTM_UPDATE_NOW,             /* Select synchronization method */
+        },
+        FTM_MODE_INPUT_CAPTURE,         /* Mode of operation for FTM */
+        FTM_CLOCK_DIVID_BY_4,           /* FTM clock pre-scaler */
+        FTM_CLOCK_SOURCE_SYSTEMCLK,     /* FTM clock source */
+        FTM_BDM_MODE_00,                /* FTM debug mode */
+        false,                          /* Interrupt state */
+        false                           /* Initialization trigger */
+    };
+    FTM_DRV_Init(FTM_IC_INSTANCE, &inputCapture_InitConfig, &stateInputCapture);
+    FTM_DRV_InitInputCapture(FTM_IC_INSTANCE, &inputCapture_InputCaptureConfig);
+    counter = FTM_DRV_GetInputCaptureMeasurement(FTM_IC_INSTANCE, 0UL);
+    @endcode
+   FTM_DRV_GetInputCaptureMeasurement is now used in interrupt mode and this function is used to save time stamps
+   in internal buffers.
+
+   ### Edge-Aligned PWM and Input Capture mode ###
+   - Support both Edge-Aligned PWM and Input Capture mode can work over the same FTM instance.
+   - The guideline can be found here \ref ftm_pwm_driver
+
+@}*/

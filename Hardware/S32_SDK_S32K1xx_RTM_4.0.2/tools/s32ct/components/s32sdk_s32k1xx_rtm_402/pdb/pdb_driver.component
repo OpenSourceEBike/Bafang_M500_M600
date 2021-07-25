@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="pdb" label="pdb_config" category="driver" global_only="false" hidden="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component-5.0.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <sw_comp_ref name="platform.driver.pdb" version="1.0.0"/>
+    <description>Programmable Delay Block</description>
+    <mode id="general" label="General Mode" available="true">
+        <description>PDB general mode</description>
+        <config_set_refs>
+            <config_set_ref>pdb_driver</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>PDB</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set label="General PDB Configuration" id="pdb_driver" from_source="pdb_driver.h">
+        <description>Programmable Delay Block Driver</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="pdb_default" label="Default Values" available="true">
+                <description>PDB default configuration</description>
+				    <set id="adcTrigCfgs.0.readOnly">true</set><!-- This is to add 1 element to pre-trigger configurations -->
+				    <set id="pdbCfgs.0.readOnly">true</set><!-- This is to add 1 element to PDB timer configurations -->
+            </quick_selection>
+            <default>pdb_default</default>
+        </quick_selections>
+        <settings>
+            <reference id="adcTrigCfgs" label="ADC pre-trigger configuration" available="true" type="adcTrigCfgsArray" config_set_id="pdb_driver" component_id="pdb_trig_config">
+                <description>ADC pre-trigger configuration for PDB</description>
+            </reference>
+            <reference id="pdbCfgs" label="PDB timer configuration" available="true" type="pdbCfgsArray" config_set_id="pdb_driver" component_id="pdb_config">
+                <description>Basic configuration for PDB</description>
+            </reference>
+
+            <variable value="`../pdb/pdb_codegen.js`" id="codegen_file"/>
+			<variable value="`PDB_CodeGenerator`" id="codegen_class"/>
+        </settings>
+        <user_types>
+            <array id="adcTrigCfgsArray" label="ADC pre-trigger configurations" options="ShowContentAs=MasterDetail" key_selector_expr="x -> (x.getSetting(`name`).value())" type="pdb_adc_pretrigger_config_t">
+					<description>ADC PAL conversion group list</description>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -&gt; ($instance.getLabel() +`_adcTrigConfig`+ x.getID())"/>
+                    <set_default id="readOnly" value_expr="x -&gt; (`true`)"/>
+                    <set_default id="adcPreTriggerIdx" value_expr="x -&gt; (x.getID())"/>
+                </item_defaults>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -&gt;item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the ADC pre-trigger configurations"/>
+                    <constraint cond_expr="($this.getSize() + $parent.pdbCfgs.getSize()) > 0" level="error" description="There must be at least one PDB configuration."/>
+                </validation>
+            </array>
+            <array id="pdbCfgsArray" label="PDB timer configurations" options="ShowContentAs=MasterDetail" key_selector_expr="x -> (x.getSetting(`name`).value())" type="pdb_timer_config_t">
+					<description>ADC PAL conversion group list</description>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -&gt; ($instance.getLabel() +`_timerConfig`+ x.getID())"/>
+                    <set_default id="readOnly" value_expr="x -&gt; (`true`)"/>
+                </item_defaults>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -&gt;item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the ADC pre-trigger configurations"/>
+                </validation>
+            </array>
+        </user_types>
+        <generated_types>
+            <enum id="pdb_load_value_mode_t" label="Defines the type of value load mode for the PDB module" from="pdb_load_value_mode_t">
+                <description>Some timing related registers, such as the MOD, IDLY, CHnDLYm, INTx and POyDLY, buffer the setting values. Only the load operation is triggered. The setting value is loaded from a buffer and takes effect. There are four loading modes to fit different applications. Implements : pdb_load_value_mode_t_Class</description>
+                <item id="PDB_LOAD_VAL_IMMEDIATELY" label="Loaded immediately after load operation">
+                    <description>Loaded immediately after load operation.</description>
+                </item>
+                <item id="PDB_LOAD_VAL_AT_MODULO_COUNTER" label="Loaded when counter hits the modulo after load operation">
+                    <description>Loaded when counter hits the modulo after load operation.</description>
+                </item>
+                <item id="PDB_LOAD_VAL_AT_NEXT_TRIGGER" label="Loaded when detecting an input trigger after load operation">
+                    <description>Loaded when detecting an input trigger after load operation.</description>
+                </item>
+                <item id="PDB_LOAD_VAL_AT_MODULO_COUNTER_OR_NEXT_TRIGGER" label="Loaded when counter hits the modulo or detecting an input trigger after load operation">
+                    <description>Loaded when counter hits the modulo or detecting an input trigger after load operation.</description>
+                </item>
+            </enum>
+            <enum id="pdb_clk_prescaler_div_t" label="Defines the type of prescaler divider for the PDB counter clock" from="pdb_clk_prescaler_div_t">
+                <description></description>
+                <item id="PDB_CLK_PREDIV_BY_1" label="Counting divided by 1 time prescaler multiplication factor">
+                    <description>Counting divided by 1 time prescaler multiplication factor.</description>
+                </item>
+                <item id="PDB_CLK_PREDIV_BY_2" label="Counting divided by 2 times prescaler multiplication factor">
+                    <description>Counting divided by 2 times prescaler multiplication factor.</description>
+                </item>
+                <item id="PDB_CLK_PREDIV_BY_4" label="Counting divided by 4 times prescaler multiplication factor">
+                    <description>Counting divided by 4 times prescaler multiplication factor.</description>
+                </item>
+                <item id="PDB_CLK_PREDIV_BY_8" label="Counting divided by 8 times prescaler multiplication factor">
+                    <description>Counting divided by 8 times prescaler multiplication factor.</description>
+                </item>
+                <item id="PDB_CLK_PREDIV_BY_16" label="Counting divided by 16 times prescaler multiplication factor">
+                    <description>Counting divided by 16 times prescaler multiplication factor.</description>
+                </item>
+                <item id="PDB_CLK_PREDIV_BY_32" label="Counting divided by 32 times prescaler multiplication factor">
+                    <description>Counting divided by 32 times prescaler multiplication factor.</description>
+                </item>
+                <item id="PDB_CLK_PREDIV_BY_64" label="Counting divided by 64 times prescaler multiplication factor">
+                    <description>Counting divided by 64 times prescaler multiplication factor.</description>
+                </item>
+                <item id="PDB_CLK_PREDIV_BY_128" label="Counting divided by 128 times prescaler multiplication factor">
+                    <description>Counting divided by 128 times prescaler multiplication factor.</description>
+                </item>
+            </enum>
+            <enum id="pdb_trigger_src_t" label="Defines the type of trigger source mode for the PDB" from="pdb_trigger_src_t">
+                <description>Selects the trigger input source for the PDB. The trigger input source can be internal or the software trigger. Implements : pdb_trigger_src_t_Class</description>
+                <item id="PDB_TRIGGER_IN0" label="Trigger selected via TRGMUX">
+                    <description>Trigger selected via TRGMUX.</description>
+                </item>
+                <item id="PDB_SOFTWARE_TRIGGER" label="Software trigger">
+                    <description>Software trigger.</description>
+                </item>
+            </enum>
+            <enum id="pdb_clk_prescaler_mult_factor_t" label="Defines the type of the multiplication source mode for PDB" from="pdb_clk_prescaler_mult_factor_t">
+                <description>Selects the multiplication factor of the prescaler divider for the PDB counter clock. Implements : pdb_clk_prescaler_mult_factor_t_Class</description>
+                <item id="PDB_CLK_PREMULT_FACT_AS_1" label="1">
+                    <description>Multiplication factor is 1.</description>
+                </item>
+                <item id="PDB_CLK_PREMULT_FACT_AS_10" label="10">
+                    <description>Multiplication factor is 10.</description>
+                </item>
+                <item id="PDB_CLK_PREMULT_FACT_AS_20" label="20">
+                    <description>Multiplication factor is 20.</description>
+                </item>
+                <item id="PDB_CLK_PREMULT_FACT_AS_40" label="40">
+                    <description>Multiplication factor is 40.</description>
+                </item>
+            </enum>
+            <struct id="pdb_timer_config_t" label="Defines the type of structure for basic timer in PDB" from="pdb_timer_config_t">
+                <description></description>
+                <string id="name" label="Name">
+                    <description>Configuration name</description>
+                </string>
+                <bool id="readOnly" label="Read only">
+                    <description>Read only configuration</description>
+                </bool>
+                <reference id="loadValueMode" label="Load mode" type="pdb_load_value_mode_t">
+                    <description>Load mode.</description>
+                </reference>
+                <bool id="seqErrIntEnable" label="Enable PDB Sequence Error Interrupt">
+                    <description>Enable PDB Sequence Error Interrupt.</description>
+                </bool>
+                <reference id="clkPreDiv" label="Prescaler divider" type="pdb_clk_prescaler_div_t">
+                    <description>Prescaler divider.</description>
+                </reference>
+                <reference id="clkPreMultFactor" label="Multiplication factor for prescaler" type="pdb_clk_prescaler_mult_factor_t">
+                    <description>Multiplication factor for prescaler.</description>
+                </reference>
+                <reference id="triggerInput" label="Trigger input source" type="pdb_trigger_src_t">
+                    <description>Trigger input source.</description>
+                </reference>
+                <bool id="continuousModeEnable" label="Enable the continuous mode">
+                    <description>Enable the continuous mode.</description>
+                </bool>
+                <bool id="dmaEnable" label="Enable the dma for timer">
+                    <description>Enable the dma for timer.</description>
+                </bool>
+                <bool id="intEnable" label="Enable the interrupt for timer">
+                    <description>Enable the interrupt for timer.</description>
+                </bool>
+                <bool id="instanceBackToBackEnable" label="Enable instance back to back mode between PDB0 CH0 and PDB1 CH0 pre-triggers"  available="featureDefined(`FEATURE_PDB_HAS_INSTANCE_BACKTOBACK`)">
+                    <description>Enable the instance back to back mode between PDB0 CH0 and PDB1 CH0 pre-triggers, forming a ring (PDB0_CH0_pretrigger7 -> PDB1_CH0_pretrigger0 and PDB1_CH0_pretrigger7 -> PDB0_CH0_pretrigger0).
+                                &lt;br&gt;&lt;b&gt;NOTE:&lt;/b&gt; this configuration is common between all PDB instances (configures the same register SIM_CHIPCTL[PDB_BB_SEL] even if configured for either PDB instance)
+                                 Enabling when configuring PDB0, then disabling when configuring PDB1, will result in being disabled.
+                                &lt;br&gt;&lt;b&gt;NOTE:&lt;/b&gt; must not be enabled simultaneously with inter-channel back to back on any PDB instance.
+                    </description>
+                    <validation>
+                        <constraint when_expr="$this.getValue() == `true`" cond_expr="$parent.interchannelBackToBackEnable.getValue() == `false`" level="error" description="Instance back to back mode cannot be enabled simultaneously with inter-channel back to back "/>
+                    </validation>
+                </bool>
+                <bool id="interchannelBackToBackEnable" label="Enable inter-channel back to back mode between PDBx CH0 and PDBx CH1 pre-triggers"  available="featureDefined(`FEATURE_PDB_HAS_INTERCHANNEL_BACKTOBACK`)">
+                    <description>Enable the inter-channel back to back mode between PDBx CH0 and PDBx CH1 pre-triggers, forming a ring (PDBx_CH0_pretrigger7 -> PDBx_CH1_pretrigger0 and PDBx_CH1_pretrigger7 -> PDBx_CH0_pretrigger0).
+                                 &lt;br&gt;&lt;b&gt;NOTE:&lt;/b&gt; this configuration is dedicated to each PDB instance.
+                                 &lt;br&gt;&lt;b&gt;NOTE:&lt;/b&gt; must not be enabled simultaneously with instance back to back on any PDB instance.
+                    </description>
+                </bool>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -&gt;($instance.getLabel() +`_timerConfig`+ x.getID())"/>
+                </item_defaults>
+            </struct>
+            <struct id="pdb_adc_pretrigger_config_t" label="Defines the type of structure for configuring ADC's pre-trigger" from="pdb_adc_pretrigger_config_t">
+                <description></description>
+                <string id="name" label="Name">
+                    <description>Configuration name</description>
+                </string>
+                <bool id="readOnly" label="Read only">
+                    <description>Read only configuration</description>
+                </bool>
+                <integer id="adcPreTriggerIdx" label="Setting pre-trigger's index" type="uint8_t" min_expr="0" max_expr="7">
+                    <description>Setting pre-trigger's index</description>
+                </integer>
+                <bool id="preTriggerEnable" label="Enable the pre-trigger">
+                    <description>Enable the pre-trigger.</description>
+                </bool>
+                <bool id="preTriggerOutputEnable" label="Enable the pre-trigger output">
+                    <description>Enable the pre-trigger output.</description>
+                </bool>
+                <bool id="preTriggerBackToBackEnable" label="Enable pre-trigger back to back mode">
+                    <description>Enable the back to back mode for ADC pre-trigger.
+                                 &lt;br&gt;If enabled, the pretrigger will be activated automatically when the ADC COCO flag corresponding to the previous pretrigger in the chain, is set.
+                                 &lt;br&gt;The previous pretrigger for pretriggers with index 0, depend on features instanceBackToBackEnable and interchannelBackToBackEnable.
+                    </description>
+                </bool>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -&gt;($instance.getLabel() +`_adcTrigConfig`+ x.getID())"/>
+                </item_defaults>
+            </struct>
+        </generated_types>
+    </config_set>
+</component:config_component>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="trgmux_config" label="trgmux" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+    <sw_comp_ref name="platform.driver.trgmux" version="1.0.0"/>
+    <description>S32 SDK Peripheral Driver for Trigger MUX Control (TRGMUX)</description>
+    <mode id="general" label="General Mode" available="true">
+        <description>TRGMUX general mode</description>
+        <config_set_refs>
+            <config_set_ref>trgmux</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+         <peripheral_type>TRGMUX</peripheral_type>
+      </master_peripheral>
+    </mode>
+    <config_set id="trgmux" label="TRGMUX Configuration" from_source="trgmux_driver.h">
+        <description>Definition of TRGMUX configurations</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+          <quick_selection id="trgmux_default_value" label="Default Values TRGMUX">
+              <description>TRGMUX default configuration</description>
+                <set id="trgmuxCfg.0.readonly">true</set>
+                <set id="trgmuxCfg.0.mapping_cfg.0.triggerSource">TRGMUX_TRIG_SOURCE_DISABLED</set>
+                <set id="trgmuxCfg.0.mapping_cfg.0.targetModule">TRGMUX_TARGET_MODULE_DMA_CH0</set>
+                <set id="trgmuxCfg.0.mapping_cfg.0.lockreg">false</set>
+            </quick_selection>
+        </quick_selections>
+        <user_types>
+            <struct id="mapping_cfg_t" label="The TRGMUX mapping configuration" from="mapping_cfg_t">
+                <dynamic_enum id="triggerSource" label="Source" items="
+                    getResource(
+                    `trgmux_source`,
+                    `trigger_source_id`
+                    ).arrayToEnumItems(
+                    enumItem -> true,
+                    enumItem -> enumItem.getValue(),
+                    enumItem -> enumItem.getLabel(),
+                    enumItem -> enumItem.getValue()
+                    )"/>
+                <dynamic_enum id="targetModule" label="Target" items="
+                    getResource(
+                    `trgmux_source`,
+                    `target_module_id`
+                    ).arrayToEnumItems(
+                    enumItem -> true,
+                    enumItem -> enumItem.getValue(),
+                    enumItem -> enumItem.getLabel(),
+                    enumItem -> enumItem.getValue()
+                    )"/>
+                <bool id = "lockreg" label="Lock register">
+                    <description>Lock register </description>
+                </bool>
+            </struct>
+            <struct id="trgmux_config_t" label="The TRGMUX configuration" from="trgmux_config_t">
+                <string id="name" label="Name" >
+                   <description>Configuration Name</description>
+                   <validation>
+                      <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="the configuration name must be a C    identifier!"/>
+                   </validation>
+                </string>
+                <bool id = "readonly" label="Read only configuration">
+                    <description>Specifies how will be configuration generated. Read only generated structures are declared with const qualifiers</description>
+                </bool>
+                <array id="mapping_cfg" label="TRGMUX IO mapping lists" type="mapping_cfg_t" options="ShowContentAs=Table">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`targetModule`).value()).length() == 0" level="error" description="There are    some duplicated `Target` in the TRGMUX IO mapping configurations"/>
+                        <constraint cond_expr="$this.length() &gt; 0" level="error" description=" There is at least one TRGMUX IO mapping configuration!"/>
+                    </validation>
+                </array>
+            </struct>
+        </user_types>
+        <settings>
+            <array id="trgmuxCfg" label="TRGMUX configuration lists" type="trgmux_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN;UI_BORDER_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+                <description>TRGMUX instance configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the TRGMUX configurations"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> (`trgmux1_InitConfig` + x.getID())"/>
+                </item_defaults>
+            </array>
+            <variable value="`../trgmux/trgmux_codegen.js`" id="codegen_file"></variable>
+            <variable value="`TRGMUX_CodeGenerator`" id="codegen_class"></variable>
+        </settings>
+        <generated_types>
+        </generated_types>
+    </config_set>
+</component:config_component>

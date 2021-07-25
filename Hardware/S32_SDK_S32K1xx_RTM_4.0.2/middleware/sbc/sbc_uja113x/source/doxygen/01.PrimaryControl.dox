@@ -1,0 +1,174 @@
+/**
+  @addtogroup pcr
+<p>
+The primary control registers (0x00 - 0x1F) allow:
+<ul>
+<li>Configuring watchdog (0x00)</li>
+<li>Changing SBC mode (0x01)</li>
+<li>Configuring Fail-safe behaviour (0x02)</li>
+<li>Read SBCs main status (0x03)</li>
+<li>Enable system interrupts (0x04)</li>
+<li>Read watchdog status (0x05)</li>
+<li>Access (read/write) general purpose memory 0 - 3 (0x06 - 0x09)</li>
+<li>Lock specific memory areas (0x0A)</li>
+</ul>
+Interrupts and interrupt status is described in @ref isr.
+</p>
+  @{
+  @defgroup modeconfig 01. Mode handling
+  @defgroup wtdcconfig 02. Watchdog
+  @defgroup fscconfig 03. Fail-safe configuration
+  @defgroup lckcconfig 04. Lock control
+  @}
+ */
+
+/**
+ @addtogroup modeconfig
+ @section mode_intro Introduction
+<p>
+The SBC has two debug modes, the Forced Normal Mode (FNMC) and Software Development
+mode (SDMC). These modes can be configured in the SBCs MTPNV memory and can
+be set using the UJA113X_SetMtpnv() function. Be aware while writing the non-volatile
+memory, as these registers can't be rewritten again easily. Clearing the non-volatile
+memory requires special treatment, see @ref mtpnv_restore for details. These modes 
+influence the watchdog behaviour and the main purpose is to use them during 
+development, although is not limitted just for this use case.\n
+Aditionally, the SBC has 3 operating modes the user can switch to (the Normal,
+Standby and Sleep mode) with UJA113X_SetMode().
+</p>
+@subsection mode_sleep Sleep mode
+<p>
+To be able to switch to the Sleep mode, the MTPNV memory has to be set accordingly.
+In case the Sleep mode is disabled, the request to switch to Sleep mode is ignored.\n
+To enter the sleep mode, any pending interrupts or wake-up events need to be cleared
+and at least one regular wake-up source has to be enabled. Otherwise a system
+reset is triggered and the Reset Source Status bit (RSS) is set to  10100 (illegal
+Sleep mode command received).
+</p>
+
+ @subsection mode_modes Normal & Standby mode
+There should be no limitation to switch into these two modes except constrains
+related to watchdog. As the watchdog can be still running, make sure to
+handle the watchdog properly, otherwise a reset can occur.
+*/
+
+/**
+ @addtogroup wtdcconfig
+ @section wtdc_intro Introduction
+<p>
+The watchdog behaviour can be influenced by the debug modes (see mode @ref 
+mode_intro for details) in combination with the watchdog mode (window, timeout
+or autonomous mode). The watchdog period is adjustable ranging from 8 ms to
+4094 ms. 
+</p>
+@subsection wtdc_fnmc Watchdog in FNMC
+<p>
+In Forced Normal Mode the Watchdog is completely disabled. Thus, configuring 
+the watchdog mode has no influence on it's operation!
+</p>
+@subsection wtdc_sdmc Watchdog in SDMC
+<p>
+In Software Development Mode the watchdog can be activated or disabled based
+on configured watchdog mode. In case the timeout or window mode is selected,
+the watchdog is active independet from SDMC. For autonomous mode, the watchdog
+is active (only timeout mode) while SDMC = 0. For SDMC = 1, the watchdog stays
+inactive in autonomous mode!
+
+
+Following table summarizes all the use cases.
+
+<table>
+<caption>Summary of Watchdog settings</caption>
+<tr><th>SBC state                </tr> <th colspan = 4>            Watchdog Configurations               </th></tr>
+<tr><th>                         </th> <th>SDMC = x</th> <th>SDMC = x</th> <th>SDMC = 0</th> <th>SDMC = 1</th></tr>
+<tr><th>                         </th> <th>WMC = 100\n(Window)</th> <th>WMC = 010\n(Timeout)</th> <th>WMC = 001\n(Autonomous)</th> <th>WMC = 001\n(Autonomous</th></tr>
+<tr><th>Normal mode              </th> <td>Window </td> <td>Timeout</td> <td>Timeout</td> <td>Off</td></tr>
+<tr><th>Standby mode (INTN1 HIGH)</th> <td>Timeout</td> <td>Timeout</td> <td>Off    </td> <td>Off</td></tr>
+<tr><th>Standby mode (INTN1 LOW) </th> <td>Timeout</td> <td>Timeout</td> <td>Timeout</td> <td>Off</td></tr>
+<tr><th>Sleep mode               </th> <td>Timeout</td> <td>Timeout</td> <td>Off    </td> <td>Off</td></tr>
+<tr><th>Forced Normal mode       </th> <td>Off    </td> <td>Off    </td> <td>Off    </td> <td>Off</td></tr>
+<tr><th>Other modes              </th> <td>Off    </td> <td>Off    </td> <td>Off    </td> <td>Off</td></tr>
+</table>
+</p>
+@subsection wtdc_config Watchdog mode configuration
+The watchdog mode can be reconfigured only in Standby mode using the 
+UJA113X_SetWatchdog(). Writes leading to change the watchdog mode in other 
+modes than Standby would cause a switch to reset mode and reset source status 
+(RSS) bit will be set to 10000 (illegal watchdog mode control access).
+
+From this perspective it's the users responsibility to switch the SBC into
+Standby mode prior to watchdog mode update.
+</p>
+<p>
+@subsection wtdc_trig Watchdog trigger
+<p>
+To reset the watchdog timer a successful write into the watchdog control register
+has to be performed. The UJA113X_SetWatchdog() function can be used. If a new
+mode/period have changed as a result of the write access, the new values are
+valid immediately.
+
+@warning Writing a different mode while resetting the watchdog timer can cause a reset
+in case the SBC is not in Standby mode.
+
+@warning Writing a different period while resetting the watchdog timer can result in reset
+as a consequence of a watchdog counter overflow due to period change.
+</p>
+*/
+
+/**
+ @addtogroup fscconfig
+ @section failsafe_intro Introduction
+<p>
+The SBC incorporates following fail-safe features:
+<ul>
+<li>EN pin</li>
+<ul>
+<li>can control an external hardware</li>
+<li>can operate as general purpose output when system is running properly</li>
+</ul>
+<li>LIMP pin</li>
+<ul>
+<li>enables "limp home" hardware in case of ECU failure</li>
+</ul>
+<li>Advanced LIMP home function via HVIO 4 - 2 configurabale in non-volatile 
+memory (see MTPNV @ref mtpnv_intro for details)</li>
+<li>Register locking (see lock control @ref lock_intro for details)</li>
+<li>Reset counter</li>
+</ul>
+</p>
+@subsection failsafe_reset Reset mechanism
+<p>
+If the system resets, the SBC initiates a reset process, during which a reset
+counter is incremented. In case the counter equals 3 when the UJA113x enters
+reset mode, the SBC assumes that a serious failure has occured and switches
+to Forced Sleep mode (FSP), enabling the limp home function. A properly designed
+system should reset this counter to avoid its overflow.\n
+The UJA113X_SetFailSafe() function which configures the fail-safe functionality
+can be also used to update the reset counter. However the parameters for EN pin
+and LIMP home pin should reflect the current configuration!\n
+The reset counter can be (pre)configured to any value providing additional level
+of safety. For instance, setting the counter to 3 would mean no errors allowed (
+in case an error occurs, the system would be forced to FSP immediately)!
+</p>
+*/
+
+/**
+ @addtogroup lckcconfig
+ @section lock_intro Introduction
+<p>
+The Lock control allows the user to write protect specific memory areas. This
+way the SBC is protected against unintentional writes into the SBC registers
+providing additional level of safety/security.\n
+An SPI failure interrupt is generated, if enabled (see @ref isr). Othewise writes 
+into locked areas are ignored.
+<ul>
+<li>Lock 0: address area 0x06 - 0x09; general purpose memory</li>
+<li>Lock 1: address area 0x10 - 0x1F; supply control</li>
+<li>Lock 2: address area 0x20 - 0x2F; transceiver control</li>
+<li>Lock 3: address area 0x30 - 0x3F; HVIO1 - HVIO4 control</li>
+<li>Lock 4: address area 0x40 - 0x4F; HVIO5 - HVIO8 control</li>
+<li>Lock 5: address area 0x50 - 0x5F; timer control</li>
+<li>Lock 6: address area 0x68 - 0x6F; data mask (FD versions only)
+</ul>
+</p>
+*/

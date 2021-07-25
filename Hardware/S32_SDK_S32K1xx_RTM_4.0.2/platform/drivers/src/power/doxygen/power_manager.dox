@@ -1,0 +1,28 @@
+/*!
+@defgroup power_manager Power Manager
+@ingroup power_manager
+@brief The S32 SDK Power Manager provides a set of API/services that enables applications
+to configure and select among various operational and low power modes.
+
+## Driver consideration ##
+
+The Power Manager driver is developed on top of an appropriate hardware access layer.
+The Power Manager provides API to handle the device power modes. It also supports
+run-time switching between multiple power modes. Each power mode is described by
+configuration structures with multiple power-related options. The Power Manager
+provides a notification mechanism for registered callbacks and API for static and
+dynamic callback registration.
+
+The Driver uses structures for configuration. The actual format of the structure is
+defined by the underlying device specific header file.
+There is a power mode and a callback configuration structure. These structures may be generated using
+Processor Expert. The user application can use the default for most settings, changing only what is necessary.
+
+This driver provides functions for initializing power manager and changing the
+power mode.
+
+All methods that access the hardware layer will return an error code to signal
+if the operation succeeded or failed. The values are defined by the
+status_t enumeration, and the possible values include: success,
+switch error, callback notification errors, wrong clock setup error.
+*/

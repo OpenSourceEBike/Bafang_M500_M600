@@ -1,0 +1,130 @@
+/*!
+    \page Examples_and_Demos_s32k142 Examples and Demos
+    @brief Applications that show the user how to initialize the peripherals for the basic use cases \n
+  
+  @section Introduction
+<p>
+S32 SDK examples structure:
+    -   @subpage demo_apps_s32k142 (SDK/examples/<CPU>/demo_apps), are demo applications for various IDEs and compilers. Also this examples are using more advanced use-cases - FreeRTOS integration, LIN Stack, FlexCAN usage and Clock Setup.
+    -   @subpage driver_examples_s32k142 (SDK/examples/<CPU>/driver_examples), are simple applications which exemplify a basic use-case for a specific driver.
+
+</p>
+@section Usage
+@subsection build How to build
+<p>
+### For makefile project ###
+</p>
+<p>
+There are makefile projects in all compilers supported. In order to used them:
+    -   \b Make utility (eg. GNU Make)
+    -   \b Toolchain (eg. GCC Toolchain)
+    -   <b>Make sure the make and compiler are in Path (for Microsoft Windows : System -> Environmental Variables)</b>
+    -   From command line execute the makefile: \b make \b all
+</p>
+<p>
+The makefiles generate binary files for both RAM and FLASH configurations.
+</p>
+<p>
+### For IAR Embedded Workbench ###
+</p>
+<p>
+From IAR Workbench for ARM use File > Open > Workspace and browse to the desired project. After the project was opened you can see the files in "Workspace Files". Finally, the project can be executed from Project > Download and Debug. Make sure that the debug probe you are using is selected and configured in Project options > Debugger > Driver.
+</p>
+<p>
+### For S32 Design Studio ###
+</p>
+<p>  
+From S32 Design Studio (See Release notes for the S32 Design Studio version), go to File -> New -> New Project from Example and select the example you wish to import. This will copy the example project into workspace. Next steps:
+    -   Examples will run without an active configuration, however if any changes are required, a configuration needs to be generated. Use Open S32 Configuration button, make the desired changes (if any) then click on the "Update Code" button.
+    -   Use Project > Build to build the project
+    -   Use Project > Debug and launch your preferred debug configuration
+
+</p>
+@subsection debug How to debug
+<p>
+    This section explains how to upload and debug the binary files generated after build. 
+    This assumes that you have a debug probe(see release notes for supported debug probes) and a debug software installed on the machine.
+    
+    
+Generic steps:  
+        1. Launch the debug software
+        2. Load the binary file into the MCU
+        3. Execute the application
+        
+<b>Loading with Segger JLink:</b>
+    -   Download and install the latest drivers and GDB server, named <i>Software and documentation pack</i>, from their <a href="https://www.segger.com/jlink-software.html" alt="JLink downloads">site</a>
+    -   Download your favorite GDB client (eg. arm-none-eabi-gdb) 
+    -   Browse to JLink installation folder and launch <b>JLinkGDBServer</b>
+    -   Select the appropriate part from the device list and click on <b>OK</b>
+    -   Open the GDB client and connect to the configured port - by default localhost:2331
+    -   Upload the file and execute (see GDB client user manual for details regarding the commands used)
+    
+    The following table is a small list of commands used in GNU ARM GDB with JLinkGDBServer to connect and run the application:
+    \b Command | \b Description
+    --------|------------
+    target remote:PortNumber | Connect to the remote target at a specified port. Please replace PortNumber with the port configured in the GDB server.
+    monitor reset|Reset the target MCU
+    monitor halt|Halt the target MCU
+    file ApplicationName.elf | Load the file and symbols. Please change \i ApplicationName with your application name
+    load|Download the executable to the target MCU
+    continue|Begin executing the application
+    
+<b>Loading with PEmicro OpenSDA/MultiLink:</b>
+    -   Download and install the latest drivers and GDB server, named <i>P&E GDB Server for Kinetis with Windows GUI</i>, from their <a href="https://www.pemicro.com" alt="PEmicro downloads">site</a>
+    -   Download your favorite GDB client (eg. arm-none-eabi-gdb) 
+    -   Browse to PEmicro GDB Server installation folder and launch <b>P&E GDB Server for Kinetis</b>
+    -   Select the appropriate part from the device list and click on <b>Connect</b>
+    -   Open the GDB client and connect to the configured port - by default localhost:7224
+    -   Upload the file and execute (see GDB client user manual for details regarding the commands used)
+    
+    The following table is a small list of commands used in GNU ARM GDB with PEmicro GDB server to connect and run the application:
+    \b Command|\b Description
+    --------------|------------------
+    target remote:PortNumber | Connect to the remote target at a specified port. Please replace PortNumber with the port configured in the GDB server.
+    monitor reset | Reset the target MCU
+    file ApplicationName.elf | Load the file and symbols. Please change \i ApplicationName with your application name
+    load | Download the executable to the target MCU
+    continue | Begin executing the application
+  
+@subsection term_emulator_section Using terminal emulator    
+
+To run the examples that use LPUART to help you visualize data you must download a terminal emulator (eg. Putty, Termite, TeraTerm) and configure it.
+
+Unless otherwise noted the standard communication parameters are:
+    - 115200 baud
+    - One stop bit
+    - No parity
+    - No flow control
+
+### Example configuration for Termite using OpenSDA ###
+
+ 1) Download Termite from their <a href="http://www.compuphase.com/software_termite.htm" alt="Termite Download" target="_blank">site</a> \n
+ 2) Run the installer. Wait for the installation to be completed \n
+ 3) Go to \b Start -> \b All \b Programs -> \b Termite and launch the program. The window from Fig.1 will appear ... \n
+ @image html termite-1.png Fig.1 - Termite window
+
+ @latexonly
+ \begin{center}\includegraphics{termite-1.png}\caption{Termite window}\end{center}
+ @endlatexonly
+ 
+ 4) Click on \b Settings \n
+ 5) As seen in Fig.2, configure the following communication parameters:
+    - \b Port(1) : COMx - where x must be replaced with the COM port number
+    - \b Baud \b Rate(2) : 115200
+    - \b Data \b Bits(3) : 8
+    - \b Stop \b Bits(4) : 1
+    - \b Parity(5) : None
+    - \b Flow \b Control(6) : None
+    - \b Forward(7) : None \n
+     @image html termite-2.png Fig.2 - Settings window \n
+	 
+     @latexonly
+     \begin{center}\includegraphics{termite-2.png}\caption{Settings window}\end{center}
+     @endlatexonly
+     
+ 6) Click \b OK. Now the terminal should be configured
+
+ @note For further help consult the terminal's documentation
+\n
+*/
+

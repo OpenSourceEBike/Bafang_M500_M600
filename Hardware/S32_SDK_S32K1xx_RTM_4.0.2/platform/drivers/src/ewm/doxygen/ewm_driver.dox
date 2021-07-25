@@ -1,0 +1,117 @@
+/*!
+ * @defgroup ewm_drv EWM Driver
+ * @ingroup ewm
+ * @brief External Watchdog Monitor Peripheral Driver.
+ *
+ * ## Hardware background ##
+ * Features:
+ *  - Independent LPO clock source
+ *  - Programmable time-out period specified in terms of number of EWM LPO clock cycles.
+ *  - Windowed refresh option
+ *      - Provides robust check that program flow is faster than expected.
+ *      - Programmable window.
+ *      - Refresh outside window leads to assertion of EWM_out.
+ *  - Robust refresh mechanism
+ *      - Write values of \b 0xB4 and \b 0x2C to EWM Refresh Register within 15 (\b EWM_service_time) peripheral bus clock cycles.
+ *  - One output port, \b EWM_out, when asserted is used to reset or place the external circuit into safe mode
+ *  - One Input port, \b EWM_in, allows an external circuit to control the \b EWM_out signal.
+ *
+ * <b> The EWM can be initialized only once as all the configuration registers are write once per reset </b>
+ *
+ *
+ * ## Integration guideline ##
+ *
+ * ### Compilation units ###
+ *
+ * The following files need to be compiled in the project:
+ * \verbatim
+ * ${S32SDK_PATH}\platform\drivers\src\ewm\ewm_driver.c
+ * \endverbatim
+ *
+ * ### Include path ###
+ *
+ * The following paths need to be added to the include path of the toolchain:
+ * \verbatim
+ * ${S32SDK_PATH}\platform\drivers\inc\
+ * \endverbatim
+ *
+ * ### Compile symbols ###
+ *
+ * No special symbols are required for this component
+ *
+ * ### Dependencies ###
+ *
+ * No special dependencies are required for this component
+ *
+ * ## Clocking and pin configuration ##
+ * The EWM Driver does not handle clock setup (from PCC) or any kind of pin
+ * configuration (done by PORT module). This is handled by the Clock Manager and
+ * PORT module, respectively. The driver assumes that correct clock
+ * configurations have been made, so it is the user's responsibility to set up
+ * clocking and pin configurations correctly.
+ *
+ * ## Interrupts ##
+ * The EWM module can generate interrupts, if enabled on <tt>EWM_DRV_Init()</tt> but they
+ * are not handled by the driver. The EWM shares the interrupt vector with the Watchdog Timer.
+ * The following code snippet is an example of how enable the interrupt and assign a handler:
+ * @code
+ * /* EWM and watchdog interrupt service routine */
+ * void EWM_Watchdog_ISR()
+ * {
+ *      /* Do something(e.g perform a clean reset) */
+ *      ...
+ * }
+ * int main()
+ *  {
+ *      /* Init clocks, pins, other modules */
+ *      ...
+ *      /* Install interrupt handler for EWM and Watchdog */
+ *      INT_SYS_InstallHandler(WDOG_EWM_IRQn, &EWM_Watchdog_ISR, (isr_t *)0);
+ *      /* Enable the interrupt */
+ *      INT_SYS_EnableIRQ(WDOG_EWM_IRQn);
+ *
+ *      /* Init EWM */
+ *      ...
+ *      /* Infinite loop*/
+ *      while(1)
+ *      {
+ *          /* Do something until the counter needs to be refreshed */
+ *          ...
+ *          /* Refresh the counter */
+ *          EWM_DRV_Refresh(EWM_INSTANCE);
+ *      }
+ *  }
+ *  @endcode
+ *
+ * ## Using the EWM driver in your application ##
+ *
+ *  @code
+ *  /* Declare the EWM instance you want to use */
+ *  #define EWM_INSTANCE    0UL
+ *
+ *  int main()
+ *  {
+ *      /* Declare the EWM configuration structure */
+ *      ewm_init_config_t ewmConfig;
+ *      /* Variable where to store the init status */
+ *      status_t ewmStatus;
+ *      /* Init clocks, pins, other modules */
+ *      ...
+ *
+ *      /* Get the default configuration values */
+ *      EWM_DRV_GetDefaultConfig(&ewmConfig);
+ *      /* Init the module instance */
+ *      ewmStatus = EWM_DRV_Init(EWM_INSTANCE, &ewmConfig);
+ *
+ *      /* Infinite loop*/
+ *      while(1)
+ *      {
+ *          /* Do something until the counter needs to be refreshed */
+ *          ...
+ *          /* Refresh the counter */
+ *          EWM_DRV_Refresh(EWM_INSTANCE);
+ *      }
+ *  }
+ *  @endcode
+ *
+ */

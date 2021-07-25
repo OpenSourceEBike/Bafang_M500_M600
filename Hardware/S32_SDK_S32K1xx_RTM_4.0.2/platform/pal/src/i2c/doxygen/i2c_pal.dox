@@ -1,0 +1,211 @@
+/*!
+  
+   @defgroup i2c_pal Inter Integrated Circuit - Peripheral Abstraction Layer(I2C PAL) 
+   @brief Inter Integrated Circuit- Peripheral Abstraction Layer
+   <p>
+    The I2C PAL driver allows communication on an I2C bus. It was designed to be portable across all 
+    platforms and IPs which support I2C communication.
+   </p>
+
+   ## How to integrate I2C in your application ##
+<p>
+  I2C PAL modules need to include a configuration file named i2c_pal_cfg.h, 
+  which allows the user to specify which IPSs are used and how many resources
+  are allocated for each of them (state structures).
+  The following code example shows how to configure one instance for each
+  available I2C IPs. 
+
+ @code
+ #ifndef I2C_PAL_cfg_H
+ #define I2C_PAL_cfg_H
+
+ /* Define which IP instance will be used in current project */
+ #define I2C_OVER_LPI2C
+ #define I2C_OVER_FLEXIO
+ #define I2C_OVER_I2C
+ #define I2C_OVER_SWI2C
+
+ /* Define the resources necessary for current project */
+ #define NO_OF_LPI2C_INSTS_FOR_I2C 2
+ #define NO_OF_FLEXIO_INSTS_FOR_I2C 1
+ #define NO_OF_I2C_INSTS_FOR_I2C 0
+ #define NO_OF_SWI2C_INSTS_FOR_I2C 1
+ #endif /* I2C_PAL_cfg_H */
+ @endcode
+ 
+ The following table contains the matching between platforms and available IPs
+ IP/MCU |S32K116|S32K118|S32K142|S32K144|S32K146|S32K148|MPC5748G|MPC5746C|MPC5744P| S32R274 | S32R372| S32K144W | S32K142W
+ -----: |:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:------:|:-------|:-------|:--------|:-------|:-------- |:-------
+ LPI2C  |  YES  |  YES  |  YES  |  YES  |  YES  |  YES  |   NO   |   NO   |   NO   |   NO    |   NO   |   YES    |   YES   
+ FlexIO |  YES  |  YES  |  YES  |  YES  |  YES  |  YES  |   NO   |   NO   |   NO   |   NO    |   NO   |   YES    |   YES   
+  I2C   |  NO   |  NO   |  NO   |  NO   |  NO   |  NO   |   YES  |   YES  |   NO   |   YES   |   YES  |   NO     |   NO  
+ SWI2C  |  NO   |  NO   |  NO   |  NO   |  NO   |  NO   |   YES  |   YES  |   YES  |   NO    |   NO   |   NO     |   NO   
+<p>
+<p>
+  In order to use the I2C driver it must be first initialized in either master or slave mode, 
+  using functions I2C_MasterInit() or I2C_SlaveInit(). Once initialized, it cannot 
+  be initialized again for the same I2C module instance until it is de-initialized, using 
+  I2C_SlaveDeinit() or I2C_MasterDeinit. Different I2C module instances can work independently 
+  of each other.
+</p>
+
+<p>
+  In each mode (master/slave) are available two types of transfers: blocking and non-blocking. 
+  The functions which initiate blocking transfers will configure the time out for transmission. If 
+  time expires the blocking functions will return STATUS_TIMEOUT and transmission will be aborted.
+  The blocking functions are: I2C_MasterSendDataBlocking, I2C_MasterReceiveDataBlocking,
+  I2C_SlaveSendDataBlocking and I2C_SlaveReceiveDataBlocking. 
+</p>
+
+<p>
+  Slave Mode provides functions for transmitting or receiving data to/from any I2C master. There are two 
+  slave operating modes, selected by the field <tt>slaveListening</tt> in the slave configuration structure:
+   - Slave always listening: the slave interrupt is enabled at initialization time and the slave always 
+   listens to the line for a master addressing it. Any events are reported to the application through the 
+   callback function provided at initialization time.
+   - On-demand operation: the slave is commanded to transmit or receive data through the call of 
+   I2C_SlaveSendData() and I2C_SlaveReceiveData() (or their blocking counterparts). The actual moment of the
+   transfer depends on the I2C master. 
+</p>
+
+<p>
+  The configuration structure includes a special field named extension. It will be used only for I2C
+  transfers over FLEXIO and should contain a pointer to extension_flexio_for_i2c_t structure.
+  The purpose of this structure is to configure which FLEXIO pins are used by the applications and
+  their functionality (SDA and SCL).
+ <p>
+
+  ## Important Notes ##
+<p>
+  - The I2C transfers could be done using interrupts and DMA mode.
+  - FlexIO driver only supports master mode.
+  - The driver enables the interrupts for the corresponding module, but any interrupt priority 
+    setting must be done by the application.
+  - SWI2C driver supports only master mode.
+  - For send/receive blocking functions the timeout parameter is unused for SWI2C driver. The driver 
+    has a timeout independent of this parameter.
+  - The baud rate for SWI2C can reach a maximum value of 90Kbps.
+  - SWI2C baud rate depends on many parameters such as CPU frequency, compiler, optimizations and pull-up resistors. The I2C_MasterSetBaudrate is considering 
+    the maximum baud rate for swi2c device to be 90Kbps and it was tested using gcc compiler with -O1 optimizations, system clock of 200MHz and external pull-up
+	resistors of 2KOhm each.   
+  - Aborting a transfer with the function I2C_MasterAbortTransferData() can't be done safely due to device limitation; the user must ensure that  
+    the address is sent before aborting the transfer.	
+  
+  </p>
+ ## Example code ##
+ @code
+ /* Configure I2C master */
+i2c_master_t i2c1_MasterConfig0 =
+{
+    .slaveAddress        = 10,
+    .is10bitAddr         = false,
+    .baudRate            = 100000,
+    .transferType        = I2C_PAL_USING_INTERRUPTS,
+    .operatingMode       = I2C_PAL_STANDARD_MODE,
+    .dmaChannel1         = 255,
+    .dmaChannel2         = 255,
+    .callback            = NULL,
+    .callbackParam       = NULL,
+    .extension           = NULL 
+};
+
+ /* Configure I2C slave */
+i2c_slave_t i2c2_SlaveConfig0 =
+{
+    .slaveAddress       = 10,
+    .is10bitAddr        = false,
+    .slaveListening     = true,
+    .transferType       = I2C_PAL_USING_INTERRUPTS,
+    .dmaChannel         = 255,
+    .callback           = i2c2_SlaveCallback0,
+    .callbackParam      = NULL
+};
+
+/*! @brief PAL instance information */
+i2c_instance_t i2c1_instance = {I2C_INST_TYPE_FLEXIO, 0U};
+i2c_instance_t i2c2_instance = {I2C_INST_TYPE_LPI2C, 0U};
+i2c_instance_t i2c3_instance = {I2C_INST_TYPE_LPI2C, 1U};
+ 
+ /* Callback for I2C slave */
+void i2c2_SlaveCallback0(i2c_slave_event_t slaveEvent, void *userData)
+{
+    /* Get instance number from userData */
+    i2c_instance_t * instance;
+    instance = (i2c_instance_t *) userData;
+
+    /* Check the event type:
+     *  - set RX or TX buffers depending on the master request type
+     */
+    if (slaveEvent == I2C_SLAVE_EVENT_RX_REQ)
+        I2C_SlaveSetRxBuffer(instance, slaveRxBuffer, TRANSFER_SIZE);
+    if (slaveEvent == I2C_SLAVE_EVENT_TX_REQ)
+        I2C_SlaveSetTxBuffer(instance, slaveTxBuffer, TRANSFER_SIZE);
+}
+ 
+ /* Configure FLEXIO pins routing */
+extension_flexio_for_i2c_t extension;
+extension.sclPin = 1;
+extension.sdaPin = 0;
+i2c1_MasterConfig0.extension = &extension;
+ 
+ /* Buffers */
+ uint8_t slaveTxBuffer[16]  = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF};
+ uint8_t slaveRxBuffer[16]  = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+ uint8_t masterTxBuffer[16] = {0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF};
+ uint8_t masterRxBuffer[16] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+ 
+ /* Initializes I2C master for FlexIO */
+ I2C_MasterInit(&i2c1_instance, &i2c1_MasterConfig0);
+ 
+ /* Initialize I2C slave instance for LPI2C driver*/
+ I2C_SlaveInit(&i2c2_instance, &i2c2_SlaveConfig0);
+ 
+ /* FlexIO master sends masterTxBuffer to LPI2C0 configured as slave */
+ I2C_MasterSendDataBlocking(&i2c1_instance, masterTxBuffer, BUFFER_SIZE, true, 0xFF);
+ 
+ /* Initialize I2C master for LPI2C1 instance */
+ I2C_MasterInit(&i2c3_instance, &i2c1_MasterConfig0);
+ 
+ /* LPI2C1 master sends data to LPI2C0 configured as slave */
+ I2C_MasterSendDataBlocking(&i2c3_instance,  masterTxBuffer, BUFFER_SIZE, true, 0xFF);
+ 
+ /* De-initialize I2C modules */
+ I2C_MasterDeinit(&i2c1_instance);
+ I2C_MasterDeinit(&i2c3_instance);
+ I2C_SlaveDeinit(&i2c2_instance);
+
+ @endcode
+ 
+    ## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\pal\src\i2c\i2c_pal.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\pal\inc
+i2c_pal_cfg.h path
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref i2c
+\ref swi2c 
+\ref lpi2c 
+\ref flexio_i2c
+\ref edma
+\ref osif 
+\ref clock manager
+\ref interrupt_manager
+ 
+@}*/

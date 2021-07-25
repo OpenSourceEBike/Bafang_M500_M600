@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="flexTimer_oc" label="flexTimer_oc" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.ftm_oc" version="1.0.0"/>
+   <description>FTM configuration</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>FTM_OC general mode</description>
+      <config_set_refs>
+         <config_set_ref>ftm_oc</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>FTM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="ftm_oc" label="Configuration" from_source="ftm_oc_driver.h">
+      <description>FTM_OC Driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="default_value" label="Default Values for FTM OC" available="true">
+            <description>FTM_PWM configuration</description>
+            <set id="totalConfiguration.ftmUserConfig.DebugMode">FTM_BDM_MODE_11</set>
+            <set id="totalConfiguration.ftmUserConfig.softTrigger">true</set>
+            <set id="totalConfiguration.ocConfiguration.maxCountVal">65535</set>
+            <set id="totalConfiguration.ocConfiguration.arrayocConfig.0.hwID">0</set>
+            <set id="totalConfiguration.ocConfiguration.arrayocConfig.0.outputMode">FTM_TOGGLE_ON_MATCH</set>
+            <set id="totalConfiguration.ocConfiguration.arrayocConfig.0.CompareValue">32767</set>
+         </quick_selection>
+         <default>default_value</default>
+      </quick_selections>
+      <settings>
+         <reference id="totalConfiguration" label="FTM OC configurations" type="totalConfig" options="ShowContentAs=Tabs">
+         </reference>
+         <variable value="`../ftm_oc/ftm_oc_codegen.js`" id="codegen_file"></variable>
+         <variable value="`FTM_OC_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+      <user_types>
+         <struct id="totalConfig" label="FTM OC configurations" type="totalConfig">
+            <reference id="ftmUserConfig" label="Initialization" type="ftm_user_config_t">
+            </reference>
+            <reference id="ocConfiguration" label="configurations" type="ocConfig">
+            </reference>
+         </struct>
+         <struct id="ocConfig" label=" " >
+            <integer id="numofChannel" label="Number of channel configurations" type="uint16_t" enable="false">
+               <description> Number of output compare channels are used.</description>
+            </integer>
+            <integer id="maxCountVal" label="Maximum count value" type="uint16_t" min_expr="0" max_expr="65535">
+               <description>Maximum of counter value.</description>
+            </integer>
+            <array id="arrayocConfig" label="Detail for configuration" type="ocConfigDetail" options="ShowContentAs=MasterDetail">
+               <item_defaults>
+               <set_default id="hwID" value_expr="x -> x.getID()"/>
+               </item_defaults>
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`hwID`).value()).length() == 0"
+                              level="error" description="There are some duplicated ` Channel Hw Id` in the configuration"/>
+               </validation>
+            </array>
+         </struct>
+         <struct id="ocConfigDetail" label=" " type="ocConfigDetail">
+            <string id="configName" label="Name" enable='false'>
+            </string>
+            <reference id="hwID" label="Channel Hw Id" type="ftm_channel_hwID">
+               <validation>
+                  <constraint cond_expr="!( featureDefined(`FEATURE_INSTANCE1_NUM_CHANNELS`) &amp;&amp;
+                                            (toInt($parent.hwID.value()) &gt;= 2) &amp;&amp;
+                                            (getPeriphInstanceIndex($instance.getPeripheral()) == 1) )"
+                              level="error"
+                              description="FTM_1 has only 2 channels."/>
+               </validation>
+            </reference>
+            <reference id="outputMode" label="Output behaviour mode" type="ftm_output_compare_mode_t">
+            </reference>
+            <integer id="CompareValue" label="Compare value" type="uint16_t" min_expr="0" max_expr="65535">
+               <description> This value will be compared with counter </description>
+            </integer>
+            <bool id="externalTrigger" label="External Trigger">
+            </bool>
+         </struct>
+         <struct id="ftm_user_config_t" label="FTM OC User configurations" type="ftm_user_config_t">
+            <reference id="ClockSource" label="FTM clock source" type="ftm_clock_source_t" enable="true">
+            </reference>
+
+            <info id="Name_ModuleClock"
+                  value="getFeature(`FEATURE_FTM_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="Name_ExternalClock"
+                  value="getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="SystemClockFrequency"
+                  label="System Clock(Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_SYS_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="false">
+            </info>
+            <info id="DisplaySystemClock"
+                  label="Frequency of source clock (Hz)"
+                  value="$parent.SystemClockFrequency.getValue()"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_SYSTEMCLK`)">
+            </info>
+            <info id="DisplayExternalClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               $parent.Name_ExternalClock.getValue(),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_EXTERNALCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 4))"
+                              level="error"
+                              description="The frequency of the external clock source must not exceed 1/4 of the FTM input clock frequency"/>
+               </validation>
+            </info>
+            <info id="DisplayFixedClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_FIX_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_FIXEDCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 2))"
+                              level="error"
+                              description="The frequency of the fixed frequency clock must not exceed 1/2 of the FTM input clock frequency"/>
+               </validation>
+            </info>
+
+            <reference id="ClockSourcePrescaler" label="Clock source prescaler" type="ftm_clock_ps_t">
+            </reference>
+
+            <info id="DisplayCounterClock_None"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayNoneClock.getValue()"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_NONE`)">
+            </info>
+            <info id="DisplayCounterClock_System"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplaySystemClock.getValue() / toInt($parent.ClockSourcePrescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_SYSTEMCLK`)">
+            </info>
+            <info id="DisplayCounterClock_External"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayExternalClock.getValue() / toInt($parent.ClockSourcePrescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_EXTERNALCLK`)">
+            </info>
+            <info id="DisplayCounterClock_Fixed"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayFixedClock.getValue() / toInt($parent.ClockSourcePrescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_FIXEDCLK`)">
+            </info>
+
+            <reference id="DebugMode" label="Debug mode" type="ftm_Debug_mode_t">
+            </reference>
+            <bool id="TimerOverInterrupt" label="Timer overflow interrupt">
+            </bool>
+            <bool id="InitializationTrigger" label="Initialization Trigger">
+            </bool>
+            <bool id="softTrigger" label="Software trigger" enable="!($parent.hardwareTrigger1.getValue() || $parent.hardwareTrigger2.getValue() || $parent.hardwareTrigger3.getValue())">
+               <description></description>
+            </bool>
+            <bool id="hardwareTrigger1" label="Hardware trigger 1" enable="!$parent.softTrigger.getValue()">
+               <description>Enables/disables hardware trigger for register sync.</description>
+            </bool>
+            <bool id="hardwareTrigger2" label="Hardware trigger 2" enable="!$parent.softTrigger.getValue()">
+               <description>Enables/disables hardware trigger for register sync</description>
+            </bool>
+            <bool id="hardwareTrigger3" label="Hardware trigger 3" enable="!$parent.softTrigger.getValue()">
+               <description>Enables/disables hardware trigger for register sync</description>
+            </bool>
+            <reference id="ftmSyncPoint" label="Sync point" type="ftm_sync_point_t">
+               <description>Clock source used by FTM counter</description>
+            </reference>
+            <bool id="maxload" label="Max loading point" enable="($parent.ftmSyncPoint.getValue()==`FTM_WAIT_LOADING_POINTS`)">
+               <description>Enables/disables max counter value loading point</description>
+            </bool>
+            <bool id="minload" label="Min loading point" enable="($parent.ftmSyncPoint.getValue()==`FTM_WAIT_LOADING_POINTS`)">
+               <description>Enables/disables min counter value loading point</description>
+            </bool>
+            <bool id="autoTriggerClear" label="Automatic trigger clear">
+               <description>If enable FTM clears the TRIGGER-j bit when the hardware trigger is detected, where j = 0,1,2</description>
+            </bool>
+            <reference id="ftmRegisterUpdate" label="Inverting control synchronization" type="ftm_sync_mode_t">
+               <description>Trigger for register update</description>
+            </reference>
+            <reference id="ftmSoftwareOutControl" label="Software output control synchronization" type="ftm_sync_mode_t">
+               <description></description>
+            </reference>
+            <reference id="ftmOutMaskSync" label="Output mask synchronization" type="ftm_sync_mode_t">
+               <description></description>
+            </reference>
+            <reference id="ftmCounterInitSync" label="Counter initial synchronization" type="ftm_sync_mode_t">
+               <description></description>
+            </reference>
+         </struct>
+         <enum id="ftm_clock_source_t" label="FTM clock source" from="ftm_clock_source_t">
+            <description></description>
+            <item id="FTM_CLOCK_SOURCE_SYSTEMCLK" label="System clock" available="true"/>
+            <item id="FTM_CLOCK_SOURCE_EXTERNALCLK" label="External clock" available="featureDefined(`FEATURE_FTM_HAS_EXT_CLOCK_SOURCE`)"/>
+            <item id="FTM_CLOCK_SOURCE_FIXEDCLK" label="Fixed clock" available="featureDefined(`FEATURE_FTM_HAS_FIXED_CLOCK_SOURCE`)"/>
+         </enum>
+         <enum id="power_modes_t" label="Power modes enumeration" from="power_modes_t">
+            <item id="DRUN" label="DRUN"/>
+            <item id="RUN0" label="RUN0"/>
+            <item id="RUN1" label="RUN1"/>
+            <item id="RUN2" label="RUN2"/>
+            <item id="RUN3" label="RUN3"/>
+         </enum>
+         <enum id="ftm_clock_ps_t" label="Clock source prescaler" from="ftm_clock_ps_t">
+            <description></description>
+            <item id="1" label="1"/>
+            <item id="2" label="2"/>
+            <item id="4" label="4"/>
+            <item id="8" label="8"/>
+            <item id="16" label="16"/>
+            <item id="32" label="32"/>
+            <item id="64" label="64"/>
+            <item id="128" label="128"/>
+         </enum>
+         <enum id="ftm_channel_hwID" label="Channel Hw ID" from="ftm_channel_hwID">
+            <description></description>
+            <item id="0" label="Channel 0" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 0"/>
+            <item id="1" label="Channel 1" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 1"/>
+            <item id="2" label="Channel 2" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 2"/>
+            <item id="3" label="Channel 3" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 3"/>
+            <item id="4" label="Channel 4" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 4"/>
+            <item id="5" label="Channel 5" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 5"/>
+            <item id="6" label="Channel 6" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 6"/>
+            <item id="7" label="Channel 7" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 7"/>
+         </enum>
+         <enum id="ftm_output_compare_mode_t" label="Compare mode" from="ftm_output_compare_mode_t">
+            <description>Not output, clear, set or toggle on match.</description>
+            <item id="FTM_DISABLE_OUTPUT" label="Diable Output"/>
+            <item id="FTM_TOGGLE_ON_MATCH" label="Toggle output on match"/>
+            <item id="FTM_CLEAR_ON_MATCH" label="Clear output on match"/>
+            <item id="FTM_SET_ON_MATCH" label="Set output on match"/>
+         </enum>
+         <enum id="ftm_Debug_mode_t" label="Debug mode" from="ftm_Debug_mode_t">
+            <description>
+                Mode 0: FTM counter stopped, CH(n)F bit can be set, FTM channels in functional mode, writes to MOD,CNTIN and C(n)V registers bypass the register buffers.
+                Mode 1: FTM counter stopped, CH(n)F bit is not set, FTM channels outputs are forced to their safe value , writes to MOD,CNTIN and C(n)V registers bypass the register buffers.
+                Mode 2: FTM counter stopped, CH(n)F bit is not set, FTM channels outputs are frozen when chip enters in BDM mode, writes to MOD, CNTIN and C(n)V registers bypass the register buffers.
+                Mode 3: FTM counter in functional mode, CH(n)F bit can be set,FTM channels in functional mode, writes to MOD,CNTIN and C(n)V registers is in fully functional mode.
+            </description>
+            <item id="FTM_BDM_MODE_00" label="Mode 0"/>
+            <item id="FTM_BDM_MODE_01" label="Mode 1"/>
+            <item id="FTM_BDM_MODE_10" label="Mode 2"/>
+            <item id="FTM_BDM_MODE_11" label="Mode 3"/>
+         </enum>
+         <enum id="ftm_sync_point_t" label="" from="ftm_sync_point_t">
+            <description></description>
+            <item id="FTM_UPDATE_NOW" label="Immediate"/>
+            <item id="FTM_WAIT_LOADING_POINTS" label="Next loading point"/>
+      </enum>
+      <enum id="ftm_sync_mode_t" label="" from="ftm_sync_mode_t">
+            <description></description>
+            <item id="FTM_SYSTEM_CLOCK" label="System clock"/>
+            <item id="FTM_PWM_SYNC" label="PWM synchronization"/>
+      </enum>
+      </user_types>
+   </config_set>
+</component:config_component>

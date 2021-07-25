@@ -1,0 +1,209 @@
+/**
+@defgroup oc_pal Output Compare - Peripheral Abstraction Layer (OC PAL)
+@brief The S32 SDK provides a Peripheral Abstraction Layer for the output compare mode of S32 SDK devices.
+<p>
+  The OC PAL driver allows to set pin, clear pin or toggle pin.
+  It was designed to be portable across all platforms and IPs which support FTM, eMIOS, FlexPWM and eTIMER.
+</p>
+
+  ## How to integrate OC PAL in your application ##
+<p>
+  Unlike the other drivers, OC PAL modules need to include a configuration
+  file named oc_pal_cfg.h. This one allows the user to specify which IPs are used.
+  The following code example shows how to configure one instance for each
+  available OC IPs.
+</p>
+
+ @code
+ #ifndef OC_PAL_CFG_H
+ #define OC_PAL_CFG_H
+
+ /* Define which IP instance will be used in current project */
+ #define OC_PAL_OVER_EMIOS
+
+ #endif /* OC_PAL_CFG_H */
+ @endcode
+
+ The following table contains the matching between platforms and available IPs
+ |    IP/MCU   | S32K116 | S32K118 | S32K142 | S32K142W | S32K144 | S32K144W | S32K146 | S32K148 | MPC5748G | MPC5746C | MPC5744P | S32R274 | S32R372 |
+ |:-----------:|:-------:|:-------:|:-------:|:--------:|:-------:|:--------:|:-------:|:-------:|:--------:|:--------:|:--------:|:-------:|:--------|
+ |    FTM_OC   |   YES   |   YES   |   YES   |    YES   |   YES   |    YES   |   YES   |   YES   |    NO    |    NO    |    NO    |   NO    |    NO   |
+ |    eMIOS_OC |   NO    |   NO    |   NO    |    NO    |   NO    |    NO    |   NO    |   NO    |    YES   |    YES   |    NO    |   NO    |    NO   |
+ |    eTIMER   |   NO    |   NO    |   NO    |    NO    |   NO    |    NO    |   NO    |   NO    |    NO    |    NO    |    YES   |   YES   |    YES  |
+ |    FlexPWM  |   NO    |   NO    |   NO    |    NO    |   NO    |    NO    |   NO    |   NO    |    NO    |    NO    |    YES   |   YES   |    YES  |
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\pal\src\oc\oc_pal.c
+${S32SDK_PATH}\platform\pal\src\oc\oc_irq.c
+${S32SDK_PATH}\platform\pal\src\oc\oc_irq.h
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\pal\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+\ref clock_manager
+\ref interrupt_manager
+\ref ftm_oc
+\ref emios_oc
+\ref etimer
+\ref flexpwm
+
+
+<p>
+
+  ## Features ##
+   - Set the output signal can be set, cleared, or toggled pin
+   - Start/stop the channel in the output compare mode
+   - Force the channel output to high or low level
+
+  ## Functionality ##
+
+  ### Initialization ###
+<p>
+  In order to use the OC PAL driver it must be first initialized, using OC_Init() function.
+  Once initialized, it should be de-initialized before initialized again for the same OC module instance,
+  using OC_Deinit(). The initialization function does the following operations:
+    - sets the clock source, clock prescaler
+    - sets the number of channel output compare are used
+    - configures the channel output to set or clear or toggle pin
+</p>
+
+### Example: ###
+</p>
+ @code
+    /*! @brief PAL instance information */
+    const oc_instance_t oc_pal1_instance = { OC_INST_TYPE_ETIMER, 0U };
+
+
+    /*! @brief The channel extension configuration for ETIMER */
+    channel_extension_etimer_for_oc_t oc_pal1_etimerChnExtension0 =
+    {
+        .primaryInput =
+        {
+             .source = ETIMER_IN_SRC_CLK_DIV_128,
+             .polarity = ETIMER_POLARITY_POSITIVE,
+        },
+        .outputPin =
+        {
+             .enable = true,
+             .polarity = ETIMER_POLARITY_POSITIVE,
+        },
+    };
+
+    /*! @brief Channel configuration array */
+    oc_output_ch_param_t oc_pal1_ChnConfig[1] =
+    {
+        /* Channel configuration 0 */
+        {
+             .hwChannelId           = 4U,
+             .chMode                = OC_TOGGLE_ON_MATCH,
+             .comparedValue         = 62500,
+             .channelExtension      = &oc_pal1_etimerChnExtension0,
+             .channelCallbackParams = NULL,
+             .channelCallbacks      = oc_pal1_channel_callBack0
+        }
+    };
+
+    /*! @brief Output compare configuration */
+    oc_config_t oc_pal1_InitConfig =
+    {
+        .nNumChannels    = 1U,
+        .outputChConfig  = oc_pal1_ChnConfig,
+        .extension       = NULL
+    };
+
+    /* Initialize output compare mode */
+    OC_Init(&oc_pal1_instance, &oc_pal1_InitConfig);
+ @endcode
+
+  ### De-initialize a output compare instance ###
+<p>
+ This function will disable the output compare mode. The driver can't be used again until reinitialized.
+ All register are reset to default value and counter is stopped.
+### Example: ###
+</p>
+ @code
+    /* De-initialize output compare mode */
+    OC_Deinit(&oc_pal1_instance);
+ @endcode
+
+  ### Start the channel in the output compare mode ###
+<p>
+ This function will set the channel is in the output compare mode.
+### Example: ###
+</p>
+ @code
+    uint8_t hwChannel = oc_pal1_InitConfig.outputChConfig->hwChannelId;
+
+    /* Start channel in the output compare  mode */
+    OC_StartChannel(&oc_pal1_instance, hwChannel);
+ @endcode
+
+  ### Stop the channel in the output compare  mode ###
+<p>
+ This function will set the channel is used in GPIO mode or other peripheral.
+### Example: ###
+</p>
+ @code
+    uint8_t hwChannel = oc_pal1_InitConfig.outputChConfig->hwChannelId;
+
+    /* Stop channel in the output compare mode */
+    OC_StopChannel(&oc_pal1_instance, hwChannel);
+ @endcode
+
+  ### Control the channel output by software ###
+<p>
+This function is used to forces the output pin to a specified value. It can be used to control the output pin value when the OC channel is disabled.
+### Example: ###
+</p>
+ @code
+    uint8_t hwChannel = oc_pal1_InitConfig.outputChConfig->hwChannelId;
+
+    /* Force the channel output by software */
+    OC_SetOutputState(&oc_pal1_instance, hwChannel, false);
+ @endcode
+
+  ### Set the operation mode of channel output ###
+<p>
+This function will set the action executed on a compare match value to set output pin, clear output pin, toggle output pin.
+### Example: ###
+</p>
+ @code
+    uint8_t hwChannel = oc_pal1_InitConfig.outputChConfig->hwChannelId;
+
+    /* Change the channel output to toggle pin */
+    OC_SetOutputAction(&oc_pal1_instance, hwChannel, OC_TOGGLE_ON_MATCH);
+ @endcode
+
+  ### Update the match value on the channel ###
+<p>
+This function will update the value of an output compare channel to the counter matches to this value.
+### Example: ###
+</p>
+ @code
+    uint8_t hwChannel = oc_pal1_InitConfig.outputChConfig->hwChannelId;
+
+    /* Set the match counter to new value */
+    OC_SetCompareValue(&oc_pal1_instance, hwChannel, 0x1000UL, OC_RELATIVE_VALUE);
+ @endcode
+
+  ## Important Notes ##
+<p>
+  - Before using the OC PAL driver the module clock must be configured. Refer to Clock Manager for clock configuration.
+  - The board specific configurations must be done prior to driver after that can call APIs.
+  - Some features are not available for all OC IPs and incorrect parameters will be handled by DEV_ASSERT.
+</p>
+  </p>
+@}*/

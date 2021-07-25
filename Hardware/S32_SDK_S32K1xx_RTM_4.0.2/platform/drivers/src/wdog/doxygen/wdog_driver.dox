@@ -1,0 +1,176 @@
+/*!
+@defgroup wdog Watchdog timer (WDOG)
+@brief The S32 SDK provides Peripheral Driver for the Watchdog timer (WDOG) module of S32 SDK devices.@n
+@details
+ ## Hardware background ##
+
+   The Watchdog Timer (WDOG) module is an independent timer that is available for
+   system use. It provides a safety feature to ensure that software is executing as planned
+   and that the CPU is not stuck in an infinite loop or executing unintended code. If the
+   WDOG module is not serviced (refreshed) within a certain period, it resets the MCU.
+
+   Features of the WDOG module include:
+   - Configurable clock source inputs independent from the bus clock
+   - Programmable timeout period
+      - Programmable 16-bit timeout value
+      - Optional fixed 256 clock prescaler when longer timeout periods are needed
+   - Window mode option for the refresh mechanism
+      - Programmable 16-bit window value
+      - Provides robust check that program flow is faster than expected
+      - Early refresh attempts trigger a reset
+   - Optional timeout interrupt to allow post-processing diagnostics
+      - Interrupt request to CPU with interrupt vector for an interrupt service routine
+   (ISR)
+      - Forced reset occurs 128 bus clocks after the interrupt vector fetch
+   - Configuration bits are write-once-after-reset to ensure watchdog configuration cannot
+   be mistakenly altered
+   - Robust write sequence for unlocking write-once configuration bits
+
+   @defgroup wdog_drv WDOG Driver
+   @ingroup wdog
+
+   ## How to use the WDOG driver in your application ##
+   In order to be able to use the Watchdog in your application, the first thing to do is
+   initializing it with the desired configuration. This is done by calling the <b>WDOG_DRV_Init</b>
+   function. One of the arguments passed to this function is the configuration which will be
+   used for the Watchdog, specified by the <b>wdog_user_config_t</b> structure.
+
+   The <b>wdog_user_config_t</b> structure allows you to configure the following:
+      - the clock source of the Watchdog;
+      - the prescaler (a fixed 256 pre-scaling of the Watchdog counter reference clock may be enabled);
+      - the operation modes in which the Watchdog is functional (by default, the Watchdog is not
+      functional in Debug mode, Wait mode or Stop mode);
+      - the timeout value to which the Watchdog counter is compared;
+      - the window mode option for the refresh mechanism (by default, the window mode is disabled,
+      but it may be enabled and a window value may be set);
+      - the Watchdog timeout interrupt (if enabled, after a reset-triggering event, the Watchdog
+      first generates an interrupt request; next, the Watchdog delays 128 bus clocks before forcing
+      a reset, to allow the interrupt service routine to perform tasks (like analyzing the stack
+      to debug code));
+      - the update mechanism (by default, the Watchdog reconfiguration is enabled, but updates can
+      be disabled)
+
+   <b>Please note</b> that if the updates are disabled the Watchdog cannot be later modified without
+   forcing a reset (this implies that further calls of the <b>WDOG_DRV_Init</b>, <b>WDOG_DRV_Deinit</b>
+   or <b>WDOG_DRV_SetInt</b> functions will lead to a reset).
+
+   As mentioned before, a timeout interrupt may be enabled by specifying it at the module initialization.
+   The <b>WDOG_DRV_Init</b> only allows enabling/disabling the interrupt, and it does not set up the ISR
+   to be used for the interrupt request. In order to set up a function to be called after a
+   reset-triggering event (and also enable/disable the interrupt), the <b>WDOG_DRV_SetInt</b> function
+   may be used. <b>Please note</b> that, due to the 128 bus clocks delay before the reset, a limited
+   amount of job can be done in the ISR.
+
+## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\wdog\wdog_driver.c
+${S32SDK_PATH}\platform\drivers\src\wdog\wdog_hw_driver.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref interrupt_manager
+
+# Basic Operations of WDOG
+
+1. To initialize WDOG, call WDOG_DRV_Init() with an user configuration structure.
+   In the following code, WDOG is initialized with default settings.@n
+~~~~~{.c}
+   #define INST_WDOG1 (0U)
+
+   wdog_user_config_t userConfigPtr = {
+        .WDOG_LPO_CLOCK,           /* Use the LPO clock as source */
+        .opMode = {                /* WDOG not functional in Wait/Debug/Stop mode */
+            false,
+            false,
+            false
+        },
+        .true,                     /* Enable further updates of the WDOG configuration */
+        .false,                    /* Timeout interrupt disabled */
+        .false,                    /* Window mode disabled */
+        .0U,                       /* Window value */
+        .0x400,                    /* Timeout value */
+        .false                     /* Prescaler disabled */
+   };
+
+   /* Initialize WDOG module */
+   WDOG_DRV_Init(INST_WDOG1, &userConfigPtr);
+~~~~~
+
+2. To get default configuration of WDOG module, just call the function WDOG_DRV_GetDefaultConfig(). Make sure that the operation
+   before WDOG timeout executing.
+~~~~~{.c}
+   wdog_user_config_t userConfigPtr;
+
+   /* Get default configuration of WDOG module */
+   WDOG_DRV_GetDefaultConfig(&userConfigPtr);
+~~~~~
+
+3. To refresh WDOG counter of WDOG module, just call the function WDOG_DRV_Trigger(). Make sure that the operation
+   before WDOG timeout executing.
+~~~~~{.c}
+   /* Refresh counter of WDOG counter */
+   WDOG_DRV_Trigger(INST_WDOG1);
+~~~~~
+
+4. To de-initialize WDOG module, just call the function WDOG_DRV_Deinit(). Make sure that the operation
+   before WDOG timeout executing.
+~~~~~{.c}
+   /* De-initialize WDOG module */
+   WDOG_DRV_Deinit(INST_WDOG1);
+~~~~~
+
+   #### Example: ####
+~~~~~{.c}
+   #define INST_WDOG1 (0U)
+
+   wdog_user_config_t userConfigPtr = {
+        .WDOG_LPO_CLOCK,           /* Use the LPO clock as source */
+        .opMode = {                /* WDOG not functional in Wait/Debug/Stop mode */
+            false,
+            false,
+            false
+        },
+        .true,                     /* Enable further updates of the WDOG configuration */
+        .false,                    /* Timeout interrupt disabled */
+        .false,                    /* Window mode disabled */
+        .0U,                       /* Window value */
+        .0x400,                    /* Timeout value */
+        .false                     /* Prescaler disabled */
+   };
+
+   /* Initialize WDOG module */
+   WDOG_DRV_Init(INST_WDOG1, &userConfigPtr);
+
+   /* Enable the timeout interrupt and set the ISR */
+   WDOG_DRV_SetInt(INST_WDOG1, true);
+
+   while (1) {
+
+       /* Do something that takes between 0x100 and 0x400 clock cycles */
+
+       /* Refresh the counter */
+       WDOG_DRV_Trigger(INST_WDOG1);
+   }
+
+   /* De-initialize WDOG module */
+   WDOG_DRV_Deinit(INST_WDOG1);
+~~~~~
+
+@}*/

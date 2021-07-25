@@ -1,0 +1,532 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0x4" width="32" name="CHIPCTL" description="Chip Control register">
+    <alias type="CMSIS" value="CHIPCTL"/>
+    <bit_field offset="0" width="4" name="ADC_INTERLEAVE_EN" access="RW" reset_value="0" description="ADC interleave channel enable">
+      <alias type="CMSIS" value="SIM_CHIPCTL_ADC_INTERLEAVE_EN(x)"/>
+      <bit_field_value name="CHIPCTL_ADC_INTERLEAVE_EN_0b0000" value="0b0000" description="Interleaving disabled. No channel pair interleaved. Interleaved channels are individually connected to pins. PTC0 is connected to ADC0_SE8. PTC1 is connected to ADC0_SE9. PTB15 is connected to ADC1_SE14. PTB16 is connected to ADC1_SE15. PTB0 is connected to ADC0_SE4. PTB1 is connected to ADC0_SE5. PTB13 is connected to ADC1_SE8. PTB14 is connected to ADC1_SE9."/>
+      <bit_field_value name="CHIPCTL_ADC_INTERLEAVE_EN_0b1xxx" value="0b1???" description="PTB14 to ADC1_SE9 and ADC0_SE9"/>
+      <bit_field_value name="CHIPCTL_ADC_INTERLEAVE_EN_0bx1xx" value="0b?1??" description="PTB13 to ADC1_SE8 and ADC0_SE8"/>
+      <bit_field_value name="CHIPCTL_ADC_INTERLEAVE_EN_0bxx1x" value="0b??1?" description="PTB1 to ADC0_SE5 and ADC1_SE15"/>
+      <bit_field_value name="CHIPCTL_ADC_INTERLEAVE_EN_0bxxx1" value="0b???1" description="PTB0 to ADC0_SE4 and ADC1_SE14"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="CLKOUTSEL" access="RW" reset_value="0" description="CLKOUT Select">
+      <alias type="CMSIS" value="SIM_CHIPCTL_CLKOUTSEL(x)"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b0000" value="0b0000" description="SCG CLKOUT"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b0001" value="0b0001" description="Reserved"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b0010" value="0b0010" description="SOSC DIV2 CLK"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b0011" value="0b0011" description="Reserved"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b0100" value="0b0100" description="SIRC DIV2 CLK"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b0101" value="0b0101" description="For S32K148: QSPI SFIF_CLK_HYP: Divide by 2 clock (configured through SCLKCONFIG[5]) for HyperRAM going to sfif clock to QSPI; For others: Reserved"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b0110" value="0b0110" description="FIRC DIV2 CLK"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b0111" value="0b0111" description="HCLK"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b1000" value="0b1000" description="SPLL DIV2 CLK"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b1001" value="0b1001" description="BUS_CLK"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b1010" value="0b1010" description="LPO128K_CLK"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b1011" value="0b1011" description="For S32K148: QSPI IPG_CLK; For others: Reserved"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b1100" value="0b1100" description="LPO_CLK as selected by SIM_LPOCLKS[LPOCLKSEL]"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b1101" value="0b1101" description="For S32K148: QSPI IPG_CLK_SFIF; For others: Reserved"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b1110" value="0b1110" description="RTC_CLK as selected by SIM_LPOCLKS[RTCCLKSEL]"/>
+      <bit_field_value name="CHIPCTL_CLKOUTSEL_0b1111" value="0b1111" description="For S32K148: QSPI IPG_CLK_2XSFIF; For others: Reserved"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="CLKOUTDIV" access="RW" reset_value="0" description="CLKOUT Divide Ratio">
+      <alias type="CMSIS" value="SIM_CHIPCTL_CLKOUTDIV(x)"/>
+      <bit_field_value name="CHIPCTL_CLKOUTDIV_0b000" value="0b000" description="Divide by 1"/>
+      <bit_field_value name="CHIPCTL_CLKOUTDIV_0b001" value="0b001" description="Divide by 2"/>
+      <bit_field_value name="CHIPCTL_CLKOUTDIV_0b010" value="0b010" description="Divide by 3"/>
+      <bit_field_value name="CHIPCTL_CLKOUTDIV_0b011" value="0b011" description="Divide by 4"/>
+      <bit_field_value name="CHIPCTL_CLKOUTDIV_0b100" value="0b100" description="Divide by 5"/>
+      <bit_field_value name="CHIPCTL_CLKOUTDIV_0b101" value="0b101" description="Divide by 6"/>
+      <bit_field_value name="CHIPCTL_CLKOUTDIV_0b110" value="0b110" description="Divide by 7"/>
+      <bit_field_value name="CHIPCTL_CLKOUTDIV_0b111" value="0b111" description="Divide by 8"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="CLKOUTEN" access="RW" reset_value="0" description="CLKOUT enable">
+      <alias type="CMSIS" value="SIM_CHIPCTL_CLKOUTEN(x)"/>
+      <bit_field_value name="CHIPCTL_CLKOUTEN_0b0" value="0b0" description="Clockout disable"/>
+      <bit_field_value name="CHIPCTL_CLKOUTEN_0b1" value="0b1" description="Clockout enable"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="TRACECLK_SEL" access="RW" reset_value="0" description="Debug trace clock select">
+      <alias type="CMSIS" value="SIM_CHIPCTL_TRACECLK_SEL(x)"/>
+      <bit_field_value name="CHIPCTL_TRACECLK_SEL_0b0" value="0b0" description="Core clock"/>
+      <bit_field_value name="CHIPCTL_TRACECLK_SEL_0b1" value="0b1" description="Platform clock"/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="PDB_BB_SEL" access="RW" reset_value="0" description="PDB back-to-back select">
+      <alias type="CMSIS" value="SIM_CHIPCTL_PDB_BB_SEL(x)"/>
+      <bit_field_value name="CHIPCTL_PDB_BB_SEL_0b0" value="0b0" description="PDB0 channel 0 back-to-back operation with ADC0 COCO[7:0] and PDB1 channel 0 back-to-back operation with ADC1 COCO[7:0]"/>
+      <bit_field_value name="CHIPCTL_PDB_BB_SEL_0b1" value="0b1" description="Channel 0 of PDB0 and PDB1 back-to-back operation with COCO[7:0] of ADC0 and ADC1."/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="2" reset_value="0"/>
+    <bit_field offset="16" width="3" name="ADC_SUPPLY" access="RW" reset_value="0" description="ADC_SUPPLY">
+      <alias type="CMSIS" value="SIM_CHIPCTL_ADC_SUPPLY(x)"/>
+      <bit_field_value name="CHIPCTL_ADC_SUPPLY_0b000" value="0b000" description="5 V input VDD supply (VDD)"/>
+      <bit_field_value name="CHIPCTL_ADC_SUPPLY_0b001" value="0b001" description="5 V input analog supply (VDDA)"/>
+      <bit_field_value name="CHIPCTL_ADC_SUPPLY_0b010" value="0b010" description="ADC Reference Supply (VREFH)"/>
+      <bit_field_value name="CHIPCTL_ADC_SUPPLY_0b011" value="0b011" description="3.3 V Oscillator Regulator Output (VDD_3V)"/>
+      <bit_field_value name="CHIPCTL_ADC_SUPPLY_0b100" value="0b100" description="3.3 V flash regulator output (VDD_flash_3V)"/>
+      <bit_field_value name="CHIPCTL_ADC_SUPPLY_0b101" value="0b101" description="1.2 V core regulator output (VDD_LV)"/>
+      <bit_field_value name="CHIPCTL_ADC_SUPPLY_0b110" value="0b110" description="Reserved"/>
+      <bit_field_value name="CHIPCTL_ADC_SUPPLY_0b111" value="0b111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="ADC_SUPPLYEN" access="RW" reset_value="0" description="ADC_SUPPLYEN">
+      <alias type="CMSIS" value="SIM_CHIPCTL_ADC_SUPPLYEN(x)"/>
+      <bit_field_value name="CHIPCTL_ADC_SUPPLYEN_0b0" value="0b0" description="Disable internal supply monitoring"/>
+      <bit_field_value name="CHIPCTL_ADC_SUPPLYEN_0b1" value="0b1" description="Enable internal supply monitoring"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="SRAMU_RETEN" access="RW" reset_value="0x1" description="SRAMU_RETEN">
+      <alias type="CMSIS" value="SIM_CHIPCTL_SRAMU_RETEN(x)"/>
+      <bit_field_value name="CHIPCTL_SRAMU_RETEN_0b0" value="0b0" description="SRAMU contents are retained across resets"/>
+      <bit_field_value name="CHIPCTL_SRAMU_RETEN_0b1" value="0b1" description="No SRAMU retention"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="SRAML_RETEN" access="RW" reset_value="0x1" description="SRAML_RETEN">
+      <alias type="CMSIS" value="SIM_CHIPCTL_SRAML_RETEN(x)"/>
+      <bit_field_value name="CHIPCTL_SRAML_RETEN_0b0" value="0b0" description="SRAML contents are retained across resets"/>
+      <bit_field_value name="CHIPCTL_SRAML_RETEN_0b1" value="0b1" description="No SRAML retention"/>
+    </bit_field>
+    <reserved_bit_field offset="22" width="2" reset_value="0"/>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="CHIPOPT" description="Chip Option register">
+    <alias type="CMSIS" value="CHIPOPT"/>
+    <bit_field offset="0" width="1" name="RAMSBDIS" access="RW" reset_value="0" reset_mask="0" description="SRAM Source Bias Disable">
+      <alias type="CMSIS" value="SIM_CHIPOPT_RAMSBDIS(x)"/>
+      <bit_field_value name="CHIPOPT_RAMSBDIS_0b0" value="0b0" description="Enable SRAM source bias"/>
+      <bit_field_value name="CHIPOPT_RAMSBDIS_0b1" value="0b1" description="Disable SRAM source bias"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="7" reset_value="0"/>
+    <bit_field offset="8" width="1" name="VALDIS" access="RW" reset_value="0" reset_mask="0" description="Self-Time Adjust Disable">
+      <alias type="CMSIS" value="SIM_CHIPOPT_VALDIS(x)"/>
+      <bit_field_value name="CHIPOPT_VALDIS_0b0" value="0b0" description="Enable self-time adjust of compiled memories"/>
+      <bit_field_value name="CHIPOPT_VALDIS_0b1" value="0b1" description="Disable self-time adjust of compiled memories"/>
+    </bit_field>
+    <bit_field offset="9" width="3" name="VALRD" access="RW" reset_value="0" reset_mask="0" description="Read Timing Control Value">
+      <alias type="CMSIS" value="SIM_CHIPOPT_VALRD(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="VALWR" access="RW" reset_value="0" reset_mask="0" description="Write Timing Control Value">
+      <alias type="CMSIS" value="SIM_CHIPOPT_VALWR(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="3" reset_value="0"/>
+    <bit_field offset="18" width="1" name="TSIEN" access="RW" reset_value="0" reset_mask="0" description="TSI module Enable">
+      <alias type="CMSIS" value="SIM_CHIPOPT_TSIEN(x)"/>
+      <bit_field_value name="CHIPOPT_TSIEN_0b0" value="0b0" description="TSI module clock cannot be enabled in PCC."/>
+      <bit_field_value name="CHIPOPT_TSIEN_0b1" value="0b1" description="TSI module clock can be enabled in PCC."/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="CANEN" access="RW" reset_value="0" reset_mask="0" description="CAN module Enable">
+      <alias type="CMSIS" value="SIM_CHIPOPT_CANEN(x)"/>
+      <bit_field_value name="CHIPOPT_CANEN_0b0" value="0b0" description="CAN module clock cannot be enabled in PCC."/>
+      <bit_field_value name="CHIPOPT_CANEN_0b1" value="0b1" description="CAN module clock can be enabled in PCC."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="3" reset_value="0"/>
+    <bit_field offset="23" width="1" name="FPUENB" access="RW" reset_value="0" reset_mask="0" description="FPU Enable Bit">
+      <alias type="CMSIS" value="SIM_CHIPOPT_FPUENB(x)"/>
+      <bit_field_value name="CHIPOPT_FPUENB_0b0" value="0b0" description="Enable FPU feature"/>
+      <bit_field_value name="CHIPOPT_FPUENB_0b1" value="0b1" description="Disable FPU feature"/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="ROMVALDIS" access="RW" reset_value="0" reset_mask="0" description="ROMVALDIS">
+      <alias type="CMSIS" value="SIM_CHIPOPT_ROMVALDIS(x)"/>
+      <bit_field_value name="CHIPOPT_ROMVALDIS_0b0" value="0b0" description="Enable self-time adjust of compiled ROM"/>
+      <bit_field_value name="CHIPOPT_ROMVALDIS_0b1" value="0b1" description="Disable self-time adjust of compiled ROM"/>
+    </bit_field>
+    <bit_field offset="25" width="3" name="ROMVALRD" access="RW" reset_value="0" reset_mask="0" description="ROMVALRD">
+      <alias type="CMSIS" value="SIM_CHIPOPT_ROMVALRD(x)"/>
+    </bit_field>
+    <bit_field offset="28" width="3" name="ROMVALPRE" access="RW" reset_value="0" reset_mask="0" description="ROMVALPRE">
+      <alias type="CMSIS" value="SIM_CHIPOPT_ROMVALPRE(x)"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="BOOTROMEN" access="RW" reset_value="0" reset_mask="0" description="Boot ROM Enable">
+      <alias type="CMSIS" value="SIM_CHIPOPT_BOOTROMEN(x)"/>
+      <bit_field_value name="CHIPOPT_BOOTROMEN_0b0" value="0b0" description="Booting from ROM is disabled."/>
+      <bit_field_value name="CHIPOPT_BOOTROMEN_0b1" value="0b1" description="Booting from ROM is enabled."/>
+    </bit_field>
+  </register>
+  <register offset="0xC" width="32" name="FTMOPT0" description="FTM Option Register 0">
+    <alias type="CMSIS" value="FTMOPT0"/>
+    <bit_field offset="0" width="3" name="FTM0FLTxSEL" access="RW" reset_value="0" description="FTM0 Fault X Select">
+      <alias type="CMSIS" value="SIM_FTMOPT0_FTM0FLTxSEL(x)"/>
+      <bit_field_value name="FTMOPT0_FTM0FLTxSEL_0b000" value="0b000" description="FTM0_FLTx pin"/>
+      <bit_field_value name="FTMOPT0_FTM0FLTxSEL_0b001" value="0b001" description="TRGMUX_FTM0 out"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <bit_field offset="4" width="3" name="FTM1FLTxSEL" access="RW" reset_value="0" description="FTM1 Fault X Select">
+      <alias type="CMSIS" value="SIM_FTMOPT0_FTM1FLTxSEL(x)"/>
+      <bit_field_value name="FTMOPT0_FTM1FLTxSEL_0b000" value="0b000" description="FTM1_FLTx pin"/>
+      <bit_field_value name="FTMOPT0_FTM1FLTxSEL_0b001" value="0b001" description="TRGMUX_FTM1 out"/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="3" name="FTM2FLTxSEL" access="RW" reset_value="0" description="FTM2 Fault X Select">
+      <alias type="CMSIS" value="SIM_FTMOPT0_FTM2FLTxSEL(x)"/>
+      <bit_field_value name="FTMOPT0_FTM2FLTxSEL_0b000" value="0b000" description="FTM2_FLTx pin"/>
+      <bit_field_value name="FTMOPT0_FTM2FLTxSEL_0b001" value="0b001" description="TRGMUX_FTM2 out"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="1" reset_value="0"/>
+    <bit_field offset="12" width="3" name="FTM3FLTxSEL" access="RW" reset_value="0" description="FTM3 Fault X Select">
+      <alias type="CMSIS" value="SIM_FTMOPT0_FTM3FLTxSEL(x)"/>
+      <bit_field_value name="FTMOPT0_FTM3FLTxSEL_0b000" value="0b000" description="FTM3_FLTx pin"/>
+      <bit_field_value name="FTMOPT0_FTM3FLTxSEL_0b001" value="0b001" description="TRGMUX_FTM3 out"/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <reserved_bit_field offset="16" width="2" reset_value="0"/>
+    <reserved_bit_field offset="18" width="2" reset_value="0"/>
+    <reserved_bit_field offset="20" width="2" reset_value="0"/>
+    <reserved_bit_field offset="22" width="2" reset_value="0"/>
+    <bit_field offset="24" width="2" name="FTM0CLKSEL" access="RW" reset_value="0" description="FTM0 External Clock Pin Select">
+      <alias type="CMSIS" value="SIM_FTMOPT0_FTM0CLKSEL(x)"/>
+      <bit_field_value name="FTMOPT0_FTM0CLKSEL_0b00" value="0b00" description="FTM0 external clock driven by TCLK0 pin."/>
+      <bit_field_value name="FTMOPT0_FTM0CLKSEL_0b01" value="0b01" description="FTM0 external clock driven by TCLK1 pin."/>
+      <bit_field_value name="FTMOPT0_FTM0CLKSEL_0b10" value="0b10" description="FTM0 external clock driven by TCLK2 pin."/>
+      <bit_field_value name="FTMOPT0_FTM0CLKSEL_0b11" value="0b11" description="No clock input"/>
+    </bit_field>
+    <bit_field offset="26" width="2" name="FTM1CLKSEL" access="RW" reset_value="0" description="FTM1 External Clock Pin Select">
+      <alias type="CMSIS" value="SIM_FTMOPT0_FTM1CLKSEL(x)"/>
+      <bit_field_value name="FTMOPT0_FTM1CLKSEL_0b00" value="0b00" description="FTM1 external clock driven by TCLK0 pin."/>
+      <bit_field_value name="FTMOPT0_FTM1CLKSEL_0b01" value="0b01" description="FTM1 external clock driven by TCLK1 pin."/>
+      <bit_field_value name="FTMOPT0_FTM1CLKSEL_0b10" value="0b10" description="FTM1 external clock driven by TCLK2 pin."/>
+      <bit_field_value name="FTMOPT0_FTM1CLKSEL_0b11" value="0b11" description="No clock input"/>
+    </bit_field>
+    <bit_field offset="28" width="2" name="FTM2CLKSEL" access="RW" reset_value="0" description="FTM2 External Clock Pin Select">
+      <alias type="CMSIS" value="SIM_FTMOPT0_FTM2CLKSEL(x)"/>
+      <bit_field_value name="FTMOPT0_FTM2CLKSEL_0b00" value="0b00" description="FTM2 external clock driven by TCLK0 pin."/>
+      <bit_field_value name="FTMOPT0_FTM2CLKSEL_0b01" value="0b01" description="FTM2 external clock driven by TCLK1 pin."/>
+      <bit_field_value name="FTMOPT0_FTM2CLKSEL_0b10" value="0b10" description="FTM2 external clock driven by TCLK2 pin."/>
+      <bit_field_value name="FTMOPT0_FTM2CLKSEL_0b11" value="0b11" description="No clock input"/>
+    </bit_field>
+    <bit_field offset="30" width="2" name="FTM3CLKSEL" access="RW" reset_value="0" description="FTM3 External Clock Pin Select">
+      <alias type="CMSIS" value="SIM_FTMOPT0_FTM3CLKSEL(x)"/>
+      <bit_field_value name="FTMOPT0_FTM3CLKSEL_0b00" value="0b00" description="FTM3 external clock driven by TCLK0 pin."/>
+      <bit_field_value name="FTMOPT0_FTM3CLKSEL_0b01" value="0b01" description="FTM3 external clock driven by TCLK1 pin."/>
+      <bit_field_value name="FTMOPT0_FTM3CLKSEL_0b10" value="0b10" description="FTM3 external clock driven by TCLK2 pin."/>
+      <bit_field_value name="FTMOPT0_FTM3CLKSEL_0b11" value="0b11" description="No clock input"/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="32" name="LPOCLKS" description="LPO Clock Select Register">
+    <alias type="CMSIS" value="LPOCLKS"/>
+    <bit_field offset="0" width="1" name="LPO1KCLKEN" access="RW" reset_value="0x1" description="1 kHz LPO_CLK enable">
+      <alias type="CMSIS" value="SIM_LPOCLKS_LPO1KCLKEN(x)"/>
+      <bit_field_value name="LPOCLKS_LPO1KCLKEN_0b0" value="0b0" description="Disable 1 kHz LPO_CLK output"/>
+      <bit_field_value name="LPOCLKS_LPO1KCLKEN_0b1" value="0b1" description="Enable 1 kHz LPO_CLK output"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="LPO32KCLKEN" access="RW" reset_value="0x1" description="32 kHz LPO_CLK enable">
+      <alias type="CMSIS" value="SIM_LPOCLKS_LPO32KCLKEN(x)"/>
+      <bit_field_value name="LPOCLKS_LPO32KCLKEN_0b0" value="0b0" description="Disable 32 kHz LPO_CLK output"/>
+      <bit_field_value name="LPOCLKS_LPO32KCLKEN_0b1" value="0b1" description="Enable 32 kHz LPO_CLK output"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="LPOCLKSEL" access="RW" reset_value="0" description="LPO clock source select">
+      <alias type="CMSIS" value="SIM_LPOCLKS_LPOCLKSEL(x)"/>
+      <bit_field_value name="LPOCLKS_LPOCLKSEL_0b00" value="0b00" description="128 kHz LPO_CLK"/>
+      <bit_field_value name="LPOCLKS_LPOCLKSEL_0b01" value="0b01" description="No clock"/>
+      <bit_field_value name="LPOCLKS_LPOCLKSEL_0b10" value="0b10" description="32 kHz LPO_CLK which is derived from the 128 kHz LPO_CLK"/>
+      <bit_field_value name="LPOCLKS_LPOCLKSEL_0b11" value="0b11" description="1 kHz LPO_CLK which is derived from the 128 kHz LPO_CLK"/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="RTCCLKSEL" access="RW" reset_value="0" description="32 kHz clock source select">
+      <alias type="CMSIS" value="SIM_LPOCLKS_RTCCLKSEL(x)"/>
+      <bit_field_value name="LPOCLKS_RTCCLKSEL_0b00" value="0b00" description="SOSCDIV1_CLK"/>
+      <bit_field_value name="LPOCLKS_RTCCLKSEL_0b01" value="0b01" description="32 kHz LPO_CLK"/>
+      <bit_field_value name="LPOCLKS_RTCCLKSEL_0b10" value="0b10" description="RTC_CLKIN clock"/>
+      <bit_field_value name="LPOCLKS_RTCCLKSEL_0b11" value="0b11" description="FIRCDIV1_CLK"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="26" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="ADCOPT" description="ADC Options Register">
+    <alias type="CMSIS" value="ADCOPT"/>
+    <bit_field offset="0" width="1" name="ADC0TRGSEL" access="RW" reset_value="0" description="ADC0 trigger source select">
+      <alias type="CMSIS" value="SIM_ADCOPT_ADC0TRGSEL(x)"/>
+      <bit_field_value name="ADCOPT_ADC0TRGSEL_0b0" value="0b0" description="PDB output"/>
+      <bit_field_value name="ADCOPT_ADC0TRGSEL_0b1" value="0b1" description="TRGMUX output"/>
+    </bit_field>
+    <bit_field offset="1" width="3" name="ADC0SWPRETRG" access="RW" reset_value="0" description="ADC0 software pretrigger sources">
+      <alias type="CMSIS" value="SIM_ADCOPT_ADC0SWPRETRG(x)"/>
+      <bit_field_value name="ADCOPT_ADC0SWPRETRG_0b000" value="0b000" description="Software pretrigger disabled"/>
+      <bit_field_value name="ADCOPT_ADC0SWPRETRG_0b001" value="0b001" description="Reserved (do not use)"/>
+      <bit_field_value name="ADCOPT_ADC0SWPRETRG_0b010" value="0b010" description="Reserved (do not use)"/>
+      <bit_field_value name="ADCOPT_ADC0SWPRETRG_0b011" value="0b011" description="Reserved (do not use)"/>
+      <bit_field_value name="ADCOPT_ADC0SWPRETRG_0b100" value="0b100" description="Software pretrigger 0"/>
+      <bit_field_value name="ADCOPT_ADC0SWPRETRG_0b101" value="0b101" description="Software pretrigger 1"/>
+      <bit_field_value name="ADCOPT_ADC0SWPRETRG_0b110" value="0b110" description="Software pretrigger 2"/>
+      <bit_field_value name="ADCOPT_ADC0SWPRETRG_0b111" value="0b111" description="Software pretrigger 3"/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="ADC0PRETRGSEL" access="RW" reset_value="0" description="ADC0 pretrigger source select">
+      <alias type="CMSIS" value="SIM_ADCOPT_ADC0PRETRGSEL(x)"/>
+      <bit_field_value name="ADCOPT_ADC0PRETRGSEL_0b00" value="0b00" description="PDB pretrigger (default)"/>
+      <bit_field_value name="ADCOPT_ADC0PRETRGSEL_0b01" value="0b01" description="TRGMUX pretrigger"/>
+      <bit_field_value name="ADCOPT_ADC0PRETRGSEL_0b10" value="0b10" description="Software pretrigger"/>
+      <bit_field_value name="ADCOPT_ADC0PRETRGSEL_0b11" value="0b11" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="1" name="ADC1TRGSEL" access="RW" reset_value="0" description="ADC1 trigger source select">
+      <alias type="CMSIS" value="SIM_ADCOPT_ADC1TRGSEL(x)"/>
+      <bit_field_value name="ADCOPT_ADC1TRGSEL_0b0" value="0b0" description="PDB output"/>
+      <bit_field_value name="ADCOPT_ADC1TRGSEL_0b1" value="0b1" description="TRGMUX output"/>
+    </bit_field>
+    <bit_field offset="9" width="3" name="ADC1SWPRETRG" access="RW" reset_value="0" description="ADC1 software pretrigger sources">
+      <alias type="CMSIS" value="SIM_ADCOPT_ADC1SWPRETRG(x)"/>
+      <bit_field_value name="ADCOPT_ADC1SWPRETRG_0b000" value="0b000" description="Software pretrigger disabled"/>
+      <bit_field_value name="ADCOPT_ADC1SWPRETRG_0b001" value="0b001" description="Reserved (do not use)"/>
+      <bit_field_value name="ADCOPT_ADC1SWPRETRG_0b010" value="0b010" description="Reserved (do not use)"/>
+      <bit_field_value name="ADCOPT_ADC1SWPRETRG_0b011" value="0b011" description="Reserved (do not use)"/>
+      <bit_field_value name="ADCOPT_ADC1SWPRETRG_0b100" value="0b100" description="Software pretrigger 0"/>
+      <bit_field_value name="ADCOPT_ADC1SWPRETRG_0b101" value="0b101" description="Software pretrigger 1"/>
+      <bit_field_value name="ADCOPT_ADC1SWPRETRG_0b110" value="0b110" description="Software pretrigger 2"/>
+      <bit_field_value name="ADCOPT_ADC1SWPRETRG_0b111" value="0b111" description="Software pretrigger 3"/>
+    </bit_field>
+    <bit_field offset="12" width="2" name="ADC1PRETRGSEL" access="RW" reset_value="0" description="ADC1 pretrigger source select">
+      <alias type="CMSIS" value="SIM_ADCOPT_ADC1PRETRGSEL(x)"/>
+      <bit_field_value name="ADCOPT_ADC1PRETRGSEL_0b00" value="0b00" description="PDB pretrigger (default)"/>
+      <bit_field_value name="ADCOPT_ADC1PRETRGSEL_0b01" value="0b01" description="TRGMUX pretrigger"/>
+      <bit_field_value name="ADCOPT_ADC1PRETRGSEL_0b10" value="0b10" description="Software pretrigger"/>
+      <bit_field_value name="ADCOPT_ADC1PRETRGSEL_0b11" value="0b11" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="2" reset_value="0"/>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="FTMOPT1" description="FTM Option Register 1">
+    <alias type="CMSIS" value="FTMOPT1"/>
+    <bit_field offset="0" width="1" name="FTM0SYNCBIT" access="RW" reset_value="0" description="FTM0 Sync Bit">
+      <alias type="CMSIS" value="SIM_FTMOPT1_FTM0SYNCBIT(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="FTM1SYNCBIT" access="RW" reset_value="0" description="FTM1 Sync Bit">
+      <alias type="CMSIS" value="SIM_FTMOPT1_FTM1SYNCBIT(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="FTM2SYNCBIT" access="RW" reset_value="0" description="FTM2 Sync Bit">
+      <alias type="CMSIS" value="SIM_FTMOPT1_FTM2SYNCBIT(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="FTM3SYNCBIT" access="RW" reset_value="0" description="FTM3 Sync Bit">
+      <alias type="CMSIS" value="SIM_FTMOPT1_FTM3SYNCBIT(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="FTM1CH0SEL" access="RW" reset_value="0" description="FTM1 CH0 Select">
+      <alias type="CMSIS" value="SIM_FTMOPT1_FTM1CH0SEL(x)"/>
+      <bit_field_value name="FTMOPT1_FTM1CH0SEL_0b00" value="0b00" description="FTM1_CH0 input"/>
+      <bit_field_value name="FTMOPT1_FTM1CH0SEL_0b01" value="0b01" description="CMP0 output"/>
+      <bit_field_value name="FTMOPT1_FTM1CH0SEL_0b10" value="0b10" description="Reserved"/>
+      <bit_field_value name="FTMOPT1_FTM1CH0SEL_0b11" value="0b11" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="FTM2CH0SEL" access="RW" reset_value="0" description="FTM2 CH0 Select">
+      <alias type="CMSIS" value="SIM_FTMOPT1_FTM2CH0SEL(x)"/>
+      <bit_field_value name="FTMOPT1_FTM2CH0SEL_0b00" value="0b00" description="FTM2_CH0 input"/>
+      <bit_field_value name="FTMOPT1_FTM2CH0SEL_0b01" value="0b01" description="CMP0 output"/>
+      <bit_field_value name="FTMOPT1_FTM2CH0SEL_0b10" value="0b10" description="Reserved"/>
+      <bit_field_value name="FTMOPT1_FTM2CH0SEL_0b11" value="0b11" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="FTM2CH1SEL" access="RW" reset_value="0" description="FTM2 CH1 Select">
+      <alias type="CMSIS" value="SIM_FTMOPT1_FTM2CH1SEL(x)"/>
+      <bit_field_value name="FTMOPT1_FTM2CH1SEL_0b0" value="0b0" description="FTM2_CH1 input"/>
+      <bit_field_value name="FTMOPT1_FTM2CH1SEL_0b1" value="0b1" description="exclusive OR of FTM2_CH0,FTM2_CH1,and FTM1_CH1"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="2" reset_value="0"/>
+    <reserved_bit_field offset="11" width="1" reset_value="0"/>
+    <reserved_bit_field offset="12" width="1" reset_value="0"/>
+    <reserved_bit_field offset="13" width="1" reset_value="0"/>
+    <reserved_bit_field offset="14" width="1" reset_value="0"/>
+    <bit_field offset="15" width="1" name="FTMGLDOK" access="RW" reset_value="0" description="FTM global load enable">
+      <alias type="CMSIS" value="SIM_FTMOPT1_FTMGLDOK(x)"/>
+      <bit_field_value name="FTMOPT1_FTMGLDOK_0b0" value="0b0" description="FTM Global load mechanism disabled."/>
+      <bit_field_value name="FTMOPT1_FTMGLDOK_0b1" value="0b1" description="FTM Global load mechanism enabled"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="FTM0_OUTSEL" access="RW" reset_value="0" description="FTM0 channel modulation select with FTM1_CH1">
+      <alias type="CMSIS" value="SIM_FTMOPT1_FTM0_OUTSEL(x)"/>
+      <bit_field_value name="FTMOPT1_FTM0_OUTSEL_0b00000000" value="0b00000000" description="No modulation with FTM1_CH1"/>
+      <bit_field_value name="FTMOPT1_FTM0_OUTSEL_0b00000001" value="0b00000001" description="Modulation with FTM1_CH1"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="FTM3_OUTSEL" access="RW" reset_value="0" description="FTM3 channel modulation select with FTM2_CH1">
+      <alias type="CMSIS" value="SIM_FTMOPT1_FTM3_OUTSEL(x)"/>
+      <bit_field_value name="FTMOPT1_FTM3_OUTSEL_0b00000000" value="0b00000000" description="No modulation with FTM2_CH1"/>
+      <bit_field_value name="FTMOPT1_FTM3_OUTSEL_0b00000001" value="0b00000001" description="Modulation with FTM2_CH1"/>
+    </bit_field>
+  </register>
+  <register offset="0x20" width="32" name="MISCTRL0" description="Miscellaneous control register 0">
+    <alias type="CMSIS" value="MISCTRL0"/>
+    <reserved_bit_field offset="0" width="14" reset_value="0"/>
+    <reserved_bit_field offset="14" width="1" reset_value="0"/>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="1" name="FTM0_OBE_CTRL" access="RW" reset_value="0" description="FTM0 OBE CTRL bit">
+      <alias type="CMSIS" value="SIM_MISCTRL0_FTM0_OBE_CTRL(x)"/>
+      <bit_field_value name="MISCTRL0_FTM0_OBE_CTRL_0b0" value="0b0" description="The FTM channel output is put to safe state when the FTM counter is enabled and the FTM channel output is enabled by Fault Control (FTM_MODE[FAULTM]!=2'b00 and FTM_FLTCTRL[FSTATE]=1'b0) and PWM is enabled (FTM_SC[PWMENn] = 1'b1). Otherwise the channel output is tristated."/>
+      <bit_field_value name="MISCTRL0_FTM0_OBE_CTRL_0b1" value="0b1" description="The FTM channel output state is retained when the channel is in output mode. The output channel is tristated when the channel is in input capture [DECAPEN=1'b0, COMBINE=1'b0, MSnB:MSnA=2'b00] or dual edge capture mode [DECAPEN=1'b1]."/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="FTM1_OBE_CTRL" access="RW" reset_value="0" description="FTM1 OBE CTRL bit">
+      <alias type="CMSIS" value="SIM_MISCTRL0_FTM1_OBE_CTRL(x)"/>
+      <bit_field_value name="MISCTRL0_FTM1_OBE_CTRL_0b0" value="0b0" description="The FTM channel output is put to safe state when the FTM counter is enabled and the FTM channel output is enabled by Fault Control (FTM_MODE[FAULTM]!=2'b00 and FTM_FLTCTRL[FSTATE]=1'b0) and PWM is enabled (FTM_SC[PWMENn] = 1'b1). Otherwise the channel output is tristated."/>
+      <bit_field_value name="MISCTRL0_FTM1_OBE_CTRL_0b1" value="0b1" description="The FTM channel output state is retained when the channel is in output mode. The output channel is tristated when the channel is in input capture [DECAPEN=1'b0, COMBINE=1'b0, MSnB:MSnA=2'b00] or dual edge capture mode [DECAPEN=1'b1]."/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="FTM2_OBE_CTRL" access="RW" reset_value="0" description="FTM2 OBE CTRL bit">
+      <alias type="CMSIS" value="SIM_MISCTRL0_FTM2_OBE_CTRL(x)"/>
+      <bit_field_value name="MISCTRL0_FTM2_OBE_CTRL_0b0" value="0b0" description="The FTM channel output is put to safe state when the FTM counter is enabled and the FTM channel output is enabled by Fault Control (FTM_MODE[FAULTM]!=2'b00 and FTM_FLTCTRL[FSTATE]=1'b0) and PWM is enabled (FTM_SC[PWMENn] = 1'b1). Otherwise the channel output is tristated."/>
+      <bit_field_value name="MISCTRL0_FTM2_OBE_CTRL_0b1" value="0b1" description="The FTM channel output state is retained when the channel is in output mode. The output channel is tristated when the channel is in input capture [DECAPEN=1'b0, COMBINE=1'b0, MSnB:MSnA=2'b00] or dual edge capture mode [DECAPEN=1'b1]."/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="FTM3_OBE_CTRL" access="RW" reset_value="0" description="FTM3 OBE CTRL bit">
+      <alias type="CMSIS" value="SIM_MISCTRL0_FTM3_OBE_CTRL(x)"/>
+      <bit_field_value name="MISCTRL0_FTM3_OBE_CTRL_0b0" value="0b0" description="The FTM channel output is put to safe state when the FTM counter is enabled and the FTM channel output is enabled by Fault Control (FTM_MODE[FAULTM]!=2'b00 and FTM_FLTCTRL[FSTATE]=1'b0) and PWM is enabled (FTM_SC[PWMENn] = 1'b1). Otherwise the channel output is tristated."/>
+      <bit_field_value name="MISCTRL0_FTM3_OBE_CTRL_0b1" value="0b1" description="The FTM channel output state is retained when the channel is in output mode. The output channel is tristated when the channel is in input capture [DECAPEN=1'b0, COMBINE=1'b0, MSnB:MSnA=2'b00] or dual edge capture mode [DECAPEN=1'b1]."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="1" reset_value="0"/>
+    <reserved_bit_field offset="21" width="1" reset_value="0"/>
+    <reserved_bit_field offset="22" width="1" reset_value="0"/>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <reserved_bit_field offset="24" width="2" reset_value="0"/>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x24" width="32" name="SDID" description="System Device Identification Register">
+    <alias type="CMSIS" value="SDID"/>
+    <bit_field offset="0" width="8" name="FEATURES" access="RO" reset_value="0" reset_mask="0" description="Features">
+      <alias type="CMSIS" value="SIM_SDID_FEATURES(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="PACKAGE" access="RO" reset_value="0" reset_mask="0" description="Package">
+      <alias type="CMSIS" value="SIM_SDID_PACKAGE(x)"/>
+      <bit_field_value name="SDID_PACKAGE_0b0000" value="0b0000" description="Reserved"/>
+      <bit_field_value name="SDID_PACKAGE_0b0001" value="0b0001" description="Reserved"/>
+      <bit_field_value name="SDID_PACKAGE_0b0010" value="0b0010" description="48 LQFP"/>
+      <bit_field_value name="SDID_PACKAGE_0b0011" value="0b0011" description="64 LQFP"/>
+      <bit_field_value name="SDID_PACKAGE_0b0100" value="0b0100" description="100 LQFP"/>
+      <bit_field_value name="SDID_PACKAGE_0b0101" value="0b0101" description="Reserved"/>
+      <bit_field_value name="SDID_PACKAGE_0b0110" value="0b0110" description="144 LQFP"/>
+      <bit_field_value name="SDID_PACKAGE_0b0111" value="0b0111" description="176 LQFP"/>
+      <bit_field_value name="SDID_PACKAGE_0b1000" value="0b1000" description="100 MAP BGA"/>
+      <bit_field_value name="SDID_PACKAGE_0b1001" value="0b1001" description="Reserved"/>
+      <bit_field_value name="SDID_PACKAGE_0b1010" value="0b1010" description="Reserved"/>
+      <bit_field_value name="SDID_PACKAGE_0b1011" value="0b1011" description="Reserved"/>
+      <bit_field_value name="SDID_PACKAGE_0b1100" value="0b1100" description="Reserved"/>
+      <bit_field_value name="SDID_PACKAGE_0b1101" value="0b1101" description="Reserved"/>
+      <bit_field_value name="SDID_PACKAGE_0b1110" value="0b1110" description="Reserved"/>
+      <bit_field_value name="SDID_PACKAGE_0b1111" value="0b1111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="12" width="4" name="REVID" access="RO" reset_value="0" reset_mask="0" description="Device revision number">
+      <alias type="CMSIS" value="SIM_SDID_REVID(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="RAMSIZE" access="RO" reset_value="0" reset_mask="0" description="RAM size">
+      <alias type="CMSIS" value="SIM_SDID_RAMSIZE(x)"/>
+      <bit_field_value name="SDID_RAMSIZE_0b0000" value="0b0000" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b0001" value="0b0001" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b0010" value="0b0010" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b0011" value="0b0011" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b0100" value="0b0100" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b0101" value="0b0101" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b0110" value="0b0110" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b0111" value="0b0111" description="128 KB (S32K148), Reserved (others)"/>
+      <bit_field_value name="SDID_RAMSIZE_0b1000" value="0b1000" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b1001" value="0b1001" description="160 KB (S32K148) , 80 KB (S32K146), Reserved (others)"/>
+      <bit_field_value name="SDID_RAMSIZE_0b1010" value="0b1010" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b1011" value="0b1011" description="192 KB (S32K148), 96 KB (S32K146), 16 KB (S32K142), Reserved (others)"/>
+      <bit_field_value name="SDID_RAMSIZE_0b1100" value="0b1100" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b1101" value="0b1101" description="48 KB (S32K144), 24 KB (S32K142), Reserved (others)"/>
+      <bit_field_value name="SDID_RAMSIZE_0b1110" value="0b1110" description="Reserved"/>
+      <bit_field_value name="SDID_RAMSIZE_0b1111" value="0b1111" description="256 KB (S32K148), 128 KB (S32K146), 64 KB (S32K144), 32 KB (S32K142)"/>
+    </bit_field>
+    <bit_field offset="20" width="4" name="DERIVATE" access="RO" reset_value="0" reset_mask="0" description="Derivate">
+      <alias type="CMSIS" value="SIM_SDID_DERIVATE(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="SUBSERIES" access="RO" reset_value="0" reset_mask="0" description="Subseries">
+      <alias type="CMSIS" value="SIM_SDID_SUBSERIES(x)"/>
+    </bit_field>
+    <bit_field offset="28" width="4" name="GENERATION" access="RO" reset_value="0" reset_mask="0" description="S32K product series generation">
+      <alias type="CMSIS" value="SIM_SDID_GENERATION(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x40" width="32" name="PLATCGC" description="Platform Clock Gating Control Register">
+    <alias type="CMSIS" value="PLATCGC"/>
+    <bit_field offset="0" width="1" name="CGCMSCM" access="RW" reset_value="0x1" description="MSCM Clock Gating Control">
+      <alias type="CMSIS" value="SIM_PLATCGC_CGCMSCM(x)"/>
+      <bit_field_value name="PLATCGC_CGCMSCM_0b0" value="0b0" description="Clock disabled"/>
+      <bit_field_value name="PLATCGC_CGCMSCM_0b1" value="0b1" description="Clock enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CGCMPU" access="RW" reset_value="0x1" description="MPU Clock Gating Control">
+      <alias type="CMSIS" value="SIM_PLATCGC_CGCMPU(x)"/>
+      <bit_field_value name="PLATCGC_CGCMPU_0b0" value="0b0" description="Clock disabled"/>
+      <bit_field_value name="PLATCGC_CGCMPU_0b1" value="0b1" description="Clock enabled"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CGCDMA" access="RW" reset_value="0x1" description="DMA Clock Gating Control">
+      <alias type="CMSIS" value="SIM_PLATCGC_CGCDMA(x)"/>
+      <bit_field_value name="PLATCGC_CGCDMA_0b0" value="0b0" description="Clock disabled"/>
+      <bit_field_value name="PLATCGC_CGCDMA_0b1" value="0b1" description="Clock enabled"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CGCERM" access="RW" reset_value="0x1" description="ERM Clock Gating Control">
+      <alias type="CMSIS" value="SIM_PLATCGC_CGCERM(x)"/>
+      <bit_field_value name="PLATCGC_CGCERM_0b0" value="0b0" description="Clock disabled"/>
+      <bit_field_value name="PLATCGC_CGCERM_0b1" value="0b1" description="Clock enabled"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="CGCEIM" access="RW" reset_value="0x1" description="EIM Clock Gating Control">
+      <alias type="CMSIS" value="SIM_PLATCGC_CGCEIM(x)"/>
+      <bit_field_value name="PLATCGC_CGCEIM_0b0" value="0b0" description="Clock disabled"/>
+      <bit_field_value name="PLATCGC_CGCEIM_0b1" value="0b1" description="Clock enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="27" reset_value="0"/>
+  </register>
+  <register offset="0x4C" width="32" name="FCFG1" description="Flash Configuration Register 1">
+    <alias type="CMSIS" value="FCFG1"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="1" width="1" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="2" width="10" reset_value="0" reset_mask="0"/>
+    <bit_field offset="12" width="4" name="DEPART" access="RO" reset_value="0" reset_mask="0" description="FlexNVM partition">
+      <alias type="CMSIS" value="SIM_FCFG1_DEPART(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="EEERAMSIZE" access="RO" reset_value="0" reset_mask="0" description="EEE SRAM SIZE">
+      <alias type="CMSIS" value="SIM_FCFG1_EEERAMSIZE(x)"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b0000" value="0b0000" description="Reserved"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b0001" value="0b0001" description="Reserved"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b0010" value="0b0010" description="4 KB"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b0011" value="0b0011" description="2 KB"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b0100" value="0b0100" description="1 KB"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b0101" value="0b0101" description="512 Bytes"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b0110" value="0b0110" description="256 Bytes"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b0111" value="0b0111" description="128 Bytes"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b1000" value="0b1000" description="64 Bytes"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b1001" value="0b1001" description="32 Bytes"/>
+      <bit_field_value name="FCFG1_EEERAMSIZE_0b1111" value="0b1111" description="0 Bytes"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="24" width="4" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="28" width="4" reset_value="0" reset_mask="0"/>
+  </register>
+  <register offset="0x50" width="32" name="FCFG2" description="Flash Configuration Register 2">
+    <alias type="CMSIS" value="FCFG2"/>
+    <reserved_bit_field offset="0" width="16" reset_value="0"/>
+    <reserved_bit_field offset="16" width="7" reset_value="0x8"/>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <reserved_bit_field offset="24" width="7" reset_value="0x40"/>
+    <reserved_bit_field offset="31" width="1" reset_value="0"/>
+  </register>
+  <register offset="0x54" width="32" name="UIDH" description="Unique Identification Register High">
+    <alias type="CMSIS" value="UIDH"/>
+    <bit_field offset="0" width="32" name="UID127_96" access="RO" reset_value="0" reset_mask="0" description="Unique Identification">
+      <alias type="CMSIS" value="SIM_UIDH_UID127_96(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x58" width="32" name="UIDMH" description="Unique Identification Register Mid-High">
+    <alias type="CMSIS" value="UIDMH"/>
+    <bit_field offset="0" width="32" name="UID95_64" access="RO" reset_value="0" reset_mask="0" description="Unique Identification">
+      <alias type="CMSIS" value="SIM_UIDMH_UID95_64(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x5C" width="32" name="UIDML" description="Unique Identification Register Mid Low">
+    <alias type="CMSIS" value="UIDML"/>
+    <bit_field offset="0" width="32" name="UID63_32" access="RO" reset_value="0" reset_mask="0" description="Unique Identification">
+      <alias type="CMSIS" value="SIM_UIDML_UID63_32(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x60" width="32" name="UIDL" description="Unique Identification Register Low">
+    <alias type="CMSIS" value="UIDL"/>
+    <bit_field offset="0" width="32" name="UID31_0" access="RO" reset_value="0" reset_mask="0" description="Unique Identification">
+      <alias type="CMSIS" value="SIM_UIDL_UID31_0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x68" width="32" name="CLKDIV4" description="System Clock Divider Register 4">
+    <alias type="CMSIS" value="CLKDIV4"/>
+    <bit_field offset="0" width="1" name="TRACEFRAC" access="RW" reset_value="0" description="Trace Clock Divider fraction To configure TRACEDIV and TRACEFRAC, you must first clear TRACEDIVEN to disable the trace clock divide function.">
+      <alias type="CMSIS" value="SIM_CLKDIV4_TRACEFRAC(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="3" name="TRACEDIV" access="RW" reset_value="0" description="Trace Clock Divider value To configure TRACEDIV, you must first disable TRACEDIVEN, then enable it after setting TRACEDIV.">
+      <alias type="CMSIS" value="SIM_CLKDIV4_TRACEDIV(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="24" reset_value="0"/>
+    <bit_field offset="28" width="1" name="TRACEDIVEN" access="RW" reset_value="0x1" description="Debug Trace Divider control">
+      <alias type="CMSIS" value="SIM_CLKDIV4_TRACEDIVEN(x)"/>
+      <bit_field_value name="CLKDIV4_TRACEDIVEN_0b0" value="0b0" description="Debug trace divider disabled"/>
+      <bit_field_value name="CLKDIV4_TRACEDIVEN_0b1" value="0b1" description="Debug trace divider enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0x6C" width="32" name="MISCTRL1" description="Miscellaneous Control register 1">
+    <alias type="CMSIS" value="MISCTRL1"/>
+    <bit_field offset="0" width="1" name="SW_TRG" access="RW" reset_value="0" description="Software trigger to TRGMUX. Writing to this bit generates software trigger to peripherals through TRGMUX (Refer to Figure: Trigger interconnectivity).">
+      <alias type="CMSIS" value="SIM_MISCTRL1_SW_TRG(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+</regs:peripheral>

@@ -1,0 +1,142 @@
+VPATH=$(SOURCEDIR)
+
+## Internal variables ##
+OBJECTS=$(CSOURCES:%.c=%.o)
+OBJECTS+=$(ASMSOURCES:%.$(ASM_EXT)=%.o)
+
+SOURCEDIR=$(SOURCEDIR_NAME)/
+SOURCEDIR+=$(addprefix $(BASEDIR),$(SOURCEDIRSDK))
+
+OBJECTDIR_RAM=$(OBJECTDIR_NAME)_ram/
+OBJECTDIR_FLASH=$(OBJECTDIR_NAME)_flash/
+COBJECTS_RAM=$(addprefix $(OBJECTDIR_RAM),$(OBJECTS))
+COBJECTS_FLASH=$(addprefix $(OBJECTDIR_FLASH),$(OBJECTS))
+INCLUDES=$(addprefix -I,$(SOURCEDIR))
+
+SEPARATOR=======================================================================
+
+## Testing to check whether it is a Windows environment or an Unix like
+## one. This test is based on 'uname' command call. If the shell is a Windows one
+## with no GNU binutils or similar tools, the command will raise a CreateProcess
+## error but the makefile will detect the correct environment and work as expected.
+
+UNAME_CMD:=uname
+OS_DETECTED:=$(shell $(UNAME_CMD))
+
+ifeq ($(OS_DETECTED), )
+	CC_SEARCH:=where $(CC)
+	mkdir=mkdir_windows
+	clean_target=clean_windows
+	env_predetection_msg=Checked for '$(UNAME_CMD)', not found
+	env_detected_msg=Assuming Windows environment
+else
+	CC_SEARCH:=where $(CC)
+	mkdir=mkdir_linux
+	clean_target=clean_linux
+	env_predetection_msg=Checked for '$(UNAME_CMD)', found: $(OS_DETECTED)
+	env_detected_msg=Assuming Unix like environment
+endif
+
+## Testing to check if the toolchain is correct
+CC_DETECTED:=$(shell $(CC_SEARCH))
+
+mkdir_message:=Creating directory for object files
+clean_message:=Removing files and directories
+
+## Targets ##
+.DEFAULT_GOAL := all
+
+check_cc:
+	@echo $(SEPARATOR)
+ifeq ($(CC_DETECTED),)
+	$(error Compiler cannot be exectuted. Please make sure that the toolchain path is added to PATH variable)
+else
+	@echo Compiler found in PATH
+endif
+
+
+mkdir_windows:
+	@echo $(SEPARATOR)
+	@echo $(mkdir_message)
+	@mkdir $(OBJECTDIR_NAME)_ram || @echo Directory already exists
+	@mkdir $(OBJECTDIR_NAME)_flash || @echo Directory already exists
+		
+mkdir_linux:
+	@echo $(SEPARATOR)
+	@echo $(mkdir_message)
+	@mkdir -p $(OBJECTDIR_NAME)_ram
+	@mkdir -p $(OBJECTDIR_NAME)_flash
+
+clean_windows:
+	@echo $(SEPARATOR)
+	@echo $(clean_message)
+	@del /q $(OBJECTDIR_NAME_RAM)\*.* $(OBJECTDIR_NAME_FLASH)\*.* $(EXECUTABLE_FLASH) $(EXECUTABLE_RAM) $(MAP_RAM) $(MAP_FLASH)
+	@rmdir /s /q $(OBJECTDIR_NAME)_ram
+	@rmdir /s /q $(OBJECTDIR_NAME)_flash
+	
+clean_linux:
+	@echo $(SEPARATOR)
+	@echo $(clean_message)
+	@rm -rf $(EXECUTABLE_FLASH) $(EXECUTABLE_RAM) $(MAP_RAM) $(MAP_FLASH)
+	@rm -rf $(OBJECTDIR_NAME)_ram
+	@rm -rf $(OBJECTDIR_NAME)_flash
+	
+print_env:
+	@echo $(SEPARATOR)
+	@echo $(env_predetection_msg)
+	@echo $(env_detected_msg)
+
+all: print_env check_cc $(mkdir) $(EXECUTABLE_RAM) $(EXECUTABLE_FLASH) build_complete
+
+# Target used to compile C source files - RAM target
+$(OBJECTDIR_RAM)%.o: %.c
+	@echo $(SEPARATOR)	
+	@echo Compiling $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# Target used to compile C source files - FLASH target
+$(OBJECTDIR_FLASH)%.o: %.c
+	@echo $(SEPARATOR)	
+	@echo Compiling $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# Target used to compile assembler files - RAM target
+$(OBJECTDIR_RAM)%.o: %.$(ASM_EXT)
+	@echo $(SEPARATOR)
+	@echo Compiling $@
+	@$(AS) $(ASFLAGS_RAM) $(INCLUDES) -c $< -o $@
+    
+# Target used to compile assembler files - FLASH target
+$(OBJECTDIR_FLASH)%.o: %.$(ASM_EXT)
+	@echo $(SEPARATOR)
+	@echo Compiling $@
+	@$(AS) $(ASFLAGS_FLASH) $(INCLUDES) -c $< -o $@
+
+# Target used to link compiled sources
+$(EXECUTABLE_RAM): $(COBJECTS_RAM)
+	@echo $(SEPARATOR)
+	@echo Linking to $(EXECUTABLE_RAM)
+	@$(LD) -o $(EXECUTABLE_RAM) $(COBJECTS_RAM) $(LDFLAGS_RAM)
+
+$(EXECUTABLE_FLASH): $(COBJECTS_FLASH)
+	@echo $(SEPARATOR)
+	@echo Linking to $(EXECUTABLE_FLASH)
+	@$(LD) -o $(EXECUTABLE_FLASH) $(COBJECTS_FLASH) $(LDFLAGS_FLASH)
+
+# Target used to create folder used to store temporary objects
+mkdir:
+	@mkdir $(OBJECTDIR_NAME) || @echo -
+
+# Target used to print compile informations
+print:
+	@echo Compile options: $(CFLAGS) $(ASFLAGS) $(INCLUDES)
+
+build_complete:
+	@echo $(SEPARATOR)
+	@echo Build complete!
+	
+# Target used to remove files and folders
+clean: print_env $(clean_target)
+	
+
+

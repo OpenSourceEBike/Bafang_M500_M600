@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="ewm_config" label="ewm_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.ewm" version="1.0.0"/>
+   <description>External Watchdog Monitor</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>EWM General Mode</description>
+      <config_set_refs>
+         <config_set_ref>ewm</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>EWM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="ewm" label="EWM Configuration" from_source="ewm_driver.h">
+      <description>External Watchdog Monitor Configuration</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="ewm_default" label="Default Values" available="true">
+            <description>EWM Default Configuration</description>
+            <set id="ewmConfig.0.name">ewm_Config0</set>
+            <set id="ewmConfig.0.readOnly">true</set>
+            <set id="ewmConfig.0.interrupt">true</set>
+            <set id="ewmConfig.0.prescaler">251</set>
+            <set id="ewmConfig.0.compareLow">0</set>
+            <set id="ewmConfig.0.compareHigh">254</set>
+            <set id="ewmConfig.0.inputPin">EWM_IN_ASSERT_DISABLED</set>
+         </quick_selection>
+         <default>eim_default</default>
+      </quick_selections>
+      <user_types>
+         <array id="ewmConfigArray" label="EWM Configuration List" type="ewm_init_config_t" options="ShowContentAs=Table">
+            <item_defaults>
+               <set_default id="name" value_expr="x -> (`ewm_Config` + x.getID())"/>
+               <set_default id="readOnly" value_expr="x -> (`true`)"/>
+               <set_default id="interrupt" value_expr="x -> (`true`)"/>
+               <set_default id="prescaler" value_expr="x -> (`251`)"/>
+               <set_default id="compareLow" value_expr="x -> (`0`)"/>
+               <set_default id="compareHigh" value_expr="x -> (`254`)"/>
+               <set_default id="inputPin" value_expr="x -> (`EWM_IN_ASSERT_DISABLED`)"/>
+            </item_defaults>
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+               <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+            </validation>
+         </array>
+         <struct id="ewm_init_config_t" label="EWM configuration structure" from="ewm_init_config_t">
+            <string id="name" label="Name          ">
+               <description>Configuration name</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Interrupt configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readOnly" label="Read-only" >
+               <description>Specifies how the configuration will be generated. Read-only structures are declared with const qualifier.</description>
+            </bool>
+            <bool id="interrupt" label="Interrupt" >
+               <description>Specifies if the EWM interrupt is enabled. If enabled, an interrupt request will
+                            be generated upon counter value expired or, if the input pin is enabled, when the input pin is asserted.</description>
+            </bool>
+            <integer id="prescaler" label="Prescaler" type="uint8_t" enable="true">
+               <description>Counter clock frequency = Low Power Oscillator Clock / (1 + Prescaler).
+                            Admissible range for this item: from 0 to 255.</description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt;= 255" level="error" description="Value out of range for Prescaler"/>
+               </validation>
+            </integer>
+            <integer id="compareLow" label="Compare Low" type="uint8_t" enable="true">
+               <description>Set up compare low. This together with compare high will set the refresh window.
+                            Admissible range for this item: from 0 to 254.</description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt;= 254" level="error" description="Value out of range for Compare Low"/>
+                  <constraint cond_expr="$this.getValue() &lt; $parent.compareHigh.getValue()" level="error" description="Compare Low value must be less than Compare High"/>
+               </validation>
+            </integer>
+            <integer id="compareHigh" label="Compare High" type="uint8_t" enable="true">
+               <description>Set up compare high. This together with compare low will set the refresh window.
+                            Admissible range for this item: from 0 to 254.</description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt;= 254" level="error" description="Value out of range for Compare High"/>
+                  <constraint cond_expr="$this.getValue() &gt; $parent.compareLow.getValue()" level="error" description="Compare High value must be greater than Compare Low"/>
+               </validation>
+            </integer>
+            <reference id="inputPin" label="Input Pin" type="ewm_in_assert_logic_t" options="cStructField">
+               <description>Specifies the logic state of the input pin when EWM out is asserted.</description>
+            </reference>
+            <variable id="LPOClkFreq" value="getPeripheralClockFrequency(`EWM0`, `LPO_CLK`, getClockFunctionalGroups().get(0))"></variable>
+            <info id="period" label="Period" value="$parent.execScriptFunction(`../ewm/ewm_period.js`, `ewmPeriod`).toInt() + ` ms`">
+               <description>EWM counter period. This value is calculated based on the frequency from the first clock configuration.</description>
+            </info>
+            <info id="refreshWindow" label="Refresh Window" value="$parent.execScriptFunction(`../ewm/ewm_period.js`, `ewmWindow`).toInt() + ` ms`">
+               <description>Window to refresh the module counter. This value is calculated based on the frequency from the first clock configuration.</description>
+            </info>
+         </struct>
+         <enum id="ewm_in_assert_logic_t" label = "Input Pin" from="ewm_in_assert_logic_t">
+            <item id="EWM_IN_ASSERT_DISABLED" label="Disabled"/>
+            <item id="EWM_IN_ASSERT_ON_LOGIC_ZERO" label = "Assert on logic 0"/>
+            <item id="EWM_IN_ASSERT_ON_LOGIC_ONE" label = "Assert on logic 1"/>
+         </enum>
+      </user_types>
+      <settings>
+         <reference id="ewmConfig" label="User Configuration List" type="ewmConfigArray" config_set_id="ewm" component_id="ewm_config" available="true">
+            <description>EWM User Configuration List</description>
+         </reference>
+         <variable value="`../ewm/ewm_codegen.js`" id="codegen_file"></variable>
+         <variable value="`EWM_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+      <generated_types>
+         <enum id="ewm_in_assert_logic_t" label="Input Pin" from="ewm_in_assert_logic_t">
+            <item id="EWM_IN_ASSERT_DISABLED" label="Input pin disabled"/>
+            <item id="EWM_IN_ASSERT_ON_LOGIC_ZERO" label = "Input pin asserts EWM when on logic 0"/>
+            <item id="EWM_IN_ASSERT_ON_LOGIC_ONE" label = "Input pin asserts EWM when on logic 1"/>
+         </enum>
+         <struct id="ewm_init_config_t" label="EWM Configuration Structure" from="ewm_init_config_t">
+            <reference id="assertLogic" label="Assert logic for EWM input pin" type="ewm_in_assert_logic">
+               <description>Assert logic for EWM input pin</description>
+            </reference>
+            <bool id="interruptEnable" label="Enable EWM interrupt">
+               <description>Enable EWM Interrupt</description>
+            </bool>
+            <integer id="prescaler" label="EWM clock prescaler" type="uint8_t">
+               <description>EWM clock prescaler</description>
+            </integer>
+            <integer id="compareLow" label="Compare Low value" type="uint8_t">
+               <description>Compare Low value</description>
+            </integer>
+            <integer id="compareHigh" label="Compare High value" type="uint8_t">
+               <description>Compare High value</description>
+            </integer>
+         </struct>
+      </generated_types>
+   </config_set>
+</component:config_component>

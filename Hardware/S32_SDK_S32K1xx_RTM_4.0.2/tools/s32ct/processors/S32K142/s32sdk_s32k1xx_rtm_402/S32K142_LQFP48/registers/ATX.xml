@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="CTRL" description="Analog Test Annex Control">
+    <alias type="CMSIS" value="CTRL"/>
+    <bit_field offset="0" width="8" name="CUT_PREDIV" access="RW" reset_value="0" description="CUT_PREDIV">
+      <alias type="CMSIS" value="ATX_CTRL_CUT_PREDIV(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="7" name="CUT_SEL" access="RW" reset_value="0" description="CUT_SEL">
+      <alias type="CMSIS" value="ATX_CTRL_CUT_SEL(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="CUT_PIN_EN" access="RW" reset_value="0" description="CUT_PIN_EN">
+      <alias type="CMSIS" value="ATX_CTRL_CUT_PIN_EN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="1" reset_value="0"/>
+    <bit_field offset="17" width="1" name="SENSE_PIN_EN" access="RW" reset_value="0" description="SENSE_PIN_EN">
+      <alias type="CMSIS" value="ATX_CTRL_SENSE_PIN_EN(x)"/>
+      <bit_field_value name="CTRL_SENSE_PIN_EN_0b0" value="0b0" description="Sense bus not connected to external pin."/>
+      <bit_field_value name="CTRL_SENSE_PIN_EN_0b1" value="0b1" description="Sense bus connected to external pin."/>
+    </bit_field>
+    <bit_field offset="18" width="6" name="SENSE_SEL" access="RW" reset_value="0" description="SENSE_SEL">
+      <alias type="CMSIS" value="ATX_CTRL_SENSE_SEL(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="DACFORCE_EN" access="RW" reset_value="0" description="DACFORCE_EN">
+      <alias type="CMSIS" value="ATX_CTRL_DACFORCE_EN(x)"/>
+      <bit_field_value name="CTRL_DACFORCE_EN_0b0" value="0b0" description="DAC output not connected to the force bus."/>
+      <bit_field_value name="CTRL_DACFORCE_EN_0b1" value="0b1" description="DAC output connected to the force bus."/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="FORCE_PIN_EN" access="RW" reset_value="0" description="FORCE_PIN_EN">
+      <alias type="CMSIS" value="ATX_CTRL_FORCE_PIN_EN(x)"/>
+      <bit_field_value name="CTRL_FORCE_PIN_EN_0b0" value="0b0" description="Force bus not connected to external pin."/>
+      <bit_field_value name="CTRL_FORCE_PIN_EN_0b1" value="0b1" description="Force bus connected to external pin."/>
+    </bit_field>
+    <bit_field offset="26" width="6" name="FORCE_SEL" access="RW" reset_value="0" description="FORCE_SEL">
+      <alias type="CMSIS" value="ATX_CTRL_FORCE_SEL(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="CUT_CNT" description="Analog Test Annex Clock Under Test Counter">
+    <alias type="CMSIS" value="CUT_CNT"/>
+    <bit_field offset="0" width="32" name="CUT_CNT" access="RO" reset_value="0" description="CUT_CNT">
+      <alias type="CMSIS" value="ATX_CUT_CNT_CUT_CNT(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8" width="32" name="REF_CNT" description="Analog Test Annex Reference Clock Counter">
+    <alias type="CMSIS" value="REF_CNT"/>
+    <bit_field offset="0" width="32" name="REF_CNT" access="RO" reset_value="0" description="REF_CNT">
+      <alias type="CMSIS" value="ATX_REF_CNT_REF_CNT(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xC" width="32" name="CUT_TARGET" description="Analog Test Annex Clock Under Test Target Count">
+    <alias type="CMSIS" value="CUT_TARGET"/>
+    <bit_field offset="0" width="32" name="CUT_TARGET" access="RW" reset_value="0xFFFFFFFF" description="CUT_TARGET">
+      <alias type="CMSIS" value="ATX_CUT_TARGET_CUT_TARGET(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="32" name="REF_TARGET" description="Analog Test Annex Reference Clock Target Count">
+    <alias type="CMSIS" value="REF_TARGET"/>
+    <bit_field offset="0" width="32" name="REF_TARGET" access="RW" reset_value="0xFFFFFFFF" description="REF_TARGET">
+      <alias type="CMSIS" value="ATX_REF_TARGET_REF_TARGET(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x14" width="32" name="CNT_STAT" description="Analog Test Annex Count Status Register">
+    <alias type="CMSIS" value="CNT_STAT"/>
+    <bit_field offset="0" width="1" name="REF_STOPPED" access="RO" reset_value="0" description="REF_STOPPED">
+      <alias type="CMSIS" value="ATX_CNT_STAT_REF_STOPPED(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CUT_STOPPED" access="RO" reset_value="0" description="CUT_STOPPED">
+      <alias type="CMSIS" value="ATX_CNT_STAT_CUT_STOPPED(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CUT_STARTED" access="RO" reset_value="0" description="CUT_STARTED">
+      <alias type="CMSIS" value="ATX_CNT_STAT_CUT_STARTED(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="REF_CNT_SAVED" description="Analog Test Annex Reference Clock Count Saved Register">
+    <alias type="CMSIS" value="REF_CNT_SAVED"/>
+    <bit_field offset="0" width="32" name="REF_CNT_SAVED" access="RO" reset_value="0" description="REF_CNT_SAVED">
+      <alias type="CMSIS" value="ATX_REF_CNT_SAVED_REF_CNT_SAVED(x)"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

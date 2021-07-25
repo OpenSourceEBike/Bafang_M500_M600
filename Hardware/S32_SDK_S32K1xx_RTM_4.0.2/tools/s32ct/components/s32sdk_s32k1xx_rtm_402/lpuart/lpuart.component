@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="lpuart_config" label="lpuart" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.lpuart" version="1.0.0"/>
+   <description>LPUART Configuration</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>LPUART General Mode</description>
+      <config_set_refs>
+         <config_set_ref>lpuart_driver</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>LPUART</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="lpuart_driver" label="LPUART configuration set" from_source="lpuart_driver.h">
+      <description>LPUART Driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation>
+      </validation>
+      <quick_selections>
+         <quick_selection id="dv_lpuart0" label="Default Values for LPUART0" available="getPeripheral($instance) == `LPUART_0`">
+            <description>LPUART0 Default Configuration</description>
+            <set id="lpuart_state_name">lpUartState0</set>
+            <set id="lpuart_configuration.0.name">lpuart_0_InitConfig0</set>
+            <set id="lpuart_configuration.0.transferType">LPUART_USING_INTERRUPTS</set>
+            <set id="lpuart_configuration.0.baudRate">9600</set>
+            <set id="lpuart_configuration.0.bitCountPerChar">LPUART_8_BITS_PER_CHAR</set>
+            <default>dv_lpuart0</default>
+         </quick_selection>
+         <quick_selection id="dv_lpuart1" label="Default Values for LPUART1" available="getPeripheral($instance) == `LPUART_1`">
+            <description>LPUART1 Default Configuration</description>
+            <set id="lpuart_state_name">lpUartState1</set>
+            <set id="lpuart_configuration.0.name">lpuart_1_InitConfig0</set>
+            <set id="lpuart_configuration.0.transferType">LPUART_USING_INTERRUPTS</set>
+            <set id="lpuart_configuration.0.baudRate">9600</set>
+            <set id="lpuart_configuration.0.bitCountPerChar">LPUART_8_BITS_PER_CHAR</set>
+            <default>dv_lpuart1</default>
+         </quick_selection>
+         <quick_selection id="dv_lpuart2" label="Default Values for LPUART2" available="getPeripheral($instance) == `LPUART_2`">
+            <description>LPUART2 Default Configuration</description>
+            <set id="lpuart_state_name">lpUartState2</set>
+            <set id="lpuart_configuration.0.name">lpuart_2_InitConfig0</set>
+            <set id="lpuart_configuration.0.transferType">LPUART_USING_INTERRUPTS</set>
+            <set id="lpuart_configuration.0.baudRate">9600</set>
+            <set id="lpuart_configuration.0.bitCountPerChar">LPUART_8_BITS_PER_CHAR</set>
+            <default>dv_lpuart2</default>
+         </quick_selection>
+      </quick_selections>
+      <generated_types/>
+
+      <settings>
+         <string id="lpuart_state_name" label="Driver State Structure Name">
+            <description>Driver state structure name.</description>
+            <validation>
+               <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="State structure name must be a valid C identifier!"/>
+            </validation>
+         </string>
+         <array id="lpuart_configuration" label="LPUART Configuration" type="lpuart_user_config" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+            <description>LPUART configuration</description>
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+               <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+            </validation>
+            <item_defaults>
+               <set_default id = "name" value_expr="x -> ($instance.getPeripheral().toLowerCase() +`_InitConfig` + x.getID())"/>
+               <set_default id = "readonly" value_expr="x -> (`true`)"/>
+               <set_default id = "transferType" value_expr="x -> (`LPUART_USING_INTERRUPTS`)"/>
+               <set_default id = "baudRate" value_expr="x -> (`9600`)"/>
+               <set_default id = "parityMode" value_expr="x -> (`LPUART_PARITY_DISABLED`)"/>
+               <set_default id = "stopBitCount" value_expr="x -> (`LPUART_ONE_STOP_BIT`)"/>
+               <set_default id = "bitCountPerChar" value_expr="x -> (`LPUART_8_BITS_PER_CHAR`)"/>
+               <set_default id = "rxDMAChannel" value_expr="x -> (`0`)"/>
+               <set_default id = "txDMAChannel" value_expr="x -> (`0`)"/>
+            </item_defaults>
+         </array>
+         <variable value="`../lpuart/lpuart_codegen.js`" id="codegen_file"></variable>
+         <variable value="`LpUartCodeGen`" id="codegen_class"></variable>
+         <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+         <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+      </settings>
+
+      <user_types>
+         <enum id="lpuart_parity_mode_t" label="Parity Mode" from="lpuart_parity_mode_t">
+            <item id="LPUART_PARITY_DISABLED" label="Disabled"/>
+            <item id="LPUART_PARITY_EVEN" label="Even"/>
+            <item id="LPUART_PARITY_ODD" label="Odd"/>
+         </enum>
+         <enum id="lpuart_bit_count_per_char_t" label="Bits per char" from="lpuart_bit_count_per_char_t">
+            <item id="LPUART_8_BITS_PER_CHAR" label="8"/>
+            <item id="LPUART_9_BITS_PER_CHAR" label="9"/>
+            <item id="LPUART_10_BITS_PER_CHAR" label="10"/>
+         </enum>
+         <enum id="lpuart_stop_bit_count_t" label="Stop Bits" from="lpuart_stop_bit_count_t">
+            <item id="LPUART_ONE_STOP_BIT" label="1"/>
+            <item id="LPUART_TWO_STOP_BIT" label="2"/>
+         </enum>
+         <enum id="lpuart_transfer_type_t" label="Transfer Type" from="lpuart_transfer_type_t">
+            <item id="LPUART_USING_DMA" label="DMA"/>
+            <item id="LPUART_USING_INTERRUPTS" label="Interrupts"/>
+         </enum>
+         <struct id="lpuart_user_config" label="LPUART Configuration" from="lpuart_user_config_t">
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readonly" label="Read-only">
+               <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+            </bool>
+            <reference id="transferType" label="Transfer Type" type="lpuart_transfer_type_t" available="true" enable="(getPeripheral($instance) == `LPUART_0`) || (getPeripheral($instance) == `LPUART_1`) || (getPeripheral($instance) == `LPUART_2`)" options="cStructField">
+               <description>UART transfer type: DMA/Interrupts.</description>
+            </reference>
+            <integer id="baudRate" label="Baudrate" type="uint32_t" available="true" options="cStructField">
+               <description>Baud rate for the UART transfer.</description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &gt; 0" level="error" description="Baudrate must be greater than zero."/>
+               </validation>
+            </integer>
+
+            <variable id="lpuartInstance" value="getPeripheral($instance)"/>
+            <variable id="uartGroupClocks" value="getClockFunctionalGroups().get(0)"/>
+            <variable id="lpuartName" value="`LPUART` + getPeriphInstanceIndex($parent.lpuartInstance.getValue()).toString()"/>
+            <variable id="lpuartClockName" value="$parent.lpuartName.getValue() + `_CLK`"/>
+
+            <variable id="lpuartClock" value="getPeripheralClockFrequency($parent.lpuartName.getValue(), $parent.lpuartClockName.getValue(), $parent.uartGroupClocks.getValue())"/>
+
+            <variable id="actBaudRate" value = "``"></variable>
+            <info id="actualBaudRate" label="Actual Baudrate" value = "$parent.actBaudRate.getValue()">
+                  <description>The actual baud rate that be set by the driver. May be substantially different than the requested baud rate.</description>
+            </info>
+
+            <reference id="parityMode" label="Parity Mode" type="lpuart_parity_mode_t" options="cStructField">
+               <description>Parity type (even/odd).</description>
+               <validation>
+                  <constraint cond_expr="!(($this.getValue() != `LPUART_PARITY_DISABLED`) &amp;&amp; ($parent.bitCountPerChar.getValue() == `LPUART_10_BITS_PER_CHAR`))" level="error" description="For 10 bits per char data mode, parity bit can't be enabled."/>
+               </validation>
+            </reference>
+            <reference id="stopBitCount" label="Stop Bits" type="lpuart_stop_bit_count_t" options="cStructField">
+               <description>Number of stop bits (1/2).</description>
+            </reference>
+            <reference id="bitCountPerChar" label="Bits per_char" type="lpuart_bit_count_per_char_t" options="cStructField">
+               <description>LPUART number of bits in a character.</description>
+               <validation>
+                  <constraint cond_expr="!(($this.getValue() != `LPUART_8_BITS_PER_CHAR`) &amp;&amp; ($parent.transferType.getValue() == `LPUART_USING_DMA`))" level="error" description="In DMA mode, only 8-bits chars are supported."/>
+               </validation>
+            </reference>
+            <integer id="rxDMAChannel" label="RX DMA Channel" type="uint32_t" enable="$parent.transferType.getValue() == `LPUART_USING_DMA`" options="cStructField">
+               <description>DMA channel used for reception.</description>
+               <validation>
+                  <constraint cond_expr="($parent.transferType.getValue() == `LPUART_USING_DMA`) &amp;&amp; ($this.getValue() != $parent.txDMAChannel.getValue())" level="error" description="Please use different channels for RX and TX!"/>
+                  <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> ((((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART0_RX`) &amp;&amp; getPeripheral($instance) == `LPUART_0`) || ((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART1_RX`) &amp;&amp; getPeripheral($instance) == `LPUART_1`) || ((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART2_RX`) &amp;&amp; getPeripheral($instance) == `LPUART_2`))  &amp;&amp; (x.getSetting(`virtCh`).value() == $this.getValue())))), true) &gt; 0)" level="warning" description="Please configure the correct source (LPUARTx_RX) for this channel, from the DMA component!"/>
+               </validation>
+            </integer>
+            <integer id="txDMAChannel" label="TX DMA Channel" type="uint32_t" enable="$parent.transferType.getValue() == `LPUART_USING_DMA`" options="cStructField">
+               <description>DMA channel used for transmission.</description>
+               <validation>
+                  <constraint cond_expr="($parent.transferType.getValue() == `LPUART_USING_DMA`) &amp;&amp; ($this.getValue() != $parent.rxDMAChannel.getValue())" level="error" description="Please use different channels for RX and TX!"/>
+                  <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> ((((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART0_TX`) &amp;&amp; getPeripheral($instance) == `LPUART_0`) || ((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART1_TX`) &amp;&amp; getPeripheral($instance) == `LPUART_1`) || ((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART2_TX`) &amp;&amp; getPeripheral($instance) == `LPUART_2`)) &amp;&amp; (x.getSetting(`virtCh`).value() == $this.getValue())))), true) &gt; 0)" level="warning" description="Please configure the correct source (LPUARTx_TX) for this channel, from the DMA component!"/>
+               </validation>
+            </integer>
+         </struct>
+      </user_types>
+   </config_set>
+</component:config_component>

@@ -1,0 +1,75 @@
+/*!
+    @page trgmux_lpit_s32k142_group Trigger MUX Control
+    @brief Example application showing the usage of the TRGMUX module
+
+    ## Application description ##
+    ______
+    The purpose of this demo application is to show you
+    how to use the Trigger MUX Control of the S32K14x
+    MCU with this SDK.
+
+    The examples use TRGMUX to connect Pin Trigger Mux In10 and LPIT channel 0.
+    - Initialize TRGMUX with source trigger from TRGMUX_IN10 and target module is LPIT_CH0
+    - Initialize the LPIT Channel 0.
+    - LED RED on EVB board or LED ORANGE on Motherboard is used to blink led
+    - Each time when user presses button SW2 on EVB board or SW4 on Motherboard will
+    generate a trigger signal that actives LPIT channel 0 via TRGMUX.
+    After 1ms, LPIT will create an event interrupt and toggle LED
+
+    ## Prerequisites ##
+    ______
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board cannot be powered from the USB port)
+    - 1 Personal Computer
+    - 1 PEmicro Debugger (optional, users can use Open SDA)
+
+    ## Boards supported ##
+    ______
+    The following boards are supported by this application:
+    - S32K142EVB
+    - S32K142-MB
+
+    ## Hardware Wiring ##
+    ______
+    PIN FUNCTION         |    S32K142EVB                              |S32K142-MB
+    ---------------------|--------------------------------------------|--------------
+    RED_LED(PTD15)       | RGB_RED -wired on the board                | LED0 (JP49-2 connect J12-18)
+    SW (\b PTC11)        | SW2_BTN0 (J1-15 connect J2-10)             | SW4 - (JP64-2 connect JP64-3; JP63-1 connect JP63-2; JP36-1 connect JP11-22)
+
+
+    ## How to run ##
+    ______
+
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New \b S32DS \b Project \b From... and select \b trgmux_lpit_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    ####2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    Right click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar).
+    In S32 Configuration menu, click on the desired configuration (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components.
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user.
+    Make the desired changes (if any) then click "Update Code".
+    Wait for the code generation to be completed before continuing to the next step.
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) or \b RAM (Debug_RAM) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be four debug configurations for this project:
+     Configuration Name | Description
+     -------------------|------------
+     \b trgmux_lpit_s32k142_debug_ram_pemicro   | Debug the RAM configuration using PEMicro debuggers
+     \b trgmux_lpit_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debuggers
+     \b trgmux_lpit_s32k142_debug_ram_jlink     | Debug the RAM configuration using Segger Jlink debuggers
+     \b trgmux_lpit_s32k142_debug_flash_jlink   | Debug the FLASH configuration using Segger Jlink debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+    ## Notes ##
+    ______
+
+    The TRGMUX module in S32K platform supports both big endian and little endian in source data.
+*/
+

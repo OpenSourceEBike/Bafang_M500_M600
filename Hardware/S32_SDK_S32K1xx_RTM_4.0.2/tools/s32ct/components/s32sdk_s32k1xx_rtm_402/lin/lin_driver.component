@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="lin" label="lin" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  category="driver">
+    <sw_comp_ref name="platform.driver.lin" version="1.0.0"/>
+    <description>S32 SDK Peripheral Driver for LIN module</description>
+    <mode id="general" label="General" available="true">
+        <description>LIN general mode</description>
+        <config_set_refs>
+            <config_set_ref>lin_driver</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>LPUART</peripheral_type>
+        </master_peripheral>
+    </mode>
+
+    <config_set id="lin_driver" label="LIN Configuration" from_source="lin_driver.h">
+        <description>LIN Configuration</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="linUserConfigDefault1" label="Default values for LIN configuration0" available="($instance.getPeripheral() == `LPUART_0`)">
+                <description>Default values for LIN configuration0</description>
+                <set id="linUserConfiguation.linStateStructure">lin0_State</set>
+                <set id="linUserConfiguation.linConfiguration.0.name">lin0_InitConfig0</set>
+                <set id="linUserConfiguation.linConfiguration.0.baudRate">19200</set>
+                <set id="linUserConfiguation.linConfiguration.0.nodeFunction">(bool)MASTER</set>
+                <set id="linUserConfiguation.linConfiguration.0.timerGetTimeIntervalCallback">NULL</set>
+                <set id="linUserConfiguation.linConfiguration.0.autobaudEnable">false</set>
+                <set id="linUserConfiguation.linConfiguration.0.classicPidType">Classic</set>
+            </quick_selection>
+            <quick_selection id="linUserConfigDefault2" label="Default values for LIN configuration1" available="($instance.getPeripheral() == `LPUART_1`)">
+                <description>Default values for LIN configuration1</description>
+                <set id="linUserConfiguation.linStateStructure">lin1_State</set>
+                <set id="linUserConfiguation.linConfiguration.0.name">lin1_InitConfig0</set>
+                <set id="linUserConfiguation.linConfiguration.0.baudRate">19200</set>
+                <set id="linUserConfiguation.linConfiguration.0.nodeFunction">(bool)MASTER</set>
+                <set id="linUserConfiguation.linConfiguration.0.timerGetTimeIntervalCallback">NULL</set>
+                <set id="linUserConfiguation.linConfiguration.0.autobaudEnable">false</set>
+                <set id="linUserConfiguation.linConfiguration.0.classicPidType">Classic</set>
+            </quick_selection>
+            <quick_selection id="linUserConfigDefault3" label="Default values for LIN configuration2" available="($instance.getPeripheral() == `LPUART_2`)">
+                <description>Default values for LIN configuration2</description>
+                <set id="linUserConfiguation.linStateStructure">lin2_State</set>
+                <set id="linUserConfiguation.linConfiguration.0.name">lin2_InitConfig0</set>
+                <set id="linUserConfiguation.linConfiguration.0.baudRate">19200</set>
+                <set id="linUserConfiguation.linConfiguration.0.nodeFunction">(bool)MASTER</set>
+                <set id="linUserConfiguation.linConfiguration.0.timerGetTimeIntervalCallback">NULL</set>
+                <set id="linUserConfiguation.linConfiguration.0.autobaudEnable">false</set>
+                <set id="linUserConfiguation.linConfiguration.0.classicPidType">Classic</set>
+            </quick_selection>
+            <default>linUserConfigDefault</default>
+        </quick_selections>
+        <generated_types>
+            <fixme id="lin_timer_get_time_interval_t" label="Callback function to get time interval in nanoseconds Implements : lin_timer_get_time_interval_t_Class" type="uint32_t(*">
+                <description></description>
+            </fixme>
+            <fixme id="lin_callback_t" label="LIN Driver callback function type Implements : lin_callback_t_Class" type="void(*">
+                <description></description>
+            </fixme>
+            <enum id="lin_node_function_type_t" label="Node function as Master or Slave" from="lin_node_function_type_t">
+                <description>Node function as Master or Slave</description>
+                <item id="(bool)MASTER" label="MASTER">
+                    <description>Node function as Slave</description>
+                </item>
+                <item id="(bool)SLAVE" label="SLAVE">
+                    <description>Node function as Master</description>
+                </item>
+            </enum>
+            <enum id="lin_baud_rate_type_t" label="LIN baud rate" from="lin_baud_rate_type_t">
+                <description>Node function as Master or Slave</description>
+                <item id="2400" label="2400">
+                    <description>LPUART baud rare</description>
+                </item>
+                <item id="4800" label="4800">
+                    <description>LPUART baud rare</description>
+                </item>
+                <item id="9600" label="9600">
+                    <description>LPUART baud rare</description>
+                </item>
+                <item id="14400" label="14400">
+                    <description>LPUART baud rare</description>
+                </item>
+                <item id="19200" label="19200">
+                    <description>LPUART baud rare</description>
+                </item>
+            </enum>
+            <enum id="lin_classic_pid_type_t" label="LIN classic PID" from="lin_classic_pid_type_t">
+                <description>LIN Classic PID</description>
+                <item id="Classic" label="Classic">
+                    <description>Classic</description>
+                </item>
+                <item id="Enhanced" label="Enhanced">
+                    <description>Enhanced</description>
+                </item>
+                <item id="Mixed" label="Mixed">
+                    <description>Mixed</description>
+                </item>
+            </enum>
+            <enum id="lin_event_id_t" label="Defines types for an enumerating event related to an Identifier" from="lin_event_id_t">
+                <description></description>
+                <item id="LIN_NO_EVENT" label="No event yet">
+                    <description>No event yet</description>
+                </item>
+                <item id="LIN_WAKEUP_SIGNAL" label="Received a wakeup signal">
+                    <description>Received a wakeup signal</description>
+                </item>
+                <item id="LIN_BAUDRATE_ADJUSTED" label="Indicate that baudrate was adjusted to Master&apos;s baudrate">
+                    <description>Indicate that baudrate was adjusted to Master&apos;s baudrate</description>
+                </item>
+                <item id="LIN_RECV_BREAK_FIELD_OK" label="Indicate that correct Break Field was received">
+                    <description>Indicate that correct Break Field was received</description>
+                </item>
+                <item id="LIN_SYNC_OK" label="Sync byte is correct">
+                    <description>Sync byte is correct</description>
+                </item>
+                <item id="LIN_SYNC_ERROR" label="Sync byte is incorrect">
+                    <description>Sync byte is incorrect</description>
+                </item>
+                <item id="LIN_PID_OK" label="PID correct">
+                    <description>PID correct</description>
+                </item>
+                <item id="LIN_PID_ERROR" label="PID incorrect">
+                    <description>PID incorrect</description>
+                </item>
+                <item id="LIN_FRAME_ERROR" label="Framing Error">
+                    <description>Framing Error</description>
+                </item>
+                <item id="LIN_READBACK_ERROR" label="Readback data is incorrect">
+                    <description>Readback data is incorrect</description>
+                </item>
+                <item id="LIN_CHECKSUM_ERROR" label="Checksum byte is incorrect">
+                    <description>Checksum byte is incorrect</description>
+                </item>
+                <item id="LIN_TX_COMPLETED" label="Sending data completed">
+                    <description>Sending data completed</description>
+                </item>
+                <item id="LIN_RX_COMPLETED" label="Receiving data completed">
+                    <description>Receiving data completed</description>
+                </item>
+                <item id="LIN_RX_OVERRUN" label="RX overrun flag">
+                    <description>RX overrun flag</description>
+                </item>
+            </enum>
+            <enum id="lin_node_state_t" label="Define type for an enumerating LIN Node state" from="lin_node_state_t">
+                <description></description>
+                <item id="LIN_NODE_STATE_UNINIT" label="Uninitialized state">
+                    <description>Uninitialized state</description>
+                </item>
+                <item id="LIN_NODE_STATE_SLEEP_MODE" label="Sleep mode state">
+                    <description>Sleep mode state</description>
+                </item>
+                <item id="LIN_NODE_STATE_IDLE" label="Idle state">
+                    <description>Idle state</description>
+                </item>
+                <item id="LIN_NODE_STATE_SEND_BREAK_FIELD" label="Send break field state">
+                    <description>Send break field state</description>
+                </item>
+                <item id="LIN_NODE_STATE_RECV_SYNC" label="Receive the synchronization byte state">
+                    <description>Receive the synchronization byte state</description>
+                </item>
+                <item id="LIN_NODE_STATE_SEND_PID" label="Send PID state">
+                    <description>Send PID state</description>
+                </item>
+                <item id="LIN_NODE_STATE_RECV_PID" label="Receive PID state">
+                    <description>Receive PID state</description>
+                </item>
+                <item id="LIN_NODE_STATE_RECV_DATA" label="Receive data state">
+                    <description>Receive data state</description>
+                </item>
+                <item id="LIN_NODE_STATE_RECV_DATA_COMPLETED" label="Receive data completed state">
+                    <description>Receive data completed state</description>
+                </item>
+                <item id="LIN_NODE_STATE_SEND_DATA" label="Send data state">
+                    <description>Send data state</description>
+                </item>
+                <item id="LIN_NODE_STATE_SEND_DATA_COMPLETED" label="Send data completed state">
+                    <description>Send data completed state</description>
+                </item>
+            </enum>
+        </generated_types>
+        <user_types>
+
+            <struct id="lin_number_class_pid_t" label="classic PID" from="lin_number_class_pid_t">
+                <integer id="numberclassicPID" label="PID" type="uint8_t">
+                    <description>Number of classicPID</description>
+                </integer>
+            </struct>
+            <struct id="lin_user_config_t" label="LIN hardware configuration structure Implements : lin_user_config_t_Class" from="lin_user_config_t">
+                <description></description>
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                       <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <integer id="baudRate" label="Baud rate" type="uint32_t" min_expr="1000" max_expr="20000">
+                    <description>Baudrate of LIN Hardware Interface should be configured: 2400/4800/9600/14400/19200</description>
+                </integer>
+                <reference id="nodeFunction" label="Node function" type="lin_node_function_type_t">
+                    <description>Node function as Master or Slave.</description>
+                </reference>
+                <bool id="autobaudEnable" label="Auto baud rate" enable="$parent.nodeFunction.getValue() == `(bool)SLAVE`">
+                    <description>Enable Autobaud feature</description>
+                </bool>
+                <string id="timerGetTimeIntervalCallback" label="Timer get time interval callback" type="lin_timer_get_time_interval_t">
+                    <description>Callback function to get time interval in nanoseconds</description>
+                    <validation>
+                       <constraint cond_expr="isCIdentifier($this.getValue()) || ($this.getValue() == `NULL`)" level="error" description="timerGetTimeIntervalCallback must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <reference id="classicPidType" label="Checksum type" type="lin_classic_pid_type_t">
+                    <description>Checksum type</description>
+                </reference>
+                <array id="numOfClassicPID" type="lin_number_class_pid_t" options="ShowContentAs=Table" label="List of PIDs use classic checksum" enable="$parent.classicPidType.getValue() == `Mixed`">
+                    <item_defaults>
+                       <set_default id="numberclassicPID" value_expr="x -> x.getID()"/>
+                    </item_defaults>
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`numberclassicPID`).value()).length() == 0" level="error" description="There are some duplicated `numberclassicPID's Value` in the Channel configurations"/>
+                    </validation>
+                </array>
+            </struct>
+        </user_types>
+        <settings>
+            <struct id="linUserConfiguation" label="LIN User Configuration" type="linUserConfiguation" options="ShowContentAs=Table" config_set_id="lin_driver" component_id="lin" available="true">
+              <string id="linStateStructure" label="LIN State structure name" type="string">
+                    <description>LIN state structure name.</description>
+                    <validation>
+                       <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+              </string>
+              <array id="linConfiguration" label="LIN Configuration" type="lin_user_config_t" available="true"  options="    ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+                 <description>LIN User Configuration</description>
+                  <item_defaults>
+                       <set_default id="name" value_expr="x -> (replaceText($instance.getPeripheral(),`LPUART_`,`lin`) + `_InitConfig` + x.getID())"/>
+                       <set_default id="baudRate" value_expr="x -> (19200)"/>
+                       <set_default id="timerGetTimeIntervalCallback" value_expr="x -> (replaceText($instance.getPeripheral(),`LPUART_`,`lin`) + `TimerGetTimeIntervalCallback` +   x.getID())"/>
+                  </item_defaults>
+                  <validation>
+                   <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the Channel configurations"/>
+                   <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`timerGetTimeIntervalCallback`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the Channel configurations"/>
+                  </validation>
+              </array>
+            </struct>
+            <variable value="`../lin/lin_codegen.js`" id="codegen_file"></variable>
+            <variable value="`LIN_CodeGenerator`" id="codegen_class"></variable>
+            <variable value="`../lin/lin_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+            <variable value="`LIN_ToolchainSettings`" id="toolchain_settings_class"></variable>
+            <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+            <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+        </settings>
+    </config_set>
+</component:config_component>

@@ -1,0 +1,159 @@
+/*!
+ * @defgroup lpit_drv LPIT Driver
+ * @ingroup lpit
+ * @brief Low Power Interrupt Timer Peripheral Driver.
+ *
+ * ## Hardware background ##
+ * Each LPIT timer channel can be configured to run in one of 4 modes:@n
+ * <b>32-bit Periodic Counter</b>: In this mode the counter will load and then decrement down
+ * to zero. It will then set the timer interrupt flag and assert the output pre-trigger.@n
+ * <b>Dual 16-bit Periodic Counter</b>: In this mode, the counter will load and then the lower
+ * 16-bits will decrement down to zero, which will assert the output pre-trigger. The
+ * upper 16-bits will then decrement down to zero, which will negate the output pre-trigger and set the timer interrupt flag.@n
+ * <b>32-bit Trigger Accumulator</b>: In this mode, the counter will load on the first trigger
+ * rising edge and then decrement down to zero on each trigger rising edge. It will then
+ * set the timer interrupt flag and assert the output pre-trigger.@n
+ * <b>32-bit Trigger Input Capture</b>: In this mode, the counter will load with 0xFFFF_FFFF
+ * and then decrement down to zero. If a trigger rising edge is detected, it will store the
+ * inverse of the current counter value in the load value register, set the timer interrupt
+ * flag and assert the output pre-trigger.@n
+ * In these modes, the timer channel operation is further controlled by Trigger Control bits (TSOT, TSOI, TROT)
+ * which control the load, reload, start and restart of the timer channels.
+ *
+ * ## Driver consideration ##
+ * The Driver uses structures for configuration. Each structure contains members
+ * that are specific to its respective functionality. There are \b lpit_user_config_t
+ * and \b lpit_user_channel_config_t.
+ *
+ * ## Interrupt handling ##
+ * Each LPIT timer channel has a corresponding interrupt handler. The LPIT Driver does not define interrupt handler internally.
+ * These interrupt handler methods can be defined by the user application.
+ * There are two ways to add an LPIT interrupt handler:
+ *  1. Using the weak symbols defined by start-up code. if the methods
+ *      <tt>LPIT<b>x</b>_Handler(void)</tt> (x denotes instance number) are not
+ *      defined, the linker use a default ISR. An error will be generated if
+ *      methods with the same name are defined multiple times. This method works
+ *      regardless of the placement of the interrupt vector table (Flash or RAM).
+ *  2. Using the Interrupt Manager's <tt>INT_SYS_InstallHandler()</tt> method. This can
+ *      be used to dynamically change the ISR at run-time. This method works
+ *      only if the interrupt vector table is located in RAM.
+ *
+ * ## Clocking configuration ##
+ * The LPIT Driver does not handle clock setup (from PCC) configuration. This is handled by the Clock Manager. The driver assumes that clock
+ * configurations have been made, so it is the user's responsibility to set up
+ * clocking and pin configurations correctly.
+ *
+ * ## Basic operations ##
+ * 1. Pre-Initialization information of LPIT module
+ *   - Before using the LPIT driver, the protocol clock of the module must be configured by the application using PCC
+ *     module.
+ *   - Configures Trigger MUX Control (TRGMUX) if want to use external trigger for LPIT module.
+ *   - Configures different peripherals if want to use them in LPIT interrupt routine.
+ *   - Provides configuration data structure to LPIT initialization API.
+
+ * 2. To initialize the LPIT module, just call the LPIT_DRV_Init() function with the user configuration data structure.
+ *     This function configures LPIT module operation when MCU enters DEBUG and DOZE (Low power mode)
+ *     modes and enables LPIT module. This function must be called firstly.@n
+ *     In the following code, LPIT module is initialized to continue to run when MCU enters both Debug and DOZE modes.
+  ~~~~~{.c}
+ *     #define BOARD_LPIT_INSTANCE 0U
+ *     /* LPIT module configuration stucture */
+ *     lpit_user_config_t lpitconfig =
+ *     {
+ *         .enableRunInDebug = true,
+ *         .enableRunInDoze  = true
+ *     };
+ *     /* Initializes the LPIT module. */
+ *     LPIT_DRV_Init(BOARD_LPIT_INSTANCE, &lpitconfig);
+  ~~~~~
+ *
+ * 3. After calling the LPIT_DRV_Init() function, call LPIT_DRV_InitChannel() function with user channel configuration
+ *     structure to initialize timer channel.@n
+ *     This function configures timer channel chaining, timer channel mode, timer channel period, interrupt generation,
+ *     trigger source, trigger select, reload on trigger, stop on interrupt and start on trigger.
+ *     In the following code, timer channel is initialized with the channel chaining is disabled, interrupt generation
+ *     is enabled, operation mode is 32 bit periodic counter mode, trigger source is external, reload on trigger is
+ *     disabled, stop on interrupt is disabled, start on trigger is disabled and timer period is 1 second. Note that: @n
+ *     - Trigger select is not effective if trigger source is external.@n
+ *     - Timer channel period must be suitable for operation mode.@n
+ *     - The timer channel 0 can not be chained.
+  ~~~~~{.c}
+ *     /* Channel 0 configuration structure */
+ *     lpit_user_channel_config_t chnlconfig =
+ *     {
+ *         .timerMode = LPIT_PERIODIC_COUNTER,
+ *         .periodUnits = LPIT_PERIOD_UNITS_MICROSECONDS,
+ *         .period = 1000000U,
+ *         .triggerSource = LPIT_TRIGGER_SOURCE_INTERNAL,
+ *         .triggerSelect = 1U,
+ *         .enableReloadOnTrigger = false,
+ *         .enableStopOnInterrupt = false,
+ *         .enableStartOnTrigger = false,
+ *         .chainChannel = false,
+ *         .isInterruptEnabled = true
+ *     };
+ *     /* Initializes the channel 0 */
+ *     LPIT_DRV_InitChannel(BOARD_LPIT_INSTANCE, 0, &chnlconfig);
+  ~~~~~
+ *
+ * 4. To reconfigure timer channel period , just call LPIT_DRV_SetTimerPeriodByUs() or LPIT_DRV_SetTimerPeriodByCount()
+ *     with corresponding new period.
+ *     In the following code, the timer channel period is reconfigured with new period in count unit.
+  ~~~~~{.c}
+ *     /* Reconfigures timer channel period with new period of 10000 count*/
+ *     LPIT_DRV_SetTimerPeriodByCount(BOARD_LPIT_INSTANCE, 0, 10000);
+  ~~~~~
+ *
+ * 5. To start timer channel counting, just call LPIT_DRV_StartTimerChannels() with timer channels starting mask.
+ *     In the following code, the timer channel 0 is started with the mask of 0x1U.
+  ~~~~~{.c}
+ *     /* Starts channel 0 counting*/
+ *     LPIT_DRV_StartTimerChannels(BOARD_LPIT_INSTANCE, 0x1U);
+  ~~~~~
+ *
+ * 6. To stop timer channel counting, just call LPIT_DRV_StopTimerChannels() with timer channels stopping mask.
+ *     In the following code, the timer channel 0 is stopped with the mask of 0x1U.
+  ~~~~~{.c}
+ *     /* Stops channel 0 counting*/
+ *     LPIT_DRV_StopTimerChannels(BOARD_LPIT_INSTANCE, 0x1U);
+  ~~~~~
+ *
+ * 7. To disable LPIT module, just call LPIT_DRV_Deinit().
+  ~~~~~{.c}
+ *     /* Disables LPIT module*/
+ *     LPIT_DRV_Deinit(BOARD_LPIT_INSTANCE);
+  ~~~~~
+</p>
+<p>
+ * ## API ##
+ * Some of the features exposed by the API are targeted specifically for timer channel mode. For example, set/get timer period in dual 16 mode function makes sense
+ * if timer channel mode is dual 16 mode, so therefor it is restricted for use in other modes.
+ *
+ * For any invalid configuration the functions will either return an error code or trigger DEV_ASSERT (if enabled).
+ * For more details, please refer to each function description.
+</p>
+
+## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\lpit_driver.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+\ref clock_manager
+\ref interrupt_manager
+ */

@@ -1,0 +1,129 @@
+/*!
+    @defgroup phy Ethernet Transciever (PHY)
+    The S32 SDK provides a peripheral driver for some of the Ethernet Transcievers on the supported devices.
+
+    ## Hardware background ##
+
+    One of the devices supported by the current framework is TJA1100.
+    The TJA1100 is a 100BASE-T1 compliant Ethernet PHY optimized for automotive use
+    cases. The device provides 100 Mbit/s transmit and receive capability over a single
+    Unshielded Twisted Pair (UTP) cable, supporting a cable length of up to at least 15 m.
+    Optimized for automotive use cases such as IP camera links, driver assistance systems
+    and back-bone networks, the TJA1100 has been designed to minimize power
+    consumption and system costs, while still providing the robustness required for
+    automotive use cases.
+
+    @addtogroup phy_driver
+    @ingroup phy
+
+    ## How to use the PHY framework in your application ##
+
+    In order to use the PHY framework in your application, the framework needs to be initialized by calling
+    the <b>PHY_FrameworkInit()</b> function. The parameters of this function specify:
+        - an array of PHY configuration structures;
+        - an array of pointers to the PHY drivers used by the application.
+
+    The configuration of the PHY is specified through the <b>phy_config_t</b> structure and contains:
+        - the PHY driver type used by the current PHY - will refer to an index in the array of drivers (<b>phyDrivers</b>);
+        - the address of the PHY;
+        - the location (internal/external);
+        - the role (master/slave/auto);
+		- the link speed;
+		- for MDIO/SMI managed devices: clause 45/22 MDIO frames selection;
+        - the instance number of the ENET module connected to this PHY;
+        - the callbacks associated with different events (link up/down, autonegotiation complete, autonegotiation failed, sleep request);
+    - extended configuration (PHY specific).
+
+    The driver structure (<b>phy_driver_t</b>) represents a set of functions used to control the module and must be compatible with the
+    associated device. Currently, the following drivers are implemented:
+        - TJA110x (<b>PHY_driver_tja110x</b>);
+        - generic driver, supporting IEEE standardized registers (<b>PHY_driver_generic</b>).
+
+## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\phy\phy.c
+${S32SDK_PATH}\platform\drivers\src\phy\phy_generic.c
+${S32SDK_PATH}\platform\drivers\src\phy\phy_tja110x.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref enet
+
+<b>Examples:</b>
+
+<b>Initializing the framework</b>
+@code
+
+/*! @brief Array of pointers towards the driver structures */
+phy_driver_t* phyDrivers[N_PHY_DRIVERS] = {&PHY_driver_tja110x, &PHY_driver_generic};
+
+/*! @brief Array of PHY configuration structures */
+phy_config_t  phyConfig[N_PHY_DEVS] = {
+    {
+        .type = PHY_TYPE_TJA110X,
+        .addr = 4,
+        .speed = PHY_SPEED_100_MBPS,
+        .location = PHY_LOCATION_EXTERNAL,
+        .role = PHY_ROLE_MASTER,
+        .enetInstance =  0,
+        .linkUpEventCB = NULL,
+        .linkDownEventCB = NULL,
+        .sleepRequestCB = NULL,
+        .autonegCompleteCB = NULL,
+        .autonegFailedCB = NULL,
+        .extendedConfig = NULL
+    },
+    {
+        .type = PHY_TYPE_GENERIC,
+        .addr = 1,
+        .speed = PHY_SPEED_AUTONEG,
+        .location = PHY_LOCATION_EXTERNAL,
+        .role = PHY_ROLE_SLAVE,
+        .enetInstance =  0,
+        .linkUpEventCB = NULL,
+        .linkDownEventCB = NULL,
+        .sleepRequestCB = NULL,
+        .autonegCompleteCB = NULL,
+        .autonegFailedCB = NULL,
+        .extendedConfig = NULL
+    },
+};
+
+int main(void)
+{
+    /* ... */
+
+    /* Initialize the module */
+    PHY_FrameworkInit(phyConfig, phyDrivers);
+
+    /* Initialize the TJA110x PHY */
+    PHY_Init(0);
+    /* Initialize the generic PHY */
+    PHY_Init(1);
+
+    /* ... */
+}
+
+@endcode
+
+## Important Note
+1. When PHY TJA1102 device is used in the application, User must add 2 configurations with PHY TJA110x type.
+The configurations must be arranged in order TJA1102_P0 then TJA1102_P1. Because TJA1102_P1 is always initialized after TJA1102_P0.
+2. With TJA110x: Link down occurs when the link is lost or Phy device is turned off. No link down is reported when disabling link control manually.
+@}*/

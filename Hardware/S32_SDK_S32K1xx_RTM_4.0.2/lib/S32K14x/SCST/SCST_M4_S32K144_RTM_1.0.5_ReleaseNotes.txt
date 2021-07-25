@@ -1,0 +1,222 @@
+﻿************************************************************************************
+Release Notes for NXP Semiconductors SCST M4 S32K144 / MWCT101xS RTM_1.0.5
+
+NXP and the NXP logo are trademarks of NXP Semiconductors.
+
+All other product or service names are the property of their respective owners.
+Copyright (C) 2015-2016 Freescale Semiconductor,Inc., 2016-2020 NXP Semiconductors
+************************************************************************************
+
+************************************************************************************
+This package contains files for NXP SCST M4 for S32K144 / MWCT101xS, swv. 1.0.5 RTM
+************************************************************************************
+
+========================================================
+Installation
+========================================================
+
+Run the SCST_M4_S32K144_RTM_1.0.5.exe file and follow the instructions.
+
+========================================================
+Supported Devices:
+========================================================
+S32K14x (Cortex-M4 core)
+ 
+
+Tested with:
+ - S32K144_lqfp100 / MWCT1014S_lqfp100 - 100LQFP 0N57U cut 2.1
+ - PS32K144WSWLH 64LQFP	0P64A 
+
+========================================================
+Release Specifics:
+========================================================
+1. This release was specifically created for the Cortex-M4 core.
+
+2. This is RTM release. User documentation is available.
+
+3. The software was developed to support the following compilers:
+ - GreenHills compiler v.2017.1.4 and v.2017.5.4
+ - GCC compiler for ARM v.6.3.1 20170509 
+ - IAR Embedded Workbench v.8.11.2
+ 
+========================================================
+Known Issues, Limitations, Notes
+========================================================
+There are no known issues.
+
+========================================================
+What's modified in RTM 1.0.5 release:
+========================================================
+CSTL-587 Add ISB after APSR_g register is written 
+    - According to the ARM's recommendation that writing to the APSR register 
+      has the potential to change the context, the ISB instruction was added 
+      after writing the APSR_g register by the MSR instruction. 
+    - Updated the following files: 
+        m4_scst_alu_test1.s 
+        m4_scst_alu_test4.s 
+        m4_scst_alu_test5.s 
+        m4_scst_alu_test7.s 
+        m4_scst_branch_test1.s 
+        m4_scst_branch_test2.s 
+        m4_scst_simdsat_test4.s 
+        m4_scst_status_test3.s
+
+CSTL-586 Add ISB after CONTROL,VTOR registers are written
+    - According to the ARM Cortex™-M Programming Guide to Memory Barrier Instructions,
+      Application Note 321, the ISB instruction was added after writing CONTROL, 
+      VTOR registers.
+    - Updated the following file:
+        m4_scst_exception_lib.s
+
+CSTL-599 Fix GHS compilation error
+    - Fixed compilation error when --no_debug compiler option was set.
+    - Updated the following files:
+        m4_scst_exception_lib.s
+        m4_scst_exception_wrappers.s
+        m4_scst_lib.s
+        m4_scst_vector_table.s
+        m4_scst_compiler.h
+        
+CSTL-614 Improve checks for pending/active exceptions
+    - M4 SCST Library returns M4_SCST_TEST_WAS_INTERRUPTED in case of pending or active 
+      exception is detected.
+    - Updated the following files:
+	m4_scst_branch_test3.s
+	m4_scst_exception_test_bus_fault.s
+	m4_scst_exception_test_handler_thread.s
+	m4_scst_exception_test_hard_fault1.s
+	m4_scst_exception_test_hard_fault2.s
+	m4_scst_exception_test_masking.s
+	m4_scst_exception_test_mem_fault.s
+	m4_scst_exception_test_pendsv.s
+	m4_scst_exception_test_svc.s
+	m4_scst_exception_test_systick.s
+	m4_scst_exception_test_tail_chain.s
+	m4_scst_exception_test_usage_fault.s
+	m4_scst_status_test3.s
+     
+========================================================
+What's modified in RTM 1.0.4 release:
+========================================================
+The M4 SCST S32K144 Library code functionality was verified
+with new supported compilers, see Release Specifics above for more details.
+
+Documentation:
+CSTL-504 Verify M4_DEVICE_RESERVED_ADDR value
+    - Updated the Cortex-M4 Structural Core Self Test Library User Manual
+      Updated Chapter 4.3 "Compilation of Assembly Files". Added warning 
+      regarding to the M4_DEVICE_RESERVED_ADDR value configuration.
+
+Updated Test Reports documents.
+========================================================
+What's modified in RTM 1.0.3 release:
+========================================================
+CSTL-450 Implement support for Process SP
+    - M4 SCST Library code was updated to allow running SCST Library tests with 
+      active Process stack pointer (PSP). 
+    - Updated the following files to support this feature:
+        m4_scst_exception_lib.s, 
+        m4_scst_lib.s,
+        m4_scst_exception_test_handler_thread.s
+
+CSTL-451 Implement Mask Set Errata workarounds for Mask 0N57U 
+     - Implemented workaround for the errata e9005, see WCT1014SF_0N57U Rev. 31/May/2017 
+       document for more details.
+     - Updated the following files:
+        m4_scst_alu_test7.s
+        m4_scst_branch_test3.s
+        m4_scst_exception_test_bus_fault.s
+        m4_scst_exception_test_handler_thread.s
+        m4_scst_exception_test_hard_fault1.s
+        m4_scst_exception_test_hard_fault2.s
+        m4_scst_exception_test_masking.s
+        m4_scst_exception_test_mem_fault.s
+        m4_scst_exception_test_nmihf.s
+        m4_scst_exception_test_pendsv.s
+        m4_scst_exception_test_svc.s
+        m4_scst_exception_test_systick.s
+        m4_scst_exception_test_tail_chain.s
+        m4_scst_exception_test_usage_fault.s
+        m4_scst_status_test3.s
+        m4_scst_exception_wrappers.s
+    - All other erratas were analysed - they have no impact to the M4 SCST Library.
+
+Documentation:
+- Updated the Cortex-M4 Structural Core Self Test Library User Manual,
+   - Changed code size, interrupt latency and execution time, see Tables 1,2,7,9
+   - Removed Chapter 4.1 SCST Library Delivery Forms
+- Updated all Quality Pack documents.
+
+========================================================
+What's modified in RTM 1.0.2 release:
+========================================================
+Defects:
+CSTL-314 Fix problem with tail-chained interrupts
+   - Fixed problem where most of the SCST exception tests IDs(0-16) were not properly 
+     executed in case of these tests were periodically interrupted with the
+     highest priority external interrupts.
+     - Updated the m4_scst_exception_wrappes.s file to fix this issue.
+     - Updated the m4_scst_exception_lib.s file to fix this issue.
+     - Updated the m4_scst_lib.s s file to fix this issue.
+     - Updated the m4_scst_configuration.h file to fix this issue.
+     - Minor changes in the following atomic test files to be compliant with
+       updates done in the files which fixes this issue.
+       - m4_scst_exception_test_handler_thread.s
+       - m4_scst_exception_test_hard_fault1.s
+       - m4_scst_exception_test_masking.s
+       - m4_scst_exception_test_tail_chain.s
+
+Documentation:
+- Updated the Cortex-M4 Structural Core Self Test Library User Manual
+   - Changed code size, interrupt latency and execution time, see Tables 1,2,7,9.
+   - Updated LPIT timer frequency, see chapter 1.2.
+   - Added the chapter describing supported devices (added MWCT101xS), see chapter 1.3.
+- Updated all Quality Pack documents.
+
+========================================================
+What's modified in RTM 1.0.1 release:
+========================================================
+1. CSTL-216 Wrong section alignment for GHS Compiler.
+   - When compiled by the GHS compiler sections were aligned to more bytes that it was required.
+   - Updated the m4_scst_compiler.h file to fix this issue.
+
+2. CSTL-227 Error in registers restoring.
+    - Under specific circumstances when tests with indexes 1-15 were interrupted by a user interrupt 
+      the SCST Library may corrupt registers stored on the stack. This happens because the SCST Library
+      wrongly writes the T bit (EPSR Thumb state bit) in the PSR register on the stack. Restoring of T bit
+      was wrongly done by the m4_scst_ISR_dispatcher function.
+    - Updated the m4_scst_exception_wrappers.s file to fix register restoring issue.
+
+2. CSTL-236 Error while returning from interrupt for the tests with IT instructions.
+    - Under specific circumstances (CPU execution interrupted inside an IT block) the return 
+      from an interrupt is not handled properly because the IPSR Register is not read. 
+      The failure condition is active when the control reaches interrupt handling function 
+      (m4_scst_ISR_dispatcher) in thread mode and therefore reading of the IPSR is skipped. 
+      The issue only happens for tests that use IT block and which modify interrupt vector
+      table, and only if the exception comes in an exact point in time. 
+    - Impacted tests: m4_scst_regbank_test4 (Test index: 11) and m4_scst_status_test3 (Test
+                      index: 14) are affected by this issue.
+    - Updated m4_scst_exception_lib.s and m4_scst_exception_wrappers.s files to fix the issue.
+    
+3. CSTL-262 m4_scst_status_test3 test issue
+    - In case of hw error is detected by this test the m4_scst_status_test3 test is not finished
+      immediately. (This minor issue has no impact to customer).
+    - Updated the m4_scst_status_test3.s file to fix this issue.
+
+4. CSTL-264 Split m4_scst_exception_hard_fault_test.
+    - The m4_scst_exception_hard_fault test was split into two short tests m4_scst_exception_hard_fault1
+      and m4_scst_exception_hard_fault2.
+    - Removed m4_scst_exception_test_hard_fault.s files and added m4_scst_exception_test_hard_fault1.s and
+      m4_scst_exception_test_hard_fault2.s files.
+    - Updated m4_scst_data.c and m4_scst_configuration.h files.
+    - Updated Tables 9,10 in the M4_S32K144_SCST_User_Manual document.
+
+5. CSTL-268 Missing volatile qualifier for globals; remove unused NULL definition.
+    - Global variables manipulated from routines written in assembler shall be declared
+      volatile in C code. Otherwise they are prone to unwanted optimization at compile time 
+      and the MISRA check properly suggests declaration at block level.
+      The NULL identifier defined in m4_scst_typedefs.h can be removed to avoid reporting
+      the violation of MISRA 2004 Rule 20.2.
+    - Updated m4_scst_test_shell.c, m4_scst_test_shell.h and m4_scst_typedefs.h files.
+    
+

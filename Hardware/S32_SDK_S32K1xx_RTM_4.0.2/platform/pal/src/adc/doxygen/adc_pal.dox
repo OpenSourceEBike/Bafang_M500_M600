@@ -1,0 +1,195 @@
+/*!
+ * @defgroup adc_pal Analog to Digital Converter - Peripheral Abstraction Layer (ADC PAL)
+ * @ingroup adc_pal
+ * @brief Analog to Digital Converter - Peripheral Abstraction Layer (ADC PAL).
+ *
+ * ## ADC PAL general consideration ##
+ *
+ * The ADC PAL is an interface abstraction layer for multiple Analog to Digital Converter peripherals.\n
+ * The ADC PAL allows configuration of groups of successive conversions started by a single trigger event.\n
+ * Each conversion in a group is mapped to an ADC input channel - the <b>conversion group</b> is actually defined by an array of input channels, which is a member of the adc_group_config_t structure.
+ * The order of the input channels will also give the order of execution of the conversions within the group.\n
+ * <b>Note</b>: all conversion groups need to be configured at PAL initialization time.
+ *
+ * The trigger event for a group can be SW or HW, and needs to be selected at configuration time.
+ * 1. Execution of <b>SW triggered groups</b> may be started/stopped by calling a dedicated function
+ * ADC_StartGroupConversion(), ADC_StopGroupConversion().
+ * 2. <b>HW triggered groups</b> need to be enabled for execution by calling a dedicated function - the actual execution will be started by the occurrence of the selected hardware trigger event
+ * ADC_EnableHardwareTrigger(), ADC_DisableHardwareTrigger(). \n
+ * <b>Note:</b> for HW triggered groups the ADC PAL does not configure the peripherals which provide the triggering events (timers, counters, etc.) - they will need to be configured separately by the ADC PAL user.
+ *
+ * Each group needs to have associated a <b>result buffer</b> which needs to be allocated by the PAL user. The length of the result buffer is defined by two configuration parameters:
+ * \n  * <i>numChannels</i> - defines also the size of the inputChannelArray \n  * <i>numSetsResultBuffer</i> - defines the number of sets of results which can be stored in the result buffer.\n
+ * The <i>length of the result buffer = numChannels * numSetsResultBuffer</i>. Each time a group of conversions finishes execution, a set of results for all conversions in the group will be copied by the PAL into the corresponding result buffer. The PAL considers the result buffer as circular, with the length configured via previously described.
+ *
+ * On some platforms, HW triggered groups may support <b>delay(s)</b> between the occurrence of the HW trigger event and the actual start of conversions.
+ * This feature can be controlled for each HW triggered group via <i>delayType</i> and <i>delayArray</i> parameters in adc_group_config_t. For SW triggered groups, these parameters are ignored. For details please refer to ADC PAL platform specific information. \n\n
+ *
+ * Each group can also have associated a <b>notification callback</b> which will be executed when all conversions finish execution. The callback shall receive as parameter a pointer to adc_callback_info_t containing the <i>group index</i> for which the notification is called, and <i>result buffer tail</i> - offset of the most recent conversion result in the result buffer.
+ * Notifications can be enabled and disabled using ADC_EnableNotification() and ADC_DisableNotification(). By default the notification is set to active when enabling a HW triggered group or starting a SW triggered group.\n
+ * <b>Note:</b> The notification callback may be set to NULL and thus it will not be called.
+ *
+ * For SW triggered groups, <b>continuous mode</b> can be enabled at configuration time.\n
+ * E.g.: a group with 3 conversions <i>InputCh0, InputCh1, InputCh2</i> -> with continuous mode enabled will continuously repeat the series of conversions until it is stopped: <i>InputCh0, InputCh1, InputCh2, InputCh0, InputCh1, InputCh2,...</i>\n
+ * The user needs to dimension accordingly the result buffer, such that it has sufficient time to read the results before they are overwritten. \n
+ * For HW triggered groups, continuous mode parameter is not available.\n\n
+ *
+ * The ADC PAL implicitly configures and uses other peripherals besides ADC - these resources should not be used simultaneously from other parts of the application.
+ * For details please refer to the platform specific details. \n\n
+ *
+ * The ADC PAL module needs to include a configuration file named adc_pal_cfg.h, which defines which IPs are used.
+ *
+ * The ADC PAL allows configuration of platform specific parameters via a pointer to a platform specific structure, following the naming convention: extension_adc_<platform>_t. E.g.: extension_adc_s32k1xx_t
+ *
+ * ###Important note###
+ * The ADC PAL configuration structure passed via reference to ADC_Init(), including all arrays referenced by structure members, must be persistent throughout the usage of the ADC PAL.
+ * Storing them to memory sections which get freed or altered during ADC PAL usage, will lead to unpredictable behavior.
+ *
+ * ## Platform specific details ##
+ * ### S32K1xx device family ###
+ *
+ * On these platforms, each instance of ADC PAL uses:
+ *  - one instance of PDB linked to the selected ADC (ADCn - PDBn) - used for both SW and HW triggered groups\n
+ *  - the TRGMUX_TARGET_MODULE_PDBn_TRG_IN targets from TRGMUX - used only for HW triggered groups
+ *
+ * These platforms are supported by the ADC PAL of type <b>ADC_PAL_S32K1xx</b>. \n\n
+ *
+ * Important details:
+ * 1. The PAL supports configuring any number of conversion groups at PAL initialization time, but every time a HW/SW triggered group is enabled/started, the underlying hardware peripherals are reconfigured.
+ * 2. The same input channel may appear multiple times in a group.
+ *
+ * Group delay support:
+ *  - no delay between HW trigger event and conversions start: \n
+ * <i>delayType</i> = ADC_DELAY_TYPE_NO_DELAY and <i>delayArray</i> = NULL
+ *  - group delay between HW trigger event and the start of the first conversion in the group - the rest of conversions start right after the previous one \n
+ * <i>delayType</i> = ADC_DELAY_TYPE_GROUP_DELAY and <i>delayArray</i> set to point to a single uint16_t variable storing the delay value, expressed in PDB ticks (affected by PDB prescaler configurable via config extension)
+ *  - individual delays between HW trigger event and the start of each conversion in the group
+ * <i>delayType</i> = ADC_DELAY_TYPE_INDIVIDUAL_DELAY and <i>delayArray</i> set to point to an uin16_t array with length equal with the number of conversions in the group \n
+ * Delays are expressed in PDB ticks (affected by PDB prescaler configurable via config extension).
+ * Delay values are measured relative to the trigger event. When a delay expires, a PDB pretrigger is issued. \n
+ * <b>Note:</b> the pretriggers must not occur while another conversion in the group is running, otherwise the ADC freezes.
+ * It is the user's responsibility to make sure they do not overlap, i.e. delayN_plus_1 > (delayN + conversion_duration).
+ *
+ *
+ * ### MPC5746C and MPC5748G device families ###
+ *
+ * On these platforms, each instance of ADC PAL uses:
+ *  - one instance of BCTU - used only for HW triggered groups\n
+ *  - all ADC instances connected to the selected BCTU instance. Please note that the ADC instances may have different resolutions
+ *
+ * These platforms are supported by the ADC PAL of type <b>ADC_PAL_MPC574xC_G_R</b>. \n\n
+ *
+ * Group delay support:
+ *  - groups do not support delays, so in adc_group_config_t structures <i>delayType</i> must be set to ADC_DELAY_TYPE_NO_DELAY and <i>delayArray</i> to NULL, in adc_group_config_t.
+ *
+ * Important details:
+ * 1. The PAL supports any number of <b>SW triggered</b> conversion groups at PAL initialization time. SW triggered groups will be configured directly in ADC, each time ADC_StartGroupConversion() is called.
+ * 2. The maximum supported number of <b>HW triggered</b> conversion groups is expressed in two steps:
+ *  - for groups which include a minimum of 2 conversions: the total number of conversions within all these groups shall be less than or equal with the number of BCTU LIST HW registers. (E.g. 1 group of 8 conversions & 1 group of 24 conversions: 8 + 24 <= 32)\n
+ *  - for groups which include a single conversion: the total number of such groups shall be less than or equal with the total number of BCTU Triggers minus the number of configured groups with at least 2 conversions\n
+ * 3. An input channel may only appear once in the group, otherwise the last conversion result will appear for each occurrence of the channel index in the group.
+ * This is a platform limitation: BCTU has only a single result register per ADC instance, and the ADC has a single result register per channel.
+ * 4. A conversion group (SW and HW triggered) can target only conversions on a single ADC instance.
+ * 5. The same trigger source cannot be assigned to multiple HW triggered groups.
+ * 6. Multiple HW triggered groups may be enabled simultaneously. \n
+ * However, the user must make sure that the actual HW trigger events do not occur simultaneously and that conversions from multiple groups do not overlap in time.
+ * Otherwise hardware errors may occur and results may be overwritten.
+ *
+ *
+ * ### MPC574xP and S32Rx7x device families ###
+ *
+ * On these platforms, each instance of ADC PAL uses:
+ *  - one instance of CTU - used only for HW triggered groups and statically configured to CTU triggered mode \n
+ *  - all ADC instances connected to the selected CTU instance
+ *
+ * These platforms are supported by the ADC PAL of type <b>ADC_PAL_SAR_CTU</b>. \n\n
+ *
+ * Group delay support:
+ *  - no delay between HW trigger event and conversions start: \n
+ * <i>delayType</i> = ADC_DELAY_TYPE_NO_DELAY and <i>delayArray</i> = NULL
+ *  - group delay between HW trigger event and the start of the first conversion in the group - the rest of conversions start right after the previous one \n
+ * <i>delayType</i> = ADC_DELAY_TYPE_GROUP_DELAY and <i>delayArray</i> set to point to a single uint16_t variable storing the delay value, expressed in CTU ticks (affected by CTU prescaler)
+ *
+ * Important details:
+ * 1. The PAL supports any number of <b>SW triggered</b> conversion groups at PAL initialization time. SW triggered groups will be configured directly in ADC, each time ADC_StartGroupConversion() is called.
+ * 2. The maximum supported number of <b>HW triggered</b> conversion groups is equal with the number of CTU result FIFOs - defined in platform header file as CTU_FR_COUNT.
+ * The total number of conversions in all HW triggered groups must be <= the length of the CTU ADC command list - defined in platform header file as CTU_CHANNEL_COUNT.
+ * 3. A conversion group (SW and HW triggered) can target only conversions on a single ADC instance.
+ * 4. An input channel may only appear once in a SW triggered group, otherwise the last conversion result will appear for each occurrence of the channel index in the group.
+ * This is a platform limitation: the ADC has a single result register per channel. For HW triggered groups this restriction doesn't apply. \n
+ * 5. All HW triggered groups can be enabled simultaneously. \n
+ * However, the user must make sure that the actual HW trigger events do not occur simultaneously and that conversions from multiple groups do not overlap in time.
+ * Otherwise hardware errors may occur and results may be overwritten.
+ * 6. Each HW triggered group has assigned a CTU result FIFO. The number of channels in each group must be less than the CTU result FIFO length - note that not all FIFOs have the same length.
+ * FIFOs are assigned in the same order in which the HW triggered groups are configured in the PAL init state: FIFO#0 assigned to first group, FIFO#1 to second, etc.
+ * 7. The trigger sources enabled for a group can implicitly start also the rest of the enabled HW triggered groups. \n
+ * E.g. SourceX configured for group0, sourceY configured for group1. If both groups are enabled, when event from sourceX occurs, both group0 and group1 will execute; the same when event from sourceY occurs.
+ *
+ *
+ * ## Integration guideline ##
+ *
+ * ### Compilation units ###
+ *
+ * The following files need to be compiled in the project:
+ * \verbatim
+  ${S32SDK_PATH}\platform\pal\src\adc\adc_pal.c
+  ${S32SDK_PATH}\platform\pal\src\adc\adc_irq.c
+  \endverbatim
+ *
+ * Additionally, it is required to compile also the .c files from the dependencies listed for each ADC PAL type (please see Dependencies subsection below).
+ *
+ * ### Include path ###
+ *
+ * The following paths need to be added to the include path of the toolchain:
+ * \verbatim
+  ${S32SDK_PATH}\platform\pal\inc\
+  ${S32SDK_PATH}\platform\drivers\inc\
+  \endverbatim
+ * 
+ * \n An additional file, named <i>adc_pal_cfg.h</i>, must be created by the user and added to one of the include paths.
+ * The user has to add to the file the definitions of preprocessor symbols according to the ADC PAL type used. These symbols are specified in the next subsection. \n
+ * When using the S32 SDK configuration tool, the file is generated by the configurator.
+ *
+ * \n The pal type ADC_PAL_S32K1xx also requires:
+ * \verbatim
+  ${S32SDK_PATH}\platform\drivers\src\adc\
+  \endverbatim
+ *
+ * ### Compile symbols ###
+ *
+ * 1. Define for selecting one of the ADC PAL type to be used:
+ * \verbatim
+  ADC_PAL_S32K1xx
+  ADC_PAL_MPC574xC_G_R
+  ADC_PAL_SAR_CTU
+  \endverbatim
+ * 
+ * 2. Define the maximum number of HW triggered groups which may be enabled simultaneously. For ADC_PAL_S32K1xx the maximum value of the define is 1.
+ * \verbatim
+  ADC_PAL_MAX_NUM_HW_GROUPS_EN
+  \endverbatim
+ *
+ * 3. For ADC_PAL_MPC574xC_G_R and ADC_PAL_SAR_CTU types, define the total number of configured groups.
+ * \verbatim
+  ADC_PAL_TOTAL_NUM_GROUPS
+  \endverbatim
+ *
+ * ### Dependencies ###
+ *
+ * \ref interrupt_manager \n
+ * \ref osif \n
+ *
+ * - The pal type ADC_PAL_S32K1xx also depends on: \n
+ * \ref adc_driver \n
+ * \ref pdb_driver \n
+ * \ref trgmux_driver \n \n
+ *
+ * - The pal type ADC_PAL_MPC574xC_G_R also depends on: \n
+ * \ref adc_c55_driver \n
+ * \ref bctu_driver \n \n
+ *
+ * - The pal type ADC_PAL_SAR_CTU also depends on: \n
+ * \ref adc_c55_driver \n
+ * \ref ctu_driver \n \n
+ *
+ */

@@ -1,0 +1,83 @@
+/*!
+    @page uart_pal_echo_s32k142_group UART PAL ECHO
+    @brief Basic application that presents the project scenarios for S32 SDK
+
+    ## Application description ##
+    _____
+    The purpose of this demo is to show the user how UART PAL works over FLEXIO_UART or LPUART peripherals.
+    The user can choose whether to use FLEXIO_UART or LPUART (see USE_FLEXIO_UART define from The board sends a welcome message to the console with further instructions.)
+    - The welcome message is sent via UART: "This example is an simple echo using uart_pal_echo
+                                             it will send back any character you send to it.
+                                             The board will greet you if you send 'Hello!'
+                                             Now you can begin typing:"
+    - User shall send "Hello!" string. If the board receives the user's string, then the "Hello World!" string shall be sent again.
+      User need to add EOL character to string which will be sent to board.
+      Green led(devkit) or led 1(Motherboard) shall be turned on if the communication is done over FLEXIO_UART; similarly the led shall be turned off if the communication is done over LPUART.
+
+    ## Prerequisites ##
+    _____
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board cannot be powered from the USB port)
+    - 2 Dupont male to male cable
+    - 1 Personal Computer
+    - 1 PEmicro/Jlink Lite Debugger (optional, users can use Open SDA)
+
+    ## Boards supported ##
+    _____
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+    - S32K142-MB
+
+    ## Hardware Wiring ##
+    _____
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION                  | S32K142EVB-Q100                 | S32K142-MB                      |
+    ------------------------------|---------------------------------|---------------------------------|
+    GREEN_LED (\b PTD16)          | RGB_GREEN - wired on the board  |                                 |
+    LED1 (\b PTC1)                |                                 | JP50 - jump 50 on motherboard   |
+    LPUART1 TX (\b PTC7)          | UART_TX - wired on the board    | J11.26 - J20.2                  |
+    LPUART1 RX (\b PTC6)          | UART_RX - wired on the board    | J11.25 - J20.5                  |
+    FLEXIO_UART RX  (\b PTA11)    | J1.2 - J4.4                     | J9.22 - J20.5                   |
+    FLEXIO_UART TX  (\b PTA0)     | J5.7 - J4.2                     | J9.31 - J20.2                   |
+
+    ## How to run ##
+    _____
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New -> \b S32DS \b Project \b From \bExample and select \b hello_world_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    Wait for the S32 Configuration was initialized and ready.
+
+    #### 2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    Left click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar).
+    In S32 Configuration menu, click on the desired configurator (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components.
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user.
+    Make the desired changes (if any) then click "Update Code".
+
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be four debug configurations for this project:
+     Configuration Name                                 | Description
+     ---------------------------------------------------|------------------------------------------------------------
+     \b uart_pal_echo_s32k142_debug_flash_jlink         | Debug the FLASH configuration using Segger Jlink debuggers
+     \b uart_pal_echo_s32k142_debug_flash_pemicro       | Debug the FLASH configuration using PEMicro debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+    ## Notes ##
+    ______
+    For this example it is necessary to open a terminal emulator and configure it with:
+    -   115200 baud
+    -   One stop bit
+    -   No parity
+    -   No flow control
+    -   '\\n' line ending
+*/
+

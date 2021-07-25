@@ -1,0 +1,77 @@
+/*!
+    @page lpuart_echo_s32k142_group LPUART Echo
+    @brief Example application using the LPUART driver
+
+    ## Application description ##
+    ______
+    The purpose of this demo application is to show you how to use the Low Power UART from the S32K142 CPU using the S32 SDK API.
+    - The welcome message is sent via UART: "This example is an simple echo using LPUART
+                                             it will send back any character you send to it.
+                                             The board will greet you if you send 'Hello Board'
+                                             Now you can begin typing:"
+    - User shall send "Hello Board" string. If the board receives the user's string, then the "Hello World" string shall be sent again.
+      User need to add EOL character to string which will be sent to board.
+
+    ## Prerequisites ##
+    ______
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board cannot be powered from the USB port)
+    - 1 Personal Computer
+    - 1 PEmicro debugger
+	- 1 Jlink Lite Debugger (optional, users can use Open SDA)
+
+    ## Boards supported ##
+    ______
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+    - S32K142-MB
+
+    ## Hardware Wiring ##
+    ______
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION                | S32K142EVB-Q100               |   S32K142-MB
+    ----------------------------|-------------------------------|-----------------
+    LPUART1 TX (\b PTC7)        | UART_TX - wired on the board  |   J11.26 - J20.2
+    LPUART1 RX (\b PTC6)        | UART_RX - wired on the board  |   J11.25 - J20.5
+
+    ## How to run ##
+    ______
+
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New \b S32DS \b Project \b From... and select \b lpuart_echo_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    ####2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    Right click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar).
+    In S32 Configuration menu, click on the desired configuration (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components.
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user.
+    Make the desired changes (if any) then click "Update Code".
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) or \b RAM (Debug_RAM) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be four debug configurations for this project:
+     Configuration Name                               | Description
+     -------------------------------------------------|-----------------------------------------------------------
+           \b lpuart_echo_s32k142_debug_ram_jlink     | Debug the RAM configuration using Segger Jlink debuggers
+           \b lpuart_echo_s32k142_debug_flash_jlink   | Debug the FLASH configuration using Segger Jlink debuggers
+           \b lpuart_echo_s32k142_debug_ram_pemicro   | Debug the RAM configuration using PEMicro debuggers
+           \b lpuart_echo_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+    ## Notes ##
+    ______
+    For this example it is necessary to open a terminal emulator and configure it with:
+    -   9600 baud
+    -   One stop bit
+    -   No parity
+    -   No flow control
+    -   '\\n' line ending
+*/
+
