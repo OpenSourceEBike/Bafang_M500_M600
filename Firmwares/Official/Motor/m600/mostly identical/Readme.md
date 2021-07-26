@@ -11,8 +11,8 @@ hex address = value == effect/target-effect
 **Low voltage level:**
 
 076c = 2A  == 42v
-076c = 32 == 32v
-076c = 39  == 39v
+076c = 20 == 32v
+076c = 27 == 39v
 
 **Normal/Nominal Voltage setting:**
 
