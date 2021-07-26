@@ -1,34 +1,20 @@
-# Bafang M500 and M600
+# Bafang M500 and M600 Modification Project
 
-Tecnhical notes about Bafang M500 and M600, see the [forum message](https://endless-sphere.com/forums/viewtopic.php?f=28&t=100777).
+This project aims to provide guidance for modifying the Bafang m500 and m600 motors. Eventually we hope to be able to provide a fully opensource firmware, but for the time being we provide hacked firmwares and documentation
 
 ## How to colaborate
-Please fork this repository, make your changes and then submit a pull request.
+
+Help test our firmwares, join discussions, fork the repository or send us relevant information either by github-issue or email directly.
 
 
-## Notes
+## Project structure
 
-##### Notes on the Bafang BESST Software
-
-- WORST security ever.
-One could write a complete alternative backend for BEST in about a week or two, Spoofing the login is easily and the whole UI is just an Electron App, so you can just read the Javascript sourcecode yourself. However:
-- BESST does not contain the UI elements required to modify firmware
-- The settings that can be altered with the right login, are limited. There is no UI or backend element to change the current limit or voltage for example. However: Reading the code I cannot exclude that it is, in fact, possible to use the canbus to alter these settings.
-- The BESST code does seem to include some references where certain values can be found on the canbus for it's GET, the users working at reverse enginering the CANBUS should be able to use the Javascript UI to reverse engineer the correct bussaddresses for those values and start trying to SET those.
-- There is no firmware validation in the BESST software.
-
-
-##### Notes on the Bafang BESST hardware tool
-- It looks like the BESST tool (the physical thing) connects to the PC using UART which uses a generic Silicon Labs CP210x chip
-- The BESST hardware tool translates those UART commands to CANBUS commands
-- We could try to test the responses if we try to set or get values we are not supposed to, by simply editing the BESST software source
-
-##### Notes on reverse enginering the official firmware
-
-- According to entrophy scanners, the firmware files are not encrypted.
-- Comparing different versions, indicate some obfustication might be going on, but we can clearly deff the actual hex differences.
-- After running Binwalk it seems the code is for ARM, little endian based cortex hardware with THUMB instructions
-- Initial tries with GHIDRA or IDA Pro to decompile where not (yet) successfull
+- `/BESST` -  Provides sourcecode and older versions to research the BESST software package
+- `/CANBUS` - Provides documentation on the inner workings of the Bafang CANBUS protocol
+- `/Firmwares/Official` - Provides firmwares originally provided by Bafang themselves
+- `/Firmwares/Custom` - Provides hacked firmwares created by this projects, that contain customised settings
+- `/hardware` - Provides Documentation for everything we know about the Bafang hardware and it's controller
+- `/Laws and Regulations/EU` - Aims to document all legal complication surrounding customised ebike motors in the EU
 
 ## Disclaimer
 
