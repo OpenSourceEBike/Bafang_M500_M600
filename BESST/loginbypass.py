@@ -16,7 +16,7 @@ class BESST_server(BaseHTTPRequestHandler):
 			self.send_response(200)
 			self.send_header('Content-type', 'application/json;charset:UTF-8\r\n')
 			self.end_headers()
-			#user type: 1 brand, 2 dealer, 3 assembler, 4 manufacturer, 5 terminal. 4 for tool access, 3 for diagnostics
+			#user type: 1 brand, 2 dealer, 3 assembler, 4 component, 5 service center, 6 dealer for tool access
 			userdata = json.dumps( {'code':0,'data':{'account_type':[1,2,3,5,6,7],'user':{'status':6,'org': {'id': 1212, 'type': 6}},'token':123}} )
 			self.wfile.write(userdata.encode('utf-8'))
 		else:
