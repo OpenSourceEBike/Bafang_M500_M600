@@ -151,22 +151,31 @@ module.exports.OPT = {
 ```
 ## Known working CANBUS commands
 
+##### BESST Speed/Wheel/Circumference Setup
 
-##### Torque Sensor Calibration
+```
+ID: 05103203
+Numbers Byte: 6
+Speed Limit Byte 0/1	: 60.00km/h(1770Hex) = 70 17 / 25.00km/h(9C4Hex) = C4 09
+Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
+Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
+```
+
+##### BESST Torque Sensor Calibration
 
 ```
 ID: 05106101
 Numbers Byte: 0
 ```
 
-##### Position Sensor Calibration
+##### BESST Position Sensor Calibration
 
 ```
 ID: 05116201
 Numbers Bytes: 0
 ```
 
-##### Controller display
+##### Controller Level Informations
 
 ```
 Level
@@ -178,7 +187,7 @@ Byte 4/5				:
 Level Byte 6/7			: 0 = FF FF / 1= 40 1F / 2= 2C 1A / 3 = EC 13 / 4 = AC 0D / 5 = 8C 0A
 ```
 
-##### Speed/Current/Temperature/Voltage Informations
+##### Controller Speed/Current/Temperature/Voltage Informations
 
 ```
 ID: 02F83201
@@ -189,7 +198,7 @@ Temperature Byte 4/5	: 10.00°C(3E8Hex) = E8 03
 Voltage Byte 6/7		: 53.46V(14E2Hex) = E2 14
 ```
 
-##### Speed/Wheel/Circumference Informations
+##### Controller Speed/Wheel/Circumference Informations
 
 ```
 ID: 02F83203
@@ -200,7 +209,7 @@ Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 ```
 
 
-##### HMI Setup Controller
+##### HMI Level/Light Setup
 
 ```
 ID: 03106300
@@ -209,4 +218,14 @@ Level number Byte 0		: 05
 Set Level Byte 1		: 0 = 00 / 1 = 0B / 2 = 0D / 3 = 15 / 4 = 17 / 5 = 03
 Button Set level Byte 2	: Change Off = 00 / Change On = 02 / Change Off with light = 01 / Change On with light = 03
 On/Off Byte 3			: Off = 00 / On = 01
+```
+
+##### HMI Speed/Wheel/Circumference Setup
+
+```
+ID: 03103203
+Numbers Byte: 6
+Speed Limit Byte 0/1	: 60.00km/h(1770Hex) = 70 17 / 25.00km/h(9C4Hex) = C4 09
+Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
+Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 ```
