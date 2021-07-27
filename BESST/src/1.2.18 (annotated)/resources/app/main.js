@@ -69,7 +69,7 @@ app.on('ready', function() {
     // mainWindow.loadURL('http://www.baidu.com');
 
     // Open the DevTools. 打开调试窗口
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
