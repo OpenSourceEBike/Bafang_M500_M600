@@ -178,7 +178,6 @@ Numbers Bytes: 0
 ##### Controller Level Informations
 
 ```
-Level
 ID: 02F83200
 Numbers Byte: 8
 Byte 0/1				: 
