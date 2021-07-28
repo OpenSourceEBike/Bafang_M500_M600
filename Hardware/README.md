@@ -73,7 +73,7 @@ The difference between 52v or 48v are, however, very small so it wouldn't actual
 
 The m500 and m600 are mostly similair, with some exceptions:
 
-- The m500 seems to still be using 1 plastic gear, where the m600 is not.
+- The m500 and m600 motors, use a plastic gear on the first reduction. In the 2019/2020 period, the gears on the m600 were all metal.
 - The gears of the two motors have a slightly different pitch
 
 Gear ratio's:
