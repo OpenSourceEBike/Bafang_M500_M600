@@ -36,7 +36,10 @@ L9  L5  L3
 
 |Function|GET/SET|second-last-digit|last-digit|
 |---|---|---|---|
+|announceUpgrade|20|00|
+|startUpgradeTransfer|20|01|
 |pulse|GET|30|00|
+|unknown|?|30|05|
 |sensorSignal|GET|31|00|
 |controllerInformation|GET|32|00|
 |controllerInformation_1|GET|32|01|
@@ -149,6 +152,10 @@ module.exports.OPT = {
     OPT_CLIENT_NO: 0x04
 }
 ```
+
+These can be used using our CANBUS frameid calculator here:
+https://ornias1993.github.io/Bafang_M500_M600/index.html
+
 ## Known working CANBUS commands
 
 ##### BESST Speed/Wheel/Circumference Setup
@@ -229,3 +236,84 @@ Speed Limit Byte 0/1	: 60.00km/h(1770Hex) = 70 17 / 25.00km/h(9C4Hex) = C4 09
 Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
 Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 ```
+
+## CANBUS controller update procedure
+
+**1. Start continuesly announcing that the host (pc) is ready to transfer a firmware update:**
+
+m500
+``
+05FF3005 - 00 ( BESST "waiting in firmware update mode" or "Trying to transfer")
+05112000 - 88 45 02 00 (Polling: "Is Controller ready for firmware?")
+`` 
+
+m600
+``
+05FF3005 - 00 ( BESST "waiting in firmware update mode" or "Trying to transfer")
+05112000 - 89 45 02 00 (Polling: "Is Controller ready for firmware?")
+`` 
+
+**2. Wait for Controller response:**
+Once you recieve this confirmation, you can stop announcing as stated in step 1.
+
+m500
+```
+022A2000 - 88 45 82 (Response: "Controller ready to recieve firmware")
+```
+
+m600
+```
+022A2000 - 89 45 82 (Response: "Controller ready to recieve firmware")
+```
+
+**3. send first package:**
+
+This package contains the length of the file, minus the first 16 hex bytes, transformed into hex.
+We will use ## ## ## to represent this value.
+
+``
+05142001 - ## ## ## (Transfer started from BESST, contains length in hex)
+
+**4. wait for response first package:**
+
+We now need to wait for the response from the controller before actually starting to send the firmware
+
+``
+022A2001 - 00 (Transfer start ack from Controller)
+`` 
+
+**5. send data:**
+
+We now send the firmware in 8 byte chunks, minus the first 16 hex bytes. 
+Each chunk will be numbered in hexadecimal, starting from 0000. After each chunk we will recieve a response verifying the transfer has been completed successfully.
+We will use #### to represent the ever incrementing chunk numbers. While we list only one response, ofcoarse this means multiple chunks get send with incrementing frame numbers.
+We will use XX XX XX XX XX XX XX XX to represent the file content that is getting transfered.
+
+Do not send the last data package this way though...
+
+Data send:
+```
+0515#### - XX XX XX XX XX XX XX XX (Data transfer packages)
+```
+
+Response from controller:
+```
+022A#### - (Data transfer packages ack from controller)
+```
+
+**6. send last data and end transfer:**
+
+This package needs to go towards a different frameID, to signal the controller that the transfer has been completed.
+The content of the package can vary in length up to 8 bytes, which we will simulate by using XX.
+The #### is still the autoincrement number from step 5.
+
+Data send:
+```
+0516#### - XX (Transfer completed from BESST)
+```
+
+Response from controller:
+```
+022A#### - (Data transfer packages ack from controller)
+```
+
