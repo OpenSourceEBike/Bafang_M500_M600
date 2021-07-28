@@ -127,3 +127,36 @@ It should technically be possible to transplant a m600 module into a m500, howev
 The differences are mostly the fact that the m500 has 1 instead of 2 shunt resistors in the m600.
 
 ![controllercomparison](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/controllercomparison.jpg)
+
+
+## Links
+
+FS32K142 main page ARM Cortex CPU
+https://www.nxp.com/part/FS32K142HAT0MLHT#/
+
+datasheet
+https://www.nxp.com/docs/en/data-sheet/S32K-DS.pdf
+
+FD6287 3-phase gate driver (can't seem to find datasheet)
+https://assets-stash.oss-cn-shanghai.aliyuncs.com/forum/201910/10/105844o2cthp7r7qz0zizr.png
+https://mbb.eet-china.com/forum/topic/73906_1_1.html
+
+1042 CAN Transciever
+https://www.ti.com/lit/ds/symlink/tcan1042-q1.pdf
+
+SGM8634 Quad OpAmp
+https://pdf1.alldatasheet.com/datasheet-pdf/view/224078/SGMICRO/SGM8634.html
+
+GN036N08S Power Mosfets
+http://www.hunteck.com/Datasheets/HGN036N08S_V1.0-061417.pdf
+
+
+M600 Motor Controller
+https://flx.bike/products/m600-motor-controller-version-3-2
+
+
+Development Boards and typical controller schematic
+https://www.nxp.com/design/development-boards/automotive-motor-control-solutions/arm-based-solutions-/s32k142-development-board-for-bldc-pmsm-motor-control:MCSXTE2BK142
+
+
+
