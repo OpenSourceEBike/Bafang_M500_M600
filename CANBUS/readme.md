@@ -200,8 +200,8 @@ ID: 02F83201
 Numbers Byte: 8
 Speed Byte 0/1			: 25.00km/h(9C4Hex) = C4 09
 Current					: 10.00A(3E8Hex) = E8 03
-Temperature Byte 4/5	: 10.00°C(3E8Hex) = E8 03
 Voltage Byte 6/7		: 53.46V(14E2Hex) = E2 14
+Temperature Byte 4/5	: 10.00°C = 10+40=50(32Hex) = 00 32
 ```
 
 ##### Controller Speed/Wheel/Circumference Informations
