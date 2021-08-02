@@ -203,7 +203,7 @@ Current					: 10.00A(3E8Hex) = E8 03
 Voltage Byte 4/5		: 53.46V(14E2Hex) = E2 14
 Temp. Control. Byte 6   : 10°C = 10+40=50(32Hex) = 32
 Temp. Motor Byte 7	    : 20°C = 20+40=60(3CHex) = 3C
-
+```
 
 ##### Controller Speed/Wheel/Circumference Informations
 
