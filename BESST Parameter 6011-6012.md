@@ -103,7 +103,7 @@ BESST Parameter 6011/6012
 | Start pulse number - 4 | Torque | 40 | 1 |
 | Start pulse number - 5 | Torque | 41 | 1 | | Torque | 0 | 1 |
 | Current decay time - 0 5ms | Torque | 42 | 1 |
-| Current decay time - 1.5ms | Torque | 43 | 1 |
+| Current decay time - 1 5ms | Torque | 43 | 1 |
 | Current decay time - 2 5ms | Torque | 44 | 1 |
 | Current decay time - 3 5ms | Torque | 45 | 1 |
 | Current decay time - 4 5ms | Torque | 46 | 1 |
