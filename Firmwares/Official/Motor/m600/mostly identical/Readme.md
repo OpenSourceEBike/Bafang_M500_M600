@@ -30,7 +30,7 @@ hex address = value == effect/target-effect
 0774 = 14 == 20A
 
 **Max current setting 2:**
-somewhere around 11b00, this whole section differs between firmwares with different voltage setting
+somewhere around 11b80, this whole section differs between firmwares with different voltage setting
 
 24 24 == 36v
 2B 2B == 43V
