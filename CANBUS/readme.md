@@ -193,6 +193,14 @@ Byte 4/5				:
 Level Byte 6/7			: 0 = FF FF / 1= 40 1F / 2= 2C 1A / 3 = EC 13 / 4 = AC 0D / 5 = 8C 0A
 ```
 
+##### Controller % Battery Informations
+
+```
+ID: 02F83200
+Numbers Byte: 8
+% Battery Byte 0	    : 50%(32Hex) = 32
+```
+
 ##### Controller Speed/Current/Voltage/Temperature Informations
 
 ```
