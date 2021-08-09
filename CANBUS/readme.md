@@ -188,7 +188,10 @@ Numbers Bytes: 0
 ID: 02F83200
 Numbers Byte: 8
 % Battery Byte 0	    : 50%(32Hex) = 32
-Level Byte 6/7			: 0 = FF FF / 1= 40 1F / 2= 2C 1A / 3 = EC 13 / 4 = AC 0D / 5 = 8C 0A
+Byte 1/2/3              : 00 00 00
+Byte 4                  : EE
+Byte 5                  : 02
+Level Byte 6/7			: 0 = FF FF / 1 = 40 1F / 2 = 2C 1A / 3 = EC 13 / 4 = AC 0D / 5 = 8C 0A
 ```
 
 ##### Controller Speed/Current/Voltage/Temperature Informations
@@ -197,7 +200,7 @@ Level Byte 6/7			: 0 = FF FF / 1= 40 1F / 2= 2C 1A / 3 = EC 13 / 4 = AC 0D / 5 =
 ID: 02F83201
 Numbers Byte: 8
 Speed Byte 0/1			: 25.00km/h(9C4Hex) = C4 09
-Current					: 10.00A(3E8Hex) = E8 03
+Current Byte 2/3		: 10.00A(3E8Hex) = E8 03
 Voltage Byte 4/5		: 53.46V(14E2Hex) = E2 14
 Temp. Control. Byte 6   : 10°C = 10+40=50(32Hex) = 32
 Temp. Motor Byte 7	    : 20°C = 20+40=60(3CHex) = 3C
