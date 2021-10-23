@@ -77,7 +77,7 @@ The nominal wattage, according to EU regulations, is determined by measuring the
 
 ##### m500 vs m600
 
-The m500 has, in fact, a motor unit that has a 250w rated stator. Whereas the m600 has a 500w rated stator. At the time of writing it's not 100% sure if the rotor also has significant changes between versions.
+The m500 has, in fact, a motor unit that has a 250w rated stator. Whereas the m600 has a 500w rated stator. At the time of writing it's not 100% sure if the rotor also has significant changes between versions, besides the axle difference noted below.
 In practice this means that the m500 WILL overheat quicker than the m600. For this reason it's adviced not to run the m500 above 18A.
 
 ## Gearing
@@ -101,6 +101,10 @@ Here are a few pictures of people trying to find the stock gearing part numbers:
 The plastic gear in the m500, will NOT survive extremely increased power targets.
 If you go much above 13A it's adviced to have it replaced by a metal gear.
 
+##### Rotor Axle
+
+The rotor of the m600 has a different (longer/bigger) axle. This prevents easy swap of rotors between the two types and adding a m600 gearbox to the m600.
+It is, however, possible using professional mechanic equipment to build a m500 rotor with m600 axle. It has been done, but requires significant skill and knowhow.
 
 ## Controller hardware module
 
