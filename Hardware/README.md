@@ -69,7 +69,20 @@ It should be noted that there is a safety cutoff for 48v controllers, that disab
 The reason Bafang does not supply a 52v battery (and you also don't have to try and ask them for it), is because the EU does not allow more than 48v charger connections  CE certification.
 The difference between 52v or 48v are, however, very small so it wouldn't actually pose a risk. But for Bafang they cannot supply it within regulations.
 
+## Electo Motor and nominal Wattage
+
+##### Nominal Wattage
+
+The nominal wattage, according to EU regulations, is determined by measuring the temperature at a certain continues load. This means that to comply to EU regulations, the actual **physical** motor unit has to be different.
+
+##### m500 vs m600
+
+The m500 has, in fact, a motor unit that has a 250w rated stator. Whereas the m600 has a 500w rated stator. At the time of writing it's not 100% sure if the rotor also has significant changes between versions.
+In practice this means that the m500 WILL overheat quicker than the m600. For this reason it's adviced not to run the m500 above 18A.
+
 ## Gearing
+
+##### m500 vs m600
 
 The m500 and m600 are mostly similair, with some exceptions:
 
@@ -82,6 +95,12 @@ m500: 7:32
 
 Here are a few pictures of people trying to find the stock gearing part numbers:
 `TODO: Insert images`
+
+##### Increasing motor power on the m500 (and gearing)
+
+The plastic gear in the m500, will NOT survive extremely increased power targets.
+If you go much above 13A it's adviced to have it replaced by a metal gear.
+
 
 ## Controller hardware module
 
