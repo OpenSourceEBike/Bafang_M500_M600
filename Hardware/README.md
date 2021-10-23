@@ -75,6 +75,16 @@ The difference between 52v or 48v are, however, very small so it wouldn't actual
 
 The nominal wattage, according to EU regulations, is determined by measuring the temperature at a certain continues load. This means that to comply to EU regulations, the actual **physical** motor unit has to be different.
 
+Bafang has done this by adapting the stator size (the power coil):
+
+m600:
+Size: 72.4mm
+Rating: 500w Nominal
+
+m500:
+Size: 63.4mm
+Rating: 250w Nominal
+
 ##### m500 vs m600
 
 The m500 has, in fact, a motor unit that has a 250w rated stator. Whereas the m600 has a 500w rated stator. At the time of writing it's not 100% sure if the rotor also has significant changes between versions, besides the axle difference noted below.
