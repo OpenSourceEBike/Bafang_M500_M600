@@ -9,7 +9,7 @@ https://www.higoconnector.com/news/compact-transmission-connector-range
 
 ##### Connection diagram
 
-![connectiondiagram](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/Bafang%20Diagram.png)
+![connectiondiagram](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Battery%20and%20Wiring/img/Bafang%20Diagram.png)
 
 ### m600 Teardown
 
@@ -34,7 +34,7 @@ https://www.youtube.com/watch?v=muSNIUXNNaQ
 For both models the official Bafang battery includes a connector that might in the future include CANBUS integration for the battery.
 However: The motor controller, as of July 2021, does not require the battery to be CANBUS connected to function. This means connecting the battery power-wires to the motor controller is enough.
 
-![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/battery.jpg)
+![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Battery%20and%20Wiring/img/battery.jpg)
 
 ## Power
 
@@ -110,9 +110,9 @@ If you go much above 13A it's adviced to have it replaced by a metal gear.
 These pictures highlight the most important components on the Controller Hardware Module
 
 
-![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/X1_Ludicrous_Controller_M600_-_Annotated_Top.jpg)
+![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Board/img/X1_Ludicrous_Controller_M600_-_Annotated_Top.jpg)
 
-![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/X1_Ludicrous_Controller_M600_-_Annotated_Bottom.jpg)
+![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Board/img/X1_Ludicrous_Controller_M600_-_Annotated_Bottom.jpg)
 
 
 
@@ -137,7 +137,7 @@ The board containers 1 or 2 shuntresistors of type `?` in parallel measuring the
 
 However the board does not contain any shunt resistors on the indivudual phases. How the single shunt resistor(s) can be used in this regard, is highlighted in the following documentation:
 
-![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/3-phase_bridge_motor_driver_example.jpg)
+![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Controller/img/3-phase_bridge_motor_driver_example.jpg)
 https://github.com/OpenSourceEBike/Bafang_M500_M600/blob/main/Hardware/AN5327.pdf
 
 ##### m500 vs m600
@@ -145,7 +145,7 @@ https://github.com/OpenSourceEBike/Bafang_M500_M600/blob/main/Hardware/AN5327.pd
 It should technically be possible to transplant a m600 module into a m500, however: one would need to change the wiring from the board to the motor (phase wires) in such a way that the colors line up.
 The differences are mostly the fact that the m500 has 1 instead of 2 shunt resistors in the m600.
 
-![controllercomparison](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/controllercomparison.jpg)
+![controllercomparison](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Board/img/boardcomparison.jpg)
 
 
 ## Links
