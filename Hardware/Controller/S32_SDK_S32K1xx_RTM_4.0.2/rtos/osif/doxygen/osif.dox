@@ -1,0 +1,139 @@
+/**
+@defgroup osif OS Interface (OSIF)
+@brief OS Interface Layer (OSIF)
+
+The OSIF layer is a minimal wrapper layer for common RTOS services, intended to be used
+by SDK drivers and middlewares. It can be used by the user application, but it is not recommended.
+The operations supported by OSIF:
+ - mutex lock/unlock
+ - semaphore post/wait
+ - time delay and get time elapsed
+ 
+OSIF currently comes in two variants: bare-metal and FreeRTOS. Steps to use each one are
+described below.
+
+## FreeRTOS ##
+
+To integrate the FreeRTOS OSIF variant, two steps are necessary:
+ - compile and link the osif_freertos.c file
+ - define a project-wide compile symbol: \verbatim  USING_OS_FREERTOS \endverbatim
+
+### FreeRTOSConfig.h dependencies ###
+
+FreeRTOS configuration file needs to have these options activated (set to 1 in FreeRTOSConfig.h):
+ - \verbatim INCLUDE_xQueueGetMutexHolder \endverbatim
+ - \verbatim INCLUDE_xTaskGetCurrentTaskHandle \endverbatim
+
+### Hardware resources ###
+
+FreeRTOS OSIF uses the FreeRTOS API and services, does not use any additional hardware
+or software resources.
+
+### FreeRTOS supported platforms ###
+
+The SDK platforms supported by FreeRTOS can be found in the following table. If a platform is
+supported by FreeRTOS, both osif variants, bare-metal and freertos, are supported. If the platform
+is not supported by FreeRTOS, only osif bare-metal variant is applicable:
+
+Platform      | FreeRTOS support 
+:-----------: | :--------------:
+S32K11x       | Yes
+S32K14x       | Yes
+S32K14xW      | Yes
+MPC5746C      | Yes
+MPC5748G      | Yes
+MPC5744P      | Yes
+S32R274       | Yes
+S32R372       | Yes
+
+#### FreeRTOS static vs dynamic memory allocation ####
+OSIF objects will use static memory allocation schemes (FreeRTOS 9.0.0 and above) if the feature is enabled.
+
+This should be transparent for the upper layer which uses OSIF.
+
+The FreeRTOS configuration option is \verbatim configSUPPORT_STATIC_ALLOCATION \endverbatim
+If it's set to 1, the OSIF will use static memory allocation. 
+
+## Bare-metal ##
+
+To integrate the bare-metal OSIF variant:
+ - compile and link the osif_baremetal.c file
+
+Mutex operations are dummy operations (always return success) and semaphore is
+implemented as a simple counter.
+
+### Hardware resources ###
+
+Bare-metal OSIF uses a hardware timer to accurately measure time. The timer and channel
+used are platform-dependent, are chosen to be the same as the FreeRTOS implementation if possible.
+
+The table below shows which timers and channels are used on each platform:
+
+Platform      | Timer       | Channel      
+:------------ | :---------: | -----------: 
+S32K11x       | Systick     | N/A
+S32K14x       | Systick     | N/A
+S32K14xW      | Systick     | N/A
+MPC5746C      | PIT         | 15
+MPC5748G      | PIT         | 15    
+MPC5744P      | PIT         | 3
+S32R274       | PIT0        | 3
+S32R372       | PIT0        | 3
+
+### Bare-metal timing limitations ###
+
+For bare-metal OSIF, the timer is initialized at the first call in OSIF that needs
+timing. That is either ::OSIF_TimeDelay, ::OSIF_MutexLock or ::OSIF_SemaWait (functions with timeout).
+The timer configuration, but not the counter, is updated at each subsequent call to these functions.
+
+Do not assume ::OSIF_GetMilliseconds will return a global value since system initialization. It will return the
+global value since the very first timer initialization, mentioned above.
+
+## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+
+- for baremetal variant:
+\verbatim
+${S32SDK_PATH}\rtos\osif\osif_baremetal.c
+\endverbatim
+
+- for FreeRTOS variant:
+\verbatim
+${S32SDK_PATH}\rtos\osif\osif_freertos.c
+\endverbatim
+
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\rtos\osif\
+\endverbatim
+
+### Compile symbols ###
+
+- for baremetal variant:
+No special symbols are required for this component
+
+- for FreeRTOS variant:
+The following symbol must be added to the compile symbols of the toolchain:
+\verbatim
+USING_OS_FREERTOS
+\endverbatim 
+
+### Dependencies ###
+
+- for baremetal variant:
+
+\ref clock_manager
+
+\ref interrupt_manager
+
+- for FreeRTOS variant:
+
+\ref freeRTOS
+
+*/

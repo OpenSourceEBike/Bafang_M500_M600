@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="VERID" description="SMC Version ID Register">
+    <alias type="CMSIS" value="VERID"/>
+    <bit_field offset="0" width="16" name="FEATURE" access="RO" reset_value="0" description="Feature Specification Number">
+      <alias type="CMSIS" value="SMC_VERID_FEATURE(x)"/>
+      <bit_field_value name="VERID_FEATURE_0b0000000000000000" value="0b0000000000000000" description="Standard features implemented"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="MINOR" access="RO" reset_value="0" description="Minor Version Number">
+      <alias type="CMSIS" value="SMC_VERID_MINOR(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="MAJOR" access="RO" reset_value="0x1" description="Major Version Number">
+      <alias type="CMSIS" value="SMC_VERID_MAJOR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="PARAM" description="SMC Parameter Register">
+    <alias type="CMSIS" value="PARAM"/>
+    <bit_field offset="0" width="1" name="EHSRUN" access="RO" reset_value="0x1" description="Existence of HSRUN feature">
+      <alias type="CMSIS" value="SMC_PARAM_EHSRUN(x)"/>
+      <bit_field_value name="PARAM_EHSRUN_0b0" value="0b0" description="The feature is not available."/>
+      <bit_field_value name="PARAM_EHSRUN_0b1" value="0b1" description="The feature is available."/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="2" reset_value="0"/>
+    <bit_field offset="3" width="1" name="ELLS" access="RO" reset_value="0" description="Existence of LLS feature">
+      <alias type="CMSIS" value="SMC_PARAM_ELLS(x)"/>
+      <bit_field_value name="PARAM_ELLS_0b0" value="0b0" description="The feature is not available."/>
+      <bit_field_value name="PARAM_ELLS_0b1" value="0b1" description="The feature is available."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <bit_field offset="5" width="1" name="ELLS2" access="RO" reset_value="0" description="Existence of LLS2 feature">
+      <alias type="CMSIS" value="SMC_PARAM_ELLS2(x)"/>
+      <bit_field_value name="PARAM_ELLS2_0b0" value="0b0" description="The feature is not available."/>
+      <bit_field_value name="PARAM_ELLS2_0b1" value="0b1" description="The feature is available."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="EVLLS0" access="RO" reset_value="0" description="Existence of VLLS0 feature">
+      <alias type="CMSIS" value="SMC_PARAM_EVLLS0(x)"/>
+      <bit_field_value name="PARAM_EVLLS0_0b0" value="0b0" description="The feature is not available."/>
+      <bit_field_value name="PARAM_EVLLS0_0b1" value="0b1" description="The feature is available."/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="PMPROT" description="Power Mode Protection register">
+    <alias type="CMSIS" value="PMPROT"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0"/>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <bit_field offset="5" width="1" name="AVLP" access="RW" reset_value="0" description="Allow Very-Low-Power Modes">
+      <alias type="CMSIS" value="SMC_PMPROT_AVLP(x)"/>
+      <bit_field_value name="PMPROT_AVLP_0b0" value="0b0" description="VLPR and VLPS are not allowed."/>
+      <bit_field_value name="PMPROT_AVLP_0b1" value="0b1" description="VLPR and VLPS are allowed."/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <bit_field offset="7" width="1" name="AHSRUN" access="RW" reset_value="0" description="Allow High Speed Run mode">
+      <alias type="CMSIS" value="SMC_PMPROT_AHSRUN(x)"/>
+      <bit_field_value name="PMPROT_AHSRUN_0b0" value="0b0" description="HSRUN is not allowed"/>
+      <bit_field_value name="PMPROT_AHSRUN_0b1" value="0b1" description="HSRUN is allowed"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="PMCTRL" description="Power Mode Control register">
+    <alias type="CMSIS" value="PMCTRL"/>
+    <bit_field offset="0" width="3" name="STOPM" access="RW" reset_value="0" description="Stop Mode Control">
+      <alias type="CMSIS" value="SMC_PMCTRL_STOPM(x)"/>
+      <bit_field_value name="PMCTRL_STOPM_0b000" value="0b000" description="Normal Stop (STOP)"/>
+      <bit_field_value name="PMCTRL_STOPM_0b001" value="0b001" description="Reserved"/>
+      <bit_field_value name="PMCTRL_STOPM_0b010" value="0b010" description="Very-Low-Power Stop (VLPS)"/>
+      <bit_field_value name="PMCTRL_STOPM_0b011" value="0b011" description="Reserved"/>
+      <bit_field_value name="PMCTRL_STOPM_0b101" value="0b101" description="Reserved"/>
+      <bit_field_value name="PMCTRL_STOPM_0b110" value="0b110" description="Reseved"/>
+      <bit_field_value name="PMCTRL_STOPM_0b111" value="0b111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="VLPSA" access="RO" reset_value="0" description="Very Low Power Stop Aborted">
+      <alias type="CMSIS" value="SMC_PMCTRL_VLPSA(x)"/>
+      <bit_field_value name="PMCTRL_VLPSA_0b0" value="0b0" description="The previous stop mode entry was successful."/>
+      <bit_field_value name="PMCTRL_VLPSA_0b1" value="0b1" description="The previous stop mode entry was aborted."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <bit_field offset="5" width="2" name="RUNM" access="RW" reset_value="0" description="Run Mode Control">
+      <alias type="CMSIS" value="SMC_PMCTRL_RUNM(x)"/>
+      <bit_field_value name="PMCTRL_RUNM_0b00" value="0b00" description="Normal Run mode (RUN)"/>
+      <bit_field_value name="PMCTRL_RUNM_0b01" value="0b01" description="Reserved"/>
+      <bit_field_value name="PMCTRL_RUNM_0b10" value="0b10" description="Very-Low-Power Run mode (VLPR)"/>
+      <bit_field_value name="PMCTRL_RUNM_0b11" value="0b11" description="High Speed Run mode (HSRUN)"/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="25" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="STOPCTRL" description="Stop Control Register">
+    <alias type="CMSIS" value="STOPCTRL"/>
+    <reserved_bit_field offset="0" width="3" reset_value="0x3"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <bit_field offset="6" width="2" name="STOPO" access="RW" reset_value="0" description="Stop Option">
+      <alias type="CMSIS" value="SMC_STOPCTRL_STOPO(x)"/>
+      <bit_field_value name="STOPCTRL_STOPO_0b00" value="0b00" description="Reserved"/>
+      <bit_field_value name="STOPCTRL_STOPO_0b01" value="0b01" description="STOP1 - Stop with both system and bus clocks disabled"/>
+      <bit_field_value name="STOPCTRL_STOPO_0b10" value="0b10" description="STOP2 - Stop with system clock disabled and bus clock enabled"/>
+      <bit_field_value name="STOPCTRL_STOPO_0b11" value="0b11" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="PMSTAT" description="Power Mode Status register">
+    <alias type="CMSIS" value="PMSTAT"/>
+    <bit_field offset="0" width="8" name="PMSTAT" access="RO" reset_value="0x1" description="Power Mode Status">
+      <alias type="CMSIS" value="SMC_PMSTAT_PMSTAT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+</regs:peripheral>

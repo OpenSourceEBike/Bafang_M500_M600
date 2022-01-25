@@ -1,0 +1,165 @@
+/*!
+ * @defgroup pdb_driver PDB Driver
+ * @ingroup pdb
+ * @brief Programmable Delay Block Peripheral Driver.
+ *
+ * ## Overview ##
+ * 
+ * This section describes the programming interface of the PDB Peripheral driver. The PDB peripheral driver configures the PDB (Programmable Delay Block). It handles the triggers for ADC 
+ * and pulse out to the CMP and the PDB counter.
+ * 
+ * The PDB contains a counter whose output is compared to several different digital values. If the PDB is enabled, then a trigger input event will reset the counter and make it start to count. 
+ * A trigger input event is defined as a rising edge being detected on a selected trigger input source, or if software trigger is selected and a software trigger is issued.
+ * Each PDB channel is associated with 1 ADC block, and each PDB channel contains 8 pre-triggers. A pre-trigger has a delay associated and is mapped to an ADC channel; 
+ * when the PDB counter is equal to the delay value configured for a pre-trigger, the pre-trigger is activated and selects the ADC channel that starts the conversion.
+ * Inside a PDB channel, the pre-triggers can be configured to work as chains, meaning that a pre-trigger is enabled automatically when the ADC conversion selected by the previous pre-trigger, completes it's execution.
+ * The pre-trigger delays and back-to-back operation must be configured, in such a way that at most one pre-trigger per PDB channel is activated at any given point - otherwise a PDB sequence error occurs.
+ * This feature is called back-to-back mode, and needs to be configured individually for each pre-trigger using PDB_DRV_ConfigAdcPreTrigger(). On some devices (depending on availability), 
+ * chains can be configured between different PDB channels or PDB instances - this can be configured using interchannelBackToBackEnable or instanceBackToBackEnable.
+ * 
+ * ## PDB Initialization ##
+ * 
+ * For initializing the PDB counter, input triggers or general pre-trigger settings (instance or interchannel back-to-back modes) call <b>PDB_DRV_Init()</b>
+ * Note that all pre-triggers share the same counter.  * 
+ * The basic timing/counting step is set when initializing the main PDB counter:
+ * The basic timing/counting step = F_BusClkHz / pdb_timer_config_t.clkPreDiv / pdb_timer_config_t.clkPreMultFactor
+ * 
+ * The F_BusClkHz is the frequency of bus clock in Hertz. The "clkPreDiv" and "clkPreMultFactor" are in the pdb_timer_config_t structure. All pre-triggering delayes use this frequency.
+ * 
+ * ## Integration guideline ##
+ *
+ * ### Compilation units ###
+ *
+ * The following files need to be compiled in the project:
+ * \verbatim
+ * ${S32SDK_PATH}\platform\drivers\src\pdb\pdb_driver.c
+ * ${S32SDK_PATH}\platform\drivers\src\pdb\pdb_hw_access.c
+ * \endverbatim
+ *
+ * ### Include path ###
+ *
+ * The following paths need to be added to the include path of the toolchain:
+ * \verbatim
+ * ${S32SDK_PATH}\platform\drivers\inc\
+ * ${S32SDK_PATH}\platform\drivers\src\pdb\
+ * \endverbatim
+ *
+ * ### Compile symbols ###
+ *
+ * No special symbols are required for this component
+ *
+ * ### Dependencies ###
+ * 
+ * \ref clock_manager
+ * \ref interrupt_manager
+ * 
+ * ## PDB Call diagram ##
+ * 
+ * Three kinds of typical use cases are designed for the PDB module.
+ * 
+ * - Normal Timer/Counter - the basic use-case. The Timer/Counter starts after the PDB is initialized, when the input trigger (hardware or software) is asserted. When the counter reaches the compare value (set via modulus register),
+ * an interrupt or DMA transfer occur if enabled. In continuous mode, when the counter reaches the modulus compare value, it resets to zero and starts counting again.
+ * - Triggering for ADC module. Depending on the number of ADC channels that need to be used, each pre-trigger must be configured using PDB_DRV_ConfigAdcPreTrigger(). The PDB counter starts counting whenn the input trigger (hardware or software) is asserted. 
+ * If the pre-trigger is enabled in normal mode (back-to-back disabled), it will be activated (thus starting the corresponding ADC channel conversion) when the PDB counter is equal with the configured pre-trigger delay. 
+ * If the pre-trigger is enabled in back-to-back mode, it will trigger the corresponding ADC channel conversion, when the ADC channel corresponding to the previous pre-trigger in the chain, completes the conversion (ADC COCO flag set).
+ * - Generate pulse outputs of configurable width. The Pulse-Out is set to high/low when the PDB counter reaches the values set in POyDLY[DLY1/2], configured via PDB_DRV_SetCmpPulseOutDelayForHigh() or PDB_DRV_SetCmpPulseOutDelayForLow.
+ * The Pulse-Out signal is connected to TRGMUX, which can route it to any other peripheral (e.g. can be used as a sample window for any CMP module).
+ * 
+ * These are the examples to initialize and configure the PDB driver for typical use cases.
+ * 
+ * <b>Normal Timer/Counter:</b>
+ *
+ ~~~~~{.c}
+ * #define PDB_INSTANCE    0UL 
+ *
+ * static volatile uint32_t gPdbIntCounter = 0U;
+ * static volatile uint32_t gPdbInstance = 0U;
+ * static void PDB_ISR_Counter(void);
+ * void PDB_TEST_NormalTimer(uint32_t instance)
+ * {
+ *     pdb_timer_config_t PdbTimerConfig;
+ *     PdbTimerConfig.loadValueMode            = PDB_LOAD_VAL_IMMEDIATELY;
+ *     PdbTimerConfig.seqErrIntEnable          = false;
+ *     PdbTimerConfig.clkPreDiv                = PDB_CLK_PREDIV_BY_8;
+ *     PdbTimerConfig.clkPreMultFactor         = PDB_CLK_PREMULT_FACT_AS_40;
+ *     PdbTimerConfig.triggerInput             = PDB_SOFTWARE_TRIGGER;
+ *     PdbTimerConfig.continuousModeEnable     = true;
+ *     PdbTimerConfig.dmaEnable                = false;
+ *     PdbTimerConfig.intEnable                = true;
+ *     PdbTimerConfig.instanceBackToBackEnable     = false;
+ *     PdbTimerConfig.interchannelBackToBackEnable = false;
+ *     PDB_DRV_Init(instance, &PdbTimerConfig);
+ *     PDB_DRV_SetTimerModulusValue(instance, 0xFFFU);
+ *     PDB_DRV_SetValueForTimerInterrupt(instance, 0xFFU);
+ *     PDB_DRV_LoadValuesCmd(instance);
+ *     gPdbIntCounter = 0U;
+ *     gPdbInstance = instance;
+ *     PDB_DRV_SoftTriggerCmd(instance);
+ *     while (gPdbIntCounter < 20U) {}
+ *     PRINTF("PDB Timer's delay interrupt generated.\r\n");
+ *     PDB_DRV_Deinit(instance);
+ *     PRINTF("OK.\r\n");
+ * }
+ *
+ * void PDB_IRQHandler()
+ * {
+ *     PDB_DRV_ClearTimerIntFlag(PDB_INSTANCE);
+ *     if (gPdbIntCounter >= 0xFFFFU)
+ *     {
+ *         gPdbIntCounter = 0U;
+ *     }
+ *     else
+ *     {
+ *         gPdbIntCounter++;
+ *     }
+ * }
+ * 
+ * #if PDB_INSTANCE < 1
+ *     void PDB0_IRQHandler(void)
+ *     {   
+ *         PDB_IRQHandler();
+ *     }
+ * #elif PDB_INSTANCE < 2
+ *     void PDB1_IRQHandler(void)
+ *     {   
+ *         PDB_IRQHandler();
+ *     }
+ * #endif
+ * 
+ ~~~~~
+ * <b>Trigger for ADC module:</b>
+ ~~~~~{.c}
+ * void PDB_TEST_AdcPreTrigger(uint32_t instance)
+ * {
+ *     pdb_timer_config_t PdbTimerConfig;
+ *     pdb_adc_pretrigger_config_t PdbAdcPreTriggerConfig;
+ *     PdbTimerConfig.loadValueMode            = PDB_LOAD_VAL_IMMEDIATELY;
+ *     PdbTimerConfig.seqErrIntEnable          = false;
+ *     PdbTimerConfig.clkPreDiv                = PDB_CLK_PREDIV_BY_8;
+ *     PdbTimerConfig.clkPreMultFactor         = PDB_CLK_PREMULT_FACT_AS_40;
+ *     PdbTimerConfig.triggerInput             = PDB_SOFTWARE_TRIGGER;
+ *     PdbTimerConfig.continuousModeEnable     = false;
+ *     PdbTimerConfig.dmaEnable                = false;
+ *     PdbTimerConfig.intEnable                = false;
+ *     PdbTimerConfig.instanceBackToBackEnable     = false;
+ *     PdbTimerConfig.interchannelBackToBackEnable = false;
+ *     PDB_DRV_Init(instance, &PdbTimerConfig);
+ *
+ *     PdbAdcPreTriggerConfig.adcPreTriggerIdx              = 0U;
+ *     PdbAdcPreTriggerConfig.preTriggerEnable              = true;
+ *     PdbAdcPreTriggerConfig.preTriggerOutputEnable        = true;
+ *     PdbAdcPreTriggerConfig.preTriggerBackToBackEnable    = false;
+ *     PDB_DRV_ConfigAdcPreTrigger(instance, 0U, &PdbAdcPreTriggerConfig);
+ *
+ *     PDB_DRV_SetTimerModulusValue(instance, 0xFFFU);
+ *     PDB_DRV_SetAdcPreTriggerDelayValue(instance, 0U, 0U, 0xFFU);
+ *     PDB_DRV_LoadValuesCmd(instance);
+ *     PDB_DRV_SoftTriggerCmd(instance);
+ *     while (1U != PDB_DRV_GetAdcPreTriggerFlags(instance, 0U, 1U)) {}
+ *     PDB_DRV_ClearAdcPreTriggerFlags(instance, 0U, 1U);
+ *     PRINTF("PDB ADC PreTrigger generated.\r\n");
+ *     PDB_DRV_Deinit(instance);
+ *     PRINTF("OK.\r\n");
+ * }
+ ~~~~~
+ */

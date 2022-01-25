@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="freertos" label="freertos" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_os">
+   <sw_comp_ref name="platform.os.freertos" version="1.0.0"/>
+   <description>FreeRTOS configuration</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>FreeRTOS general mode</description>
+      <config_set_refs>
+         <config_set_ref>freertos_driver</config_set_ref>
+      </config_set_refs>
+   </mode>
+   <config_set id="freertos_driver" label="FreeRTOS configuration" from_source="freertos.h">
+      <description>TBD</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <generated_types/>
+
+      <quick_selections>
+         <quick_selection id="default_freeRTOS" label="Default values for FreeRTOS" available="true">
+            <description>freeRTOS default configuration</description>
+            <set id="general_tab.configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY">1</set>
+            <set id="general_tab.configCPU_CLOCK_HZ">0</set>
+            <set id="general_tab.configTICK_RATE_HZ">1000</set>
+            <set id="general_tab.configMAX_PRIORITIES">5</set>
+            <set id="general_tab.configMINIMAL_STACK_SIZE">90</set>
+            <set id="general_tab.configMAX_TASK_NAME_LEN">10</set>
+            <set id="general_tab.configUSE_16_BIT_TICKS">false</set>
+            <set id="general_tab.configIDLE_SHOULD_YIELD">true</set>
+            <set id="general_tab.configUSE_PREEMPTION">true</set>
+            <set id="general_tab.configNUM_THREAD_LOCAL_STORAGE_POINTERS">0</set>
+            <set id="general_tab.configUSE_PORT_OPTIMISED_TASK_SELECTION">false</set>
+            <set id="general_tab.configUSE_TASK_NOTIFICATIONS">true</set>
+            <set id="general_tab.configUSE_TIME_SLICING">true</set>
+            <set id="general_tab.configUSE_NEWLIB_REENTRANT">false</set>
+            <set id="general_tab.configENABLE_BACKWARD_COMPATIBILITY">true</set>
+            <set id="general_tab.configUSE_POSIX_ERRNO">false</set>
+            <set id="general_tab.configMESSAGE_BUFFER_LENGTH_TYPE"></set>
+            <set id="general_tab.configASSERT_id.boolConfigASSERT">true</set>
+            <set id="general_tab.configASSERT_id.configASSERT">if((x)==0) { taskDISABLE_INTERRUPTS(); for( ;; ); }</set>
+
+            <set id="memory_tab.configSUPPORT_STATIC_ALLOCATION">false</set>
+            <set id="memory_tab.configSUPPORT_DYNAMIC_ALLOCATION">true</set>
+            <set id="memory_tab.memory_scheme_id">heap1</set>
+            <set id="memory_tab.configTOTAL_HEAP_SIZE">8192</set>
+            <set id="memory_tab.configAPPLICATION_ALLOCATED_HEAP">false</set>
+
+            <set id="hook_tab.configUSE_IDLE_HOOK">false</set>
+            <set id="hook_tab.configUSE_TICK_HOOK">false</set>
+            <set id="hook_tab.configUSE_MALLOC_FAILED_HOOK">false</set>
+            <set id="hook_tab.configCHECK_FOR_STACK_OVERFLOW">0</set>
+            <set id="hook_tab.configUSE_DAEMON_TASK_STARTUP_HOOK">false</set>
+
+            <set id="rttsgrd_tab.configGENERATE_RUN_TIME_STATS_id.configGENERATE_RUN_TIME_STATS">false</set>
+            <set id="rttsgrd_tab.configGENERATE_RUN_TIME_STATS_id.portCONFIGURE_TIMER_FOR_RUN_TIME_STATS"></set>
+            <set id="rttsgrd_tab.configGENERATE_RUN_TIME_STATS_id.portGET_RUN_TIME_COUNTER_VALUE">xTaskGetTickCount()</set>
+            <set id="rttsgrd_tab.configUSE_TRACE_FACILITY">true</set>
+            <set id="rttsgrd_tab.configUSE_STATS_FORMATTING_FUNCTIONS">true</set>
+
+            <set id="co_routines_tab.configUSE_CO_ROUTINES">false</set>
+            <set id="co_routines_tab.configMAX_CO_ROUTINE_PRIORITIES">2</set>
+
+            <set id="sandm_tab.configUSE_MUTEXES">true</set>
+            <set id="sandm_tab.configUSE_RECURSIVE_MUTEXES">true</set>
+            <set id="sandm_tab.configUSE_COUNTING_SEMAPHORES">true</set>
+
+            <set id="st_tab.configUSE_TIMERS">true</set>
+            <set id="st_tab.configTIMER_TASK_PRIORITY">2</set>
+            <set id="st_tab.configTIMER_QUEUE_LENGTH">10</set>
+            <set id="st_tab.configTIMER_TASK_STACK_DEPTH">180</set>
+
+            <set id="tidlem_tab.configUSE_TICKLESS_IDLE">false</set>
+            <set id="tidlem_tab.configEXPECTED_IDLE_TIME_BEFORE_SLEEP">2</set>
+            <set id="tidlem_tab.configPRE_SLEEP_PROCESSING"></set>
+            <set id="tidlem_tab.configPOST_SLEEP_PROCESSING"></set>
+
+            <set id="queue_tab.configQUEUE_REGISTRY_SIZE">2</set>
+            <set id="queue_tab.configUSE_QUEUE_SETS">false</set>
+
+            <set id="api_tab.INCLUDE_vTaskPrioritySet">true</set>
+            <set id="api_tab.INCLUDE_uxTaskPriorityGet">true</set>
+            <set id="api_tab.INCLUDE_vTaskDelete">true</set>
+            <set id="api_tab.INCLUDE_vTaskSuspend">true</set>
+            <set id="api_tab.INCLUDE_vTaskDelayUntil">true</set>
+            <set id="api_tab.INCLUDE_vTaskDelay">true</set>
+            <set id="api_tab.INCLUDE_xTaskGetSchedulerState">true</set>
+            <set id="api_tab.INCLUDE_xTaskGetCurrentTaskHandle">true</set>
+            <set id="api_tab.INCLUDE_uxTaskGetStackHighWaterMark">true</set>
+            <set id="api_tab.INCLUDE_xTaskGetIdleTaskHandle">false</set>
+            <set id="api_tab.INCLUDE_eTaskGetState">true</set>
+            <set id="api_tab.INCLUDE_xEventGroupSetBitFromISR">true</set>
+            <set id="api_tab.INCLUDE_xTimerPendFunctionCall">true</set>
+            <set id="api_tab.INCLUDE_xTaskAbortDelay">true</set>
+            <set id="api_tab.INCLUDE_xTaskGetHandle">true</set>
+            <set id="api_tab.INCLUDE_xTaskResumeFromISR">true</set>
+            <set id="api_tab.INCLUDE_xQueueGetMutexHolder">true</set>
+
+            <set id="us_tab.configUSER_SETTINGS"></set>
+
+         </quick_selection>
+         <default>default_freeRTOS</default>
+      </quick_selections>
+
+      <user_types>
+         <!-- /* general definitions. */ -->
+         <struct id="general_t" label="general configuration structure for freeRTOS" from="general_t">
+            <description>general definitions</description>
+            <integer id="configCPU_CLOCK_HZ" label="cpu clock [Hz]" type="uint32_t" options="cStructField">
+               <validation>
+               <constraint cond_expr="(($this.getValue() == getPeripheralClockFrequency(`FREERTOS`, `CPU_CLOCK`, getClockFunctionalGroups().get(0)) || ($this.getValue() == 0)))" level="warning" description_expr="`CPU frequency configured in FreeRTOS does not match value in clock component [Hz]: ` + getPeripheralClockFrequency(`FREERTOS`, `CPU_CLOCK`, getClockFunctionalGroups().get(0))"/>
+               </validation>
+            </integer>
+            <variable value="getPeripheralClockFrequency(`FREERTOS`, `CPU_CLOCK`, getClockFunctionalGroups().get(0))" id="configCPU_CLOCK_HZ_Default"></variable>
+            <integer id="configTICK_RATE_HZ" label="tick rate [Hz]" type="uint32_t" options="cStructField" />
+            <integer id="configUSE_PIT_CHANNEL" label="PIT Channel" type="uint8_t" min_expr="0" max_expr="6" available="(featureDefined(`FEATURE_FREERTOS_USE_PIT`)==true)&amp;&amp;(getFeature(`FEATURE_FREERTOS_USE_PIT`)==1)"  options="cStructField" />
+            <integer id="configMAX_PRIORITIES" label="max priorities" type="uint16_t" options="cStructField" />
+            <integer id="configMINIMAL_STACK_SIZE" label="minimal stack size" type="uint16_t" options="cStructField" />
+            <integer id="configMAX_TASK_NAME_LEN" label="max task name len" type="uint32_t" options="cStructField" />
+            <integer id="configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY" label="library max syscall interrupt priority" type="uint8_t" min_expr="0" max_expr="15" options="cStructField" />
+            <bool id="configUSE_16_BIT_TICKS" label="use 16bit ticks" options="cStructField" />
+            <bool id="configIDLE_SHOULD_YIELD" label="idle should yield" options="cStructField" />
+            <bool id="configUSE_PREEMPTION" label="use preemption" options="cStructField" />
+            <integer id="configNUM_THREAD_LOCAL_STORAGE_POINTERS" label="num thread local storage pointers" type="uint32_t" options="cStructField" />
+            <bool id="configUSE_PORT_OPTIMISED_TASK_SELECTION" label="use port optimised task selection" options="cStructField" />
+            <bool id="configUSE_TASK_NOTIFICATIONS" label="use task notifications" options="cStructField" />
+            <bool id="configUSE_TIME_SLICING" label="use time slicing" options="cStructField" />
+            <bool id="configUSE_NEWLIB_REENTRANT" label="use newlib reentrant" options="cStructField" />
+            <bool id="configENABLE_BACKWARD_COMPATIBILITY" label="enable backward compatibility" options="cStructField" />
+            <bool id="configUSE_POSIX_ERRNO" label="enable POSIX errno" options="cStructField" />
+            <string id="configMESSAGE_BUFFER_LENGTH_TYPE" label="Message buffer type (optional)" options="cStructField">
+                <description>
+                Leave blank to omit this configuration option.
+                Allow the number of bytes used to hold the length of a message in the message buffer to be reduced. configMESSAGE_BUFFER_LENGTH_TYPE default to size_t, but if, for example, messages can never be more than 255 bytes it could be set to uint8_t, saving 3 bytes each time a message is written into the message buffer (assuming sizeof( size_t ) is 4).
+                </description>
+            </string>
+            <struct id="configASSERT_id" label="ASSERT() function" from="configASSERT_t">
+               <bool id="boolConfigASSERT" label="config ASSERT" options="cStructField"/>
+               <string id="configASSERT" label="macro definition" enable="$parent.boolConfigASSERT.getValue()" options="cStructField"/>
+            </struct>
+         </struct>
+
+         <!-- /* Memory allocation related definitions. */ -->
+         <enum id="memory_scheme_id" label="memory scheme selection" from="memory_scheme_id">
+               <description>select CHECK FOR STACK OVERFLOW method</description>
+               <item id="heap1" label="Alloc only"/>
+               <item id="heap2" label="Alloc/Free"/>
+               <item id="heap3" label="Malloc"/>
+               <item id="heap4" label="Coalesc blocks"/>
+               <item id="heap5" label="Coalesc blocks/Multiple regions"/>
+         </enum>
+         <struct id="mard_t" label="Memory allocation related definitions" from="mard_t">
+            <description>Memory allocation related definitions</description>
+            <bool id="configSUPPORT_STATIC_ALLOCATION" label="support static allocation" options="cStructField"/>
+            <bool id="configSUPPORT_DYNAMIC_ALLOCATION" label="support dynamic allocation" options="cStructField"/>
+            <reference id="memory_scheme_id" label="memory scheme" type="memory_scheme_id" options="cStructField"/>
+            <integer id="configTOTAL_HEAP_SIZE" label="total heap size" type="uint32_t" options="cStructField" enable="($parent.memory_scheme_id.getValue() != `heap3`) &amp;&amp; ($parent.memory_scheme_id.getValue() != `heap5`)"/>
+            <bool id="configAPPLICATION_ALLOCATED_HEAP" label="application allocated heap" options="cStructField"/>
+         </struct>
+
+
+         <!-- /* Hook function related definitions. */ -->
+         <enum id="configCFSO_t" label="check for stack overflow" from="configCFSO_t">
+               <description>select CHECK FOR STACK OVERFLOW method</description>
+               <item id="0" label="Disable"/>
+               <item id="1" label="Method 1"/>
+               <item id="2" label="Method 2"/>
+         </enum>
+         <struct id="hfrd_t" label="Hook function related definitions" from="hfrd_t">
+            <description>Hook function related definitions</description>
+            <bool id="configUSE_IDLE_HOOK" label="use idle hook" options="cStructField"/>
+            <bool id="configUSE_TICK_HOOK" label="use tick hook" options="cStructField"/>
+            <bool id="configUSE_MALLOC_FAILED_HOOK" label="use malloc failed hook" options="cStructField"/>
+            <reference id="configCHECK_FOR_STACK_OVERFLOW" label="check for stack overflow" type="configCFSO_t" options="cStructField"/>
+            <bool id="configUSE_DAEMON_TASK_STARTUP_HOOK" label="use daemon task startup hook" options="cStructField"/>
+         </struct>
+
+         <!-- /* Run time and task stats gathering related definitions. */ -->
+         <struct id="rttsgrd_t" label="Run time and task stats gathering related definitions" from="rttsgrd_t">
+            <description>Run time and task stats gathering related definitions</description>
+            <struct id="configGENERATE_RUN_TIME_STATS_id" label="Generate run time stats" from="configGENERATE_RUN_TIME_STATS_t">
+               <bool id="configGENERATE_RUN_TIME_STATS" label="generate run time stats" options="cStructField"/>
+               <string id="portCONFIGURE_TIMER_FOR_RUN_TIME_STATS" label="configure timer for run time stats" enable="$parent.configGENERATE_RUN_TIME_STATS.getValue()" options="cStructField" >
+                    <description>Macro to configure timer. Can be empty. Do not use C-style comments /* */ or // in this field.</description>
+               </string>
+               <string id="portGET_RUN_TIME_COUNTER_VALUE" label="get run time counter value" enable="$parent.configGENERATE_RUN_TIME_STATS.getValue()" options="cStructField">
+                    <description>Macro to get timer value. Do not use C-style comments /* */ or // in this field.</description>
+               </string>
+            </struct>
+            <bool id="configUSE_TRACE_FACILITY" label="use trace facility" options="cStructField" />
+            <bool id="configUSE_STATS_FORMATTING_FUNCTIONS" label="use stats formatting functions" options="cStructField" />
+         </struct>
+
+         <!-- /* Co-routine related definitions. */ -->
+         <struct id="co_routines_t" label="Co-routine related definitions" from="co_routines_t">
+            <description>Co-routine related definitions</description>
+            <bool id="configUSE_CO_ROUTINES" label="use co-routines" options="cStructField"/>
+            <integer id="configMAX_CO_ROUTINE_PRIORITIES" label="max co-routine priorities" type="uint32_t" options="cStructField" />
+         </struct>
+
+         <!-- /* SEMAPHORES and MUTEXS */ -->
+         <struct id="sandm_t" label="Semaphores and mutexs" from="sandm_t">
+            <description>Semaphores and mutexs</description>
+            <bool id="configUSE_MUTEXES" label="use mutexes" options="cStructField"/>
+            <bool id="configUSE_RECURSIVE_MUTEXES" label="use recursive mutexes" options="cStructField"/>
+            <bool id="configUSE_COUNTING_SEMAPHORES" label="use counting semaphores" options="cStructField"/>
+         </struct>
+
+         <!-- /* Software timer related definitions. */ -->
+         <struct id="st_t" label="Software timer" from="st_t">
+            <description>Software timer</description>
+            <bool id="configUSE_TIMERS" label="use timers" options="cStructField"/>
+            <integer id="configTIMER_TASK_PRIORITY" label="timer task priority" type="uint16_t" options="cStructField" enable="$parent.configUSE_TIMERS.getValue()"/>
+            <integer id="configTIMER_QUEUE_LENGTH" label="timer queue length" type="uint16_t" options="cStructField" enable="$parent.configUSE_TIMERS.getValue()"/>
+            <integer id="configTIMER_TASK_STACK_DEPTH" label="timer task stack depth" type="uint16_t" options="cStructField" enable="$parent.configUSE_TIMERS.getValue()"/>
+         </struct>
+
+         <!-- /* Tickless Idle Mode */ -->
+         <struct id="tidlem_t" label="Tickless Idle Mode" from="tidlem_t">
+            <description>Tickless Idle Mode</description>
+            <bool id="configUSE_TICKLESS_IDLE" label="use tickless idle" options="cStructField"/>
+            <integer id="configEXPECTED_IDLE_TIME_BEFORE_SLEEP" label="expected idle time before sleep" type="uint16_t" options="cStructField" enable="$parent.configUSE_TICKLESS_IDLE.getValue()"/>
+            <string id="configPRE_SLEEP_PROCESSING" label="pre sleep processing" enable="$parent.configUSE_TICKLESS_IDLE.getValue()" options="cStructField">
+                <description>Macro to be called before entering sleep. Can be empty. Do not use C-style comments /* */ or // in this field.</description>
+            </string>
+            <string id="configPOST_SLEEP_PROCESSING" label="post sleep processing" enable="$parent.configUSE_TICKLESS_IDLE.getValue()" options="cStructField">
+                <description>Macro to be called after waking from sleep. Can be empty. Do not use C-style comments /* */ or // in this field.</description>
+            </string>
+         </struct>
+
+         <!-- /* QUEUE*/ -->
+         <struct id="queue_t" label="queue" from="queue_t">
+            <description>queue</description>
+            <integer id="configQUEUE_REGISTRY_SIZE" label="queue registry size" type="uint32_t" options="cStructField"/>
+            <bool id="configUSE_QUEUE_SETS" label="use queue sets" options="cStructField"/>
+         </struct>
+
+         <!-- /* Optional functions - most linkers will remove unused functions anyway. */ -->
+         <struct id="api_t" label="Optional functions - most linkers will remove unused functions anyway" from="api_t">
+            <description>Optional functions - most linkers will remove unused functions anyway</description>
+            <bool id="INCLUDE_vTaskPrioritySet" label="vTaskPrioritySet()" options="cStructField"/>
+            <bool id="INCLUDE_uxTaskPriorityGet" label="uxTaskPriorityGet()" options="cStructField"/>
+            <bool id="INCLUDE_vTaskDelete" label="vTaskDelete()" options="cStructField"/>
+            <bool id="INCLUDE_vTaskSuspend" label="vTaskSuspend()" options="cStructField"/>
+            <bool id="INCLUDE_vTaskDelayUntil" label="vTaskDelayUntil()" options="cStructField"/>
+            <bool id="INCLUDE_vTaskDelay" label="vTaskDelay()" options="cStructField"/>
+            <bool id="INCLUDE_xTaskGetSchedulerState" label="xTaskGetSchedulerState()" options="cStructField"/>
+            <bool id="INCLUDE_xTaskGetCurrentTaskHandle" label="xTaskGetCurrentTaskHandle()" options="cStructField"/>
+            <bool id="INCLUDE_uxTaskGetStackHighWaterMark" label="uxTaskGetStackHighWaterMark()" options="cStructField"/>
+            <bool id="INCLUDE_xTaskGetIdleTaskHandle" label="xTaskGetIdleTaskHandle()" options="cStructField"/>
+            <bool id="INCLUDE_eTaskGetState" label="eTaskGetState()" options="cStructField"/>
+            <bool id="INCLUDE_xEventGroupSetBitFromISR" label="xEventGroupSetBitFromISR()" options="cStructField"/>
+            <bool id="INCLUDE_xTimerPendFunctionCall" label="xTimerPendFunctionCall()" options="cStructField"/>
+            <bool id="INCLUDE_xTaskAbortDelay" label="xTaskAbortDelay()" options="cStructField"/>
+            <bool id="INCLUDE_xTaskGetHandle" label="xTaskGetHandle()" options="cStructField"/>
+            <bool id="INCLUDE_xTaskResumeFromISR" label="xTaskResumeFromISR()" options="cStructField"/>
+            <bool id="INCLUDE_xQueueGetMutexHolder" label="xQueueGetMutexHolder()" options="cStructField"/>
+         </struct>
+
+         <!-- /* User settings */ -->
+         <struct id="us_t" label="Tickless Idle Mode" from="us_t">
+            <description>User settings</description>
+            <string id="configUSER_SETTINGS" label=" " options="cStructField;UI_MULTI_LINE=10">
+                <description>Application specific code (includes, macros). Can be empty. Do not use C-style comments /* */ or // in this field.</description>
+            </string>
+         </struct>
+
+      </user_types>
+      <settings>;
+         <reference id="general_tab" label="General definitions" type="general_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>general definitions</description>
+         </reference>
+         <reference id="memory_tab" label="Memory schema allocation" type="mard_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>memory schema allocation</description>
+         </reference>
+         <reference id="hook_tab" label="Hook function" type="hfrd_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>Hook function related definitions</description>
+         </reference>
+         <reference id="rttsgrd_tab" label="Run time and task stats gathering related definitions" type="rttsgrd_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>Run time and task stats gathering related definitions</description>
+         </reference>
+         <reference id="co_routines_tab" label="Co-routine related definitions" type="co_routines_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>Co-routine related definitions</description>
+         </reference>
+         <reference id="sandm_tab" label="Semaphores and mutexs" type="sandm_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>SEMAPHORES and MUTEXS</description>
+         </reference>
+         <reference id="st_tab" label="Software timer" type="st_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>Software timer</description>
+         </reference>
+         <reference id="tidlem_tab" label="Tickless Idle Mode" type="tidlem_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>Tickless Idle Mode</description>
+         </reference>
+         <reference id="queue_tab" label="Queue" type="queue_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>queue</description>
+         </reference>
+         <reference id="api_tab" label="Optional functions" type="api_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>Optional functions</description>
+         </reference>
+         <reference id="us_tab" label="User settings" type="us_t" config_set_id="freertos_driver" component_id="freertos" available="true">
+            <description>User settings</description>
+         </reference>
+
+         <variable value="`true`" id="generate_header_and_c"></variable>
+         <variable value="`freertos_CodeGenerator`" id="codegen_class"></variable>
+         <variable value="`FreeRtosToolchainSettings`" id="toolchain_settings_class"></variable>
+         <!-- We use FEATURE_FREERTOS_USE_PIT on Cortex-R52 currently, so we can use the symbol to include the corrent .js file -->
+         <variable value="(featureDefined(`FEATURE_FREERTOS_USE_PIT`) &amp;&amp; (getFeature(`FEATURE_FREERTOS_USE_PIT`)==1)) ? `../freertos/freertos_codegen_r52.js` : `../freertos/freertos_codegen.js`" id="codegen_file"  ></variable>
+         <variable value="`../freertos/freertos_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+       </settings>
+   </config_set>
+</component:config_component>

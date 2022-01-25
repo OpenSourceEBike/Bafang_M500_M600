@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="adc_pal_config" label="adc_pal" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+	<sw_comp_ref name="platform.pal.adc_pal" version="1.0.0"/>
+	<description>ADC PAL Configuration</description>
+	<mode id="general" label="General Mode" available="true">
+		<description>ADC PAL general mode</description>
+		<config_set_refs>
+			<config_set_ref>adc_pal</config_set_ref>
+		</config_set_refs>
+		<!-- TODO: Update component to use both SAR_ADC and CTU peripherals on S32G/S32R45 platform when the tool can support it -->
+		<master_peripheral>
+			<peripheral_type>ADC</peripheral_type>
+			<peripheral_type>SAR_ADC</peripheral_type>
+			<!-- <peripheral_type>CTU</peripheral_type> -->
+		</master_peripheral>
+	</mode>
+	<config_set id="adc_pal" label="General ADC PAL configuration" from_source="adc_pal.h">
+		<description>ADC PAL configuration</description>
+		<fragment_defs/>
+		<code/>
+        <validation/>
+		<quick_selections>
+			<quick_selection id="defaultConfig" label="Default config for ADC PAL" available="true">
+				<description>ADC PAL default configuration</description>
+				<set id="adcPalConfig.name">adc_pal_1_config</set>
+				<set id="adcPalConfig.readOnly">true</set>
+				<set id="adcPalConfig.sampleTicks">30</set>
+				<set id="adcPalConfig.extensionName">adc_pal_1_extensionConfig</set>
+				<set id="adcPalConfig.conversionGroupArrayName">adc_pal_1_groupArray</set>
+				<set id="adcPalConfig.conversionGroupArray.0.inputChannelArray.0.adcInputChannel" value="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`) ? `ADC_INPUTCHAN_EXT0` : `ADC_CHAN_MAP(0, 0)`"/><!-- This is to add 1 element in ConversionGroupArray[0].InputChannelList[0] -->
+			</quick_selection>
+			<default>defaultConfig</default>
+		</quick_selections>
+		<user_types>
+			<enum id="adc_inst_type_t" label="Enumeration with the types of peripherals supported by ADC PAL" from="adc_inst_type_t">
+				<description>This enumeration contains the types of peripherals supported by ADC PAL. Implements : adc_inst_type_t_Class</description>
+				<item id="ADC_INST_TYPE_ADC_S32K1xx" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)" label="ADC PAL over ADC, PDB, TRGMUX"/>
+				<item id="ADC_INST_TYPE_ADC_SAR_BCTU" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_BCTU`)" label="ADC PAL over ADC SAR and BCTU"/>
+				<item id="ADC_INST_TYPE_ADC_SAR_CTU" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_CTU`)" label="ADC PAL over ADC SAR and CTU"/>
+				<item id="ADC_INST_TYPE_ADC_SAR" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR`)" label="ADC PAL over ADC SAR without triggering unit"/>
+			</enum>
+			<enum id="extension_adc_type_t" label="Enumeration with the types of extensions supported by ADC PAL">
+				<description>This enumeration contains the types of extensions supported by ADC PAL</description>
+				<item id="extension_adc_s32k1xx_t" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)" label="ADC PAL over ADC, PDB, TRGMUX"/>
+				<item id="extension_adc_sar_bctu_t" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_BCTU`)" label="ADC PAL over ADC SAR and BCTU"/>
+				<item id="extension_adc_sar_ctu_t" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_CTU`)" label="ADC PAL over ADC SAR and CTU"/>
+				<item id="extension_adc_sar_t" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR`)" label="ADC PAL over ADC SAR without triggering unit"/>
+			</enum>
+			<enum id="triggering_units" label="Enumeration with the triggering units used by ADC PAL">
+				<description>This enumeration contains the triggering units used by ADC PAL</description>
+				<item id="PDB" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)"/>
+				<item id="BCTU" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_BCTU`)"/>
+				<item id="CTU" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_CTU`)"/>
+			</enum>
+
+			<!-- ADC_SAR w/ and w/o CTU extension fields -->
+			<enum id="adcClkSel" label="Enumeration with ADC clock select values" from="adcClkSel">
+				<description>This enumeration contains ADC clock select values</description>
+				<item id="ADC_CLK_HALF_BUS" label="Input clock is bus clock / 2"/>
+				<item id="ADC_CLK_FULL_BUS" label="Input clock is bus clock"/>
+				<item id="ADC_CLK_QUARTER_BUS" available="featureDefined(`FEATURE_ADC_HAS_CLKSEL_EXTENDED`)" label="Input clock is bus clock / 4"/>
+			</enum>
+			<enum id="ctuPrescalerSel" label="Enumeration with CTU prescaler select values" from="ctuPrescalerSel">
+				<description>This enumeration with CTU prescaler select values</description>
+				<item id="1" label="1"/>
+				<item id="2" label="2"/>
+				<item id="3" label="3"/>
+				<item id="4" label="4"/>
+			</enum>
+			<enum id="adcRefSel" label="Enumeration with ADC voltage reference values" from="adcRefSel">
+				<description>This enumeration contains the ADC voltage reference values</description>
+				<item id="ADC_REF_VREFH" label="VREFH"/>
+			</enum>
+
+			<!-- ADC for K1xx extension fields -->
+			<enum id="adcClkDiv" label="Extension ADC clock divide" from="adcClkDiv">
+				<description>Value which divides the ADC peripheral clock. It affects the duration of ADC conversions. Does not affect the duraction of delays.</description>
+				<item id="ADC_CLK_DIVIDE_1" label="Input clock divided by 1"/>
+				<item id="ADC_CLK_DIVIDE_2" label="Input clock divided by 2"/>
+				<item id="ADC_CLK_DIVIDE_4" label="Input clock divided by 4"/>
+				<item id="ADC_CLK_DIVIDE_8" label="Input clock divided by 8"/>
+			</enum>
+			<enum id="adcResolution" label="Extension resolution" from="adcResolution">
+				<description>ADC resolution (8,10,12 bit)</description>
+				<item id="ADC_RESOLUTION_8BIT" label="8-bit resolution mode"/>
+				<item id="ADC_RESOLUTION_10BIT" label="10-bit resolution mode"/>
+				<item id="ADC_RESOLUTION_12BIT" label="12-bit resolution mode"/>
+			</enum>
+			<enum id="adcInputClock" label="Extension input clock" from="adcInputClock">
+				<description>Input clock source</description>
+				<item id="ADC_CLK_ALT_1" label="Input clock alternative 1"/>
+				<item id="ADC_CLK_ALT_2" label="Input clock alternative 2"/>
+				<item id="ADC_CLK_ALT_3" label="Input clock alternative 3"/>
+				<item id="ADC_CLK_ALT_4" label="Input clock alternative 4"/>
+			</enum>
+			<enum id="adcVoltageRef" label="Extension voltage reference" from="adcVoltageRef">
+				<description>Voltage reference used</description>
+				<item id="ADC_VOLTAGEREF_VREF" label="VrefH and VrefL as Voltage reference"/>
+				<item id="ADC_VOLTAGEREF_VALT" label="ValtH and ValtL as Voltage reference"/>
+			</enum>
+			<enum id="adcPDBPrescaler" label="PDB clock prescaler" from="adcPDBPrescaler">
+				<description>PDB clock prescaler. Delays are measured based on PDB clock divided by prescaler. Only relevant if delays are used.</description>
+				<item id="PDB_CLK_PREDIV_BY_1" label="1"/>
+				<item id="PDB_CLK_PREDIV_BY_2" label="2"/>
+				<item id="PDB_CLK_PREDIV_BY_4" label="4"/>
+				<item id="PDB_CLK_PREDIV_BY_8" label="8"/>
+				<item id="PDB_CLK_PREDIV_BY_16" label="16"/>
+				<item id="PDB_CLK_PREDIV_BY_32" label="32"/>
+				<item id="PDB_CLK_PREDIV_BY_64" label="64"/>
+				<item id="PDB_CLK_PREDIV_BY_128" label="128"/>
+			</enum>
+
+
+			<enum id="HWSupportSel" label="Enumeration with CTU prescaler select values" from="HWSupportSel">
+				<description>Conversion group is HW triggered or SW triggered.</description>
+				<item id="false" label="SW trigger"/>
+				<item id="true" label="HW trigger" available="!featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR`)"/>
+			</enum>
+
+			<enum id="delayTypeSel" label="Enumeration with delay types" from="delayTypeSel">
+				<description>This enumeration contains the delay types for ADC.</description>
+				<item id="ADC_DELAY_TYPE_NO_DELAY" label="No delay"/>
+				<item id="ADC_DELAY_TYPE_GROUP_DELAY" label="Group delay"/>
+				<item id="ADC_DELAY_TYPE_INDIVIDUAL_DELAY" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)" label="Individual delay"/> <!--No UCT supported MCU has this feature-->
+			</enum>
+			<struct id="inputChannel" label="The structure holds the configuration settings for the timer channel notification" from="inputChannel">
+                <dynamic_enum id="adcInputChannel" label="ADC Input Channel" items="
+                        getResource(
+                        `adc_chans`,
+                        `chan_list_` + $instance.getPeripheral()
+                        ).arrayToEnumItems(
+                        enumItem -> true,
+                        enumItem -> enumItem.getValue(),
+                        enumItem -> enumItem.getLabel(),
+                        enumItem -> enumItem.getValue()
+                        )"/>
+				<integer id="chanDelay" label="Channel delay" type="uint8_t" min_expr="0" max_expr="255" enable="$parent.getParent().getParent().getSetting(`delayType`).getValue() == `ADC_DELAY_TYPE_INDIVIDUAL_DELAY`" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)">
+					<description>Delay used when individual delay is enabled.</description>
+				</integer>
+			</struct>
+			<struct id="adcGroupConfig" label="The structure holds the configuration settings for the timer channel notification" from="adcGroupConfig">
+				<integer id="numSetsResults" label="Num sets of results in buffer" type="uint8_t" min_expr="0" max_expr="255">
+					<description>Num sets of results in buffer</description>
+				</integer>
+				<reference id="hwTriggerSupport" label="Trigger support" type="HWSupportSel" options="cStructField" enable="!featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR`)">
+					<description>Conversion group is HW triggered or SW triggered.</description>
+				</reference>
+                <dynamic_enum id="triggerSource" label="HW trigger source" enable="($parent.hwTriggerSupport.getValue()==`true`)" items="
+                    getResource(
+                    `trgmux_source`,
+                    `trigger_source_id`
+                    ).arrayToEnumItems(
+                    enumItem -> true,
+                    enumItem -> enumItem.getValue(),
+                    enumItem -> enumItem.getLabel(),
+                    enumItem -> enumItem.getValue()
+                    )" />
+				<reference id="delayType" label="Delay type" type="delayTypeSel" enable="($parent.hwTriggerSupport.getValue()==`true`) &#38;&#38; !featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_BCTU`) &#38;&#38; !featureDefined(`ADC_INST_TYPE_ADC_SAR`)">
+					<description>Type of delay configuration. Supported values are platform dependent.</description>
+				</reference>
+				<string id="delayArray" label="Delay array" available="false" enable="($parent.hwTriggerSupport.getValue()==`true`) &#38;&#38; ($parent.delayType.getValue()!=`ADC_DELAY_TYPE_NO_DELAY`)">
+					<description>Delay array</description>
+				</string>
+				<integer id="groupDelay" label="Group delay value" type="uint16_t" available="($parent.delayType.getValue()==`ADC_DELAY_TYPE_GROUP_DELAY`) &#38;&#38; $parent.delayType.isEnabled()">
+					<description>Group delay value</description>
+				</integer>
+				<bool id="continuousConvEn" label="Continuous mode" enable="($parent.hwTriggerSupport.getValue()==`false`)">
+					<description>Flag for enabling continuous conversions of a group - used only for SW triggered groups i.e. hwTriggerSupport==false.</description>
+				</bool>
+				<string id="callback" label="Callback">
+					<description>Name of callback function</description>
+					<validation>
+						<constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="Callback function name must be a valid C identifier!"/>
+					</validation>
+				</string>
+				<string id="callbackUserData" label="Callback user data">
+					<description>Name of callback user data parameter</description>
+					<validation>
+						<constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="Callback function name must be a valid C identifier!"/>
+					</validation>
+				</string>
+				<string id="resultsName" label="Name of conversion results array">
+				</string>
+				<string id="chansArrayName" label="Name of ADC conversion input channels array">
+				</string>
+				<info id="numConversions" label="Number of conversions in group" value="($parent.inputChannelArray.getSize())">
+					<description>Number of conversions in group</description>
+				</info>
+				<array id="inputChannelArray" label="Input Channel List" type="inputChannel" options="ShowContentAs=Table">
+					<description>ADC PAL conversion group list</description>
+					<item_defaults>
+						<set_default id="adcInputChannel" value_expr="x -&gt; (featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`) ? `ADC_INPUTCHAN_EXT0` : (`ADC_CHAN_MAP(` + toInt(x.getID())/8 + `, ` + toInt(x.getID())%8 + `)`))"/>
+						<set_default id="chanDelay" value_expr="x -&gt; (`0`)"/>
+					</item_defaults>
+					<validation>
+						<constraint cond_expr="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`) ? true : ($this.findDuplicates(item -&gt; item.getSetting(`adcInputChannel`).getValue()).length() == 0)" level="error" description="There are some duplicated ADC input channels in the configuration"/>
+						<constraint cond_expr="($this.findDuplicates(item -&gt; (item.getSetting(`chanDelay`).getValue())).length() == 0) || ($parent.delayType.getValue() != `ADC_DELAY_TYPE_INDIVIDUAL_DELAY`)" level="error" description="There are duplicate channel delays in the configuration. Conversions from HW triggered groups must not overlap."/>
+						<constraint cond_expr="($this.getSize() &lt; 17)" level="error" description="Maximum number of channels in a conversion group is 8"/>
+					</validation>
+				</array>
+			</struct>
+			<!--  GUI container -->
+			<struct id="adcInstance" label="PAL instance information" from="adcInstance">
+				<description>This structure is used for storing PAL instance information </description>
+				<string id="name" label="Name">
+					<description>Configuration name.</description>
+					<validation>
+						<constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="Configuration name must be a valid C identifier!"/>
+					</validation>
+				</string>
+				<bool id="readOnly" label="Read-only">
+					<description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+				</bool>
+				<reference id="instType" label="ADC pal type" type="adc_inst_type_t" options="cStructField">
+					<description>Peripheral over which the PAL is used</description>
+				</reference>
+				<info id="instIdx" label="Instance of ADC peripheral used by PAL" value="0" options="cStructField" />
+			</struct>
+			<!--  GUI container -->
+			<struct id="adcConfig" label="Structure storing PAL instance information" from="adcConfig">
+				<description>This structure is used for configuring ADC PAL information </description>
+				<reference id="triggering_unit" type="triggering_units" available="false"> <!-- This will select which triggering unit is available on the platform. -->
+				</reference>
+				<info id="adcPALBehaviour" label="Info" value="`ADC PAL uses ` + $instance.getPeripheral() + ` and ` + $parent.triggering_unit.getValue() + (($instance.getPeripheral() == `ADC_0`)?`0`:`1`) + `.`" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)">
+				</info>
+				<info id="adcPALBehaviourSAR" label="Info" value="`ADC PAL uses all instances of ADC and ` + $parent.triggering_unit.getValue() + `.`" available="!featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)">
+				</info>
+				<string id="name" label="Name">
+					<description>Configuration name.</description>
+					<validation>
+						<constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="Configuration name must be a valid C identifier!"/>
+					</validation>
+				</string>
+				<reference id="instanceType" label="Instance type" type="adc_inst_type_t" available="false">
+					<description>Instance type</description>
+				</reference>
+				<bool id="readOnly" label="Read-only">
+					<description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+				</bool>
+				<integer id="sampleTicks" label="Sample ticks" type="uint8_t" min_expr="8" max_expr="255">
+					<description>Number of ticks for sampling time</description>
+				</integer>
+				<string id="extensionName" label="Extension name">
+					<description>Extension includes platform specific parameters for ADC</description>
+					<validation>
+						<constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="Configuration name must be a valid C identifier!"/>
+					</validation>
+				</string>
+				<reference id="extensionType" label="Extension type" type="extension_adc_type_t" available="false"> <!-- This will select which extension is available without it being shown. -->
+					<description>Extension type</description>
+				</reference>
+				<info id="extensionType_v" label="Extension type" value="($parent.extensionType.getValue())"> <!-- This will only show the selected ID from above. -->
+					<description>Extension type</description>
+				</info>
+
+				<!-- ADC_SAR w/ and w/o CTU extension fields -->
+				<reference id="adcClkSel" label="Extension ADC clock select" type="adcClkSel" options="cStructField" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR`) || featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_CTU`)">
+					<description>ADC clock input select</description>
+				</reference>
+				<reference id="adcRefSel" label="Extension ADC converter reference" type="adcRefSel" options="cStructField" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR`) || featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_CTU`)">
+					<description>ADC conversion voltage reference</description>
+				</reference>
+				<bool id="autoClockOff" label="Extension Auto Clock Off" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR`) || featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_CTU`)">
+					<description>Enable Auto Clock Off feature of ADC </description>
+				</bool>
+				<reference id="ctuPrescaler" label="CTU Prescaler" type="ctuPrescalerSel" options="cStructField" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_SAR_CTU`)">
+					<description>CTU clock prescaler value select</description>
+				</reference>
+
+				<!-- ADC for K1xx extension fields -->
+				<reference id="adcClkDiv" label="Extension ADC clock divide" type="adcClkDiv" options="cStructField" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)">
+					<description>Value which divides the ADC peripheral clock. It affects the duration of ADC conversions. Does not affect the duraction of delays.</description>
+				</reference>
+				<reference id="adcResolution" label="Extension resolution" type="adcResolution" options="cStructField" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)">
+					<description>ADC resolution (8,10,12 bit)</description>
+				</reference>
+				<reference id="adcInputClock" label="Extension input clock" type="adcInputClock" options="cStructField" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)">
+					<description>Input clock source</description>
+				</reference>
+				<reference id="adcVoltageRef" label="Extension voltage reference" type="adcVoltageRef" options="cStructField" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)">
+					<description>Voltage reference used</description>
+				</reference>
+				<bool id="adcSupplyMonitoringEnable" label="Enable internal supply monitoring" enable="($instance.getPeripheral() == `ADC_0`)" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)">
+					<description>Enable supply monitoring on ADC_INPUT_CHAN_SUPPLY. Only available on instance 0 of ADC.</description>
+				</bool>
+				<reference id="adcPDBPrescaler" label="PDB clock prescaler" type="adcPDBPrescaler" options="cStructField" available="featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`)">
+					<description>Select the PDB prescaler value. Affects the delay values, which are expressed in PDB prescaled clock ticks: PDB clock frequency divided bt prescaler value.</description>
+				</reference>
+
+				<string id="conversionGroupArrayName" label="ADC conversion group array name">
+					<description>ADC conversion group array name</description>
+				</string>
+				<info id="numConvGroups" label="Number conversion groups" value="($parent.conversionGroupArray.getSize())">
+					<description>Number of conversion groups</description>
+				</info>
+				<array id="conversionGroupArray" label="Conversion Group Array" type="adcGroupConfig">
+					<description>ADC PAL conversion group array</description>
+                    <validation>
+                        <constraint cond_expr="$this.filter(item -&gt; (item.getSetting(`callback`).getValue() != `NULL`)).findDuplicates(item -&gt; item.getSetting(`callback`).getValue()).length() == 0" level="error" description="There are duplicated `Callback` functions in the configuration"/>
+                        <constraint cond_expr="$this.findDuplicates(item -&gt; item.getSetting(`resultsName`).getValue()).length() == 0" level="error" description="There are duplicated `conversion results array` names in the configuration"/>
+                        <constraint cond_expr="$this.findDuplicates(item -&gt; item.getSetting(`chansArrayName`).getValue()).length() == 0" level="error" description="There are duplicated `ADC conversion input channels array` names in the configuration"/>
+                        <constraint cond_expr="$this.map(item -> item.getSetting(`delayArray`)).filter(item -&gt; ((item.getValue() != `NULL`) &#38;&#38; (item.getValue() != ``) &#38;&#38; item.isAvailable())).findDuplicates(item -&gt; item.getValue()).length() == 0" level="error" description="There are duplicated `Delay Arrays` names in the configuration. Conversions from HW triggered groups must not overlap, otherwise CTU issues Trigger Overrun Error"/>
+                        <constraint cond_expr="$this.map(item -> item.getSetting(`groupDelay`)).filter(item -&gt; item.isAvailable()).findDuplicates(item -&gt; item.getValue()).length() == 0" level="error" description="There are duplicated group delay values in the configuration. Conversions from HW triggered groups must not overlap, otherwise CTU issues Trigger Overrun Error"/>
+                        <constraint cond_expr="$this.filter(item -&gt; ((item.getSetting(`delayType`).isEnabled() &#38;&#38; (item.getSetting(`delayType`).getValue() == `ADC_DELAY_TYPE_NO_DELAY`)) || ((item.getSetting(`delayType`).isEnabled() &#38;&#38; (item.getSetting(`delayType`).getValue() == `ADC_DELAY_TYPE_GROUP_DELAY`) &#38;&#38; (item.getSetting(`groupDelay`).getValue() == `0`))))).length() &lt; 2" level="error" description="Only a single HW triggered group can have 'No delay' assigned or group delay with value 0"/>
+                        <constraint cond_expr="$this.filter(item -&gt; (item.getSetting(`hwTriggerSupport`).getValue() == `true`)).findDuplicates(item -&gt; item.getSetting(`triggerSource`).getValue()).length() == 0" level="error" description="There are duplicated `HW trigger sources` in the configuration"/>
+                        <constraint cond_expr="$this.length() &gt; 0" level="error" description="There must be at least one conversion group."/>
+                        <constraint cond_expr="$this.filter(item -&gt; (item.getSetting(`inputChannelArray`).length() &lt; 1)).length() == 0" level="error" description="There must be at least one input channel for each conversion group."/>
+                    </validation>
+					<item_defaults>
+						<set_default id="numSetsResults" value_expr="x -&gt; (`2`)"/>
+						<set_default id="triggerSource" value_expr="x -&gt; (featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`) ? `TRGMUX_TRIG_SOURCE_DISABLED` : `CTU_INPUT_TRIG_BITMASK_RISING(CTU_INPUT_TRIG_PWM_REL)`)"/>
+						<set_default id="delayType" value_expr="x -&gt; (`ADC_DELAY_TYPE_NO_DELAY`)"/>
+						<set_default id="delayArray" value_expr="x -&gt; (`NULL`)"/>
+						<set_default id="callback" value_expr="x -&gt; (`NULL`)"/>
+						<set_default id="callbackUserData" value_expr="x -&gt; (`NULL`)"/>
+						<set_default id="resultsName" value_expr="x -&gt; (`adc_pal_1_results` + x.getID())"/>
+						<set_default id="chansArrayName" value_expr="x -&gt; (`adc_pal_1_channelsArray` + x.getID())"/>
+						<set_default id="inputChannelArray.0.adcInputChannel" value_expr="x -&gt; (featureDefined(`ADC_PAL_SUPPORTS_ADC_S32K1xx`) ? `ADC_INPUTCHAN_EXT0` : `ADC_CHAN_MAP(0, 0)`)"/>
+					</item_defaults>
+				</array>
+			</struct>
+		</user_types>
+		<settings>
+			<!--
+			<reference id="adcPalInst" label="ADC PAL Instance" type="adcInstance" config_set_id="adc_pal" component_id="adc_pal_config" available="true">
+				<description>ADC PAL instance configuration</description>
+			</reference>
+			-->
+			<reference id="adcPalConfig" label="ADC PAL configuration" type="adcConfig" config_set_id="adc_pal" component_id="adc_pal_config" available="true">
+				<description>ADC PAL configuration</description>
+			</reference>
+			<variable value="`../adc_pal/adc_pal_codegen.js`" id="codegen_file"/>
+			<variable value="`adc_pal_CodeGenerator`" id="codegen_class"/>
+			<variable value="`../adc_pal/adc_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+			<variable value="`addADCPALDrivers`" id="toolchain_settings_class"></variable>
+		</settings>
+		<generated_types>
+			<fixme id="adc_input_chan_t" label="Defines the enumeration with ADC PAL input channels" type="adc_inputchannel_t">
+				<description>Defines the type used for ADC PAL input channels. Values of the input channel numbers.Defines the type used for ADC PAL input channels. The ADC channel numbers (for each instance) are mapped on this type according to the ADC_CHAN_ macros. The mapping is required because an instance of ADC PAL uses multiple ADC instances linked to the same triggering unit. Therefore, please use the ADC_CHAN_ macros together with adc_input_chan_t type variables.Implements : adc_input_chan_t_Class</description>
+			</fixme>
+			<fixme id="adc_trigger_source_t" label="Defines the enumeration with ADC PAL hardware trigger sources" type="trgmux_trigger_source_t">
+				<description>Typedef for the ADC PAL hardware trigger sources. HW triggers are not supported. Only added to facilitate compilation.Defines the enumeration with ADC PAL hardware trigger sources This is a mask which selects rising, falling or both edges for each available input trigger. Should be initialized using CTU_INPUT_TRIG_BITMASK_RISING/FALLING/BOTH macros, with ctu_input_trig_t parameter.Typedef for the ADC PAL hardware trigger sources Should be used with BCTU trigger number, which selects a trigger source from other peripherals available on the platform.Implements : adc_trigger_source_t_Class</description>
+			</fixme>
+			<enum id="adc_delay_type_t" label="Defines an enumeration which contains the types of delay configurations for ADC conversions within a group" from="adc_delay_type_t">
+				<description>Implements : adc_delay_type_t_Class</description>
+				<item id="ADC_DELAY_TYPE_NO_DELAY" label="First conversion can start right after the trigger occurrence, and the rest of conversions execute one after another"/>
+				<item id="ADC_DELAY_TYPE_GROUP_DELAY" label="Delay only first conversion, and the rest execute one after another"/>
+				<item id="ADC_DELAY_TYPE_INDIVIDUAL_DELAY" label="Individual delay for each conversion in the group (each measured from the occurrence of the trigger)"/>
+			</enum>
+			<struct id="adc_group_config_t" label="Defines the configuration structure for an ADC PAL conversion group" from="adc_group_config_t">
+				<description>Implements : adc_group_config_t_Class</description>
+				<fixme id="inputChannelArray" label="Pointer to the array of ADC input channels" type="const adc_input_chan_t *">
+					<description>Pointer to the array of ADC input channels. Each entry in this array corresponds to an individual conversion in the group. Only on some of the platforms the same input channel may appear multiple times - see device family specific details in the ADC PAL documentation.</description>
+				</fixme>
+				<fixme id="resultBuffer" label="Pointer to the array for conversion results" type="uint16_t *">
+					<description>Pointer to the array for conversion results</description>
+				</fixme>
+				<integer id="numChannels" label="Number of input channels in the array" type="uint8_t">
+					<description>Number of input channels in the array</description>
+				</integer>
+				<integer id="numSetsResultBuffer" label="Number of sets of results which can be stored in result buffer: length of the result buffer = numChannels x numSetsResultBuffer" type="uint8_t">
+					<description>Number of sets of results which can be stored in result buffer: length of the result buffer = numChannels x numSetsResultBuffer</description>
+				</integer>
+				<bool id="hwTriggerSupport" label="Conversion group is HW triggered (true) or SW triggered (false)">
+					<description>Conversion group is HW triggered (true) or SW triggered (false).</description>
+				</bool>
+				<reference id="triggerSource" label="HW trigger source associated with the conversion group" type="adc_trigger_source_t">
+					<description>HW trigger source associated with the conversion group. Will be ignored if (hwTriggerSupport == false). Note for ADC_SAR_CTU: this enables the HW trigger source for all other groups; the actual order of execution of groups depends on the order of occurrence of triggers.</description>
+				</reference>
+				<reference id="delayType" label="Type of delay configuration" type="adc_delay_type_t">
+					<description>Type of delay configuration. Supported values are platform dependent.</description>
+				</reference>
+				<fixme id="delayArray" label="Pointer to array of delay values introduced from the occurrence of a HW trigger event until each ADC conversion in the group can start execution" type="uint16_t *">
+					<description>Pointer to array of delay values introduced from the occurrence of a HW trigger event until each ADC conversion in the group can start execution. Expressed in clock ticks. Note: the delay might be bigger if there is an overlap with another conversion already executing.</description>
+				</fixme>
+				<bool id="continuousConvEn" label="Flag for enabling continuous conversions of a group - used only for SW triggered groups i.e">
+					<description>Flag for enabling continuous conversions of a group - used only for SW triggered groups i.e. hwTriggerSupport==false.</description>
+				</bool>
+				<fixme id="callback" label="Callback function associated with group conversion complete" type="adc_callback_t">
+					<description>Callback function associated with group conversion complete</description>
+				</fixme>
+				<fixme id="callbackUserData" label="Pointer to additional user data to be passed by the callback" type="void *">
+					<description>Pointer to additional user data to be passed by the callback</description>
+				</fixme>
+			</struct>
+			<struct id="adc_config_t" label="Defines the configuration structure for ADC PAL" from="adc_config_t">
+				<description>Implements : adc_config_t_Class</description>
+				<fixme id="groupConfigArray" label="Array of group configurations" type="const adc_group_config_t *">
+					<description>Array of group configurations</description>
+				</fixme>
+				<integer id="numGroups" label="Number of elements in groupConfigArray" type="uint16_t">
+					<description>Number of elements in groupConfigArray</description>
+				</integer>
+				<integer id="sampleTicks" label="Duration of sample time expressed in ADC clock ticks" type="uint8_t">
+					<description>Duration of sample time expressed in ADC clock ticks</description>
+				</integer>
+				<fixme id="extension" label="This field is used to add extra IP specific settings to the basic configuration" type="void *">
+					<description>This field is used to add extra IP specific settings to the basic configuration.</description>
+				</fixme>
+			</struct>
+			<struct id="extension_adc_s32k1xx_t" label="Defines the extension structure for ADC S32K1xx" from="extension_adc_s32k1xx_t">
+				<description>Implements : extension_adc_s32k1xx_t_Class</description>
+				<fixme id="clockDivide" label="Divider of the input clock for the ADC" type="adc_clk_divide_t">
+					<description>Divider of the input clock for the ADC</description>
+				</fixme>
+				<fixme id="resolution" label="ADC resolution (8,10,12 bit)" type="adc_resolution_t">
+					<description>ADC resolution (8,10,12 bit)</description>
+				</fixme>
+				<fixme id="inputClock" label="Input clock source" type="adc_input_clock_t">
+					<description>Input clock source</description>
+				</fixme>
+				<fixme id="voltageRef" label="Voltage reference used" type="adc_voltage_reference_t">
+					<description>Voltage reference used</description>
+				</fixme>
+				<bool id="supplyMonitoringEnable" label="Enable internal supply monitoring">
+					<description>Enable internal supply monitoring</description>
+				</bool>
+				<fixme id="pdbPrescaler" label="PDB clock prescaler" type="pdb_clk_prescaler_div_t">
+					<description>PDB clock prescaler. Delays are measured based on PDB clock divided by prescaler. Only relevant if delays are used.</description>
+				</fixme>
+			</struct>
+			<struct id="extension_adc_sar_bctu_t" label="Defines the extension structure for ADC SAR BCTU" from="extension_adc_sar_bctu_t">
+				<description>Implements : extension_adc_sar_bctu_Class</description>
+				<fixme id="clkSelect" label="Clock input" type="adc_clk_sel_t">
+					<description>Clock input</description>
+				</fixme>
+				<fixme id="refSelect" label="Reference selection" type="adc_ref_sel_t">
+					<description>Reference selection</description>
+				</fixme>
+				<bool id="autoClockOff" label="Enable Auto Clock Off">
+					<description>Enable Auto Clock Off</description>
+				</bool>
+			</struct>
+			<struct id="extension_adc_sar_t" label="Defines the extension structure for ADC SAR" from="extension_adc_sar_t">
+				<description>Implements : extension_adc_sar_Class</description>
+				<fixme id="clkSelect" label="Clock input" type="adc_clk_sel_t">
+					<description>Clock input</description>
+				</fixme>
+				<fixme id="refSelect" label="Reference selection" type="adc_ref_sel_t">
+					<description>Reference selection</description>
+				</fixme>
+				<bool id="autoClockOff" label="Enable Auto Clock Off">
+					<description>Enable Auto Clock Off</description>
+				</bool>
+			</struct>
+			<struct id="extension_adc_sar_ctu_t" label="Defines the extension structure for ADC PAL of type SAR_CTU" from="extension_adc_sar_ctu_t">
+				<description>Implements : extension_adc_sar_ctu_t_Class</description>
+				<fixme id="clkSelect" label="ADC conversion clock prescale" type="adc_clk_sel_t">
+					<description>ADC conversion clock prescale</description>
+				</fixme>
+				<fixme id="refSelect" label="Voltage reference selection" type="adc_ref_sel_t">
+					<description>Voltage reference selection</description>
+				</fixme>
+				<bool id="autoClockOff" label="Enable ADC Auto Clock Off">
+					<description>Enable ADC Auto Clock Off</description>
+				</bool>
+				<fixme id="ctuPrescaler" label="CTU prescale value - affects input clock for group delays" type="ctu_prescaler_t">
+					<description>CTU prescale value - affects input clock for group delays</description>
+				</fixme>
+			</struct>
+		</generated_types>
+	</config_set>
+</component:config_component>

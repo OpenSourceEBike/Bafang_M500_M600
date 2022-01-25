@@ -1,0 +1,138 @@
+/*!
+@defgroup lin_driver LIN Driver
+@ingroup lin
+@brief This section describes the programming interface of the Peripheral driver for LIN.
+
+# LIN Driver Overview {#LINDRIVEROvw}
+
+The LIN (Local Interconnect Network) Driver is an use-case driven High Level Peripheral Driver. The driver provides users important key features. NXP provides LIN Stack as a middleware software package that is developed on LIN driver. Users also can create their own LIN applications and LIN stack that are compatible with LIN Specification.<br />
+In this release package, LIN Driver is built on LPUART interface.
+
+# LIN Driver Device structures {#LINDRIVERDevS}
+
+The driver uses instantiations of the lin_state_t to maintain the current state of a particular LIN Hardware instance module driver.<br />
+The user is required to provide memory for the driver state structures during the initialization. The driver itself does not statically allocate memory.
+
+# Integration guideline #
+
+## Compilation units ##
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\lin\lin_common.c
+${S32SDK_PATH}\platform\drivers\src\lin\lin_driver.c
+${S32SDK_PATH}\platform\drivers\src\lin\lin_irq.c
+${S32SDK_PATH}\platform\drivers\src\lpuart\lin_lpuart_driver.c
+\endverbatim
+
+## Include path ##
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+${S32SDK_PATH}\platform\drivers\src\lpuart\
+\endverbatim
+
+## Compile symbols ##
+
+No special symbols are required for this component
+
+## Dependencies ##
+
+- \ref clock_manager @n
+- \ref interrupt_manager @n
+- \ref osif @n
+- \ref lpuart @n
+
+# LIN Driver Initialization {#LINDRIVERInit}
+
+1. To initialize the LIN driver, call the LIN_DRV_Init() function and pass the instance number of the relevant LIN hardware interface instance which is LPUART instance in this release.<br />
+For example: to use LPUART0 pass value 0 to the initialization function.
+2. Pass a user configuration structure #lin_user_config_t as shown here:
+~~~~~{.c}
+/* LIN Driver configuration structure */
+typedef struct {
+    uint32_t baudRate;                        /*!< baudrate of LIN Hardware Interface to configure */
+    bool nodeFunction;                        /*!< Node function as Master or Slave */
+    bool autobaudEnable;                      /*!< Enable Autobaud feature */
+    lin_timer_get_time_interval_t timerGetTimeIntervalCallback;    /*!< Callback function to get time interval in nanoseconds */
+} lin_user_config_t;
+~~~~~
+3. For LIN, typically the user configures the #lin_user_config_t instantiation with a baudrate from 1000bps to 20000bps.<br />
+-E.g. 19200 bps linUserConfig.baudRate = 19200U.
+4. Node function can be MASTER or SLAVE.<br />
+-E.g. linUserConfig.nodeFunction = MASTER
+5. If users do not want to use Autobaud feature, then just configure linUserConfig.autobaudEnable = FALSE.
+6. Users shall assign measurement callback function pointer that is <i>timerGetTimeIntervalCallback</i>. This function must return time period between two consecutive calls in nano seconds with accuracy at least 0.1 microsecond and if this function is called for the first time, it will start the timer to measure time. When an event (such as detecting a falling edge of a dominant signal while node is in sleep mode) occurs, LIN driver will call <i>timerGetTimeIntervalCallback</i> to start time measurement. Then on rising edge of that signal, LIN driver will call <i>timerGetTimeIntervalCallback</i> function to get time interval of that dominant signal in nano seconds. If Autobaud feature is enabled, LIN driver uses <i>timerGetTimeIntervalCallback</i> to measure two bit time length between two consecutive falling edges of the sync byte in order to evaluate Master's baudrate. Users can implement this function in their applications.
+-E.g. linUserConfig.timerGetTimeIntervalCallback = timerGetTimeIntervalCallback0;
+This is a code example to set up a FTM0 for LIN Driver:
+~~~~~{.c}
+/* Global variables */
+uint16_t timerCounterValue[2] = {0u};
+uint16_t timerOverflowInterruptCount = 0u;
+
+/* Callback function to get time interval in nano seconds */
+uint32_t timerGetTimeIntervalCallback0(uint32_t *ns)
+{
+    timerCounterValue[1] = (uint16_t)(ftmBase->CNT);
+    *ns = ((uint32_t)(timerCounterValue[1] + timerOverflowInterruptCount*65536u - timerCounterValue[0]))*1000 / TIMER_1US;
+    timerOverflowInterruptCount = 0U;
+    timerCounterValue[0] = timerCounterValue[1];
+    return 0U;
+}
+~~~~~
+7. This is a code example to set up a user LIN Driver configuration instantiation:
+~~~~~{.c}
+    /* Device instance number as LPUART instance*/
+    #define LI0 (0U)
+
+    lin_state_t linState;
+    lin_user_config_t linUserConfig;
+    /* Set baudrate 19200 bps */
+    linUserConfig.baudRate = 19200U;
+    /* Node is MASTER */
+    linUserConfig.nodeFunction = MASTER;
+    /* Disable autobaud feature */
+    linUserConfig.autobaudEnable = FALSE;
+    /* Callback function to get time interval in nano seconds */
+    linUserConfig.timerGetTimeIntervalCallback = (lin_timer_get_time_t) timerGetTimeIntervalCallback0;
+
+    /* Initialize LIN Hardware interface */
+    LIN_DRV_Init(LI0, (lin_user_config_t *) &linUserConfig, (lin_state_t *) &linState);
+~~~~~
+8. The users are required to initialize a timer for LIN.<br />
+E.g. a Flex Timer (FTM). FTM instance should be initialized in Output Compare mode with an interrupt(E.g. FTM0_Ch0_Ch1_IRQHandler) period of about 500 us. Users can choose a different interrupt period that is appropriate to their applications. In timer interrupt handler, users shall call LIN_DRV_TimeoutService to handle linCurrentState->timeoutCounter while sending or receiving data.<br /><br />
+
+# LIN Data Transfers {#LINDRIVERTrnsf}
+
+The driver implements transmit and receive functions to transfer buffers of data by blocking and non-blocking modes.
+
+The blocking transmit and receive functions include LIN_DRV_SendFrameDataBlocking() and the LIN_DRV_ReceiveFrameDataBlocking() functions.
+
+The non-blocking (async) transmit and receive functions include the LIN_DRV_SendFrameData() and the LIN_DRV_ReceiveFrameData() functions.
+
+The LIN_DRV_ReceiveFrameData() function is recommended to be called in an interrupt event of receiving PID as implemented in LIN Stack middleware.
+
+The LIN_DRV_ReceiveFrameData() function should be called before data is transferring on the LIN bus. The LIN_DRV_ReceiveFrameDataBlocking() function should be called before frame is transferring on the LIN bus. Otherwise, some data may be lost.
+
+Master nodes can transmit frame headers in non-blocking mode using LIN_DRV_MasterSendHeader().
+
+In all these cases, the functions are interrupt-driven.
+
+# Autobaud feature {#LINDRIVERAutobaud}
+
+AUTOBAUD is an extensive feature in LIN Driver which allows a slave node to automatically detect baudrate of LIN bus and adapt its original baudrate to bus value. Auto Baud is applied when the baudrate of the incoming data is unknown. Currently autobaud feature is supported to detect LIN bus baudrates 2400, 4800, 9600, 14400, 19200 bps.
+
+1. If autobaud feature is enabled, at LIN driver initialization slave's baudrate is set to 19200bps. The application should use a timer interrupt in input capture mode of both rising and falling edges(E.g FTM), call LIN_DRV_AutoBaudCapture(uint32_t instance) function to calculate and set Slave's baudrate like Master's baudrate. When receiving a frame header, the slave detect LIN bus's baudrate based on the synchronization byte and adapts its baudrate accordingly. On changing baudrate, the slave set current event ID to LIN_BAUDRATE_ADJUSTED and call the callback function. In that callback function users might change the frame data count timeout. Users can look at CallbackHandler() in lin.c of lin middleware for a reference.
+
+    Note: Lin driver should be initiated before initiating a timer interrupt( E.g FTM).
+
+2. Baudrate evaluation process is executed until autobaud successfully. During run-time if LIN bus's baudrate is changed suddenly to a value other than the slave's current baudrate, users shall reset MCU to execute baudrate evaluation process.
+
+## Note
+
+1. When the vector table is not in ram (__flash_vector_table__ = 1):
+    - INT_SYS_InstallHandler shall check if the function pointer provided as parameter for the new handler is already present in the vector table for the given IRQ number.
+    - The user will be required to manually add the correct handlers in the startup files
+
+@}*/

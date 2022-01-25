@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="security_pal" label="security_pal" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+   <sw_comp_ref name="platform.pal.security" version="1.0.0"/>
+   <description>S32 SDK Peripheral Abstraction Layer for Security</description>
+   <mode id="general" label="General" available="true">
+      <description>Security PAL general mode</description>
+      <config_set_refs>
+         <config_set_ref>security_pal_config_set</config_set_ref>
+      </config_set_refs>
+      <master_peripheral exclusive="false">
+         <peripheral_type>CSE3</peripheral_type>
+         <peripheral_type>FTFC</peripheral_type>
+         <peripheral_type>FTFM</peripheral_type>
+         <peripheral_type>FTFx</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="security_pal_config_set" label="Security PAL Configuration" from_source="security_pal.h">
+      <description>Security PAL configuration</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="defaultConfig_security_pal" label="Default values for Security PAL" available="true">
+            <description>Security PAL configuration</description>
+            <set id="security_pal_user_config.name">securityUserConfig</set>
+            <set id="security_pal_user_config.callback">NULL</set>
+            <set id="security_pal_user_config.callbackParam">NULL</set>
+         </quick_selection>
+         <default>defaultConfig_security_pal</default>
+      </quick_selections>
+      <generated_types/>
+      <user_types>
+         <struct id="security_config_t" label="Security PAL Configuration" from="security_config_t">
+            <string id="name" label="Configuration Structure Name">
+               <description>Configuration structure name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readonly" label="Read only" >
+               <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+            </bool>
+            <string id="callback" label="Callback" options="cStructField">
+               <description>Callback name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue()) || ($this.getValue() == `NULL`)" level="error" description="Callback name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <string id="callbackParam" label="Callback Parameter" options="cStructField">
+               <description>Callback parameter (pointer passed to the callback by the driver interrupt handler).</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue()) || ($this.getValue() == `NULL`)" level="error" description="Callback parameter name must be a valid C identifier!"/>
+               </validation>
+            </string>
+          </struct>
+      </user_types>
+      <settings>
+        <reference id="security_pal_user_config" label="Configuration Structure" type="security_config_t" config_set_id="security_pal_config_set" component_id="security_pal" available="true">
+            <description>Security PAL configuration</description>
+        </reference>
+        <variable value="`../security_pal/security_pal_codegen.js`" id="codegen_file"></variable>
+        <variable value="`security_palCodeGen`" id="codegen_class"></variable>
+        <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+        <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+        <variable value="`add_components`" id="toolchain_settings_class"></variable>
+        <variable value="`../security_pal/add_components.js`" id="toolchain_settings_file"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="lpi2c_config" label="lpi2c_config" category="driver" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component-5.0.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <sw_comp_ref name="platform.driver.lpi2c" version="1.0.0"/>
+    <description>LPI2C configuration</description>
+    <mode id="general" label="General Mode" available="true">
+        <description>LPI2C general mode</description>
+        <config_set_refs>
+            <config_set_ref>lpi2c</config_set_ref>
+        </config_set_refs>
+        <master_peripheral exclusive="true">
+            <peripheral_type>LPI2C</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set label="Lpi2c configuration set" id="lpi2c" from_source="lpi2c_driver.h">
+        <description>LPI2C Driver</description>
+        <generated_types>
+            <enum id="lpi2c_mode_t" label="I2C operating modes Implements : lpi2c_mode_t_Class" from="lpi2c_mode_t">
+                <description></description>
+                <item id="LPI2C_STANDARD_MODE" label="Standard-mode (Sm), bidirectional data transfers up to 100 kbit/s">
+                    <description>Standard-mode (Sm), bidirectional data transfers up to 100 kbit/s</description>
+                </item>
+                <item id="LPI2C_FAST_MODE" label="Fast-mode (Fm), bidirectional data transfers up to 400 kbit/s">
+                    <description>Fast-mode (Fm), bidirectional data transfers up to 400 kbit/s</description>
+                </item>
+            </enum>
+            <enum id="lpi2c_transfer_type_t" label="Type of LPI2C transfer (based on interrupts or DMA). Implements : lpi2c_transfer_type_t_Class" from="lpi2c_transfer_type_t">
+                <description></description>
+                <item id="LPI2C_USING_DMA" label="The driver will use DMA to perform I2C transfer">
+                    <description>The driver will use DMA to perform I2C transfer</description>
+                </item>
+                <item id="LPI2C_USING_INTERRUPTS" label="The driver will use interrupts to perform I2C transfer">
+                    <description>The driver will use interrupts to perform I2C transfer</description>
+                </item>
+            </enum>
+            <struct id="lpi2c_master_user_config_t" label="Defines the example structure" from="lpi2c_master_user_config_t">
+                <description>This structure is used as an example.Master configuration structureThis structure is used to provide configuration parameters for the LPI2C master at initialization time. Implements : lpi2c_master_user_config_t_Class</description>
+                <integer id="slaveAddress" label="Slave address, 7-bit or 10-bit" type="uint16_t">
+                    <description>Slave address, 7-bit or 10-bit</description>
+                </integer>
+                <bool id="is10bitAddr" label="10-bit slave address">
+                    <description>Selects 7-bit or 10-bit slave address</description>
+                </bool>
+                <reference id="operatingMode" label="I2C Operating mode" type="lpi2c_mode_t">
+                    <description>I2C Operating mode</description>
+                </reference>
+                <integer id="baudRate" label="The baud rate in hertz to use with current slave device" type="uint32_t">
+                    <description>The baud rate in hertz to use with current slave device</description>
+                </integer>
+                <integer id="baudRateHS" label="Baud rate for High-speed mode" type="uint32_t">
+                    <description>Baud rate for High-speed mode. Unused in other operating modes</description>
+                </integer>
+                <integer id="masterCode" label="Master code for High-speed mode" type="uint8_t">
+                    <description>Master code for High-speed mode. Valid range: 0-7. Unused in other operating modes</description>
+                </integer>
+                <reference id="transferType" label="Type of LPI2C transfer" type="lpi2c_transfer_type_t">
+                    <description>Type of LPI2C transfer</description>
+                </reference>
+                <integer id="dmaChannel" label="Channel number for DMA channel" type="uint8_t">
+                    <description>Channel number for DMA channel. If DMA mode isn&apos;t used this field will be ignored.</description>
+                </integer>
+                <fixme id="masterCallback" label="Master callback function" type="i2c_master_callback_t">
+                    <description>Master callback function. Note that this function will be called from the interrupt service routine at the end of a transfer, so its execution time should be as small as possible. It can be NULL if you want to check manually the status of the transfer.</description>
+                </fixme>
+                <fixme id="callbackParam" label="Parameter for the master callback function" type="void *">
+                    <description>Parameter for the master callback function</description>
+                </fixme>
+            </struct>
+            <struct id="lpi2c_slave_user_config_t" label="Slave configuration structure" from="lpi2c_slave_user_config_t">
+                <description>This structure is used to provide configuration parameters for the LPI2C slave at initialization time. Implements : lpi2c_slave_user_config_t_Class</description>
+                <integer id="slaveAddress" label="Slave address, 7-bit or 10-bit" type="uint16_t">
+                    <description>Slave address, 7-bit or 10-bit</description>
+                </integer>
+                <bool id="is10bitAddr" label="Selects 7-bit or 10-bit slave address">
+                    <description>Selects 7-bit or 10-bit slave address</description>
+                </bool>
+                <reference id="operatingMode" label="I2C Operating mode" type="lpi2c_mode_t">
+                    <description>I2C Operating mode</description>
+                </reference>
+                <bool id="slaveListening" label="Slave mode (always listening or on demand only)">
+                    <description>Slave mode (always listening or on demand only)</description>
+                </bool>
+                <reference id="transferType" label="Type of LPI2C transfer" type="lpi2c_transfer_type_t">
+                    <description>Type of LPI2C transfer</description>
+                </reference>
+                <integer id="dmaChannel" label="Channel number for DMA rx channel" type="uint8_t">
+                    <description>Channel number for DMA rx channel. If DMA mode isn&apos;t used this field will be ignored.</description>
+                </integer>
+                <fixme id="slaveCallback" label="Slave callback function" type="i2c_slave_callback_t">
+                    <description>Slave callback function. Note that this function will be called from the interrupt service routine, so its execution time should be as small as possible. It can be NULL if the slave is not in listening mode (slaveListening = false)</description>
+                </fixme>
+                <fixme id="callbackParam" label="Parameter for the slave callback function" type="void *">
+                    <description>Parameter for the slave callback function</description>
+                </fixme>
+            </struct>
+            <struct id="lpi2c_baud_rate_params_t" label="Baud rate structure" from="lpi2c_baud_rate_params_t">
+                <description>This structure is used for setting or getting the baud rate. Implements : lpi2c_baud_rate_params_t_Class</description>
+                <integer id="baudRate" label="" type="uint32_t">
+                    <description></description>
+                </integer>
+                <integer id="baudRateHS" label="" type="uint32_t">
+                    <description></description>
+                </integer>
+            </struct>
+            <fixme id="structlpi2c__master__state__t" label="TBD" type="This structure is used by the master-mode driver for its internal logic. It must be provided by the application through the LPI2C_DRV_MasterInit() function, then it cannot be freed until the driver is de-initialized using LPI2C_DRV_MasterDeinit(). The application should make no assumptions about the content of this structure.">
+                <description>TBD</description>
+            </fixme>
+            <fixme id="structlpi2c__slave__state__t" label="TBD" type="This structure is used by the slave-mode driver for its internal logic. It must be provided by the application through the LPI2C_DRV_SlaveInit() function, then it cannot be freed until the driver is de-initialized using LPI2C_DRV_SlaveDeinit(). The application should make no assumptions about the content of this structure.">
+                <description>TBD</description>
+            </fixme>
+        </generated_types>
+		<user_types>
+	        <array id="arrayLPI2CMasterConfig" label="Detail for configuration" type="lpi2c_master_user_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+			   	<item_defaults>
+			       <set_default id="name" value_expr="x -> ($instance.getPeripheral().toLowerCase() +`_MasterConfig` + x.getID())"/>
+				   <set_default id = "lpi2c_master_cfg_slaveAddress" value_expr="x.lpi2c_master_cfg_slaveAddress -> (`0x32`)"/>
+				   <set_default id = "lpi2c_master_cfg_is10bitAddr" value_expr="x.lpi2c_master_cfg_is10bitAddr -> (`false`)"/>
+				   <set_default id = "lpi2c_master_cfg_operatingMode" value_expr="x.lpi2c_master_cfg_operatingMode -> (`LPI2C_STANDARD_MODE`)"/>				   
+				   <set_default id = "lpi2c_master_cfg_baudRate" value_expr="x.lpi2c_master_cfg_baudRate -> (`100000`)"/>
+				   <set_default id = "lpi2c_master_cfg_transferType" value_expr="x.lpi2c_master_cfg_transferType -> (`LPI2C_USING_INTERRUPTS`)"/>
+				   <set_default id = "lpi2c_master_cfg_dmaChannel" value_expr="x.lpi2c_master_cfg_dmaChannel -> (`0`)"/>
+				   <set_default id = "lpi2c_master_cfg_masterCallback" value_expr="x.lpi2c_master_cfg_masterCallback -> (`NULL`)"/>
+				   <set_default id = "lpi2c_master_cfg_callbackParam" value_expr="x.lpi2c_master_cfg_callbackParam -> (`NULL`)"/>
+			   </item_defaults>
+               <validation>
+                   <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+               </validation>
+            </array>
+	        <array id="arrayLPI2CSlaveConfig" label="Detail for configuration" type="lpi2c_slave_user_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+               <item_defaults>
+			       <set_default id = "name" value_expr="x -> ($instance.getPeripheral().toLowerCase()+`_SlaveConfig` + x.getID())"/>
+				   <set_default id = "lpi2c_slave_cfg_slaveAddress" value_expr="x.lpi2c_slave_cfg_slaveAddress -> (`0x32`)"/>
+				   <set_default id = "lpi2c_master_cfg_is10bitAddr" value_expr="x.lpi2c_master_cfg_is10bitAddr -> (`false`)"/>
+				   <set_default id = "lpi2c_slave_cfg_slaveListening" value_expr="x.lpi2c_slave_cfg_slaveListening -> (`true`)"/>
+				   <set_default id = "lpi2c_master_cfg_operatingMode" value_expr="x.lpi2c_master_cfg_operatingMode -> (`LPI2C_STANDARD_MODE`)"/>
+				   <set_default id = "lpi2c_slave_cfg_transferType" value_expr="x.lpi2c_slave_cfg_transferType -> (`LPI2C_USING_INTERRUPTS`)"/>
+				   <set_default id = "lpi2c_slave_cfg_dmaChannel" value_expr="x.lpi2c_slave_cfg_dmaChannel -> (`0`)"/>
+				   <set_default id = "lpi2c_slave_cfg_slaveCallback" value_expr="x.lpi2c_slave_cfg_slaveCallback -> (`NULL`)"/>
+				   <set_default id = "lpi2c_slave_cfg_callbackParam" value_expr="x.lpi2c_slave_cfg_callbackParam -> (`NULL`)"/>
+			   </item_defaults>
+               <validation>
+                   <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+			   </validation>
+            </array>		
+            <struct id="lpi2c_master_user_config_t" label="Defines the example structure" from="lpi2c_master_user_config_t">
+                <description>This structure is used as an example.Master configuration structureThis structure is used to provide configuration parameters for the LPI2C master at initialization time. Implements : lpi2c_master_user_config_t_Class</description>
+                <string id="name" label="Name">
+                   <description>Configuration name.</description>
+                   <validation>
+                      <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                   </validation>
+                </string>    
+                <bool id="readonly" label="Read-only">
+                   <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+                </bool>			
+				<integer id="lpi2c_master_cfg_slaveAddress" label="Slave address, 7-bit or 10-bit" type="uint16_t" options="cStructField">
+                    <description>Slave address, 7-bit or 10-bit</description>
+			        <validation>
+                          <constraint cond_expr="!(($parent.lpi2c_master_cfg_is10bitAddr.getValue() == `false`) &amp;&amp; (($this.getValue()) &gt;= 0x80))" level="warning" description="7-bit slave address should not be greater than 0x7F!" />
+                          <constraint cond_expr="!(($parent.lpi2c_master_cfg_is10bitAddr.getValue() == `true`) &amp;&amp; (($this.getValue()) &gt;= 0x400))" level="warning" description="10-bit slave address should not be greater than 0x3FF!" />
+                    </validation>
+                </integer>
+                <bool id="lpi2c_master_cfg_is10bitAddr" label="10-bit slave address" options="cStructField">
+                    <description>Selects 7-bit or 10-bit slave address</description>
+                </bool>	
+                <reference id="lpi2c_master_cfg_operatingMode" label="I2C Operating mode" type="lpi2c_mode_t" options="cStructField">
+                    <description>I2C Operating mode</description>
+                </reference>
+                <integer id="lpi2c_master_cfg_baudRate" label="The baud rate in hertz to use with current slave device" type="uint32_t" options="cStructField">
+                    <description>The baud rate in hertz to use with current slave device</description>
+			  	    <validation>
+                        <constraint cond_expr="(($this.getValue()) &lt;= 400000)" level="warning" description="Baud rates over 400KHz are not supported!" />
+                    </validation>
+                </integer>
+                <integer id="lpi2c_master_cfg_baudRateHS" label="Baud rate for High-speed mode" type="uint32_t" available="false">
+                    <description>Baud rate for High-speed mode. Unused in other operating modes</description>
+                </integer>
+                <integer id="lpi2c_master_cfg_masterCode" label="Master code for High-speed mode" type="uint8_t" available="false">
+                    <description>Master code for High-speed mode. Valid range: 0-7. Unused in other operating modes</description>
+                </integer>
+                <reference id="lpi2c_master_cfg_transferType" label="Type of LPI2C transfer" type="lpi2c_transfer_type_t" options="cStructField">
+                    <description>Type of LPI2C transfer</description>
+                </reference>
+                <integer id="lpi2c_master_cfg_dmaChannel" label="Channel number for DMA channel" type="uint8_t" options="cStructField">
+                    <description>Channel number for DMA channel. If DMA mode isn&apos;t used this field will be ignored.</description>
+                </integer>
+                <string id="lpi2c_master_cfg_masterCallback" label="Master callback function" type="i2c_master_callback_t" options="cStructField">
+                    <description>Master callback function. Note that this function will be called from the interrupt service routine at the end of a transfer, so its execution time should be as small as possible. It can be NULL if you want to check manually the status of the transfer.</description>
+                </string>
+                <string id="lpi2c_master_cfg_callbackParam" label="Parameter for the master callback function" type="void *" options="cStructField">
+                    <description>Parameter for the master callback function</description>
+                </string>
+            </struct>
+            <struct id="lpi2c_slave_user_config_t" label="Slave configuration structure" from="lpi2c_slave_user_config_t">
+                <description>This structure is used to provide configuration parameters for the LPI2C slave at initialization time. Implements : lpi2c_slave_user_config_t_Class</description>
+                <string id="name" label="Name">
+                   <description>Configuration name.</description>
+                   <validation>
+                      <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                   </validation>
+                </string>    
+                <bool id="readonly" label="Read-only">
+                   <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+                </bool>			
+				<integer id="lpi2c_slave_cfg_slaveAddress" label="Slave address, 7-bit or 10-bit" type="uint16_t" options="cStructField">
+                    <description>Slave address, 7-bit or 10-bit</description>
+					<validation>
+                          <constraint cond_expr="!(($parent.lpi2c_slave_cfg_is10bitAddr.getValue() == `false`) &amp;&amp; (($this.getValue()) &gt;= 0x80))" level="warning" description="Address on 7-bit selected!" />
+                          <constraint cond_expr="!(($parent.lpi2c_slave_cfg_is10bitAddr.getValue() == `true`) &amp;&amp; (($this.getValue()) &gt;= 0x400))" level="warning" description="Address is grater than 10-bit!" />
+                    </validation>
+                </integer>
+                <bool id="lpi2c_slave_cfg_is10bitAddr" label="10-bit slave address" options="cStructField">
+                    <description>Selects 7-bit or 10-bit slave address</description>
+                </bool>	
+                <reference id="lpi2c_slave_cfg_operatingMode" label="I2C Operating mode" type="lpi2c_mode_t" options="cStructField">
+                    <description>I2C Operating mode</description>
+                </reference>
+                <bool id="lpi2c_slave_cfg_slaveListening" label="Slave mode (always listening or on demand only)" options="cStructField">
+                    <description>Slave mode (always listening or on demand only)</description>
+                </bool>
+                <reference id="lpi2c_slave_cfg_transferType" label="Type of LPI2C transfer" type="lpi2c_transfer_type_t" options="cStructField">
+                    <description>Type of LPI2C transfer</description>
+                </reference>
+                <integer id="lpi2c_slave_cfg_dmaChannel" label="Channel number for DMA rx channel" type="uint8_t" options="cStructField">
+                    <description>Channel number for DMA rx channel. If DMA mode isn&apos;t used this field will be ignored.</description>
+                </integer>
+                <string id="lpi2c_slave_cfg_slaveCallback" label="Slave callback function" type="i2c_slave_callback_t" options="cStructField">
+                    <description>Slave callback function. Note that this function will be called from the interrupt service routine, so its execution time should be as small as possible. It can be NULL if the slave is not in listening mode (slaveListening = false)</description>
+                </string>
+                <string id="lpi2c_slave_cfg_callbackParam" label="Parameter for the slave callback function" type="void *" options="cStructField">
+                    <description>Parameter for the slave callback function</description>
+                </string>
+            </struct>	
+        </user_types>
+        <settings>
+         <reference id="masterConfigurationLPI2C" label="LPI2C Master configurations" type="arrayLPI2CMasterConfig" options="ShowContentAs=Tabs">
+         </reference>
+		 <reference id="slaveConfigurationLPI2C" label="LPI2C Slave configurations" type="arrayLPI2CSlaveConfig" options="ShowContentAs=Tabs">
+         </reference>
+         <variable value="`../lpi2c/lpi2c_codegen.js`" id="codegen_file"></variable>
+         <variable value="`LPI2CCodeGen`" id="codegen_class"></variable>
+         <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+         <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+        </settings>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+			<quick_selection id="dv_lpi2c0" label="Default Values for LPI2C0" available="getPeripheral($instance) == `LPI2C0`">
+				<description>LPI2C_0 Default Configuration</description>  
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_slaveAddress">0x32</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_is10bitAddr">false</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_operatingMode">LPI2C_STANDARD_MODE</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_baudRate">100000</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_transferType">LPI2C_USING_INTERRUPTS</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_dmaChannel">0</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_masterCallback">NULL</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_callbackParam">NULL</set>
+                <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_slaveAddress">0x32</set>
+			    <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_is10bitAddr">false</set>
+                <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_slaveListening">true</set>
+				<set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_operatingMode">LPI2C_STANDARD_MODE</set>
+                <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_dmaChannel">0</set>
+                <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_slaveCallback">NULL</set>
+                <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_callbackParam">NULL</set>
+	            <default>dv_lpi2c0</default>
+            </quick_selection>
+			<quick_selection id="dv_lpi2c1" label="Default Values for LPI2C1" available="getPeripheral($instance) == `LPI2C1`">
+				<description>LPI2C_1 Default Configuration</description>  
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_slaveAddress">0x32</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_is10bitAddr">false</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_operatingMode">LPI2C_STANDARD_MODE</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_baudRate">100000</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_transferType">LPI2C_USING_INTERRUPTS</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_dmaChannel">0</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_masterCallback">NULL</set>
+                <set id="masterConfigurationLPI2C.0.lpi2c_master_cfg_callbackParam">NULL</set>
+                <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_slaveAddress">0x32</set>
+			    <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_is10bitAddr">false</set>
+                <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_slaveListening">true</set>
+				<set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_operatingMode">LPI2C_STANDARD_MODE</set>
+                <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_dmaChannel">0</set>
+                <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_slaveCallback">NULL</set>
+                <set id="slaveConfigurationLPI2C.0.lpi2c_slave_cfg_callbackParam">NULL</set>
+	            <default>dv_lpi2c1</default>
+            </quick_selection>
+        </quick_selections>
+    </config_set>
+</component:config_component>

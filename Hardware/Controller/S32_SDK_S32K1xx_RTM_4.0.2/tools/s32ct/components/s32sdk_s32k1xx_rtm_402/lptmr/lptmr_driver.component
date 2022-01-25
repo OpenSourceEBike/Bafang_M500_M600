@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="lptmr" label="lptmr" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.lptmr" version="1.0.0"/>
+   <description>Low Power Timer</description>
+   <mode id="general" label="General_Mode" available="true">
+      <description>LPTMR general mode</description>
+      <config_set_refs>
+         <config_set_ref>lptmr</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>LPTMR</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="lptmr" label="General LPTMR Configuration" from_source="lptmr_driver.h">
+      <description>Low Power Timer Driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="lptmr_default" label="Default values" available ="true">
+            <description>TLPTMR default configuration</description>
+            <set id="lptmrConfig.0.readOnly">true</set>
+            <set id="lptmrConfig.0.workMode">LPTMR_WORKMODE_TIMER</set>
+            <set id="lptmrConfig.0.dmaRequest">false</set>
+            <set id="lptmrConfig.0.interruptEnable">true</set>
+            <set id="lptmrConfig.0.freeRun">false</set>
+            <set id="lptmrConfig.0.compareValue">1000</set>
+            <set id="lptmrConfig.0.counterUnits">LPTMR_COUNTER_UNITS_MICROSECONDS</set>
+            <set id="lptmrConfig.0.clockSelect">LPTMR_CLOCKSOURCE_SIRCDIV2</set>
+            <set id="lptmrConfig.0.prescaler">LPTMR_PRESCALE_2</set>
+            <set id="lptmrConfig.0.bypassPrescaler">false</set>
+            <default>lptmr_default</default>
+         </quick_selection>
+      </quick_selections>
+      <default>lptmr_default</default>
+      <settings>
+         <reference id="lptmrConfig" label="LPTMR Configurations" type="lptmrConfigList" config_set_id="lptmr" component_id="lptmr" available="true">
+            <description>LPTMR Configuration Structure</description>
+         </reference>
+         <variable value="`../lptmr/lptmr_codegen.js`" id="codegen_file"></variable>
+         <variable value="`LPTMR_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+      <user_types>
+         <enum id="lptmr_pinselect_t" label="Pulse Counter Input selection" from="lptmr_pinselect_t">
+            <item id="LPTMR_PINSELECT_TRGMUX" label="Count pulses from TRGMUX trigger"/>
+            <item id="LPTMR_PINSELECT_ALT1" label="Count pulses from pin alternative 1"/>
+            <item id="LPTMR_PINSELECT_ALT2" label="Count pulses from pin alternative 2"/>
+            <item id="LPTMR_PINSELECT_ALT3" label="Count pulses from pin alternative 3"/>
+         </enum>
+         <enum id="lptmr_pinpolarity_t" label="Pulse Counter input polarity" from="lptmr_pinpolarity_t">
+            <item id="LPTMR_PINPOLARITY_RISING" label="Count pulse on rising edge"/>
+            <item id="LPTMR_PINPOLARITY_FALLING" label="Count pulse on falling edge"/>
+         </enum>
+         <enum id="lptmr_workmode_t" label="Work Mode" from="lptmr_workmode_t">
+            <item id="LPTMR_WORKMODE_TIMER" label="Timer"/>
+            <item id="LPTMR_WORKMODE_PULSECOUNTER" label="Pulse counter"/>
+         </enum>
+         <enum id="lptmr_counterunits_t" label="Defines the LPTMR counter units available for configuring or reading the timer compare value" from="lptmr_counterunits_t">
+            <item id="LPTMR_COUNTER_UNITS_TICKS" label="Ticks"/>
+            <item id="LPTMR_COUNTER_UNITS_MICROSECONDS" label="Microseconds"/>
+         </enum>
+         <enum id="lptmr_prescaler_t" label="Prescaler Selection" from="lptmr_prescaler_t">
+            <item id="LPTMR_PRESCALE_2" label="Timer mode: prescaler 2, Glitch filter mode: invalid"/>
+            <item id="LPTMR_PRESCALE_4_GLITCHFILTER_2" label="Timer mode: prescaler 4, Glitch filter mode: 2 clocks"/>
+            <item id="LPTMR_PRESCALE_8_GLITCHFILTER_4" label="Timer mode: prescaler 8, Glitch filter mode: 4 clocks"/>
+            <item id="LPTMR_PRESCALE_16_GLITCHFILTER_8" label ="Timer mode: prescaler 16, Glitch filter mode: 8 clocks"/>
+            <item id="LPTMR_PRESCALE_32_GLITCHFILTER_16" label ="Timer mode: prescaler 32, Glitch filter mode: 16 clocks"/>
+            <item id="LPTMR_PRESCALE_64_GLITCHFILTER_32" label ="Timer mode: prescaler 64, Glitch filter mode: 32 clocks"/>
+            <item id="LPTMR_PRESCALE_128_GLITCHFILTER_64" label ="Timer mode: prescaler 128, Glitch filter mode: 64 clocks"/>
+            <item id="LPTMR_PRESCALE_256_GLITCHFILTER_128" label ="Timer mode: prescaler 256, Glitch filter mode: 128 clocks"/>
+            <item id="LPTMR_PRESCALE_512_GLITCHFILTER_256" label ="Timer mode: prescaler 512, Glitch filter mode: 256 clocks"/>
+            <item id="LPTMR_PRESCALE_1024_GLITCHFILTER_512" label ="Timer mode: prescaler 1024, Glitch filter mode: 512 clocks"/>
+            <item id="LPTMR_PRESCALE_2048_GLITCHFILTER_1024" label ="Timer mode: prescaler 2048, Glitch filter mode: 1024 clocks"/>
+            <item id="LPTMR_PRESCALE_4096_GLITCHFILTER_2048" label ="Timer mode: prescaler 4096, Glitch filter mode: 2048 clocks"/>
+            <item id="LPTMR_PRESCALE_8192_GLITCHFILTER_4096" label ="Timer mode: prescaler 8192, Glitch filter mode: 4096 clocks"/>
+            <item id="LPTMR_PRESCALE_16384_GLITCHFILTER_8192" label ="Timer mode: prescaler 16384, Glitch filter mode: 8192 clocks"/>
+            <item id="LPTMR_PRESCALE_32768_GLITCHFILTER_16384" label ="Timer mode: prescaler 32768, Glitch filter mode: 16384 clocks"/>
+            <item id="LPTMR_PRESCALE_65536_GLITCHFILTER_32768" label ="Timer mode: prescaler 65536, Glitch filter mode: 32768 clocks"/>
+         </enum>
+         <enum id="lptmr_clocksource_t" label="Clock Source selection" from="lptmr_clocksource_t">
+            <item id="LPTMR_CLOCKSOURCE_SIRCDIV2" label="SIRC DIV2 clock"/>
+            <item id="LPTMR_CLOCKSOURCE_1KHZ_LPO" label="1kHz LPO clock"/>
+            <item id="LPTMR_CLOCKSOURCE_RTC" label="RTC clock"/>
+            <item id="LPTMR_CLOCKSOURCE_PCC" label="PCC configured clock"/>
+         </enum>
+         <struct id="lptmrStruct" label="LPTMR Configuration" from="lptmrStruct">
+            <string id="name" label="Name">
+               <description>Configuration name</description>
+               <validation>
+                  <constraint cond_expr="((isCIdentifier($this.getValue())))" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readOnly" label="Read only">
+               <description>Specifies how will be configuration generated. Read only generated structures are declared with const qualifiers.</description>
+            </bool>
+            <reference id="workMode" label="Work Mode" type="lptmr_workmode_t" options="cStructField">
+               <description>LPTMR Work Mode. Timer or Pulse-Counter.&lt;br&gt;&lt;b&gt;NOTE:&lt;/b&gt; If selecting "Timer" work mode, "Pin Select" and "Pin Polarity" have no effect on Timer work mode, so will not be configurable from the interface</description>
+               <validation>
+                  <constraint when_expr="$this.getValue() == `LPTMR_WORKMODE_PULSECOUNTER`" cond_expr="$parent.counterUnits.getValue() == `LPTMR_COUNTER_UNITS_TICKS`" level="error" description="Invalid Counter Units for PULSE_COUNTER working mode."/>
+                  <constraint when_expr="$this.getValue() == `LPTMR_WORKMODE_PULSECOUNTER`" cond_expr="$parent.prescaler.getValue() != `LPTMR_PRESCALE_2` || $parent.bypassPrescaler.getValue() != false" level="error" description="Invalid Glitch Filter value for PULSE_COUNTER working mode."/>
+              </validation>
+            </reference>
+            <bool id="dmaRequest" label="DMA Request" options="cStructField">
+               <description>Enable generation of DMA requests on Compare Event.</description>
+            </bool>
+            <bool id="interruptEnable" label="Interrupt Enable" options="cStructField">
+               <description>Enable generation of interrupt requests on Compare Event.</description>
+            </bool>
+            <bool id="freeRun" label="Free Run" options="cStructField">
+               <description>Activate Free Running Mode. The counter increments past the Compare Value and overflows after 0xFFFF</description>
+            </bool>
+            <integer id="compareValue" label="Compare Value" type="uint32_t" options="cStructField">
+               <description>Compare value for the LPTMR. When the internal counter reaches this value and increments, will generate a Compare Event and, if the Free Running mode is disabled, will reset the CNR. &lt;br&gt;- For ticks unit, the max value is 2^16-1 &lt;br&gt;- For microseconds unit, the max value is 2^32-1. Actual timer period may be subject to truncation errors, underflow or overflow.</description>
+               <validation>
+                  <constraint when_expr="$parent.counterUnits.getValue() == `LPTMR_COUNTER_UNITS_TICKS`" cond_expr="$this.getValue() &lt; 65536" level="error" description="The value is out of supported range! For ticks unit, the max value is 2^16-1."/>
+                  <constraint when_expr="$parent.counterUnits.getValue() == `LPTMR_COUNTER_UNITS_MICROSECONDS`" cond_expr="$this.getValue() &lt; 4294967296" level="error" description="The value is out of supported range! For microseconds unit, the max value is 2^32-1."/>
+              </validation>
+            </integer>
+            <reference id="counterUnits" label="Compare Value Units" type="lptmr_counterunits_t" options="cStructField">
+               <description>LPTMR Compare Value Measurement Units. Ticks or Microseconds.&lt;br&gt;&lt;b&gt;NOTE:&lt;/b&gt; If selecting "Microseconds" Unit, 'Prescaler' and 'Bypass Prescaler' will be auto-adapted @runtime to best fit Compare Value [us], so will not be configurable from the interface</description>
+               <validation>
+                  <constraint when_expr="$parent.workMode.getValue() == `LPTMR_WORKMODE_PULSECOUNTER`" cond_expr="$this.getValue() == `LPTMR_COUNTER_UNITS_TICKS`" level="error" description="Invalid Counter Units for PULSE_COUNTER working mode."/>
+              </validation>
+            </reference>
+            <reference id="clockSelect" label="Input Clock" type="lptmr_clocksource_t" options="cStructField">
+               <description>Input Clock for the Timer in Timer Mode or Glitch filter in Pulse-Counter Mode.</description>
+            </reference>
+            <variable id="lptmrClocks" value="getClockFunctionalGroups()"/>
+            <info id="clk_info_lptmr0" label="Clock frequency" value="frequencyToString(getPeripheralClockFrequency(`LPTMR0_CLK`,`SIRCDIV2_CLK`,$parent.lptmrClocks.getValue().get(0)))" available="($parent.clockSelect.getValue() == `LPTMR_CLOCKSOURCE_SIRCDIV2`)">
+               <description>Clock frequency</description>
+            </info>
+            <info id="clk_info_lptmr1" label="Clock frequency" value="frequencyToString(getPeripheralClockFrequency(`LPTMR0_CLK`,`LPO_1K_CLK`,$parent.lptmrClocks.getValue().get(0)))" available="($parent.clockSelect.getValue() == `LPTMR_CLOCKSOURCE_1KHZ_LPO`)">
+               <description>Clock frequency</description>
+            </info>
+            <info id="clk_info_lptmr2" label="Clock frequency" value="frequencyToString(getPeripheralClockFrequency(`LPTMR0_CLK`,`RTC_CLK`,$parent.lptmrClocks.getValue().get(0)))" available="($parent.clockSelect.getValue() == `LPTMR_CLOCKSOURCE_RTC`)">
+               <description>Clock frequency</description>
+            </info>
+            <info id="clk_info_lptmr3" label="Clock frequency" value="frequencyToString(getPeripheralClockFrequency(`LPTMR0_CLK`,`LPTMR0_CLK`,$parent.lptmrClocks.getValue().get(0)))" available="($parent.clockSelect.getValue() == `LPTMR_CLOCKSOURCE_PCC`)">
+               <description>Clock frequency</description>
+            </info>
+
+            <reference id="prescaler" label="Prescaler" type="lptmr_prescaler_t" options="cStructField" enable="$parent.workMode.getValue() == `LPTMR_WORKMODE_PULSECOUNTER` || $parent.counterUnits.getValue() != `LPTMR_COUNTER_UNITS_MICROSECONDS`">
+               <description>LPTMR Prescaler Value for Timer in Timer Mode or Glitch filter in Pulse-Counter Mode&lt;br&gt;For microseconds unit: will be auto-adapted at runtime to best fit Compare Value [us].</description>
+               <validation>
+                  <constraint when_expr="$parent.workMode.getValue() == `LPTMR_WORKMODE_PULSECOUNTER`" cond_expr="$this.getValue() != `LPTMR_PRESCALE_2` || $parent.bypassPrescaler.getValue() != false" level="error" description="Invalid Glitch Filter value for PULSE_COUNTER working mode."/>
+                  <!-- <constraint when_expr="$parent.workMode.getValue() == `LPTMR_WORKMODE_TIMER`" cond_expr="$parent.counterUnits.getValue() != `LPTMR_COUNTER_UNITS_MICROSECONDS`" level="info" description="Auto-adapted @runtime to best fit Compare Value [us]."/> -->
+               </validation>
+            </reference>
+            <bool id="bypassPrescaler" label="Bypass Prescaler" options="cStructField" enable="$parent.workMode.getValue() == `LPTMR_WORKMODE_PULSECOUNTER` || $parent.counterUnits.getValue() != `LPTMR_COUNTER_UNITS_MICROSECONDS`">
+               <description>Bypass the prescaler.&lt;br&gt;For microseconds unit: will be auto-adapted at runtime to best fit Compare Value [us].</description>
+               <validation>
+                  <constraint when_expr="$parent.workMode.getValue() == `LPTMR_WORKMODE_PULSECOUNTER`" cond_expr="$this.getValue() != false || $parent.prescaler.getValue() != `LPTMR_PRESCALE_2`" level="error" description="Invalid Glitch Filter value for PULSE_COUNTER working mode."/>
+                  <!-- <constraint when_expr="$parent.workMode.getValue() == `LPTMR_WORKMODE_TIMER`" cond_expr="$parent.counterUnits.getValue() != `LPTMR_COUNTER_UNITS_MICROSECONDS`" level="info" description="Auto-adapted @runtime to best fit Compare Value [us]."/> -->
+               </validation>
+            </bool>
+            <reference id="pinSelect" label="Pin Select (Pulse-Counter)" type="lptmr_pinselect_t" options="cStructField" enable="$parent.workMode.getValue() != `LPTMR_WORKMODE_TIMER`">
+               <description>LPTMR pulse input selection for Pulse-Counter Mode.</description>
+               <!-- <validation>
+                  <constraint cond_expr="$parent.workMode.getValue() != `LPTMR_WORKMODE_TIMER`" level="info" description="No effect for Timer work mode."/>
+               </validation> -->
+            </reference>
+            <reference id="pinPolarity" label="Pin Polarity (Pulse-Counter)" type="lptmr_pinpolarity_t" options="cStructField" enable="$parent.workMode.getValue() != `LPTMR_WORKMODE_TIMER`">
+               <description>LPTMR pulse polarity selection for Pulse-Counter Mode.</description>
+               <!-- <validation>
+                  <constraint cond_expr="$parent.workMode.getValue() != `LPTMR_WORKMODE_TIMER`" level="info" description="No effect for Timer work mode."/>
+               </validation> -->
+            </reference>
+         </struct>
+         <array id="lptmrConfigList" label="LPTMR Configuration List" type="lptmrStruct" options="ShowContentAs=MasterDetail" key_selector_expr="x -> (x.getSetting(`name`).value())">
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated 'Name' in the LPTMR configurations"/>
+               </validation>
+               <item_defaults>
+                  <set_default id="name" value_expr="x -> $instance.getID() + `_config` + x.getID()"/>
+               </item_defaults>
+         </array>
+      </user_types>
+      <generated_types>
+      </generated_types>
+   </config_set>
+   <global_config_set_ref></global_config_set_ref>
+</component:config_component>

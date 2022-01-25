@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="MBIST_COM_CTRL" description="RAMBIST COMMON CONTROL Register">
+    <alias type="CMSIS" value="MBIST_COM_CTRL"/>
+    <bit_field offset="0" width="1" name="mbist_resetb" access="RW" reset_value="0x1" description="MBIST Reset">
+      <alias type="CMSIS" value="CTI_MBIST_COM_CTRL_mbist_resetb(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="mbist_invoke" access="RW" reset_value="0" description="MBIST Invoke">
+      <alias type="CMSIS" value="CTI_MBIST_COM_CTRL_mbist_invoke(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="mbist_resume" access="RW" reset_value="0" description="MBIST Invoke">
+      <alias type="CMSIS" value="CTI_MBIST_COM_CTRL_mbist_resume(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="mbist_diag_en" access="RW" reset_value="0" description="MBIST Diagnose Enable">
+      <alias type="CMSIS" value="CTI_MBIST_COM_CTRL_mbist_diag_en(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="mbist_vlp" access="RW" reset_value="0" description="MBIST VLP enable">
+      <alias type="CMSIS" value="CTI_MBIST_COM_CTRL_mbist_vlp(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="mbist_pd_sben" access="RW" reset_value="0" description="MBIST source bias enable">
+      <alias type="CMSIS" value="CTI_MBIST_COM_CTRL_mbist_pd_sben(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="mbist_pd_b" access="RW" reset_value="0" description="MBIST power down mode enable">
+      <alias type="CMSIS" value="CTI_MBIST_COM_CTRL_mbist_pd_b(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="17" reset_value="0"/>
+    <bit_field offset="24" width="4" name="resume_active_cnt" access="RW" reset_value="0x4" description="To define the resume active time frame">
+      <alias type="CMSIS" value="CTI_MBIST_COM_CTRL_resume_active_cnt(x)"/>
+      <bit_field_value name="MBIST_COM_CTRL_resume_active_cnt_0b0000" value="0b0000" description="mbist_resume (MBIST_COM_CTRL[2] active time frame will last 3 IPS clocks."/>
+      <bit_field_value name="MBIST_COM_CTRL_resume_active_cnt_0b0001" value="0b0001" description="mbist_resume (MBIST_COM_CTRL[2] active time frame will last 6 IPS clocks."/>
+      <bit_field_value name="MBIST_COM_CTRL_resume_active_cnt_0b0010" value="0b0010" description="mbist_resume (MBIST_COM_CTRL[2] active time frame will last 10 IPS clocks."/>
+      <bit_field_value name="MBIST_COM_CTRL_resume_active_cnt_0b0011" value="0b0011" description="mbist_resume (MBIST_COM_CTRL[2] active time frame will last 14 IPS clocks."/>
+      <bit_field_value name="MBIST_COM_CTRL_resume_active_cnt_0b0100" value="0b0100" description="mbist_resume (MBIST_COM_CTRL[2] active time frame will last 18 IPS clocks."/>
+      <bit_field_value name="MBIST_COM_CTRL_resume_active_cnt_0b0101" value="0b0101" description="mbist_resume (MBIST_COM_CTRL[2] active time frame will last 22 IPS clocks."/>
+      <bit_field_value name="MBIST_COM_CTRL_resume_active_cnt_0b0110" value="0b0110" description="mbist_resume (MBIST_COM_CTRL[2] active time frame will last 26 IPS clocks."/>
+      <bit_field_value name="MBIST_COM_CTRL_resume_active_cnt_0b0111" value="0b0111" description="mbist_resume (MBIST_COM_CTRL[2] active time frame will last 30 IPS clocks."/>
+      <bit_field_value name="MBIST_COM_CTRL_resume_active_cnt_0b1000" value="0b1000" description="if resume_active_cnt[3] =1, resume count will has no effect to mbist_resume."/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0x1"/>
+  </register>
+  <register offset="0x4" width="32" name="MBIST_SEL" description="RAMBIST Selection Register">
+    <alias type="CMSIS" value="MBIST_SEL"/>
+    <bit_field offset="0" width="1" name="mbist_select0" access="RW" reset_value="0" description="MBIST Wrapper Select">
+      <alias type="CMSIS" value="CTI_MBIST_SEL_mbist_select0(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="MBIST_LOOP_CNT" description="RAMBIST Loop Counter Register">
+    <alias type="CMSIS" value="MBIST_LOOP_CNT"/>
+    <bit_field offset="0" width="16" name="mbist_loop_done_cnt" access="RW" reset_value="0" description="MBIST loop done counter">
+      <alias type="CMSIS" value="CTI_MBIST_LOOP_CNT_mbist_loop_done_cnt(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="16" name="mbist_first_fail_rec" access="RW" reset_value="0" description="MBIST first fail record">
+      <alias type="CMSIS" value="CTI_MBIST_LOOP_CNT_mbist_first_fail_rec(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xC" width="32" name="MBIST_STATUS_1" description="The First Group of MBIST Status Register">
+    <alias type="CMSIS" value="MBIST_STATUS_1"/>
+    <bit_field offset="0" width="1" name="mbist_start_ret" access="RO" reset_value="0" description="MBIST start retention">
+      <alias type="CMSIS" value="CTI_MBIST_STATUS_1_mbist_start_ret(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="mbist_done_0" access="RO" reset_value="0" description="MBIST done signal">
+      <alias type="CMSIS" value="CTI_MBIST_STATUS_1_mbist_done_0(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="mbist_fail_0" access="RO" reset_value="0" description="MBIST fail signal">
+      <alias type="CMSIS" value="CTI_MBIST_STATUS_1_mbist_fail_0(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="MBIST_STATUS_2" description="The Second Group of MBIST Status Register">
+    <alias type="CMSIS" value="MBIST_STATUS_2"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="MBIST_ALGORITHM" description="RAMBIST Algorithm Register">
+    <alias type="CMSIS" value="MBIST_ALGORITHM"/>
+    <bit_field offset="0" width="1" name="burn_in_test" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_burn_in_test(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="nwrt_test" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_nwrt_test(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="addressdecode_bg" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_addressdecode_bg(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="rowfast_18n_test" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_rowfast_18n_test(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="colfast_18n_test" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_colfast_18n_test(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="bit_write" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_bit_write(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="retentioncb" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_retentioncb(x)"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="wr_only" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_wr_only(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="rd_only" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_rd_only(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="wr_only_bar" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_wr_only_bar(x)"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="rd_only_bar" access="RW" reset_value="0" description="For all bist enginee">
+      <alias type="CMSIS" value="CTI_MBIST_ALGORITHM_rd_only_bar(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="21" reset_value="0x7C"/>
+  </register>
+  <register offset="0x20" width="32" name="MBIST_REPAIR_CTRL" description="RAMBIST Repair Control Register">
+    <alias type="CMSIS" value="MBIST_REPAIR_CTRL"/>
+    <bit_field offset="0" width="1" name="mbist_fix" access="RW" reset_value="0" description="MBIST Repair Fix">
+      <alias type="CMSIS" value="CTI_MBIST_REPAIR_CTRL_mbist_fix(x)"/>
+      <bit_field_value name="MBIST_REPAIR_CTRL_mbist_fix_0b0" value="0b0" description="it allows the BISR to evaluate the repair abilit and generate a repair solution."/>
+      <bit_field_value name="MBIST_REPAIR_CTRL_mbist_fix_0b1" value="0b1" description="it does not allow the current solution container to be changed."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="mbist_cp_enable" access="RW" reset_value="0x1" description="MBIST Repair Source selection">
+      <alias type="CMSIS" value="CTI_MBIST_REPAIR_CTRL_mbist_cp_enable(x)"/>
+      <alias type="id" value="cp_enable"/>
+      <bit_field_value name="MBIST_REPAIR_CTRL_mbist_cp_enable_0b0" value="0b0" description="Repair source is from BIST controller."/>
+      <bit_field_value name="MBIST_REPAIR_CTRL_mbist_cp_enable_0b1" value="0b1" description="Repair source is from SIM."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0x2"/>
+  </register>
+  <register offset="0x24" width="32" name="MBIST_REPAIR_STATUS" description="RAMBIST REPAIR STATUS Register">
+    <alias type="CMSIS" value="MBIST_REPAIR_STATUS"/>
+    <bit_field offset="0" width="1" name="mbist_repairable" access="RO" reset_value="0" description="RAM repairable indicator signal">
+      <alias type="CMSIS" value="CTI_MBIST_REPAIR_STATUS_mbist_repairable(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="repair_data_force" access="RO" reset_value="0" description="Indicate the repair data is avaliable, and tester can record">
+      <alias type="CMSIS" value="CTI_MBIST_REPAIR_STATUS_repair_data_force(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <register offset="0x28" width="32" name="MBIST_REPAIR_INFO_1" description="MBIST Repair Info Register">
+    <alias type="id" value="MMBIST_REPAIR_INFO_1"/>
+    <alias type="CMSIS" value="MBIST_REPAIR_INFO_1"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x2C" width="32" name="MBIST_REPAIR_INFO_2" description="MBIST Repair Info Register">
+    <alias type="id" value="MMBIST_REPAIR_INFO_2"/>
+    <alias type="CMSIS" value="MBIST_REPAIR_INFO_2"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="MBIST_REPAIR_INFO_3" description="MBIST Repair Info Register">
+    <alias type="id" value="MMBIST_REPAIR_INFO_3"/>
+    <alias type="CMSIS" value="MBIST_REPAIR_INFO_3"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x34" width="32" name="MBIST_REPAIR_INFO_4" description="MBIST Repair Info Register">
+    <alias type="id" value="MMBIST_REPAIR_INFO_4"/>
+    <alias type="CMSIS" value="MBIST_REPAIR_INFO_4"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x38" width="32" name="MBIST_REPAIR_INFO_5" description="MBIST Repair Info Register">
+    <alias type="id" value="MMBIST_REPAIR_INFO_5"/>
+    <alias type="CMSIS" value="MBIST_REPAIR_INFO_5"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x3C" width="32" name="MBIST_REPAIR_INFO_6" description="MBIST Repair Info Register">
+    <alias type="id" value="MMBIST_REPAIR_INFO_6"/>
+    <alias type="CMSIS" value="MBIST_REPAIR_INFO_6"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x40" width="32" name="MBIST_REPAIR_INFO_7" description="MBIST Repair Info Register">
+    <alias type="id" value="MMBIST_REPAIR_INFO_7"/>
+    <alias type="CMSIS" value="MBIST_REPAIR_INFO_7"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x44" width="32" name="MBIST_REPAIR_INFO_8" description="MBIST Repair Info Register">
+    <alias type="id" value="MMBIST_REPAIR_INFO_8"/>
+    <alias type="CMSIS" value="MBIST_REPAIR_INFO_8"/>
+    <reserved_bit_field offset="0" width="32" reset_value="0"/>
+  </register>
+  <register offset="0x50" width="32" name="RAMLOADER_START_ADR" description="RAMLOADER START ADDRESS Register">
+    <alias type="CMSIS" value="RAMLOADER_START_ADR"/>
+    <bit_field offset="0" width="16" name="ramloader_start_adr" access="RW" reset_value="0" description="RAMLOADER START ADR">
+      <alias type="CMSIS" value="CTI_RAMLOADER_START_ADR_ramloader_start_adr(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="start_addr_ld_en_sys" access="RW" reset_value="0" description="Start address load enable">
+      <alias type="CMSIS" value="CTI_RAMLOADER_START_ADR_start_addr_ld_en_sys(x)"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="start_addr_ld_en_NVM" access="RW" reset_value="0" description="Start address load enable">
+      <alias type="CMSIS" value="CTI_RAMLOADER_START_ADR_start_addr_ld_en_NVM(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="14" reset_value="0"/>
+  </register>
+  <register offset="0x80" width="32" name="MODE" description="CTI MODE Register">
+    <alias type="id" value="CTI_MODE"/>
+    <alias type="CMSIS" value="CTI_MODE"/>
+    <bit_field offset="0" width="16" name="cti_mode" access="RW" reset_value="0" description="CTI Sub-modes registers">
+      <alias type="CMSIS" value="CTI_CTI_MODE_cti_mode(x)"/>
+      <bit_field_value name="MODE_cti_mode_0b0000000000000001" value="0b0000000000000001" description="CTI Sub-mode1."/>
+      <bit_field_value name="MODE_cti_mode_0b0000000000000010" value="0b0000000000000010" description="CTI Sub-mode2."/>
+      <bit_field_value name="MODE_cti_mode_0b0000000000000100" value="0b0000000000000100" description="CTI Sub-mode3."/>
+      <bit_field_value name="MODE_cti_mode_0b0000000000001000" value="0b0000000000001000" description="CTI Sub-mode4."/>
+      <bit_field_value name="MODE_cti_mode_0b0000000000010000" value="0b0000000000010000" description="CTI Sub-mode5."/>
+      <bit_field_value name="MODE_cti_mode_0b0000000000100000" value="0b0000000000100000" description="CTI Sub-mode6."/>
+      <bit_field_value name="MODE_cti_mode_0b0000000001000000" value="0b0000000001000000" description="CTI Sub-mode7."/>
+      <bit_field_value name="MODE_cti_mode_0b0000000010000000" value="0b0000000010000000" description="CTI Sub-mode8."/>
+      <bit_field_value name="MODE_cti_mode_0b0000000100000000" value="0b0000000100000000" description="CTI Sub-mode9."/>
+      <bit_field_value name="MODE_cti_mode_0b0000001000000000" value="0b0000001000000000" description="CTI Sub-mode10."/>
+    </bit_field>
+    <bit_field offset="16" width="2" name="cti_data0_ctrl" access="RW" reset_value="0" description="CTI DATA0 Control">
+      <alias type="CMSIS" value="CTI_CTI_MODE_cti_data0_ctrl(x)"/>
+      <bit_field_value name="MODE_cti_data0_ctrl_0b00" value="0b00" description="The IO of CTI_DATA0 was safe, ibe=0 and obe=0."/>
+      <bit_field_value name="MODE_cti_data0_ctrl_0b01" value="0b01" description="The IO of CTI_DATA0 was input, ibe=1 and obe=0."/>
+      <bit_field_value name="MODE_cti_data0_ctrl_0b10" value="0b10" description="The IO of CTI_DATA0 was output, ibe=0 and obe=1."/>
+      <bit_field_value name="MODE_cti_data0_ctrl_0b11" value="0b11" description="The IO of CTI_DATA0 was safe, ibe=0 and obe=0."/>
+    </bit_field>
+    <bit_field offset="18" width="2" name="cti_data1_ctrl" access="RW" reset_value="0" description="CTI DATA0 Control">
+      <alias type="CMSIS" value="CTI_CTI_MODE_cti_data1_ctrl(x)"/>
+      <bit_field_value name="MODE_cti_data1_ctrl_0b00" value="0b00" description="The IO of CTI_DATA1 was safe, ibe=0 and obe=0."/>
+      <bit_field_value name="MODE_cti_data1_ctrl_0b01" value="0b01" description="The IO of CTI_DATA1 was input, ibe=1 and obe=0."/>
+      <bit_field_value name="MODE_cti_data1_ctrl_0b10" value="0b10" description="The IO of CTI_DATA1 was output, ibe=0 and obe=1."/>
+      <bit_field_value name="MODE_cti_data1_ctrl_0b11" value="0b11" description="The IO of CTI_DATA1 was safe, ibe=0 and obe=0."/>
+    </bit_field>
+    <bit_field offset="20" width="2" name="cti_data2_ctrl" access="RW" reset_value="0" description="CTI DATA0 Control">
+      <alias type="CMSIS" value="CTI_CTI_MODE_cti_data2_ctrl(x)"/>
+      <bit_field_value name="MODE_cti_data2_ctrl_0b00" value="0b00" description="The IO of CTI_DATA2 was safe, ibe=0 and obe=0."/>
+      <bit_field_value name="MODE_cti_data2_ctrl_0b01" value="0b01" description="The IO of CTI_DATA2 was input, ibe=1 and obe=0."/>
+      <bit_field_value name="MODE_cti_data2_ctrl_0b10" value="0b10" description="The IO of CTI_DATA2 was output, ibe=0 and obe=1."/>
+      <bit_field_value name="MODE_cti_data2_ctrl_0b11" value="0b11" description="The IO of CTI_DATA2 was safe, ibe=0 and obe=0."/>
+    </bit_field>
+    <bit_field offset="22" width="2" name="cti_data3_ctrl" access="RW" reset_value="0" description="CTI DATA0 Control">
+      <alias type="CMSIS" value="CTI_CTI_MODE_cti_data3_ctrl(x)"/>
+      <bit_field_value name="MODE_cti_data3_ctrl_0b00" value="0b00" description="The IO of CTI_DATA3 was safe, ibe=0 and obe=0."/>
+      <bit_field_value name="MODE_cti_data3_ctrl_0b01" value="0b01" description="The IO of CTI_DATA3 was input, ibe=1 and obe=0."/>
+      <bit_field_value name="MODE_cti_data3_ctrl_0b10" value="0b10" description="The IO of CTI_DATA3 was output, ibe=0 and obe=1."/>
+      <bit_field_value name="MODE_cti_data3_ctrl_0b11" value="0b11" description="The IO of CTI_DATA3 was safe, ibe=0 and obe=0."/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="cti_data4_ctrl" access="RW" reset_value="0" description="CTI DATA0 Control">
+      <alias type="CMSIS" value="CTI_CTI_MODE_cti_data4_ctrl(x)"/>
+      <bit_field_value name="MODE_cti_data4_ctrl_0b00" value="0b00" description="The IO of CTI_DATA4 was safe, ibe=0 and obe=0."/>
+      <bit_field_value name="MODE_cti_data4_ctrl_0b01" value="0b01" description="The IO of CTI_DATA4 was input, ibe=1 and obe=0."/>
+      <bit_field_value name="MODE_cti_data4_ctrl_0b10" value="0b10" description="The IO of CTI_DATA4 was output, ibe=0 and obe=1."/>
+      <bit_field_value name="MODE_cti_data4_ctrl_0b11" value="0b11" description="The IO of CTI_DATA4 was safe, ibe=0 and obe=0."/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0xC0" width="32" name="MIX_CTRL" description="CTI MIX ControlRegister">
+    <alias type="id" value="CTI_MIX_CTRL"/>
+    <alias type="CMSIS" value="CTI_MIX_CTRL"/>
+    <bit_field offset="0" width="1" name="tstjtag_dsel" access="RW" reset_value="0" description="Test JTAG Deselect">
+      <alias type="CMSIS" value="CTI_CTI_MIX_CTRL_tstjtag_dsel(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+</regs:peripheral>

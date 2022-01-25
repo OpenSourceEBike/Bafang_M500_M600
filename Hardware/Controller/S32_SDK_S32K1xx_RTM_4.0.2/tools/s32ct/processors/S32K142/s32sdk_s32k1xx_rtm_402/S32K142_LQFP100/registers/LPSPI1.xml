@@ -1,0 +1,413 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="VERID" description="Version ID Register">
+    <alias type="CMSIS" value="VERID"/>
+    <bit_field offset="0" width="16" name="FEATURE" access="RO" reset_value="0x4" description="Module Identification Number">
+      <alias type="CMSIS" value="LPSPI_VERID_FEATURE(x)"/>
+      <bit_field_value name="VERID_FEATURE_0b0000000000000100" value="0b0000000000000100" description="Standard feature set supporting 32-bit shift register."/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="MINOR" access="RO" reset_value="0" description="Minor Version Number">
+      <alias type="CMSIS" value="LPSPI_VERID_MINOR(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="MAJOR" access="RO" reset_value="0x1" description="Major Version Number">
+      <alias type="CMSIS" value="LPSPI_VERID_MAJOR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="PARAM" description="Parameter Register">
+    <alias type="CMSIS" value="PARAM"/>
+    <bit_field offset="0" width="8" name="TXFIFO" access="RO" reset_value="0x2" description="Transmit FIFO Size">
+      <alias type="CMSIS" value="LPSPI_PARAM_TXFIFO(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="RXFIFO" access="RO" reset_value="0x2" description="Receive FIFO Size">
+      <alias type="CMSIS" value="LPSPI_PARAM_RXFIFO(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="CR" description="Control Register">
+    <alias type="CMSIS" value="CR"/>
+    <bit_field offset="0" width="1" name="MEN" access="RW" reset_value="0" description="Module Enable">
+      <alias type="CMSIS" value="LPSPI_CR_MEN(x)"/>
+      <bit_field_value name="CR_MEN_0b0" value="0b0" description="Module is disabled."/>
+      <bit_field_value name="CR_MEN_0b1" value="0b1" description="Module is enabled."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RST" access="RW" reset_value="0" description="Software Reset">
+      <alias type="CMSIS" value="LPSPI_CR_RST(x)"/>
+      <bit_field_value name="CR_RST_0b0" value="0b0" description="Master logic is not reset."/>
+      <bit_field_value name="CR_RST_0b1" value="0b1" description="Master logic is reset."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="DOZEN" access="RW" reset_value="0" description="Doze mode enable">
+      <alias type="CMSIS" value="LPSPI_CR_DOZEN(x)"/>
+      <bit_field_value name="CR_DOZEN_0b0" value="0b0" description="Module is enabled in Doze mode."/>
+      <bit_field_value name="CR_DOZEN_0b1" value="0b1" description="Module is disabled in Doze mode."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="DBGEN" access="RW" reset_value="0" description="Debug Enable">
+      <alias type="CMSIS" value="LPSPI_CR_DBGEN(x)"/>
+      <bit_field_value name="CR_DBGEN_0b0" value="0b0" description="Module is disabled in debug mode."/>
+      <bit_field_value name="CR_DBGEN_0b1" value="0b1" description="Module is enabled in debug mode."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+    <bit_field offset="8" width="1" name="RTF" access="WO" reset_value="0" description="Reset Transmit FIFO">
+      <alias type="CMSIS" value="LPSPI_CR_RTF(x)"/>
+      <bit_field_value name="CR_RTF_0b0" value="0b0" description="No effect."/>
+      <bit_field_value name="CR_RTF_0b1" value="0b1" description="Transmit FIFO is reset."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="RRF" access="WO" reset_value="0" description="Reset Receive FIFO">
+      <alias type="CMSIS" value="LPSPI_CR_RRF(x)"/>
+      <bit_field_value name="CR_RRF_0b0" value="0b0" description="No effect."/>
+      <bit_field_value name="CR_RRF_0b1" value="0b1" description="Receive FIFO is reset."/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="22" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="SR" description="Status Register">
+    <alias type="CMSIS" value="SR"/>
+    <bit_field offset="0" width="1" name="TDF" access="RO" reset_value="0x1" description="Transmit Data Flag">
+      <alias type="CMSIS" value="LPSPI_SR_TDF(x)"/>
+      <bit_field_value name="SR_TDF_0b0" value="0b0" description="Transmit data not requested."/>
+      <bit_field_value name="SR_TDF_0b1" value="0b1" description="Transmit data is requested."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RDF" access="RO" reset_value="0" description="Receive Data Flag">
+      <alias type="CMSIS" value="LPSPI_SR_RDF(x)"/>
+      <bit_field_value name="SR_RDF_0b0" value="0b0" description="Receive Data is not ready."/>
+      <bit_field_value name="SR_RDF_0b1" value="0b1" description="Receive data is ready."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="6" reset_value="0"/>
+    <bit_field offset="8" width="1" name="WCF" access="W1C" reset_value="0" description="Word Complete Flag">
+      <alias type="CMSIS" value="LPSPI_SR_WCF(x)"/>
+      <bit_field_value name="SR_WCF_0b0" value="0b0" description="Transfer word not completed."/>
+      <bit_field_value name="SR_WCF_0b1" value="0b1" description="Transfer word completed."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="FCF" access="W1C" reset_value="0" description="Frame Complete Flag">
+      <alias type="CMSIS" value="LPSPI_SR_FCF(x)"/>
+      <bit_field_value name="SR_FCF_0b0" value="0b0" description="Frame transfer has not completed."/>
+      <bit_field_value name="SR_FCF_0b1" value="0b1" description="Frame transfer has completed."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="TCF" access="W1C" reset_value="0" description="Transfer Complete Flag">
+      <alias type="CMSIS" value="LPSPI_SR_TCF(x)"/>
+      <bit_field_value name="SR_TCF_0b0" value="0b0" description="All transfers have not completed."/>
+      <bit_field_value name="SR_TCF_0b1" value="0b1" description="All transfers have completed."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="TEF" access="W1C" reset_value="0" description="Transmit Error Flag">
+      <alias type="CMSIS" value="LPSPI_SR_TEF(x)"/>
+      <bit_field_value name="SR_TEF_0b0" value="0b0" description="Transmit FIFO underrun has not occurred."/>
+      <bit_field_value name="SR_TEF_0b1" value="0b1" description="Transmit FIFO underrun has occurred"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="REF" access="W1C" reset_value="0" description="Receive Error Flag">
+      <alias type="CMSIS" value="LPSPI_SR_REF(x)"/>
+      <bit_field_value name="SR_REF_0b0" value="0b0" description="Receive FIFO has not overflowed."/>
+      <bit_field_value name="SR_REF_0b1" value="0b1" description="Receive FIFO has overflowed."/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="DMF" access="W1C" reset_value="0" description="Data Match Flag">
+      <alias type="CMSIS" value="LPSPI_SR_DMF(x)"/>
+      <bit_field_value name="SR_DMF_0b0" value="0b0" description="Have not received matching data."/>
+      <bit_field_value name="SR_DMF_0b1" value="0b1" description="Have received matching data."/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="10" reset_value="0"/>
+    <bit_field offset="24" width="1" name="MBF" access="RO" reset_value="0" description="Module Busy Flag">
+      <alias type="CMSIS" value="LPSPI_SR_MBF(x)"/>
+      <bit_field_value name="SR_MBF_0b0" value="0b0" description="LPSPI is idle."/>
+      <bit_field_value name="SR_MBF_0b1" value="0b1" description="LPSPI is busy."/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="IER" description="Interrupt Enable Register">
+    <alias type="CMSIS" value="IER"/>
+    <bit_field offset="0" width="1" name="TDIE" access="RW" reset_value="0" description="Transmit Data Interrupt Enable">
+      <alias type="CMSIS" value="LPSPI_IER_TDIE(x)"/>
+      <bit_field_value name="IER_TDIE_0b0" value="0b0" description="Interrupt disabled."/>
+      <bit_field_value name="IER_TDIE_0b1" value="0b1" description="Interrupt enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RDIE" access="RW" reset_value="0" description="Receive Data Interrupt Enable">
+      <alias type="CMSIS" value="LPSPI_IER_RDIE(x)"/>
+      <bit_field_value name="IER_RDIE_0b0" value="0b0" description="Interrupt disabled."/>
+      <bit_field_value name="IER_RDIE_0b1" value="0b1" description="Interrupt enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="6" reset_value="0"/>
+    <bit_field offset="8" width="1" name="WCIE" access="RW" reset_value="0" description="Word Complete Interrupt Enable">
+      <alias type="CMSIS" value="LPSPI_IER_WCIE(x)"/>
+      <bit_field_value name="IER_WCIE_0b0" value="0b0" description="Interrupt disabled."/>
+      <bit_field_value name="IER_WCIE_0b1" value="0b1" description="Interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="FCIE" access="RW" reset_value="0" description="Frame Complete Interrupt Enable">
+      <alias type="CMSIS" value="LPSPI_IER_FCIE(x)"/>
+      <bit_field_value name="IER_FCIE_0b0" value="0b0" description="Interrupt disabled."/>
+      <bit_field_value name="IER_FCIE_0b1" value="0b1" description="Interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="TCIE" access="RW" reset_value="0" description="Transfer Complete Interrupt Enable">
+      <alias type="CMSIS" value="LPSPI_IER_TCIE(x)"/>
+      <bit_field_value name="IER_TCIE_0b0" value="0b0" description="Interrupt disabled."/>
+      <bit_field_value name="IER_TCIE_0b1" value="0b1" description="Interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="TEIE" access="RW" reset_value="0" description="Transmit Error Interrupt Enable">
+      <alias type="CMSIS" value="LPSPI_IER_TEIE(x)"/>
+      <bit_field_value name="IER_TEIE_0b0" value="0b0" description="Interrupt disabled."/>
+      <bit_field_value name="IER_TEIE_0b1" value="0b1" description="Interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="REIE" access="RW" reset_value="0" description="Receive Error Interrupt Enable">
+      <alias type="CMSIS" value="LPSPI_IER_REIE(x)"/>
+      <bit_field_value name="IER_REIE_0b0" value="0b0" description="Interrupt disabled."/>
+      <bit_field_value name="IER_REIE_0b1" value="0b1" description="Interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="DMIE" access="RW" reset_value="0" description="Data Match Interrupt Enable">
+      <alias type="CMSIS" value="LPSPI_IER_DMIE(x)"/>
+      <bit_field_value name="IER_DMIE_0b0" value="0b0" description="Interrupt disabled."/>
+      <bit_field_value name="IER_DMIE_0b1" value="0b1" description="Interrupt enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="18" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="DER" description="DMA Enable Register">
+    <alias type="CMSIS" value="DER"/>
+    <bit_field offset="0" width="1" name="TDDE" access="RW" reset_value="0" description="Transmit Data DMA Enable">
+      <alias type="CMSIS" value="LPSPI_DER_TDDE(x)"/>
+      <bit_field_value name="DER_TDDE_0b0" value="0b0" description="DMA request disabled."/>
+      <bit_field_value name="DER_TDDE_0b1" value="0b1" description="DMA request enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RDDE" access="RW" reset_value="0" description="Receive Data DMA Enable">
+      <alias type="CMSIS" value="LPSPI_DER_RDDE(x)"/>
+      <bit_field_value name="DER_RDDE_0b0" value="0b0" description="DMA request disabled."/>
+      <bit_field_value name="DER_RDDE_0b1" value="0b1" description="DMA request enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="CFGR0" description="Configuration Register 0">
+    <alias type="CMSIS" value="CFGR0"/>
+    <bit_field offset="0" width="1" name="HREN" access="RW" reset_value="0" description="Host Request Enable">
+      <alias type="CMSIS" value="LPSPI_CFGR0_HREN(x)"/>
+      <bit_field_value name="CFGR0_HREN_0b0" value="0b0" description="Host request is disabled."/>
+      <bit_field_value name="CFGR0_HREN_0b1" value="0b1" description="Host request is enabled."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="HRPOL" access="RW" reset_value="0" description="Host Request Polarity">
+      <alias type="CMSIS" value="LPSPI_CFGR0_HRPOL(x)"/>
+      <bit_field_value name="CFGR0_HRPOL_0b0" value="0b0" description="Active low."/>
+      <bit_field_value name="CFGR0_HRPOL_0b1" value="0b1" description="Active high."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="HRSEL" access="RW" reset_value="0" description="Host Request Select">
+      <alias type="CMSIS" value="LPSPI_CFGR0_HRSEL(x)"/>
+      <bit_field_value name="CFGR0_HRSEL_0b0" value="0b0" description="Host request input is pin LPSPI_HREQ."/>
+      <bit_field_value name="CFGR0_HRSEL_0b1" value="0b1" description="Host request input is input trigger."/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="5" reset_value="0"/>
+    <bit_field offset="8" width="1" name="CIRFIFO" access="RW" reset_value="0" description="Circular FIFO Enable">
+      <alias type="CMSIS" value="LPSPI_CFGR0_CIRFIFO(x)"/>
+      <bit_field_value name="CFGR0_CIRFIFO_0b0" value="0b0" description="Circular FIFO is disabled."/>
+      <bit_field_value name="CFGR0_CIRFIFO_0b1" value="0b1" description="Circular FIFO is enabled."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="RDMO" access="RW" reset_value="0" description="Receive Data Match Only">
+      <alias type="CMSIS" value="LPSPI_CFGR0_RDMO(x)"/>
+      <bit_field_value name="CFGR0_RDMO_0b0" value="0b0" description="Received data is stored in the receive FIFO as normal."/>
+      <bit_field_value name="CFGR0_RDMO_0b1" value="0b1" description="Received data is discarded unless the DMF is set."/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="22" reset_value="0"/>
+  </register>
+  <register offset="0x24" width="32" name="CFGR1" description="Configuration Register 1">
+    <alias type="CMSIS" value="CFGR1"/>
+    <bit_field offset="0" width="1" name="MASTER" access="RW" reset_value="0" description="Master Mode">
+      <alias type="CMSIS" value="LPSPI_CFGR1_MASTER(x)"/>
+      <bit_field_value name="CFGR1_MASTER_0b0" value="0b0" description="Slave mode."/>
+      <bit_field_value name="CFGR1_MASTER_0b1" value="0b1" description="Master mode."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SAMPLE" access="RW" reset_value="0" description="Sample Point">
+      <alias type="CMSIS" value="LPSPI_CFGR1_SAMPLE(x)"/>
+      <bit_field_value name="CFGR1_SAMPLE_0b0" value="0b0" description="Input data sampled on SCK edge."/>
+      <bit_field_value name="CFGR1_SAMPLE_0b1" value="0b1" description="Input data sampled on delayed SCK edge."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="AUTOPCS" access="RW" reset_value="0" description="Automatic PCS">
+      <alias type="CMSIS" value="LPSPI_CFGR1_AUTOPCS(x)"/>
+      <bit_field_value name="CFGR1_AUTOPCS_0b0" value="0b0" description="Automatic PCS generation disabled."/>
+      <bit_field_value name="CFGR1_AUTOPCS_0b1" value="0b1" description="Automatic PCS generation enabled."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="NOSTALL" access="RW" reset_value="0" description="No Stall">
+      <alias type="CMSIS" value="LPSPI_CFGR1_NOSTALL(x)"/>
+      <bit_field_value name="CFGR1_NOSTALL_0b0" value="0b0" description="Transfers will stall when transmit FIFO is empty or receive FIFO is full."/>
+      <bit_field_value name="CFGR1_NOSTALL_0b1" value="0b1" description="Transfers will not stall, allowing transmit FIFO underrun or receive FIFO overrun to occur."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+    <bit_field offset="8" width="4" name="PCSPOL" access="RW" reset_value="0" description="Peripheral Chip Select Polarity">
+      <alias type="CMSIS" value="LPSPI_CFGR1_PCSPOL(x)"/>
+      <bit_field_value name="CFGR1_PCSPOL_0b0000" value="0b0000" description="The PCSx is active low."/>
+      <bit_field_value name="CFGR1_PCSPOL_0b0001" value="0b0001" description="The PCSx is active high."/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="3" name="MATCFG" access="RW" reset_value="0" description="Match Configuration">
+      <alias type="CMSIS" value="LPSPI_CFGR1_MATCFG(x)"/>
+      <bit_field_value name="CFGR1_MATCFG_0b000" value="0b000" description="Match is disabled."/>
+      <bit_field_value name="CFGR1_MATCFG_0b001" value="0b001" description="Reserved"/>
+      <bit_field_value name="CFGR1_MATCFG_0b010" value="0b010" description="010b - Match is enabled, if 1st data word equals MATCH0 OR MATCH1, i.e., (1st data word = MATCH0 + MATCH1)"/>
+      <bit_field_value name="CFGR1_MATCFG_0b011" value="0b011" description="011b - Match is enabled, if any data word equals MATCH0 OR MATCH1, i.e., (any data word = MATCH0 + MATCH1)"/>
+      <bit_field_value name="CFGR1_MATCFG_0b100" value="0b100" description="100b - Match is enabled, if 1st data word equals MATCH0 AND 2nd data word equals MATCH1, i.e., [(1st data word = MATCH0) * (2nd data word = MATCH1)]"/>
+      <bit_field_value name="CFGR1_MATCFG_0b101" value="0b101" description="101b - Match is enabled, if any data word equals MATCH0 AND the next data word equals MATCH1, i.e., [(any data word = MATCH0) * (next data word = MATCH1)]"/>
+      <bit_field_value name="CFGR1_MATCFG_0b110" value="0b110" description="110b - Match is enabled, if (1st data word AND MATCH1) equals (MATCH0 AND MATCH1), i.e., [(1st data word * MATCH1) = (MATCH0 * MATCH1)]"/>
+      <bit_field_value name="CFGR1_MATCFG_0b111" value="0b111" description="111b - Match is enabled, if (any data word AND MATCH1) equals (MATCH0 AND MATCH1), i.e., [(any data word * MATCH1) = (MATCH0 * MATCH1)]"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="5" reset_value="0"/>
+    <bit_field offset="24" width="2" name="PINCFG" access="RW" reset_value="0" description="Pin Configuration">
+      <alias type="CMSIS" value="LPSPI_CFGR1_PINCFG(x)"/>
+      <bit_field_value name="CFGR1_PINCFG_0b00" value="0b00" description="SIN is used for input data and SOUT for output data."/>
+      <bit_field_value name="CFGR1_PINCFG_0b01" value="0b01" description="SIN is used for both input and output data."/>
+      <bit_field_value name="CFGR1_PINCFG_0b10" value="0b10" description="SOUT is used for both input and output data."/>
+      <bit_field_value name="CFGR1_PINCFG_0b11" value="0b11" description="SOUT is used for input data and SIN for output data."/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="OUTCFG" access="RW" reset_value="0" description="Output Config">
+      <alias type="CMSIS" value="LPSPI_CFGR1_OUTCFG(x)"/>
+      <bit_field_value name="CFGR1_OUTCFG_0b0" value="0b0" description="Output data retains last value when chip select is negated."/>
+      <bit_field_value name="CFGR1_OUTCFG_0b1" value="0b1" description="Output data is tristated when chip select is negated."/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="PCSCFG" access="RW" reset_value="0" description="Peripheral Chip Select Configuration">
+      <alias type="CMSIS" value="LPSPI_CFGR1_PCSCFG(x)"/>
+      <bit_field_value name="CFGR1_PCSCFG_0b0" value="0b0" description="PCS[3:2] are enabled."/>
+      <bit_field_value name="CFGR1_PCSCFG_0b1" value="0b1" description="PCS[3:2] are disabled."/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="DMR0" description="Data Match Register 0">
+    <alias type="CMSIS" value="DMR0"/>
+    <bit_field offset="0" width="32" name="MATCH0" access="RW" reset_value="0" description="Match 0 Value">
+      <alias type="CMSIS" value="LPSPI_DMR0_MATCH0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x34" width="32" name="DMR1" description="Data Match Register 1">
+    <alias type="CMSIS" value="DMR1"/>
+    <bit_field offset="0" width="32" name="MATCH1" access="RW" reset_value="0" description="Match 1 Value">
+      <alias type="CMSIS" value="LPSPI_DMR1_MATCH1(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x40" width="32" name="CCR" description="Clock Configuration Register">
+    <alias type="CMSIS" value="CCR"/>
+    <bit_field offset="0" width="8" name="SCKDIV" access="RW" reset_value="0" description="SCK Divider">
+      <alias type="CMSIS" value="LPSPI_CCR_SCKDIV(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="DBT" access="RW" reset_value="0" description="Delay Between Transfers">
+      <alias type="CMSIS" value="LPSPI_CCR_DBT(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="PCSSCK" access="RW" reset_value="0" description="PCS to SCK Delay">
+      <alias type="CMSIS" value="LPSPI_CCR_PCSSCK(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="SCKPCS" access="RW" reset_value="0" description="SCK to PCS Delay">
+      <alias type="CMSIS" value="LPSPI_CCR_SCKPCS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x58" width="32" name="FCR" description="FIFO Control Register">
+    <alias type="CMSIS" value="FCR"/>
+    <bit_field offset="0" width="2" name="TXWATER" access="RW" reset_value="0" description="Transmit FIFO Watermark">
+      <alias type="CMSIS" value="LPSPI_FCR_TXWATER(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="6" reset_value="0"/>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="2" name="RXWATER" access="RW" reset_value="0" description="Receive FIFO Watermark">
+      <alias type="CMSIS" value="LPSPI_FCR_RXWATER(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="6" reset_value="0"/>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x5C" width="32" name="FSR" description="FIFO Status Register">
+    <alias type="CMSIS" value="FSR"/>
+    <bit_field offset="0" width="3" name="TXCOUNT" access="RO" reset_value="0" description="Transmit FIFO Count">
+      <alias type="CMSIS" value="LPSPI_FSR_TXCOUNT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="5" reset_value="0"/>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="3" name="RXCOUNT" access="RO" reset_value="0" description="Receive FIFO Count">
+      <alias type="CMSIS" value="LPSPI_FSR_RXCOUNT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="5" reset_value="0"/>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x60" width="32" name="TCR" description="Transmit Command Register">
+    <alias type="CMSIS" value="TCR"/>
+    <bit_field offset="0" width="12" name="FRAMESZ" access="RW" reset_value="0x1F" description="Frame Size">
+      <alias type="CMSIS" value="LPSPI_TCR_FRAMESZ(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="2" name="WIDTH" access="RW" reset_value="0" description="Transfer Width">
+      <alias type="CMSIS" value="LPSPI_TCR_WIDTH(x)"/>
+      <bit_field_value name="TCR_WIDTH_0b00" value="0b00" description="Single bit transfer."/>
+      <bit_field_value name="TCR_WIDTH_0b01" value="0b01" description="Two bit transfer."/>
+      <bit_field_value name="TCR_WIDTH_0b10" value="0b10" description="Four bit transfer."/>
+      <bit_field_value name="TCR_WIDTH_0b11" value="0b11" description="Reserved."/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="TXMSK" access="RW" reset_value="0" description="Transmit Data Mask">
+      <alias type="CMSIS" value="LPSPI_TCR_TXMSK(x)"/>
+      <bit_field_value name="TCR_TXMSK_0b0" value="0b0" description="Normal transfer."/>
+      <bit_field_value name="TCR_TXMSK_0b1" value="0b1" description="Mask transmit data."/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="RXMSK" access="RW" reset_value="0" description="Receive Data Mask">
+      <alias type="CMSIS" value="LPSPI_TCR_RXMSK(x)"/>
+      <bit_field_value name="TCR_RXMSK_0b0" value="0b0" description="Normal transfer."/>
+      <bit_field_value name="TCR_RXMSK_0b1" value="0b1" description="Receive data is masked."/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="CONTC" access="RW" reset_value="0" description="Continuing Command">
+      <alias type="CMSIS" value="LPSPI_TCR_CONTC(x)"/>
+      <bit_field_value name="TCR_CONTC_0b0" value="0b0" description="Command word for start of new transfer."/>
+      <bit_field_value name="TCR_CONTC_0b1" value="0b1" description="Command word for continuing transfer."/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="CONT" access="RW" reset_value="0" description="Continuous Transfer">
+      <alias type="CMSIS" value="LPSPI_TCR_CONT(x)"/>
+      <bit_field_value name="TCR_CONT_0b0" value="0b0" description="Continuous transfer disabled."/>
+      <bit_field_value name="TCR_CONT_0b1" value="0b1" description="Continuous transfer enabled."/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="BYSW" access="RW" reset_value="0" description="Byte Swap">
+      <alias type="CMSIS" value="LPSPI_TCR_BYSW(x)"/>
+      <bit_field_value name="TCR_BYSW_0b0" value="0b0" description="Byte swap disabled."/>
+      <bit_field_value name="TCR_BYSW_0b1" value="0b1" description="Byte swap enabled."/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="LSBF" access="RW" reset_value="0" description="LSB First">
+      <alias type="CMSIS" value="LPSPI_TCR_LSBF(x)"/>
+      <bit_field_value name="TCR_LSBF_0b0" value="0b0" description="Data is transferred MSB first."/>
+      <bit_field_value name="TCR_LSBF_0b1" value="0b1" description="Data is transferred LSB first."/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="PCS" access="RW" reset_value="0" description="Peripheral Chip Select">
+      <alias type="CMSIS" value="LPSPI_TCR_PCS(x)"/>
+      <bit_field_value name="TCR_PCS_0b00" value="0b00" description="Transfer using LPSPI_PCS[0]"/>
+      <bit_field_value name="TCR_PCS_0b01" value="0b01" description="Transfer using LPSPI_PCS[1]"/>
+      <bit_field_value name="TCR_PCS_0b10" value="0b10" description="Transfer using LPSPI_PCS[2]"/>
+      <bit_field_value name="TCR_PCS_0b11" value="0b11" description="Transfer using LPSPI_PCS[3]"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="1" reset_value="0"/>
+    <bit_field offset="27" width="3" name="PRESCALE" access="RW" reset_value="0" description="Prescaler Value">
+      <alias type="CMSIS" value="LPSPI_TCR_PRESCALE(x)"/>
+      <bit_field_value name="TCR_PRESCALE_0b000" value="0b000" description="Divide by 1."/>
+      <bit_field_value name="TCR_PRESCALE_0b001" value="0b001" description="Divide by 2."/>
+      <bit_field_value name="TCR_PRESCALE_0b010" value="0b010" description="Divide by 4."/>
+      <bit_field_value name="TCR_PRESCALE_0b011" value="0b011" description="Divide by 8."/>
+      <bit_field_value name="TCR_PRESCALE_0b100" value="0b100" description="Divide by 16."/>
+      <bit_field_value name="TCR_PRESCALE_0b101" value="0b101" description="Divide by 32."/>
+      <bit_field_value name="TCR_PRESCALE_0b110" value="0b110" description="Divide by 64."/>
+      <bit_field_value name="TCR_PRESCALE_0b111" value="0b111" description="Divide by 128."/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="CPHA" access="RW" reset_value="0" description="Clock Phase">
+      <alias type="CMSIS" value="LPSPI_TCR_CPHA(x)"/>
+      <bit_field_value name="TCR_CPHA_0b0" value="0b0" description="Data is captured on the leading edge of SCK and changed on the following edge."/>
+      <bit_field_value name="TCR_CPHA_0b1" value="0b1" description="Data is changed on the leading edge of SCK and captured on the following edge."/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="CPOL" access="RW" reset_value="0" description="Clock Polarity">
+      <alias type="CMSIS" value="LPSPI_TCR_CPOL(x)"/>
+      <bit_field_value name="TCR_CPOL_0b0" value="0b0" description="The inactive state value of SCK is low."/>
+      <bit_field_value name="TCR_CPOL_0b1" value="0b1" description="The inactive state value of SCK is high."/>
+    </bit_field>
+  </register>
+  <register offset="0x64" width="32" name="TDR" description="Transmit Data Register">
+    <alias type="CMSIS" value="TDR"/>
+    <bit_field offset="0" width="32" name="DATA" access="WO" reset_value="0" description="Transmit Data">
+      <alias type="CMSIS" value="LPSPI_TDR_DATA(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x70" width="32" name="RSR" description="Receive Status Register">
+    <alias type="CMSIS" value="RSR"/>
+    <bit_field offset="0" width="1" name="SOF" access="RO" reset_value="0" description="Start Of Frame">
+      <alias type="CMSIS" value="LPSPI_RSR_SOF(x)"/>
+      <bit_field_value name="RSR_SOF_0b0" value="0b0" description="Subsequent data word received after LPSPI_PCS assertion."/>
+      <bit_field_value name="RSR_SOF_0b1" value="0b1" description="First data word received after LPSPI_PCS assertion."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RXEMPTY" access="RO" reset_value="0x1" description="RX FIFO Empty">
+      <alias type="CMSIS" value="LPSPI_RSR_RXEMPTY(x)"/>
+      <bit_field_value name="RSR_RXEMPTY_0b0" value="0b0" description="RX FIFO is not empty."/>
+      <bit_field_value name="RSR_RXEMPTY_0b1" value="0b1" description="RX FIFO is empty."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <register offset="0x74" width="32" name="RDR" description="Receive Data Register">
+    <alias type="CMSIS" value="RDR"/>
+    <bit_field offset="0" width="32" name="DATA" access="RO" reset_value="0" description="Receive Data">
+      <alias type="CMSIS" value="LPSPI_RDR_DATA(x)"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

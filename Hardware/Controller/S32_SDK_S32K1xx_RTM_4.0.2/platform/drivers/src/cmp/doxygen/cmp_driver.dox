@@ -1,0 +1,273 @@
+/*!
+  
+   @defgroup cmp Comparator (CMP) 
+   ## Hardware background ##
+   The comparator (CMP) module is an analog comparator integrated in MCU.
+   
+   Features of the CMP module include:   
+   - 8 bit DAC with 2 voltage reference source
+   - 8 analog inputs from external pins
+   - Round robin check. In summary, this allow the CMP to operate independently 
+   in STOP and VLPS mode, whilst being triggered periodically to sample up to 8
+   inputs. Only if an input changes state is a full wakeup generated.
+   - Operational over the entire supply range
+   - Inputs may range from rail to rail
+   - Programmable hysteresis control
+   - Selectable interrupt on rising-edge, falling-edge, or both rising or falling edges of the
+comparator output
+   - Selectable inversion on comparator output
+   - Capability to produce a wide range of outputs such as: sampled, windowed, which is ideal for certain PWM zero-crossing-detection applications and digitally filtered
+   - A comparison event can be selected to trigger a DMA transfer
+   - The window and filter functions are not available in STOP modes.	
+
+
+   ## How to use the CMP driver in your application ##
+   
+   The user can configure the CMP in many ways: 
+		-CMP_DRV_Init - configures all CMP features
+		-CMP_DRV_ConfigDAC - configures only DAC features
+		-CMP_DRV_ConfigTriggerMode - configures only trigger mode features
+		-CMP_DRV_ConfigComparator - configures only analog comparator features
+		-CMP_DRV_ConfigMUX - configures only MUX features
+   
+   Also the current configuration can be read using:
+		-CMP_DRV_GetConfigAll - gets all CMP configuration
+		-CMP_DRV_GetDACConfig - gets only DAC configuration
+		-CMP_DRV_GetMUXConfig - gets only MUX configuration
+		-CMP_DRV_GetInitTriggerMode - gets only trigger mode configuration
+		-CMP_DRV_GetComparatorConfig - gets only analog comparator features
+	
+	A default configuration can be read using:
+        -CMP_DRV_GetDefaultConfig - gets a default configuration for the comparator
+	
+   When the MCU exits from STOP mode CMP_DRV_GetInputFlags can be used to get the channel which triggered the wakeup. Please use this function only in this use case.
+ CMP_DRV_ClearInputFlags will be used to clear this input change flags.
+
+   CMP_DRV_GetOutputFlags can be used to get output flag state and CMP_DRV_ClearOutputFlags to clear them.
+	
+	The main structure used to configure your application is <b>cmp_module_t</b>. This structure includes
+configuration structures for trigger mode, MUX, DAC and comparator: <b>cmp_comparator_t</b>, <b>cmp_anmux_t</b>,
+<b>cmp_dac_t</b> and <b>cmp_trigger_mode_t</b>	
+
+    If application use CMP as wakeup source from Standby mode on MPC574x devices is mandatory to enable channel 3 from WKPU.
+
+	## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\cmp\cmp_driver.c
+${S32SDK_PATH}\platform\drivers\src\cmp\cmp_hw_access.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+${S32SDK_PATH}\platform\drivers\src\cmp\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref interrupt_manager
+\ref PinSettings
+
+   #### Example for S32K14x: ####
+   The next example will compare 2 external signals (CMP input 0 an CMP input 1). The output can be measured on port E, pin 4.
+@code  
+   const cmp_module_t cmp_general_config =
+    {
+        {
+            .dmaTriggerState        = false,
+            .outputInterruptTrigger = CMP_NO_EVENT,
+            .mode                   = CMP_CONTINUOUS,
+            .filterSamplePeriod     = 0,
+            .filterSampleCount      = 0,
+            .powerMode              = CMP_LOW_SPEED,
+            .inverterState          = CMP_NORMAL,
+            .outputSelect           = CMP_COUT,
+            .pinState               = CMP_AVAILABLE,
+            .offsetLevel            = CMP_LEVEL_OFFSET_0,
+            .hysteresisLevel        = CMP_LEVEL_HYS_0
+        },
+        
+        {
+            .positivePortMux        = CMP_MUX,
+            .negativePortMux        = CMP_MUX,
+            .positiveInputMux       = 0,
+            .negativeInputMux       = 1
+        },
+        
+        {
+            .voltageReferenceSource = CMP_VIN1,
+            .voltage                = 120,
+            .state                  = false
+        },
+        
+        {
+            .roundRobinState            = false,
+            .roundRobinInterruptState   = false,
+            .fixedPort                  = CMP_PLUS_FIXED,
+            .fixedChannel               = 0,
+            .samples                    = 0,
+            .initializationDelay        = 0,
+            /* Channel 0 is enabled for round robin check */
+            /* Channel 1 is enabled for round robin check */
+            /* Channel 2 is enabled for round robin check */
+            /* Channel 3 is enabled for round robin check */
+            /* Channel 4 is enabled for round robin check */
+            /* Channel 5 is enabled for round robin check */
+            /* Channel 6 is enabled for round robin check */
+            /* Channel 7 is enabled for round robin check */
+            .roundRobinChannelsState    = 255, 
+            /* Initial comparison result for channel 0 is 1 */
+            /* Initial comparison result for channel 1 is 1 */
+            /* Initial comparison result for channel 2 is 1 */
+            /* Initial comparison result for channel 3 is 1 */
+            /* Initial comparison result for channel 4 is 1 */
+            /* Initial comparison result for channel 5 is 1 */
+            /* Initial comparison result for channel 6 is 1 */
+            /* Initial comparison result for channel 7 is 1 */
+            .programedState             = 255
+        }       
+    };
+	
+	#define	COMPARATOR_PORT			PORTA
+	#define	COMPARATOR_INPUT1_PIN	0UL
+	#define	COMPARATOR_INPUT2_PIN	1UL
+	#define COMPARATOR_OUTPUT		4UL
+	#define COMPARATOR_INSTANCE		0UL
+     
+    int main(void)
+	{
+		/* Initialize and configure clocks
+         *  -   Setup system clocks
+         *  -   Enable clock feed for Ports and Comparator
+         *  -   See Clock Manager component for more info
+         */
+        CLOCK_SYS_Init(g_clockManConfigsArr, CLOCK_MANAGER_CONFIG_CNT,
+                            g_clockManCallbacksArr, CLOCK_MANAGER_CALLBACK_CNT);
+        CLOCK_SYS_UpdateConfiguration(0U, CLOCK_MANAGER_POLICY_AGREEMENT);
+
+		/* Set pins used by CMP */
+		/* The negative port is connected to PTA0 and positive port is connected to PTA1. The
+		 comparator output can be visualized on PTA4 */
+		/* Initialize pins
+         *  -   Setup input pins for Comparator
+         *  -   Setup output pins for LEDs
+         *  -   See PinSettings component for more info
+         */
+        PINS_DRV_Init(NUM_OF_CONFIGURED_PINS, g_pin_mux_InitConfigArr);
+		
+		/* Init CMP module */
+		CMP_DRV_Init(COMPARATOR_INSTANCE, &cmp_general_config);
+		for (;;)
+			{}
+		return(0);
+	}
+@endcode
+
+
+   #### Example for MPC574XG\C: ####
+   The next example will compare 2 external signals (CMP input 0 an CMP input 1). The output can be measured on port E, pin 4.
+@code  
+   const cmp_module_t cmp_general_config =
+    {
+        {
+            .dmaTriggerState        = false,
+            .outputInterruptTrigger = CMP_NO_EVENT,
+            .mode                   = CMP_CONTINUOUS,
+            .filterSamplePeriod     = 0,
+            .filterSampleCount      = 0,
+            .powerMode              = CMP_LOW_SPEED,
+            .inverterState          = CMP_NORMAL,
+            .outputSelect           = CMP_COUT,
+            .pinState               = CMP_AVAILABLE,
+            .hysteresisLevel        = CMP_LEVEL_HYS_0
+        },
+        
+        {
+            .positivePortMux        = CMP_MUX,
+            .negativePortMux        = CMP_MUX,
+            .positiveInputMux       = 0,
+            .negativeInputMux       = 1
+        },
+        
+        {
+            .voltageReferenceSource = CMP_VIN1,
+            .voltage                = 120,
+            .state                  = false,
+			.fixRefInputMux         = false
+        },
+        
+        {
+            .roundRobinState            = false,
+            .roundRobinInterruptState   = false,
+            .fixedPort                  = CMP_PLUS_FIXED,
+            .fixedChannel               = 0,
+            .samples                    = 0,
+            /* Channel 0 is enabled for round robin check */
+            /* Channel 1 is enabled for round robin check */
+            /* Channel 2 is enabled for round robin check */
+            /* Channel 3 is enabled for round robin check */
+            /* Channel 4 is enabled for round robin check */
+            /* Channel 5 is enabled for round robin check */
+            /* Channel 6 is enabled for round robin check */
+            /* Channel 7 is enabled for round robin check */
+            .roundRobinChannelsState    = 255, 
+            /* Initial comparison result for channel 0 is 1 */
+            /* Initial comparison result for channel 1 is 1 */
+            /* Initial comparison result for channel 2 is 1 */
+            /* Initial comparison result for channel 3 is 1 */
+            /* Initial comparison result for channel 4 is 1 */
+            /* Initial comparison result for channel 5 is 1 */
+            /* Initial comparison result for channel 6 is 1 */
+            /* Initial comparison result for channel 7 is 1 */
+            .programedState             = 255
+        }       
+    };
+	
+	#define	COMPARATOR_PORT			PORTA
+	#define	COMPARATOR_INPUT1_PIN	0UL
+	#define	COMPARATOR_INPUT2_PIN	1UL
+	#define COMPARATOR_OUTPUT		4UL
+	#define COMPARATOR_INSTANCE		0UL
+     
+    int main(void)
+	{
+		/* Write your local variable definition here */
+		/* Initialize and configure clocks
+         *  -   Setup system clocks
+         *  -   Enable clock feed for Ports and Comparator
+         *  -   See Clock Manager component for more info
+         */
+        CLOCK_SYS_Init(g_clockManConfigsArr, CLOCK_MANAGER_CONFIG_CNT,
+                            g_clockManCallbacksArr, CLOCK_MANAGER_CALLBACK_CNT);
+        CLOCK_SYS_UpdateConfiguration(0U, CLOCK_MANAGER_POLICY_AGREEMENT);
+
+		/* Set pins used by CMP */
+		/* The negative port is connected to PTA0 and positive port is connected to PTA1. The
+		 comparator output can be visualized on PTA4 */
+		/* Initialize pins
+         *  -   Setup input pins for Comparator
+         *  -   Setup output pins for LEDs
+         *  -   See PinSettings component for more info
+         */
+        PINS_DRV_Init(NUM_OF_CONFIGURED_PINS, g_pin_mux_InitConfigArr);
+		
+		/* Init CMP module */
+		CMP_DRV_Init(COMPARATOR_INSTANCE, &cmp_general_config);
+		for (;;)
+			{}
+		return(0);
+	}
+@endcode
+
+@}*/

@@ -1,0 +1,107 @@
+/*!
+ * @defgroup adc_driver ADC Driver
+ * @ingroup adc
+ * @brief Analog to Digital Converter Peripheral Driver.
+ *
+ * The ADC is a configurable 12-bit (selectable to between 8-bit, 10-bit and 12-bit resolution) single-ended SAR converter.
+ *
+ * Features of the ADC include:
+ *     - up to 32 control channels (depending on the device variant), with configurable triggers
+ *     - up to 32 selectable external input sources (depending on the device variant) and multiple internal input sources
+ *     - hardware compare and average functions
+ *     - auto-calibration feature
+ *
+ * ## Hardware background ##
+ * The ADC included in the S32K14x series is a selectable resolution (8, 10, 12-bit), single-ended,
+ * SAR converter. Depending on the device variant, each ADC instance has
+ * up to 40 selectable input channels (up to 32 external and up to 8 internal)
+ * and up to 32 control channels (each with a result register, an input channel selection register
+ * and interrupt enable).
+ *
+ * <b>Sample time</b> is configurable through selection of A/D clock and a
+ * configurable sample time (in A/D clocks).
+ *
+ * Also provided are the Hardware Average and Hardware Compare Features.
+ *
+ * <b>Hardware Average</b> will sample a selectable number of measurements and
+ * average them before signaling a Conversion Complete.
+ *
+ * <b>Hardware Compare</b> can be used to signal if an input channel goes outside
+ * (or inside) of a predefined range.
+ *
+ * The <b>Calibration</b> features can be used to automatically calibrate or
+ * fine-tune the ADC before use.
+ *
+ * ## Driver consideration ##
+ * The ADC Driver provides access to all features, but not all need to be
+ * configured to use the ADC.
+ * The user application can use the default for most settings, changing only
+ * what is necessary. For example, if Compare or Average features are not used,
+ * the user does not need to configure them.
+ *
+ * The Driver uses structures for configuration. Each structure contains members
+ * that are specific to its respective functionality. There is a \b converter
+ * structure, a hardware \b compare structure, a hardware \b average structure
+ * and a \b calibration structure. Each struct has a corresponding
+ * <tt>InitStruct()</tt> method that can be used to initialize the members to
+ * reset values, so the user can change only the values that are specific to the
+ * application.
+ *
+ * The Driver also includes support for configuring the Trigger Latching and Arbitration Unit
+ * controlled from a separate hardware module - System Integration Module (SIM).
+ *
+ *
+ * ## Interrupt handling ##
+ * The ADC Driver in S32 SDK does not use interrupts internally. These can be
+ * defined by the user application.
+ * There are two ways to add an ADC interrupt:
+ *  1. Using the weak symbols defined by start-up code. If the methods
+ *      <tt>ADC<b>x</b>_Handler(void)</tt> (x denotes instance number) are not
+ *      defined, the linker uses a default ISR. An error will be generated if
+ *      methods with the same name are defined multiple times. This method works
+ *      regardless of the placement of the interrupt vector table (Flash or RAM).
+ *  2. Using the Interrupt Manager's <tt>INT_SYS_InstallHandler()</tt> method. This can
+ *      be used to dynamically change the ISR at run-time. This method works
+ *      only if the interrupt vector table is located in RAM (S32 SDK behavior). To get
+ *      the ADC instance's interrupt number, use <tt>ADC_DRV_GetInterruptNumber()</tt>.
+ *
+ * ## Clocking and pin configuration ##
+ * The ADC Driver does not handle clock setup (from PCC) or any kind of pin
+ * configuration (done by PORT module). This is handled by the Clock Manager and
+ * PORT module, respectively. The driver assumes that correct clock
+ * configurations have been made, so it is the user's responsibility to set up
+ * clocking and pin configurations correctly.
+ *
+ * ## Triggering a conversion ##
+ * There are two separate ways for triggering an ADC conversion from a control channel:
+ * 1. Software triggering
+ *     Only conversion from first control channel may be triggered from software - must enabled at converter configuration
+ *     Initiated by writing a valid input channel ID to the first control channel - use ADC_DRV_ConfigChan().
+ * 2. Hardware triggering
+ *     Conversion from any control channel may be hardware triggered - however for first control channel it must be enabled
+ *     at converter configuration.
+ *
+ * ## Integration guideline ##
+ *
+ * ### Compilation units ###
+ *
+ * The following files need to be compiled in the project:
+ * \verbatim
+ * ${S32SDK_PATH}\platform\drivers\src\adc_driver.c
+ * \endverbatim
+ *
+ * ### Include path ###
+ *
+ * The following paths need to be added to the include path of the toolchain:
+ * \verbatim
+ * ${S32SDK_PATH}\platform\drivers\inc\
+ * \endverbatim
+ *
+ * ### Compile symbols ###
+ *
+ * No special symbols are required for this component
+ *
+ * ### Dependencies ###
+ * \ref clock_manager
+ *
+ */

@@ -1,0 +1,669 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="VERID" description="Version ID Register">
+    <alias type="CMSIS" value="VERID"/>
+    <bit_field offset="0" width="32" name="VERSION" access="RO" reset_value="0x1000000" description="SCG Version Number">
+      <alias type="CMSIS" value="SCG_VERID_VERSION(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="PARAM" description="Parameter Register">
+    <alias type="CMSIS" value="PARAM"/>
+    <bit_field offset="0" width="8" name="CLKPRES" access="RO" reset_value="0xFE" description="Clock Present">
+      <alias type="CMSIS" value="SCG_PARAM_CLKPRES(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <reserved_bit_field offset="16" width="11" reset_value="0"/>
+    <bit_field offset="27" width="5" name="DIVPRES" access="RO" reset_value="0x1F" description="Divider Present">
+      <alias type="CMSIS" value="SCG_PARAM_DIVPRES(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="32" name="CSR" description="Clock Status Register">
+    <alias type="CMSIS" value="CSR"/>
+    <bit_field offset="0" width="4" name="DIVSLOW" access="RO" reset_value="0x1" description="Slow Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_CSR_DIVSLOW(x)"/>
+      <bit_field_value name="CSR_DIVSLOW_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="CSR_DIVSLOW_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="CSR_DIVSLOW_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="CSR_DIVSLOW_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="CSR_DIVSLOW_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="CSR_DIVSLOW_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="CSR_DIVSLOW_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="CSR_DIVSLOW_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="CSR_DIVSLOW_0b1000" value="0b1000" description="Reserved"/>
+      <bit_field_value name="CSR_DIVSLOW_0b1001" value="0b1001" description="Reserved"/>
+      <bit_field_value name="CSR_DIVSLOW_0b1010" value="0b1010" description="Reserved"/>
+      <bit_field_value name="CSR_DIVSLOW_0b1011" value="0b1011" description="Reserved"/>
+      <bit_field_value name="CSR_DIVSLOW_0b1100" value="0b1100" description="Reserved"/>
+      <bit_field_value name="CSR_DIVSLOW_0b1101" value="0b1101" description="Reserved"/>
+      <bit_field_value name="CSR_DIVSLOW_0b1110" value="0b1110" description="Reserved"/>
+      <bit_field_value name="CSR_DIVSLOW_0b1111" value="0b1111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="DIVBUS" access="RO" reset_value="0" description="Bus Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_CSR_DIVBUS(x)"/>
+      <bit_field_value name="CSR_DIVBUS_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="CSR_DIVBUS_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="CSR_DIVBUS_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="CSR_DIVBUS_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="CSR_DIVBUS_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="CSR_DIVBUS_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="CSR_DIVBUS_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="CSR_DIVBUS_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="CSR_DIVBUS_0b1000" value="0b1000" description="Divide-by-9"/>
+      <bit_field_value name="CSR_DIVBUS_0b1001" value="0b1001" description="Divide-by-10"/>
+      <bit_field_value name="CSR_DIVBUS_0b1010" value="0b1010" description="Divide-by-11"/>
+      <bit_field_value name="CSR_DIVBUS_0b1011" value="0b1011" description="Divide-by-12"/>
+      <bit_field_value name="CSR_DIVBUS_0b1100" value="0b1100" description="Divide-by-13"/>
+      <bit_field_value name="CSR_DIVBUS_0b1101" value="0b1101" description="Divide-by-14"/>
+      <bit_field_value name="CSR_DIVBUS_0b1110" value="0b1110" description="Divide-by-15"/>
+      <bit_field_value name="CSR_DIVBUS_0b1111" value="0b1111" description="Divide-by-16"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="4" reset_value="0"/>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DIVCORE" access="RO" reset_value="0" description="Core Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_CSR_DIVCORE(x)"/>
+      <bit_field_value name="CSR_DIVCORE_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="CSR_DIVCORE_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="CSR_DIVCORE_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="CSR_DIVCORE_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="CSR_DIVCORE_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="CSR_DIVCORE_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="CSR_DIVCORE_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="CSR_DIVCORE_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="CSR_DIVCORE_0b1000" value="0b1000" description="Divide-by-9"/>
+      <bit_field_value name="CSR_DIVCORE_0b1001" value="0b1001" description="Divide-by-10"/>
+      <bit_field_value name="CSR_DIVCORE_0b1010" value="0b1010" description="Divide-by-11"/>
+      <bit_field_value name="CSR_DIVCORE_0b1011" value="0b1011" description="Divide-by-12"/>
+      <bit_field_value name="CSR_DIVCORE_0b1100" value="0b1100" description="Divide-by-13"/>
+      <bit_field_value name="CSR_DIVCORE_0b1101" value="0b1101" description="Divide-by-14"/>
+      <bit_field_value name="CSR_DIVCORE_0b1110" value="0b1110" description="Divide-by-15"/>
+      <bit_field_value name="CSR_DIVCORE_0b1111" value="0b1111" description="Divide-by-16"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="4" name="SCS" access="RO" reset_value="0x3" description="System Clock Source">
+      <alias type="CMSIS" value="SCG_CSR_SCS(x)"/>
+      <bit_field_value name="CSR_SCS_0b0000" value="0b0000" description="Reserved"/>
+      <bit_field_value name="CSR_SCS_0b0001" value="0b0001" description="System OSC (SOSC_CLK)"/>
+      <bit_field_value name="CSR_SCS_0b0010" value="0b0010" description="Slow IRC (SIRC_CLK)"/>
+      <bit_field_value name="CSR_SCS_0b0011" value="0b0011" description="Fast IRC (FIRC_CLK)"/>
+      <bit_field_value name="CSR_SCS_0b0100" value="0b0100" description="Reserved"/>
+      <bit_field_value name="CSR_SCS_0b0101" value="0b0101" description="Reserved"/>
+      <bit_field_value name="CSR_SCS_0b0110" value="0b0110" description="System PLL (SPLL_CLK)"/>
+      <bit_field_value name="CSR_SCS_0b0111" value="0b0111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="RCCR" description="Run Clock Control Register">
+    <alias type="CMSIS" value="RCCR"/>
+    <bit_field offset="0" width="4" name="DIVSLOW" access="RW" reset_value="0x1" description="Slow Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_RCCR_DIVSLOW(x)"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b1000" value="0b1000" description="Reserved"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b1001" value="0b1001" description="Reserved"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b1010" value="0b1010" description="Reserved"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b1011" value="0b1011" description="Reserved"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b1100" value="0b1100" description="Reserved"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b1101" value="0b1101" description="Reserved"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b1110" value="0b1110" description="Reserved"/>
+      <bit_field_value name="RCCR_DIVSLOW_0b1111" value="0b1111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="DIVBUS" access="RW" reset_value="0" description="Bus Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_RCCR_DIVBUS(x)"/>
+      <bit_field_value name="RCCR_DIVBUS_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="RCCR_DIVBUS_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="RCCR_DIVBUS_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="RCCR_DIVBUS_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="RCCR_DIVBUS_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="RCCR_DIVBUS_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="RCCR_DIVBUS_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="RCCR_DIVBUS_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="RCCR_DIVBUS_0b1000" value="0b1000" description="Divide-by-9"/>
+      <bit_field_value name="RCCR_DIVBUS_0b1001" value="0b1001" description="Divide-by-10"/>
+      <bit_field_value name="RCCR_DIVBUS_0b1010" value="0b1010" description="Divide-by-11"/>
+      <bit_field_value name="RCCR_DIVBUS_0b1011" value="0b1011" description="Divide-by-12"/>
+      <bit_field_value name="RCCR_DIVBUS_0b1100" value="0b1100" description="Divide-by-13"/>
+      <bit_field_value name="RCCR_DIVBUS_0b1101" value="0b1101" description="Divide-by-14"/>
+      <bit_field_value name="RCCR_DIVBUS_0b1110" value="0b1110" description="Divide-by-15"/>
+      <bit_field_value name="RCCR_DIVBUS_0b1111" value="0b1111" description="Divide-by-16"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="4" reset_value="0"/>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DIVCORE" access="RW" reset_value="0" description="Core Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_RCCR_DIVCORE(x)"/>
+      <bit_field_value name="RCCR_DIVCORE_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="RCCR_DIVCORE_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="RCCR_DIVCORE_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="RCCR_DIVCORE_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="RCCR_DIVCORE_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="RCCR_DIVCORE_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="RCCR_DIVCORE_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="RCCR_DIVCORE_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="RCCR_DIVCORE_0b1000" value="0b1000" description="Divide-by-9"/>
+      <bit_field_value name="RCCR_DIVCORE_0b1001" value="0b1001" description="Divide-by-10"/>
+      <bit_field_value name="RCCR_DIVCORE_0b1010" value="0b1010" description="Divide-by-11"/>
+      <bit_field_value name="RCCR_DIVCORE_0b1011" value="0b1011" description="Divide-by-12"/>
+      <bit_field_value name="RCCR_DIVCORE_0b1100" value="0b1100" description="Divide-by-13"/>
+      <bit_field_value name="RCCR_DIVCORE_0b1101" value="0b1101" description="Divide-by-14"/>
+      <bit_field_value name="RCCR_DIVCORE_0b1110" value="0b1110" description="Divide-by-15"/>
+      <bit_field_value name="RCCR_DIVCORE_0b1111" value="0b1111" description="Divide-by-16"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="4" name="SCS" access="RW" reset_value="0x3" description="System Clock Source">
+      <alias type="CMSIS" value="SCG_RCCR_SCS(x)"/>
+      <bit_field_value name="RCCR_SCS_0b0000" value="0b0000" description="Reserved"/>
+      <bit_field_value name="RCCR_SCS_0b0001" value="0b0001" description="System OSC (SOSC_CLK)"/>
+      <bit_field_value name="RCCR_SCS_0b0010" value="0b0010" description="Slow IRC (SIRC_CLK)"/>
+      <bit_field_value name="RCCR_SCS_0b0011" value="0b0011" description="Fast IRC (FIRC_CLK)"/>
+      <bit_field_value name="RCCR_SCS_0b0100" value="0b0100" description="Reserved"/>
+      <bit_field_value name="RCCR_SCS_0b0101" value="0b0101" description="Reserved"/>
+      <bit_field_value name="RCCR_SCS_0b0110" value="0b0110" description="System PLL (SPLL_CLK)"/>
+      <bit_field_value name="RCCR_SCS_0b0111" value="0b0111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="VCCR" description="VLPR Clock Control Register">
+    <alias type="CMSIS" value="VCCR"/>
+    <bit_field offset="0" width="4" name="DIVSLOW" access="RW" reset_value="0x3" description="Slow Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_VCCR_DIVSLOW(x)"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b1000" value="0b1000" description="Reserved"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b1001" value="0b1001" description="Reserved"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b1010" value="0b1010" description="Reserved"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b1011" value="0b1011" description="Reserved"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b1100" value="0b1100" description="Reserved"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b1101" value="0b1101" description="Reserved"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b1110" value="0b1110" description="Reserved"/>
+      <bit_field_value name="VCCR_DIVSLOW_0b1111" value="0b1111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="DIVBUS" access="RW" reset_value="0" description="Bus Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_VCCR_DIVBUS(x)"/>
+      <bit_field_value name="VCCR_DIVBUS_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="VCCR_DIVBUS_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="VCCR_DIVBUS_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="VCCR_DIVBUS_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="VCCR_DIVBUS_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="VCCR_DIVBUS_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="VCCR_DIVBUS_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="VCCR_DIVBUS_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="VCCR_DIVBUS_0b1000" value="0b1000" description="Divide-by-9"/>
+      <bit_field_value name="VCCR_DIVBUS_0b1001" value="0b1001" description="Divide-by-10"/>
+      <bit_field_value name="VCCR_DIVBUS_0b1010" value="0b1010" description="Divide-by-11"/>
+      <bit_field_value name="VCCR_DIVBUS_0b1011" value="0b1011" description="Divide-by-12"/>
+      <bit_field_value name="VCCR_DIVBUS_0b1100" value="0b1100" description="Divide-by-13"/>
+      <bit_field_value name="VCCR_DIVBUS_0b1101" value="0b1101" description="Divide-by-14"/>
+      <bit_field_value name="VCCR_DIVBUS_0b1110" value="0b1110" description="Divide-by-15"/>
+      <bit_field_value name="VCCR_DIVBUS_0b1111" value="0b1111" description="Divide-by-16"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="4" reset_value="0"/>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DIVCORE" access="RW" reset_value="1" description="Core Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_VCCR_DIVCORE(x)"/>
+      <bit_field_value name="VCCR_DIVCORE_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="VCCR_DIVCORE_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="VCCR_DIVCORE_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="VCCR_DIVCORE_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="VCCR_DIVCORE_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="VCCR_DIVCORE_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="VCCR_DIVCORE_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="VCCR_DIVCORE_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="VCCR_DIVCORE_0b1000" value="0b1000" description="Divide-by-9"/>
+      <bit_field_value name="VCCR_DIVCORE_0b1001" value="0b1001" description="Divide-by-10"/>
+      <bit_field_value name="VCCR_DIVCORE_0b1010" value="0b1010" description="Divide-by-11"/>
+      <bit_field_value name="VCCR_DIVCORE_0b1011" value="0b1011" description="Divide-by-12"/>
+      <bit_field_value name="VCCR_DIVCORE_0b1100" value="0b1100" description="Divide-by-13"/>
+      <bit_field_value name="VCCR_DIVCORE_0b1101" value="0b1101" description="Divide-by-14"/>
+      <bit_field_value name="VCCR_DIVCORE_0b1110" value="0b1110" description="Divide-by-15"/>
+      <bit_field_value name="VCCR_DIVCORE_0b1111" value="0b1111" description="Divide-by-16"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="4" name="SCS" access="RW" reset_value="0x2" description="System Clock Source">
+      <alias type="CMSIS" value="SCG_VCCR_SCS(x)"/>
+      <bit_field_value name="VCCR_SCS_0b0000" value="0b0000" description="Reserved"/>
+      <bit_field_value name="VCCR_SCS_0b0001" value="0b0001" description="Reserved"/>
+      <bit_field_value name="VCCR_SCS_0b0010" value="0b0010" description="Slow IRC (SIRC_CLK)"/>
+      <bit_field_value name="VCCR_SCS_0b0011" value="0b0011" description="Reserved"/>
+      <bit_field_value name="VCCR_SCS_0b0100" value="0b0100" description="Reserved"/>
+      <bit_field_value name="VCCR_SCS_0b0101" value="0b0101" description="Reserved"/>
+      <bit_field_value name="VCCR_SCS_0b0110" value="0b0110" description="Reserved"/>
+      <bit_field_value name="VCCR_SCS_0b0111" value="0b0111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="HCCR" description="HSRUN Clock Control Register">
+    <alias type="CMSIS" value="HCCR"/>
+    <bit_field offset="0" width="4" name="DIVSLOW" access="RW" reset_value="0x3" description="Slow Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_HCCR_DIVSLOW(x)"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b1000" value="0b1000" description="Reserved"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b1001" value="0b1001" description="Reserved"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b1010" value="0b1010" description="Reserved"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b1011" value="0b1011" description="Reserved"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b1100" value="0b1100" description="Reserved"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b1101" value="0b1101" description="Reserved"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b1110" value="0b1110" description="Reserved"/>
+      <bit_field_value name="HCCR_DIVSLOW_0b1111" value="0b1111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="DIVBUS" access="RW" reset_value="1" description="Bus Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_HCCR_DIVBUS(x)"/>
+      <bit_field_value name="HCCR_DIVBUS_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="HCCR_DIVBUS_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="HCCR_DIVBUS_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="HCCR_DIVBUS_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="HCCR_DIVBUS_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="HCCR_DIVBUS_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="HCCR_DIVBUS_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="HCCR_DIVBUS_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="HCCR_DIVBUS_0b1000" value="0b1000" description="Divide-by-9"/>
+      <bit_field_value name="HCCR_DIVBUS_0b1001" value="0b1001" description="Divide-by-10"/>
+      <bit_field_value name="HCCR_DIVBUS_0b1010" value="0b1010" description="Divide-by-11"/>
+      <bit_field_value name="HCCR_DIVBUS_0b1011" value="0b1011" description="Divide-by-12"/>
+      <bit_field_value name="HCCR_DIVBUS_0b1100" value="0b1100" description="Divide-by-13"/>
+      <bit_field_value name="HCCR_DIVBUS_0b1101" value="0b1101" description="Divide-by-14"/>
+      <bit_field_value name="HCCR_DIVBUS_0b1110" value="0b1110" description="Divide-by-15"/>
+      <bit_field_value name="HCCR_DIVBUS_0b1111" value="0b1111" description="Divide-by-16"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="4" reset_value="0"/>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DIVCORE" access="RW" reset_value="0" description="Core Clock Divide Ratio">
+      <alias type="CMSIS" value="SCG_HCCR_DIVCORE(x)"/>
+      <bit_field_value name="HCCR_DIVCORE_0b0000" value="0b0000" description="Divide-by-1"/>
+      <bit_field_value name="HCCR_DIVCORE_0b0001" value="0b0001" description="Divide-by-2"/>
+      <bit_field_value name="HCCR_DIVCORE_0b0010" value="0b0010" description="Divide-by-3"/>
+      <bit_field_value name="HCCR_DIVCORE_0b0011" value="0b0011" description="Divide-by-4"/>
+      <bit_field_value name="HCCR_DIVCORE_0b0100" value="0b0100" description="Divide-by-5"/>
+      <bit_field_value name="HCCR_DIVCORE_0b0101" value="0b0101" description="Divide-by-6"/>
+      <bit_field_value name="HCCR_DIVCORE_0b0110" value="0b0110" description="Divide-by-7"/>
+      <bit_field_value name="HCCR_DIVCORE_0b0111" value="0b0111" description="Divide-by-8"/>
+      <bit_field_value name="HCCR_DIVCORE_0b1000" value="0b1000" description="Divide-by-9"/>
+      <bit_field_value name="HCCR_DIVCORE_0b1001" value="0b1001" description="Divide-by-10"/>
+      <bit_field_value name="HCCR_DIVCORE_0b1010" value="0b1010" description="Divide-by-11"/>
+      <bit_field_value name="HCCR_DIVCORE_0b1011" value="0b1011" description="Divide-by-12"/>
+      <bit_field_value name="HCCR_DIVCORE_0b1100" value="0b1100" description="Divide-by-13"/>
+      <bit_field_value name="HCCR_DIVCORE_0b1101" value="0b1101" description="Divide-by-14"/>
+      <bit_field_value name="HCCR_DIVCORE_0b1110" value="0b1110" description="Divide-by-15"/>
+      <bit_field_value name="HCCR_DIVCORE_0b1111" value="0b1111" description="Divide-by-16"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="4" name="SCS" access="RW" reset_value="0x6" description="System Clock Source">
+      <alias type="CMSIS" value="SCG_HCCR_SCS(x)"/>
+      <bit_field_value name="HCCR_SCS_0b0000" value="0b0000" description="Reserved"/>
+      <bit_field_value name="HCCR_SCS_0b0001" value="0b0001" description="System OSC (SOSC_CLK)"/>
+      <bit_field_value name="HCCR_SCS_0b0010" value="0b0010" description="Slow IRC (SIRC_CLK)"/>
+      <bit_field_value name="HCCR_SCS_0b0011" value="0b0011" description="Fast IRC (FIRC_CLK)"/>
+      <bit_field_value name="HCCR_SCS_0b0100" value="0b0100" description="Reserved"/>
+      <bit_field_value name="HCCR_SCS_0b0101" value="0b0101" description="Reserved"/>
+      <bit_field_value name="HCCR_SCS_0b0110" value="0b0110" description="System PLL (SPLL_CLK)"/>
+      <bit_field_value name="HCCR_SCS_0b0111" value="0b0111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="CLKOUTCNFG" description="SCG CLKOUT Configuration Register">
+    <alias type="CMSIS" value="CLKOUTCNFG"/>
+    <reserved_bit_field offset="0" width="24" reset_value="0"/>
+    <bit_field offset="24" width="4" name="CLKOUTSEL" access="RW" reset_value="0x3" description="SCG Clkout Select">
+      <alias type="CMSIS" value="SCG_CLKOUTCNFG_CLKOUTSEL(x)"/>
+      <bit_field_value name="CLKOUTCNFG_CLKOUTSEL_0b0000" value="0b0000" description="SCG SLOW Clock"/>
+      <bit_field_value name="CLKOUTCNFG_CLKOUTSEL_0b0001" value="0b0001" description="System OSC (SOSC_CLK)"/>
+      <bit_field_value name="CLKOUTCNFG_CLKOUTSEL_0b0010" value="0b0010" description="Slow IRC (SIRC_CLK)"/>
+      <bit_field_value name="CLKOUTCNFG_CLKOUTSEL_0b0011" value="0b0011" description="Fast IRC (FIRC_CLK)"/>
+      <bit_field_value name="CLKOUTCNFG_CLKOUTSEL_0b0100" value="0b0100" description="Reserved"/>
+      <bit_field_value name="CLKOUTCNFG_CLKOUTSEL_0b0101" value="0b0101" description="Reserved"/>
+      <bit_field_value name="CLKOUTCNFG_CLKOUTSEL_0b0110" value="0b0110" description="System PLL (SPLL_CLK)"/>
+      <bit_field_value name="CLKOUTCNFG_CLKOUTSEL_0b0111" value="0b0111" description="Reserved"/>
+      <bit_field_value name="CLKOUTCNFG_CLKOUTSEL_0b1111" value="0b1111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x100" width="32" name="SOSCCSR" description="System OSC Control Status Register">
+    <alias type="CMSIS" value="SOSCCSR"/>
+    <bit_field offset="0" width="1" name="SOSCEN" access="RW" reset_value="0" description="System OSC Enable">
+      <alias type="CMSIS" value="SCG_SOSCCSR_SOSCEN(x)"/>
+      <bit_field_value name="SOSCCSR_SOSCEN_0b0" value="0b0" description="System OSC is disabled"/>
+      <bit_field_value name="SOSCCSR_SOSCEN_0b1" value="0b1" description="System OSC is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="2" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="12" reset_value="0"/>
+    <bit_field offset="16" width="1" name="SOSCCM" access="RW" reset_value="0" description="System OSC Clock Monitor">
+      <alias type="CMSIS" value="SCG_SOSCCSR_SOSCCM(x)"/>
+      <bit_field_value name="SOSCCSR_SOSCCM_0b0" value="0b0" description="System OSC Clock Monitor is disabled"/>
+      <bit_field_value name="SOSCCSR_SOSCCM_0b1" value="0b1" description="System OSC Clock Monitor is enabled"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="SOSCCMRE" access="RW" reset_value="0" description="System OSC Clock Monitor Reset Enable">
+      <alias type="CMSIS" value="SCG_SOSCCSR_SOSCCMRE(x)"/>
+      <bit_field_value name="SOSCCSR_SOSCCMRE_0b0" value="0b0" description="Clock Monitor generates interrupt when error detected"/>
+      <bit_field_value name="SOSCCSR_SOSCCMRE_0b1" value="0b1" description="Clock Monitor generates reset when error detected"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="5" reset_value="0"/>
+    <bit_field offset="23" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="SCG_SOSCCSR_LK(x)"/>
+      <bit_field_value name="SOSCCSR_LK_0b0" value="0b0" description="This Control Status Register can be written."/>
+      <bit_field_value name="SOSCCSR_LK_0b1" value="0b1" description="This Control Status Register cannot be written."/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="SOSCVLD" access="RO" reset_value="0" description="System OSC Valid">
+      <alias type="CMSIS" value="SCG_SOSCCSR_SOSCVLD(x)"/>
+      <bit_field_value name="SOSCCSR_SOSCVLD_0b0" value="0b0" description="System OSC is not enabled or clock is not valid"/>
+      <bit_field_value name="SOSCCSR_SOSCVLD_0b1" value="0b1" description="System OSC is enabled and output clock is valid"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="SOSCSEL" access="RO" reset_value="0" description="System OSC Selected">
+      <alias type="CMSIS" value="SCG_SOSCCSR_SOSCSEL(x)"/>
+      <bit_field_value name="SOSCCSR_SOSCSEL_0b0" value="0b0" description="System OSC is not the system clock source"/>
+      <bit_field_value name="SOSCCSR_SOSCSEL_0b1" value="0b1" description="System OSC is the system clock source"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="SOSCERR" access="W1C" reset_value="0" description="System OSC Clock Error">
+      <alias type="CMSIS" value="SCG_SOSCCSR_SOSCERR(x)"/>
+      <bit_field_value name="SOSCCSR_SOSCERR_0b0" value="0b0" description="System OSC Clock Monitor is disabled or has not detected an error"/>
+      <bit_field_value name="SOSCCSR_SOSCERR_0b1" value="0b1" description="System OSC Clock Monitor is enabled and detected an error"/>
+    </bit_field>
+    <reserved_bit_field offset="27" width="5" reset_value="0"/>
+  </register>
+  <register offset="0x104" width="32" name="SOSCDIV" description="System OSC Divide Register">
+    <alias type="CMSIS" value="SOSCDIV"/>
+    <bit_field offset="0" width="3" name="SOSCDIV1" access="RW" reset_value="1" description="System OSC Clock Divide 1">
+      <alias type="CMSIS" value="SCG_SOSCDIV_SOSCDIV1(x)"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV1_0b000" value="0b000" description="Output disabled"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV1_0b001" value="0b001" description="Divide by 1"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV1_0b010" value="0b010" description="Divide by 2"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV1_0b011" value="0b011" description="Divide by 4"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV1_0b100" value="0b100" description="Divide by 8"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV1_0b101" value="0b101" description="Divide by 16"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV1_0b110" value="0b110" description="Divide by 32"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV1_0b111" value="0b111" description="Divide by 64"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="5" reset_value="0"/>
+    <bit_field offset="8" width="3" name="SOSCDIV2" access="RW" reset_value="1" description="System OSC Clock Divide 2">
+      <alias type="CMSIS" value="SCG_SOSCDIV_SOSCDIV2(x)"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV2_0b000" value="0b000" description="Output disabled"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV2_0b001" value="0b001" description="Divide by 1"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV2_0b010" value="0b010" description="Divide by 2"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV2_0b011" value="0b011" description="Divide by 4"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV2_0b100" value="0b100" description="Divide by 8"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV2_0b101" value="0b101" description="Divide by 16"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV2_0b110" value="0b110" description="Divide by 32"/>
+      <bit_field_value name="SOSCDIV_SOSCDIV2_0b111" value="0b111" description="Divide by 64"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <reserved_bit_field offset="16" width="3" reset_value="0"/>
+    <reserved_bit_field offset="19" width="13" reset_value="0"/>
+  </register>
+  <register offset="0x108" width="32" name="SOSCCFG" description="System Oscillator Configuration Register">
+    <alias type="CMSIS" value="SOSCCFG"/>
+    <reserved_bit_field offset="0" width="2" reset_value="0"/>
+    <bit_field offset="2" width="1" name="EREFS" access="RW" reset_value="0" description="External Reference Select">
+      <alias type="CMSIS" value="SCG_SOSCCFG_EREFS(x)"/>
+      <bit_field_value name="SOSCCFG_EREFS_0b0" value="0b0" description="External reference clock selected"/>
+      <bit_field_value name="SOSCCFG_EREFS_0b1" value="0b1" description="Internal crystal oscillator of OSC selected."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="HGO" access="RW" reset_value="0" description="High Gain Oscillator Select">
+      <alias type="CMSIS" value="SCG_SOSCCFG_HGO(x)"/>
+      <bit_field_value name="SOSCCFG_HGO_0b0" value="0b0" description="Configure crystal oscillator for low-gain operation"/>
+      <bit_field_value name="SOSCCFG_HGO_0b1" value="0b1" description="Configure crystal oscillator for high-gain operation"/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="RANGE" access="RW" reset_value="0x3" description="System OSC Range Select">
+      <alias type="CMSIS" value="SCG_SOSCCFG_RANGE(x)"/>
+      <bit_field_value name="SOSCCFG_RANGE_0b00" value="0b00" description="Reserved"/>
+      <bit_field_value name="SOSCCFG_RANGE_0b01" value="0b01" description="Low frequency range selected for the crystal oscillator"/>
+      <bit_field_value name="SOSCCFG_RANGE_0b10" value="0b10" description="Medium frequency range selected for the crytstal oscillator"/>
+      <bit_field_value name="SOSCCFG_RANGE_0b11" value="0b11" description="High frequency range selected for the crystal oscillator"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <reserved_bit_field offset="8" width="4" reset_value="0"/>
+    <reserved_bit_field offset="12" width="20" reset_value="0"/>
+  </register>
+  <register offset="0x200" width="32" name="SIRCCSR" description="Slow IRC Control Status Register">
+    <alias type="CMSIS" value="SIRCCSR"/>
+    <bit_field offset="0" width="1" name="SIRCEN" access="RW" reset_value="0x1" description="Slow IRC Enable">
+      <alias type="CMSIS" value="SCG_SIRCCSR_SIRCEN(x)"/>
+      <bit_field_value name="SIRCCSR_SIRCEN_0b0" value="0b0" description="Slow IRC is disabled"/>
+      <bit_field_value name="SIRCCSR_SIRCEN_0b1" value="0b1" description="Slow IRC is enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SIRCSTEN" access="RW" reset_value="0" description="Slow IRC Stop Enable">
+      <alias type="CMSIS" value="SCG_SIRCCSR_SIRCSTEN(x)"/>
+      <bit_field_value name="SIRCCSR_SIRCSTEN_0b0" value="0b0" description="Slow IRC is disabled in supported Stop modes"/>
+      <bit_field_value name="SIRCCSR_SIRCSTEN_0b1" value="0b1" description="Slow IRC is enabled in supported Stop modes"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="SIRCLPEN" access="RW" reset_value="0x1" description="Slow IRC Low Power Enable">
+      <alias type="CMSIS" value="SCG_SIRCCSR_SIRCLPEN(x)"/>
+      <bit_field_value name="SIRCCSR_SIRCLPEN_0b0" value="0b0" description="Slow IRC is disabled in VLP modes"/>
+      <bit_field_value name="SIRCCSR_SIRCLPEN_0b1" value="0b1" description="Slow IRC is enabled in VLP modes"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="19" reset_value="0"/>
+    <bit_field offset="23" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="SCG_SIRCCSR_LK(x)"/>
+      <bit_field_value name="SIRCCSR_LK_0b0" value="0b0" description="Control Status Register can be written."/>
+      <bit_field_value name="SIRCCSR_LK_0b1" value="0b1" description="Control Status Register cannot be written."/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="SIRCVLD" access="RO" reset_value="0x1" description="Slow IRC Valid">
+      <alias type="CMSIS" value="SCG_SIRCCSR_SIRCVLD(x)"/>
+      <bit_field_value name="SIRCCSR_SIRCVLD_0b0" value="0b0" description="Slow IRC is not enabled or clock is not valid"/>
+      <bit_field_value name="SIRCCSR_SIRCVLD_0b1" value="0b1" description="Slow IRC is enabled and output clock is valid"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="SIRCSEL" access="RO" reset_value="0" description="Slow IRC Selected">
+      <alias type="CMSIS" value="SCG_SIRCCSR_SIRCSEL(x)"/>
+      <bit_field_value name="SIRCCSR_SIRCSEL_0b0" value="0b0" description="Slow IRC is not the system clock source"/>
+      <bit_field_value name="SIRCCSR_SIRCSEL_0b1" value="0b1" description="Slow IRC is the system clock source"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x204" width="32" name="SIRCDIV" description="Slow IRC Divide Register">
+    <alias type="CMSIS" value="SIRCDIV"/>
+    <bit_field offset="0" width="3" name="SIRCDIV1" access="RW" reset_value="1" description="Slow IRC Clock Divide 1">
+      <alias type="CMSIS" value="SCG_SIRCDIV_SIRCDIV1(x)"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV1_0b000" value="0b000" description="Output disabled"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV1_0b001" value="0b001" description="Divide by 1"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV1_0b010" value="0b010" description="Divide by 2"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV1_0b011" value="0b011" description="Divide by 4"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV1_0b100" value="0b100" description="Divide by 8"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV1_0b101" value="0b101" description="Divide by 16"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV1_0b110" value="0b110" description="Divide by 32"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV1_0b111" value="0b111" description="Divide by 64"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="5" reset_value="0"/>
+    <bit_field offset="8" width="3" name="SIRCDIV2" access="RW" reset_value="1" description="Slow IRC Clock Divide 2">
+      <alias type="CMSIS" value="SCG_SIRCDIV_SIRCDIV2(x)"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV2_0b000" value="0b000" description="Output disabled"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV2_0b001" value="0b001" description="Divide by 1"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV2_0b010" value="0b010" description="Divide by 2"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV2_0b011" value="0b011" description="Divide by 4"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV2_0b100" value="0b100" description="Divide by 8"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV2_0b101" value="0b101" description="Divide by 16"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV2_0b110" value="0b110" description="Divide by 32"/>
+      <bit_field_value name="SIRCDIV_SIRCDIV2_0b111" value="0b111" description="Divide by 64"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <reserved_bit_field offset="16" width="3" reset_value="0"/>
+    <reserved_bit_field offset="19" width="13" reset_value="0"/>
+  </register>
+  <register offset="0x208" width="32" name="SIRCCFG" description="Slow IRC Configuration Register">
+    <alias type="CMSIS" value="SIRCCFG"/>
+    <bit_field offset="0" width="1" name="RANGE" access="RW" reset_value="0x1" description="Frequency Range">
+      <alias type="CMSIS" value="SCG_SIRCCFG_RANGE(x)"/>
+      <bit_field_value name="SIRCCFG_RANGE_0b0" value="0b0" description="Slow IRC low range clock (2 MHz)"/>
+      <bit_field_value name="SIRCCFG_RANGE_0b1" value="0b1" description="Slow IRC high range clock (8 MHz )"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x300" width="32" name="FIRCCSR" description="Fast IRC Control Status Register">
+    <alias type="CMSIS" value="FIRCCSR"/>
+    <bit_field offset="0" width="1" name="FIRCEN" access="RW" reset_value="0x1" description="Fast IRC Enable">
+      <alias type="CMSIS" value="SCG_FIRCCSR_FIRCEN(x)"/>
+      <bit_field_value name="FIRCCSR_FIRCEN_0b0" value="0b0" description="Fast IRC is disabled"/>
+      <bit_field_value name="FIRCCSR_FIRCEN_0b1" value="0b1" description="Fast IRC is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="2" reset_value="0"/>
+    <bit_field offset="3" width="1" name="FIRCREGOFF" access="RW" reset_value="0" description="Fast IRC Regulator Enable">
+      <alias type="CMSIS" value="SCG_FIRCCSR_FIRCREGOFF(x)"/>
+      <bit_field_value name="FIRCCSR_FIRCREGOFF_0b0" value="0b0" description="Fast IRC Regulator is enabled."/>
+      <bit_field_value name="FIRCCSR_FIRCREGOFF_0b1" value="0b1" description="Fast IRC Regulator is disabled."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+    <reserved_bit_field offset="8" width="2" reset_value="0"/>
+    <reserved_bit_field offset="10" width="13" reset_value="0"/>
+    <bit_field offset="23" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="SCG_FIRCCSR_LK(x)"/>
+      <bit_field_value name="FIRCCSR_LK_0b0" value="0b0" description="Control Status Register can be written."/>
+      <bit_field_value name="FIRCCSR_LK_0b1" value="0b1" description="Control Status Register cannot be written."/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="FIRCVLD" access="RO" reset_value="0x1" description="Fast IRC Valid status">
+      <alias type="CMSIS" value="SCG_FIRCCSR_FIRCVLD(x)"/>
+      <bit_field_value name="FIRCCSR_FIRCVLD_0b0" value="0b0" description="Fast IRC is not enabled or clock is not valid."/>
+      <bit_field_value name="FIRCCSR_FIRCVLD_0b1" value="0b1" description="Fast IRC is enabled and output clock is valid. The clock is valid once there is an output clock from the FIRC analog."/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="FIRCSEL" access="RO" reset_value="0x1" description="Fast IRC Selected status">
+      <alias type="CMSIS" value="SCG_FIRCCSR_FIRCSEL(x)"/>
+      <bit_field_value name="FIRCCSR_FIRCSEL_0b0" value="0b0" description="Fast IRC is not the system clock source"/>
+      <bit_field_value name="FIRCCSR_FIRCSEL_0b1" value="0b1" description="Fast IRC is the system clock source"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="FIRCERR" access="W1C" reset_value="0" description="Fast IRC Clock Error">
+      <alias type="CMSIS" value="SCG_FIRCCSR_FIRCERR(x)"/>
+      <bit_field_value name="FIRCCSR_FIRCERR_0b0" value="0b0" description="Error not detected with the Fast IRC trimming."/>
+      <bit_field_value name="FIRCCSR_FIRCERR_0b1" value="0b1" description="Error detected with the Fast IRC trimming."/>
+    </bit_field>
+    <reserved_bit_field offset="27" width="5" reset_value="0"/>
+  </register>
+  <register offset="0x304" width="32" name="FIRCDIV" description="Fast IRC Divide Register">
+    <alias type="CMSIS" value="FIRCDIV"/>
+    <bit_field offset="0" width="3" name="FIRCDIV1" access="RW" reset_value="1" description="Fast IRC Clock Divide 1">
+      <alias type="CMSIS" value="SCG_FIRCDIV_FIRCDIV1(x)"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV1_0b000" value="0b000" description="Output disabled"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV1_0b001" value="0b001" description="Divide by 1"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV1_0b010" value="0b010" description="Divide by 2"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV1_0b011" value="0b011" description="Divide by 4"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV1_0b100" value="0b100" description="Divide by 8"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV1_0b101" value="0b101" description="Divide by 16"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV1_0b110" value="0b110" description="Divide by 32"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV1_0b111" value="0b111" description="Divide by 64"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="5" reset_value="0"/>
+    <bit_field offset="8" width="3" name="FIRCDIV2" access="RW" reset_value="1" description="Fast IRC Clock Divide 2">
+      <alias type="CMSIS" value="SCG_FIRCDIV_FIRCDIV2(x)"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV2_0b000" value="0b000" description="Output disabled"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV2_0b001" value="0b001" description="Divide by 1"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV2_0b010" value="0b010" description="Divide by 2"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV2_0b011" value="0b011" description="Divide by 4"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV2_0b100" value="0b100" description="Divide by 8"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV2_0b101" value="0b101" description="Divide by 16"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV2_0b110" value="0b110" description="Divide by 32"/>
+      <bit_field_value name="FIRCDIV_FIRCDIV2_0b111" value="0b111" description="Divide by 64"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <reserved_bit_field offset="16" width="3" reset_value="0"/>
+    <reserved_bit_field offset="19" width="13" reset_value="0"/>
+  </register>
+  <register offset="0x308" width="32" name="FIRCCFG" description="Fast IRC Configuration Register">
+    <alias type="CMSIS" value="FIRCCFG"/>
+    <bit_field offset="0" width="2" name="RANGE" access="RW" reset_value="0" description="Frequency Range">
+      <alias type="CMSIS" value="SCG_FIRCCFG_RANGE(x)"/>
+      <bit_field_value name="FIRCCFG_RANGE_0b00" value="0b00" description="Fast IRC is trimmed to 48 MHz"/>
+      <bit_field_value name="FIRCCFG_RANGE_0b01" value="0b01" description="Reserved"/>
+      <bit_field_value name="FIRCCFG_RANGE_0b10" value="0b10" description="Reserved"/>
+      <bit_field_value name="FIRCCFG_RANGE_0b11" value="0b11" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <register offset="0x600" width="32" name="SPLLCSR" description="System PLL Control Status Register">
+    <alias type="CMSIS" value="SPLLCSR"/>
+    <bit_field offset="0" width="1" name="SPLLEN" access="RW" reset_value="0" description="System PLL Enable">
+      <alias type="CMSIS" value="SCG_SPLLCSR_SPLLEN(x)"/>
+      <bit_field_value name="SPLLCSR_SPLLEN_0b0" value="0b0" description="System PLL is disabled"/>
+      <bit_field_value name="SPLLCSR_SPLLEN_0b1" value="0b1" description="System PLL is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <reserved_bit_field offset="2" width="14" reset_value="0"/>
+    <bit_field offset="16" width="1" name="SPLLCM" access="RW" reset_value="0" description="System PLL Clock Monitor">
+      <alias type="CMSIS" value="SCG_SPLLCSR_SPLLCM(x)"/>
+      <bit_field_value name="SPLLCSR_SPLLCM_0b0" value="0b0" description="System PLL Clock Monitor is disabled"/>
+      <bit_field_value name="SPLLCSR_SPLLCM_0b1" value="0b1" description="System PLL Clock Monitor is enabled"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="SPLLCMRE" access="RW" reset_value="0" description="System PLL Clock Monitor Reset Enable">
+      <alias type="CMSIS" value="SCG_SPLLCSR_SPLLCMRE(x)"/>
+      <bit_field_value name="SPLLCSR_SPLLCMRE_0b0" value="0b0" description="Clock Monitor generates interrupt when error detected"/>
+      <bit_field_value name="SPLLCSR_SPLLCMRE_0b1" value="0b1" description="Clock Monitor generates reset when error detected"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="5" reset_value="0"/>
+    <bit_field offset="23" width="1" name="LK" access="RW" reset_value="0" description="Lock Register">
+      <alias type="CMSIS" value="SCG_SPLLCSR_LK(x)"/>
+      <bit_field_value name="SPLLCSR_LK_0b0" value="0b0" description="Control Status Register can be written."/>
+      <bit_field_value name="SPLLCSR_LK_0b1" value="0b1" description="Control Status Register cannot be written."/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="SPLLVLD" access="RO" reset_value="0" description="System PLL Valid">
+      <alias type="CMSIS" value="SCG_SPLLCSR_SPLLVLD(x)"/>
+      <bit_field_value name="SPLLCSR_SPLLVLD_0b0" value="0b0" description="System PLL is not enabled or clock is not valid"/>
+      <bit_field_value name="SPLLCSR_SPLLVLD_0b1" value="0b1" description="System PLL is enabled and output clock is valid"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="SPLLSEL" access="RO" reset_value="0" description="System PLL Selected">
+      <alias type="CMSIS" value="SCG_SPLLCSR_SPLLSEL(x)"/>
+      <bit_field_value name="SPLLCSR_SPLLSEL_0b0" value="0b0" description="System PLL is not the system clock source"/>
+      <bit_field_value name="SPLLCSR_SPLLSEL_0b1" value="0b1" description="System PLL is the system clock source"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="SPLLERR" access="W1C" reset_value="0" description="System PLL Clock Error">
+      <alias type="CMSIS" value="SCG_SPLLCSR_SPLLERR(x)"/>
+      <bit_field_value name="SPLLCSR_SPLLERR_0b0" value="0b0" description="System PLL Clock Monitor is disabled or has not detected an error"/>
+      <bit_field_value name="SPLLCSR_SPLLERR_0b1" value="0b1" description="System PLL Clock Monitor is enabled and detected an error. System PLL Clock Error flag will not set when System OSC is selected as its source and SOSCERR has set."/>
+    </bit_field>
+    <reserved_bit_field offset="27" width="5" reset_value="0"/>
+  </register>
+  <register offset="0x604" width="32" name="SPLLDIV" description="System PLL Divide Register">
+    <alias type="CMSIS" value="SPLLDIV"/>
+    <bit_field offset="0" width="3" name="SPLLDIV1" access="RW" reset_value="1" description="System PLL Clock Divide 1">
+      <alias type="CMSIS" value="SCG_SPLLDIV_SPLLDIV1(x)"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV1_0b000" value="0b000" description="Clock disabled"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV1_0b001" value="0b001" description="Divide by 1"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV1_0b010" value="0b010" description="Divide by 2"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV1_0b011" value="0b011" description="Divide by 4"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV1_0b100" value="0b100" description="Divide by 8"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV1_0b101" value="0b101" description="Divide by 16"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV1_0b110" value="0b110" description="Divide by 32"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV1_0b111" value="0b111" description="Divide by 64"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="5" reset_value="0"/>
+    <bit_field offset="8" width="3" name="SPLLDIV2" access="RW" reset_value="1" description="System PLL Clock Divide 2">
+      <alias type="CMSIS" value="SCG_SPLLDIV_SPLLDIV2(x)"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV2_0b000" value="0b000" description="Clock disabled"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV2_0b001" value="0b001" description="Divide by 1"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV2_0b010" value="0b010" description="Divide by 2"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV2_0b011" value="0b011" description="Divide by 4"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV2_0b100" value="0b100" description="Divide by 8"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV2_0b101" value="0b101" description="Divide by 16"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV2_0b110" value="0b110" description="Divide by 32"/>
+      <bit_field_value name="SPLLDIV_SPLLDIV2_0b111" value="0b111" description="Divide by 64"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <reserved_bit_field offset="16" width="3" reset_value="0"/>
+    <reserved_bit_field offset="19" width="13" reset_value="0"/>
+  </register>
+  <register offset="0x608" width="32" name="SPLLCFG" description="System PLL Configuration Register">
+    <alias type="CMSIS" value="SPLLCFG"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0"/>
+    <reserved_bit_field offset="1" width="7" reset_value="0"/>
+    <bit_field offset="8" width="3" name="PREDIV" access="RW" reset_value="0" description="PLL Reference Clock Divider">
+      <alias type="CMSIS" value="SCG_SPLLCFG_PREDIV(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <bit_field offset="16" width="5" name="MULT" access="RW" reset_value="12" description="System PLL Multiplier">
+      <alias type="CMSIS" value="SCG_SPLLCFG_MULT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="11" reset_value="0"/>
+  </register>
+</regs:peripheral>

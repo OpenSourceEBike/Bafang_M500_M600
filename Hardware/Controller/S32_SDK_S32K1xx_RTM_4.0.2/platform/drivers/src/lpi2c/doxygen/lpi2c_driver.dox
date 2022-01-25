@@ -1,0 +1,127 @@
+/** 
+@defgroup lpi2c_drv LPI2C Driver
+@ingroup lpi2c
+@brief Low Power Inter-Integrated Circuit (LPI2C) Peripheral Driver
+<p>
+  The LPI2C driver allows communication on an I2C bus using the LPI2C module in the S32144K processor.
+</p>
+  ## Features ##
+   - Interrupt based
+   - Master or slave operation
+   - Provides blocking and non-blocking transmit and receive functions
+   - 7-bit or 10-bit addressing
+   - Configurable baud rate
+   - Provides support for all operating modes supported by the hardware
+        - Standard-mode (Sm): bidirectional data transfers up to 100 kbit/s
+        - Fast-mode (Fm): bidirectional data transfers up to 400 kbit/s
+
+  ## Functionality ##
+<p>
+  In order to use the LPI2C driver it must be first initialized in either master of slave mode, 
+  using functions LPI2C_DRV_MasterInit() or LPI2C_DRV_SlaveInit(). Once initialized, it cannot 
+  be initialized again for the same LPI2C module instance until it is de-initialized, using 
+  LPI2C_DRV_MasterDeinit() or LPI2C_DRV_SlaveDeinit(). Different LPI2C module instances can function 
+  independently of each other.
+</p>
+
+  ### Master Mode ###
+<p>
+  Master Mode provides functions for transmitting or receiving data to/from any I2C slave. Slave 
+  address and baud rate are provided at initialization time through the master configuration structure, 
+  but they can be changed at runtime by using LPI2C_DRV_MasterSetBaudRate() or LPI2C_DRV_MasterSetSlaveAddr(). 
+  Note that due to module limitation not any baud rate can be achieved. The driver will set a baud rate as 
+  close as possible to the requested baud rate, but there may still be substantial differences, for example 
+  if requesting a high baud rate while using a low-frequency protocol clock for the LPI2C module. The 
+  application should call LPI2C_DRV_MasterGetBaudRate() after LPI2C_DRV_MasterSetBaudRate() to check what 
+  baud rate was actually set.
+</p>
+<p>
+  To send or receive data to/from the currently configured slave address, use functions LPI2C_DRV_MasterSendData()
+  or LPI2C_DRV_MasterReceiveData() (or their blocking counterparts). Parameter <tt>sendStop</tt> can be
+  used to chain multiple transfers with repeated START condition between them, for example when sending a command
+  and then immediately receiving a response. The application should ensure that any send or receive transfer with
+  <tt>sendStop</tt> set to <tt>false</tt> is followed by another transfer, otherwise the LPI2C master will hold 
+  the SCL line low indefinitely and block the I2C bus. The last transfer from a chain should always have
+  <tt>sendStop</tt> set to <tt>true</tt>.
+</p>
+<p>
+  Blocking operations will return only when the transfer is completed, either successfully or with error. 
+  Non-blocking operations will initiate the transfer and return \ref STATUS_SUCCESS, but the module is still 
+  busy with the transfer and another transfer can't be initiated until the current transfer is complete. The 
+  application can check the status of the current transfer by calling LPI2C_DRV_MasterGetTransferStatus(). 
+  If the transfer is completed, the functions will return either \ref STATUS_SUCCESS or an error code, depending
+  on the outcome of the last transfer.
+</p>
+<p>
+  The driver supports any operating mode supported by the module. The operating mode is set together with the 
+  baud rate, by LPI2C_DRV_MasterSetBaudRate(). For High-Speed mode a second baud rate is required, for high-speed 
+  communication. Note that due to module limitation (common prescaler setting for normal and fast baud rate)
+  there is a limit on the maximum difference between the two baud rates. LPI2C_DRV_MasterGetBaudRate() can be 
+  used to check the baud rate setting for both modes.
+</p>
+
+  ### Slave Mode ###
+<p>
+  Slave Mode provides functions for transmitting or receiving data to/from any I2C master. There are two 
+  slave operating modes, selected by the field <tt>slaveListening</tt> in the slave configuration structure:
+   - Slave always listening: the slave interrupt is enabled at initialization time and the slave always 
+   listens to the line for a master addressing it. Any events are reported to the application through the 
+   callback function provided at initialization time. The callback can use LPI2C_DRV_SlaveSetRxBuffer() 
+   or LPI2C_DRV_SlaveSetTxBuffer() to provide the appropriate buffers for transmit or receive, as needed.
+   - On-demand operation: the slave is commanded to transmit or receive data through the call of 
+   LPI2C_DRV_SlaveSendData() and LPI2C_DRV_SlaveReceiveData() (or their blocking counterparts). The 
+   actual moment of the transfer depends on the I2C master. The use of callbacks optional in this case, 
+   for example to treat events like \ref LPI2C_SLAVE_EVENT_TX_EMPTY or \ref LPI2C_SLAVE_EVENT_RX_FULL. 
+   Outside the commanded receive / transmit operations the LPI2C interrupts are disabled and the module 
+   will not react to master transfer requests.
+</p>
+
+  ## Important Notes ##
+<p>
+  - Before using the LPI2C driver in master mode the protocol clock of the module must be configured. Refer 
+  to SCG HAL and PCC HAL for clock configuration.
+  - Before using the LPI2C driver the pins must be routed to the LPI2C module. Refer to PORT HAL for pin 
+  routing configuration.
+  - The driver enables the interrupts for the corresponding LPI2C module, but any interrupt priority 
+  setting must be done by the application.
+  - Fast+, high-speed  and ultra-fast mode aren't supported.
+  - Aborting a master reception is not currently supported due to hardware behavior (the module will continue
+  a started reception even if the FIFO is reset).
+  - In listening mode, the init function must be called before the master starts the transfer. In non-listening
+  mode, the init function and the appropriate send/receive function must be called before the master starts
+  the transfer. 
+  - Aborting a transfer with the function LPI2C_DRV_MasterAbortTransferData() can't be done safely due to device limitation; the user must ensure that  
+    the address is sent before aborting the transfer. 
+</p>
+
+  ## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\lpi2c\lpi2c_irq.c
+${S32SDK_PATH}\platform\drivers\src\lpi2c\lpi2c_hw_access.c
+${S32SDK_PATH}\platform\drivers\src\lpi2c\lpi2c_driver.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc
+${S32SDK_PATH}\platform\drivers\src\lpi2c
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+\ref osif
+\ref interrupt_manager
+\ref edma
+
+*/

@@ -1,0 +1,55 @@
+/*!
+ * @defgroup trgmux_driver TRGMUX Driver
+ * @ingroup trgmux
+ * @brief Trigger MUX Control Peripheral Driver. The TRGMUX introduces an extremely flexible methodology
+   for connecting various trigger sources to multiple pins/peripherals.
+ * @details The S32 SDK provides Peripheral Drivers for the Trigger MUX Control (TRGMUX) module of S32 SDK devices.
+
+ * ## Overview ##
+ *
+ * This section describes the programing interface of the TRGMUX driver. The TRGMUX driver configures the TRGMUX (Trigger Mux Control).
+   The Trigger MUX module allows software to configure the trigger inputs for various peripherals.
+ *
+ * ## TRGMUX Driver model building ##
+ *
+ * TRGMUX can be seen as a collection of muxes, each mux allowing to select one output from a list of input signals
+   that are common to all muxes. The TRGMUX registers are identical as structure and all bitfields can be read/written
+   using the TRGMUX driver API.
+ *
+ * ## TRGMUX Initialization ##
+ *
+ * The <b>TRGMUX_DRV_Init()</b> function is used to initialize the TRGMUX IP. The function receives as parameter
+   a pointer to the trgmux_user_config_t structure. This structure contains a variable number of mappings between
+   a trgmux trigger source and a trgmux target modules.
+ *
+ * ## Integration guideline ##
+ *
+ * ### Compilation units ###
+ *
+ * The following files need to be compiled in the project:
+ * \verbatim
+   ${S32SDK_PATH}\platform\drivers\src\trgmux\trgmux_driver.c
+   ${S32SDK_PATH}\platform\drivers\src\trgmux\trgmux_hw_access.c
+   \endverbatim
+ *
+ * ### Include path ###
+ *
+ * The following paths need to be added to the include path of the toolchain:
+ * \verbatim
+   ${S32SDK_PATH}\platform\drivers\inc\
+   \endverbatim
+ *
+ * ### Compile symbols ###
+ *
+ * No special symbols are required for this component
+ *
+ * ### Dependencies ###
+ * 
+ * There are no dependencies with other components 
+ * 
+ * ## TRGMUX API ##
+ * After initialization, the driver allows the reconfiguration of the source trigger for a given target
+   module using <b>TRGMUX_DRV_SetTrigSourceForTargetModule()</b>.
+   Also, by using <b>TRGMUX_DRV_SetLockForTargetModule()</b>, a given target module can be locked,
+   such that it cannot be updated until a reset.
+ */

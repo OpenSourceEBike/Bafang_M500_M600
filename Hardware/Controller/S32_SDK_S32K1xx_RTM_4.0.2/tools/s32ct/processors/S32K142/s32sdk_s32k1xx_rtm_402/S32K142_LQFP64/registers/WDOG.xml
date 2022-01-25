@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="CS" description="Watchdog Control and Status Register">
+    <alias type="CMSIS" value="CS"/>
+    <bit_field offset="0" width="1" name="STOP" access="RW" reset_value="0" description="Stop Enable">
+      <alias type="CMSIS" value="WDOG_CS_STOP(x)"/>
+      <bit_field_value name="CS_STOP_0b0" value="0b0" description="Watchdog disabled in chip stop mode."/>
+      <bit_field_value name="CS_STOP_0b1" value="0b1" description="Watchdog enabled in chip stop mode."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="WAIT" access="RW" reset_value="0" description="Wait Enable">
+      <alias type="CMSIS" value="WDOG_CS_WAIT(x)"/>
+      <bit_field_value name="CS_WAIT_0b0" value="0b0" description="Watchdog disabled in chip wait mode."/>
+      <bit_field_value name="CS_WAIT_0b1" value="0b1" description="Watchdog enabled in chip wait mode."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="DBG" access="RW" reset_value="0" description="Debug Enable">
+      <alias type="CMSIS" value="WDOG_CS_DBG(x)"/>
+      <bit_field_value name="CS_DBG_0b0" value="0b0" description="Watchdog disabled in chip debug mode."/>
+      <bit_field_value name="CS_DBG_0b1" value="0b1" description="Watchdog enabled in chip debug mode."/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="TST" access="RW" reset_value="0" description="Watchdog Test">
+      <alias type="CMSIS" value="WDOG_CS_TST(x)"/>
+      <bit_field_value name="CS_TST_0b00" value="0b00" description="Watchdog test mode disabled."/>
+      <bit_field_value name="CS_TST_0b01" value="0b01" description="Watchdog user mode enabled. (Watchdog test mode disabled.) After testing the watchdog, software should use this setting to indicate that the watchdog is functioning normally in user mode."/>
+      <bit_field_value name="CS_TST_0b10" value="0b10" description="Watchdog test mode enabled, only the low byte is used. CNT[CNTLOW] is compared with TOVAL[TOVALLOW]."/>
+      <bit_field_value name="CS_TST_0b11" value="0b11" description="Watchdog test mode enabled, only the high byte is used. CNT[CNTHIGH] is compared with TOVAL[TOVALHIGH]."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="UPDATE" access="RW" reset_value="0" description="Allow updates">
+      <alias type="CMSIS" value="WDOG_CS_UPDATE(x)"/>
+      <bit_field_value name="CS_UPDATE_0b0" value="0b0" description="Updates not allowed. After the initial configuration, the watchdog cannot be later modified without forcing a reset."/>
+      <bit_field_value name="CS_UPDATE_0b1" value="0b1" description="Updates allowed. Software can modify the watchdog configuration registers within 128 bus clocks after performing the unlock write sequence."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="INT" access="RW" reset_value="0" description="Watchdog Interrupt">
+      <alias type="CMSIS" value="WDOG_CS_INT(x)"/>
+      <bit_field_value name="CS_INT_0b0" value="0b0" description="Watchdog interrupts are disabled. Watchdog resets are not delayed."/>
+      <bit_field_value name="CS_INT_0b1" value="0b1" description="Watchdog interrupts are enabled. Watchdog resets are delayed by 128 bus clocks from the interrupt vector fetch."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="EN" access="RW" reset_value="0x1" description="Watchdog Enable">
+      <alias type="CMSIS" value="WDOG_CS_EN(x)"/>
+      <bit_field_value name="CS_EN_0b0" value="0b0" description="Watchdog disabled."/>
+      <bit_field_value name="CS_EN_0b1" value="0b1" description="Watchdog enabled."/>
+    </bit_field>
+    <bit_field offset="8" width="2" name="CLK" access="RW" reset_value="0x1" description="Watchdog Clock">
+      <alias type="CMSIS" value="WDOG_CS_CLK(x)"/>
+      <bit_field_value name="CS_CLK_0b00" value="0b00" description="Bus clock"/>
+      <bit_field_value name="CS_CLK_0b01" value="0b01" description="LPO clock"/>
+      <bit_field_value name="CS_CLK_0b10" value="0b10" description="INTCLK (internal clock)"/>
+      <bit_field_value name="CS_CLK_0b11" value="0b11" description="ERCLK (external reference clock)"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="RCS" access="RO" reset_value="0" description="Reconfiguration Success">
+      <alias type="CMSIS" value="WDOG_CS_RCS(x)"/>
+      <bit_field_value name="CS_RCS_0b0" value="0b0" description="Reconfiguring WDOG."/>
+      <bit_field_value name="CS_RCS_0b1" value="0b1" description="Reconfiguration is successful."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="ULK" access="RO" reset_value="0x1" description="Unlock status">
+      <alias type="CMSIS" value="WDOG_CS_ULK(x)"/>
+      <bit_field_value name="CS_ULK_0b0" value="0b0" description="WDOG is locked."/>
+      <bit_field_value name="CS_ULK_0b1" value="0b1" description="WDOG is unlocked."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="PRES" access="RW" reset_value="0" description="Watchdog prescaler">
+      <alias type="CMSIS" value="WDOG_CS_PRES(x)"/>
+      <bit_field_value name="CS_PRES_0b0" value="0b0" description="256 prescaler disabled."/>
+      <bit_field_value name="CS_PRES_0b1" value="0b1" description="256 prescaler enabled."/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="CMD32EN" access="RW" reset_value="0x1" description="Enables or disables WDOG support for 32-bit (otherwise 16-bit or 8-bit) refresh/unlock command write words">
+      <alias type="CMSIS" value="WDOG_CS_CMD32EN(x)"/>
+      <bit_field_value name="CS_CMD32EN_0b0" value="0b0" description="Disables support for 32-bit refresh/unlock command write words. Only 16-bit or 8-bit is supported."/>
+      <bit_field_value name="CS_CMD32EN_0b1" value="0b1" description="Enables support for 32-bit refresh/unlock command write words. 16-bit or 8-bit is NOT supported."/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="FLG" access="W1C" reset_value="0" description="Watchdog Interrupt Flag">
+      <alias type="CMSIS" value="WDOG_CS_FLG(x)"/>
+      <bit_field_value name="CS_FLG_0b0" value="0b0" description="No interrupt occurred."/>
+      <bit_field_value name="CS_FLG_0b1" value="0b1" description="An interrupt occurred."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="WIN" access="RW" reset_value="0" description="Watchdog Window">
+      <alias type="CMSIS" value="WDOG_CS_WIN(x)"/>
+      <bit_field_value name="CS_WIN_0b0" value="0b0" description="Window mode disabled."/>
+      <bit_field_value name="CS_WIN_0b1" value="0b1" description="Window mode enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x4" width="32" name="CNT" description="Watchdog Counter Register">
+    <alias type="CMSIS" value="CNT"/>
+    <bit_field offset="0" width="8" name="CNTLOW" access="RW" reset_value="0" description="Low byte of the Watchdog Counter">
+      <alias type="CMSIS" value="WDOG_CNT_CNTLOW(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="CNTHIGH" access="RW" reset_value="0" description="High byte of the Watchdog Counter">
+      <alias type="CMSIS" value="WDOG_CNT_CNTHIGH(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="TOVAL" description="Watchdog Timeout Value Register">
+    <alias type="CMSIS" value="TOVAL"/>
+    <bit_field offset="0" width="8" name="TOVALLOW" access="RW" reset_value="0" description="Low byte of the timeout value">
+      <alias type="CMSIS" value="WDOG_TOVAL_TOVALLOW(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="TOVALHIGH" access="RW" reset_value="0x4" description="High byte of the timeout value">
+      <alias type="CMSIS" value="WDOG_TOVAL_TOVALHIGH(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="WIN" description="Watchdog Window Register">
+    <alias type="CMSIS" value="WIN"/>
+    <bit_field offset="0" width="8" name="WINLOW" access="RW" reset_value="0" description="Low byte of Watchdog Window">
+      <alias type="CMSIS" value="WDOG_WIN_WINLOW(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="WINHIGH" access="RW" reset_value="0" description="High byte of Watchdog Window">
+      <alias type="CMSIS" value="WDOG_WIN_WINHIGH(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+</regs:peripheral>

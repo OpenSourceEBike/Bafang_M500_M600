@@ -1,0 +1,443 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0x8" width="16" name="PLASC" description="Crossbar Switch (AXBS) Slave Configuration">
+    <alias type="CMSIS" value="PLASC"/>
+    <bit_field offset="0" width="8" name="ASC" access="RO" reset_value="0x7" description="Each bit in the ASC field indicates whether there is a corresponding connection to the crossbar switch's slave input port.">
+      <alias type="CMSIS" value="MCM_PLASC_ASC(x)"/>
+      <bit_field_value name="PLASC_ASC_0b00000000" value="0b00000000" description="A bus slave connection to AXBS input port n is absent"/>
+      <bit_field_value name="PLASC_ASC_0b00000001" value="0b00000001" description="A bus slave connection to AXBS input port n is present"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+  </register>
+  <register offset="0xA" width="16" name="PLAMC" description="Crossbar Switch (AXBS) Master Configuration">
+    <alias type="CMSIS" value="PLAMC"/>
+    <bit_field offset="0" width="8" name="AMC" access="RO" reset_value="0x7" description="Each bit in the AMC field indicates whether there is a corresponding connection to the AXBS master input port.">
+      <alias type="CMSIS" value="MCM_PLAMC_AMC(x)"/>
+      <bit_field_value name="PLAMC_AMC_0b00000000" value="0b00000000" description="A bus master connection to AXBS input port n is absent"/>
+      <bit_field_value name="PLAMC_AMC_0b00000001" value="0b00000001" description="A bus master connection to AXBS input port n is present"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="CPCR" description="Core Platform Control Register">
+    <alias type="CMSIS" value="CPCR"/>
+    <bit_field offset="0" width="2" name="HLT_FSM_ST" access="RO" reset_value="0" description="AXBS Halt State Machine Status">
+      <alias type="CMSIS" value="MCM_CPCR_HLT_FSM_ST(x)"/>
+      <bit_field_value name="CPCR_HLT_FSM_ST_0b00" value="0b00" description="Waiting for request"/>
+      <bit_field_value name="CPCR_HLT_FSM_ST_0b01" value="0b01" description="Waiting for platform idle"/>
+      <bit_field_value name="CPCR_HLT_FSM_ST_0b10" value="0b10" description="Unused state"/>
+      <bit_field_value name="CPCR_HLT_FSM_ST_0b11" value="0b11" description="Platform stalled"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="AXBS_HLT_REQ" access="RO" reset_value="0" description="AXBS Halt Request">
+      <alias type="CMSIS" value="MCM_CPCR_AXBS_HLT_REQ(x)"/>
+      <bit_field_value name="CPCR_AXBS_HLT_REQ_0b0" value="0b0" description="AXBS is not receiving halt request"/>
+      <bit_field_value name="CPCR_AXBS_HLT_REQ_0b1" value="0b1" description="AXBS is receiving halt request"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="AXBS_HLTD" access="RO" reset_value="0" description="AXBS Halted">
+      <alias type="CMSIS" value="MCM_CPCR_AXBS_HLTD(x)"/>
+      <bit_field_value name="CPCR_AXBS_HLTD_0b0" value="0b0" description="AXBS is not currently halted"/>
+      <bit_field_value name="CPCR_AXBS_HLTD_0b1" value="0b1" description="AXBS is currently halted"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="FMC_PF_IDLE" access="RO" reset_value="0" reset_mask="0" description="Flash Memory Controller Program Flash Idle">
+      <alias type="CMSIS" value="MCM_CPCR_FMC_PF_IDLE(x)"/>
+      <bit_field_value name="CPCR_FMC_PF_IDLE_0b0" value="0b0" description="FMC program flash is not idle"/>
+      <bit_field_value name="CPCR_FMC_PF_IDLE_0b1" value="0b1" description="FMC program flash is currently idle"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <bit_field offset="6" width="1" name="PBRIDGE_IDLE" access="RO" reset_value="0" reset_mask="0" description="Peripheral Bridge Idle">
+      <alias type="CMSIS" value="MCM_CPCR_PBRIDGE_IDLE(x)"/>
+      <bit_field_value name="CPCR_PBRIDGE_IDLE_0b0" value="0b0" description="PBRIDGE is not idle"/>
+      <bit_field_value name="CPCR_PBRIDGE_IDLE_0b1" value="0b1" description="PBRIDGE is currently idle"/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="2" reset_value="0"/>
+    <bit_field offset="9" width="1" name="CBRR" access="RW" reset_value="0" description="Crossbar Round-robin Arbitration Enable">
+      <alias type="CMSIS" value="MCM_CPCR_CBRR(x)"/>
+      <bit_field_value name="CPCR_CBRR_0b0" value="0b0" description="Fixed-priority arbitration"/>
+      <bit_field_value name="CPCR_CBRR_0b1" value="0b1" description="Round-robin arbitration"/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="14" reset_value="0"/>
+    <bit_field offset="24" width="2" name="SRAMUAP" access="RW" reset_value="0" description="SRAM_U Arbitration Priority">
+      <alias type="CMSIS" value="MCM_CPCR_SRAMUAP(x)"/>
+      <bit_field_value name="CPCR_SRAMUAP_0b00" value="0b00" description="Round robin"/>
+      <bit_field_value name="CPCR_SRAMUAP_0b01" value="0b01" description="Special round robin (favors SRAM backdoor accesses over the processor)"/>
+      <bit_field_value name="CPCR_SRAMUAP_0b10" value="0b10" description="Fixed priority. Processor has highest, backdoor has lowest"/>
+      <bit_field_value name="CPCR_SRAMUAP_0b11" value="0b11" description="Fixed priority. Backdoor has highest, processor has lowest"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="SRAMUWP" access="RW" reset_value="0" description="SRAM_U Write Protect">
+      <alias type="CMSIS" value="MCM_CPCR_SRAMUWP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="27" width="1" reset_value="0"/>
+    <bit_field offset="28" width="2" name="SRAMLAP" access="RW" reset_value="0" description="SRAM_L Arbitration Priority">
+      <alias type="CMSIS" value="MCM_CPCR_SRAMLAP(x)"/>
+      <bit_field_value name="CPCR_SRAMLAP_0b00" value="0b00" description="Round robin"/>
+      <bit_field_value name="CPCR_SRAMLAP_0b01" value="0b01" description="Special round robin (favors SRAM backdoor accesses over the processor)"/>
+      <bit_field_value name="CPCR_SRAMLAP_0b10" value="0b10" description="Fixed priority. Processor has highest, backdoor has lowest"/>
+      <bit_field_value name="CPCR_SRAMLAP_0b11" value="0b11" description="Fixed priority. Backdoor has highest, processor has lowest"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="SRAMLWP" access="RW" reset_value="0" description="SRAM_L Write Protect">
+      <alias type="CMSIS" value="MCM_CPCR_SRAMLWP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="31" width="1" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="ISCR" description="Interrupt Status and Control Register">
+    <alias type="CMSIS" value="ISCR"/>
+    <reserved_bit_field offset="0" width="4" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="3" reset_value="0"/>
+    <bit_field offset="8" width="1" name="FIOC" access="RO" reset_value="0" description="FPU Invalid Operation Interrupt Status">
+      <alias type="CMSIS" value="MCM_ISCR_FIOC(x)"/>
+      <bit_field_value name="ISCR_FIOC_0b0" value="0b0" description="No interrupt"/>
+      <bit_field_value name="ISCR_FIOC_0b1" value="0b1" description="Interrupt occurred"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="FDZC" access="RO" reset_value="0" description="FPU Divide-by-Zero Interrupt Status">
+      <alias type="CMSIS" value="MCM_ISCR_FDZC(x)"/>
+      <bit_field_value name="ISCR_FDZC_0b0" value="0b0" description="No interrupt"/>
+      <bit_field_value name="ISCR_FDZC_0b1" value="0b1" description="Interrupt occurred"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="FOFC" access="RO" reset_value="0" description="FPU Overflow Interrupt Status">
+      <alias type="CMSIS" value="MCM_ISCR_FOFC(x)"/>
+      <bit_field_value name="ISCR_FOFC_0b0" value="0b0" description="No interrupt"/>
+      <bit_field_value name="ISCR_FOFC_0b1" value="0b1" description="Interrupt occurred"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="FUFC" access="RO" reset_value="0" description="FPU Underflow Interrupt Status">
+      <alias type="CMSIS" value="MCM_ISCR_FUFC(x)"/>
+      <bit_field_value name="ISCR_FUFC_0b0" value="0b0" description="No interrupt"/>
+      <bit_field_value name="ISCR_FUFC_0b1" value="0b1" description="Interrupt occurred"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="FIXC" access="RO" reset_value="0" description="FPU Inexact Interrupt Status">
+      <alias type="CMSIS" value="MCM_ISCR_FIXC(x)"/>
+      <bit_field_value name="ISCR_FIXC_0b0" value="0b0" description="No interrupt"/>
+      <bit_field_value name="ISCR_FIXC_0b1" value="0b1" description="Interrupt occurred"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="2" reset_value="0"/>
+    <bit_field offset="15" width="1" name="FIDC" access="RO" reset_value="0" description="FPU Input Denormal Interrupt Status">
+      <alias type="CMSIS" value="MCM_ISCR_FIDC(x)"/>
+      <bit_field_value name="ISCR_FIDC_0b0" value="0b0" description="No interrupt"/>
+      <bit_field_value name="ISCR_FIDC_0b1" value="0b1" description="Interrupt occurred"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="1" reset_value="0"/>
+    <reserved_bit_field offset="17" width="1" reset_value="0x1"/>
+    <reserved_bit_field offset="18" width="2" reset_value="0"/>
+    <reserved_bit_field offset="20" width="1" reset_value="0"/>
+    <reserved_bit_field offset="21" width="3" reset_value="0"/>
+    <bit_field offset="24" width="1" name="FIOCE" access="RW" reset_value="0" description="FPU Invalid Operation Interrupt Enable">
+      <alias type="CMSIS" value="MCM_ISCR_FIOCE(x)"/>
+      <bit_field_value name="ISCR_FIOCE_0b0" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="ISCR_FIOCE_0b1" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="FDZCE" access="RW" reset_value="0" description="FPU Divide-by-Zero Interrupt Enable">
+      <alias type="CMSIS" value="MCM_ISCR_FDZCE(x)"/>
+      <bit_field_value name="ISCR_FDZCE_0b0" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="ISCR_FDZCE_0b1" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="FOFCE" access="RW" reset_value="0" description="FPU Overflow Interrupt Enable">
+      <alias type="CMSIS" value="MCM_ISCR_FOFCE(x)"/>
+      <bit_field_value name="ISCR_FOFCE_0b0" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="ISCR_FOFCE_0b1" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="FUFCE" access="RW" reset_value="0" description="FPU Underflow Interrupt Enable">
+      <alias type="CMSIS" value="MCM_ISCR_FUFCE(x)"/>
+      <bit_field_value name="ISCR_FUFCE_0b0" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="ISCR_FUFCE_0b1" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="FIXCE" access="RW" reset_value="0" description="FPU Inexact Interrupt Enable">
+      <alias type="CMSIS" value="MCM_ISCR_FIXCE(x)"/>
+      <bit_field_value name="ISCR_FIXCE_0b0" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="ISCR_FIXCE_0b1" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="2" reset_value="0"/>
+    <bit_field offset="31" width="1" name="FIDCE" access="RW" reset_value="0" description="FPU Input Denormal Interrupt Enable">
+      <alias type="CMSIS" value="MCM_ISCR_FIDCE(x)"/>
+      <bit_field_value name="ISCR_FIDCE_0b0" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="ISCR_FIDCE_0b1" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+  </register>
+  <register offset="0x30" width="32" name="PID" description="Process ID Register">
+    <alias type="CMSIS" value="PID"/>
+    <bit_field offset="0" width="8" name="PID" access="RW" reset_value="0" description="M0_PID and M1_PID for MPU">
+      <alias type="CMSIS" value="MCM_PID_PID(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x40" width="32" name="CPO" description="Compute Operation Control Register">
+    <alias type="CMSIS" value="CPO"/>
+    <bit_field offset="0" width="1" name="CPOREQ" access="RW" reset_value="0" description="Compute Operation Request">
+      <alias type="CMSIS" value="MCM_CPO_CPOREQ(x)"/>
+      <bit_field_value name="CPO_CPOREQ_0b0" value="0b0" description="Request is cleared."/>
+      <bit_field_value name="CPO_CPOREQ_0b1" value="0b1" description="Request Compute Operation."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CPOACK" access="RO" reset_value="0" description="Compute Operation Acknowledge">
+      <alias type="CMSIS" value="MCM_CPO_CPOACK(x)"/>
+      <bit_field_value name="CPO_CPOACK_0b0" value="0b0" description="Compute operation entry has not completed or compute operation exit has completed."/>
+      <bit_field_value name="CPO_CPOACK_0b1" value="0b1" description="Compute operation entry has completed or compute operation exit has not completed."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CPOWOI" access="RW" reset_value="0" description="Compute Operation Wakeup On Interrupt">
+      <alias type="CMSIS" value="MCM_CPO_CPOWOI(x)"/>
+      <bit_field_value name="CPO_CPOWOI_0b0" value="0b0" description="No effect."/>
+      <bit_field_value name="CPO_CPOWOI_0b1" value="0b1" description="When set, the CPOREQ is cleared on any interrupt or exception vector fetch."/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x400" width="32" name="LMDR0" description="Local Memory Descriptor Register">
+    <alias type="CMSIS" value="LMDR[0]"/>
+    <bit_field offset="0" width="4" name="CF0" access="RW" reset_value="0" reset_mask="0" description="Control Field 0">
+      <alias type="CMSIS" value="MCM_LMDR_CF0(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="CF1" access="RW" reset_value="0" reset_mask="0" description="Control Field 1">
+      <alias type="CMSIS" value="MCM_LMDR_CF1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="4" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="12" width="1" reset_value="0" reset_mask="0"/>
+    <bit_field offset="13" width="3" name="MT" access="RO" reset_value="0" reset_mask="0" description="Memory Type">
+      <alias type="CMSIS" value="MCM_LMDR_MT(x)"/>
+      <bit_field_value name="LMDR_MT_0b000" value="0b000" description="SRAM_L"/>
+      <bit_field_value name="LMDR_MT_0b001" value="0b001" description="SRAM_U"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="LOCK" access="RW" reset_value="0" reset_mask="0" description="LOCK">
+      <alias type="CMSIS" value="MCM_LMDR_LOCK(x)"/>
+      <bit_field_value name="LMDR_LOCK_0b0" value="0b0" description="Writes to the LMDRn[7:0] are allowed."/>
+      <bit_field_value name="LMDR_LOCK_0b1" value="0b1" description="Writes to the LMDRn[7:0] are ignored."/>
+    </bit_field>
+    <bit_field offset="17" width="3" name="DPW" access="RO" reset_value="0" reset_mask="0" description="LMEM Data Path Width. This field defines the width of the local memory.">
+      <alias type="CMSIS" value="MCM_LMDR_DPW(x)"/>
+      <bit_field_value name="LMDR_DPW_0b010" value="0b010" description="LMEMn 32-bits wide"/>
+      <bit_field_value name="LMDR_DPW_0b011" value="0b011" description="LMEMn 64-bits wide"/>
+    </bit_field>
+    <bit_field offset="20" width="4" name="WY" access="RO" reset_value="0" reset_mask="0" description="Level 1 Cache Ways">
+      <alias type="CMSIS" value="MCM_LMDR_WY(x)"/>
+      <bit_field_value name="LMDR_WY_0b0000" value="0b0000" description="No Cache"/>
+      <bit_field_value name="LMDR_WY_0b0010" value="0b0010" description="2-Way Set Associative"/>
+      <bit_field_value name="LMDR_WY_0b0100" value="0b0100" description="4-Way Set Associative"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="LMSZ" access="RO" reset_value="0" reset_mask="0" description="LMEM Size">
+      <alias type="CMSIS" value="MCM_LMDR_LMSZ(x)"/>
+      <bit_field_value name="LMDR_LMSZ_0b0000" value="0b0000" description="no LMEMn (0 KB)"/>
+      <bit_field_value name="LMDR_LMSZ_0b0001" value="0b0001" description="1 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0010" value="0b0010" description="2 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0011" value="0b0011" description="4 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0100" value="0b0100" description="8 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0101" value="0b0101" description="16 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0110" value="0b0110" description="32 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0111" value="0b0111" description="64 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1000" value="0b1000" description="128 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1001" value="0b1001" description="256 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1010" value="0b1010" description="512 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1011" value="0b1011" description="1024 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1100" value="0b1100" description="2048 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1101" value="0b1101" description="4096 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1110" value="0b1110" description="8192 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1111" value="0b1111" description="16384 KB LMEMn"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="LMSZH" access="RO" reset_value="0" reset_mask="0" description="LMEM Size Hole">
+      <alias type="CMSIS" value="MCM_LMDR_LMSZH(x)"/>
+      <bit_field_value name="LMDR_LMSZH_0b0" value="0b0" description="LMEMn is a power-of-2 capacity."/>
+      <bit_field_value name="LMDR_LMSZH_0b1" value="0b1" description="LMEMn is not a power-of-2, with a capacity is 0.75 * LMSZ."/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="1" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="30" width="1" reset_value="0" reset_mask="0"/>
+    <bit_field offset="31" width="1" name="V" access="RO" reset_value="0" reset_mask="0" description="Local Memory Valid">
+      <alias type="CMSIS" value="MCM_LMDR_V(x)"/>
+      <bit_field_value name="LMDR_V_0b0" value="0b0" description="LMEMn is not present."/>
+      <bit_field_value name="LMDR_V_0b1" value="0b1" description="LMEMn is present."/>
+    </bit_field>
+  </register>
+  <register offset="0x404" width="32" name="LMDR1" description="Local Memory Descriptor Register">
+    <alias type="CMSIS" value="LMDR[1]"/>
+    <bit_field offset="0" width="4" name="CF0" access="RW" reset_value="0" reset_mask="0" description="Control Field 0">
+      <alias type="CMSIS" value="MCM_LMDR_CF0(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="CF1" access="RW" reset_value="0" reset_mask="0" description="Control Field 1">
+      <alias type="CMSIS" value="MCM_LMDR_CF1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="4" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="12" width="1" reset_value="0" reset_mask="0"/>
+    <bit_field offset="13" width="3" name="MT" access="RO" reset_value="0" reset_mask="0" description="Memory Type">
+      <alias type="CMSIS" value="MCM_LMDR_MT(x)"/>
+      <bit_field_value name="LMDR_MT_0b000" value="0b000" description="SRAM_L"/>
+      <bit_field_value name="LMDR_MT_0b001" value="0b001" description="SRAM_U"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="LOCK" access="RW" reset_value="0" reset_mask="0" description="LOCK">
+      <alias type="CMSIS" value="MCM_LMDR_LOCK(x)"/>
+      <bit_field_value name="LMDR_LOCK_0b0" value="0b0" description="Writes to the LMDRn[7:0] are allowed."/>
+      <bit_field_value name="LMDR_LOCK_0b1" value="0b1" description="Writes to the LMDRn[7:0] are ignored."/>
+    </bit_field>
+    <bit_field offset="17" width="3" name="DPW" access="RO" reset_value="0" reset_mask="0" description="LMEM Data Path Width. This field defines the width of the local memory.">
+      <alias type="CMSIS" value="MCM_LMDR_DPW(x)"/>
+      <bit_field_value name="LMDR_DPW_0b010" value="0b010" description="LMEMn 32-bits wide"/>
+      <bit_field_value name="LMDR_DPW_0b011" value="0b011" description="LMEMn 64-bits wide"/>
+    </bit_field>
+    <bit_field offset="20" width="4" name="WY" access="RO" reset_value="0" reset_mask="0" description="Level 1 Cache Ways">
+      <alias type="CMSIS" value="MCM_LMDR_WY(x)"/>
+      <bit_field_value name="LMDR_WY_0b0000" value="0b0000" description="No Cache"/>
+      <bit_field_value name="LMDR_WY_0b0010" value="0b0010" description="2-Way Set Associative"/>
+      <bit_field_value name="LMDR_WY_0b0100" value="0b0100" description="4-Way Set Associative"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="LMSZ" access="RO" reset_value="0" reset_mask="0" description="LMEM Size">
+      <alias type="CMSIS" value="MCM_LMDR_LMSZ(x)"/>
+      <bit_field_value name="LMDR_LMSZ_0b0000" value="0b0000" description="no LMEMn (0 KB)"/>
+      <bit_field_value name="LMDR_LMSZ_0b0001" value="0b0001" description="1 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0010" value="0b0010" description="2 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0011" value="0b0011" description="4 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0100" value="0b0100" description="8 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0101" value="0b0101" description="16 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0110" value="0b0110" description="32 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b0111" value="0b0111" description="64 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1000" value="0b1000" description="128 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1001" value="0b1001" description="256 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1010" value="0b1010" description="512 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1011" value="0b1011" description="1024 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1100" value="0b1100" description="2048 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1101" value="0b1101" description="4096 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1110" value="0b1110" description="8192 KB LMEMn"/>
+      <bit_field_value name="LMDR_LMSZ_0b1111" value="0b1111" description="16384 KB LMEMn"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="LMSZH" access="RO" reset_value="0" reset_mask="0" description="LMEM Size Hole">
+      <alias type="CMSIS" value="MCM_LMDR_LMSZH(x)"/>
+      <bit_field_value name="LMDR_LMSZH_0b0" value="0b0" description="LMEMn is a power-of-2 capacity."/>
+      <bit_field_value name="LMDR_LMSZH_0b1" value="0b1" description="LMEMn is not a power-of-2, with a capacity is 0.75 * LMSZ."/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="1" reset_value="0" reset_mask="0"/>
+    <reserved_bit_field offset="30" width="1" reset_value="0" reset_mask="0"/>
+    <bit_field offset="31" width="1" name="V" access="RO" reset_value="0" reset_mask="0" description="Local Memory Valid">
+      <alias type="CMSIS" value="MCM_LMDR_V(x)"/>
+      <bit_field_value name="LMDR_V_0b0" value="0b0" description="LMEMn is not present."/>
+      <bit_field_value name="LMDR_V_0b1" value="0b1" description="LMEMn is present."/>
+    </bit_field>
+  </register>
+  <register offset="0x408" width="32" name="LMDR2" description="Local Memory Descriptor Register2">
+    <alias type="CMSIS" value="LMDR2"/>
+    <reserved_bit_field offset="0" width="4" reset_value="0"/>
+    <bit_field offset="4" width="4" name="CF1" access="RW" reset_value="0xA" description="Control Field 1">
+      <alias type="CMSIS" value="MCM_LMDR2_CF1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="4" reset_value="0"/>
+    <reserved_bit_field offset="12" width="1" reset_value="0"/>
+    <bit_field offset="13" width="3" name="MT" access="RO" reset_value="0x2" description="Memory Type">
+      <alias type="CMSIS" value="MCM_LMDR2_MT(x)"/>
+      <bit_field_value name="LMDR2_MT_0b010" value="0b010" description="PC Cache"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="LOCK" access="RW" reset_value="0" description="LOCK">
+      <alias type="CMSIS" value="MCM_LMDR2_LOCK(x)"/>
+      <bit_field_value name="LMDR2_LOCK_0b0" value="0b0" description="Writes to the LMDRn[7:0] are allowed."/>
+      <bit_field_value name="LMDR2_LOCK_0b1" value="0b1" description="Writes to the LMDRn[7:0] are ignored."/>
+    </bit_field>
+    <bit_field offset="17" width="3" name="DPW" access="RO" reset_value="0x2" description="LMEM Data Path Width. This field defines the width of the local memory.">
+      <alias type="CMSIS" value="MCM_LMDR2_DPW(x)"/>
+      <bit_field_value name="LMDR2_DPW_0b010" value="0b010" description="LMEMn 32-bits wide"/>
+      <bit_field_value name="LMDR2_DPW_0b011" value="0b011" description="LMEMn 64-bits wide"/>
+    </bit_field>
+    <bit_field offset="20" width="4" name="WY" access="RO" reset_value="0x2" description="Level 1 Cache Ways">
+      <alias type="CMSIS" value="MCM_LMDR2_WY(x)"/>
+      <bit_field_value name="LMDR2_WY_0b0000" value="0b0000" description="No Cache"/>
+      <bit_field_value name="LMDR2_WY_0b0010" value="0b0010" description="2-Way Set Associative"/>
+      <bit_field_value name="LMDR2_WY_0b0100" value="0b0100" description="4-Way Set Associative"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="LMSZ" access="RO" reset_value="0x4" description="LMEM Size">
+      <alias type="CMSIS" value="MCM_LMDR2_LMSZ(x)"/>
+      <bit_field_value name="LMDR2_LMSZ_0b0100" value="0b0100" description="4 KB LMEMn"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="LMSZH" access="RO" reset_value="0" description="LMEM Size Hole">
+      <alias type="CMSIS" value="MCM_LMDR2_LMSZH(x)"/>
+      <bit_field_value name="LMDR2_LMSZH_0b0" value="0b0" description="LMEMn is a power-of-2 capacity."/>
+      <bit_field_value name="LMDR2_LMSZH_0b1" value="0b1" description="LMEMn is not a power-of-2, with a capacity is 0.75 * LMSZ."/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="1" reset_value="0"/>
+    <reserved_bit_field offset="30" width="1" reset_value="0"/>
+    <bit_field offset="31" width="1" name="V" access="RO" reset_value="0x1" description="Local Memory Valid">
+      <alias type="CMSIS" value="MCM_LMDR2_V(x)"/>
+      <bit_field_value name="LMDR2_V_0b0" value="0b0" description="LMEMn is not present."/>
+      <bit_field_value name="LMDR2_V_0b1" value="0b1" description="LMEMn is present."/>
+    </bit_field>
+  </register>
+  <register offset="0x480" width="32" name="LMPECR" description="LMEM Parity and ECC Control Register">
+    <alias type="CMSIS" value="LMPECR"/>
+    <bit_field offset="0" width="1" name="ERNCR" access="RW" reset_value="0" description="Enable RAM ECC Noncorrectable Reporting">
+      <alias type="CMSIS" value="MCM_LMPECR_ERNCR(x)"/>
+      <bit_field_value name="LMPECR_ERNCR_0b0" value="0b0" description="Reporting disabled"/>
+      <bit_field_value name="LMPECR_ERNCR_0b1" value="0b1" description="Reporting enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="7" reset_value="0"/>
+    <bit_field offset="8" width="1" name="ER1BR" access="RW" reset_value="0" description="Enable RAM ECC 1 Bit Reporting">
+      <alias type="CMSIS" value="MCM_LMPECR_ER1BR(x)"/>
+      <bit_field_value name="LMPECR_ER1BR_0b0" value="0b0" description="Reporting disabled"/>
+      <bit_field_value name="LMPECR_ER1BR_0b1" value="0b1" description="Reporting enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <reserved_bit_field offset="16" width="1" reset_value="0"/>
+    <reserved_bit_field offset="17" width="3" reset_value="0"/>
+    <bit_field offset="20" width="1" name="ECPR" access="RW" reset_value="0" description="Enable Cache Parity Reporting">
+      <alias type="CMSIS" value="MCM_LMPECR_ECPR(x)"/>
+      <bit_field_value name="LMPECR_ECPR_0b0" value="0b0" description="Reporting disabled"/>
+      <bit_field_value name="LMPECR_ECPR_0b1" value="0b1" description="Reporting enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="11" reset_value="0"/>
+  </register>
+  <register offset="0x488" width="32" name="LMPEIR" description="LMEM Parity and ECC Interrupt Register">
+    <alias type="CMSIS" value="LMPEIR"/>
+    <bit_field offset="0" width="8" name="ENC" access="W1C" reset_value="0" description="ENCn = ECC Noncorrectable Error n">
+      <alias type="CMSIS" value="MCM_LMPEIR_ENC(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="E1B" access="W1C" reset_value="0" description="E1Bn = ECC 1-bit Error n">
+      <alias type="CMSIS" value="MCM_LMPEIR_E1B(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="PE" access="W1C" reset_value="0" description="Cache Parity Error">
+      <alias type="CMSIS" value="MCM_LMPEIR_PE(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="5" name="PEELOC" access="RO" reset_value="0" description="Parity or ECC Error Location">
+      <alias type="CMSIS" value="MCM_LMPEIR_PEELOC(x)"/>
+      <bit_field_value name="LMPEIR_PEELOC_0b00000" value="0b00000" description="Non-correctable ECC event from SRAM_L"/>
+      <bit_field_value name="LMPEIR_PEELOC_0b00001" value="0b00001" description="Non-correctable ECC event from SRAM_U"/>
+      <bit_field_value name="LMPEIR_PEELOC_0b01000" value="0b01000" description="1-bit correctable ECC event from SRAM_L"/>
+      <bit_field_value name="LMPEIR_PEELOC_0b01001" value="0b01001" description="1-bit correctable ECC event from SRAM_U"/>
+      <bit_field_value name="LMPEIR_PEELOC_0b01110" value="0b01110" description="PC tag parity error"/>
+      <bit_field_value name="LMPEIR_PEELOC_0b01111" value="0b01111" description="PC data parity error"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="2" reset_value="0"/>
+    <bit_field offset="31" width="1" name="V" access="RO" reset_value="0" description="Valid Bit">
+      <alias type="CMSIS" value="MCM_LMPEIR_V(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x490" width="32" name="LMFAR" description="LMEM Fault Address Register">
+    <alias type="CMSIS" value="LMFAR"/>
+    <bit_field offset="0" width="32" name="EFADD" access="RO" reset_value="0" description="ECC Fault Address">
+      <alias type="CMSIS" value="MCM_LMFAR_EFADD(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x494" width="32" name="LMFATR" description="LMEM Fault Attribute Register">
+    <alias type="CMSIS" value="LMFATR"/>
+    <bit_field offset="0" width="4" name="PEFPRT" access="RO" reset_value="0" description="Parity/ECC Fault Protection">
+      <alias type="CMSIS" value="MCM_LMFATR_PEFPRT(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="3" name="PEFSIZE" access="RO" reset_value="0" description="Parity/ECC Fault Master Size">
+      <alias type="CMSIS" value="MCM_LMFATR_PEFSIZE(x)"/>
+      <bit_field_value name="LMFATR_PEFSIZE_0b000" value="0b000" description="8-bit access"/>
+      <bit_field_value name="LMFATR_PEFSIZE_0b001" value="0b001" description="16-bit access"/>
+      <bit_field_value name="LMFATR_PEFSIZE_0b010" value="0b010" description="32-bit access"/>
+      <bit_field_value name="LMFATR_PEFSIZE_0b011" value="0b011" description="64-bit access"/>
+      <bit_field_value name="LMFATR_PEFSIZE_0b1xx" value="0b1??" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="PEFW" access="RO" reset_value="0" description="Parity/ECC Fault Write">
+      <alias type="CMSIS" value="MCM_LMFATR_PEFW(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="PEFMST" access="RO" reset_value="0" description="Parity/ECC Fault Master Number">
+      <alias type="CMSIS" value="MCM_LMFATR_PEFMST(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="8" reset_value="0"/>
+    <reserved_bit_field offset="24" width="6" reset_value="0"/>
+    <reserved_bit_field offset="30" width="1" reset_value="0"/>
+    <bit_field offset="31" width="1" name="OVR" access="RO" reset_value="0" description="Overrun">
+      <alias type="CMSIS" value="MCM_LMFATR_OVR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4A0" width="32" name="LMFDHR" description="LMEM Fault Data High Register">
+    <alias type="CMSIS" value="LMFDHR"/>
+    <bit_field offset="0" width="32" name="PEFDH" access="RO" reset_value="0" description="Parity or ECC Fault Data High">
+      <alias type="CMSIS" value="MCM_LMFDHR_PEFDH(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4A4" width="32" name="LMFDLR" description="LMEM Fault Data Low Register">
+    <alias type="CMSIS" value="LMFDLR"/>
+    <bit_field offset="0" width="32" name="PEFDL" access="RO" reset_value="0" description="Parity or ECC Fault Data Low">
+      <alias type="CMSIS" value="MCM_LMFDLR_PEFDL(x)"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

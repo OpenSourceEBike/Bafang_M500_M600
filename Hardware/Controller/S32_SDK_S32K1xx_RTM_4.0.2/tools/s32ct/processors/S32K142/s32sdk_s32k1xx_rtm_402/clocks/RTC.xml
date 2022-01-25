@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<clocks:component xmlns:clocks="http://apif.freescale.net/schemas/clocks/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://apif.freescale.net/schemas/clocks/1.1 http://apif.freescale.net/schemas/clocks/1.1/clocks.xsd" id="RTC">
+  <instance_header>
+    <instance_description>Clock model for the RTC module - RTC (parameterized, shared accross all S32K parts). </instance_description>
+  </instance_header>
+  <interface>
+    <output_clock_signal id="RTC_CLKIN" name="LPO RTC_CLKIN"/>
+    <pin id="RTC_CLKIN" name="RTC_CLKIN" direction="in">
+      <peripheral_signal_ref signal="rtc_clkin"/>
+    </pin>
+  </interface>
+  <implementation>
+    <clock_source id="RTC_CLK_EXT_IN" name="RTC_CLK external input">
+      <external_source default_connected="true" default_freq="32.768 kHz">
+        <pin id="RTC_CLKIN"/>
+        <range min_freq="1kHz" max_freq="1MHz" description="RTC clock input frequency"/>
+      </external_source>
+      <configuration_element id="RTC_CR_CPE_CFG" name="Initialize" description="Initialize 32kHz oscillator of the RTC.">
+        <default value="no"/>
+        <item id="yes" description="yes">
+          <assigns>
+            <assign register="RTC::CR" bit_field="CPE" value="1"/>
+          </assigns>
+        </item>
+        <item id="no" description="no">
+          <assigns>
+            <assign register="RTC::CR" bit_field="CPE" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_source>
+    <map_output id="RTC_CLKIN">
+      <input signal="RTC_CLK_EXT_IN.clk"/>
+    </map_output>
+  </implementation>
+</clocks:component>

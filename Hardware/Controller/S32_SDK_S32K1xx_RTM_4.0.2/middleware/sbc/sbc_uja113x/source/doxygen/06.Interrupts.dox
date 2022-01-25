@@ -1,0 +1,18 @@
+/**
+  @addtogroup isr
+  @section isr_intro Introduction
+<p>
+The library provides one function for each interrupt group (UJA113X_SetSystemInterrupts(),
+UJA113X_SetSupplyInterrupts() etc.) to enable/disable required interrupts. On the other 
+hand, handling the interrupt's is not supported and it's the users responsiblity
+to provide his own logic.\n
+ @subsection isr_handling Handling pending interrupts
+After an event related to enabled interrupt occurs, the corresponding pin INTN1/INTN2
+is set low. This can be detected by the MCU and a pending interrupt can be
+processed.\n
+The SBC provides a global interrupt status register (see @ref regmap). This 
+should be read first, to identify the interrupt group source. Afterwards a 
+dedicated interrupt status register should be read to identify the interrupt 
+source. The UJA113X_SbcTransfer() function can be used.
+</p>
+ */

@@ -1,0 +1,67 @@
+/*!
+    @page security_pal_s32k142_group SECURITY PAL
+    @brief Basic application that presents basic usecases for the Security PAL.
+
+    @note <b>This example works only for CSEc enabled parts.</b> SIM_SDID indicates whether CSEc is available on your device.</b>
+    @note <b>The first time when running the example on the board, or after a key erase, this example should be ran from RAM.</b>
+    @note <b>This example generates a random number.</b>
+    @note <b>This example demonstrates CBC Encryption/Decryption.</b>
+
+    ## Application description ##
+    _____
+    The purpose of this demo application is to show the user how to use the Security PAL in conjuction with Cryptographic Services Engine module from
+    the S32K14x MCU with the S32 SDK API.
+
+    The implementation demonstrates the following:
+        - the enablement of the Security PAL, used over CSEc module, by showing how the Flash should be partitioned (using the Flash driver);
+        - initializing the Random Number Generator and generating a vector of 128 random bits;
+        - configuring the RAM key, with a 128-bit plaintext;
+        - using the user key for a CBC encryption and a CBC decryption;
+
+    If no errors occur during the cryptographic operations, the green LED will be turned on upon completion; if the red LED is lit, the program
+    failed during one of the steps.
+
+    ## Prerequisites ##
+    _____
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board cannot be powered from the USB port)
+    - 1 Personal Computer
+    - 1 PEmicro/Jlink Lite Debugger (optional, users can use Open SDA)
+
+    ## Boards supported ##
+    _____
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+
+    ## How to run ##
+    _____
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New \b S32DS \b Project \b From... and select \b security_pal_s32k142. Select "Copy projects into workspace" and then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    #### 2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    Right click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar).
+    In S32 Configuration menu, click on the desired configuration (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components.
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user.
+    Make the desired changes (if any) then click "Update Code"."
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) or \b RAM (Debug_RAM) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug Configurations. There will be four debug configurations for this project:
+     Configuration Name | Description
+     -------------------|------------
+     \b security_pal_s32k142_debug_flash_jlink \b Debug_FLASH \b Jlink | Debug the FLASH configuration using Segger Jlink debuggers
+     \b security_pal_s32k142_debug_ram_jlink \b Debug_RAM \b Jlink | Debug the RAM configuration using Segger Jlink debuggers
+     \b security_pal_s32k142_debug_flash_pemicro \b Debug_FLASH \b PEMicro | Debug the FLASH configuration using PEMicro debuggers
+     \b security_pal_s32k142_debug_ram_pemicro \b Debug_RAM \b PEMicro | Debug the RAM configuration using PEMicro debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+
+*/
+

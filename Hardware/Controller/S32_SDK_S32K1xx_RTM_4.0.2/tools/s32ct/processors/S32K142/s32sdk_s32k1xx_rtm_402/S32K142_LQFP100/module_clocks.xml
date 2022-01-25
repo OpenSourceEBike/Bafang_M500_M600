@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<clocks:component xmlns:clocks="http://apif.freescale.net/schemas/clocks/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://apif.freescale.net/schemas/clocks/1.1 http://apif.freescale.net/schemas/clocks/1.1/clocks.xsd" id="module_clocks">
+  <interface>
+      <input_clock_signal id="SPLL_CLK_OUT" name="SPLL_CLK_OUT" description="SPLL clock source."/>
+      <input_clock_signal id="CORE_CLK" name="Core clock" description="Clocks the ARM core, divided by DIVCORE bits inside SCG."/>
+      <input_clock_signal id="SYS_CLK" name="System clock" description="System clock."/>
+      <input_clock_signal id="BUS_CLK" name="Bus clock" description="Clocks the chip peripherals."/>
+      <input_clock_signal id="FLASH_CLK" name="Flash clock" description="Clocks the flash module."/>
+      <input_clock_signal id="SPLLDIV1_CLK" name="Divided SPLL1_CLK" description="This should be configured to 80MHz or less in RUN mode." group="peripheral"/>
+      <input_clock_signal id="SPLLDIV2_CLK" name="Divided SPLL2_CLK" description="This should be configured to 40 MHz or less in RUN mode." group="peripheral"/>
+      <input_clock_signal id="FIRCDIV1_CLK" name="Divided FIRC1_CLK" description="This should be configured to 48 MHz or less in RUN mode." group="peripheral"/>
+      <input_clock_signal id="FIRCDIV2_CLK" name="Divided FIRC2_CLK" description="This should be configured to 48 MHz or less in RUN mode." group="peripheral"/>
+      <input_clock_signal id="SIRCDIV1_CLK" name="Divided SIRC1_CLK" description="This should be configured to 8 MHz or less in RUN mode and to 4 MHz or less in VLPR/VLPS mode." group="peripheral"/>
+      <input_clock_signal id="SIRCDIV2_CLK" name="Divided SIRC2_CLK" description="This should be configured to 8 MHz or less in RUN mode and to 4 MHz or less in VLPR/VLPS mode." group="peripheral"/>
+      <input_clock_signal id="SOSCDIV1_CLK" name="Divided SOSC1_CLK" description="This should be configured to 40 MHz or less in RUN mode." group="peripheral"/>
+      <input_clock_signal id="SOSCDIV2_CLK" name="Divided SOSC2_CLK" description="This should be configured to 40 MHz or less in RUN mode." group="peripheral"/>
+      <input_clock_signal id="SCGCLKOUT" name="SCGCLKOUT" description="SCG clock output"/>
+      <input_clock_signal id="CLKOUT" name="CLKOUT" description="Selected from one of eight internal clock sources."/>
+      <input_clock_signal id="LPO_CLK" name="LPO_CLK" description="Clock output generated from one of three LPO clocks sources (LPO128K_CLK, LPO32K_CLK, LPO1K_CLK)."/>
+      <input_clock_signal id="LPO_1K_CLK" name="LPO_1K_CLK" description="LPO 1K Clock."/>
+      <input_clock_signal id="RTC_CLK" name="RTC_CLK" description="RTC Clock."/>
+      <input_clock_signal id="LPSPI0_CLK" name="LPSPI0_CLK" description="LPSPI0 clock output signal."/>
+      <input_clock_signal id="LPSPI1_CLK" name="LPSPI1_CLK" description="LPSPI1 clock output signal."/>
+      <input_clock_signal id="LPUART0_CLK" name="LPUART0_CLK" description="LPUART0 clock output signal."/>
+      <input_clock_signal id="LPUART1_CLK" name="LPUART1_CLK" description="LPUART1 clock output signal."/>
+      <input_clock_signal id="LPI2C0_CLK" name="LPI2C0_CLK" description="LPI2C0 clock output signal."/>
+      <input_clock_signal id="LPTMR0_CLK" name="LPTMR0_CLK" description="LPTMR0 clock output signal."/>
+      <input_clock_signal id="LPIT0_CLK" name="LPIT0_CLK" description="LPIT clock output signal."/>
+      <input_clock_signal id="FlexIO0_CLK" name="FlexIO0_CLK" description="FlexIO clock output signal."/>
+      <input_clock_signal id="ADC0_CLK" name="ADC0_CLK" description="ADC0 clock output signal."/>
+      <input_clock_signal id="ADC1_CLK" name="ADC1_CLK" description="ADC1 clock output signal."/>
+      <input_clock_signal id="FTM0_CLK" name="FTM0_CLK" description="FTM0 clock output signal."/>
+      <input_clock_signal id="FTM1_CLK" name="FTM1_CLK" description="FTM1 clock output signal."/>
+      <input_clock_signal id="FTM2_CLK" name="FTM2_CLK" description="FTM2 clock output signal."/>
+      <input_clock_signal id="FTM3_CLK" name="FTM3_CLK" description="FTM3 clock output signal."/>
+      <input_clock_signal id="CMP0_CLK" name="CMP0_CLK" description="CMP0 clock output signal."/>
+      <input_clock_signal id="CRC0_CLK" name="CRC0_CLK" description="CRC0 clock output signal."/>
+      <input_clock_signal id="DMAMUX0_CLK" name="DMAMUX0_CLK" description="DMAMUX0 clock output signal."/>
+      <input_clock_signal id="EWM0_CLK" name="EWM0_CLK" description="EWM0 clock output signal."/>
+      <input_clock_signal id="FTFM0_CLK" name="FTFM0_CLK" description="FTFM0 clock output signal."/>
+      <input_clock_signal id="PDB0_CLK" name="PDB0_CLK" description="PDB0 clock output signal."/>
+      <input_clock_signal id="PDB1_CLK" name="PDB1_CLK" description="PDB1 clock output signal."/>
+      <input_clock_signal id="FLEXCAN0_CLK" name="FLEXCAN0_CLK" description="FLEXCAN0 clock output signal."/>
+      <input_clock_signal id="FLEXCAN1_CLK" name="FLEXCAN1_CLK" description="FLEXCAN1 clock output signal."/>
+      <input_clock_signal id="RTC0_CLK" name="RTC_CLK" description="RTC0 clock output signal."/>
+      <input_clock_signal id="EIM0_CLK" name="EIM0_CLK" description="EIM0 clock output signal."/>
+      <input_clock_signal id="ERM0_CLK" name="ERM0_CLK" description="ERM0 clock output signal."/>
+      <input_clock_signal id="DMA0_CLK" name="DMA0_CLK" description="DMA0 clock output signal."/>
+      <input_clock_signal id="MPU0_CLK" name="MPU0_CLK" description="MPU0 clock output signal."/>
+      <input_clock_signal id="MSCM0_CLK" name="MSCM0_CLK" description="MSCM0 clock output signal."/>
+      <input_clock_signal id="TRACE_CLK" name="TRACE_CLK" description="TRACE clock output signal."/>
+      <input_clock_signal id="PORTA_CLK" name="PORTA_CLK" description="PORTA clock output signal."/>
+      <input_clock_signal id="PORTB_CLK" name="PORTB_CLK" description="PORTB clock output signal."/>
+      <input_clock_signal id="PORTC_CLK" name="PORTC_CLK" description="PORTC clock output signal."/>
+      <input_clock_signal id="PORTD_CLK" name="PORTD_CLK" description="PORTD clock output signal."/>
+      <input_clock_signal id="PORTE_CLK" name="PORTE_CLK" description="PORTE clock output signal."/>
+      <input_clock_signal id="TCLK_0_EXT_REF" name="TCLK_0 EXT REF clock" description="TCLK_0 EXT REF clock"/>
+      <input_clock_signal id="TCLK_1_EXT_REF" name="TCLK_1 EXT REF clock" description="TCLK_1 EXT REF clock"/>
+      <input_clock_signal id="TCLK_2_EXT_REF" name="TCLK_2 EXT REF clock" description="TCLK_2 EXT REF clock"/>
+  </interface>
+  <implementation>
+    <peripheral_component id="LPSPI0" component="LPSPI" name="LPSPI0">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="LPSPI0_CLK" signal="LPSPI0_CLK" description="LPSPI0_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="LPSPI1" component="LPSPI" name="LPSPI1">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="LPSPI1_CLK" signal="LPSPI1_CLK" description="LPSPI1_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="LPUART0" component="LPUART" name="LPUART0">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="LPUART0_CLK" signal="LPUART0_CLK" description="LPUART0_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="LPUART1" component="LPUART" name="LPUART1">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="LPUART1_CLK" signal="LPUART1_CLK" description="LPUART1_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="LPI2C0" component="LPI2C" name="LPI2C0">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="LPI2C0_CLK" signal="LPI2C0_CLK" description="LPI2C0_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="LPTMR0_CLK" component="LPTMR" name="LPTMR0">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="LPTMR0_CLK" signal="LPTMR0_CLK" description="LPTMR0_CLK"/>
+      <input_signal id="RTC_CLK" signal="RTC_CLK" description="RTC_CLK"/>
+      <input_signal id="SIRCDIV2_CLK" signal="SIRCDIV2_CLK" description="SIRCDIV2_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="LPIT" component="LPIT" name="LPIT">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="LPIT0_CLK" signal="LPIT0_CLK" description="LPIT0_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="FlexIO0_CLK" component="FlexIO" name="FlexIO">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="FlexIO0_CLK" signal="FlexIO0_CLK" description="FlexIO0_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="ADC0_CLK" component="ADC0" name="ADC0">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="ADC0_CLK" signal="ADC0_CLK" description="ADC0_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="ADC1_CLK" component="ADC1" name="ADC1">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="ADC1_CLK" signal="ADC1_CLK" description="ADC1_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="FTM0_CLK" component="FTM" name="FTM0">
+      <input_signal id="SYS_CLK" signal="SYS_CLK" description="SYS_CLK"/>
+      <input_signal id="FTM0_CLK" signal="FTM0_CLK" description="FTM0_CLK"/>
+      <input_signal id="RTC_CLK" signal="RTC_CLK" description="RTC_CLK"/>
+      <input_signal id="TCLK_0_EXT_REF" signal="TCLK_0_EXT_REF" description="TCLK_0 EXT pin clock"/>
+      <input_signal id="TCLK_1_EXT_REF" signal="TCLK_1_EXT_REF" description="TCLK_1 EXT pin clock"/>
+      <input_signal id="TCLK_2_EXT_REF" signal="TCLK_2_EXT_REF" description="TCLK_2 EXT pin clock"/>
+    </peripheral_component>
+    <peripheral_component id="FTM1_CLK" component="FTM" name="FTM1">
+      <input_signal id="SYS_CLK" signal="SYS_CLK" description="SYS_CLK"/>
+      <input_signal id="FTM1_CLK" signal="FTM1_CLK" description="FTM1_CLK"/>
+      <input_signal id="RTC_CLK" signal="RTC_CLK" description="RTC_CLK"/>
+      <input_signal id="TCLK_0_EXT_REF" signal="TCLK_0_EXT_REF" description="TCLK_0 EXT pin clock"/>
+      <input_signal id="TCLK_1_EXT_REF" signal="TCLK_1_EXT_REF" description="TCLK_1 EXT pin clock"/>
+      <input_signal id="TCLK_2_EXT_REF" signal="TCLK_2_EXT_REF" description="TCLK_2 EXT pin clock"/>
+    </peripheral_component>
+    <peripheral_component id="FTM2_CLK" component="FTM" name="FTM2">
+      <input_signal id="SYS_CLK" signal="SYS_CLK" description="SYS_CLK"/>
+      <input_signal id="FTM2_CLK" signal="FTM2_CLK" description="FTM2_CLK"/>
+      <input_signal id="RTC_CLK" signal="RTC_CLK" description="RTC_CLK"/>
+        <input_signal id="TCLK_0_EXT_REF" signal="TCLK_0_EXT_REF" description="TCLK_0 EXT pin clock"/>
+      <input_signal id="TCLK_1_EXT_REF" signal="TCLK_1_EXT_REF" description="TCLK_1 EXT pin clock"/>
+      <input_signal id="TCLK_2_EXT_REF" signal="TCLK_2_EXT_REF" description="TCLK_2 EXT pin clock"/>
+    </peripheral_component>
+    <peripheral_component id="FTM3_CLK" component="FTM" name="FTM3">
+      <input_signal id="SYS_CLK" signal="SYS_CLK" description="SYS_CLK"/>
+      <input_signal id="FTM3_CLK" signal="FTM3_CLK" description="FTM3_CLK"/>
+      <input_signal id="RTC_CLK" signal="RTC_CLK" description="RTC_CLK"/>
+        <input_signal id="TCLK_0_EXT_REF" signal="TCLK_0_EXT_REF" description="TCLK_0 EXT pin clock"/>
+      <input_signal id="TCLK_1_EXT_REF" signal="TCLK_1_EXT_REF" description="TCLK_1 EXT pin clock"/>
+      <input_signal id="TCLK_2_EXT_REF" signal="TCLK_2_EXT_REF" description="TCLK_2 EXT pin clock"/>
+    </peripheral_component>
+    <peripheral_component id="FLEXCAN0_CLK" component="FlexCan0" name="FLEXCAN0">
+      <input_signal id="SYS_CLK" signal="SYS_CLK" description="SYS_CLK"/>
+      <input_signal id="FLEXCAN0_CLK" signal="FLEXCAN0_CLK" description="FLEXCAN0_CLK"/>
+      <input_signal id="SOSCDIV2_CLK" signal="SOSCDIV2_CLK" description="SOSCDIV2_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="FLEXCAN1_CLK" component="FlexCan1" name="FLEXCAN1">
+      <input_signal id="SYS_CLK" signal="SYS_CLK" description="SYS_CLK"/>
+      <input_signal id="FLEXCAN1_CLK" signal="FLEXCAN1_CLK" description="FLEXCAN1_CLK"/>
+      <input_signal id="SOSCDIV2_CLK" signal="SOSCDIV2_CLK" description="SOSCDIV2_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="PDB0_CLK" component="PDB0" name="PDB0">
+      <input_signal id="SYS_CLK" signal="SYS_CLK" description="SYS_CLK"/>
+      <input_signal id="PDB0_CLK" signal="PDB0_CLK" description="PDB0_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="PDB1_CLK" component="PDB1" name="PDB1">
+      <input_signal id="SYS_CLK" signal="SYS_CLK" description="SYS_CLK"/>
+      <input_signal id="PDB1_CLK" signal="PDB1_CLK" description="PDB1_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="RTC0_CLK" component="RTC0" name="RTC0">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="RTC_CLK" signal="RTC_CLK" description="RTC_CLK"/>
+      <input_signal id="RTC0_CLK" signal="RTC0_CLK" description="RTC0_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="CAN_0" component="CAN" name="CAN_0">
+      <input_signal id="SOSCDIV2_CLK" signal="SOSCDIV2_CLK" description="SOSCDIV2_CLK"/>
+      <input_signal id="SYS_CLK" signal="SYS_CLK" description="SYS_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="EWM0" component="EWM" name="EWM0">
+      <input_signal id="BUS_CLK" signal="BUS_CLK" description="BUS_CLK"/>
+      <input_signal id="LPO_CLK" signal="LPO_CLK" description="LPO_CLK"/>
+    </peripheral_component>
+    <peripheral_component id="FREERTOS" component="FREERTOS" name="FREERTOS">
+      <input_signal id="CPU_CLOCK" signal="CORE_CLK" description="CPU_CLOCK"/>
+    </peripheral_component>
+  </implementation>
+</clocks:component>

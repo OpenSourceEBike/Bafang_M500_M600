@@ -1,0 +1,87 @@
+/**
+@defgroup clock_manager_s32k1xx Clock Manager Driver
+@brief This module covers the device-specific clock_manager functionality implemented for S32K1xx SOC.
+@ingroup clock_manager
+<p>
+The support for S32K1xx consist in the following items:
+-# Clock names enumeration
+\ref clock_names_t is an enumeration which contains all clock names which are relevant for S32K1xx.
+-# Submodule configuration structures
+    - \ref scg_config_t
+    - \ref pcc_config_t
+    - \ref sim_clock_config_t
+    - \ref pmc_config_t
+-# Submodule configuration functions
+The following functions were implemented for S32K1xx:
+    - \ref CLOCK_SYS_SetScgConfiguration
+    - \ref CLOCK_SYS_SetPccConfiguration
+    - \ref CLOCK_SYS_SetSimConfiguration
+    - \ref CLOCK_SYS_SetPmcConfiguration
+
+## Hardware background ##
+
+Features of clock_manager module include the following clock sources:
+    - 4 - 40 MHz fast external oscillator (SOSC)
+    - 48 MHz Fast Internal RC oscillator (FIRC)
+    - 8 MHz Slow Internal RC oscillator (SIRC)
+    - 128 kHz Low Power Oscillator (LPO)
+    - Up to 112 MHz (HSRUN) System Phased Lock Loop (SPLL)
+
+## How to use the CLOCK_MANAGER driver in your application ##
+
+In order to be able to use the clock_manager in your application,
+<b>CLOCK_DRV_Init</b> function has to be called. The same function is called
+when another configuration is loaded and clock configuration is updated.
+
+## Code Example ##
+
+This is an example for switching between two configurations:
+
+@code
+  CLOCK_SYS_Init(g_clockManConfigsArr,
+                 CLOCK_MANAGER_CONFIG_CNT,
+                 g_clockManCallbacksArr,
+                 CLOCK_MANAGER_CALLBACK_CNT);
+
+  CLOCK_SYS_UpdateConfiguration(0, CLOCK_MANAGER_POLICY_FORCIBLE);
+  CLOCK_SYS_UpdateConfiguration(1, CLOCK_MANAGER_POLICY_FORCIBLE);
+@endcode
+
+## Notes ##
+
+Current implementation assumes that the clock configurations are valid and are applied in a valid sequence.
+Mainly this means that the configuration doesn't reinitialize the clock used as the system clock.
+
+According to Errata e10777, when the power mode is being switched, the core clock
+frequency is incorrectly read. As a result, when switching from VLPR mode to
+HSRUN, the frequency has to be read twice or after some time has passed.
+
+The S32DS do not support generate Callbacks configuration. It's alway empty.
+
+## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\clock\S32K1xx\clock_S32K1xx.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+${S32SDK_PATH}\platform\drivers\src\clock\
+${S32SDK_PATH}\platform\drivers\src\clock\S32K1xx\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref interrupt_manager
+</p>
+*/

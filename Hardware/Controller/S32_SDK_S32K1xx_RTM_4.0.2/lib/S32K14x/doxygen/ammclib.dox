@@ -1,0 +1,31 @@
+/*!
+* @defgroup ammclib Automotive Math and Motor Control Library
+* @brief Automotive Math and Motor Control Library integration with S32 SDK @n
+* 
+* ## General Information ##
+* The Automotive Math and Motor Control Library Set is a precompiled off-the-shelf software library containing the building blocks for a wide range of motor control and general mathematical applications. The Automotive Math and Motor Control Library Set is delivered as a precompiled or source code library, and a provides production-ready, highly speed-optimized, intensively tested and easy to use solution for the rapid development of user motor control and general mathematical applications.
+* An integral part of the Automotive Math and Motor Control Library Set are the Matlab/Simulink® models of all supported functions to allow modelling of the user application using the Matlab/Simulink® environment, and extensive user documentation. The Automotive Math and Motor Control Library Set support three major arithmetic: 32-bit fixed-point, 16-bit fixed-point and single precision floating-point.
+* For more information, application notes and demos please visit AMMCLib <a href="http://www.nxp.com/products/software-and-tools/run-time-software/automotive-software-and-tools/motor-control-development-solutions/automotive-math-and-motor-control-library-set:AUTOMATH_MCL">page</a> from NXP website.
+* AMMCLIB package contains the following:
+* - \b bam : contains Bit Accurate Models of all the functions for Matlab/Simulink
+* - \b doc : contains the User Manual
+* - \b include : contains all the header files, including the master header files of each library to be included in the user application
+* - \b lib : contains the compiled library file to be included in the user application
+*
+* @note For an overview of what is included in the Automotive Math and Motor Control Library and it's capabilities you can check the document found in <a href="../AMMCLIB_OnePager_S32SDK.pdf">&lt;SDK_Location&gt;/doc/AMMCLIB_OnePager_S32SDK.pdf</a>
+* @note This is just a brief description of the Automotive Math and Motor Control Library, for more information please check the full library documentation found in <a href="../../lib/S32K14x/AMMCLIB/Doc/S32K14XMCLUG.pdf">&lt;SDK_Location&gt;/lib/&lt;CPU_Family&gt;/AMMCLIB/doc/S32K14XMCLUG.pdf</a>
+* @note The library is provided in binary format, compiled using GCC, GHS, IAR and for evaluation purposes only. Please consult license.txt file for more information found in <a href="../../lib/S32K14x/AMMCLIB/license.txt">&lt;SDK_Location&gt;/lib/&lt;CPU_Family&gt;/AMMCLIB/license.txt</a>
+*
+* ## How to use ##
+* To add AMMCLib in your application you need to follow four steps:
+*  - 1)  Add AMMCLib S32CT component into your project. The component will automatically add the required include paths.
+*  - 2) Add  ":S32K14x_AMMCLIB.a" in Libraries (-l) and add "${workspace_loc:/${ProjName}/SDK/lib/AMMCLIB/lib/<compiler>}" in Library search path (-L)
+*  - 3) Select the implementations from the AMMCLib component(Fixed 16, Fixed 32 or Float). If you are using the float implementation you need to enable FPU in the toolchain settings.
+*  - 4) Use the library API to execute the required tests.
+*
+* You can use the AMMCLib examples as a practical implementation of the steps described above.
+*
+* ## Note ##
+* IAR compiler:
+* - The compiler is not able to distinguish the sequence of read and write operations inside an inline assembly block in GFLIB_VMin.h and it make the Warning[Pe549] messages. In that case, C option "--diag_suppress Pe549" should be added to suppress those warnings or "--warnings_are_errors" should be removed to not treat those warnings as errors.
+*/

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="adc_config" label="adc_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+    <sw_comp_ref name="platform.driver.adc" version="1.0.0"/>
+    <description>Analog to Digital Driver</description>
+    <mode id="general" label="General Mode" available="true">
+        <description>ADC general mode</description>
+        <config_set_refs>
+            <config_set_ref>adc</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>ADC</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set label="ADC Configuration" id="adc" from_source="adc_driver.h">
+        <description>Analog to Digital Converter Configurations</description>
+        <generated_types>
+        </generated_types>
+        <user_types>
+            <enum id="adc_clk_divide_t" label="Clock Divider selection" from="adc_clk_divide_t" options="cStructField">
+                <description>Implements : adc_clk_divide_t_Class</description>
+                <item id="ADC_CLK_DIVIDE_1" label="Input clock divided by 1">
+                    <description>Input clock divided by 1.</description>
+                </item>
+                <item id="ADC_CLK_DIVIDE_2" label="Input clock divided by 2">
+                    <description>Input clock divided by 2.</description>
+                </item>
+                <item id="ADC_CLK_DIVIDE_4" label="Input clock divided by 4">
+                    <description>Input clock divided by 4.</description>
+                </item>
+                <item id="ADC_CLK_DIVIDE_8" label="Input clock divided by 8">
+                    <description>Input clock divided by 8.</description>
+                </item>
+            </enum>
+            <enum id="adc_resolution_t" label="Conversion resolution selection" from="adc_resolution_t" options="cStructField">
+                <description>Implements : adc_resolution_t_Class</description>
+                <item id="ADC_RESOLUTION_8BIT" label="8-bit resolution mode">
+                    <description>8-bit resolution mode</description>
+                </item>
+                <item id="ADC_RESOLUTION_12BIT" label="12-bit resolution mode">
+                    <description>12-bit resolution mode</description>
+                </item>
+                <item id="ADC_RESOLUTION_10BIT" label="10-bit resolution mode">
+                    <description>10-bit resolution mode</description>
+                </item>
+            </enum>
+            <enum id="adc_input_clock_t" label="Input clock source selection" from="adc_input_clock_t" options="cStructField">
+                <description>Implements : adc_input_clock_t_Class</description>
+                <item id="ADC_CLK_ALT_1" label="Input clock alternative 1">
+                    <description>Input clock alternative 1.</description>
+                </item>
+                <item id="ADC_CLK_ALT_2" label="Input clock alternative 2">
+                    <description>Input clock alternative 2.</description>
+                </item>
+                <item id="ADC_CLK_ALT_3" label="Input clock alternative 3">
+                    <description>Input clock alternative 3.</description>
+                </item>
+                <item id="ADC_CLK_ALT_4" label="Input clock alternative 4">
+                    <description>Input clock alternative 4.</description>
+                </item>
+            </enum>
+            <enum id="adc_trigger_t" label="Trigger type selection" from="adc_trigger_t" options="cStructField">
+                <description>Implements : adc_trigger_t_Class</description>
+                <item id="ADC_TRIGGER_SOFTWARE" label="Software trigger">
+                    <description>Software trigger.</description>
+                </item>
+                <item id="ADC_TRIGGER_HARDWARE" label="Hardware trigger">
+                    <description>Hardware trigger.</description>
+                </item>
+            </enum>
+            <enum id="adc_pretrigger_sel_t" label="Pretrigger types selectable from Trigger Latching and Arbitration Unit" from="adc_pretrigger_sel_t" options="cStructField">
+                <description>Implements : adc_pretrigger_sel_t_Class</description>
+                <item id="ADC_PRETRIGGER_SEL_PDB" label="PDB pretrigger selected">
+                    <description>PDB pretrigger selected.</description>
+                </item>
+                <item id="ADC_PRETRIGGER_SEL_TRGMUX" label="TRGMUX pretrigger selected">
+                    <description>TRGMUX pretrigger selected.</description>
+                </item>
+                <item id="ADC_PRETRIGGER_SEL_SW" label="Software pretrigger selected">
+                    <description>Software pretrigger selected.</description>
+                </item>
+            </enum>
+            <enum id="adc_trigger_sel_t" label="Trigger source selectable from Trigger Latching and Arbitration Unit" from="adc_trigger_sel_t" options="cStructField">
+                <description>Implements : adc_trigger_sel_t_Class</description>
+                <item id="ADC_TRIGGER_SEL_PDB" label="PDB trigger selected">
+                    <description>PDB trigger selected.</description>
+                </item>
+                <item id="ADC_TRIGGER_SEL_TRGMUX" label="TRGMUX trigger selected">
+                    <description>TRGMUX trigger selected.</description>
+                </item>
+            </enum>
+            <enum id="adc_sw_pretrigger_t" label="Software pretriggers which may be set from Trigger Latching and Arbitration Unit" from="adc_sw_pretrigger_t" options="cStructField">
+                <description>Implements : adc_sw_pretrigger_t_Class</description>
+                <item id="ADC_SW_PRETRIGGER_DISABLED" label="SW pretrigger disabled">
+                    <description>SW pretrigger disabled.</description>
+                </item>
+                <item id="ADC_SW_PRETRIGGER_0" label="SW pretrigger 0">
+                    <description>SW pretrigger 0.</description>
+                </item>
+                <item id="ADC_SW_PRETRIGGER_1" label="SW pretrigger 1">
+                    <description>SW pretrigger 1.</description>
+                </item>
+                <item id="ADC_SW_PRETRIGGER_2" label="SW pretrigger 2">
+                    <description>SW pretrigger 2.</description>
+                </item>
+                <item id="ADC_SW_PRETRIGGER_3" label="SW pretrigger 3">
+                    <description>SW pretrigger 3.</description>
+                </item>
+            </enum>
+            <enum id="adc_voltage_reference_t" label="Voltage reference selection" from="adc_voltage_reference_t" options="cStructField">
+                <description>Implements : adc_voltage_reference_t_Class</description>
+                <item id="ADC_VOLTAGEREF_VREF" label="VrefH and VrefL as Voltage reference">
+                    <description>VrefH and VrefL as Voltage reference.</description>
+                </item>
+                <item id="ADC_VOLTAGEREF_VALT" label="ValtH and ValtL as Voltage reference">
+                    <description>ValtH and ValtL as Voltage reference.</description>
+                </item>
+            </enum>
+            <enum id="adc_average_t" label="Hardware average selection" from="adc_average_t" options="cStructField">
+                <description>Implements : adc_average_t_Class</description>
+                <item id="ADC_AVERAGE_4" label="Hardware average of 4 samples">
+                    <description>Hardware average of 4 samples.</description>
+                </item>
+                <item id="ADC_AVERAGE_8" label="Hardware average of 8 samples">
+                    <description>Hardware average of 8 samples.</description>
+                </item>
+                <item id="ADC_AVERAGE_16" label="Hardware average of 16 samples">
+                    <description>Hardware average of 16 samples.</description>
+                </item>
+                <item id="ADC_AVERAGE_32" label="Hardware average of 32 samples">
+                    <description>Hardware average of 32 samples.</description>
+                </item>
+            </enum>
+            <enum id="adc_latch_clear_t" label="Defines the trigger latch clear method Implements : adc_latch_clear_t_Class" from="adc_latch_clear_t" options="cStructField">
+                <description></description>
+                <item id="ADC_LATCH_CLEAR_WAIT" label="Clear by waiting all latched triggers to be processed">
+                    <description>Clear by waiting all latched triggers to be processed</description>
+                </item>
+                <item id="ADC_LATCH_CLEAR_FORCE" label="Process current trigger and clear all latched">
+                    <description>Process current trigger and clear all latched</description>
+                </item>
+            </enum>
+            <struct id="adc_converter_config_t" label="Defines the converter configuration" from="adc_converter_config_t">
+                <description>This structure is used to configure the ADC converterImplements : adc_converter_config_t_Class</description>
+                <string id="name" label="Name" >
+                   <description>Configuration Name</description>
+                   <validation>
+                      <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="the configuration name must be a C    identifier!"/>
+                   </validation>
+                </string>
+                <bool id = "readonly" label="Read only configuration">
+                    <description>Specifies how will be configuration generated. Read only generated structures are declared with const qualifiers</description>
+                </bool>
+                <reference id="clockDivide" label="Divider of the input clock for the ADC" type="adc_clk_divide_t">
+                    <description>Divider of the input clock for the ADC</description>
+                </reference>
+                <integer id="sampleTime" label="Sample time in AD Clocks" type="uint8_t" options="cStructField">
+                    <description>Sample time in AD Clocks</description>
+                </integer>
+                <reference id="resolution" label="ADC resolution (8,10,12 bit)" type="adc_resolution_t">
+                    <description>ADC resolution (8,10,12 bit)</description>
+                </reference>
+                <reference id="inputClock" label="Input clock source" type="adc_input_clock_t">
+                    <description>Input clock source</description>
+                </reference>
+                <reference id="trigger" label="ADC trigger type (software, hardware) - affects only the first control channel" type="adc_trigger_t">
+                    <description>ADC trigger type (software, hardware) - affects only the first control channel</description>
+                </reference>
+                <reference id="pretriggerSel" label="Pretrigger source selected from Trigger Latching and Arbitration Unit - affects only the first 4 control channels" type="adc_pretrigger_sel_t">
+                    <description>Pretrigger source selected from Trigger Latching and Arbitration Unit - affects only the first 4 control channels</description>
+                </reference>
+                <reference id="triggerSel" label="Trigger source selected from Trigger Latching and Arbitration Unit" type="adc_trigger_sel_t">
+                    <description>Trigger source selected from Trigger Latching and Arbitration Unit</description>
+                </reference>
+                <bool id="dmaEnable" label="Enable DMA for the ADC" options="cStructField">
+                    <description>Enable DMA for the ADC</description>
+                </bool>
+                <reference id="voltageRef" label="Voltage reference used" type="adc_voltage_reference_t">
+                    <description>Voltage reference used</description>
+                </reference>
+                <bool id="continuousConvEnable" label="Enable Continuous conversions" options="cStructField">
+                    <description>Enable Continuous conversions</description>
+                </bool>
+                <bool id="supplyMonitoringEnable" label="Enable internal supply monitoring" options="cStructField">
+                    <description>Only available for ADC 0. Enable internal supply monitoring - enables measurement of ADC_INPUTCHAN_SUPPLY_ sources.</description>
+                </bool>
+            </struct>
+            <struct id="adc_compare_config_t" label="Defines the hardware compare configuration" from="adc_compare_config_t">
+                <description>This structure is used to configure the hardware compare feature for the ADCImplements : adc_compare_config_t_Class</description>
+                <string id="name" label="Name" >
+                   <description>Configuration Name</description>
+                   <validation>
+                      <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="the configuration name must be a C    identifier!"/>
+                   </validation>
+                </string>
+                <bool id = "readonly" label="Read only configuration">
+                    <description>Specifies how will be configuration generated. Read only generated structures are declared with const qualifiers</description>
+                </bool>
+                <bool id="compareEnable" label="Enable the compare feature" options="cStructField">
+                    <description>Enable the compare feature</description>
+                </bool>
+                <bool id="compareGreaterThanEnable" label="Enable Greater-Than functionality" options="cStructField">
+                    <description>Enable Greater-Than functionality</description>
+                </bool>
+                <bool id="compareRangeFuncEnable" label="Enable Range functionality" options="cStructField">
+                    <description>Enable Range functionality</description>
+                </bool>
+                <integer id="compVal1" label="First Compare Value" type="uint16_t" options="cStructField">
+                    <description>First Compare Value</description>
+                </integer>
+                <integer id="compVal2" label="Second Compare Value" type="uint16_t" options="cStructField">
+                    <description>Second Compare Value</description>
+                </integer>
+            </struct>
+            <struct id="adc_average_config_t" label="Defines the hardware average configuration" from="adc_average_config_t">
+                <description>This structure is used to configure the hardware average feature for the ADCImplements : adc_average_config_t_Class</description>
+                <string id="name" label="Name" >
+                   <description>Configuration Name</description>
+                   <validation>
+                      <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="the configuration name must be a C    identifier!"/>
+                   </validation>
+                </string>
+                <bool id = "readonly" label="Read only configuration" >
+                    <description>Specifies how will be configuration generated. Read only generated structures are declared with const qualifiers</description>
+                </bool>
+                <bool id="hwAvgEnable" label="Enable averaging functionality" options="cStructField">
+                    <description>Enable averaging functionality</description>
+                </bool>
+                <reference id="hwAverage" label="Selection for number of samples used for averaging" type="adc_average_t">
+                    <description>Selection for number of samples used for averaging</description>
+                </reference>
+            </struct>
+            <struct id="adc_chan_config_t" label="Defines the control channel configuration" from="adc_chan_config_t">
+                <description>This structure is used to configure a control channel of the ADCImplements : adc_chan_config_t_Class</description>
+                <string id="name" label="Name" >
+                   <description>Configuration Name</description>
+                   <validation>
+                      <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="the configuration name must be a C    identifier!"/>
+                   </validation>
+                </string>
+                <bool id = "readonly" label="Read only configuration" >
+                    <description>Specifies how will be configuration generated. Read only generated structures are declared with const qualifiers</description>
+                </bool>
+                <bool id="interruptEnable" label="Enable interrupts for this channel" options="cStructField">
+                    <description>Enable interrupts for this channel</description>
+                </bool>                
+                <dynamic_enum id="channel" label="Selection of input channel for measurement" items="
+                    getResource(
+                    `adc_chans`,
+                    `chan_list_` + getPeripheral($instance)
+                    ).arrayToEnumItems(
+                    enumItem -> true,
+                    enumItem -> enumItem.getValue(),
+                    enumItem -> enumItem.getLabel(),
+                    enumItem -> enumItem.getValue()
+                    )" options="cStructField" />
+            </struct>
+            <struct id="adc_calibration_t" label="Defines the user calibration configuration" from="adc_calibration_t">
+                <description>This structure is used to configure the user calibration parameters of the ADC.Implements : adc_calibration_t_Class</description>
+                <integer id="userGain" label="User-configurable gain" type="uint16_t" options="cStructField">
+                    <description>User-configurable gain</description>
+                </integer>
+                <integer id="userOffset" label="User-configurable Offset (2&apos;s complement, subtracted from result)" type="uint16_t" options="cStructField">
+                    <description>User-configurable Offset (2&apos;s complement, subtracted from result)</description>
+                </integer>
+            </struct>
+        </user_types>
+        <settings>
+            <array id="adcConverterCfg" label="ADC converter configurations" type="adc_converter_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN;UI_BORDER_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())" min_expr="1">
+                <description>ADC compare configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the ADC configurations"/>
+                    <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `_ConvConfig` + x.getID())"/>
+                    <set_default id="readonly" value_expr="x -> (`true`)"/>
+                    <set_default id="clockDivide" value_expr="x -> (`ADC_CLK_DIVIDE_4`)"/>
+                    <set_default id="sampleTime" value_expr="x -> (`255`)"/>
+                    <set_default id="resolution" value_expr="x -> (`ADC_RESOLUTION_12BIT`)"/>
+                    <set_default id="inputClock" value_expr="x -> (`ADC_CLK_ALT_1`)"/>
+                    <set_default id="trigger" value_expr="x -> (`ADC_TRIGGER_SOFTWARE`)"/>
+                    <set_default id="pretriggerSel" value_expr="x -> (`ADC_PRETRIGGER_SEL_PDB`)"/>
+                    <set_default id="triggerSel" value_expr="x -> (`ADC_TRIGGER_SEL_PDB`)"/>
+                    <set_default id="dmaEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="voltageRef" value_expr="x -> (`ADC_VOLTAGEREF_VREF`)"/>
+                    <set_default id="continuousConvEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="supplyMonitoringEnable" value_expr="x -> (`false`)"/>
+                </item_defaults>
+            </array>
+            <array id="adcCompareCfg" label="ADC compare cofigurations" type="adc_compare_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN;UI_BORDER_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+                <description>ADC compare configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the ADC configurations"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `_HwCompConfig` + x.getID())"/>
+                    <set_default id="readonly" value_expr="x -> (`true`)"/>
+                    <set_default id="compareEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="compareGreaterThanEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="compareRangeFuncEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="compVal1" value_expr="x -> (`0`)"/>
+                    <set_default id="compVal2" value_expr="x -> (`0`)"/>
+                </item_defaults>
+            </array>
+            <array id="adcAverageCfg" label="ADC average configurations" type="adc_average_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN;UI_BORDER_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+                <description>ADC compare configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the ADC configurations"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `_HwAvgConfig` + x.getID())"/>
+                    <set_default id="readonly" value_expr="x -> (`true`)"/>
+                    <set_default id="hwAvgEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="hwAverage" value_expr="x -> (`ADC_AVERAGE_4`)"/>
+                </item_defaults>
+            </array>
+            <array id="adcChanCfg" label="ADC channel configurations" type="adc_chan_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN;UI_BORDER_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+                <description>ADC compare configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the ADC configurations"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `_ChnConfig` + x.getID())"/>
+                    <set_default id="readonly" value_expr="x -> (`true`)"/>
+                    <set_default id="interruptEnable" value_expr="x -> (`true`)"/>
+                    <set_default id="channel" value_expr="x -> (`ADC_INPUTCHAN_DISABLED`)"/>
+                </item_defaults>
+            </array>
+            <variable value="`../adc/adc_codegen.js`" id="codegen_file"></variable>
+            <variable value="`ADC_CodeGenerator`" id="codegen_class"></variable>
+        </settings>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="dv_adc" label="Default Configuration" available="true">
+                <description>Default Configuration</description>
+                <set id="adcConverterCfg.0"></set>
+            </quick_selection>
+            <default>dv_adc</default>
+        </quick_selections>
+    </config_set>
+</component:config_component>

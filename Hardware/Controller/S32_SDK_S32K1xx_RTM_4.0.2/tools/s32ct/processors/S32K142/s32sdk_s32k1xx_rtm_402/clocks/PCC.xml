@@ -1,0 +1,965 @@
+<?xml version="1.0"?>
+<clocks:component xmlns:clocks="http://apif.freescale.net/schemas/clocks/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://apif.freescale.net/schemas/clocks/1.1 http://apif.freescale.net/schemas/clocks/1.1/clocks.xsd" id="PCC">
+  <instance_header>
+    <instance_description>PCC module for definition of module clocks only (parameterized, shared accross all S32K parts)</instance_description>
+  </instance_header>
+  <interface>
+    <input_clock_signal id="BUS_CLK" name="BUS_CLK"/>
+    <input_clock_signal id="SYS_CLK" name="SYS_CLK"/>
+    <input_clock_signal id="CORE_CLK" name="CORE_CLK"/>
+    <input_clock_signal id="FLASH_CLK" name="FLASH_CLK"/>
+    <input_clock_signal id="SOSCDIV1_CLK_IN" name="SOSCDIV1_CLK_IN"/>
+    <input_clock_signal id="FIRCDIV1_CLK_IN" name="FIRCDIV1_CLK_IN"/>
+    <input_clock_signal id="SIRCDIV1_CLK_IN" name="SIRCDIV1_CLK_IN"/>
+    <input_clock_signal id="SPLLDIV1_CLK_IN" name="SPLLDIV1_CLK_IN"/>
+    <input_clock_signal id="SOSCDIV2_CLK_IN" name="SOSCDIV2_CLK_IN"/>
+    <input_clock_signal id="FIRCDIV2_CLK_IN" name="FIRCDIV2_CLK_IN"/>
+    <input_clock_signal id="SIRCDIV2_CLK_IN" name="SIRCDIV2_CLK_IN"/>
+    <input_clock_signal id="SPLLDIV2_CLK_IN" name="SPLLDIV2_CLK_IN"/>
+    <input_clock_signal id="LPO_CLK_IN" name="LPO_CLK_IN"/>
+    <input_clock_signal id="FTM0_EXT_PIN_CLK_IN" name="FTM0_EXT_PIN_CLK_IN"/>
+    <input_clock_signal id="FTM1_EXT_PIN_CLK_IN" name="FTM1_EXT_PIN_CLK_IN"/>
+    <input_clock_signal id="FTM2_EXT_PIN_CLK_IN" name="FTM2_EXT_PIN_CLK_IN"/>
+    <input_clock_signal id="FTM3_EXT_PIN_CLK_IN" name="FTM3_EXT_PIN_CLK_IN"/>
+    <output_clock_signal id="LPSPI0_CLK" name="LPSPI0 clock" description="LPSPI0 device clock output"/>
+    <output_clock_signal id="LPSPI1_CLK" name="LPSPI1 clock" description="LPSPI1 device clock output"/>
+    <output_clock_signal id="LPUART0_CLK" name="LPUART0 clock" description="LPUART0 device clock output"/>
+    <output_clock_signal id="LPUART1_CLK" name="LPUART1 clock" description="LPUART1 device clock output"/>
+    <output_clock_signal id="LPI2C0_CLK" name="LPI2C0 clock" description="LPI2C0 device clock output"/>
+    <output_clock_signal id="LPTMR0_CLK" name="LPTMR0 clock" description="LPTMR0 device clock output"/>
+    <output_clock_signal id="LPIT0_CLK" name="LPIT0 clock" description="LPIT0 device clock output"/>
+    <output_clock_signal id="FlexIO0_CLK" name="FlexIO0 clock" description="FlexIO device clock output"/>
+    <output_clock_signal id="ADC0_CLK" name="ADC0 clock" description="ADC0 device clock output"/>
+    <output_clock_signal id="ADC1_CLK" name="ADC1 clock" description="ADC1 device clock output"/>
+    <output_clock_signal id="FTM0_CLK" name="FTM0 clock" description="FTM0 device clock output"/>
+    <output_clock_signal id="FTM1_CLK" name="FTM1 clock" description="FTM1 device clock output"/>
+    <output_clock_signal id="FTM2_CLK" name="FTM2 clock" description="FTM2 device clock output"/>
+    <output_clock_signal id="FTM3_CLK" name="FTM3 clock" description="FTM3 device clock output"/>
+    <output_clock_signal id="CMP0_CLK" name="CMP0 clock" description="CMP0 device clock output"/>
+    <output_clock_signal id="CRC0_CLK" name="CRC0 clock" description="CRC0 device clock output"/>
+    <output_clock_signal id="DMAMUX0_CLK" name="DMAMUX0 clock" description="DMAMUX0 device clock output"/>
+    <output_clock_signal id="EWM0_CLK" name="EWM0 clock" description="EWM0 device clock output"/>
+    <output_clock_signal id="FTFC0_CLK" name="FTFC0 clock" description="FTFC0 device clock output"/>
+    <output_clock_signal id="PDB0_CLK" name="PDB0 clock" description="PDB0 device clock output"/>
+    <output_clock_signal id="PDB1_CLK" name="PDB1 clock" description="PDB1 device clock output"/>
+    <output_clock_signal id="FLEXCAN0_CLK" name="FLEXCAN0 clock" description="FLEXCAN0 device clock output"/>
+    <output_clock_signal id="FLEXCAN1_CLK" name="FLEXCAN1 clock" description="FLEXCAN1 device clock output"/>
+    <output_clock_signal id="RTC0_CLK" name="RTC0 clock" description="RTC0 device clock output"/>
+    <output_clock_signal id="EIM0_CLK" name="EIM0 clock" description="EIM0 device clock output"/>
+    <output_clock_signal id="ERM0_CLK" name="ERM0 clock" description="ERM0 device clock output"/>
+    <output_clock_signal id="DMA0_CLK" name="DMA0 clock" description="DMA0 device clock output"/>
+    <output_clock_signal id="MPU0_CLK" name="MPU0 clock" description="MPU0 device clock output"/>
+    <output_clock_signal id="MSCM0_CLK" name="MSCM0 clock" description="MSCM0 device clock output"/>
+    <output_clock_signal id="TRACE_CLK" name="TRACE clock" description="TRACE device clock output"/>
+    <output_clock_signal id="PORTA_CLK" name="PORTA clock" description="PORTA clocking"/>
+    <output_clock_signal id="PORTB_CLK" name="PORTB clock" description="PORTB clocking"/>
+    <output_clock_signal id="PORTC_CLK" name="PORTC clock" description="PORTC clocking"/>
+    <output_clock_signal id="PORTD_CLK" name="PORTD clock" description="PORTD clocking"/>
+    <output_clock_signal id="PORTE_CLK" name="PORTE clock" description="PORTE clocking"/>
+  </interface>
+  <implementation>
+    <clock_select id="TRACE_CLK_SEL" name="TRACE_CLK_SEL" description="TRACE peripheral clock select">
+    <enable cond_expr="TRACEInitialize == `yes` " description="clock out gate can be enabled by selecting Enabled and Initialize is yes."/>
+      <value_map expr="SIM::CHIPCTL[TRACECLK_SEL]">
+        <input ctrl_value="0" signal="CORE_CLK" name="CORE clock"/>
+      </value_map>
+    </clock_select>
+    <pll id="TRACE_DIV" name="TRACE divider" description="TRACE divider. Divider output clock = Divider input clock x [(TRACEFRAC+1)/(TRACEDIV+1)]">
+      <input signal="TRACE_CLK_SEL.clk"/>
+      <enable cond_expr="TRACEInitialize == `yes` &amp;&amp; TRACE_DIVEN == `Enabled`" description="Divider can be enabled by selecting Enabled and Initialize is yes"/>
+      <constraint cond_expr="SIM::CLKDIV4[TRACEDIV] &gt;= SIM::CLKDIV4[TRACEFRAC]" description="TRACE Clock Divider Fraction should be less or equal than TRACE divider"/>
+      <prescaler id="PREDIVTRACE" name="TRACE Clock Divider" description="TRACE Clock Divider">
+        <divide expr="(SIM::CLKDIV4[TRACEDIV]+1)"/>
+      </prescaler>
+      <prescaler id="TRACE_FRAC" name="TRACE Clock Divider Fraction" description="TRACE use clock divider fraction.">
+        <multiply expr="(SIM::CLKDIV4[TRACEFRAC]+1)"/>
+      </prescaler>
+    </pll>
+    <clock_enable id="TRACE_GATE" name="TRACE Gate" description="TRACE clock gate">
+      <input signal="TRACE_DIV.clk"/>
+      <enable cond_expr="TRACEInitialize == `yes` &amp;&amp; TRACE_DIVEN == `Enabled`" description="clock out gate can be enabled by selecting Enabled and Initialize is yes of TRACE clock"/>
+      <configuration_element id="TRACEInitialize" name="TRACE Initialize" description="Initialize TRACE clock.">
+        <default value="yes"/>
+        <item id="yes" description="yes">
+        </item>
+        <item id="no" description="no">
+        </item>
+      </configuration_element>
+      <configuration_element id="TRACE_DIVEN" name="Debug TRACE Divider Gate" description="Selects Enabled if TRACE clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIM::CLKDIV4" bit_field="TRACEDIVEN" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIM::CLKDIV4" bit_field="TRACEDIVEN" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_select id="SIM_CLK_SEL" name="SIM_CLK_SEL" description="Selects the clock SIM peripheral.">
+        <enable cond_expr="SimInitialize == `yes`" description="clock out gate can be enabled by selecting SimInitialize yes"/>
+        <value_map expr="0">
+          <input ctrl_value="0" signal="SYS_CLK" name="System clock" description="System clock"/>
+        </value_map>
+      <configuration_element id="SimInitialize" name="Sim Initialize" description="Initialize SIM clock gate will affect to EIM0, ERM0, DMA0, MPU0, MSCM0 clock">
+        <default value="yes"/>
+        <item id="yes" description="yes">
+        </item>
+        <item id="no" description="no">
+        </item>
+      </configuration_element>
+    </clock_select>
+    <clock_enable id="EIM0_GATE" name="EIM0_GATE" description="EIM0 clock gate">
+      <input signal="SIM_CLK_SEL.clk"/>
+      <enable cond_expr="EIM_CGC == `Enabled` &amp;&amp; SimInitialize == `yes`" description="clock out gate can be enabled by selecting Enabled clock and SIM Initialize is yes"/>
+      <configuration_element id="EIM_CGC" name="EIM0 Gate" description="Selects Enabled if EIM0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIM::PLATCGC" bit_field="CGCEIM" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIM::PLATCGC" bit_field="CGCEIM" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="ERM0_GATE" name="ERM0_GATE" description="ERM0 clock gate">
+      <input signal="SIM_CLK_SEL.clk"/>
+      <enable cond_expr="ERM_CGC == `Enabled` &amp;&amp; SimInitialize == `yes`" description="clock out gate can be enabled by selecting Enabled and SIM Initialize is yes"/>
+      <configuration_element id="ERM_CGC" name="ERM0 Gate" description="Selects Enabled if ERM0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIM::PLATCGC" bit_field="CGCERM" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIM::PLATCGC" bit_field="CGCERM" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="DMA0_GATE" name="DMA0_GATE" description="DMA0 clock gate">
+      <input signal="SIM_CLK_SEL.clk"/>
+      <enable cond_expr="DMA_CGC == `Enabled` &amp;&amp; SimInitialize == `yes`" description="clock out gate can be enabled by selecting Enabled and SIM Initialize is yes"/>
+      <configuration_element id="DMA_CGC" name="DMA0 Gate" description="Selects Enabled if DMA0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIM::PLATCGC" bit_field="CGCDMA" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIM::PLATCGC" bit_field="CGCDMA" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="MPU0_GATE" name="MPU0_GATE" description="MPU0 clock gate">
+      <input signal="SIM_CLK_SEL.clk"/>
+      <enable cond_expr="MPU_CGC == `Enabled` &amp;&amp; SimInitialize == `yes`" description="clock out gate can be enabled by selecting Enabled and SIM Initialize is yes"/>
+      <configuration_element id="MPU_CGC" name="MPU0 Gate" description="Selects Enabled if MPU0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIM::PLATCGC" bit_field="CGCMPU" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIM::PLATCGC" bit_field="CGCMPU" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+
+    <clock_enable id="MSCM0_GATE" name="MSCM0_GATE" description="MSCM0 clock gate">
+      <input signal="SIM_CLK_SEL.clk"/>
+      <enable cond_expr="MSCM_CGC == `Enabled` &amp;&amp; SimInitialize == `yes`" description="clock out gate can be enabled by selecting Enabled and SIM Initialize is yes"/>
+      <configuration_element id="MSCM_CGC" name="MSCM0 Gate" description="Selects Enabled if MSCM0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIM::PLATCGC" bit_field="CGCMSCM" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIM::PLATCGC" bit_field="CGCMSCM" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="RTC0_GATE" name="RTC0_GATE" description="RTC0 clock gate">
+      <input signal="BUS_CLK_SEL.clk"/>
+      <enable cond_expr="RTC_CGC == `Enabled`"/>
+      <configuration_element id="RTC_CGC" name="RTC0 Gate" description="Selects Enabled if RTC0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="RTC" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="RTC" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_select id="SYS_CLK_SEL" name="SYS_CLK_SEL" description="Selects the clock System peripheral.">
+        <value_map expr="0">
+          <input ctrl_value="0" signal="SYS_CLK" name="System clock" description="System clock"/>
+        </value_map>
+    </clock_select>
+    <clock_enable id="FLEXCAN1_GATE" name="FLEXCAN1_GATE" description="FLEXCAN1 clock gate">
+      <input signal="SYS_CLK_SEL.clk"/>
+      <enable cond_expr="FLEXCAN1_CGC == `Enabled`"/>
+      <configuration_element id="FLEXCAN1_CGC" name="FLEXCAN1 Gate" description="Selects Enabled if FLEXCAN1 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="FlexCAN1" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="FlexCAN1" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="FLEXCAN0_GATE" name="FLEXCAN0_GATE" description="FLEXCAN0 clock gate">
+      <input signal="SYS_CLK_SEL.clk"/>
+      <enable cond_expr="FLEXCAN0_CGC == `Enabled`"/>
+      <configuration_element id="FLEXCAN0_CGC" name="FLEXCAN0 Gate" description="Selects Enabled if FLEXCAN0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="FlexCAN0" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="FlexCAN0" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="PDB1_GATE" name="PDB1_GATE" description="PDB1 clock gate">
+      <input signal="SYS_CLK_SEL.clk"/>
+      <enable cond_expr="PDB1_CGC == `Enabled`"/>
+      <configuration_element id="PDB1_CGC" name="PDB1 Gate" description="Selects Enabled if PDB1 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="PDB1" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="PDB1" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="PDB0_GATE" name="PDB0_GATE" description="PDB0 clock gate">
+      <input signal="SYS_CLK_SEL.clk"/>
+      <enable cond_expr="PDB0_CGC == `Enabled`"/>
+      <configuration_element id="PDB0_CGC" name="PDB0 Gate" description="Selects Enabled if PDB0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="PDB0" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="PDB0" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_select id="FLASH_CLK_SEL" name="FLASH_CLK_SEL" description="Selects the clock Flash peripheral.">
+        <value_map expr="0">
+          <input ctrl_value="0" signal="FLASH_CLK" name="Flash clock" description="Flash clock"/>
+        </value_map>
+    </clock_select>
+    <clock_enable id="FTFC0_GATE" name="FTFC0_GATE" description="FTFC0 clock gate">
+      <input signal="FLASH_CLK_SEL.clk"/>
+      <enable cond_expr="FTFC_CGC == `Enabled`"/>
+      <configuration_element id="FTFC_CGC" name="FTFC0 Gate" description="Selects Enabled if FTFC0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="FTFC" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="FTFC" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_select id="BUS_CLK_SEL" name="BUS_CLK_SEL" description="Selects the clock Bus peripheral.">
+        <value_map expr="0">
+          <input ctrl_value="0" signal="BUS_CLK" name="Bus clock" description="Bus clock"/>
+        </value_map>
+    </clock_select>
+    <clock_enable id="EWM0_GATE" name="EWM0_GATE" description="EWM0 clock gate">
+      <input signal="BUS_CLK_SEL.clk"/>
+      <enable cond_expr="EWM_CGC == `Enabled`"/>
+      <configuration_element id="EWM_CGC" name="EWM0 Gate" description="Selects Enabled if EWM0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="EWM" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="EWM" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="DMAMUX0_GATE" name="DMAMUX0_GATE" description="DMAMUX0 clock gate">
+      <input signal="BUS_CLK_SEL.clk"/>
+      <enable cond_expr="DMAMUX_CGC == `Enabled`"/>
+      <configuration_element id="DMAMUX_CGC" name="DMAMUX0 Gate" description="Selects Enabled if DMAMUX0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="DMAMUX" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="DMAMUX" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="CRC0_GATE" name="CRC0_GATE" description="CRC0 clock gate">
+      <input signal="BUS_CLK_SEL.clk"/>
+      <enable cond_expr="CRC_CGC == `Enabled`"/>
+      <configuration_element id="CRC_CGC" name="CRC0 Gate" description="Selects Enabled if CRC0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="CRC" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="CRC" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="CMP0_GATE" name="CMP0_GATE" description="CMP0 clock gate">
+      <input signal="BUS_CLK_SEL.clk"/>
+      <enable cond_expr="CMP0_CGC == `Enabled`"/>
+      <configuration_element id="CMP0_CGC" name="CMP0 Gate" description="Selects Enabled if CMP0 clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="CMP0" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="CMP0" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="PORTA_GATE" name="PORTA_GATE" description="PORTA clock gate">
+      <input signal="BUS_CLK_SEL.clk"/>
+      <enable cond_expr="PORTA_CGC == `Enabled`" description="Clock out gate can be enabled by selecting Enabled."/>
+      <configuration_element id="PORTA_CGC" name="PORTA Gate" description="Selects Enabled if PORTA clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="PORTA" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="PORTA" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_enable id="PORTB_GATE" name="PORTB_GATE" description="PORTB clock gate">
+      <input signal="BUS_CLK_SEL.clk"/>
+      <enable cond_expr="PORTB_CGC == `Enabled`" description="Clock out gate can be enabled by selecting Enabled."/>
+      <configuration_element id="PORTB_CGC" name="PORTB Gate" description="Selects Enabled if PORTB clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="PORTB" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="PORTB" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+
+    <clock_enable id="PORTC_GATE" name="PORTC_GATE" description="PORTC clock gate">
+      <input signal="BUS_CLK_SEL.clk"/>
+      <enable cond_expr="PORTC_CGC == `Enabled`" description="Clock out gate can be enabled by selecting Enabled."/>
+      <configuration_element id="PORTC_CGC" name="PORTC Gate" description="Selects Enabled if PORTC clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="PORTC" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="PORTC" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+
+    <clock_enable id="PORTD_GATE" name="PORTD_GATE" description="PORTD clock gate">
+      <input signal="BUS_CLK_SEL.clk"/>
+      <enable cond_expr="PORTD_CGC == `Enabled`" description="Clock out gate can be enabled by selecting Enabled."/>
+      <configuration_element id="PORTD_CGC" name="PORTD Gate" description="Selects Enabled if PORTD clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="PORTD" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="PORTD" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+
+    <clock_enable id="PORTE_GATE" name="PORTE_GATE" description="PORTE clock gate">
+      <input signal="BUS_CLK_SEL.clk"/>
+      <enable cond_expr="PORTE_CGC == `Enabled`" description="Clock out gate can be enabled by selecting Enabled."/>
+      <configuration_element id="PORTE_CGC" name="PORTE Gate" description="Selects Enabled if PORTE clock want to active">
+        <default value="Enabled"/>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="PORTE" bit_field="CGC" value="0"/>
+          </assigns>
+        </item>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="PORTE" bit_field="CGC" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+    </clock_enable>
+    <clock_select id="LPSPI0_CLK_SEL" name="LPSPI0_CLK_SEL" description="LPSPI0 peripheral clock select">
+      <value_map expr="LPSPI0[PCS]">
+        <input ctrl_value="1" signal="SOSCDIV2_CLK_IN" name="SCG SOSC DIV2 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV2_CLK_IN" name="SCG SIRC DIV2 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV2_CLK_IN" name="SCG FIRC DIV2 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV2_CLK_IN" name="SCG SPLL DIV2 clock"/>
+        <no_clock ctrl_value="0" name="No clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="LPSPI0_GATE" name="LPSPI0_GATE" description="LPSPI0 clock gate">
+      <input signal="LPSPI0_CLK_SEL.clk"/>
+        <enable cond_expr="LPSPI0_CGC == `Enabled`"/>
+        <configuration_element id="LPSPI0_CGC" name="LPSPI0 Gate" description="LPSPI0 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::LPSPI0" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::LPSPI0" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="LPSPI1_CLK_SEL" name="LPSPI1_CLK_SEL" description="LPSPI1 peripheral clock select">
+      <value_map expr="LPSPI1[PCS]">
+        <input ctrl_value="1" signal="SOSCDIV2_CLK_IN" name="SCG SOSC DIV2 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV2_CLK_IN" name="SCG SIRC DIV2 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV2_CLK_IN" name="SCG FIRC DIV2 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV2_CLK_IN" name="SCG SPLL DIV2 clock"/>
+        <no_clock ctrl_value="0" name="No clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="LPSPI1_GATE" name="LPSPI1_GATE" description="LPSPI1 clock gate">
+      <input signal="LPSPI1_CLK_SEL.clk"/>
+        <enable cond_expr="LPSPI1_CGC == `Enabled`"/>
+        <configuration_element id="LPSPI1_CGC" name="LPSPI1 Gate" description="LPSPI1 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::LPSPI1" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::LPSPI1" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="LPUART0_CLK_SEL" name="LPUART0_CLK_SEL" description="LPUART0 peripheral clock select">
+      <value_map expr="LPUART0[PCS]">
+        <input ctrl_value="1" signal="SOSCDIV2_CLK_IN" name="SCG SOSC DIV2 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV2_CLK_IN" name="SCG SIRC DIV2 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV2_CLK_IN" name="SCG FIRC DIV2 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV2_CLK_IN" name="SCG SPLL DIV2 clock"/>
+        <no_clock ctrl_value="0" name="No clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="LPUART0_GATE" name="LPUART0_GATE" description="LPUART0 clock gate">
+      <input signal="LPUART0_CLK_SEL.clk"/>
+        <enable cond_expr="LPUART0_CGC == `Enabled`"/>
+        <configuration_element id="LPUART0_CGC" name="LPUART0 Gate" description="LPUART0 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::LPUART0" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::LPUART0" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="LPUART1_CLK_SEL" name="LPUART1_CLK_SEL" description="LPUART1 peripheral clock select">
+      <value_map expr="LPUART1[PCS]">
+        <input ctrl_value="1" signal="SOSCDIV2_CLK_IN" name="SCG SOSC DIV2 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV2_CLK_IN" name="SCG SIRC DIV2 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV2_CLK_IN" name="SCG FIRC DIV2 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV2_CLK_IN" name="SCG SPLL DIV2 clock"/>
+        <no_clock ctrl_value="0" name="No clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="LPUART1_GATE" name="LPUART1_GATE" description="LPUART1 clock gate">
+      <input signal="LPUART1_CLK_SEL.clk"/>
+        <enable cond_expr="LPUART1_CGC == `Enabled`"/>
+        <configuration_element id="LPUART1_CGC" name="LPUART1 Gate" description="LPUART1 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::LPUART1" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::LPUART1" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="LPI2C0_CLK_SEL" name="LPI2C0_CLK_SEL" description="LPI2C0 peripheral clock select">
+      <value_map expr="LPI2C0[PCS]">
+        <input ctrl_value="1" signal="SOSCDIV2_CLK_IN" name="SCG SOSC DIV2 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV2_CLK_IN" name="SCG SIRC DIV2 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV2_CLK_IN" name="SCG FIRC DIV2 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV2_CLK_IN" name="SCG SPLL DIV2 clock"/>
+        <no_clock ctrl_value="0" name="No clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="LPI2C0_GATE" name="LPI2C0_GATE" description="LPI2C0 clock gate">
+      <input signal="LPI2C0_CLK_SEL.clk"/>
+        <enable cond_expr="LPI2C0_CGC == `Enabled`"/>
+        <configuration_element id="LPI2C0_CGC" name="LPI2C0 Gate" description="LPI2C0 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::LPI2C0" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::LPI2C0" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="LPTMR0_CLK_SEL" name="LPTMR0_CLK_SEL" description="LPTMR peripheral clock select">
+      <value_map expr="LPTMR0[PCS]">
+        <input ctrl_value="1" signal="SOSCDIV2_CLK_IN" name="SCG SOSC DIV2 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV2_CLK_IN" name="SCG SIRC DIV2 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV2_CLK_IN" name="SCG FIRC DIV2 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV2_CLK_IN" name="SCG SPLL DIV2 clock"/>
+        <no_clock ctrl_value="0" name="No clock"/>
+      </value_map>
+    </clock_select>
+    <pll id="LPTMR0_DIV" name="LPTMR0 divider" description="LPTMR0 divider. Divider output clock = input clock x [(FRAC+1)/(PCD+1)]">
+      <input signal="LPTMR0_CLK_SEL.clk"/>
+      <constraint cond_expr="!(PCC::LPTMR0[PCD] == 0 &amp;&amp; PCC::LPTMR0[FRAC] == 1)" description="When dividing by 1 (PCD = 000), the Clock Divider Fraction cannot be multiply by 2(FRAC = 1)"/>
+      <prescaler id="PREDIV" name="LPTMR0 Clock Divider" description="LPTMR0 clock divider">
+        <divide expr="PCC::LPTMR0[PCD] + 1"/>
+      </prescaler>
+      <prescaler id="LPTMR0_FRAC" name="LPTMR0 Clock Divider Fraction" description="LPTMR0 use clock divider fraction.">
+        <multiply expr="PCC::LPTMR0[FRAC] + 1"/>
+      </prescaler>
+    </pll>
+
+    <clock_enable id="LPTMR0_GATE" name="LPTMR0_GATE" description="LPTMR0 clock gate">
+      <input signal="LPTMR0_DIV.clk"/>
+        <enable cond_expr="LPTMR0_CGC == `Enabled`"/>
+        <configuration_element id="LPTMR0_CGC" name="LPTMR0 Gate" description="LPTMR0 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::LPTMR0" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::LPTMR0" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="LPIT0_CLK_SEL" name="LPIT0_CLK_SEL" description="LPIT0 peripheral clock select">
+      <value_map expr="LPIT[PCS]">
+        <input ctrl_value="1" signal="SOSCDIV2_CLK_IN" name="SCG SOSC DIV2 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV2_CLK_IN" name="SCG SIRC DIV2 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV2_CLK_IN" name="SCG FIRC DIV2 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV2_CLK_IN" name="SCG SPLL DIV2 clock"/>
+        <no_clock ctrl_value="0" name="No clock"/>
+      </value_map>
+      <!-- <constraint cond_expr="(LPIT0_CLK_SEL.outFreq == 128000 &amp;&amp; LPIT[PCS] == 7)" description="LPO must be LPO_128K When selects LPO_CLK as source"/> -->
+    </clock_select>
+    <clock_enable id="LPIT0_GATE" name="LPIT0_GATE" description="LPIT clock gate">
+      <input signal="LPIT0_CLK_SEL.clk"/>
+        <enable cond_expr="LPIT0_CGC == `Enabled`"/>
+        <configuration_element id="LPIT0_CGC" name="LPIT0 Gate" description="LPIT enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::LPIT" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::LPIT" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="FlexIO0_CLK_SEL" name="FlexIO0_CLK_SEL" description="FlexIO peripheral clock select">
+      <value_map expr="FlexIO[PCS]">
+        <input ctrl_value="1" signal="SOSCDIV2_CLK_IN" name="SCG SOSC DIV2 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV2_CLK_IN" name="SCG SIRC DIV2 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV2_CLK_IN" name="SCG FIRC DIV2 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV2_CLK_IN" name="SCG SPLL DIV2 clock"/>
+        <no_clock ctrl_value="0" name="No clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="FlexIO0_GATE" name="FlexIO0_GATE" description="FlexIO0 clock gate">
+      <input signal="FlexIO0_CLK_SEL.clk"/>
+        <enable cond_expr="FlexIO0_CGC == `Enabled`"/>
+        <configuration_element id="FlexIO0_CGC" name="FlexIO0 Gate" description="FlexIO0 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::FlexIO" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::FlexIO" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="ADC0_CLK_SEL" name="ADC0_CLK_SEL" description="ADC0 peripheral clock select">
+      <value_map expr="ADC0[PCS]">
+        <input ctrl_value="1" signal="SOSCDIV2_CLK_IN" name="SCG SOSC DIV2 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV2_CLK_IN" name="SCG SIRC DIV2 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV2_CLK_IN" name="SCG FIRC DIV2 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV2_CLK_IN" name="SCG SPLL DIV2 clock"/>
+        <no_clock ctrl_value="0" name="No clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="ADC0_GATE" name="ADC0_GATE" description="ADC0 clock gate">
+      <input signal="ADC0_CLK_SEL.clk"/>
+        <enable cond_expr="ADC0_CGC == `Enabled`"/>
+        <configuration_element id="ADC0_CGC" name="ADC0 Gate" description="ADC0 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::ADC0" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::ADC0" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="ADC1_CLK_SEL" name="ADC1_CLK_SEL" description="ADC1 peripheral clock select">
+      <value_map expr="ADC1[PCS]">
+        <input ctrl_value="1" signal="SOSCDIV2_CLK_IN" name="SCG SOSC DIV2 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV2_CLK_IN" name="SCG SIRC DIV2 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV2_CLK_IN" name="SCG FIRC DIV2 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV2_CLK_IN" name="SCG SPLL DIV2 clock"/>
+        <no_clock ctrl_value="0" name="No clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="ADC1_GATE" name="ADC1_GATE" description="ADC1 clock gate">
+      <input signal="ADC1_CLK_SEL.clk"/>
+        <enable cond_expr="ADC1_CGC == `Enabled`"/>
+        <configuration_element id="ADC1_CGC" name="ADC1 Gate" description="ADC1 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::ADC1" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::ADC1" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="FTM0_CLK_SEL" name="FTM0_CLK_SEL" description="FTM0 peripheral clock select">
+      <value_map expr="PCC::FTM0[PCS]">
+        <input ctrl_value="0" signal="FTM0_EXT_PIN_CLK_IN.clk" name="FTM0 External Clock Pin Select clock"/>
+        <input ctrl_value="1" signal="SOSCDIV1_CLK_IN.clk" name="SCG SOSC DIV1 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV1_CLK_IN.clk" name="SCG SIRC DIV1 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV1_CLK_IN.clk" name="SCG FIRC DIV1 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV1_CLK_IN.clk" name="SCG SPLL DIV1 clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="FTM0_GATE" name="FTM0_GATE" description="FTM0 clock gate">
+      <input signal="FTM0_CLK_SEL.clk"/>
+        <enable cond_expr="FTM0_CGC == `Enabled`"/>
+        <configuration_element id="FTM0_CGC" name="FTM0 Gate" description="FTM0 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::FTM0" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::FTM0" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="FTM1_CLK_SEL" name="FTM1_CLK_SEL" description="FTM1 peripheral clock select">
+      <value_map expr="FTM1[PCS]">
+        <input ctrl_value="0" signal="FTM1_EXT_PIN_CLK_IN.clk" name="FTM1 External Clock Pin Select clock"/>
+        <input ctrl_value="1" signal="SOSCDIV1_CLK_IN.clk" name="SCG SOSC DIV1 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV1_CLK_IN.clk" name="SCG SIRC DIV1 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV1_CLK_IN.clk" name="SCG FIRC DIV1 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV1_CLK_IN.clk" name="SCG SPLL DIV1 clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="FTM1_GATE" name="FTM1_GATE" description="FTM1 clock gate">
+      <input signal="FTM1_CLK_SEL.clk"/>
+        <enable cond_expr="FTM1_CGC == `Enabled`"/>
+        <configuration_element id="FTM1_CGC" name="FTM1 Gate" description="FTM1 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::FTM1" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::FTM1" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="FTM2_CLK_SEL" name="FTM2_CLK_SEL" description="FTM2 peripheral clock select">
+      <value_map expr="FTM2[PCS]">
+        <input ctrl_value="0" signal="FTM2_EXT_PIN_CLK_IN.clk" name="FTM2 External Clock Pin Select clock"/>
+        <input ctrl_value="1" signal="SOSCDIV1_CLK_IN.clk" name="SCG SOSC DIV1 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV1_CLK_IN.clk" name="SCG SIRC DIV1 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV1_CLK_IN.clk" name="SCG FIRC DIV1 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV1_CLK_IN.clk" name="SCG SPLL DIV1 clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="FTM2_GATE" name="FTM2_GATE" description="FTM2 clock gate">
+      <input signal="FTM2_CLK_SEL.clk"/>
+        <enable cond_expr="FTM2_CGC == `Enabled`"/>
+        <configuration_element id="FTM2_CGC" name="FTM2 Gate" description="FTM2 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::FTM2" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::FTM2" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <clock_select id="FTM3_CLK_SEL" name="FTM3_CLK_SEL" description="FTM3 peripheral clock select">
+      <value_map expr="FTM3[PCS]">
+        <input ctrl_value="0" signal="FTM3_EXT_PIN_CLK_IN.clk" name="FTM3 External Clock Pin Select clock"/>
+        <input ctrl_value="1" signal="SOSCDIV1_CLK_IN.clk" name="SCG SOSC DIV1 clock"/>
+        <input ctrl_value="2" signal="SIRCDIV1_CLK_IN.clk" name="SCG SIRC DIV1 clock"/>
+        <input ctrl_value="3" signal="FIRCDIV1_CLK_IN.clk" name="SCG FIRC DIV1 clock"/>
+        <input ctrl_value="6" signal="SPLLDIV1_CLK_IN.clk" name="SCG SPLL DIV1 clock"/>
+      </value_map>
+    </clock_select>
+    <clock_enable id="FTM3_GATE" name="FTM3_GATE" description="FTM3 clock gate">
+      <input signal="FTM3_CLK_SEL.clk"/>
+        <enable cond_expr="FTM3_CGC == `Enabled`"/>
+        <configuration_element id="FTM3_CGC" name="FTM3 Gate" description="FTM3 enable/disable configuration.">
+          <default value="Enabled"/>
+          <item id="Enabled" description="Enabled">
+            <assigns>
+              <assign register="PCC::FTM3" bit_field="CGC" value="1"/>
+            </assigns>
+          </item>
+          <item id="Disabled" description="Disabled">
+            <assigns>
+              <assign register="PCC::FTM3" bit_field="CGC" value="0"/>
+            </assigns>
+          </item>
+        </configuration_element>
+    </clock_enable>
+    <map_output id="LPSPI0_CLK">
+      <input signal="LPSPI0_GATE.clk"/>
+    </map_output>
+    <map_output id="LPSPI1_CLK">
+      <input signal="LPSPI1_GATE.clk"/>
+    </map_output>
+    <map_output id="LPUART0_CLK">
+      <input signal="LPUART0_GATE.clk"/>
+    </map_output>
+    <map_output id="LPUART1_CLK">
+      <input signal="LPUART1_GATE.clk"/>
+    </map_output>
+    <map_output id="LPI2C0_CLK">
+      <input signal="LPI2C0_GATE.clk"/>
+    </map_output>
+    <map_output id="LPTMR0_CLK">
+      <input signal="LPTMR0_GATE.clk"/>
+    </map_output>
+    <map_output id="LPIT0_CLK">
+      <input signal="LPIT0_GATE.clk"/>
+    </map_output>
+    <map_output id="FlexIO0_CLK">
+      <input signal="FlexIO0_GATE.clk"/>
+    </map_output>
+    <map_output id="ADC0_CLK">
+      <input signal="ADC0_GATE.clk"/>
+      <constraint min_freq="0 MHz" max_freq="50 MHz" description="The maximum conversion clock frequency is 50 MHz. At any time, the conversion clock frequency should be less than the
+ADC bus interface clock frequency"/>
+    </map_output>
+    <map_output id="ADC1_CLK">
+      <input signal="ADC1_GATE.clk"/>
+      <constraint min_freq="0 MHz" max_freq="50 MHz" description="The maximum conversion clock frequency is 50 MHz. At any time, the conversion clock frequency should be less than the
+ADC bus interface clock frequency"/>
+    </map_output>
+    <map_output id="FTM0_CLK">
+      <input signal="FTM0_GATE.clk"/>
+    </map_output>
+    <map_output id="FTM1_CLK">
+      <input signal="FTM1_GATE.clk"/>
+    </map_output>
+    <map_output id="FTM2_CLK">
+      <input signal="FTM2_GATE.clk"/>
+    </map_output>
+    <map_output id="FTM3_CLK">
+      <input signal="FTM3_GATE.clk"/>
+    </map_output>
+    <map_output id="CMP0_CLK">
+      <input signal="CMP0_GATE.clk"/>
+    </map_output>
+    <map_output id="CRC0_CLK">
+      <input signal="CRC0_GATE.clk"/>
+    </map_output>
+    <map_output id="DMAMUX0_CLK">
+      <input signal="DMAMUX0_GATE.clk"/>
+    </map_output>
+    <map_output id="EWM0_CLK">
+      <input signal="EWM0_GATE.clk"/>
+    </map_output>
+    <map_output id="FTFC0_CLK">
+      <input signal="FTFC0_GATE.clk"/>
+    </map_output>
+    <map_output id="PDB0_CLK">
+      <input signal="PDB0_GATE.clk"/>
+    </map_output>
+    <map_output id="PDB1_CLK">
+      <input signal="PDB1_GATE.clk"/>
+    </map_output>
+    <map_output id="FLEXCAN0_CLK">
+      <input signal="FLEXCAN0_GATE.clk"/>
+    </map_output>
+    <map_output id="FLEXCAN1_CLK">
+      <input signal="FLEXCAN1_GATE.clk"/>
+    </map_output>
+    <map_output id="RTC0_CLK">
+      <input signal="RTC0_GATE.clk"/>
+    </map_output>
+    <map_output id="EIM0_CLK">
+      <input signal="EIM0_GATE.clk"/>
+      <enable cond_expr="SimInitialize == `yes`" description="clock out gate can be enabled by selecting Enabled and Initialize is yes of Sim Initialize in SIM_CLK_SEL"/>
+    </map_output>
+    <map_output id="ERM0_CLK">
+      <input signal="ERM0_GATE.clk"/>
+      <enable cond_expr="SimInitialize == `yes`" description="clock out gate can be enabled by selecting Enabled and Initialize is yes of Sim Initialize in SIM_CLK_SEL"/>
+    </map_output>
+    <map_output id="DMA0_CLK">
+      <input signal="DMA0_GATE.clk"/>
+      <enable cond_expr="SimInitialize == `yes`" description="clock out gate can be enabled by selecting Enabled and Initialize is yes of Sim Initialize in SIM_CLK_SEL"/>
+    </map_output>
+    <map_output id="MPU0_CLK">
+      <input signal="MPU0_GATE.clk"/>
+      <enable cond_expr="SimInitialize == `yes`" description="clock out gate can be enabled by selecting Enabled and Initialize is yes of Sim Initialize in SIM_CLK_SEL"/>
+    </map_output>
+    <map_output id="MSCM0_CLK">
+      <input signal="MSCM0_GATE.clk"/>
+      <enable cond_expr="SimInitialize == `yes`" description="clock out gate can be enabled by selecting Enabled and Initialize is yes of Sim Initialize in SIM_CLK_SEL"/>
+    </map_output>
+    <map_output id="TRACE_CLK">
+      <input signal="TRACE_GATE.clk"/>
+    </map_output>
+    <map_output id="PORTA_CLK">
+      <input signal="PORTA_GATE.clk"/>
+    </map_output>
+    <map_output id="PORTB_CLK">
+      <input signal="PORTB_GATE.clk"/>
+    </map_output>
+    <map_output id="PORTC_CLK">
+      <input signal="PORTC_GATE.clk"/>
+    </map_output>
+    <map_output id="PORTD_CLK">
+      <input signal="PORTD_GATE.clk"/>
+    </map_output>
+    <map_output id="PORTE_CLK">
+      <input signal="PORTE_GATE.clk"/>
+    </map_output>
+  </implementation>
+</clocks:component>

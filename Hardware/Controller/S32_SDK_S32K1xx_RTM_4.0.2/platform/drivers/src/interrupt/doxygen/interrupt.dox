@@ -1,0 +1,60 @@
+/*!
+@defgroup interrupt_manager  Interrupt Manager (Interrupt)
+@brief The S32 SDK Interrupt Manager provides a set of API/services to configure the Interrupt Controller (NVIC).
+@details
+The Nested-Vectored Interrupt Controller (NVIC) module implements a relocatable vector table supporting many external interrupts, a single
+non-maskable interrupt (NMI), and priority levels. The NVIC contains the address of the function to execute for a
+particular handler. The address is fetched via the instruction port allowing parallel
+register stacking and look-up. The first sixteen entries are allocated to internal sources with the others mapping to MCU-defined interrupts.
+
+# Overview
+
+The Interrupt Manager provides a set of APIs so that the application can enable or disable an interrupt
+for a specific device and also set priority, and other features. Additionally, it provides
+a way to update the vector table for a specific device interrupt handler.
+
+# Interrupt Names
+
+Each chip has its own set of supported interrupt names defined in the chip-specific header file (see \ref IRQn_Type).
+
+This is an example to enable/disable an interrupt for the ADC0_IRQn:
+~~~~~{.c}
+    #include "interrupt_manager.h"
+
+    INT_SYS_EnableIRQ(ADC0_IRQn);
+
+    INT_SYS_DisableIRQ(ADC0_IRQn);
+
+~~~~~
+
+## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\interrupt\interrupt_manager.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+This component does not have any dependencies.
+
+## Note
+
+1. When the vector table is not in ram (__flash_vector_table__ = 1):
+    - INT_SYS_InstallHandler shall check if the function pointer provided as parameter for the new handler is already present in the vector table for the given IRQ number.
+    - The user will be required to manually add the correct handlers in the startup files
+
+*/

@@ -1,0 +1,199 @@
+/**
+  @addtogroup mtpnvr
+  @{
+ @section mtpnv_intro Introduction
+<p>
+The UJA113x devices incorporate non-volatile memory for SBC configuration. This
+memory is not reset during off state and influences the chip behavior:
+<ul>
+<li>Register 0x71</li>
+<ul>
+<li>HVIOs high-side driver control</li>
+</ul>
+<li>Register 0x72</li>
+<ul>
+<li>HVIOs low-side driver control</li>
+</ul>
+<li>Register 0x73</li>
+<ul>
+<li>Reset pulse width</li>
+<li>V2 regulator start-up</li>
+<li>HVIO 4 - 2 mode</li>
+</ul>
+<li>Register 0x74</li>
+<ul>
+<li>V1 reset threshold at start-up</li>
+<li>FNMC mode/debug feature control</li>
+<li>SDMC mode/debug feature control</li>
+<li>VEXTAC pin</li>
+<li>Sleep mode activation</li>
+</ul>
+</ul>
+</p>
+<p>
+During SW development, to simplify the application debugging, the FNMC and SDMC 
+modes can be used to (partially) disable the Watchdog. In production, the FNMC and 
+SDMC should be disabled to have always full Watchdog functionality present!
+However, it could be demanding to restore the MTPNV back to factory settings
+(FNMC enabled) and configure the MTPNV paramters again, but this time with 
+SDMC mode enabled for diagnostics purposes. Or simply enable debug feature by
+configuring the watchdog into autonomous mode.\n
+Once a UJA113X device has been registered, the UJA113X_SetMtpnv() can be invoked.
+This function is called with the parameter set of parameters to be programmed
+into the non-volatile memory.\n
+This allows the user to define production parameters with FNMC & SDMC disabled 
+and in case of need to enable it again without the need of reflashing the host
+MCU with some debug firmware.\n
+</p>
+ @subsection mtpnv_restore Restoring MTPNV factory preset values
+<p>
+The values are restored when following conditions apply for at 
+least td(MTPNV) during power-up:
+<ul>
+<li>pin RSTN is held LOW</li>
+<li>CANH is pulled up to Vbat</li>
+<li>CANL is pulled down to GND</li>
+</ul>
+@warning Restoring the devices MTPNV back to factory preset values is not supported by
+the library and it's the users responsibility to implement this feature either
+in SW or HW.</b>
+</p>
+@subsection mtpnv_debug MTPNV debug flow control
+<p>
+To have the possibility to enable debugging features (through SDMC mode and
+watchdog autonomous mode) but keep the MCUs firmware untouched, an 
+MTPNV control sequence depicted on the following figure is recommended:
+@image html mtpnv_flow.png "MTPNV handling" width=600
+This mechanism allows to partially or completely disable the watchdog if
+required without the need of flashing a custom firmware into the host MCU.
+In case the MTPNV has been already programmed or it's not allowed by the application
+to clear the MTPNV, it's still possible to switch the watchdog mode into 
+autonomous, which keeps the watchdog enabled only in normal mode.\n
+
+ @note If it's requested to set the SDMC mode, the MTPNV has to be restored prior
+to the above procedure (not depicted in the diagram).
+
+The idea is:
+<ul>
+<li>Reprogramming the MTPNV to enable SDMC</li>
+<ul>
+<li>1. Restore factory settings of MTPNV (as described earlier)</li>
+<li>2. Program the MTPVN with SDMC enabled</li>
+<li>3. Depending on situation switch the watchdog mode to autonomous</li>
+<li>4. The watchdog is disabled all the time</li>
+</ul>
+<li>Keep the MTPNV untouched (SDMC disabled) and partially disable watchdog</li>
+<ul>
+<li>1. Switch the Watchdog mode to autonomous</li>
+<li>2. Watchdog disabled in all other modes then normal (in case there are no
+pending interrupts)</li>
+</ul>
+</ul>
+
+@note See @ref wtdcconfig section for more details on watchdog behaviour under
+different circumstances
+
+@subsection mtpnv_example Example 
+This example demonstrates one of many possible implemetnatations.\n
+@code
+
+.
+.
+/* Define the MTPNV parameters */
+uja113x_mtpnv_cfg_t mtpnvConfig = 
+{
+    /* highSideCtrl */
+    HHSDC_IO8HOC_DISABLED | HHSDC_IO7HOC_DISABLED | HHSDC_IO6HOC_DISABLED | HHSDC_IO5HOC_DISABLED | 
+    HHSDC_IO4HOC_DISABLED | HHSDC_IO3HOC_DISABLED | HHSDC_IO2HOC_DISABLED | HHSDC_IO1HOC_DISABLED,
+
+    /* lowSideCtrl */
+    HLSDC_IO8LOC_DISABLED | HLSDC_IO7LOC_DISABLED | HLSDC_IO6LOC_DISABLED | HLSDC_IO5LOC_DISABLED | 
+    HLSDC_IO4LOC_DISABLED | HLSDC_IO3LOC_DISABLED | HLSDC_IO2LOC_DISABLED | HLSDC_IO1LOC_DISABLED,
+
+    /* startupCtrl */
+    RLC_PULSE_WIDTH_10_12_MS | V2SUC_ALWAYS_ON | IO4SFC_STD_IO | IO3SFC_STD_IO | IO2SFC_LIMP_HOME,
+
+    /* sbcConfigCtrl */
+    V1RTSUC_90_NOM | FNMC_DISABLE | SDMC_ENABLE | VEXTAC_SENSOR_SUPPLY | SLPC_SLEEP_SUPPORTED
+}
+.
+.
+
+#define SBC0    0U
+
+void main (void)
+{
+    /* Initialize the MCU - clock, peripherals etc. */
+    ...
+    /* Initialize the SPI periheral for SBC */
+    ...
+    /* Initialize the SBC */
+    uja113x_drv_cfg_t sbcConfig = 
+    {
+        UJA1132HW5V0, /* chipType */
+        0U,           /* SPI instance */
+        100U,         /* SPI timeout */
+    };
+
+    UJA113X_RegisterDevice(SBC0, &sbcConfig);
+
+    bool enable_debug_mode = false;
+    bool set_debug         = false;
+    
+    while (1U)
+    {
+        
+        /*
+         * Set enable_debug_mode and set_debug using some event over
+         * CAN/LIN/USART etc. or GPIO inputs - application specific
+         */
+        ...
+
+        if (true == enable_debug_mode)
+        {
+            /* Read the NVMPS status bit - UJA113X_SbcTransfer() can be used */
+            ...
+            
+            if (1U == NVMPS)
+            {
+                /* Programm the MTPNV */
+                UJA113X_SetMtpnv(SBC0, mtpnvConfig);
+            }
+            else
+            {
+                if (true == set_debug)
+                {
+                    /* Set Watchdog into autonomous mode - UJA113X_SetWatchdog() can be used */
+                    ...
+                }
+                else
+                {
+                    /* Set Watchdog into application defined mode - UJA113X_SetWatchdog() can be used*/
+                    ...
+                }
+            }
+        }
+    }
+}
+@endcode
+</p>
+
+@subsection mtpnv_crc CRC calculation on MTPNV data
+<p>
+To confirm MTPNV write, last byte written into the SBC (register 0x75) has to 
+be a CRC-8 computed over the written bytes (4 bytes!). This is handled 
+automatically by the UJA113X_SetMtpnv(). However if the user wants to implemet 
+his own programming procedure, the CRC function is available, see UJA113X_ComputeCrc8()
+for details.
+</p>
+<p>
+@note During CRC computation for devices with partial/none HVIO's the respective 
+bits in registers 0x71 & 0x72 should be considered as 0 even when set by user 
+to 1!
+</p>
+
+@subsection did Device ID
+Although, there is no dedicated function for reading the devices ID, the
+UJA113X_SbcTransfer() can be used to read the ID registers (0x7E & 0x7F).
+  @}
+ */

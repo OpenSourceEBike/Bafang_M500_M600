@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="i2c_pal_config" label="i2c_pal_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+   <sw_comp_ref name="platform.pal.i2c_pal" version="1.0.0"/>
+   <description>I2C_PAL Component</description>
+   <mode id="I2C" label="I2C Mode" available="(featureDefined(`FEATURE_SWI2C_AVAILABLE`)==false) &amp;&amp; (featureDefined(`FEATURE_LPI2C_AVAILABLE`)==false)">
+      <description>I2C PAL General</description>
+      <config_set_refs>
+         <config_set_ref>i2c_pal</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>I2C</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <mode id="LPI2C" label="LPI2C/FLEXIO Mode" available="featureDefined(`FEATURE_LPI2C_AVAILABLE`)==true">
+      <description>I2C PAL General</description>
+      <config_set_refs>
+         <config_set_ref>i2c_pal</config_set_ref>
+      </config_set_refs>
+    <master_peripheral>
+         <peripheral_type>LPI2C</peripheral_type>
+         <peripheral_type>FLEXIO</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <mode id="SWI2C" label="SWI2C Mode" available="featureDefined(`FEATURE_SWI2C_AVAILABLE`)==true">
+      <description>I2C PAL General</description>
+      <config_set_refs>
+         <config_set_ref>swi2c_pal</config_set_ref>
+      </config_set_refs>
+   </mode>
+   <config_set id="i2c_pal" label="I2C Pal Configuration Settings" from_source="i2c_pal.h" available="featureDefined(`FEATURE_SWI2C_AVAILABLE`)==false">
+      <description>I2C PAL Component</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+     <quick_selection id="default_i2c_pal" label="Default Values for I2C_PAL(LPI2C0)" available="getPeripheral($instance) == `LPI2C0`">
+       <description>I2C_PAL Default Configuration</description>  
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_slaveAddress">0x32</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_baudRate">100000</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_transferType">I2C_PAL_USING_INTERRUPTS</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_operatingMode">I2C_PAL_STANDARD_MODE</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_dmaChannel1">0</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_dmaChannel2">1</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_callback">NULL</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_callbackParam">NULL</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_extension">NULL</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_slaveAddress">0x32</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_slave_cfg_slaveListening">true</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_is10bitAddr">false</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_operatingMode">I2C_PAL_STANDARD_MODE</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_transferType">I2C_PAL_USING_INTERRUPTS</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_operatingMode">I2C_PAL_STANDARD_MODE</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_dmaChannel">2</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_callback">NULL</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_callbackParam">NULL</set>
+       <default>default_i2c_pal</default>        
+        </quick_selection>  
+     <quick_selection id="default_i2c_pal" label="Default Values for I2C_PAL(LPI2C1)" available="getPeripheral($instance) == `LPI2C1`">
+       <description>I2C_PAL Default Configuration</description>  
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_slaveAddress">0x32</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_baudRate">100000</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_transferType">I2C_PAL_USING_INTERRUPTS</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_operatingMode">I2C_PAL_STANDARD_MODE</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_dmaChannel1">0</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_dmaChannel2">1</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_callback">NULL</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_callbackParam">NULL</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_extension">NULL</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_slaveAddress">0x32</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_slave_cfg_slaveListening">true</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_is10bitAddr">false</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_operatingMode">I2C_PAL_STANDARD_MODE</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_transferType">I2C_PAL_USING_INTERRUPTS</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_operatingMode">I2C_PAL_STANDARD_MODE</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_dmaChannel">2</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_callback">NULL</set>
+             <set id="i2c_palSlaveConfiguration.0.i2c_pal_slave_cfg_callbackParam">NULL</set>
+       <default>default_i2c_pal</default>        
+        </quick_selection>
+     <quick_selection id="default_i2c_pal" label="Default Values for I2C_PAL(FLEXIO)" available="getPeripheral($instance) == `FLEXIO`">
+       <description>I2C_PAL Default Configuration</description>  
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_slaveAddress">0x32</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_baudRate">100000</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_transferType">I2C_PAL_USING_INTERRUPTS</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_operatingMode">I2C_PAL_STANDARD_MODE</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_dmaChannel1">0</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_dmaChannel2">1</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_callback">NULL</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_callbackParam">NULL</set>
+             <set id="i2c_palMasterConfiguration.0.i2c_MasterConfiguration.i2c_pal_master_cfg_extension">NULL</set>
+             <set id="i2c_palMasterConfiguration.0.i2cExtConfig.name">i2c_ext0</set>
+             <set id="i2c_palMasterConfiguration.0.i2cExtConfig.sclPin">0</set>
+             <set id="i2c_palMasterConfiguration.0.i2cExtConfig.sdaPin">1</set>
+       <default>default_i2c_pal</default>        
+        </quick_selection>
+      </quick_selections>
+      <user_types>
+         <enum id="i2c_operating_mode_t" label="Defines the operation mode of the i2c pal Implements : i2c_operating_mode_t_Class" from="i2c_operating_mode_t">
+            <item id="I2C_PAL_STANDARD_MODE" label="Standard-mode (Sm), bidirectional data transfers up to 100 kbit/s"/>
+            <item id="I2C_PAL_FAST_MODE" label="Fast-mode (Fm), bidirectional data transfers up to 400 kbit/s"/>
+         </enum>
+         <array id="arrayI2CMasterConfig" label="Detail for configuration" type="i2c_master_user_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`i2c_MasterConfiguration.name`).value())">
+          <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`i2c_MasterConfiguration.name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+               <constraint when_expr="$instance.getPeripheral() == `FLEXIO`" cond_expr="$this.findDuplicates(item -> item.getSetting(`i2cExtConfig.name`).value()).length() == 0" level="error" description="There are some duplicated `Name extension` fields in the configuration"/>
+          </validation>
+          <item_defaults>
+           <set_default id="i2c_MasterConfiguration.name" value_expr="x->(`i2c_pal_` + $instance.getPeripheral().toLowerCase() +`_MasterConfig` + x.getID())"/>
+           <set_default id="i2c_MasterConfiguration.i2c_pal_master_cfg_slaveAddress" value_expr="x.i2c_pal_master_cfg_slaveAddress -> (`0x32`)"/>
+           <set_default id="i2c_MasterConfiguration.i2c_pal_master_cfg_baudRate" value_expr="x.i2c_pal_master_cfg_baudRate -> (`100000`)"/>
+           <set_default id="i2c_MasterConfiguration.i2c_pal_master_cfg_transferType" value_expr="x.i2c_pal_master_cfg_transferType -> (`I2C_PAL_USING_INTERRUPTS`)"/>
+           <set_default id="i2c_MasterConfiguration.i2c_pal_master_cfg_operatingMode" value_expr="x.i2c_pal_master_cfg_operatingMode -> (`I2C_PAL_STANDARD_MODE`)"/>
+           <set_default id="i2c_MasterConfiguration.i2c_pal_master_cfg_dmaChannel1" value_expr="x.i2c_pal_master_cfg_dmaChannel1 -> (`0`)"/>
+           <set_default id="i2c_MasterConfiguration.i2c_pal_master_cfg_dmaChannel2" value_expr="x.i2c_pal_master_cfg_dmaChannel2 -> (`1`)"/>
+           <set_default id="i2c_MasterConfiguration.i2c_pal_master_cfg_callback" value_expr="x.i2c_pal_master_cfg_callback -> (`NULL`)"/>
+           <set_default id="i2c_MasterConfiguration.i2c_pal_master_cfg_callbackParam" value_expr="x.i2c_pal_master_cfg_callbackParam -> (`NULL`)"/>
+           <set_default id="i2c_MasterConfiguration.i2c_pal_master_cfg_extension" value_expr="x -> (`NULL`)"/>
+           <set_default id="i2cExtConfig.name" value_expr="x -> (`i2c_ext` + x.getID())"/>
+           <set_default id="i2cExtConfig.sclPin" value_expr="x -> (`0`)"/>
+           <set_default id="i2cExtConfig.sdaPin" value_expr="x -> (`1`)"/>
+         </item_defaults>
+          </array>
+          <array id="arrayI2CSlaveConfig" label="Detail for configuration" type="i2c_slave_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+               <item_defaults>
+           <set_default id="name" value_expr="x->(`i2c_pal_` + $instance.getPeripheral().toLowerCase()+`_SlaveConfig` + x.getID())"/>
+           <set_default id="i2c_pal_slave_cfg_slaveAddress" value_expr="x.i2c_pal_slave_cfg_slaveAddress -> (`0x32`)"/>
+           <set_default id="i2c_pal_slave_cfg_is10bitAddr" value_expr="x.i2c_pal_slave_cfg_is10bitAddr -> (`false`)"/>
+           <set_default id="i2c_pal_slave_cfg_slaveListening" value_expr="x.i2c_pal_slave_cfg_slaveListening -> (`true`)"/>
+           <set_default id="i2c_pal_slave_cfg_operatingMode" value_expr="x.i2c_pal_slave_cfg_operatingMode -> (`I2C_PAL_STANDARD_MODE`)"/>
+           <set_default id="i2c_pal_slave_cfg_transferType" value_expr="x.i2c_pal_slave_cfg_transferType -> (`I2C_PAL_USING_INTERRUPTS`)"/>
+           <set_default id="i2c_pal_slave_cfg_dmaChannel" value_expr="x.i2c_pal_slave_cfg_dmaChannel -> (`2`)"/>
+           <set_default id="i2c_pal_slave_cfg_callback" value_expr="x.i2c_pal_slave_cfg_callback -> (`NULL`)"/>
+           <set_default id="i2c_pal_slave_cfg_callbackParam" value_expr="x.i2c_pal_slave_cfg_callbackParam -> (`NULL`)"/>
+         </item_defaults>
+               <validation>
+                   <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+         </validation>
+            </array>
+        <struct id="i2c_master_t" label="Defines the configuration structure for I2C master Implements : i2c_master_t_Class" from="i2c_master_t">
+        <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+        <bool id="readonly" label="Read-only">
+                 <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+              </bool>
+              <integer id="i2c_pal_master_cfg_slaveAddress" label="Slave address" type="uint16_t" options="cStructField" available ="featureDefined(`FEATURE_LPI2C_AVAILABLE`)==false" >
+                 <description>Slave address, 7-bit or 10-bit</description>
+         <validation>
+                    <constraint cond_expr="($this.getValue() &lt;= 0x7F)" level="warning" description="Only 7-bit slave address is supported!" />
+                 </validation>
+              </integer>
+              <integer id="i2c_pal_master_cfg_slaveAddress" label="Slave address" type="uint16_t" options="cStructField" available ="featureDefined(`FEATURE_LPI2C_AVAILABLE`)==true" >
+                 <description>Slave address, 7-bit or 10-bit(10-bit is not supported over FLEXIO))</description>
+         <validation>
+                    <constraint cond_expr="!(($parent.i2c_pal_master_cfg_is10bitAddr.getValue() == `false`) &amp;&amp; (($this.getValue()) &gt;= 0x80))" level="warning" description="7-bit slave address should not be greater than 0x7F!" />
+                    <constraint cond_expr="!(($parent.i2c_pal_master_cfg_is10bitAddr.getValue() == `true`) &amp;&amp; (($this.getValue()) &gt;= 0x400))" level="warning" description="10-bit slave address should not be greater than 0x3FF!" />
+                 </validation>
+              </integer>
+              <bool id="i2c_pal_master_cfg_is10bitAddr" label="10-bit slave address" options="cStructField" available ="($instance.getPeripheral() != `FLEXIO`)">
+                 <description>10-bit slave address</description>
+              </bool>
+              <integer id="i2c_pal_master_cfg_baudRate" label="Baud rate in hertz" type="uint32_t" options="cStructField">
+                 <description>Baud rate in hertz</description>
+           <validation>
+                     <constraint cond_expr="(($this.getValue()) &lt;= 400000)" level="warning" description="Baud rates over 400KHz are not supported!" />
+                 </validation>
+              </integer>
+              <integer id="i2c_pal_master_cfg_dmaChannel1" label="DMA channel number" type="uint8_t" options="cStructField">
+                 <description>DMA channel number. Only used in DMA mode</description>
+              </integer>
+              <integer id="i2c_pal_master_cfg_dmaChannel2" label="DMA channel used only by Flexio I2C" type="uint8_t" options="cStructField" available = "featureDefined(`FEATURE_LPI2C_AVAILABLE`)==true">
+                 <description>DMA channel used only by Flexio I2C which needs two DMA channels, one for receiving and one for transmitting.</description>
+              </integer>
+              <reference id="i2c_pal_master_cfg_transferType" label="Type of I2C transfer (interrupts or DMA)" type="i2c_pal_transfer_type_t" options="cStructField">
+                 <description>Type of I2C transfer (interrupts or DMA)</description>
+              </reference>
+              <reference id="i2c_pal_master_cfg_operatingMode" label="I2C Operating mode" type="i2c_operating_mode_t" options="cStructField">
+                 <description>I2C Operating mode</description>
+              </reference>
+              <string id="i2c_pal_master_cfg_callback" label="User callback function" type="i2c_master_callback_t" options="cStructField">
+                 <description>User callback function. Note that this function will be called from the interrupt service routine, so its execution time should be as small as possible. It can be NULL if it is not needed</description>
+                 <validation>
+                    <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                 </validation>
+             </string>
+              <string id="i2c_pal_master_cfg_callbackParam" label="Parameter for the callback function" type="void *" options="cStructField">
+                 <description>Parameter for the callback function</description>
+              </string>
+            <string id="i2c_pal_master_cfg_extension" label="Extension" available="false" type="void *" options="cStructField">
+               <description>This field will be used to add extra settings to the basic configuration like FlexIO data pins(a pointer void*)</description>
+            </string>
+           </struct>
+            <struct id="flexio_ext" label="FLEXIO PIN Extension Available" from="extension_flexio_for_i2c_t">
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <integer id="sclPin" label="Flexio pin to use as SCL pin" type="uint8_t" options="cStructField">
+               <description>Flexio pin to use as SCL pin, it must be configured within 0-7</description>
+                  <validation>
+                     <constraint cond_expr="($this.getValue() != $parent.sdaPin.getValue())" level="error" description="Please use different pins for SCL and SDA!"/>
+                     <constraint cond_expr="($this.getValue() &lt; 8)" level="warning" description="Flexio pin must be configured within 0-7"/>
+                  </validation>
+            </integer>
+            <integer id="sdaPin" label="Flexio pin to use as SDA pin" type="uint8_t" options="cStructField">
+               <description>Flexio pin to use as SDA pin, it must be configured within 0-7</description>
+                  <validation>
+                     <constraint cond_expr="($this.getValue() != $parent.sclPin.getValue())" level="error" description="Please use different pins for SCL and SDA!"/>
+                     <constraint cond_expr="($this.getValue() &lt; 8)" level="warning" description="Flexio pin must be configured within 0-7"/>
+                  </validation>
+            </integer>
+         </struct>
+           <struct id="i2c_slave_t" label="Defines the configuration structure for I2C slave Implements : i2c_slave_t_Class" from="i2c_slave_t">
+          <string id="name" label="Name">
+                 <description>Configuration name.</description>
+                 <validation>
+                    <constraint cond_expr="isCIdentifier($this.getValue()) " level="error" description="Configuration name must be a valid C identifier!"/>
+                 </validation>
+              </string>
+        <bool id="readonly" label="Read-only">
+                 <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+              </bool>
+              <integer id="i2c_pal_slave_cfg_slaveAddress" label="Slave address" type="uint16_t" options="cStructField" available ="featureDefined(`FEATURE_LPI2C_AVAILABLE`)==false">
+                 <description>Slave address, 7-bit or 10-bit</description>
+          <validation >
+                     <constraint cond_expr="(($this.getValue()) &lt;= 0x7F)" level="warning" description="Only 7-bit slave address is supported!" />
+                 </validation>
+              </integer>
+        <integer id="i2c_pal_slave_cfg_slaveAddress" label="Slave address" type="uint16_t" options="cStructField" available ="featureDefined(`FEATURE_LPI2C_AVAILABLE`)==true">
+                 <description>Slave address, 7-bit or 10-bit</description>
+         <validation>
+                    <constraint cond_expr="!(($parent.i2c_pal_slave_cfg_is10bitAddr.getValue() == `false`) &amp;&amp; (($this.getValue()) &gt;= 0x80))" level="warning" description="Address on 7-bit selected!" />
+                    <constraint cond_expr="!(($parent.i2c_pal_slave_cfg_is10bitAddr.getValue() == `true`) &amp;&amp; (($this.getValue()) &gt;= 0x400))" level="warning" description="Address is grater than 10-bit!" />
+                 </validation>
+              </integer>
+              <bool id="i2c_pal_slave_cfg_is10bitAddr" label="10-bit slave address" options="cStructField" available = "($instance.getPeripheral() != `FLEXIO`)">
+                 <description>Selects 7-bit or 10-bit slave address</description>
+              </bool>
+              <bool id="i2c_pal_slave_cfg_slaveListening" label="Slave mode (always listening or on demand only)" options="cStructField">
+                 <description>Slave mode (always listening or on demand only)</description>
+              </bool>
+              <reference id="i2c_pal_slave_cfg_operatingMode" label="I2C Operating mode" type="i2c_operating_mode_t" options="cStructField" available = "featureDefined(`FEATURE_LPI2C_AVAILABLE`)">
+                 <description>I2C Operating mode</description>
+              </reference>
+              <reference id="i2c_pal_slave_cfg_transferType" label="Type of the I2C transfer" type="i2c_pal_transfer_type_t" options="cStructField" available = "featureDefined(`FEATURE_LPI2C_AVAILABLE`)">
+                 <description>Type of the I2C transfer</description>
+              </reference>
+              <integer id="i2c_pal_slave_cfg_dmaChannel" label="Channel number for DMA channel" type="uint8_t" options="cStructField" available = "featureDefined(`FEATURE_LPI2C_AVAILABLE`)">
+                 <description>Channel number for DMA channel. If DMA mode is not supported or is not used this field will be ignored.</description>
+              </integer>
+              <string id="i2c_pal_slave_cfg_callback" label="Callback function" type="i2c_slave_callback_t" options="cStructField">
+                 <description>Callback function.</description>
+                 <validation>
+                    <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                 </validation>
+              </string>
+              <string id="i2c_pal_slave_cfg_callbackParam" label="Parameter for the slave callback function" type="void *" options="cStructField">
+                 <description>Parameter for the slave callback function</description>
+              </string>
+           </struct>
+         <struct id="i2c_master_user_config_t" label="I2C PAL User Configuration">
+            <reference id="i2c_MasterConfiguration" label="I2C PAL Master configurations" type="i2c_master_t">
+               <description>I2C PAL Common Configuration</description>
+            </reference>
+            <reference id="i2cExtConfig" label="FLEXIO PIN Extension" available="$instance.getPeripheral() == `FLEXIO`" type="flexio_ext">
+               <description>Extension Configuration</description>
+            </reference>
+         </struct>
+      </user_types>
+      <settings>
+        <reference id="i2c_palMasterConfiguration" label="I2C PAL Instance Config" type="arrayI2CMasterConfig">
+        <description>I2C PAL User Configuration</description>
+        </reference>
+     <reference id="i2c_palSlaveConfiguration" label="I2C PAL Slave configurations" type="arrayI2CSlaveConfig" options="ShowContentAs=Tabs" available = "!($instance.getPeripheral() == `FLEXIO`)">
+         </reference>
+         <variable value="`../i2c_pal/i2c_pal_codegen.js`" id="codegen_file"></variable>
+     <variable value="`../i2c_pal/i2c_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+         <variable value="`I2C_PALCodeGen`" id="codegen_class"></variable>
+         <variable value="`I2cToolchainSettings`" id="toolchain_settings_class"></variable>
+      </settings>
+      <generated_types>
+         <enum id="i2c_pal_transfer_type_t" label="Defines the mechanism to update the rx or tx buffers Implements : i2c_pal_transfer_type_t_Class" from="i2c_pal_transfer_type_t">
+            <item id="I2C_PAL_USING_DMA" label="DMA"/>
+            <item id="I2C_PAL_USING_INTERRUPTS" label="INTERRUPTS"/>
+         </enum>
+         <enum id="i2c_operating_mode_t" label="Defines the operation mode of the i2c pal Implements : i2c_operating_mode_t_Class" from="i2c_operating_mode_t">
+            <item id="I2C_PAL_STANDARD_MODE" label="Standard-mode (Sm), bidirectional data transfers up to 100 kbit/s"/>
+            <item id="I2C_PAL_FAST_MODE" label="Fast-mode (Fm), bidirectional data transfers up to 400 kbit/s"/>
+            <item id="I2C_PAL_FASTPLUS_MODE" label="Fast-mode Plus (Fm+), bidirectional data transfers up to 1 Mbit/s"/>
+            <item id="I2C_PAL_HIGHSPEED_MODE" label="High-speed Mode (Hs-mode), bidirectional data transfers up to 3.4 Mbit/s"/>
+            <item id="I2C_PAL_ULTRAFAST_MODE" label="Ultra Fast Mode (UFm), unidirectional data transfers up to 5 Mbit/s"/>
+         </enum>
+         <struct id="extension_flexio_for_i2c_t" label="Defines the extension structure for the I2C over FLEXIO Implements : extension_flexio_for_i2c_t_Class" from="extension_flexio_for_i2c_t">
+            <integer id="sclPin" label="FlexIO pin for SCL" type="uint8_t">
+               <description>FlexIO pin for SCL</description>
+            </integer>
+            <integer id="sdaPin" label="FlexIO pin for SDA" type="uint8_t">
+               <description>FlexIO pin for SDA</description>
+            </integer>
+         </struct>
+         <struct id="extension_swi2c_for_i2c_t" label="Defines the extension structure for the I2C over SWI2C Implements : extension_swi2c_for_i2c_t_Class" from="extension_swi2c_for_i2c_t">
+            <fixme id="sclPin" label="" type="swi2c_pin_t *"/>
+            <fixme id="sdaPin" label="" type="swi2c_pin_t *"/>
+            <fixme id="sdaReadPin" label="" type="swi2c_pin_t *"/>
+            <fixme id="sclReadPin" label="" type="swi2c_pin_t *"/>
+         </struct>
+         <struct id="i2c_master_t" label="Defines the configuration structure for I2C master Implements : i2c_master_t_Class" from="i2c_master_t">
+            <integer id="slaveAddress" label="Slave address, 7-bit or 10-bit" type="uint16_t">
+               <description>Slave address, 7-bit or 10-bit</description>
+            </integer>
+            <bool id="is10bitAddr" label="Selects 7-bit or 10-bit slave address">
+               <description>Selects 7-bit or 10-bit slave address</description>
+            </bool>
+            <integer id="baudRate" label="Baud rate in hertz" type="uint32_t">
+               <description>Baud rate in hertz</description>
+            </integer>
+            <integer id="dmaChannel1" label="DMA channel number" type="uint8_t">
+               <description>DMA channel number. Only used in DMA mode</description>
+            </integer>
+            <integer id="dmaChannel2" label="DMA channel used only by Flexio I2C which needs two DMA channels, one for receiving and one for transmitting" type="uint8_t">
+               <description>DMA channel used only by Flexio I2C which needs two DMA channels, one for receiving and one for transmitting</description>
+            </integer>
+            <reference id="transferType" label="Type of I2C transfer (interrupts or DMA)" type="i2c_pal_transfer_type_t">
+               <description>Type of I2C transfer (interrupts or DMA)</description>
+            </reference>
+            <reference id="operatingMode" label="I2C Operating mode" type="i2c_operating_mode_t">
+               <description>I2C Operating mode</description>
+            </reference>
+            <fixme id="callback" label="User callback function" type="i2c_master_callback_t">
+               <description>User callback function. Note that this function will be called from the interrupt service routine, so its execution time should be as small as possible. It can be NULL if it is not needed</description>
+      </fixme>
+            <fixme id="callbackParam" label="Parameter for the callback function" type="void *">
+               <description>Parameter for the callback function</description>
+            </fixme>
+            <fixme id="extension" label="This field will be used to add extra settings to the basic configuration like FlexIO pins" type="void *">
+               <description>This field will be used to add extra settings to the basic configuration like FlexIO pins</description>
+            </fixme>
+         </struct>
+         <struct id="i2c_slave_t" label="Defines the configuration structure for I2C slave Implements : i2c_slave_t_Class" from="i2c_slave_t">
+            <integer id="slaveAddress" label="Slave address, 7-bit or 10-bit" type="uint16_t">
+               <description>Slave address, 7-bit or 10-bit</description>
+            </integer>
+            <bool id="is10bitAddr" label="Selects 7-bit or 10-bit slave address">
+               <description>Selects 7-bit or 10-bit slave address</description>
+            </bool>
+            <bool id="slaveListening" label="Slave mode (always listening or on demand only)">
+               <description>Slave mode (always listening or on demand only)</description>
+            </bool>
+            <reference id="operatingMode" label="I2C Operating mode" type="i2c_operating_mode_t">
+               <description>I2C Operating mode</description>
+            </reference>
+            <reference id="transferType" label="Type of the I2C transfer" type="i2c_pal_transfer_type_t">
+               <description>Type of the I2C transfer</description>
+            </reference>
+            <integer id="dmaChannel" label="Channel number for DMA channel" type="uint8_t">
+               <description>Channel number for DMA channel. If DMA mode is not supported or is not used this field will be ignored.</description>
+            </integer>
+            <fixme id="callback" label="Callback function" type="i2c_slave_callback_t">
+               <description>Callback function.</description>
+            </fixme>
+            <fixme id="callbackParam" label="Parameter for the slave callback function" type="void *">
+               <description>Parameter for the slave callback function</description>
+            </fixme>
+         </struct>
+      </generated_types>
+   </config_set>
+   <config_set id="swi2c_pal" label="SWI2C Configuration" from_source="i2c_pal.h" available="featureDefined(`FEATURE_SWI2C_AVAILABLE`)==true">
+         <description>Software I2C</description>
+         <fragment_defs/>
+         <code/>
+         <validation/>
+         <quick_selections>
+            <quick_selection id="swi2c_default" label="Default Values" available="true">
+               <description>SWI2C Default Configuration</description>
+               <set id="swi2cMasterConfig.0.i2c_MasterConfig"> swi2c_MasterConfig0</set>
+               <set id="swi2cMasterConfig.0.slaveAddress">32</set>
+               <set id="swi2cMasterConfig.0.Baudratecounter">100</set>
+               <set id="swi2cMasterConfig.0.sdaPin">0U</set>
+               <set id="swi2cMasterConfig.0.sclPin">1U</set>
+               <set id="swi2cMasterConfig.0.sdaReadPin">2U</set>
+               <set id="swi2cMasterConfig.0.sclReadPin">3U</set>
+            </quick_selection>
+            <default>swi2c_default</default>
+         </quick_selections>
+         <settings>
+            <array id="swi2cMasterConfig" label="SWI2C User Master Configurations Structure" type="swi2c_master_user_config_t" config_set_id="i2c_pal" component_id="i2c_pal" available="true" options="ShowContentAs=MasterDetail">
+               <description>SWI2C User Slave Configurations Structure</description>
+               <item_defaults>
+                   <set_default id="swi2cModeConfig" value_expr="x -> `i2c_MasterConfig` + x.getID()"/>
+                   <set_default id="Baudratecounter" value_expr="x -> 100"/>
+                   <set_default id="slaveAddress" value_expr="x -> 32"/>
+                   <set_default id="sdaPin" value_expr="x -> `0U`"/>
+                   <set_default id="sclPin" value_expr="x -> `1U`"/>
+                   <set_default id="sdaReadPin" value_expr="x -> `2U`"/>
+                   <set_default id="sclReadPin" value_expr="x -> `3U`"/>
+   
+               </item_defaults>
+            </array>
+            <variable value="`../i2c_pal/i2c_pal_codegen.js`" id="codegen_file"></variable>
+        <variable value="`../i2c_pal/i2c_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+            <variable value="`I2C_PALCodeGen`" id="codegen_class"></variable>
+            <variable value="`I2cToolchainSettings`" id="toolchain_settings_class"></variable>
+         </settings>
+         <user_types>
+           <struct id="swi2c_master_user_config_t" label="Defines the configuration for SWI2C master mode" from="swi2c_master_user_config_t">
+               <description>This structure is used to configure the SWI2C module in SWI2C master mode swi2c_master_user_config_t_Class</description>
+               <string id="swi2cModeConfig" label="Name">
+                  <description>Configuration name.</description>
+               </string>
+               <integer id="Baudratecounter" label="Baud rate counter" type="uint32_t" min_expr="0" max_expr="4294967295">
+                  <description>Baudrate counter</description>
+               </integer>
+               <integer id="slaveAddress" label="Slave Address" type="uint8_t" min_expr="0" max_expr="127">
+                  <description>Slave address, maximum is 127</description>
+               </integer>
+               <reference id="sdaPin" label="Sda pin" type="gpioPin_t">
+                  <description>SDA pin configuration, The corresponding gpio pin must be configured from pins component with enabled output buffer and tri-stated(open-drain) </description>
+                  <validation>
+                     <constraint cond_expr="($parent.sclPin.getValue()!=$this.getValue())&amp;&amp;($parent.sdaReadPin.getValue()!=$this.getValue()) &amp;&amp;($parent.sclReadPin.getValue()!=$this.getValue()) " level="error" description="The pin is already chosen"/>
+                  </validation>
+               </reference>
+               <reference id="sclPin" label="Scl pin" type="gpioPin_t">
+                  <description>SCL pin configuration, The corresponding gpio pin must be configured from pins component with enabled output buffer and tri-stated(open-drain)</description>
+                  <validation>
+                     <constraint cond_expr="($parent.sdaReadPin.getValue()!=$this.getValue()) &amp;&amp;($parent.sclReadPin.getValue()!=$this.getValue()) " level="error" description="The pin is already chosen"/>
+                  </validation>
+               </reference>
+               <reference id="sdaReadPin" label="Sda read pin" type="gpioPin_t">
+                  <description>SDA read pin configuration, The corresponding gpio pin must be configured from pins component with enabled input buffer</description>
+               </reference>
+               <reference id="sclReadPin" label="Scl read pin" type="gpioPin_t">
+                  <description>SCL read pin configuration, The corresponding gpio pin must be configured from pins component with enabled input buffer</description>
+               </reference>
+            </struct>
+            <enum id="gpioPin_t" label="Defines how are handle the RX/TX buffers" from="gpioPin_t">
+               <description>This typedef defines the available methods to gpiopin_t_Class</description>
+               <item id="0U"     label="SWT0_GPIO0"    value="0"  />
+               <item id="1U"     label="SWT0_GPIO1"    value="1"  />
+               <item id="2U"     label="SWT0_GPIO2"    value="2"  />
+               <item id="3U"     label="SWT0_GPIO3"    value="3"  />
+               <item id="4U"     label="SWT0_GPIO4"    value="4"  />
+               <item id="5U"     label="SWT0_GPIO5"    value="5"  />
+               <item id="6U"     label="SWT0_GPIO6"    value="6"  />
+               <item id="7U"     label="SWT0_GPIO7"    value="7"  />
+               <item id="8U"     label="SWT0_GPIO8"    value="8"  />
+               <item id="9U"     label="SWT0_GPIO9"    value="9"  />
+               <item id="10U"    label="SWT0_GPIO10"   value="10" />
+               <item id="11U"    label="SWT0_GPIO11"   value="11" />
+               <item id="12U"    label="SWT0_GPIO12"   value="12" />
+               <item id="13U"    label="SWT0_GPIO13"   value="13" />
+               <item id="14U"    label="SWT0_GPIO14"   value="14" />
+               <item id="15U"    label="SWT0_GPIO15"   value="15" />
+               <item id="16U"    label="SWT1_GPIO0"    value="16" />
+               <item id="17U"    label="SWT1_GPIO1"    value="17" />
+               <item id="18U"    label="SWT1_GPIO2"    value="18" />
+               <item id="19U"    label="SWT1_GPIO3"    value="19" />
+               <item id="20U"    label="SWT1_GPIO4"    value="20" />
+               <item id="21U"    label="SWT1_GPIO5"    value="21" />
+               <item id="22U"    label="SWT1_GPIO6"    value="22" />
+               <item id="23U"    label="SWT1_GPIO7"    value="23" />
+               <item id="24U"    label="SWT1_GPIO8"    value="24" />
+               <item id="25U"    label="SWT1_GPIO9"    value="25" />
+               <item id="26U"    label="SWT1_GPIO10"   value="26" />
+               <item id="27U"    label="SWT1_GPIO11"   value="27" />
+               <item id="28U"    label="SWT1_GPIO12"   value="28" />
+               <item id="29U"    label="SWT1_GPIO13"   value="29" />
+               <item id="30U"    label="SWT1_GPIO14"   value="30" />
+               <item id="31U"    label="SWT1_GPIO15"   value="31" />
+               <item id="32U"    label="SWT2_GPIO0"    value="32" />
+               <item id="33U"    label="SWT2_GPIO1"    value="33" />
+               <item id="34U"    label="SWT2_GPIO2"    value="34" />
+               <item id="35U"    label="SWT2_GPIO3"    value="35" />
+               <item id="36U"    label="SWT2_GPIO4"    value="36" />
+               <item id="37U"    label="SWT2_GPIO5"    value="37" />
+               <item id="38U"    label="SWT2_GPIO6"    value="38" />
+               <item id="39U"    label="SWT2_GPIO7"    value="39" />
+               <item id="40U"    label="SWT2_GPIO8"    value="40" />
+               <item id="41U"    label="SWT2_GPIO9"    value="41" />
+               <item id="42U"    label="SWT2_GPIO10"   value="42" />
+               <item id="43U"    label="SWT2_GPIO11"   value="43" />
+               <item id="44U"    label="SWT2_GPIO12"   value="44" />
+               <item id="45U"    label="SWT2_GPIO13"   value="45" />
+               <item id="46U"    label="SWT2_GPIO14"   value="46" />
+               <item id="47U"    label="SWT2_GPIO15"   value="47" />
+               <item id="48U"    label="SWT3_GPIO0"    value="48" />
+               <item id="49U"    label="SWT3_GPIO1"    value="49" />
+               <item id="50U"    label="SWT3_GPIO2"    value="50" />
+               <item id="51U"    label="SWT3_GPIO3"    value="51" />
+               <item id="52U"    label="SWT3_GPIO4"    value="52" />
+               <item id="53U"    label="SWT3_GPIO5"    value="53" />
+               <item id="54U"    label="SWT3_GPIO6"    value="54" />
+               <item id="55U"    label="SWT3_GPIO7"    value="55" />
+               <item id="56U"    label="SWT3_GPIO8"    value="56" />
+               <item id="57U"    label="SWT3_GPIO9"    value="57" />
+               <item id="58U"    label="SWT3_GPIO10"   value="58" />
+               <item id="59U"    label="SWT3_GPIO11"   value="59" />
+               <item id="60U"    label="SWT3_GPIO12"   value="60" />
+               <item id="61U"    label="SWT3_GPIO13"   value="61" />
+               <item id="62U"    label="SWT3_GPIO14"   value="62" />
+               <item id="63U"    label="SWT3_GPIO15"   value="63" />
+               <item id="64U"    label="SWT4_GPIO0"    value="64" />
+               <item id="65U"    label="SWT4_GPIO1"    value="65" />
+               <item id="66U"    label="SWT4_GPIO2"    value="66" />
+               <item id="67U"    label="SWT4_GPIO3"    value="67" />
+               <item id="68U"    label="SWT4_GPIO4"    value="68" />
+               <item id="69U"    label="SWT4_GPIO5"    value="69" />
+               <item id="70U"    label="SWT4_GPIO6"    value="70" />
+               <item id="71U"    label="SWT4_GPIO7"    value="71" />
+               <item id="72U"    label="SWT4_GPIO8"    value="72" />
+               <item id="73U"    label="SWT4_GPIO9"    value="73" />
+               <item id="74U"    label="SWT4_GPIO10"   value="74" />
+               <item id="75U"    label="SWT4_GPIO11"   value="75" />
+               <item id="76U"    label="SWT4_GPIO12"   value="76" />
+               <item id="77U"    label="SWT4_GPIO13"   value="77" />
+               <item id="78U"    label="SWT4_GPIO14"   value="78" />
+               <item id="79U"    label="SWT4_GPIO15"   value="79" />
+               <item id="80U"    label="SWT5_GPIO0"    value="80" />
+               <item id="81U"    label="SWT5_GPIO1"    value="81" />
+               <item id="82U"    label="SWT5_GPIO2"    value="82" />
+               <item id="83U"    label="SWT5_GPIO3"    value="83" />
+               <item id="84U"    label="SWT5_GPIO4"    value="84" />
+               <item id="85U"    label="SWT5_GPIO5"    value="85" />
+               <item id="86U"    label="SWT5_GPIO6"    value="86" />
+               <item id="87U"    label="SWT5_GPIO7"    value="87" />
+               <item id="88U"    label="SWT5_GPIO8"    value="88" />
+               <item id="89U"    label="SWT5_GPIO9"    value="89" />
+               <item id="90U"    label="SWT5_GPIO10"   value="90" />
+               <item id="91U"    label="SWT5_GPIO11"   value="91" />
+               <item id="92U"    label="SWT5_GPIO12"   value="92" />
+               <item id="93U"    label="SWT5_GPIO13"   value="93" />
+               <item id="94U"    label="SWT5_GPIO14"   value="94" />
+               <item id="95U"    label="SWT5_GPIO15"   value="95" />
+               <item id="96U"    label="SWT6_GPIO0"    value="96" />
+               <item id="97U"    label="SWT6_GPIO1"    value="97" />
+               <item id="98U"    label="SWT6_GPIO2"    value="98" />
+               <item id="99U"    label="SWT6_GPIO3"    value="99" />
+               <item id="100U"   label="SWT6_GPIO4"    value="100" />
+               <item id="101U"   label="SWT6_GPIO5"    value="101" />
+               <item id="102U"   label="SWT6_GPIO6"    value="102" />
+               <item id="103U"   label="SWT6_GPIO7"    value="103" />
+               <item id="104U"   label="SWT6_GPIO8"    value="104" />
+               <item id="105U"   label="SWT6_GPIO9"    value="105" />
+               <item id="106U"   label="SWT6_GPIO10"   value="106" />
+               <item id="107U"   label="SWT6_GPIO11"   value="107" />
+               <item id="108U"   label="SWT6_GPIO12"   value="108" />
+               <item id="109U"   label="SWT6_GPIO13"   value="109" />
+               <item id="110"    label="SWT6_GPIO14"   value="110" />
+               <item id="111U"   label="SWT6_GPIO15"   value="111" />
+               <item id="112U"   label="SWT7_GPIO0"    value="112" />
+               <item id="113U"   label="SWT7_GPIO1"    value="113" />
+               <item id="114U"   label="SWT7_GPIO2"    value="114" />
+               <item id="115U"   label="SWT7_GPIO3"    value="115" />
+               <item id="116U"   label="SWT7_GPIO4"    value="116" />
+               <item id="117U"   label="SWT7_GPIO5"    value="117" />
+               <item id="118U"   label="SWT7_GPIO6"    value="118" />
+               <item id="119U"   label="SWT7_GPIO7"    value="119" />
+               <item id="120U"   label="SWT7_GPIO8"    value="120" />
+               <item id="121U"   label="SWT7_GPIO9"    value="121" />
+               <item id="122U"   label="SWT7_GPIO10"   value="122" />
+               <item id="123U"   label="SWT7_GPIO11"   value="123" />
+               <item id="124U"   label="SWT7_GPIO12"   value="124" />
+               <item id="125U"   label="SWT7_GPIO13"   value="125" />
+               <item id="126U"   label="SWT7_GPIO14"   value="126" />
+               <item id="127U"   label="SWT7_GPIO15"   value="127" />
+            </enum>
+         </user_types>
+    </config_set>
+</component:config_component>

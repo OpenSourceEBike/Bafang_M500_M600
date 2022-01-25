@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<clocks:component xmlns:clocks="http://apif.freescale.net/schemas/clocks/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://apif.freescale.net/schemas/clocks/1.1 http://apif.freescale.net/schemas/clocks/1.1/clocks.xsd" id="PMC">
+  <instance_header>
+    <instance_description>Clock model for the PMC module - LPO (parameterized, shared accross all S32K parts). </instance_description>
+  </instance_header>
+  <interface>
+    <output_clock_signal id="LPO128k_CLK" name="LPO clock"/>
+  </interface>
+  <implementation>
+    <clock_source id="LPO" name="LPO128K" description="The Low Power Oscillator (LPO) is an internal 128 KHz RC oscillator.">
+      <external_source default_connected="true" default_freq ="128 kHz">
+        <range min_freq="113kHz" max_freq="141kHz" description="LPO clock input frequency"/>
+      </external_source>
+      <configuration_element id="LPOInitialize" name="Initialize" description="Initialize LPO source.">
+        <default value="yes"/>
+        <item id="yes" description="yes">
+        </item>
+        <item id="no" description="no">
+        </item>
+      </configuration_element>
+      <configuration_element id="LPO_ENABLE" name="LPO Enable" description="Enable LPO source.">
+        <enable cond_expr="LPOInitialize == `yes`" description="This output can be initialize/de-initialize by the {{lpoClockConfig}} settings."/>
+        <default value="Enabled"/>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="PMC::REGSC" bit_field="LPODIS" value="0"/>
+          </assigns>
+        </item>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="PMC::REGSC" bit_field="LPODIS" value="1"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="LPO32K_ENABLE" name="LPO 32K output Enable" description="Enable LPO 32K output.">
+        <enable cond_expr="LPOInitialize == `yes`" description="This output can be initialize/de-initialize by the {{lpoClockConfig}} settings."/>
+        <default value="Enabled"/>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIM::LPOCLKS" bit_field="LPO32KCLKEN" value="1"/>
+          </assigns>
+        </item>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIM::LPOCLKS" bit_field="LPO32KCLKEN" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="LPO1K_ENABLE" name="LPO 1K output Enable" description="Enable LPO 1k output.">
+        <enable cond_expr="LPOInitialize == `yes`" description="This output can be initialize/de-initialize by the {{lpoClockConfig}} settings."/>
+        <default value="Enabled"/>
+        <item id="Enabled" description="Enabled">
+          <assigns>
+            <assign register="SIM::LPOCLKS" bit_field="LPO1KCLKEN" value="1"/>
+          </assigns>
+        </item>
+        <item id="Disabled" description="Disabled">
+          <assigns>
+            <assign register="SIM::LPOCLKS" bit_field="LPO1KCLKEN" value="0"/>
+          </assigns>
+        </item>
+      </configuration_element>
+      <configuration_element id="LPO_Trimming" name="LPO trimming value" description="LPO trimming value">
+        <enable cond_expr="LPOInitialize == `yes`" description="This output can be initialize/de-initialize by the {{lpoClockConfig}} settings."/>
+        <default value="0"/>
+        <item id="-16" description="-16">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="16"/>
+            </assigns>
+        </item>
+        <item id="-15" description="-15">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="17"/>
+            </assigns>
+        </item>
+        <item id="-14" description="-14">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="18"/>
+            </assigns>
+        </item>
+        <item id="-13" description="-13">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="19"/>
+            </assigns>
+        </item>
+        <item id="-12" description="-12">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="20"/>
+            </assigns>
+        </item>
+        <item id="-11" description="-11">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="21"/>
+            </assigns>
+        </item>
+        <item id="-10" description="-10">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="22"/>
+            </assigns>
+        </item>
+        <item id="-9" description="-9">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="23"/>
+            </assigns>
+        </item>
+        <item id="-8" description="-8">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="24"/>
+            </assigns>
+        </item>
+        <item id="-7" description="-7">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="25"/>
+            </assigns>
+        </item>
+        <item id="-6" description="-6">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="26"/>
+            </assigns>
+        </item>
+        <item id="-5" description="-5">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="27"/>
+            </assigns>
+        </item>
+        <item id="-4" description="-4">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="28"/>
+            </assigns>
+        </item>
+        <item id="-3" description="-3">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="29"/>
+            </assigns>
+        </item>
+        <item id="-2" description="-2">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="30"/>
+            </assigns>
+        </item>
+        <item id="-1" description="-1">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="31"/>
+            </assigns>
+        </item>
+        <item id="0" description="0">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="0"/>
+            </assigns>
+        </item>
+        <item id="1" description="1">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="1"/>
+            </assigns>
+        </item>
+        <item id="2" description="2">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="2"/>
+            </assigns>
+        </item>
+        <item id="3" description="3">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="3"/>
+            </assigns>
+        </item>
+        <item id="4" description="4">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="4"/>
+            </assigns>
+        </item>
+        <item id="5" description="5">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="5"/>
+            </assigns>
+        </item>
+        <item id="6" description="6">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="6"/>
+            </assigns>
+        </item>
+        <item id="7" description="7">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="7"/>
+            </assigns>
+        </item>
+        <item id="8" description="8">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="8"/>
+            </assigns>
+        </item>
+        <item id="9" description="9">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="9"/>
+            </assigns>
+        </item>
+        <item id="10" description="10">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="10"/>
+            </assigns>
+        </item>
+        <item id="11" description="11">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="11"/>
+            </assigns>
+        </item>
+        <item id="12" description="12">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="12"/>
+            </assigns>
+        </item>
+        <item id="13" description="13">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="13"/>
+            </assigns>
+        </item>
+        <item id="14" description="14">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="14"/>
+            </assigns>
+        </item>
+        <item id="15" description="15">
+            <assigns>
+              <assign register="PMC::LPOTRIM" bit_field="LPOTRIM" value="15"/>
+            </assigns>
+        </item>
+      </configuration_element>
+    </clock_source>
+    <map_output id="LPO128k_CLK">
+      <input signal="LPO.clk"/>
+      <enable cond_expr="(LPOInitialize == `yes` &amp;&amp; LPO_ENABLE == `Enabled`)" description="This output can be initialize/de-initialize by the {{lpoClockConfig}} settings."/>
+    </map_output>
+  </implementation>
+</clocks:component>

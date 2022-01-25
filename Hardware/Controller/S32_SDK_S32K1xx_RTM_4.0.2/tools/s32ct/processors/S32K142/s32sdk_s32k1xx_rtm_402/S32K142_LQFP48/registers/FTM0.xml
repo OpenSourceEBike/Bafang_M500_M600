@@ -1,0 +1,1554 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="SC" description="Status And Control">
+    <alias type="CMSIS" value="SC"/>
+    <bit_field offset="0" width="3" name="PS" access="RW" reset_value="0" description="Prescale Factor Selection">
+      <alias type="CMSIS" value="FTM_SC_PS(x)"/>
+      <bit_field_value name="SC_PS_0b000" value="0b000" description="Divide by 1"/>
+      <bit_field_value name="SC_PS_0b001" value="0b001" description="Divide by 2"/>
+      <bit_field_value name="SC_PS_0b010" value="0b010" description="Divide by 4"/>
+      <bit_field_value name="SC_PS_0b011" value="0b011" description="Divide by 8"/>
+      <bit_field_value name="SC_PS_0b100" value="0b100" description="Divide by 16"/>
+      <bit_field_value name="SC_PS_0b101" value="0b101" description="Divide by 32"/>
+      <bit_field_value name="SC_PS_0b110" value="0b110" description="Divide by 64"/>
+      <bit_field_value name="SC_PS_0b111" value="0b111" description="Divide by 128"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="CLKS" access="RW" reset_value="0" description="Clock Source Selection">
+      <alias type="CMSIS" value="FTM_SC_CLKS(x)"/>
+      <bit_field_value name="SC_CLKS_0b00" value="0b00" description="No clock selected. This in effect disables the FTM counter."/>
+      <bit_field_value name="SC_CLKS_0b01" value="0b01" description="FTM input clock"/>
+      <bit_field_value name="SC_CLKS_0b10" value="0b10" description="Fixed frequency clock"/>
+      <bit_field_value name="SC_CLKS_0b11" value="0b11" description="External clock"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CPWMS" access="RW" reset_value="0" description="Center-Aligned PWM Select">
+      <alias type="CMSIS" value="FTM_SC_CPWMS(x)"/>
+      <bit_field_value name="SC_CPWMS_0b0" value="0b0" description="FTM counter operates in Up Counting mode."/>
+      <bit_field_value name="SC_CPWMS_0b1" value="0b1" description="FTM counter operates in Up-Down Counting mode."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="RIE" access="RW" reset_value="0" description="Reload Point Interrupt Enable">
+      <alias type="CMSIS" value="FTM_SC_RIE(x)"/>
+      <bit_field_value name="SC_RIE_0b0" value="0b0" description="Reload point interrupt is disabled."/>
+      <bit_field_value name="SC_RIE_0b1" value="0b1" description="Reload point interrupt is enabled."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="RF" access="ROWZ" reset_value="0" description="Reload Flag">
+      <alias type="CMSIS" value="FTM_SC_RF(x)"/>
+      <bit_field_value name="SC_RF_0b0" value="0b0" description="A selected reload point did not happen."/>
+      <bit_field_value name="SC_RF_0b1" value="0b1" description="A selected reload point happened."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TOIE" access="RW" reset_value="0" description="Timer Overflow Interrupt Enable">
+      <alias type="CMSIS" value="FTM_SC_TOIE(x)"/>
+      <bit_field_value name="SC_TOIE_0b0" value="0b0" description="Disable TOF interrupts. Use software polling."/>
+      <bit_field_value name="SC_TOIE_0b1" value="0b1" description="Enable TOF interrupts. An interrupt is generated when TOF equals one."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="TOF" access="ROWZ" reset_value="0" description="Timer Overflow Flag">
+      <alias type="CMSIS" value="FTM_SC_TOF(x)"/>
+      <bit_field_value name="SC_TOF_0b0" value="0b0" description="FTM counter has not overflowed."/>
+      <bit_field_value name="SC_TOF_0b1" value="0b1" description="FTM counter has overflowed."/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="6" reset_value="0"/>
+    <bit_field offset="16" width="1" name="PWMEN0" access="RW" reset_value="0" description="Channel 0 PWM enable bit">
+      <alias type="CMSIS" value="FTM_SC_PWMEN0(x)"/>
+      <bit_field_value name="SC_PWMEN0_0b0" value="0b0" description="Channel output port is disabled"/>
+      <bit_field_value name="SC_PWMEN0_0b1" value="0b1" description="Channel output port is enabled"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="PWMEN1" access="RW" reset_value="0" description="Channel 1 PWM enable bit">
+      <alias type="CMSIS" value="FTM_SC_PWMEN1(x)"/>
+      <bit_field_value name="SC_PWMEN1_0b0" value="0b0" description="Channel output port is disabled"/>
+      <bit_field_value name="SC_PWMEN1_0b1" value="0b1" description="Channel output port is enabled"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="PWMEN2" access="RW" reset_value="0" description="Channel 2 PWM enable bit">
+      <alias type="CMSIS" value="FTM_SC_PWMEN2(x)"/>
+      <bit_field_value name="SC_PWMEN2_0b0" value="0b0" description="Channel output port is disabled"/>
+      <bit_field_value name="SC_PWMEN2_0b1" value="0b1" description="Channel output port is enabled"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="PWMEN3" access="RW" reset_value="0" description="Channel 3 PWM enable bit">
+      <alias type="CMSIS" value="FTM_SC_PWMEN3(x)"/>
+      <bit_field_value name="SC_PWMEN3_0b0" value="0b0" description="Channel output port is disabled"/>
+      <bit_field_value name="SC_PWMEN3_0b1" value="0b1" description="Channel output port is enabled"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="PWMEN4" access="RW" reset_value="0" description="Channel 4 PWM enable bit">
+      <alias type="CMSIS" value="FTM_SC_PWMEN4(x)"/>
+      <bit_field_value name="SC_PWMEN4_0b0" value="0b0" description="Channel output port is disabled"/>
+      <bit_field_value name="SC_PWMEN4_0b1" value="0b1" description="Channel output port is enabled"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="PWMEN5" access="RW" reset_value="0" description="Channel 5 PWM enable bit">
+      <alias type="CMSIS" value="FTM_SC_PWMEN5(x)"/>
+      <bit_field_value name="SC_PWMEN5_0b0" value="0b0" description="Channel output port is disabled"/>
+      <bit_field_value name="SC_PWMEN5_0b1" value="0b1" description="Channel output port is enabled"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="PWMEN6" access="RW" reset_value="0" description="Channel 6 PWM enable bit">
+      <alias type="CMSIS" value="FTM_SC_PWMEN6(x)"/>
+      <bit_field_value name="SC_PWMEN6_0b0" value="0b0" description="Channel output port is disabled"/>
+      <bit_field_value name="SC_PWMEN6_0b1" value="0b1" description="Channel output port is enabled"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="PWMEN7" access="RW" reset_value="0" description="Channel 7 PWM enable bit">
+      <alias type="CMSIS" value="FTM_SC_PWMEN7(x)"/>
+      <bit_field_value name="SC_PWMEN7_0b0" value="0b0" description="Channel output port is disabled"/>
+      <bit_field_value name="SC_PWMEN7_0b1" value="0b1" description="Channel output port is enabled"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="FLTPS" access="RW" reset_value="0" description="Filter Prescaler">
+      <alias type="CMSIS" value="FTM_SC_FLTPS(x)"/>
+      <bit_field_value name="SC_FLTPS_0b0000" value="0b0000" description="Divide by 1"/>
+      <bit_field_value name="SC_FLTPS_0b0001" value="0b0001" description="Divide by 2"/>
+      <bit_field_value name="SC_FLTPS_0b0010" value="0b0010" description="Divide by 3"/>
+      <bit_field_value name="SC_FLTPS_0b0011" value="0b0011" description="Divide by 4"/>
+      <bit_field_value name="SC_FLTPS_0b0100" value="0b0100" description="Divide by 5"/>
+      <bit_field_value name="SC_FLTPS_0b0101" value="0b0101" description="Divide by 6"/>
+      <bit_field_value name="SC_FLTPS_0b0110" value="0b0110" description="Divide by 7"/>
+      <bit_field_value name="SC_FLTPS_0b0111" value="0b0111" description="Divide by 8"/>
+      <bit_field_value name="SC_FLTPS_0b1000" value="0b1000" description="Divide by 9"/>
+      <bit_field_value name="SC_FLTPS_0b1001" value="0b1001" description="Divide by 10"/>
+      <bit_field_value name="SC_FLTPS_0b1010" value="0b1010" description="Divide by 11"/>
+      <bit_field_value name="SC_FLTPS_0b1011" value="0b1011" description="Divide by 12"/>
+      <bit_field_value name="SC_FLTPS_0b1100" value="0b1100" description="Divide by 13"/>
+      <bit_field_value name="SC_FLTPS_0b1101" value="0b1101" description="Divide by 14"/>
+      <bit_field_value name="SC_FLTPS_0b1110" value="0b1110" description="Divide by 15"/>
+      <bit_field_value name="SC_FLTPS_0b1111" value="0b1111" description="Divide by 16"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x4" width="32" name="CNT" description="Counter">
+    <alias type="CMSIS" value="CNT"/>
+    <bit_field offset="0" width="16" name="COUNT" access="RW" reset_value="0" description="Counter Value">
+      <alias type="CMSIS" value="FTM_CNT_COUNT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="MOD" description="Modulo">
+    <alias type="CMSIS" value="MOD"/>
+    <bit_field offset="0" width="16" name="MOD" access="RW" reset_value="0" description="MOD">
+      <alias type="CMSIS" value="FTM_MOD_MOD(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="C0SC" description="Channel (n) Status And Control">
+    <alias type="CMSIS" value="CONTROLS[0].CSC"/>
+    <bit_field offset="0" width="1" name="DMA" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="FTM_CSC_DMA(x)"/>
+      <bit_field_value name="C0SC_DMA_0b0" value="0b0" description="Disable DMA transfers."/>
+      <bit_field_value name="C0SC_DMA_0b1" value="0b1" description="Enable DMA transfers."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ICRST" access="RW" reset_value="0" description="FTM counter reset by the selected input capture event.">
+      <alias type="CMSIS" value="FTM_CSC_ICRST(x)"/>
+      <bit_field_value name="C0SC_ICRST_0b0" value="0b0" description="FTM counter is not reset when the selected channel (n) input event is detected."/>
+      <bit_field_value name="C0SC_ICRST_0b1" value="0b1" description="FTM counter is reset when the selected channel (n) input event is detected."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ELSA" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSA(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ELSB" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSB(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MSA" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSA(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="MSB" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSB(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CHIE" access="RW" reset_value="0" description="Channel (n) Interrupt Enable">
+      <alias type="CMSIS" value="FTM_CSC_CHIE(x)"/>
+      <bit_field_value name="C0SC_CHIE_0b0" value="0b0" description="Disable channel (n) interrupt. Use software polling."/>
+      <bit_field_value name="C0SC_CHIE_0b1" value="0b1" description="Enable channel (n) interrupt."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CHF" access="ROWZ" reset_value="0" description="Channel (n) Flag">
+      <alias type="CMSIS" value="FTM_CSC_CHF(x)"/>
+      <bit_field_value name="C0SC_CHF_0b0" value="0b0" description="No channel (n) event has occurred."/>
+      <bit_field_value name="C0SC_CHF_0b1" value="0b1" description="A channel (n) event has occurred."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TRIGMODE" access="RW" reset_value="0" description="Trigger mode control">
+      <alias type="CMSIS" value="FTM_CSC_TRIGMODE(x)"/>
+      <bit_field_value name="C0SC_TRIGMODE_0b0" value="0b0" description="Channel outputs will generate the normal PWM outputs without generating a pulse."/>
+      <bit_field_value name="C0SC_TRIGMODE_0b1" value="0b1" description="If a match in the channel occurs, a trigger generation on channel output will happen. The trigger pulse width has one FTM clock cycle."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CHIS" access="RO" reset_value="0" description="Channel (n) Input State">
+      <alias type="CMSIS" value="FTM_CSC_CHIS(x)"/>
+      <bit_field_value name="C0SC_CHIS_0b0" value="0b0" description="The channel (n) input is zero."/>
+      <bit_field_value name="C0SC_CHIS_0b1" value="0b1" description="The channel (n) input is one."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="CHOV" access="RO" reset_value="0" description="Channel (n) Output Value">
+      <alias type="CMSIS" value="FTM_CSC_CHOV(x)"/>
+      <bit_field_value name="C0SC_CHOV_0b0" value="0b0" description="The channel (n) output is zero."/>
+      <bit_field_value name="C0SC_CHOV_0b1" value="0b1" description="The channel (n) output is one."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="21" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="C0V" description="Channel (n) Value">
+    <alias type="CMSIS" value="CONTROLS[0].CV"/>
+    <bit_field offset="0" width="16" name="VAL" access="RW" reset_value="0" description="Channel Value">
+      <alias type="CMSIS" value="FTM_CV_VAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="C1SC" description="Channel (n) Status And Control">
+    <alias type="CMSIS" value="CONTROLS[1].CSC"/>
+    <bit_field offset="0" width="1" name="DMA" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="FTM_CSC_DMA(x)"/>
+      <bit_field_value name="C1SC_DMA_0b0" value="0b0" description="Disable DMA transfers."/>
+      <bit_field_value name="C1SC_DMA_0b1" value="0b1" description="Enable DMA transfers."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ICRST" access="RW" reset_value="0" description="FTM counter reset by the selected input capture event.">
+      <alias type="CMSIS" value="FTM_CSC_ICRST(x)"/>
+      <bit_field_value name="C1SC_ICRST_0b0" value="0b0" description="FTM counter is not reset when the selected channel (n) input event is detected."/>
+      <bit_field_value name="C1SC_ICRST_0b1" value="0b1" description="FTM counter is reset when the selected channel (n) input event is detected."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ELSA" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSA(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ELSB" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSB(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MSA" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSA(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="MSB" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSB(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CHIE" access="RW" reset_value="0" description="Channel (n) Interrupt Enable">
+      <alias type="CMSIS" value="FTM_CSC_CHIE(x)"/>
+      <bit_field_value name="C1SC_CHIE_0b0" value="0b0" description="Disable channel (n) interrupt. Use software polling."/>
+      <bit_field_value name="C1SC_CHIE_0b1" value="0b1" description="Enable channel (n) interrupt."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CHF" access="ROWZ" reset_value="0" description="Channel (n) Flag">
+      <alias type="CMSIS" value="FTM_CSC_CHF(x)"/>
+      <bit_field_value name="C1SC_CHF_0b0" value="0b0" description="No channel (n) event has occurred."/>
+      <bit_field_value name="C1SC_CHF_0b1" value="0b1" description="A channel (n) event has occurred."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TRIGMODE" access="RW" reset_value="0" description="Trigger mode control">
+      <alias type="CMSIS" value="FTM_CSC_TRIGMODE(x)"/>
+      <bit_field_value name="C1SC_TRIGMODE_0b0" value="0b0" description="Channel outputs will generate the normal PWM outputs without generating a pulse."/>
+      <bit_field_value name="C1SC_TRIGMODE_0b1" value="0b1" description="If a match in the channel occurs, a trigger generation on channel output will happen. The trigger pulse width has one FTM clock cycle."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CHIS" access="RO" reset_value="0" description="Channel (n) Input State">
+      <alias type="CMSIS" value="FTM_CSC_CHIS(x)"/>
+      <bit_field_value name="C1SC_CHIS_0b0" value="0b0" description="The channel (n) input is zero."/>
+      <bit_field_value name="C1SC_CHIS_0b1" value="0b1" description="The channel (n) input is one."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="CHOV" access="RO" reset_value="0" description="Channel (n) Output Value">
+      <alias type="CMSIS" value="FTM_CSC_CHOV(x)"/>
+      <bit_field_value name="C1SC_CHOV_0b0" value="0b0" description="The channel (n) output is zero."/>
+      <bit_field_value name="C1SC_CHOV_0b1" value="0b1" description="The channel (n) output is one."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="21" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="C1V" description="Channel (n) Value">
+    <alias type="CMSIS" value="CONTROLS[1].CV"/>
+    <bit_field offset="0" width="16" name="VAL" access="RW" reset_value="0" description="Channel Value">
+      <alias type="CMSIS" value="FTM_CV_VAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="C2SC" description="Channel (n) Status And Control">
+    <alias type="CMSIS" value="CONTROLS[2].CSC"/>
+    <bit_field offset="0" width="1" name="DMA" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="FTM_CSC_DMA(x)"/>
+      <bit_field_value name="C2SC_DMA_0b0" value="0b0" description="Disable DMA transfers."/>
+      <bit_field_value name="C2SC_DMA_0b1" value="0b1" description="Enable DMA transfers."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ICRST" access="RW" reset_value="0" description="FTM counter reset by the selected input capture event.">
+      <alias type="CMSIS" value="FTM_CSC_ICRST(x)"/>
+      <bit_field_value name="C2SC_ICRST_0b0" value="0b0" description="FTM counter is not reset when the selected channel (n) input event is detected."/>
+      <bit_field_value name="C2SC_ICRST_0b1" value="0b1" description="FTM counter is reset when the selected channel (n) input event is detected."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ELSA" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSA(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ELSB" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSB(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MSA" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSA(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="MSB" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSB(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CHIE" access="RW" reset_value="0" description="Channel (n) Interrupt Enable">
+      <alias type="CMSIS" value="FTM_CSC_CHIE(x)"/>
+      <bit_field_value name="C2SC_CHIE_0b0" value="0b0" description="Disable channel (n) interrupt. Use software polling."/>
+      <bit_field_value name="C2SC_CHIE_0b1" value="0b1" description="Enable channel (n) interrupt."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CHF" access="ROWZ" reset_value="0" description="Channel (n) Flag">
+      <alias type="CMSIS" value="FTM_CSC_CHF(x)"/>
+      <bit_field_value name="C2SC_CHF_0b0" value="0b0" description="No channel (n) event has occurred."/>
+      <bit_field_value name="C2SC_CHF_0b1" value="0b1" description="A channel (n) event has occurred."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TRIGMODE" access="RW" reset_value="0" description="Trigger mode control">
+      <alias type="CMSIS" value="FTM_CSC_TRIGMODE(x)"/>
+      <bit_field_value name="C2SC_TRIGMODE_0b0" value="0b0" description="Channel outputs will generate the normal PWM outputs without generating a pulse."/>
+      <bit_field_value name="C2SC_TRIGMODE_0b1" value="0b1" description="If a match in the channel occurs, a trigger generation on channel output will happen. The trigger pulse width has one FTM clock cycle."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CHIS" access="RO" reset_value="0" description="Channel (n) Input State">
+      <alias type="CMSIS" value="FTM_CSC_CHIS(x)"/>
+      <bit_field_value name="C2SC_CHIS_0b0" value="0b0" description="The channel (n) input is zero."/>
+      <bit_field_value name="C2SC_CHIS_0b1" value="0b1" description="The channel (n) input is one."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="CHOV" access="RO" reset_value="0" description="Channel (n) Output Value">
+      <alias type="CMSIS" value="FTM_CSC_CHOV(x)"/>
+      <bit_field_value name="C2SC_CHOV_0b0" value="0b0" description="The channel (n) output is zero."/>
+      <bit_field_value name="C2SC_CHOV_0b1" value="0b1" description="The channel (n) output is one."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="21" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="C2V" description="Channel (n) Value">
+    <alias type="CMSIS" value="CONTROLS[2].CV"/>
+    <bit_field offset="0" width="16" name="VAL" access="RW" reset_value="0" description="Channel Value">
+      <alias type="CMSIS" value="FTM_CV_VAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x24" width="32" name="C3SC" description="Channel (n) Status And Control">
+    <alias type="CMSIS" value="CONTROLS[3].CSC"/>
+    <bit_field offset="0" width="1" name="DMA" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="FTM_CSC_DMA(x)"/>
+      <bit_field_value name="C3SC_DMA_0b0" value="0b0" description="Disable DMA transfers."/>
+      <bit_field_value name="C3SC_DMA_0b1" value="0b1" description="Enable DMA transfers."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ICRST" access="RW" reset_value="0" description="FTM counter reset by the selected input capture event.">
+      <alias type="CMSIS" value="FTM_CSC_ICRST(x)"/>
+      <bit_field_value name="C3SC_ICRST_0b0" value="0b0" description="FTM counter is not reset when the selected channel (n) input event is detected."/>
+      <bit_field_value name="C3SC_ICRST_0b1" value="0b1" description="FTM counter is reset when the selected channel (n) input event is detected."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ELSA" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSA(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ELSB" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSB(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MSA" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSA(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="MSB" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSB(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CHIE" access="RW" reset_value="0" description="Channel (n) Interrupt Enable">
+      <alias type="CMSIS" value="FTM_CSC_CHIE(x)"/>
+      <bit_field_value name="C3SC_CHIE_0b0" value="0b0" description="Disable channel (n) interrupt. Use software polling."/>
+      <bit_field_value name="C3SC_CHIE_0b1" value="0b1" description="Enable channel (n) interrupt."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CHF" access="ROWZ" reset_value="0" description="Channel (n) Flag">
+      <alias type="CMSIS" value="FTM_CSC_CHF(x)"/>
+      <bit_field_value name="C3SC_CHF_0b0" value="0b0" description="No channel (n) event has occurred."/>
+      <bit_field_value name="C3SC_CHF_0b1" value="0b1" description="A channel (n) event has occurred."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TRIGMODE" access="RW" reset_value="0" description="Trigger mode control">
+      <alias type="CMSIS" value="FTM_CSC_TRIGMODE(x)"/>
+      <bit_field_value name="C3SC_TRIGMODE_0b0" value="0b0" description="Channel outputs will generate the normal PWM outputs without generating a pulse."/>
+      <bit_field_value name="C3SC_TRIGMODE_0b1" value="0b1" description="If a match in the channel occurs, a trigger generation on channel output will happen. The trigger pulse width has one FTM clock cycle."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CHIS" access="RO" reset_value="0" description="Channel (n) Input State">
+      <alias type="CMSIS" value="FTM_CSC_CHIS(x)"/>
+      <bit_field_value name="C3SC_CHIS_0b0" value="0b0" description="The channel (n) input is zero."/>
+      <bit_field_value name="C3SC_CHIS_0b1" value="0b1" description="The channel (n) input is one."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="CHOV" access="RO" reset_value="0" description="Channel (n) Output Value">
+      <alias type="CMSIS" value="FTM_CSC_CHOV(x)"/>
+      <bit_field_value name="C3SC_CHOV_0b0" value="0b0" description="The channel (n) output is zero."/>
+      <bit_field_value name="C3SC_CHOV_0b1" value="0b1" description="The channel (n) output is one."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="21" reset_value="0"/>
+  </register>
+  <register offset="0x28" width="32" name="C3V" description="Channel (n) Value">
+    <alias type="CMSIS" value="CONTROLS[3].CV"/>
+    <bit_field offset="0" width="16" name="VAL" access="RW" reset_value="0" description="Channel Value">
+      <alias type="CMSIS" value="FTM_CV_VAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x2C" width="32" name="C4SC" description="Channel (n) Status And Control">
+    <alias type="CMSIS" value="CONTROLS[4].CSC"/>
+    <bit_field offset="0" width="1" name="DMA" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="FTM_CSC_DMA(x)"/>
+      <bit_field_value name="C4SC_DMA_0b0" value="0b0" description="Disable DMA transfers."/>
+      <bit_field_value name="C4SC_DMA_0b1" value="0b1" description="Enable DMA transfers."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ICRST" access="RW" reset_value="0" description="FTM counter reset by the selected input capture event.">
+      <alias type="CMSIS" value="FTM_CSC_ICRST(x)"/>
+      <bit_field_value name="C4SC_ICRST_0b0" value="0b0" description="FTM counter is not reset when the selected channel (n) input event is detected."/>
+      <bit_field_value name="C4SC_ICRST_0b1" value="0b1" description="FTM counter is reset when the selected channel (n) input event is detected."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ELSA" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSA(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ELSB" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSB(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MSA" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSA(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="MSB" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSB(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CHIE" access="RW" reset_value="0" description="Channel (n) Interrupt Enable">
+      <alias type="CMSIS" value="FTM_CSC_CHIE(x)"/>
+      <bit_field_value name="C4SC_CHIE_0b0" value="0b0" description="Disable channel (n) interrupt. Use software polling."/>
+      <bit_field_value name="C4SC_CHIE_0b1" value="0b1" description="Enable channel (n) interrupt."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CHF" access="ROWZ" reset_value="0" description="Channel (n) Flag">
+      <alias type="CMSIS" value="FTM_CSC_CHF(x)"/>
+      <bit_field_value name="C4SC_CHF_0b0" value="0b0" description="No channel (n) event has occurred."/>
+      <bit_field_value name="C4SC_CHF_0b1" value="0b1" description="A channel (n) event has occurred."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TRIGMODE" access="RW" reset_value="0" description="Trigger mode control">
+      <alias type="CMSIS" value="FTM_CSC_TRIGMODE(x)"/>
+      <bit_field_value name="C4SC_TRIGMODE_0b0" value="0b0" description="Channel outputs will generate the normal PWM outputs without generating a pulse."/>
+      <bit_field_value name="C4SC_TRIGMODE_0b1" value="0b1" description="If a match in the channel occurs, a trigger generation on channel output will happen. The trigger pulse width has one FTM clock cycle."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CHIS" access="RO" reset_value="0" description="Channel (n) Input State">
+      <alias type="CMSIS" value="FTM_CSC_CHIS(x)"/>
+      <bit_field_value name="C4SC_CHIS_0b0" value="0b0" description="The channel (n) input is zero."/>
+      <bit_field_value name="C4SC_CHIS_0b1" value="0b1" description="The channel (n) input is one."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="CHOV" access="RO" reset_value="0" description="Channel (n) Output Value">
+      <alias type="CMSIS" value="FTM_CSC_CHOV(x)"/>
+      <bit_field_value name="C4SC_CHOV_0b0" value="0b0" description="The channel (n) output is zero."/>
+      <bit_field_value name="C4SC_CHOV_0b1" value="0b1" description="The channel (n) output is one."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="21" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="C4V" description="Channel (n) Value">
+    <alias type="CMSIS" value="CONTROLS[4].CV"/>
+    <bit_field offset="0" width="16" name="VAL" access="RW" reset_value="0" description="Channel Value">
+      <alias type="CMSIS" value="FTM_CV_VAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x34" width="32" name="C5SC" description="Channel (n) Status And Control">
+    <alias type="CMSIS" value="CONTROLS[5].CSC"/>
+    <bit_field offset="0" width="1" name="DMA" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="FTM_CSC_DMA(x)"/>
+      <bit_field_value name="C5SC_DMA_0b0" value="0b0" description="Disable DMA transfers."/>
+      <bit_field_value name="C5SC_DMA_0b1" value="0b1" description="Enable DMA transfers."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ICRST" access="RW" reset_value="0" description="FTM counter reset by the selected input capture event.">
+      <alias type="CMSIS" value="FTM_CSC_ICRST(x)"/>
+      <bit_field_value name="C5SC_ICRST_0b0" value="0b0" description="FTM counter is not reset when the selected channel (n) input event is detected."/>
+      <bit_field_value name="C5SC_ICRST_0b1" value="0b1" description="FTM counter is reset when the selected channel (n) input event is detected."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ELSA" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSA(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ELSB" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSB(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MSA" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSA(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="MSB" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSB(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CHIE" access="RW" reset_value="0" description="Channel (n) Interrupt Enable">
+      <alias type="CMSIS" value="FTM_CSC_CHIE(x)"/>
+      <bit_field_value name="C5SC_CHIE_0b0" value="0b0" description="Disable channel (n) interrupt. Use software polling."/>
+      <bit_field_value name="C5SC_CHIE_0b1" value="0b1" description="Enable channel (n) interrupt."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CHF" access="ROWZ" reset_value="0" description="Channel (n) Flag">
+      <alias type="CMSIS" value="FTM_CSC_CHF(x)"/>
+      <bit_field_value name="C5SC_CHF_0b0" value="0b0" description="No channel (n) event has occurred."/>
+      <bit_field_value name="C5SC_CHF_0b1" value="0b1" description="A channel (n) event has occurred."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TRIGMODE" access="RW" reset_value="0" description="Trigger mode control">
+      <alias type="CMSIS" value="FTM_CSC_TRIGMODE(x)"/>
+      <bit_field_value name="C5SC_TRIGMODE_0b0" value="0b0" description="Channel outputs will generate the normal PWM outputs without generating a pulse."/>
+      <bit_field_value name="C5SC_TRIGMODE_0b1" value="0b1" description="If a match in the channel occurs, a trigger generation on channel output will happen. The trigger pulse width has one FTM clock cycle."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CHIS" access="RO" reset_value="0" description="Channel (n) Input State">
+      <alias type="CMSIS" value="FTM_CSC_CHIS(x)"/>
+      <bit_field_value name="C5SC_CHIS_0b0" value="0b0" description="The channel (n) input is zero."/>
+      <bit_field_value name="C5SC_CHIS_0b1" value="0b1" description="The channel (n) input is one."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="CHOV" access="RO" reset_value="0" description="Channel (n) Output Value">
+      <alias type="CMSIS" value="FTM_CSC_CHOV(x)"/>
+      <bit_field_value name="C5SC_CHOV_0b0" value="0b0" description="The channel (n) output is zero."/>
+      <bit_field_value name="C5SC_CHOV_0b1" value="0b1" description="The channel (n) output is one."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="21" reset_value="0"/>
+  </register>
+  <register offset="0x38" width="32" name="C5V" description="Channel (n) Value">
+    <alias type="CMSIS" value="CONTROLS[5].CV"/>
+    <bit_field offset="0" width="16" name="VAL" access="RW" reset_value="0" description="Channel Value">
+      <alias type="CMSIS" value="FTM_CV_VAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x3C" width="32" name="C6SC" description="Channel (n) Status And Control">
+    <alias type="CMSIS" value="CONTROLS[6].CSC"/>
+    <bit_field offset="0" width="1" name="DMA" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="FTM_CSC_DMA(x)"/>
+      <bit_field_value name="C6SC_DMA_0b0" value="0b0" description="Disable DMA transfers."/>
+      <bit_field_value name="C6SC_DMA_0b1" value="0b1" description="Enable DMA transfers."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ICRST" access="RW" reset_value="0" description="FTM counter reset by the selected input capture event.">
+      <alias type="CMSIS" value="FTM_CSC_ICRST(x)"/>
+      <bit_field_value name="C6SC_ICRST_0b0" value="0b0" description="FTM counter is not reset when the selected channel (n) input event is detected."/>
+      <bit_field_value name="C6SC_ICRST_0b1" value="0b1" description="FTM counter is reset when the selected channel (n) input event is detected."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ELSA" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSA(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ELSB" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSB(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MSA" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSA(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="MSB" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSB(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CHIE" access="RW" reset_value="0" description="Channel (n) Interrupt Enable">
+      <alias type="CMSIS" value="FTM_CSC_CHIE(x)"/>
+      <bit_field_value name="C6SC_CHIE_0b0" value="0b0" description="Disable channel (n) interrupt. Use software polling."/>
+      <bit_field_value name="C6SC_CHIE_0b1" value="0b1" description="Enable channel (n) interrupt."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CHF" access="ROWZ" reset_value="0" description="Channel (n) Flag">
+      <alias type="CMSIS" value="FTM_CSC_CHF(x)"/>
+      <bit_field_value name="C6SC_CHF_0b0" value="0b0" description="No channel (n) event has occurred."/>
+      <bit_field_value name="C6SC_CHF_0b1" value="0b1" description="A channel (n) event has occurred."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TRIGMODE" access="RW" reset_value="0" description="Trigger mode control">
+      <alias type="CMSIS" value="FTM_CSC_TRIGMODE(x)"/>
+      <bit_field_value name="C6SC_TRIGMODE_0b0" value="0b0" description="Channel outputs will generate the normal PWM outputs without generating a pulse."/>
+      <bit_field_value name="C6SC_TRIGMODE_0b1" value="0b1" description="If a match in the channel occurs, a trigger generation on channel output will happen. The trigger pulse width has one FTM clock cycle."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CHIS" access="RO" reset_value="0" description="Channel (n) Input State">
+      <alias type="CMSIS" value="FTM_CSC_CHIS(x)"/>
+      <bit_field_value name="C6SC_CHIS_0b0" value="0b0" description="The channel (n) input is zero."/>
+      <bit_field_value name="C6SC_CHIS_0b1" value="0b1" description="The channel (n) input is one."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="CHOV" access="RO" reset_value="0" description="Channel (n) Output Value">
+      <alias type="CMSIS" value="FTM_CSC_CHOV(x)"/>
+      <bit_field_value name="C6SC_CHOV_0b0" value="0b0" description="The channel (n) output is zero."/>
+      <bit_field_value name="C6SC_CHOV_0b1" value="0b1" description="The channel (n) output is one."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="21" reset_value="0"/>
+  </register>
+  <register offset="0x40" width="32" name="C6V" description="Channel (n) Value">
+    <alias type="CMSIS" value="CONTROLS[6].CV"/>
+    <bit_field offset="0" width="16" name="VAL" access="RW" reset_value="0" description="Channel Value">
+      <alias type="CMSIS" value="FTM_CV_VAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x44" width="32" name="C7SC" description="Channel (n) Status And Control">
+    <alias type="CMSIS" value="CONTROLS[7].CSC"/>
+    <bit_field offset="0" width="1" name="DMA" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="FTM_CSC_DMA(x)"/>
+      <bit_field_value name="C7SC_DMA_0b0" value="0b0" description="Disable DMA transfers."/>
+      <bit_field_value name="C7SC_DMA_0b1" value="0b1" description="Enable DMA transfers."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ICRST" access="RW" reset_value="0" description="FTM counter reset by the selected input capture event.">
+      <alias type="CMSIS" value="FTM_CSC_ICRST(x)"/>
+      <bit_field_value name="C7SC_ICRST_0b0" value="0b0" description="FTM counter is not reset when the selected channel (n) input event is detected."/>
+      <bit_field_value name="C7SC_ICRST_0b1" value="0b1" description="FTM counter is reset when the selected channel (n) input event is detected."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ELSA" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSA(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ELSB" access="RW" reset_value="0" description="Channel (n) Edge or Level Select">
+      <alias type="CMSIS" value="FTM_CSC_ELSB(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MSA" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSA(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="MSB" access="RW" reset_value="0" description="Channel (n) Mode Select">
+      <alias type="CMSIS" value="FTM_CSC_MSB(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CHIE" access="RW" reset_value="0" description="Channel (n) Interrupt Enable">
+      <alias type="CMSIS" value="FTM_CSC_CHIE(x)"/>
+      <bit_field_value name="C7SC_CHIE_0b0" value="0b0" description="Disable channel (n) interrupt. Use software polling."/>
+      <bit_field_value name="C7SC_CHIE_0b1" value="0b1" description="Enable channel (n) interrupt."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CHF" access="ROWZ" reset_value="0" description="Channel (n) Flag">
+      <alias type="CMSIS" value="FTM_CSC_CHF(x)"/>
+      <bit_field_value name="C7SC_CHF_0b0" value="0b0" description="No channel (n) event has occurred."/>
+      <bit_field_value name="C7SC_CHF_0b1" value="0b1" description="A channel (n) event has occurred."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TRIGMODE" access="RW" reset_value="0" description="Trigger mode control">
+      <alias type="CMSIS" value="FTM_CSC_TRIGMODE(x)"/>
+      <bit_field_value name="C7SC_TRIGMODE_0b0" value="0b0" description="Channel outputs will generate the normal PWM outputs without generating a pulse."/>
+      <bit_field_value name="C7SC_TRIGMODE_0b1" value="0b1" description="If a match in the channel occurs, a trigger generation on channel output will happen. The trigger pulse width has one FTM clock cycle."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CHIS" access="RO" reset_value="0" description="Channel (n) Input State">
+      <alias type="CMSIS" value="FTM_CSC_CHIS(x)"/>
+      <bit_field_value name="C7SC_CHIS_0b0" value="0b0" description="The channel (n) input is zero."/>
+      <bit_field_value name="C7SC_CHIS_0b1" value="0b1" description="The channel (n) input is one."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="CHOV" access="RO" reset_value="0" description="Channel (n) Output Value">
+      <alias type="CMSIS" value="FTM_CSC_CHOV(x)"/>
+      <bit_field_value name="C7SC_CHOV_0b0" value="0b0" description="The channel (n) output is zero."/>
+      <bit_field_value name="C7SC_CHOV_0b1" value="0b1" description="The channel (n) output is one."/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="21" reset_value="0"/>
+  </register>
+  <register offset="0x48" width="32" name="C7V" description="Channel (n) Value">
+    <alias type="CMSIS" value="CONTROLS[7].CV"/>
+    <bit_field offset="0" width="16" name="VAL" access="RW" reset_value="0" description="Channel Value">
+      <alias type="CMSIS" value="FTM_CV_VAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x4C" width="32" name="CNTIN" description="Counter Initial Value">
+    <alias type="CMSIS" value="CNTIN"/>
+    <bit_field offset="0" width="16" name="INIT" access="RW" reset_value="0" description="INIT">
+      <alias type="CMSIS" value="FTM_CNTIN_INIT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x50" width="32" name="STATUS" description="Capture And Compare Status">
+    <alias type="CMSIS" value="STATUS"/>
+    <bit_field offset="0" width="1" name="CH0F" access="ROWZ" reset_value="0" description="Channel 0 Flag">
+      <alias type="CMSIS" value="FTM_STATUS_CH0F(x)"/>
+      <bit_field_value name="STATUS_CH0F_0b0" value="0b0" description="No channel event has occurred."/>
+      <bit_field_value name="STATUS_CH0F_0b1" value="0b1" description="A channel event has occurred."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CH1F" access="ROWZ" reset_value="0" description="Channel 1 Flag">
+      <alias type="CMSIS" value="FTM_STATUS_CH1F(x)"/>
+      <bit_field_value name="STATUS_CH1F_0b0" value="0b0" description="No channel event has occurred."/>
+      <bit_field_value name="STATUS_CH1F_0b1" value="0b1" description="A channel event has occurred."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CH2F" access="ROWZ" reset_value="0" description="Channel 2 Flag">
+      <alias type="CMSIS" value="FTM_STATUS_CH2F(x)"/>
+      <bit_field_value name="STATUS_CH2F_0b0" value="0b0" description="No channel event has occurred."/>
+      <bit_field_value name="STATUS_CH2F_0b1" value="0b1" description="A channel event has occurred."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CH3F" access="ROWZ" reset_value="0" description="Channel 3 Flag">
+      <alias type="CMSIS" value="FTM_STATUS_CH3F(x)"/>
+      <bit_field_value name="STATUS_CH3F_0b0" value="0b0" description="No channel event has occurred."/>
+      <bit_field_value name="STATUS_CH3F_0b1" value="0b1" description="A channel event has occurred."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="CH4F" access="ROWZ" reset_value="0" description="Channel 4 Flag">
+      <alias type="CMSIS" value="FTM_STATUS_CH4F(x)"/>
+      <bit_field_value name="STATUS_CH4F_0b0" value="0b0" description="No channel event has occurred."/>
+      <bit_field_value name="STATUS_CH4F_0b1" value="0b1" description="A channel event has occurred."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CH5F" access="ROWZ" reset_value="0" description="Channel 5 Flag">
+      <alias type="CMSIS" value="FTM_STATUS_CH5F(x)"/>
+      <bit_field_value name="STATUS_CH5F_0b0" value="0b0" description="No channel event has occurred."/>
+      <bit_field_value name="STATUS_CH5F_0b1" value="0b1" description="A channel event has occurred."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CH6F" access="ROWZ" reset_value="0" description="Channel 6 Flag">
+      <alias type="CMSIS" value="FTM_STATUS_CH6F(x)"/>
+      <bit_field_value name="STATUS_CH6F_0b0" value="0b0" description="No channel event has occurred."/>
+      <bit_field_value name="STATUS_CH6F_0b1" value="0b1" description="A channel event has occurred."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CH7F" access="ROWZ" reset_value="0" description="Channel 7 Flag">
+      <alias type="CMSIS" value="FTM_STATUS_CH7F(x)"/>
+      <bit_field_value name="STATUS_CH7F_0b0" value="0b0" description="No channel event has occurred."/>
+      <bit_field_value name="STATUS_CH7F_0b1" value="0b1" description="A channel event has occurred."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x54" width="32" name="MODE" description="Features Mode Selection">
+    <alias type="CMSIS" value="MODE"/>
+    <bit_field offset="0" width="1" name="FTMEN" access="RW" reset_value="0" description="FTM Enable">
+      <alias type="CMSIS" value="FTM_MODE_FTMEN(x)"/>
+      <bit_field_value name="MODE_FTMEN_0b0" value="0b0" description="TPM compatibility. Free running counter and synchronization compatible with TPM."/>
+      <bit_field_value name="MODE_FTMEN_0b1" value="0b1" description="Free running counter and synchronization are different from TPM behavior."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="INIT" access="WORZ" reset_value="0" description="Initialize The Channels Output">
+      <alias type="CMSIS" value="FTM_MODE_INIT(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="WPDIS" access="RW" reset_value="0x1" description="Write Protection Disable">
+      <alias type="CMSIS" value="FTM_MODE_WPDIS(x)"/>
+      <bit_field_value name="MODE_WPDIS_0b0" value="0b0" description="Write protection is enabled."/>
+      <bit_field_value name="MODE_WPDIS_0b1" value="0b1" description="Write protection is disabled."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="PWMSYNC" access="RW" reset_value="0" description="PWM Synchronization Mode">
+      <alias type="CMSIS" value="FTM_MODE_PWMSYNC(x)"/>
+      <bit_field_value name="MODE_PWMSYNC_0b0" value="0b0" description="No restrictions. Software and hardware triggers can be used by MOD, CnV, OUTMASK, and FTM counter synchronization."/>
+      <bit_field_value name="MODE_PWMSYNC_0b1" value="0b1" description="Software trigger can only be used by MOD and CnV synchronization, and hardware triggers can only be used by OUTMASK and FTM counter synchronization."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="CAPTEST" access="RW" reset_value="0" description="Capture Test Mode Enable">
+      <alias type="CMSIS" value="FTM_MODE_CAPTEST(x)"/>
+      <bit_field_value name="MODE_CAPTEST_0b0" value="0b0" description="Capture test mode is disabled."/>
+      <bit_field_value name="MODE_CAPTEST_0b1" value="0b1" description="Capture test mode is enabled."/>
+    </bit_field>
+    <bit_field offset="5" width="2" name="FAULTM" access="RW" reset_value="0" description="Fault Control Mode">
+      <alias type="CMSIS" value="FTM_MODE_FAULTM(x)"/>
+      <bit_field_value name="MODE_FAULTM_0b00" value="0b00" description="Fault control is disabled for all channels."/>
+      <bit_field_value name="MODE_FAULTM_0b01" value="0b01" description="Fault control is enabled for even channels only (channels 0, 2, 4, and 6), and the selected mode is the manual fault clearing."/>
+      <bit_field_value name="MODE_FAULTM_0b10" value="0b10" description="Fault control is enabled for all channels, and the selected mode is the manual fault clearing."/>
+      <bit_field_value name="MODE_FAULTM_0b11" value="0b11" description="Fault control is enabled for all channels, and the selected mode is the automatic fault clearing."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="FAULTIE" access="RW" reset_value="0" description="Fault Interrupt Enable">
+      <alias type="CMSIS" value="FTM_MODE_FAULTIE(x)"/>
+      <bit_field_value name="MODE_FAULTIE_0b0" value="0b0" description="Fault control interrupt is disabled."/>
+      <bit_field_value name="MODE_FAULTIE_0b1" value="0b1" description="Fault control interrupt is enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x58" width="32" name="SYNC" description="Synchronization">
+    <alias type="CMSIS" value="SYNC"/>
+    <bit_field offset="0" width="1" name="CNTMIN" access="RW" reset_value="0" description="Minimum Loading Point Enable">
+      <alias type="CMSIS" value="FTM_SYNC_CNTMIN(x)"/>
+      <bit_field_value name="SYNC_CNTMIN_0b0" value="0b0" description="The minimum loading point is disabled."/>
+      <bit_field_value name="SYNC_CNTMIN_0b1" value="0b1" description="The minimum loading point is enabled."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CNTMAX" access="RW" reset_value="0" description="Maximum Loading Point Enable">
+      <alias type="CMSIS" value="FTM_SYNC_CNTMAX(x)"/>
+      <bit_field_value name="SYNC_CNTMAX_0b0" value="0b0" description="The maximum loading point is disabled."/>
+      <bit_field_value name="SYNC_CNTMAX_0b1" value="0b1" description="The maximum loading point is enabled."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="REINIT" access="RW" reset_value="0" description="FTM Counter Reinitialization by Synchronization">
+      <alias type="CMSIS" value="FTM_SYNC_REINIT(x)"/>
+      <bit_field_value name="SYNC_REINIT_0b0" value="0b0" description="FTM counter continues to count normally."/>
+      <bit_field_value name="SYNC_REINIT_0b1" value="0b1" description="FTM counter is updated with its initial value when the selected trigger is detected."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="SYNCHOM" access="RW" reset_value="0" description="Output Mask Synchronization">
+      <alias type="CMSIS" value="FTM_SYNC_SYNCHOM(x)"/>
+      <bit_field_value name="SYNC_SYNCHOM_0b0" value="0b0" description="OUTMASK register is updated with the value of its buffer in all rising edges of the FTM input clock."/>
+      <bit_field_value name="SYNC_SYNCHOM_0b1" value="0b1" description="OUTMASK register is updated with the value of its buffer only by the PWM synchronization."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="TRIG0" access="RW" reset_value="0" description="PWM Synchronization Hardware Trigger 0">
+      <alias type="CMSIS" value="FTM_SYNC_TRIG0(x)"/>
+      <bit_field_value name="SYNC_TRIG0_0b0" value="0b0" description="Trigger is disabled."/>
+      <bit_field_value name="SYNC_TRIG0_0b1" value="0b1" description="Trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="TRIG1" access="RW" reset_value="0" description="PWM Synchronization Hardware Trigger 1">
+      <alias type="CMSIS" value="FTM_SYNC_TRIG1(x)"/>
+      <bit_field_value name="SYNC_TRIG1_0b0" value="0b0" description="Trigger is disabled."/>
+      <bit_field_value name="SYNC_TRIG1_0b1" value="0b1" description="Trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="TRIG2" access="RW" reset_value="0" description="PWM Synchronization Hardware Trigger 2">
+      <alias type="CMSIS" value="FTM_SYNC_TRIG2(x)"/>
+      <bit_field_value name="SYNC_TRIG2_0b0" value="0b0" description="Trigger is disabled."/>
+      <bit_field_value name="SYNC_TRIG2_0b1" value="0b1" description="Trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="SWSYNC" access="RW" reset_value="0" description="PWM Synchronization Software Trigger">
+      <alias type="CMSIS" value="FTM_SYNC_SWSYNC(x)"/>
+      <bit_field_value name="SYNC_SWSYNC_0b0" value="0b0" description="Software trigger is not selected."/>
+      <bit_field_value name="SYNC_SWSYNC_0b1" value="0b1" description="Software trigger is selected."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x5C" width="32" name="OUTINIT" description="Initial State For Channels Output">
+    <alias type="CMSIS" value="OUTINIT"/>
+    <bit_field offset="0" width="1" name="CH0OI" access="RW" reset_value="0" description="Channel 0 Output Initialization Value">
+      <alias type="CMSIS" value="FTM_OUTINIT_CH0OI(x)"/>
+      <bit_field_value name="OUTINIT_CH0OI_0b0" value="0b0" description="The initialization value is 0."/>
+      <bit_field_value name="OUTINIT_CH0OI_0b1" value="0b1" description="The initialization value is 1."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CH1OI" access="RW" reset_value="0" description="Channel 1 Output Initialization Value">
+      <alias type="CMSIS" value="FTM_OUTINIT_CH1OI(x)"/>
+      <bit_field_value name="OUTINIT_CH1OI_0b0" value="0b0" description="The initialization value is 0."/>
+      <bit_field_value name="OUTINIT_CH1OI_0b1" value="0b1" description="The initialization value is 1."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CH2OI" access="RW" reset_value="0" description="Channel 2 Output Initialization Value">
+      <alias type="CMSIS" value="FTM_OUTINIT_CH2OI(x)"/>
+      <bit_field_value name="OUTINIT_CH2OI_0b0" value="0b0" description="The initialization value is 0."/>
+      <bit_field_value name="OUTINIT_CH2OI_0b1" value="0b1" description="The initialization value is 1."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CH3OI" access="RW" reset_value="0" description="Channel 3 Output Initialization Value">
+      <alias type="CMSIS" value="FTM_OUTINIT_CH3OI(x)"/>
+      <bit_field_value name="OUTINIT_CH3OI_0b0" value="0b0" description="The initialization value is 0."/>
+      <bit_field_value name="OUTINIT_CH3OI_0b1" value="0b1" description="The initialization value is 1."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="CH4OI" access="RW" reset_value="0" description="Channel 4 Output Initialization Value">
+      <alias type="CMSIS" value="FTM_OUTINIT_CH4OI(x)"/>
+      <bit_field_value name="OUTINIT_CH4OI_0b0" value="0b0" description="The initialization value is 0."/>
+      <bit_field_value name="OUTINIT_CH4OI_0b1" value="0b1" description="The initialization value is 1."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CH5OI" access="RW" reset_value="0" description="Channel 5 Output Initialization Value">
+      <alias type="CMSIS" value="FTM_OUTINIT_CH5OI(x)"/>
+      <bit_field_value name="OUTINIT_CH5OI_0b0" value="0b0" description="The initialization value is 0."/>
+      <bit_field_value name="OUTINIT_CH5OI_0b1" value="0b1" description="The initialization value is 1."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CH6OI" access="RW" reset_value="0" description="Channel 6 Output Initialization Value">
+      <alias type="CMSIS" value="FTM_OUTINIT_CH6OI(x)"/>
+      <bit_field_value name="OUTINIT_CH6OI_0b0" value="0b0" description="The initialization value is 0."/>
+      <bit_field_value name="OUTINIT_CH6OI_0b1" value="0b1" description="The initialization value is 1."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CH7OI" access="RW" reset_value="0" description="Channel 7 Output Initialization Value">
+      <alias type="CMSIS" value="FTM_OUTINIT_CH7OI(x)"/>
+      <bit_field_value name="OUTINIT_CH7OI_0b0" value="0b0" description="The initialization value is 0."/>
+      <bit_field_value name="OUTINIT_CH7OI_0b1" value="0b1" description="The initialization value is 1."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x60" width="32" name="OUTMASK" description="Output Mask">
+    <alias type="CMSIS" value="OUTMASK"/>
+    <bit_field offset="0" width="1" name="CH0OM" access="RW" reset_value="0" description="Channel 0 Output Mask">
+      <alias type="CMSIS" value="FTM_OUTMASK_CH0OM(x)"/>
+      <bit_field_value name="OUTMASK_CH0OM_0b0" value="0b0" description="Channel output is not masked. It continues to operate normally."/>
+      <bit_field_value name="OUTMASK_CH0OM_0b1" value="0b1" description="Channel output is masked. It is forced to its inactive state."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CH1OM" access="RW" reset_value="0" description="Channel 1 Output Mask">
+      <alias type="CMSIS" value="FTM_OUTMASK_CH1OM(x)"/>
+      <bit_field_value name="OUTMASK_CH1OM_0b0" value="0b0" description="Channel output is not masked. It continues to operate normally."/>
+      <bit_field_value name="OUTMASK_CH1OM_0b1" value="0b1" description="Channel output is masked. It is forced to its inactive state."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CH2OM" access="RW" reset_value="0" description="Channel 2 Output Mask">
+      <alias type="CMSIS" value="FTM_OUTMASK_CH2OM(x)"/>
+      <bit_field_value name="OUTMASK_CH2OM_0b0" value="0b0" description="Channel output is not masked. It continues to operate normally."/>
+      <bit_field_value name="OUTMASK_CH2OM_0b1" value="0b1" description="Channel output is masked. It is forced to its inactive state."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CH3OM" access="RW" reset_value="0" description="Channel 3 Output Mask">
+      <alias type="CMSIS" value="FTM_OUTMASK_CH3OM(x)"/>
+      <bit_field_value name="OUTMASK_CH3OM_0b0" value="0b0" description="Channel output is not masked. It continues to operate normally."/>
+      <bit_field_value name="OUTMASK_CH3OM_0b1" value="0b1" description="Channel output is masked. It is forced to its inactive state."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="CH4OM" access="RW" reset_value="0" description="Channel 4 Output Mask">
+      <alias type="CMSIS" value="FTM_OUTMASK_CH4OM(x)"/>
+      <bit_field_value name="OUTMASK_CH4OM_0b0" value="0b0" description="Channel output is not masked. It continues to operate normally."/>
+      <bit_field_value name="OUTMASK_CH4OM_0b1" value="0b1" description="Channel output is masked. It is forced to its inactive state."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CH5OM" access="RW" reset_value="0" description="Channel 5 Output Mask">
+      <alias type="CMSIS" value="FTM_OUTMASK_CH5OM(x)"/>
+      <bit_field_value name="OUTMASK_CH5OM_0b0" value="0b0" description="Channel output is not masked. It continues to operate normally."/>
+      <bit_field_value name="OUTMASK_CH5OM_0b1" value="0b1" description="Channel output is masked. It is forced to its inactive state."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CH6OM" access="RW" reset_value="0" description="Channel 6 Output Mask">
+      <alias type="CMSIS" value="FTM_OUTMASK_CH6OM(x)"/>
+      <bit_field_value name="OUTMASK_CH6OM_0b0" value="0b0" description="Channel output is not masked. It continues to operate normally."/>
+      <bit_field_value name="OUTMASK_CH6OM_0b1" value="0b1" description="Channel output is masked. It is forced to its inactive state."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CH7OM" access="RW" reset_value="0" description="Channel 7 Output Mask">
+      <alias type="CMSIS" value="FTM_OUTMASK_CH7OM(x)"/>
+      <bit_field_value name="OUTMASK_CH7OM_0b0" value="0b0" description="Channel output is not masked. It continues to operate normally."/>
+      <bit_field_value name="OUTMASK_CH7OM_0b1" value="0b1" description="Channel output is masked. It is forced to its inactive state."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x64" width="32" name="COMBINE" description="Function For Linked Channels">
+    <alias type="CMSIS" value="COMBINE"/>
+    <bit_field offset="0" width="1" name="COMBINE0" access="RW" reset_value="0" description="Combine Channels For n = 0">
+      <alias type="CMSIS" value="FTM_COMBINE_COMBINE0(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="COMP0" access="RW" reset_value="0" description="Complement Of Channel (n) For n = 0">
+      <alias type="CMSIS" value="FTM_COMBINE_COMP0(x)"/>
+      <bit_field_value name="COMBINE_COMP0_0b0" value="0b0" description="The channel (n+1) output is the same as the channel (n) output."/>
+      <bit_field_value name="COMBINE_COMP0_0b1" value="0b1" description="The channel (n+1) output is the complement of the channel (n) output."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="DECAPEN0" access="RW" reset_value="0" description="Dual Edge Capture Mode Enable For n = 0">
+      <alias type="CMSIS" value="FTM_COMBINE_DECAPEN0(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="DECAP0" access="RW" reset_value="0" description="Dual Edge Capture Mode Captures For n = 0">
+      <alias type="CMSIS" value="FTM_COMBINE_DECAP0(x)"/>
+      <bit_field_value name="COMBINE_DECAP0_0b0" value="0b0" description="The dual edge captures are inactive."/>
+      <bit_field_value name="COMBINE_DECAP0_0b1" value="0b1" description="The dual edge captures are active."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="DTEN0" access="RW" reset_value="0" description="Deadtime Enable For n = 0">
+      <alias type="CMSIS" value="FTM_COMBINE_DTEN0(x)"/>
+      <bit_field_value name="COMBINE_DTEN0_0b0" value="0b0" description="The deadtime insertion in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_DTEN0_0b1" value="0b1" description="The deadtime insertion in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="SYNCEN0" access="RW" reset_value="0" description="Synchronization Enable For n = 0">
+      <alias type="CMSIS" value="FTM_COMBINE_SYNCEN0(x)"/>
+      <bit_field_value name="COMBINE_SYNCEN0_0b0" value="0b0" description="The PWM synchronization in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_SYNCEN0_0b1" value="0b1" description="The PWM synchronization in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="FAULTEN0" access="RW" reset_value="0" description="Fault Control Enable For n = 0">
+      <alias type="CMSIS" value="FTM_COMBINE_FAULTEN0(x)"/>
+      <bit_field_value name="COMBINE_FAULTEN0_0b0" value="0b0" description="The fault control in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_FAULTEN0_0b1" value="0b1" description="The fault control in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="MCOMBINE0" access="RW" reset_value="0" description="Modified Combine Mode For n = 0">
+      <alias type="CMSIS" value="FTM_COMBINE_MCOMBINE0(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="COMBINE1" access="RW" reset_value="0" description="Combine Channels For n = 2">
+      <alias type="CMSIS" value="FTM_COMBINE_COMBINE1(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="COMP1" access="RW" reset_value="0" description="Complement Of Channel (n) For n = 2">
+      <alias type="CMSIS" value="FTM_COMBINE_COMP1(x)"/>
+      <bit_field_value name="COMBINE_COMP1_0b0" value="0b0" description="The channel (n+1) output is the same as the channel (n) output."/>
+      <bit_field_value name="COMBINE_COMP1_0b1" value="0b1" description="The channel (n+1) output is the complement of the channel (n) output."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="DECAPEN1" access="RW" reset_value="0" description="Dual Edge Capture Mode Enable For n = 2">
+      <alias type="CMSIS" value="FTM_COMBINE_DECAPEN1(x)"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="DECAP1" access="RW" reset_value="0" description="Dual Edge Capture Mode Captures For n = 2">
+      <alias type="CMSIS" value="FTM_COMBINE_DECAP1(x)"/>
+      <bit_field_value name="COMBINE_DECAP1_0b0" value="0b0" description="The dual edge captures are inactive."/>
+      <bit_field_value name="COMBINE_DECAP1_0b1" value="0b1" description="The dual edge captures are active."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="DTEN1" access="RW" reset_value="0" description="Deadtime Enable For n = 2">
+      <alias type="CMSIS" value="FTM_COMBINE_DTEN1(x)"/>
+      <bit_field_value name="COMBINE_DTEN1_0b0" value="0b0" description="The deadtime insertion in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_DTEN1_0b1" value="0b1" description="The deadtime insertion in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="SYNCEN1" access="RW" reset_value="0" description="Synchronization Enable For n = 2">
+      <alias type="CMSIS" value="FTM_COMBINE_SYNCEN1(x)"/>
+      <bit_field_value name="COMBINE_SYNCEN1_0b0" value="0b0" description="The PWM synchronization in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_SYNCEN1_0b1" value="0b1" description="The PWM synchronization in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="FAULTEN1" access="RW" reset_value="0" description="Fault Control Enable For n = 2">
+      <alias type="CMSIS" value="FTM_COMBINE_FAULTEN1(x)"/>
+      <bit_field_value name="COMBINE_FAULTEN1_0b0" value="0b0" description="The fault control in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_FAULTEN1_0b1" value="0b1" description="The fault control in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="MCOMBINE1" access="RW" reset_value="0" description="Modified Combine Mode For n = 2">
+      <alias type="CMSIS" value="FTM_COMBINE_MCOMBINE1(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="COMBINE2" access="RW" reset_value="0" description="Combine Channels For n = 4">
+      <alias type="CMSIS" value="FTM_COMBINE_COMBINE2(x)"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="COMP2" access="RW" reset_value="0" description="Complement Of Channel (n) For n = 4">
+      <alias type="CMSIS" value="FTM_COMBINE_COMP2(x)"/>
+      <bit_field_value name="COMBINE_COMP2_0b0" value="0b0" description="The channel (n+1) output is the same as the channel (n) output."/>
+      <bit_field_value name="COMBINE_COMP2_0b1" value="0b1" description="The channel (n+1) output is the complement of the channel (n) output."/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="DECAPEN2" access="RW" reset_value="0" description="Dual Edge Capture Mode Enable For n = 4">
+      <alias type="CMSIS" value="FTM_COMBINE_DECAPEN2(x)"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="DECAP2" access="RW" reset_value="0" description="Dual Edge Capture Mode Captures For n = 4">
+      <alias type="CMSIS" value="FTM_COMBINE_DECAP2(x)"/>
+      <bit_field_value name="COMBINE_DECAP2_0b0" value="0b0" description="The dual edge captures are inactive."/>
+      <bit_field_value name="COMBINE_DECAP2_0b1" value="0b1" description="The dual edge captures are active."/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="DTEN2" access="RW" reset_value="0" description="Deadtime Enable For n = 4">
+      <alias type="CMSIS" value="FTM_COMBINE_DTEN2(x)"/>
+      <bit_field_value name="COMBINE_DTEN2_0b0" value="0b0" description="The deadtime insertion in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_DTEN2_0b1" value="0b1" description="The deadtime insertion in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="SYNCEN2" access="RW" reset_value="0" description="Synchronization Enable For n = 4">
+      <alias type="CMSIS" value="FTM_COMBINE_SYNCEN2(x)"/>
+      <bit_field_value name="COMBINE_SYNCEN2_0b0" value="0b0" description="The PWM synchronization in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_SYNCEN2_0b1" value="0b1" description="The PWM synchronization in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="FAULTEN2" access="RW" reset_value="0" description="Fault Control Enable For n = 4">
+      <alias type="CMSIS" value="FTM_COMBINE_FAULTEN2(x)"/>
+      <bit_field_value name="COMBINE_FAULTEN2_0b0" value="0b0" description="The fault control in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_FAULTEN2_0b1" value="0b1" description="The fault control in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="MCOMBINE2" access="RW" reset_value="0" description="Modified Combine Mode For n = 4">
+      <alias type="CMSIS" value="FTM_COMBINE_MCOMBINE2(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="COMBINE3" access="RW" reset_value="0" description="Combine Channels For n = 6">
+      <alias type="CMSIS" value="FTM_COMBINE_COMBINE3(x)"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="COMP3" access="RW" reset_value="0" description="Complement Of Channel (n) for n = 6">
+      <alias type="CMSIS" value="FTM_COMBINE_COMP3(x)"/>
+      <bit_field_value name="COMBINE_COMP3_0b0" value="0b0" description="The channel (n+1) output is the same as the channel (n) output."/>
+      <bit_field_value name="COMBINE_COMP3_0b1" value="0b1" description="The channel (n+1) output is the complement of the channel (n) output."/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="DECAPEN3" access="RW" reset_value="0" description="Dual Edge Capture Mode Enable For n = 6">
+      <alias type="CMSIS" value="FTM_COMBINE_DECAPEN3(x)"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="DECAP3" access="RW" reset_value="0" description="Dual Edge Capture Mode Captures For n = 6">
+      <alias type="CMSIS" value="FTM_COMBINE_DECAP3(x)"/>
+      <bit_field_value name="COMBINE_DECAP3_0b0" value="0b0" description="The dual edge captures are inactive."/>
+      <bit_field_value name="COMBINE_DECAP3_0b1" value="0b1" description="The dual edge captures are active."/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="DTEN3" access="RW" reset_value="0" description="Deadtime Enable For n = 6">
+      <alias type="CMSIS" value="FTM_COMBINE_DTEN3(x)"/>
+      <bit_field_value name="COMBINE_DTEN3_0b0" value="0b0" description="The deadtime insertion in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_DTEN3_0b1" value="0b1" description="The deadtime insertion in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="SYNCEN3" access="RW" reset_value="0" description="Synchronization Enable For n = 6">
+      <alias type="CMSIS" value="FTM_COMBINE_SYNCEN3(x)"/>
+      <bit_field_value name="COMBINE_SYNCEN3_0b0" value="0b0" description="The PWM synchronization in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_SYNCEN3_0b1" value="0b1" description="The PWM synchronization in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="FAULTEN3" access="RW" reset_value="0" description="Fault Control Enable For n = 6">
+      <alias type="CMSIS" value="FTM_COMBINE_FAULTEN3(x)"/>
+      <bit_field_value name="COMBINE_FAULTEN3_0b0" value="0b0" description="The fault control in this pair of channels is disabled."/>
+      <bit_field_value name="COMBINE_FAULTEN3_0b1" value="0b1" description="The fault control in this pair of channels is enabled."/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="MCOMBINE3" access="RW" reset_value="0" description="Modified Combine Mode For n = 6">
+      <alias type="CMSIS" value="FTM_COMBINE_MCOMBINE3(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x68" width="32" name="DEADTIME" description="Deadtime Configuration">
+    <alias type="CMSIS" value="DEADTIME"/>
+    <bit_field offset="0" width="6" name="DTVAL" access="RW" reset_value="0" description="Deadtime Value">
+      <alias type="CMSIS" value="FTM_DEADTIME_DTVAL(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="DTPS" access="RW" reset_value="0" description="Deadtime Prescaler Value">
+      <alias type="CMSIS" value="FTM_DEADTIME_DTPS(x)"/>
+      <bit_field_value name="DEADTIME_DTPS_0b0x" value="0b0?" description="Divide the FTM input clock by 1."/>
+      <bit_field_value name="DEADTIME_DTPS_0b10" value="0b10" description="Divide the FTM input clock by 4."/>
+      <bit_field_value name="DEADTIME_DTPS_0b11" value="0b11" description="Divide the FTM input clock by 16."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DTVALEX" access="RW" reset_value="0" description="Extended Deadtime Value">
+      <alias type="CMSIS" value="FTM_DEADTIME_DTVALEX(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x6C" width="32" name="EXTTRIG" description="FTM External Trigger">
+    <alias type="CMSIS" value="EXTTRIG"/>
+    <bit_field offset="0" width="1" name="CH2TRIG" access="RW" reset_value="0" description="Channel 2 External Trigger Enable">
+      <alias type="CMSIS" value="FTM_EXTTRIG_CH2TRIG(x)"/>
+      <bit_field_value name="EXTTRIG_CH2TRIG_0b0" value="0b0" description="The generation of this external trigger is disabled."/>
+      <bit_field_value name="EXTTRIG_CH2TRIG_0b1" value="0b1" description="The generation of this external trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CH3TRIG" access="RW" reset_value="0" description="Channel 3 External Trigger Enable">
+      <alias type="CMSIS" value="FTM_EXTTRIG_CH3TRIG(x)"/>
+      <bit_field_value name="EXTTRIG_CH3TRIG_0b0" value="0b0" description="The generation of this external trigger is disabled."/>
+      <bit_field_value name="EXTTRIG_CH3TRIG_0b1" value="0b1" description="The generation of this external trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CH4TRIG" access="RW" reset_value="0" description="Channel 4 External Trigger Enable">
+      <alias type="CMSIS" value="FTM_EXTTRIG_CH4TRIG(x)"/>
+      <bit_field_value name="EXTTRIG_CH4TRIG_0b0" value="0b0" description="The generation of this external trigger is disabled."/>
+      <bit_field_value name="EXTTRIG_CH4TRIG_0b1" value="0b1" description="The generation of this external trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CH5TRIG" access="RW" reset_value="0" description="Channel 5 External Trigger Enable">
+      <alias type="CMSIS" value="FTM_EXTTRIG_CH5TRIG(x)"/>
+      <bit_field_value name="EXTTRIG_CH5TRIG_0b0" value="0b0" description="The generation of this external trigger is disabled."/>
+      <bit_field_value name="EXTTRIG_CH5TRIG_0b1" value="0b1" description="The generation of this external trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="CH0TRIG" access="RW" reset_value="0" description="Channel 0 External Trigger Enable">
+      <alias type="CMSIS" value="FTM_EXTTRIG_CH0TRIG(x)"/>
+      <bit_field_value name="EXTTRIG_CH0TRIG_0b0" value="0b0" description="The generation of this external trigger is disabled."/>
+      <bit_field_value name="EXTTRIG_CH0TRIG_0b1" value="0b1" description="The generation of this external trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CH1TRIG" access="RW" reset_value="0" description="Channel 1 External Trigger Enable">
+      <alias type="CMSIS" value="FTM_EXTTRIG_CH1TRIG(x)"/>
+      <bit_field_value name="EXTTRIG_CH1TRIG_0b0" value="0b0" description="The generation of this external trigger is disabled."/>
+      <bit_field_value name="EXTTRIG_CH1TRIG_0b1" value="0b1" description="The generation of this external trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="INITTRIGEN" access="RW" reset_value="0" description="Initialization Trigger Enable">
+      <alias type="CMSIS" value="FTM_EXTTRIG_INITTRIGEN(x)"/>
+      <bit_field_value name="EXTTRIG_INITTRIGEN_0b0" value="0b0" description="The generation of initialization trigger is disabled."/>
+      <bit_field_value name="EXTTRIG_INITTRIGEN_0b1" value="0b1" description="The generation of initialization trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="TRIGF" access="ROWZ" reset_value="0" description="Channel Trigger Flag">
+      <alias type="CMSIS" value="FTM_EXTTRIG_TRIGF(x)"/>
+      <bit_field_value name="EXTTRIG_TRIGF_0b0" value="0b0" description="No channel trigger was generated."/>
+      <bit_field_value name="EXTTRIG_TRIGF_0b1" value="0b1" description="A channel trigger was generated."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="CH6TRIG" access="RW" reset_value="0" description="Channel 6 External Trigger Enable">
+      <alias type="CMSIS" value="FTM_EXTTRIG_CH6TRIG(x)"/>
+      <bit_field_value name="EXTTRIG_CH6TRIG_0b0" value="0b0" description="The generation of this external trigger is disabled."/>
+      <bit_field_value name="EXTTRIG_CH6TRIG_0b1" value="0b1" description="The generation of this external trigger is enabled."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CH7TRIG" access="RW" reset_value="0" description="Channel 7 External Trigger Enable">
+      <alias type="CMSIS" value="FTM_EXTTRIG_CH7TRIG(x)"/>
+      <bit_field_value name="EXTTRIG_CH7TRIG_0b0" value="0b0" description="The generation of this external trigger is disabled."/>
+      <bit_field_value name="EXTTRIG_CH7TRIG_0b1" value="0b1" description="The generation of this external trigger is enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="22" reset_value="0"/>
+  </register>
+  <register offset="0x70" width="32" name="POL" description="Channels Polarity">
+    <alias type="CMSIS" value="POL"/>
+    <bit_field offset="0" width="1" name="POL0" access="RW" reset_value="0" description="Channel 0 Polarity">
+      <alias type="CMSIS" value="FTM_POL_POL0(x)"/>
+      <bit_field_value name="POL_POL0_0b0" value="0b0" description="The channel polarity is active high."/>
+      <bit_field_value name="POL_POL0_0b1" value="0b1" description="The channel polarity is active low."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="POL1" access="RW" reset_value="0" description="Channel 1 Polarity">
+      <alias type="CMSIS" value="FTM_POL_POL1(x)"/>
+      <bit_field_value name="POL_POL1_0b0" value="0b0" description="The channel polarity is active high."/>
+      <bit_field_value name="POL_POL1_0b1" value="0b1" description="The channel polarity is active low."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="POL2" access="RW" reset_value="0" description="Channel 2 Polarity">
+      <alias type="CMSIS" value="FTM_POL_POL2(x)"/>
+      <bit_field_value name="POL_POL2_0b0" value="0b0" description="The channel polarity is active high."/>
+      <bit_field_value name="POL_POL2_0b1" value="0b1" description="The channel polarity is active low."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="POL3" access="RW" reset_value="0" description="Channel 3 Polarity">
+      <alias type="CMSIS" value="FTM_POL_POL3(x)"/>
+      <bit_field_value name="POL_POL3_0b0" value="0b0" description="The channel polarity is active high."/>
+      <bit_field_value name="POL_POL3_0b1" value="0b1" description="The channel polarity is active low."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="POL4" access="RW" reset_value="0" description="Channel 4 Polarity">
+      <alias type="CMSIS" value="FTM_POL_POL4(x)"/>
+      <bit_field_value name="POL_POL4_0b0" value="0b0" description="The channel polarity is active high."/>
+      <bit_field_value name="POL_POL4_0b1" value="0b1" description="The channel polarity is active low."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="POL5" access="RW" reset_value="0" description="Channel 5 Polarity">
+      <alias type="CMSIS" value="FTM_POL_POL5(x)"/>
+      <bit_field_value name="POL_POL5_0b0" value="0b0" description="The channel polarity is active high."/>
+      <bit_field_value name="POL_POL5_0b1" value="0b1" description="The channel polarity is active low."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="POL6" access="RW" reset_value="0" description="Channel 6 Polarity">
+      <alias type="CMSIS" value="FTM_POL_POL6(x)"/>
+      <bit_field_value name="POL_POL6_0b0" value="0b0" description="The channel polarity is active high."/>
+      <bit_field_value name="POL_POL6_0b1" value="0b1" description="The channel polarity is active low."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="POL7" access="RW" reset_value="0" description="Channel 7 Polarity">
+      <alias type="CMSIS" value="FTM_POL_POL7(x)"/>
+      <bit_field_value name="POL_POL7_0b0" value="0b0" description="The channel polarity is active high."/>
+      <bit_field_value name="POL_POL7_0b1" value="0b1" description="The channel polarity is active low."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x74" width="32" name="FMS" description="Fault Mode Status">
+    <alias type="CMSIS" value="FMS"/>
+    <bit_field offset="0" width="1" name="FAULTF0" access="ROWZ" reset_value="0" description="Fault Detection Flag 0">
+      <alias type="CMSIS" value="FTM_FMS_FAULTF0(x)"/>
+      <bit_field_value name="FMS_FAULTF0_0b0" value="0b0" description="No fault condition was detected at the fault input."/>
+      <bit_field_value name="FMS_FAULTF0_0b1" value="0b1" description="A fault condition was detected at the fault input."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="FAULTF1" access="ROWZ" reset_value="0" description="Fault Detection Flag 1">
+      <alias type="CMSIS" value="FTM_FMS_FAULTF1(x)"/>
+      <bit_field_value name="FMS_FAULTF1_0b0" value="0b0" description="No fault condition was detected at the fault input."/>
+      <bit_field_value name="FMS_FAULTF1_0b1" value="0b1" description="A fault condition was detected at the fault input."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="FAULTF2" access="ROWZ" reset_value="0" description="Fault Detection Flag 2">
+      <alias type="CMSIS" value="FTM_FMS_FAULTF2(x)"/>
+      <bit_field_value name="FMS_FAULTF2_0b0" value="0b0" description="No fault condition was detected at the fault input."/>
+      <bit_field_value name="FMS_FAULTF2_0b1" value="0b1" description="A fault condition was detected at the fault input."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="FAULTF3" access="ROWZ" reset_value="0" description="Fault Detection Flag 3">
+      <alias type="CMSIS" value="FTM_FMS_FAULTF3(x)"/>
+      <bit_field_value name="FMS_FAULTF3_0b0" value="0b0" description="No fault condition was detected at the fault input."/>
+      <bit_field_value name="FMS_FAULTF3_0b1" value="0b1" description="A fault condition was detected at the fault input."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <bit_field offset="5" width="1" name="FAULTIN" access="RO" reset_value="0" description="Fault Inputs">
+      <alias type="CMSIS" value="FTM_FMS_FAULTIN(x)"/>
+      <bit_field_value name="FMS_FAULTIN_0b0" value="0b0" description="The logic OR of the enabled fault inputs is 0."/>
+      <bit_field_value name="FMS_FAULTIN_0b1" value="0b1" description="The logic OR of the enabled fault inputs is 1."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="WPEN" access="RW" reset_value="0" description="Write Protection Enable">
+      <alias type="CMSIS" value="FTM_FMS_WPEN(x)"/>
+      <bit_field_value name="FMS_WPEN_0b0" value="0b0" description="Write protection is disabled. Write protected bits can be written."/>
+      <bit_field_value name="FMS_WPEN_0b1" value="0b1" description="Write protection is enabled. Write protected bits cannot be written."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="FAULTF" access="ROWZ" reset_value="0" description="Fault Detection Flag">
+      <alias type="CMSIS" value="FTM_FMS_FAULTF(x)"/>
+      <bit_field_value name="FMS_FAULTF_0b0" value="0b0" description="No fault condition was detected."/>
+      <bit_field_value name="FMS_FAULTF_0b1" value="0b1" description="A fault condition was detected."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x78" width="32" name="FILTER" description="Input Capture Filter Control">
+    <alias type="CMSIS" value="FILTER"/>
+    <bit_field offset="0" width="4" name="CH0FVAL" access="RW" reset_value="0" description="Channel 0 Input Filter">
+      <alias type="CMSIS" value="FTM_FILTER_CH0FVAL(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="CH1FVAL" access="RW" reset_value="0" description="Channel 1 Input Filter">
+      <alias type="CMSIS" value="FTM_FILTER_CH1FVAL(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="CH2FVAL" access="RW" reset_value="0" description="Channel 2 Input Filter">
+      <alias type="CMSIS" value="FTM_FILTER_CH2FVAL(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="4" name="CH3FVAL" access="RW" reset_value="0" description="Channel 3 Input Filter">
+      <alias type="CMSIS" value="FTM_FILTER_CH3FVAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x7C" width="32" name="FLTCTRL" description="Fault Control">
+    <alias type="CMSIS" value="FLTCTRL"/>
+    <bit_field offset="0" width="1" name="FAULT0EN" access="RW" reset_value="0" description="Fault Input 0 Enable">
+      <alias type="CMSIS" value="FTM_FLTCTRL_FAULT0EN(x)"/>
+      <bit_field_value name="FLTCTRL_FAULT0EN_0b0" value="0b0" description="Fault input is disabled."/>
+      <bit_field_value name="FLTCTRL_FAULT0EN_0b1" value="0b1" description="Fault input is enabled."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="FAULT1EN" access="RW" reset_value="0" description="Fault Input 1 Enable">
+      <alias type="CMSIS" value="FTM_FLTCTRL_FAULT1EN(x)"/>
+      <bit_field_value name="FLTCTRL_FAULT1EN_0b0" value="0b0" description="Fault input is disabled."/>
+      <bit_field_value name="FLTCTRL_FAULT1EN_0b1" value="0b1" description="Fault input is enabled."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="FAULT2EN" access="RW" reset_value="0" description="Fault Input 2 Enable">
+      <alias type="CMSIS" value="FTM_FLTCTRL_FAULT2EN(x)"/>
+      <bit_field_value name="FLTCTRL_FAULT2EN_0b0" value="0b0" description="Fault input is disabled."/>
+      <bit_field_value name="FLTCTRL_FAULT2EN_0b1" value="0b1" description="Fault input is enabled."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="FAULT3EN" access="RW" reset_value="0" description="Fault Input 3 Enable">
+      <alias type="CMSIS" value="FTM_FLTCTRL_FAULT3EN(x)"/>
+      <bit_field_value name="FLTCTRL_FAULT3EN_0b0" value="0b0" description="Fault input is disabled."/>
+      <bit_field_value name="FLTCTRL_FAULT3EN_0b1" value="0b1" description="Fault input is enabled."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="FFLTR0EN" access="RW" reset_value="0" description="Fault Input 0 Filter Enable">
+      <alias type="CMSIS" value="FTM_FLTCTRL_FFLTR0EN(x)"/>
+      <bit_field_value name="FLTCTRL_FFLTR0EN_0b0" value="0b0" description="Fault input filter is disabled."/>
+      <bit_field_value name="FLTCTRL_FFLTR0EN_0b1" value="0b1" description="Fault input filter is enabled."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="FFLTR1EN" access="RW" reset_value="0" description="Fault Input 1 Filter Enable">
+      <alias type="CMSIS" value="FTM_FLTCTRL_FFLTR1EN(x)"/>
+      <bit_field_value name="FLTCTRL_FFLTR1EN_0b0" value="0b0" description="Fault input filter is disabled."/>
+      <bit_field_value name="FLTCTRL_FFLTR1EN_0b1" value="0b1" description="Fault input filter is enabled."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="FFLTR2EN" access="RW" reset_value="0" description="Fault Input 2 Filter Enable">
+      <alias type="CMSIS" value="FTM_FLTCTRL_FFLTR2EN(x)"/>
+      <bit_field_value name="FLTCTRL_FFLTR2EN_0b0" value="0b0" description="Fault input filter is disabled."/>
+      <bit_field_value name="FLTCTRL_FFLTR2EN_0b1" value="0b1" description="Fault input filter is enabled."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="FFLTR3EN" access="RW" reset_value="0" description="Fault Input 3 Filter Enable">
+      <alias type="CMSIS" value="FTM_FLTCTRL_FFLTR3EN(x)"/>
+      <bit_field_value name="FLTCTRL_FFLTR3EN_0b0" value="0b0" description="Fault input filter is disabled."/>
+      <bit_field_value name="FLTCTRL_FFLTR3EN_0b1" value="0b1" description="Fault input filter is enabled."/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="FFVAL" access="RW" reset_value="0" description="Fault Input Filter">
+      <alias type="CMSIS" value="FTM_FLTCTRL_FFVAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="3" reset_value="0"/>
+    <bit_field offset="15" width="1" name="FSTATE" access="RW" reset_value="0" description="Fault output state">
+      <alias type="CMSIS" value="FTM_FLTCTRL_FSTATE(x)"/>
+      <bit_field_value name="FLTCTRL_FSTATE_0b0" value="0b0" description="FTM outputs will be placed into safe values when fault events in ongoing (defined by POL bits)."/>
+      <bit_field_value name="FLTCTRL_FSTATE_0b1" value="0b1" description="FTM outputs will be tri-stated when fault event is ongoing"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x84" width="32" name="CONF" description="Configuration">
+    <alias type="CMSIS" value="CONF"/>
+    <bit_field offset="0" width="5" name="LDFQ" access="RW" reset_value="0" description="Frequency of the Reload Opportunities">
+      <alias type="CMSIS" value="FTM_CONF_LDFQ(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <bit_field offset="6" width="2" name="BDMMODE" access="RW" reset_value="0" description="Debug Mode">
+      <alias type="CMSIS" value="FTM_CONF_BDMMODE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="1" reset_value="0"/>
+    <bit_field offset="9" width="1" name="GTBEEN" access="RW" reset_value="0" description="Global Time Base Enable">
+      <alias type="CMSIS" value="FTM_CONF_GTBEEN(x)"/>
+      <bit_field_value name="CONF_GTBEEN_0b0" value="0b0" description="Use of an external global time base is disabled."/>
+      <bit_field_value name="CONF_GTBEEN_0b1" value="0b1" description="Use of an external global time base is enabled."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="GTBEOUT" access="RW" reset_value="0" description="Global Time Base Output">
+      <alias type="CMSIS" value="FTM_CONF_GTBEOUT(x)"/>
+      <bit_field_value name="CONF_GTBEOUT_0b0" value="0b0" description="A global time base signal generation is disabled."/>
+      <bit_field_value name="CONF_GTBEOUT_0b1" value="0b1" description="A global time base signal generation is enabled."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="ITRIGR" access="RW" reset_value="0" description="Initialization trigger on Reload Point">
+      <alias type="CMSIS" value="FTM_CONF_ITRIGR(x)"/>
+      <bit_field_value name="CONF_ITRIGR_0b0" value="0b0" description="Initialization trigger is generated on counter wrap events."/>
+      <bit_field_value name="CONF_ITRIGR_0b1" value="0b1" description="Initialization trigger is generated when a reload point is reached."/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="20" reset_value="0"/>
+  </register>
+  <register offset="0x88" width="32" name="FLTPOL" description="FTM Fault Input Polarity">
+    <alias type="CMSIS" value="FLTPOL"/>
+    <bit_field offset="0" width="1" name="FLT0POL" access="RW" reset_value="0" description="Fault Input 0 Polarity">
+      <alias type="CMSIS" value="FTM_FLTPOL_FLT0POL(x)"/>
+      <bit_field_value name="FLTPOL_FLT0POL_0b0" value="0b0" description="The fault input polarity is active high. A 1 at the fault input indicates a fault."/>
+      <bit_field_value name="FLTPOL_FLT0POL_0b1" value="0b1" description="The fault input polarity is active low. A 0 at the fault input indicates a fault."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="FLT1POL" access="RW" reset_value="0" description="Fault Input 1 Polarity">
+      <alias type="CMSIS" value="FTM_FLTPOL_FLT1POL(x)"/>
+      <bit_field_value name="FLTPOL_FLT1POL_0b0" value="0b0" description="The fault input polarity is active high. A 1 at the fault input indicates a fault."/>
+      <bit_field_value name="FLTPOL_FLT1POL_0b1" value="0b1" description="The fault input polarity is active low. A 0 at the fault input indicates a fault."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="FLT2POL" access="RW" reset_value="0" description="Fault Input 2 Polarity">
+      <alias type="CMSIS" value="FTM_FLTPOL_FLT2POL(x)"/>
+      <bit_field_value name="FLTPOL_FLT2POL_0b0" value="0b0" description="The fault input polarity is active high. A 1 at the fault input indicates a fault."/>
+      <bit_field_value name="FLTPOL_FLT2POL_0b1" value="0b1" description="The fault input polarity is active low. A 0 at the fault input indicates a fault."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="FLT3POL" access="RW" reset_value="0" description="Fault Input 3 Polarity">
+      <alias type="CMSIS" value="FTM_FLTPOL_FLT3POL(x)"/>
+      <bit_field_value name="FLTPOL_FLT3POL_0b0" value="0b0" description="The fault input polarity is active high. A 1 at the fault input indicates a fault."/>
+      <bit_field_value name="FLTPOL_FLT3POL_0b1" value="0b1" description="The fault input polarity is active low. A 0 at the fault input indicates a fault."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x8C" width="32" name="SYNCONF" description="Synchronization Configuration">
+    <alias type="CMSIS" value="SYNCONF"/>
+    <bit_field offset="0" width="1" name="HWTRIGMODE" access="RW" reset_value="0" description="Hardware Trigger Mode">
+      <alias type="CMSIS" value="FTM_SYNCONF_HWTRIGMODE(x)"/>
+      <bit_field_value name="SYNCONF_HWTRIGMODE_0b0" value="0b0" description="FTM clears the TRIGj bit when the hardware trigger j is detected, where j = 0, 1,2."/>
+      <bit_field_value name="SYNCONF_HWTRIGMODE_0b1" value="0b1" description="FTM does not clear the TRIGj bit when the hardware trigger j is detected, where j = 0, 1,2."/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <bit_field offset="2" width="1" name="CNTINC" access="RW" reset_value="0" description="CNTIN Register Synchronization">
+      <alias type="CMSIS" value="FTM_SYNCONF_CNTINC(x)"/>
+      <bit_field_value name="SYNCONF_CNTINC_0b0" value="0b0" description="CNTIN register is updated with its buffer value at all rising edges of FTM input clock."/>
+      <bit_field_value name="SYNCONF_CNTINC_0b1" value="0b1" description="CNTIN register is updated with its buffer value by the PWM synchronization."/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <bit_field offset="4" width="1" name="INVC" access="RW" reset_value="0" description="INVCTRL Register Synchronization">
+      <alias type="CMSIS" value="FTM_SYNCONF_INVC(x)"/>
+      <bit_field_value name="SYNCONF_INVC_0b0" value="0b0" description="INVCTRL register is updated with its buffer value at all rising edges of FTM input clock."/>
+      <bit_field_value name="SYNCONF_INVC_0b1" value="0b1" description="INVCTRL register is updated with its buffer value by the PWM synchronization."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="SWOC" access="RW" reset_value="0" description="SWOCTRL Register Synchronization">
+      <alias type="CMSIS" value="FTM_SYNCONF_SWOC(x)"/>
+      <bit_field_value name="SYNCONF_SWOC_0b0" value="0b0" description="SWOCTRL register is updated with its buffer value at all rising edges of FTM input clock."/>
+      <bit_field_value name="SYNCONF_SWOC_0b1" value="0b1" description="SWOCTRL register is updated with its buffer value by the PWM synchronization."/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <bit_field offset="7" width="1" name="SYNCMODE" access="RW" reset_value="0" description="Synchronization Mode">
+      <alias type="CMSIS" value="FTM_SYNCONF_SYNCMODE(x)"/>
+      <bit_field_value name="SYNCONF_SYNCMODE_0b0" value="0b0" description="Legacy PWM synchronization is selected."/>
+      <bit_field_value name="SYNCONF_SYNCMODE_0b1" value="0b1" description="Enhanced PWM synchronization is selected."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="SWRSTCNT" access="RW" reset_value="0" description="FTM counter synchronization is activated by the software trigger">
+      <alias type="CMSIS" value="FTM_SYNCONF_SWRSTCNT(x)"/>
+      <bit_field_value name="SYNCONF_SWRSTCNT_0b0" value="0b0" description="The software trigger does not activate the FTM counter synchronization."/>
+      <bit_field_value name="SYNCONF_SWRSTCNT_0b1" value="0b1" description="The software trigger activates the FTM counter synchronization."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="SWWRBUF" access="RW" reset_value="0" description="MOD, HCR, CNTIN, and CV registers synchronization is activated by the software trigger">
+      <alias type="CMSIS" value="FTM_SYNCONF_SWWRBUF(x)"/>
+      <bit_field_value name="SYNCONF_SWWRBUF_0b0" value="0b0" description="The software trigger does not activate MOD, HCR, CNTIN, and CV registers synchronization."/>
+      <bit_field_value name="SYNCONF_SWWRBUF_0b1" value="0b1" description="The software trigger activates MOD, HCR, CNTIN, and CV registers synchronization."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="SWOM" access="RW" reset_value="0" description="Output mask synchronization is activated by the software trigger">
+      <alias type="CMSIS" value="FTM_SYNCONF_SWOM(x)"/>
+      <bit_field_value name="SYNCONF_SWOM_0b0" value="0b0" description="The software trigger does not activate the OUTMASK register synchronization."/>
+      <bit_field_value name="SYNCONF_SWOM_0b1" value="0b1" description="The software trigger activates the OUTMASK register synchronization."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="SWINVC" access="RW" reset_value="0" description="Inverting control synchronization is activated by the software trigger">
+      <alias type="CMSIS" value="FTM_SYNCONF_SWINVC(x)"/>
+      <bit_field_value name="SYNCONF_SWINVC_0b0" value="0b0" description="The software trigger does not activate the INVCTRL register synchronization."/>
+      <bit_field_value name="SYNCONF_SWINVC_0b1" value="0b1" description="The software trigger activates the INVCTRL register synchronization."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="SWSOC" access="RW" reset_value="0" description="Software output control synchronization is activated by the software trigger">
+      <alias type="CMSIS" value="FTM_SYNCONF_SWSOC(x)"/>
+      <bit_field_value name="SYNCONF_SWSOC_0b0" value="0b0" description="The software trigger does not activate the SWOCTRL register synchronization."/>
+      <bit_field_value name="SYNCONF_SWSOC_0b1" value="0b1" description="The software trigger activates the SWOCTRL register synchronization."/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="3" reset_value="0"/>
+    <bit_field offset="16" width="1" name="HWRSTCNT" access="RW" reset_value="0" description="FTM counter synchronization is activated by a hardware trigger">
+      <alias type="CMSIS" value="FTM_SYNCONF_HWRSTCNT(x)"/>
+      <bit_field_value name="SYNCONF_HWRSTCNT_0b0" value="0b0" description="A hardware trigger does not activate the FTM counter synchronization."/>
+      <bit_field_value name="SYNCONF_HWRSTCNT_0b1" value="0b1" description="A hardware trigger activates the FTM counter synchronization."/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="HWWRBUF" access="RW" reset_value="0" description="MOD, HCR, CNTIN, and CV registers synchronization is activated by a hardware trigger">
+      <alias type="CMSIS" value="FTM_SYNCONF_HWWRBUF(x)"/>
+      <bit_field_value name="SYNCONF_HWWRBUF_0b0" value="0b0" description="A hardware trigger does not activate MOD, HCR, CNTIN, and CV registers synchronization."/>
+      <bit_field_value name="SYNCONF_HWWRBUF_0b1" value="0b1" description="A hardware trigger activates MOD, HCR, CNTIN, and CV registers synchronization."/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="HWOM" access="RW" reset_value="0" description="Output mask synchronization is activated by a hardware trigger">
+      <alias type="CMSIS" value="FTM_SYNCONF_HWOM(x)"/>
+      <bit_field_value name="SYNCONF_HWOM_0b0" value="0b0" description="A hardware trigger does not activate the OUTMASK register synchronization."/>
+      <bit_field_value name="SYNCONF_HWOM_0b1" value="0b1" description="A hardware trigger activates the OUTMASK register synchronization."/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="HWINVC" access="RW" reset_value="0" description="Inverting control synchronization is activated by a hardware trigger">
+      <alias type="CMSIS" value="FTM_SYNCONF_HWINVC(x)"/>
+      <bit_field_value name="SYNCONF_HWINVC_0b0" value="0b0" description="A hardware trigger does not activate the INVCTRL register synchronization."/>
+      <bit_field_value name="SYNCONF_HWINVC_0b1" value="0b1" description="A hardware trigger activates the INVCTRL register synchronization."/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="HWSOC" access="RW" reset_value="0" description="Software output control synchronization is activated by a hardware trigger">
+      <alias type="CMSIS" value="FTM_SYNCONF_HWSOC(x)"/>
+      <bit_field_value name="SYNCONF_HWSOC_0b0" value="0b0" description="A hardware trigger does not activate the SWOCTRL register synchronization."/>
+      <bit_field_value name="SYNCONF_HWSOC_0b1" value="0b1" description="A hardware trigger activates the SWOCTRL register synchronization."/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="11" reset_value="0"/>
+  </register>
+  <register offset="0x90" width="32" name="INVCTRL" description="FTM Inverting Control">
+    <alias type="CMSIS" value="INVCTRL"/>
+    <bit_field offset="0" width="1" name="INV0EN" access="RW" reset_value="0" description="Pair Channels 0 Inverting Enable">
+      <alias type="CMSIS" value="FTM_INVCTRL_INV0EN(x)"/>
+      <bit_field_value name="INVCTRL_INV0EN_0b0" value="0b0" description="Inverting is disabled."/>
+      <bit_field_value name="INVCTRL_INV0EN_0b1" value="0b1" description="Inverting is enabled."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="INV1EN" access="RW" reset_value="0" description="Pair Channels 1 Inverting Enable">
+      <alias type="CMSIS" value="FTM_INVCTRL_INV1EN(x)"/>
+      <bit_field_value name="INVCTRL_INV1EN_0b0" value="0b0" description="Inverting is disabled."/>
+      <bit_field_value name="INVCTRL_INV1EN_0b1" value="0b1" description="Inverting is enabled."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="INV2EN" access="RW" reset_value="0" description="Pair Channels 2 Inverting Enable">
+      <alias type="CMSIS" value="FTM_INVCTRL_INV2EN(x)"/>
+      <bit_field_value name="INVCTRL_INV2EN_0b0" value="0b0" description="Inverting is disabled."/>
+      <bit_field_value name="INVCTRL_INV2EN_0b1" value="0b1" description="Inverting is enabled."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="INV3EN" access="RW" reset_value="0" description="Pair Channels 3 Inverting Enable">
+      <alias type="CMSIS" value="FTM_INVCTRL_INV3EN(x)"/>
+      <bit_field_value name="INVCTRL_INV3EN_0b0" value="0b0" description="Inverting is disabled."/>
+      <bit_field_value name="INVCTRL_INV3EN_0b1" value="0b1" description="Inverting is enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x94" width="32" name="SWOCTRL" description="FTM Software Output Control">
+    <alias type="CMSIS" value="SWOCTRL"/>
+    <bit_field offset="0" width="1" name="CH0OC" access="RW" reset_value="0" description="Channel 0 Software Output Control Enable">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH0OC(x)"/>
+      <bit_field_value name="SWOCTRL_CH0OC_0b0" value="0b0" description="The channel output is not affected by software output control."/>
+      <bit_field_value name="SWOCTRL_CH0OC_0b1" value="0b1" description="The channel output is affected by software output control."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CH1OC" access="RW" reset_value="0" description="Channel 1 Software Output Control Enable">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH1OC(x)"/>
+      <bit_field_value name="SWOCTRL_CH1OC_0b0" value="0b0" description="The channel output is not affected by software output control."/>
+      <bit_field_value name="SWOCTRL_CH1OC_0b1" value="0b1" description="The channel output is affected by software output control."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CH2OC" access="RW" reset_value="0" description="Channel 2 Software Output Control Enable">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH2OC(x)"/>
+      <bit_field_value name="SWOCTRL_CH2OC_0b0" value="0b0" description="The channel output is not affected by software output control."/>
+      <bit_field_value name="SWOCTRL_CH2OC_0b1" value="0b1" description="The channel output is affected by software output control."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CH3OC" access="RW" reset_value="0" description="Channel 3 Software Output Control Enable">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH3OC(x)"/>
+      <bit_field_value name="SWOCTRL_CH3OC_0b0" value="0b0" description="The channel output is not affected by software output control."/>
+      <bit_field_value name="SWOCTRL_CH3OC_0b1" value="0b1" description="The channel output is affected by software output control."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="CH4OC" access="RW" reset_value="0" description="Channel 4 Software Output Control Enable">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH4OC(x)"/>
+      <bit_field_value name="SWOCTRL_CH4OC_0b0" value="0b0" description="The channel output is not affected by software output control."/>
+      <bit_field_value name="SWOCTRL_CH4OC_0b1" value="0b1" description="The channel output is affected by software output control."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CH5OC" access="RW" reset_value="0" description="Channel 5 Software Output Control Enable">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH5OC(x)"/>
+      <bit_field_value name="SWOCTRL_CH5OC_0b0" value="0b0" description="The channel output is not affected by software output control."/>
+      <bit_field_value name="SWOCTRL_CH5OC_0b1" value="0b1" description="The channel output is affected by software output control."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CH6OC" access="RW" reset_value="0" description="Channel 6 Software Output Control Enable">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH6OC(x)"/>
+      <bit_field_value name="SWOCTRL_CH6OC_0b0" value="0b0" description="The channel output is not affected by software output control."/>
+      <bit_field_value name="SWOCTRL_CH6OC_0b1" value="0b1" description="The channel output is affected by software output control."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CH7OC" access="RW" reset_value="0" description="Channel 7 Software Output Control Enable">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH7OC(x)"/>
+      <bit_field_value name="SWOCTRL_CH7OC_0b0" value="0b0" description="The channel output is not affected by software output control."/>
+      <bit_field_value name="SWOCTRL_CH7OC_0b1" value="0b1" description="The channel output is affected by software output control."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="CH0OCV" access="RW" reset_value="0" description="Channel 0 Software Output Control Value">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH0OCV(x)"/>
+      <bit_field_value name="SWOCTRL_CH0OCV_0b0" value="0b0" description="The software output control forces 0 to the channel output."/>
+      <bit_field_value name="SWOCTRL_CH0OCV_0b1" value="0b1" description="The software output control forces 1 to the channel output."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CH1OCV" access="RW" reset_value="0" description="Channel 1 Software Output Control Value">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH1OCV(x)"/>
+      <bit_field_value name="SWOCTRL_CH1OCV_0b0" value="0b0" description="The software output control forces 0 to the channel output."/>
+      <bit_field_value name="SWOCTRL_CH1OCV_0b1" value="0b1" description="The software output control forces 1 to the channel output."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="CH2OCV" access="RW" reset_value="0" description="Channel 2 Software Output Control Value">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH2OCV(x)"/>
+      <bit_field_value name="SWOCTRL_CH2OCV_0b0" value="0b0" description="The software output control forces 0 to the channel output."/>
+      <bit_field_value name="SWOCTRL_CH2OCV_0b1" value="0b1" description="The software output control forces 1 to the channel output."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="CH3OCV" access="RW" reset_value="0" description="Channel 3 Software Output Control Value">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH3OCV(x)"/>
+      <bit_field_value name="SWOCTRL_CH3OCV_0b0" value="0b0" description="The software output control forces 0 to the channel output."/>
+      <bit_field_value name="SWOCTRL_CH3OCV_0b1" value="0b1" description="The software output control forces 1 to the channel output."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="CH4OCV" access="RW" reset_value="0" description="Channel 4 Software Output Control Value">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH4OCV(x)"/>
+      <bit_field_value name="SWOCTRL_CH4OCV_0b0" value="0b0" description="The software output control forces 0 to the channel output."/>
+      <bit_field_value name="SWOCTRL_CH4OCV_0b1" value="0b1" description="The software output control forces 1 to the channel output."/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="CH5OCV" access="RW" reset_value="0" description="Channel 5 Software Output Control Value">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH5OCV(x)"/>
+      <bit_field_value name="SWOCTRL_CH5OCV_0b0" value="0b0" description="The software output control forces 0 to the channel output."/>
+      <bit_field_value name="SWOCTRL_CH5OCV_0b1" value="0b1" description="The software output control forces 1 to the channel output."/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="CH6OCV" access="RW" reset_value="0" description="Channel 6 Software Output Control Value">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH6OCV(x)"/>
+      <bit_field_value name="SWOCTRL_CH6OCV_0b0" value="0b0" description="The software output control forces 0 to the channel output."/>
+      <bit_field_value name="SWOCTRL_CH6OCV_0b1" value="0b1" description="The software output control forces 1 to the channel output."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="CH7OCV" access="RW" reset_value="0" description="Channel 7 Software Output Control Value">
+      <alias type="CMSIS" value="FTM_SWOCTRL_CH7OCV(x)"/>
+      <bit_field_value name="SWOCTRL_CH7OCV_0b0" value="0b0" description="The software output control forces 0 to the channel output."/>
+      <bit_field_value name="SWOCTRL_CH7OCV_0b1" value="0b1" description="The software output control forces 1 to the channel output."/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x98" width="32" name="PWMLOAD" description="FTM PWM Load">
+    <alias type="CMSIS" value="PWMLOAD"/>
+    <bit_field offset="0" width="1" name="CH0SEL" access="RW" reset_value="0" description="Channel 0 Select">
+      <alias type="CMSIS" value="FTM_PWMLOAD_CH0SEL(x)"/>
+      <bit_field_value name="PWMLOAD_CH0SEL_0b0" value="0b0" description="Channel match is not included as a reload opportunity."/>
+      <bit_field_value name="PWMLOAD_CH0SEL_0b1" value="0b1" description="Channel match is included as a reload opportunity."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CH1SEL" access="RW" reset_value="0" description="Channel 1 Select">
+      <alias type="CMSIS" value="FTM_PWMLOAD_CH1SEL(x)"/>
+      <bit_field_value name="PWMLOAD_CH1SEL_0b0" value="0b0" description="Channel match is not included as a reload opportunity."/>
+      <bit_field_value name="PWMLOAD_CH1SEL_0b1" value="0b1" description="Channel match is included as a reload opportunity."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CH2SEL" access="RW" reset_value="0" description="Channel 2 Select">
+      <alias type="CMSIS" value="FTM_PWMLOAD_CH2SEL(x)"/>
+      <bit_field_value name="PWMLOAD_CH2SEL_0b0" value="0b0" description="Channel match is not included as a reload opportunity."/>
+      <bit_field_value name="PWMLOAD_CH2SEL_0b1" value="0b1" description="Channel match is included as a reload opportunity."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CH3SEL" access="RW" reset_value="0" description="Channel 3 Select">
+      <alias type="CMSIS" value="FTM_PWMLOAD_CH3SEL(x)"/>
+      <bit_field_value name="PWMLOAD_CH3SEL_0b0" value="0b0" description="Channel match is not included as a reload opportunity."/>
+      <bit_field_value name="PWMLOAD_CH3SEL_0b1" value="0b1" description="Channel match is included as a reload opportunity."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="CH4SEL" access="RW" reset_value="0" description="Channel 4 Select">
+      <alias type="CMSIS" value="FTM_PWMLOAD_CH4SEL(x)"/>
+      <bit_field_value name="PWMLOAD_CH4SEL_0b0" value="0b0" description="Channel match is not included as a reload opportunity."/>
+      <bit_field_value name="PWMLOAD_CH4SEL_0b1" value="0b1" description="Channel match is included as a reload opportunity."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CH5SEL" access="RW" reset_value="0" description="Channel 5 Select">
+      <alias type="CMSIS" value="FTM_PWMLOAD_CH5SEL(x)"/>
+      <bit_field_value name="PWMLOAD_CH5SEL_0b0" value="0b0" description="Channel match is not included as a reload opportunity."/>
+      <bit_field_value name="PWMLOAD_CH5SEL_0b1" value="0b1" description="Channel match is included as a reload opportunity."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CH6SEL" access="RW" reset_value="0" description="Channel 6 Select">
+      <alias type="CMSIS" value="FTM_PWMLOAD_CH6SEL(x)"/>
+      <bit_field_value name="PWMLOAD_CH6SEL_0b0" value="0b0" description="Channel match is not included as a reload opportunity."/>
+      <bit_field_value name="PWMLOAD_CH6SEL_0b1" value="0b1" description="Channel match is included as a reload opportunity."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CH7SEL" access="RW" reset_value="0" description="Channel 7 Select">
+      <alias type="CMSIS" value="FTM_PWMLOAD_CH7SEL(x)"/>
+      <bit_field_value name="PWMLOAD_CH7SEL_0b0" value="0b0" description="Channel match is not included as a reload opportunity."/>
+      <bit_field_value name="PWMLOAD_CH7SEL_0b1" value="0b1" description="Channel match is included as a reload opportunity."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="HCSEL" access="RW" reset_value="0" description="Half Cycle Select">
+      <alias type="CMSIS" value="FTM_PWMLOAD_HCSEL(x)"/>
+      <bit_field_value name="PWMLOAD_HCSEL_0b0" value="0b0" description="Half cycle reload is disabled and it is not considered as a reload opportunity."/>
+      <bit_field_value name="PWMLOAD_HCSEL_0b1" value="0b1" description="Half cycle reload is enabled and it is considered as a reload opportunity."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="LDOK" access="RW" reset_value="0" description="Load Enable">
+      <alias type="CMSIS" value="FTM_PWMLOAD_LDOK(x)"/>
+      <bit_field_value name="PWMLOAD_LDOK_0b0" value="0b0" description="Loading updated values is disabled."/>
+      <bit_field_value name="PWMLOAD_LDOK_0b1" value="0b1" description="Loading updated values is enabled."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="GLEN" access="RW" reset_value="0" description="Global Load Enable">
+      <alias type="CMSIS" value="FTM_PWMLOAD_GLEN(x)"/>
+      <bit_field_value name="PWMLOAD_GLEN_0b0" value="0b0" description="Global Load Ok disabled."/>
+      <bit_field_value name="PWMLOAD_GLEN_0b1" value="0b1" description="Global Load OK enabled. A pulse event on the module global load input sets the LDOK bit."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="GLDOK" access="WORZ" reset_value="0" description="Global Load OK">
+      <alias type="CMSIS" value="FTM_PWMLOAD_GLDOK(x)"/>
+      <bit_field_value name="PWMLOAD_GLDOK_0b0" value="0b0" description="No action."/>
+      <bit_field_value name="PWMLOAD_GLDOK_0b1" value="0b1" description="LDOK bit is set."/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="20" reset_value="0"/>
+  </register>
+  <register offset="0x9C" width="32" name="HCR" description="Half Cycle Register">
+    <alias type="CMSIS" value="HCR"/>
+    <bit_field offset="0" width="16" name="HCVAL" access="RW" reset_value="0" description="Half Cycle Value">
+      <alias type="CMSIS" value="FTM_HCR_HCVAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0xA0" width="32" name="PAIR0DEADTIME" description="Pair 0 Deadtime Configuration">
+    <alias type="CMSIS" value="PAIR0DEADTIME"/>
+    <bit_field offset="0" width="6" name="DTVAL" access="RW" reset_value="0" description="Deadtime Value">
+      <alias type="CMSIS" value="FTM_PAIR0DEADTIME_DTVAL(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="DTPS" access="RW" reset_value="0" description="Deadtime Prescaler Value">
+      <alias type="CMSIS" value="FTM_PAIR0DEADTIME_DTPS(x)"/>
+      <bit_field_value name="PAIR0DEADTIME_DTPS_0b0x" value="0b0?" description="Divide the FTM input clock by 1."/>
+      <bit_field_value name="PAIR0DEADTIME_DTPS_0b10" value="0b10" description="Divide the FTM input clock by 4."/>
+      <bit_field_value name="PAIR0DEADTIME_DTPS_0b11" value="0b11" description="Divide the FTM input clock by 16."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DTVALEX" access="RW" reset_value="0" description="Extended Deadtime Value">
+      <alias type="CMSIS" value="FTM_PAIR0DEADTIME_DTVALEX(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0xA8" width="32" name="PAIR1DEADTIME" description="Pair 1 Deadtime Configuration">
+    <alias type="CMSIS" value="PAIR1DEADTIME"/>
+    <bit_field offset="0" width="6" name="DTVAL" access="RW" reset_value="0" description="Deadtime Value">
+      <alias type="CMSIS" value="FTM_PAIR1DEADTIME_DTVAL(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="DTPS" access="RW" reset_value="0" description="Deadtime Prescaler Value">
+      <alias type="CMSIS" value="FTM_PAIR1DEADTIME_DTPS(x)"/>
+      <bit_field_value name="PAIR1DEADTIME_DTPS_0b0x" value="0b0?" description="Divide the FTM input clock by 1."/>
+      <bit_field_value name="PAIR1DEADTIME_DTPS_0b10" value="0b10" description="Divide the FTM input clock by 4."/>
+      <bit_field_value name="PAIR1DEADTIME_DTPS_0b11" value="0b11" description="Divide the FTM input clock by 16."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DTVALEX" access="RW" reset_value="0" description="Extended Deadtime Value">
+      <alias type="CMSIS" value="FTM_PAIR1DEADTIME_DTVALEX(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0xB0" width="32" name="PAIR2DEADTIME" description="Pair 2 Deadtime Configuration">
+    <alias type="CMSIS" value="PAIR2DEADTIME"/>
+    <bit_field offset="0" width="6" name="DTVAL" access="RW" reset_value="0" description="Deadtime Value">
+      <alias type="CMSIS" value="FTM_PAIR2DEADTIME_DTVAL(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="DTPS" access="RW" reset_value="0" description="Deadtime Prescaler Value">
+      <alias type="CMSIS" value="FTM_PAIR2DEADTIME_DTPS(x)"/>
+      <bit_field_value name="PAIR2DEADTIME_DTPS_0b0x" value="0b0?" description="Divide the FTM input clock by 1."/>
+      <bit_field_value name="PAIR2DEADTIME_DTPS_0b10" value="0b10" description="Divide the FTM input clock by 4."/>
+      <bit_field_value name="PAIR2DEADTIME_DTPS_0b11" value="0b11" description="Divide the FTM input clock by 16."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DTVALEX" access="RW" reset_value="0" description="Extended Deadtime Value">
+      <alias type="CMSIS" value="FTM_PAIR2DEADTIME_DTVALEX(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0xB8" width="32" name="PAIR3DEADTIME" description="Pair 3 Deadtime Configuration">
+    <alias type="CMSIS" value="PAIR3DEADTIME"/>
+    <bit_field offset="0" width="6" name="DTVAL" access="RW" reset_value="0" description="Deadtime Value">
+      <alias type="CMSIS" value="FTM_PAIR3DEADTIME_DTVAL(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="DTPS" access="RW" reset_value="0" description="Deadtime Prescaler Value">
+      <alias type="CMSIS" value="FTM_PAIR3DEADTIME_DTPS(x)"/>
+      <bit_field_value name="PAIR3DEADTIME_DTPS_0b0x" value="0b0?" description="Divide the FTM input clock by 1."/>
+      <bit_field_value name="PAIR3DEADTIME_DTPS_0b10" value="0b10" description="Divide the FTM input clock by 4."/>
+      <bit_field_value name="PAIR3DEADTIME_DTPS_0b11" value="0b11" description="Divide the FTM input clock by 16."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DTVALEX" access="RW" reset_value="0" description="Extended Deadtime Value">
+      <alias type="CMSIS" value="FTM_PAIR3DEADTIME_DTVALEX(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+</regs:peripheral>

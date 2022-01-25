@@ -1,0 +1,109 @@
+/*!
+    @defgroup ftm_oc_driver FlexTimer Output Compare Driver (FTM_OC)
+    @ingroup ftm
+    @details
+    @brief FlexTimer Output Compare Peripheral Driver.
+
+    ## Hardware background ##
+    The FTM of the S32K1xx is based on a 16 bits counter and supports: input capture, output compare, PWM and some instances
+    include quadrature decoder.
+
+    ## How to use FTM driver in your application ##
+    For all operation modes (without Quadrature Decoder mode) the user need to configure ftm_user_config_t. This structure will be used for initialization
+    (FTM_DRV_Init). The next functions used are specific for each operation mode.
+
+    ### Output compare mode ###
+    For this mode the user needs to configure maximum counter value, number of channels used and output mode for each channel (toggle/clear/set on match).
+    This information is stored in #ftm_output_cmp_param_t structure type and are used in FTM_DRV_InitOutputCompare function. Next step is to set a value for
+    comparison with the FTM_DRV_UpdateOutputCompareChannel function.
+
+    ## Integration guideline ##
+
+    ### Compilation units ###
+
+    The following files need to be compiled in the project:
+    \verbatim
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_oc_driver.c
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_common.c
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_hw_access.c
+    \endverbatim
+
+    ### Include path ###
+
+    The following paths need to be added to the include path of the toolchain:
+    \verbatim
+    ${S32SDK_PATH}\platform\drivers\inc\
+    ${S32SDK_PATH}\platform\drivers\src\ftm\
+    \endverbatim
+
+    ### Compile symbols ###
+
+    No special symbols are required for this component
+
+    ### Dependencies ###
+
+    \ref clock_manager
+    \ref interrupt_manager
+
+   Example:
+   @code
+    /* The state structure of instance in the output compare mode */
+    ftm_state_t stateOutputCompare;
+    #define FTM_OUTPUT_COMPARE_INSTANCE        1UL
+    /* Channels configuration structure for PWM output compare */
+    ftm_output_cmp_ch_param_t PWM_OutputCompareChannelConfig[2] =
+    {
+        {
+            0U,                         /* Channel id */
+            FTM_TOGGLE_ON_MATCH,        /* Output mode */
+            10000U,                     /* Compared value */
+            false,                      /* External Trigger */
+        },
+        {
+            1U,                         /* Channel id */
+            FTM_TOGGLE_ON_MATCH,        /* Output mode */
+            20000U,                     /* Compared value */
+            false,                      /* External Trigger */
+        }
+    };
+
+    /* Output compare configuration for PWM */
+    ftm_output_cmp_param_t PWM_OutputCompareConfig =
+    {
+        2U,                             /* Number of channels */
+        FTM_MODE_OUTPUT_COMPARE,        /* FTM mode */
+        40000U,                         /* Maximum count value */
+        PWM_OutputCompareChannelConfig  /* Channels configuration */
+    };
+    /* Timer mode configuration for PWM */
+    /* Global configuration of PWM */
+    ftm_user_config_t  PWM_InitConfig =
+    {
+        {
+            true,                       /* Software trigger state */
+            false,                      /* Hardware trigger 1 state */
+            false,                      /* Hardware trigger 2 state */
+            false,                      /* Hardware trigger 3 state */
+            true,                       /* Maximum loading point state */
+            true,                       /* Min loading point state */
+            FTM_SYSTEM_CLOCK,           /* Update mode for INVCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for SWOCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for OUTMASK register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for CNTIN register */
+            false,                      /* Auto clear trigger state for hardware trigger */
+            FTM_UPDATE_NOW,             /* select synchronization method */
+        },
+        FTM_MODE_OUTPUT_COMPARE,        /* Mode of operation for FTM */
+        FTM_CLOCK_DIVID_BY_4,           /* FTM clock pre-scaler */
+        FTM_CLOCK_SOURCE_SYSTEMCLK,     /* FTM clock source */
+        FTM_BDM_MODE_11,                /* FTM debug mode */
+        false,                          /* Interrupt state */
+        false                           /* Initialization trigger */
+    };
+    FTM_DRV_Init(FTM_OUTPUT_COMPARE_INSTANCE, &PWM_InitConfig, &stateOutputCompare);
+    FTM_DRV_InitOutputCompare(FTM_OUTPUT_COMPARE_INSTANCE, &PWM_OutputCompareConfig);
+    /* If you want to change compared value */
+    FTM_DRV_UpdateOutputCompareChannel(FTM_OUTPUT_COMPARE_INSTANCE, 0UL, 15000U );
+    @endcode
+
+@}*/

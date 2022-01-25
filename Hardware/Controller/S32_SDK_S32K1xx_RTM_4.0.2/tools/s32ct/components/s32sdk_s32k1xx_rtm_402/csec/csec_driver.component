@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="csec_config" label="csec_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.csec" version="1.0.0"/>
+   <description>Cryptographic Services Engine Configuration</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>CSEc general mode</description>
+      <config_set_refs>
+         <config_set_ref>csec</config_set_ref>
+      </config_set_refs>
+      <master_peripheral exclusive="false">
+         <peripheral_type>FTFM</peripheral_type>
+         <peripheral_type>FTFC</peripheral_type>
+         <peripheral_type>FTFx</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="csec" label="CSEc configuration set" from_source="csec_driver.h">
+      <description>CSEc Driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="dv_csec" label="Default Values for CSEc" available="true">
+            <description>CSEc configuration</description>
+            <set id="csec_state_name">csecState</set>
+         </quick_selection>
+         <default>dv_csec</default>
+      </quick_selections>
+      <settings>
+         <string id="csec_state_name" label="Driver state structure name">
+            <description>Driver state structure name.</description>
+            <validation>
+               <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="State structure name must be a valid C identifier!"/>
+            </validation>
+         </string>
+         <variable value="`../csec/csec_codegen.js`" id="codegen_file"></variable>
+         <variable value="`CSEcCodeGen`" id="codegen_class"></variable>
+         <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+         <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+      </settings>
+      <user_types>
+      </user_types>
+   </config_set>
+</component:config_component>

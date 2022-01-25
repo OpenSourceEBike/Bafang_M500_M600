@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component
+    id="rtc_config"
+    label="rtc"
+    category="driver"
+    global_only="false"
+    hidden="false"
+    options="UI_COMPONENT_MODE_HIDDEN"
+    xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component-7.0.xsd"
+    xmlns:component="http://swtools.freescale.net/XSD/component/1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+    <sw_comp_ref name="platform.driver.rtc" version="1.0.0"/>
+    <description>Real-Time Clock</description>
+    <mode id="rtcApi" label="RTC API" available="(featureDefined(`FEATURE_RTC_API_SUPPORT`) == true) &amp;&amp; (getFeature(`FEATURE_RTC_API_SUPPORT`) == true)">
+        <description>RTC-API </description>
+        <config_set_refs>
+            <config_set_ref>rtc_api_cfg</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>RTC</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <mode id="rtcDriver" label="RTC" available="(featureDefined(`FEATURE_RTC_API_SUPPORT`) == true) &amp;&amp; (getFeature(`FEATURE_RTC_API_SUPPORT`) == false)">
+        <description>RTC-API </description>
+        <config_set_refs>
+            <config_set_ref>rtc_driver</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>RTC</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set label="RTC-API Configuration" id="rtc_api_cfg" from_source="rtc_api_driver.h" options="UI_BORDER_HIDDEN;ShowContentAs=Tabs">
+        <description>Real-Time Clock</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="rtc_default" label="Default Values" available="true">
+                <description>RTC-API Default Configuration</description>
+                <set id="rtc_apiConfig.0.init.readonly">true</set>
+                <set id="rtc_apiAlarmConfig.0.readonly">true</set>
+            </quick_selection>
+        </quick_selections>
+        <settings>
+            <array id="rtc_apiConfig" label="User Configuration" type="rtc_user_cfg" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`init.name`).value())">
+                <description>Real-Time Clock User Configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`init.name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                    <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="init.name" value_expr="x -> ($instance.getLabel() + `_Cfg` + x.getID())"/>
+                    <set_default id="init.readonly" value_expr="x -> (`true`)"/>
+                    <set_default id="init.freezeEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="init.divideBy32" value_expr="x -> (`false`)"/>
+                    <set_default id="init.divideBy512" value_expr="x -> (`false`)"/>
+                    <set_default id="init.nonSupervisorAccessEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="init.periodicIntCallback" value_expr="x -> (`NULL`)"/>
+                    <set_default id="init.callbackParams" value_expr="x -> (`NULL`)"/>
+                </item_defaults>
+            </array>
+            <array id="rtc_apiAlarmConfig" label="Alarm Configuration" type="rtc_alarm_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+                <description>Real-Time Clock User Configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                    <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `_AlarmCfg` + x.getID())"/>
+                    <set_default id="readonly" value_expr="x -> (`true`)"/>
+                    <set_default id="repeat" value_expr="x -> (`false`)"/>
+                    <set_default id="repetitionInterval" value_expr="x -> (`0`)"/>
+                    <set_default id="numberOfRepeats" value_expr="x -> (`0`)"/>
+                    <set_default id="repeatForever" value_expr="x -> (`false`)"/>
+                    <set_default id="alarmIntEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="alarmCallback" value_expr="x -> (`NULL`)"/>
+                    <set_default id="callbackParams" value_expr="x -> (`NULL`)"/>
+                </item_defaults>
+            </array>
+            <variable value="`../rtc_api/rtc_api_codegen.js`" id="codegen_file"></variable>
+            <variable value="`RTC_API_CodeGenerator`" id="codegen_class"></variable>
+        </settings>
+        <user_types>
+            <struct id="rtc_user_cfg" label="RTC User_Cfg structure">
+                <reference id="init" label="User Configuration Structure" type="rtc_init_config_t" options="UI_BORDER_HIDDEN;UI_LABEL_HIDDEN">
+                    <description>RTC User Initialization Structure</description>
+                </reference>
+                <reference id="dateTime" label="Initial Date" type="rtc_dateTime" options="UI_BORDER_HIDDEN">
+                    <description>RTC initial start date and time</description>
+                </reference>
+            </struct>
+            <struct id="rtc_init_config_t" label="RTC Initialization structure">
+                <description></description>
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readonly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+                </bool>
+                <reference id="clockSelect" label="RTC Clock Select" type="rtc_clk_select_t" options="cStructField">
+                    <description>Specifies the clock source that feeds the RTC clock.</description>
+                </reference>
+                <bool id="divideBy32" label="Divide by 32" options="cStructField">
+                    <description>Enable clock divider by 32</description>
+                </bool>
+                <bool id="divideBy512" label="Divide by 512" options="cStructField">
+                    <description>Enable clock divider by 512</description>
+                </bool>
+                <bool id="freezeEnable" label="Freeze" options="cStructField">
+                    <description>Enable freezing the RTC counter in debug mode</description>
+                </bool>
+                <bool id="nonSupervisorAccessEnable" label="Non-Supervisor access" options="cStructField">
+                    <description>Enable writes to the registers in non-supervisor Mode</description>
+                </bool>
+                <string id="periodicIntCallback" label="User Callback" available="(featureDefined(`FEATURE_RTC_UNIFIED_API_IRQ`) == true) &amp;&amp; (getFeature(`FEATURE_RTC_UNIFIED_API_IRQ`) == 1)" options="cStructField">
+                    <description>Periodic interrupt callback</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <string id="callbackParams" label="Callback Parameters" available="(featureDefined(`FEATURE_RTC_UNIFIED_API_IRQ`) == true) &amp;&amp; (getFeature(`FEATURE_RTC_UNIFIED_API_IRQ`) == 1)" options="cStructField">
+                    <description>Pointer to the callback parameters.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <struct id="rtc_alarm_config_t" label="RTC Aalarm structure">
+                <description></description>
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readonly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+                </bool>
+                <reference id="alarmTime" label="Alarm time" type="rtc_dateTime">
+                    <description>Alarm time</description>
+                </reference>
+                <bool id="repeat" label="Repeat">
+                    <description>Enable Alarm Repetition</description>
+                </bool>
+                <integer id="repetitionInterval" label="Interval" type="uint32_t" enable="($parent.repeat.getValue() == true)" options="cStructField">
+                    <description>Interval of repetition in seconds</description>
+                </integer>
+                <integer id="numberOfRepeats" label="Repeats" type="uint32_t" enable="(($parent.repeat.getValue() == true) &amp;&amp; ($parent.repeatForever.getValue() == false))" options="cStructField">
+                    <description>Number of alarm repeats</description>
+                </integer>
+                <bool id="repeatForever" label="Forever" enable="($parent.repeat.getValue() == true)" options="cStructField">
+                    <description>Set if the alarm repeats forever at the interval selected</description>
+                </bool>
+                <bool id="alarmIntEnable" label="Interrupt" options="cStructField">
+                    <description>Enable alarm interrupt</description>
+                </bool>
+                <string id="alarmCallback" label="Callback" options="cStructField">
+                    <description>Pointer to the user callback method.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <string id="callbackParams" label="Callback Parameters" options="cStructField">
+                    <description>Pointer to the callback parameters.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <array id="rtc_dateTime" label="Date and Time" type="rtc_timedate_t" size="1" options="ShowContentAs=Table;UI_BORDER_HIDDEN;UI_ARRAY_INDICES_HIDDEN;UI_TABLE_COLUMN_WIDTHS=8,8,8,8,8,8">
+                <description>RTC initial start date and time</description>
+                <item_defaults>
+                    <set_default id="year"      value_expr="x -> (`1970`)"/>
+                    <set_default id="month"     value_expr="x -> (`1`)"/>
+                    <set_default id="day"       value_expr="x -> (`1`)"/>
+                    <set_default id="hour"      value_expr="x -> (`0`)"/>
+                    <set_default id="minutes"   value_expr="x -> (`0`)"/>
+                    <set_default id="seconds"   value_expr="x -> (`0`)"/>
+                </item_defaults>
+            </array>
+            <struct id="rtc_timedate_t" label="RTC Time Date structure">
+                <description></description>
+                <integer id="year" label="Year" type="uint16_t" min_expr="1970" max_expr="2099" options="cStructField">
+                    <description>Year</description>
+                </integer>
+                <integer id="month" label="Month" type="uint16_t" min_expr="1" max_expr="12" options="cStructField">
+                    <description>Month</description>
+                </integer>
+                <integer id="day" label="Day" type="uint16_t" min_expr="1" max_expr="31" options="cStructField">
+                    <description>Day</description>
+                </integer>
+                <integer id="hour" label="Hour" type="uint16_t" min_expr="0" max_expr="23" options="cStructField">
+                    <description>Hour</description>
+                </integer>
+                <integer id="minutes" label="Minutes" type="uint16_t" min_expr="0" max_expr="59" options="cStructField">
+                    <description>Minutes</description>
+                </integer>
+                <integer id="seconds" label="Seconds" type="uint8_t" min_expr="0" max_expr="59" options="cStructField">
+                    <description>Seconds</description>
+                </integer>
+            </struct>
+            <enum id="rtc_clk_select_t" label="Enum containing the RTC module clock sources">
+                <description>Specifies the clock source that feeds the RTC clock.</description>
+                <item id="RTC_CLOCK_SOURCE_0" label_expr="(getFeature(`RTC_CLK_SRC_0_NAME`))" available="(featureDefined(`RTC_CLK_SRC_0`) == true) &amp;&amp; (getFeature(`RTC_CLK_SRC_0`) == 1)">
+                    <description>RTC_CLOCK_SOURCE_0</description>
+                </item>
+                <item id="RTC_CLOCK_SOURCE_1" label_expr="getFeature(`RTC_CLK_SRC_1_NAME`)" available="(featureDefined(`RTC_CLK_SRC_1`) == true) &amp;&amp; (getFeature(`RTC_CLK_SRC_1`) == 1)">
+                    <description>RTC_CLOCK_SOURCE_1</description>
+                </item>
+                <item id="RTC_CLOCK_SOURCE_2" label_expr="getFeature(`RTC_CLK_SRC_2_NAME`)" available="(featureDefined(`RTC_CLK_SRC_2`) == true) &amp;&amp; (getFeature(`RTC_CLK_SRC_2`) == 1)">
+                    <description>RTC_CLOCK_SOURCE_2</description>
+                </item>
+                <item id="RTC_CLOCK_SOURCE_3" label_expr="getFeature(`RTC_CLK_SRC_3_NAME`)" available="(featureDefined(`RTC_CLK_SRC_3`) == true) &amp;&amp; (getFeature(`RTC_CLK_SRC_3`) == 1)">
+                    <description>RTC_CLOCK_SOURCE_3</description>
+                </item>
+            </enum>
+        </user_types>
+        <generated_types>
+            <fixme id="rtc_callback_t" label="RTC alarm callback typedef Implements : rtc_callback_t_Class" type="void(*">
+                <description></description>
+            </fixme>
+            <enum id="rtc_clk_select_t" label="Enum containing the RTC module clock sources Implements : rtc_clk_select_t_Class" from="rtc_clk_select_t">
+                <description></description>
+                <item id="RTC_CLOCK_SOURCE_0" label="RTC_CLOCK_SOURCE_0">
+                    <description>RTC_CLOCK_SOURCE_0</description>
+                </item>
+                <item id="RTC_CLOCK_SOURCE_1" label="RTC_CLOCK_SOURCE_1">
+                    <description>RTC_CLOCK_SOURCE_1</description>
+                </item>
+                <item id="RTC_CLOCK_SOURCE_2" label="RTC_CLOCK_SOURCE_2">
+                    <description>RTC_CLOCK_SOURCE_2</description>
+                </item>
+                <item id="RTC_CLOCK_SOURCE_3" label="RTC_CLOCK_SOURCE_3">
+                    <description>RTC_CLOCK_SOURCE_3</description>
+                </item>
+            </enum>
+            <enum id="rtc_interrupt_flag_t" label="Enum containing RTC interrupt flags Implements : rtc_interrupt_flag_t_Class" from="rtc_interrupt_flag_t">
+                <description></description>
+                <item id="RTC_COUNTER_INTERRUPT" label="RTC_COUNTER_INTERRUPT_FLAG">
+                    <description>RTC_COUNTER_INTERRUPT_FLAG</description>
+                </item>
+                <item id="RTC_API_INTERRUPT" label="RTC_API_INTERRUPT_FLAG">
+                    <description>RTC_API_INTERRUPT_FLAG</description>
+                </item>
+                <item id="RTC_ROLLOVER_INTERRUPT" label="RTC_ROLLOVER_INTERRUPT_FLAG">
+                    <description>RTC_ROLLOVER_INTERRUPT_FLAG</description>
+                </item>
+            </enum>
+            <enum id="rtc_status_flag_t" label="Enum containing RTC status flags Implements : rtc_status_flag_t_Class" from="rtc_status_flag_t">
+                <description></description>
+                <item id="RTC_INVALID_RTCVAL_WRITE" label="RTC_INVALID_RTCVAL_WRITE">
+                    <description>RTC_INVALID_RTCVAL_WRITE</description>
+                </item>
+                <item id="RTC_INVALID_API_WRITE" label="RTC_INVALID_API_WRITE">
+                    <description>RTC_INVALID_API_WRITE</description>
+                </item>
+                <item id="RTC_INVALID_ANL_WRITE" label="RTC_INVALID_ANL_WRITE">
+                    <description>RTC_INVALID_ANL_WRITE</description>
+                </item>
+            </enum>
+            <struct id="rtc_init_config_t" label="RTC Initialization structure Implements : rtc_init_config_t_Class" from="rtc_init_config_t">
+                <description></description>
+                <bool id="freezeEnable" label="Enable freezing the counter in debug mode">
+                    <description>Enable freezing the counter in debug mode</description>
+                </bool>
+                <bool id="divideBy32" label="Enable clock divide by 32">
+                    <description>Enable clock divide by 32</description>
+                </bool>
+                <bool id="divideBy512" label="Enable clock divide by 512">
+                    <description>Enable clock divide by 512</description>
+                </bool>
+                <bool id="nonSupervisorAccessEnable" label="Enable writes to the registers in non Supervisor Mode">
+                    <description>Enable writes to the registers in non Supervisor Mode</description>
+                </bool>
+                <reference id="clockSelect" label="RTC Clock Select" type="rtc_clk_select_t">
+                    <description>RTC Clock Select</description>
+                </reference>
+                <reference id="periodicIntCallback" label="Periodic interrupt callback" type="rtc_callback_t">
+                    <description>Periodic interrupt callback</description>
+                </reference>
+                <fixme id="callbackParams" label="Pointer to callback parameters" type="void *">
+                    <description>Pointer to callback parameters</description>
+                </fixme>
+            </struct>
+            <struct id="rtc_timedate_t" label="RTC Time Date structure Implements : rtc_timedate_t_Class" from="rtc_timedate_t">
+                <description></description>
+                <integer id="year" label="Year" type="uint16_t">
+                    <description>Year</description>
+                </integer>
+                <integer id="month" label="Month" type="uint16_t">
+                    <description>Month</description>
+                </integer>
+                <integer id="day" label="Day" type="uint16_t">
+                    <description>Day</description>
+                </integer>
+                <integer id="hour" label="Hour" type="uint16_t">
+                    <description>Hour</description>
+                </integer>
+                <integer id="minutes" label="Minutes" type="uint16_t">
+                    <description>Minutes</description>
+                </integer>
+                <integer id="seconds" label="Seconds" type="uint8_t">
+                    <description>Seconds</description>
+                </integer>
+            </struct>
+            <struct id="rtc_alarm_config_t" label="RTC alarm configuration Implements : rtc_alarm_config_t_Class" from="rtc_alarm_config_t">
+                <description></description>
+                <reference id="alarmTime" label="Alarm time" type="rtc_timedate_t">
+                    <description>Alarm time</description>
+                </reference>
+                <integer id="repetitionInterval" label="Interval of repetition in seconds" type="uint32_t">
+                    <description>Interval of repetition in seconds</description>
+                </integer>
+                <integer id="numberOfRepeats" label="Number of alarm repeats" type="uint32_t">
+                    <description>Number of alarm repeats</description>
+                </integer>
+                <bool id="repeatForever" label="Repeat forever if set, discard number of repeats">
+                    <description>Repeat forever if set, discard number of repeats</description>
+                </bool>
+                <bool id="alarmIntEnable" label="Enable alarm interrupt">
+                    <description>Enable alarm interrupt</description>
+                </bool>
+                <reference id="alarmCallback" label="Pointer to the user callback method" type="rtc_callback_t">
+                    <description>Pointer to the user callback method.</description>
+                </reference>
+                <fixme id="callbackParams" label="Pointer to the callback parameters" type="void *">
+                    <description>Pointer to the callback parameters.</description>
+                </fixme>
+            </struct>
+            <struct id="rtc_state_t" label="static RTC runtime structure, it is designed only for internal purposes such as storing interrupt configuration for each instance" from="rtc_state_t">
+                <description></description>
+                <fixme id="alarmConfig" label="Alarm configuration" type="rtc_alarm_config_t *">
+                    <description>Alarm configuration</description>
+                </fixme>
+                <bool id="isAlarmTimeNew" label="Check if there is a new alarm">
+                    <description>Check if there is a new alarm</description>
+                </bool>
+                <integer id="timeOffset" label="Time offset saved when the time and date were configured" type="uint32_t">
+                    <description>Time offset saved when the time and date were configured</description>
+                </integer>
+                <integer id="startTime" label="Time stamp with the start time, used for calculating the current time" type="uint32_t">
+                    <description>Time stamp with the start time, used for calculating the current time</description>
+                </integer>
+                <integer id="rolloverCount" label="Overflow count, it is incremented when the counter has overflowed to keep the accuracy" type="uint32_t">
+                    <description>Overflow count, it is incremented when the counter has overflowed to keep the accuracy</description>
+                </integer>
+                <integer id="ticksPerSecond" label="Number of ticks per second" type="uint32_t">
+                    <description>Number of ticks per second</description>
+                </integer>
+                <reference id="periodicIntCallback" label="Periodic interrupt callback" type="rtc_callback_t">
+                    <description>Periodic interrupt callback</description>
+                </reference>
+                <fixme id="callbackParams" label="Pointer to callback parameters" type="void *">
+                    <description>Pointer to callback parameters</description>
+                </fixme>
+            </struct>
+        </generated_types>
+    </config_set>
+    <config_set id="rtc_driver" label="RTC Configuration" from_source="rtc_driver.h" options="UI_BORDER_HIDDEN;ShowContentAs=Tabs">
+        <description>Real-Time Clock</description>
+        <generated_types></generated_types>
+        <user_types>
+            <struct id="rtc_user_cfg" label="User Configuration">
+                <reference id="init" label="Initialization" options="UI_BORDER_HIDDEN" type="rtc_init_config_t">
+                    <description></description>
+                </reference>
+                <reference id="date" label="Initial Date and Time" options="UI_BORDER_HIDDEN" type="rtc_dateTime">
+                    <description></description>
+                </reference>
+            </struct>
+            <struct id="rtc_init_config_t" label="Initialization" from="rtc_init_config_t">
+                <description>Initialization structure configuration</description>
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readonly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+                </bool>
+                <bool id="updateEnable" label="Update" options="cStructField">
+                    <description>Enable changing the Time Counter Enable bit even if the Status register is locked</description>
+                </bool>
+                <bool id="nonSupervisorAccessEnable" label="Non-Superviser write access" options="cStructField">
+                    <description>Enable writes to the registers in non Supervisor Mode</description>
+                </bool>
+                <bool id="compensationEnable" label="Compensation">
+                    <description>Enable compensation</description>
+                </bool>
+                <integer id="compensationInterval" label="Compensation Interval" type="uint8_t" options="cStructField"
+                    enable="$parent.compensationEnable.getValue()"
+                >
+                    <description>Compensation Interval</description>
+                </integer>
+                <integer id="compensation" label="Compensation Value" type="int8_t" options="cStructField"
+                    enable="$parent.compensationEnable.getValue()"
+                >
+                    <description>Compensation Value</description>
+                </integer>
+                <reference id="clockSelect" label="Clock Input" type="rtc_clk_select_t" options="cStructField">
+                    <description>Specifies clock source used by RTC</description>
+                </reference>
+                <reference id="clockOutConfig" label="Clock Output" type="rtc_clk_out_config_t" options="cStructField">
+                    <description>Specifies source for RTC_CLKOUT. If the source is Time Seconds Interrupt than the frequency must be configured under the Interrupt tab</description>
+                </reference>
+            </struct>
+            <struct id="rtc_register_lock_config_t" label="Register Lock" from="rtc_register_lock_config_t">
+                <description>Register Lock Configuration</description>
+                <bool id="enableCfg" label="Enable Lock">
+                    <description>Enable or disable lock configuration generation.</description>
+                </bool>
+                <string id="name" label="Name" enable="$parent.enableCfg.getValue()">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readonly" label="Read Only" enable="$parent.enableCfg.getValue()">
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+                </bool>
+                <bool id="lockRegisterLock" label="Lock Register" options="cStructField" enable="$parent.enableCfg.getValue()">
+                    <description>Lock the Lock Register</description>
+                </bool>
+                <bool id="statusRegisterLock" label="Status Register" options="cStructField" enable="$parent.enableCfg.getValue()">
+                    <description>Lock the Status Register</description>
+                </bool>
+                <bool id="controlRegisterLock" label="Control Register" options="cStructField" enable="$parent.enableCfg.getValue()">
+                    <description>Lockthe Control Register</description>
+                </bool>
+                <bool id="timeCompensationRegisterLock" label="Time Compensation Register" options="cStructField" enable="$parent.enableCfg.getValue()">
+                    <description>Lock the Time Compensation Register</description>
+                </bool>
+            </struct>
+            <struct id="rtc_alarm_config_t" label="Alarms" from="rtc_alarm_config_t">
+                <description>Alarm configuration</description>
+                <bool id="enableCfg" label="Enable Alarm">
+                    <description>Enable or disable alarm configuration generation.</description>
+                </bool>
+                <string id="name" label="Name" enable="$parent.enableCfg.getValue()">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <reference id="alarmTime" label="Alarm time" type="rtc_dateTime" enable="$parent.enableCfg.getValue()">
+                    <description>Alarm time</description>
+                </reference>
+                <bool id="repeat" label="Repeat" enable="$parent.enableCfg.getValue()">
+                    <description>Enable alarm repetition</description>
+                </bool>
+                <bool id="repeatForever" label="Repeat forever" options="cStructField"
+                    enable="$parent.repeat.getValue() &amp;&amp; $parent.enableCfg.getValue()"
+                >
+                    <description>Repeat forever if set, discard number of repeats</description>
+                </bool>
+                <integer id="repetitionInterval" label="Interval" type="uint32_t" min_expr="1" options="cStructField"
+                    enable="$parent.repeat.getValue() &amp;&amp; $parent.enableCfg.getValue()"
+                >
+                    <description>Interval of repetition in sec</description>
+                </integer>
+                <integer id="numberOfRepeats" label="Number of repetitions" type="uint32_t" options="cStructField"
+                    enable="$parent.repeat.getValue() &amp;&amp; $parent.enableCfg.getValue()"
+                >
+                    <description>Number of alarm repeats</description>
+                </integer>
+                <bool id="alarmIntEnable" label="Enable alarm interrupt" options="cStructField" enable="$parent.enableCfg.getValue()">
+                    <description>Enable alarm interrupt</description>
+                </bool>
+                <string id="alarmCallback" label="User callback" options="cStructField"
+                    enable="$parent.alarmIntEnable.getValue() == true &amp;&amp; $parent.enableCfg.getValue()"
+                >
+                    <description>Name of the user callback method.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <struct id="rtc_seconds_int_config_t" label="Seconds Interrupt" from="rtc_seconds_int_config_t">
+                <description>Time Seconds Interrupt Configuration</description>
+                <bool id="enableCfg" label="Enable Seconds Interrupt">
+                    <description>Enable or disable seconds interrupt configuration generation.</description>
+                </bool>
+                <string id="name" label="Name" enable="$parent.enableCfg.getValue()">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <reference id="secondIntConfig" label="Seconds Interrupt frequency" type="rtc_second_int_cfg_t" options="cStructField" enable="$parent.enableCfg.getValue()">
+                    <description>Seconds Interrupt frequency</description>
+                </reference>
+                <bool id="secondIntEnable" label="Seconds Interrupt enable" options="cStructField" enable="$parent.enableCfg.getValue()">
+                    <description>Seconds Interrupt enable</description>
+                </bool>
+                <string id="rtcSecondsCallback" label="User callback" options="cStructField"
+                    enable="$parent.secondIntEnable.getValue() == true &amp;&amp; $parent.enableCfg.getValue()"
+                >
+                    <description>Name of the user callback method.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <struct id="rtc_interrupt_config_t" label="Fault Interrupts" from="rtc_interrupt_config_t">
+                <description>Fault Interrupts Configuration</description>
+                <bool id="enableCfg" label="Enable Faults">
+                    <description>Enable or disable faults configuration generation.</description>
+                </bool>
+                <string id="name" label="Name" enable="$parent.enableCfg.getValue()">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="overflowIntEnable" label="Time Overflow" options="cStructField" enable="$parent.enableCfg.getValue()">
+                    <description>Enable Time Overflow Interrupt</description>
+                </bool>
+                <bool id="timeInvalidIntEnable" label="Time Invalid" options="cStructField" enable="$parent.enableCfg.getValue()">
+                    <description>Enable Time Invalid Interrupt</description>
+                </bool>
+                <string id="rtcCallback" label="User callback" options="cStructField"
+                    enable="(($parent.overflowIntEnable.getValue() == true) || ($parent.timeInvalidIntEnable.getValue() == true)) &amp;&amp; $parent.enableCfg.getValue()"
+                >
+                    <description>Name of the user callback method.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <array id="rtc_dateTime" label="Date and Time" type="rtc_timedate_t"
+                size="1"
+                options="ShowContentAs=Table;UI_BORDER_HIDDEN;UI_ARRAY_INDICES_HIDDEN;UI_TABLE_COLUMN_WIDTHS=8,8,8,8,8,8"
+            >
+                <description>RTC initial start date and time</description>
+                <item_defaults>
+                    <set_default id="year"      value_expr="x -> (`1970`)"/>
+                    <set_default id="month"     value_expr="x -> (`1`)"/>
+                    <set_default id="day"       value_expr="x -> (`1`)"/>
+                    <set_default id="hour"      value_expr="x -> (`0`)"/>
+                    <set_default id="minutes"   value_expr="x -> (`0`)"/>
+                    <set_default id="seconds"   value_expr="x -> (`0`)"/>
+                </item_defaults>
+            </array>
+            <struct id="rtc_timedate_t" label="RTC Time Date structure">
+                <description></description>
+                <integer id="year" label="Year" type="uint16_t" min_expr="1970" max_expr="2099" options="cStructField">
+                    <description>Year</description>
+                </integer>
+                <integer id="month" label="Month" type="uint16_t" min_expr="1" max_expr="12" options="cStructField">
+                    <description>Month</description>
+                </integer>
+                <variable id="isLeapYear" value="(((($parent.year.getValue() % 4) == 0) &amp;&amp; (($parent.year.getValue() % 100) != 0)) || (($parent.year.getValue() % 400) == 0)) ? true : false"/>
+                <variable id="monthLength" value="(($parent.month.getValue() &lt;= 12) &amp;&amp; ($parent.month.getValue() &gt; 0)) ? toArray(31, (($parent.isLeapYear.getValue() == true) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31).get($parent.month.getValue() - 1) : 31"/>
+                <integer id="day" label="Day" type="uint16_t" min_expr="1" max_expr="$parent.monthLength.getValue()" options="cStructField">
+                    <description>Day</description>
+                </integer>
+                <integer id="hour" label="Hour" type="uint16_t" min_expr="0" max_expr="23" options="cStructField">
+                    <description>Hour</description>
+                </integer>
+                <integer id="minutes" label="Minutes" type="uint16_t" min_expr="0" max_expr="59" options="cStructField">
+                    <description>Minutes</description>
+                </integer>
+                <integer id="seconds" label="Seconds" type="uint8_t" min_expr="0" max_expr="59" options="cStructField">
+                    <description>Seconds</description>
+                </integer>
+            </struct>
+            <enum id="rtc_second_int_cfg_t" label="Interrupt frequency" from="rtc_second_int_cfg_t">
+                <description>RTC Seconds interrupt frequency</description>
+                <item id="RTC_INT_1HZ" label="1 Hz">
+                    <description>RTC seconds interrupt occurs at 1 Hz</description>
+                </item>
+                <item id="RTC_INT_2HZ" label="2 Hz">
+                    <description>RTC seconds interrupt occurs at 2 Hz</description>
+                </item>
+                <item id="RTC_INT_4HZ" label="4 Hz">
+                    <description>RTC seconds interrupt occurs at 4 Hz</description>
+                </item>
+                <item id="RTC_INT_8HZ" label="8 Hz">
+                    <description>RTC seconds interrupt occurs at 8 Hz</description>
+                </item>
+                <item id="RTC_INT_16HZ" label="16 Hz">
+                    <description>RTC seconds interrupt occurs at 16 Hz</description>
+                </item>
+                <item id="RTC_INT_32HZ" label="32 Hz">
+                    <description>RTC seconds interrupt occurs at 32 Hz</description>
+                </item>
+                <item id="RTC_INT_64HZ" label="64 Hz">
+                    <description>RTC seconds interrupt occurs at 64 Hz</description>
+                </item>
+                <item id="RTC_INT_128HZ" label="128 Hz">
+                    <description>RTC seconds interrupt occurs at 128 Hz</description>
+                </item>
+            </enum>
+            <enum id="rtc_clk_out_config_t" label="Clock Output" from="rtc_clk_out_config_t">
+                <description>Specifies source for RTC_CLKOUT. If the source is Time Seconds Interrupt than the frequency must be configured under the Interrupt tab</description>
+                <item id="RTC_CLKOUT_DISABLED" label="Disabled">
+                    <description>Clock out pin is disabled</description>
+                </item>
+                <item id="RTC_CLKOUT_SRC_TSIC" label="Prescaler output">
+                    <description>Output on RTC_CLKOUT as configured on Time seconds interrupt</description>
+                </item>
+                <item id="RTC_CLKOUT_SRC_32KHZ" label="32KHz clock">
+                    <description>Output on RTC_CLKOUT of the 32KHz clock</description>
+                </item>
+            </enum>
+            <enum id="rtc_clk_select_t" label="Clock Input" from="rtc_clk_select_t">
+                <description></description>
+                <item id="RTC_CLK_SRC_OSC_32KHZ" label="External 32 kHz crystal">
+                    <description>RTC Prescaler increments using 32 KHz crystal</description>
+                </item>
+                <item id="RTC_CLK_SRC_LPO_1KHZ" label="Internal 1KHz LPO">
+                    <description>RTC Prescaler increments using 1KHz LPO</description>
+                </item>
+            </enum>
+        </user_types>
+        <settings>
+            <array id="rtcInitConfig" label="Initialization" type="rtc_user_cfg"
+                options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN"
+                key_selector_expr="x -> (x.getSetting(`init.name`).value())"
+                min_expr="1"
+            >
+                <description>Real-Time Clock User Initialization Configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`init.name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="init.name" value_expr="x -> ($instance.getLabel() + `InitCfg` + x.getID())"/>
+                    <set_default id="init.readonly" value_expr="x -> (`true`)"/>
+                    <set_default id="init.updateEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="init.nonSupervisorAccessEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="init.compensationEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="init.compensationInterval" value_expr="x -> (`0`)"/>
+                    <set_default id="init.compensation" value_expr="x -> (`0`)"/>
+                    <set_default id="init.clockSelect" value_expr="x -> (`RTC_CLK_SRC_LPO_1KHZ`)"/>
+                    <set_default id="init.clockOutConfig" value_expr="x -> (`RTC_CLKOUT_DISABLED`)"/>
+                </item_defaults>
+            </array>
+            <array id="rtcLockConfig" label="Register Lock" type="rtc_register_lock_config_t"
+                options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN"
+                key_selector_expr="x -> (x.getSetting(`name`).value())"
+                min_expr="1"
+            >
+                <description>Real-Time Clock Lock Configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="enableCfg" value_expr="x -> `true`"/>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `LockCfg` + x.getID())"/>
+                    <set_default id="readonly" value_expr="x -> (`true`)"/>
+                    <set_default id="lockRegisterLock" value_expr="x -> (`false`)"/>
+                    <set_default id="statusRegisterLock" value_expr="x -> (`false`)"/>
+                    <set_default id="controlRegisterLock" value_expr="x -> (`false`)"/>
+                    <set_default id="timeCompensationRegisterLock" value_expr="x -> (`false`)"/>
+                </item_defaults>
+            </array>
+            <array id="rtcAlarmConfig" label="Alarm" type="rtc_alarm_config_t"
+                options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN"
+                key_selector_expr="x -> (x.getSetting(`name`).value())"
+                min_expr="1"
+            >
+                <description>Real-Time Clock Alarm Configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="enableCfg" value_expr="x -> `true`"/>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `AlarmCfg` + x.getID())"/>
+                    <set_default id="repeat" value_expr="x -> (`false`)"/>
+                    <set_default id="repeatForever" value_expr="x -> (`false`)"/>
+                    <set_default id="repetitionInterval" value_expr="x -> (`0`)"/>
+                    <set_default id="numberOfRepeats" value_expr="x -> (`0`)"/>
+                    <set_default id="alarmIntEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="alarmCallback" value_expr="x -> (`NULL`)"/>
+                    <set_default id="callbackParams" value_expr="x -> (`NULL`)"/>
+                </item_defaults>
+            </array>
+            <array id="rtcTSIConfig" label="Seconds Interrupt" type="rtc_seconds_int_config_t"
+                options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN"
+                key_selector_expr="x -> (x.getSetting(`name`).value())"
+                min_expr="1"
+            >
+                <description>Real-Time Clock Seconds Interrupt Configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="enableCfg" value_expr="x -> `true`"/>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `SecIntCfg` + x.getID())"/>
+                    <set_default id="secondIntConfig" value_expr="x -> (`RTC_INT_1HZ`)"/>
+                    <set_default id="secondIntEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="rtcSecondsCallback" value_expr="x -> (`NULL`)"/>
+                    <set_default id="secondsCallbackParams" value_expr="x -> (`NULL`)"/>
+                </item_defaults>
+            </array>
+            <array id="rtcFaultConfig" label="Fault Interrupt" type="rtc_interrupt_config_t"
+                options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN"
+                key_selector_expr="x -> (x.getSetting(`name`).value())"
+                min_expr="1"
+            >
+                <description>Real-Time Clock Fault Interrupt Configuration</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="enableCfg" value_expr="x -> `true`"/>
+                    <set_default id="name" value_expr="x -> ($instance.getLabel() + `FaultCfg` + x.getID())"/>
+                    <set_default id="overflowIntEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="timeInvalidIntEnable" value_expr="x -> (`false`)"/>
+                    <set_default id="rtcCallback" value_expr="x -> (`NULL`)"/>
+                    <set_default id="callbackParams" value_expr="x -> (`NULL`)"/>
+                </item_defaults>
+            </array>
+            <variable value="`../rtc/rtc_codegen.js`" id="codegen_file"></variable>
+            <variable value="`RTC_CodeGenerator`" id="codegen_class"></variable>
+        </settings>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="rtc_default" label="Default Values" available="true">
+                <description>RTC-API Default Configuration</description>
+                <set id="rtcInitConfig.0.init.readonly">true</set>
+                <set id="rtcLockConfig.0.readonly">true</set>
+                <set id="rtcAlarmConfig.0.readonly">true</set>
+                <set id="rtcTSIConfig.0.readonly">true</set>
+                <set id="rtcFaultConfig.0.readonly">true</set>
+            </quick_selection>
+        </quick_selections>
+    </config_set>
+</component:config_component>

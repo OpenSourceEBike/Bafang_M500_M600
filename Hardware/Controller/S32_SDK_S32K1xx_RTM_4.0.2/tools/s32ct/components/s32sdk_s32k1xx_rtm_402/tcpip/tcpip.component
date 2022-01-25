@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="tcpip_config" label="tcpip_stack" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="middleware">
+   <sw_comp_ref name="platform.middleware.tcpip" version="1.0.0"/>
+   <description>TCP/IP middleware configuration</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>TCP/IP general mode</description>
+      <config_set_refs>
+         <config_set_ref>tcpip_cfg</config_set_ref>
+      </config_set_refs>
+   </mode>
+   <config_set id="tcpip_cfg" label="TCP/IP middleware configuration" from_source="enetif.h" options="ShowContentAs=Tabs">
+      <description>TCP/IP middleware configuration</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <generated_types/>
+      <quick_selections>
+         <quick_selection id="tcpip_baremetal_config" label="TCPIP_Baremetal Default Config" available="true">
+            <description>TCPIP Baremetal default config</description>
+
+            <set id="generic_tab.osEnable">false</set>
+            <set id="generic_tab.baremetalChoice">USING_OS_BAREMETAL</set>
+            <set id="generic_tab.txRingSize">2</set>
+            <set id="generic_tab.rxRingSize">6</set>
+            <set id="generic_tab.boolEnableHostname">true</set>
+
+            <set id="netifcfg_tab.0.boolIface">true</set>
+            <set id="netifcfg_tab.0.hostname">tcpipBoard1</set>
+            <set id="netifcfg_tab.0.macAddress">22:33:44:55:66:77</set>
+            <set id="netifcfg_tab.0.boolDhcp">false</set>
+            <set id="netifcfg_tab.0.ipv4Address">192.168.0.200</set>
+            <set id="netifcfg_tab.0.ipv4Subnet">255.255.255.0</set>
+            <set id="netifcfg_tab.0.ipv4Gateway">192.168.0.1</set>
+            <set id="netifcfg_tab.0.boolIpv6">true</set>
+
+            <set id="datalink_tab.boolARP">true</set>
+            <set id="datalink_tab.arpTableSize">10</set>
+            <set id="datalink_tab.boolARPQueue">true</set>
+
+            <set id="network_tab.ipv4_id.boolIpv4">true</set>
+            <set id="network_tab.ipv4_id.ipv4_auto_id.dhcp2autoipTries">3</set>
+            <set id="network_tab.ipv4_id.ipv4_extensions_id.ipforward">false</set>
+            <set id="network_tab.ipv4_id.ipv4_extensions_id.ipreassembly">true</set>
+            <set id="network_tab.ipv4_id.ipv4_extensions_id.ipfrag">true</set>
+            <set id="network_tab.ipv4_id.ipv4_icmp.icmp_enable">true</set>
+            <set id="network_tab.ipv4_id.ipv4_icmp.icmp_ttl">255</set>
+            <set id="network_tab.ipv4_id.ipv4_igmp.igmp_enable">true</set>
+
+            <set id="transport_tab.tcp_id.boolTcp">true</set>
+            <set id="transport_tab.tcp_id.boolQueue">false</set>
+            <set id="transport_tab.tcp_id.ttl">255</set>
+            <set id="transport_tab.tcp_id.mss">1460</set>
+            <set id="transport_tab.tcp_id.snd_buf">2920</set>
+            <set id="transport_tab.tcp_id.wnd">60000</set>
+            <set id="transport_tab.tcp_id.maxrtx">12</set>
+            <set id="transport_tab.tcp_id.synmaxrtx">4</set>
+            <set id="transport_tab.udp_id.boolUdp">true</set>
+            <set id="transport_tab.udp_id.ttl">255</set>
+
+            <set id="application_tab.raw.boolHttpdRaw">false</set>
+            <set id="application_tab.raw.boolTcpechoRaw">true</set>
+            <set id="application_tab.raw.boolUdpechoRaw">false</set>
+            <set id="application_tab.raw.boolLwiperf">false</set>
+            <set id="application_tab.raw.boolNetbios">true</set>
+
+            <set id="memory_tab.memAlign">4</set>
+            <set id="memory_tab.memHeapSize">20480</set>
+            <set id="memory_tab.noPacketBuf">8</set>
+            <set id="memory_tab.noRawPcb">4</set>
+            <set id="memory_tab.noUdpPcb">8</set>
+            <set id="memory_tab.noTcpPcb">8</set>
+            <set id="memory_tab.noListenTcpPcb">8</set>
+            <set id="memory_tab.noSegmentTcpPcb">16</set>
+            <set id="memory_tab.noActiveTimeouts">15</set>
+            <set id="memory_tab.noStructNetbufs">16</set>
+            <set id="memory_tab.noStructNetconns">32</set>
+            <set id="memory_tab.noStructTcpipMsgApi">8</set>
+            <set id="memory_tab.noStructTcpipMsgInpkt">8</set>
+            <set id="memory_tab.noBufferInPool">0</set>
+         </quick_selection>
+         <quick_selection id="tcpip_freertos_config" label="TCPIP_FreeRTOS Default Config" available="true">
+            <description>TCPIP FreeRTOS default config</description>
+
+            <set id="generic_tab.osEnable">true</set>
+            <set id="generic_tab.rtosChoice">freertos</set>
+            <set id="generic_tab.txRingSize">2</set>
+            <set id="generic_tab.rxRingSize">6</set>
+            <set id="generic_tab.boolEnableHostname">true</set>
+
+            <set id="netifcfg_tab.0.boolIface">true</set>
+            <set id="netifcfg_tab.0.hostname">tcpipBoard1</set>
+            <set id="netifcfg_tab.0.macAddress">22:33:44:55:66:77</set>
+            <set id="netifcfg_tab.0.boolDhcp">false</set>
+            <set id="netifcfg_tab.0.ipv4Address">192.168.0.200</set>
+            <set id="netifcfg_tab.0.ipv4Subnet">255.255.255.0</set>
+            <set id="netifcfg_tab.0.ipv4Gateway">192.168.0.1</set>
+            <set id="netifcfg_tab.0.boolIpv6">true</set>
+
+            <set id="datalink_tab.boolARP">true</set>
+            <set id="datalink_tab.arpTableSize">10</set>
+            <set id="datalink_tab.boolARPQueue">true</set>
+
+            <set id="network_tab.ipv4_id.boolIpv4">true</set>
+            <set id="network_tab.ipv4_id.ipv4_auto_id.dhcp2autoipTries">3</set>
+            <set id="network_tab.ipv4_id.ipv4_extensions_id.ipforward">false</set>
+            <set id="network_tab.ipv4_id.ipv4_extensions_id.ipreassembly">true</set>
+            <set id="network_tab.ipv4_id.ipv4_extensions_id.ipfrag">true</set>
+            <set id="network_tab.ipv4_id.ipv4_icmp.icmp_enable">true</set>
+            <set id="network_tab.ipv4_id.ipv4_icmp.icmp_ttl">255</set>
+            <set id="network_tab.ipv4_id.ipv4_igmp.igmp_enable">true</set>
+
+            <set id="transport_tab.tcp_id.boolTcp">true</set>
+            <set id="transport_tab.tcp_id.boolQueue">false</set>
+            <set id="transport_tab.tcp_id.ttl">255</set>
+            <set id="transport_tab.tcp_id.mss">1460</set>
+            <set id="transport_tab.tcp_id.snd_buf">2920</set>
+            <set id="transport_tab.tcp_id.wnd">60000</set>
+            <set id="transport_tab.tcp_id.maxrtx">12</set>
+            <set id="transport_tab.tcp_id.synmaxrtx">4</set>
+            <set id="transport_tab.udp_id.boolUdp">true</set>
+            <set id="transport_tab.udp_id.ttl">255</set>
+
+            <set id="application_tab.raw.boolHttpdRaw">false</set>
+            <set id="application_tab.raw.boolTcpechoRaw">false</set>
+            <set id="application_tab.raw.boolUdpechoRaw">false</set>
+            <set id="application_tab.raw.boolLwiperf">false</set>
+            <set id="application_tab.raw.boolNetbios">true</set>
+            <set id="application_tab.netconn.boolHttpdNetconn">true</set>
+            <set id="application_tab.netconn.boolTcpechoNetconn">true</set>
+            <set id="application_tab.netconn.boolUdpechoNetconn">true</set>
+            <set id="application_tab.socket.boolChargenSocket">true</set>
+
+            <set id="memory_tab.memAlign">4</set>
+            <set id="memory_tab.memHeapSize">20480</set>
+            <set id="memory_tab.noPacketBuf">8</set>
+            <set id="memory_tab.noRawPcb">4</set>
+            <set id="memory_tab.noUdpPcb">8</set>
+            <set id="memory_tab.noTcpPcb">8</set>
+            <set id="memory_tab.noListenTcpPcb">8</set>
+            <set id="memory_tab.noSegmentTcpPcb">16</set>
+            <set id="memory_tab.noActiveTimeouts">15</set>
+            <set id="memory_tab.noStructNetbufs">16</set>
+            <set id="memory_tab.noStructNetconns">32</set>
+            <set id="memory_tab.noStructTcpipMsgApi">8</set>
+            <set id="memory_tab.noStructTcpipMsgInpkt">8</set>
+            <set id="memory_tab.noBufferInPool">0</set>
+         </quick_selection>
+         <default>tcpip_baremetal_config</default>
+      </quick_selections>
+
+      <user_types>
+         <enum id="configLowlevel_t" label="lowlevelIface" from="configLowlevel_t">
+            <item id="ENET" available="featureDefined(`FEATURE_TCPIP_OVER_ENET`)" label="EnetDriver"/>
+            <item id="GMAC" available="featureDefined(`FEATURE_TCPIP_OVER_GMAC`)" label="GmacDriver"/>
+         </enum>
+         <enum id="mii_mode_t" label="MII mode implements : mii_mode_t_Class" from="mii_mode_t">
+            <item id="MII" available="featureDefined(`FEATURE_TCPIP_MII_MODE`)" label="MII (Media-independent interface)"/>
+            <item id="RMII" available="featureDefined(`FEATURE_TCPIP_RMII_MODE`)" label="RMII (Reduced media-independent interface)"/>
+            <item id="GMII" available="featureDefined(`FEATURE_TCPIP_GMII_MODE`)" label="GMII (Gigabit media-independent interface)"/>
+            <item id="RGMII" available="featureDefined(`FEATURE_TCPIP_RGMII_MODE`)" label="RGMII (Reduced gigabit media-independent interface)"/>
+            <item id="SGMII" available="featureDefined(`FEATURE_TCPIP_SGMII_MODE`)" label="SGMII (Serial gigabit media-independent interface)"/>
+            <item id="HSGMII" available="featureDefined(`FEATURE_TCPIP_HSGMII_MODE`)" label="HSGMII (High serial gigabit media-independent interface)"/>
+            <item id="QSGMII" available="featureDefined(`FEATURE_TCPIP_QSGMII_MODE`)" label="QSGMII (Quad serial gigabit media-independent interface)"/>
+            <item id="XGMII" available="featureDefined(`FEATURE_TCPIP_XGMII_MODE`)" label="XGMII (10-gigabit media-independent interface)"/>
+         </enum>
+         <enum id="mii_speed_t" label="MII speed implements : mii_speed_t_Class" from="mii_speed_t">
+            <item id="10M" available="featureDefined(`FEATURE_TCPIP_SPEED_10M`)" label="10 Mbps"/>
+            <item id="100M" available="featureDefined(`FEATURE_TCPIP_SPEED_100M`)" label="100 Mbps"/>
+            <item id="1G" available="featureDefined(`FEATURE_TCPIP_SPEED_1G`)" label="1 Gbps"/>
+            <item id="2.5G" available="featureDefined(`FEATURE_TCPIP_SPEED_2.5G`)" label="2.5 Gbps"/>
+         </enum>
+         <enum id="debug_min_level_t" from="debug_min_level_t">
+            <item id="LWIP_DBG_LEVEL_ALL" label="LWIP_DBG_LEVEL_ALL"/>
+            <item id="LWIP_DBG_LEVEL_WARNING" label="LWIP_DBG_LEVEL_WARNING"/>
+            <item id="LWIP_DBG_LEVEL_SERIOUS" label="LWIP_DBG_LEVEL_SERIOUS"/>
+            <item id="LWIP_DBG_LEVEL_SEVERE" label="LWIP_DBG_LEVEL_SEVERE"/>
+         </enum>
+
+         <!-- /* generic definitions. */ -->
+         <struct id="generic_t" label="generic configuration structure for tcpip" from="generic_t">
+            <description>Generic configurations</description>
+
+            <bool id="osEnable" label="OS enable:">
+                <description>OS Enable: RTOS, OS Disable: BareMetal</description>
+            </bool>
+            <string id="baremetalChoice" label="BareMetal choice:" available="$parent.osEnable.getValue() == `false`" enable="$parent.osEnable.getValue() == `false`">
+               <validation>
+                 <constraint cond_expr="$root.countOccurrences(item -> (item.getID() == `general_tab`), true) &lt; 1" level="error" description="Please remove FreeRTOS OS component!"/>
+               </validation>
+            </string>
+            <dynamic_enum id="rtosChoice" label="RTOS choice:" available="$parent.osEnable.getValue() == `true`" items="$group.getComponentInstances(`freertos`).filter(item -> item.isEnabled())">
+               <validation>
+                 <constraint cond_expr="$root.countOccurrences(item -> (item.getID() == `general_tab` &amp;&amp; item.isEnabled()), true) &gt; 0" level="error" description="Please add FreeRTOS OS component and enable it!"/>
+               </validation>
+            </dynamic_enum>
+
+            <reference id="lowlevelIface" label="Lowlevel Iface: " type="configLowlevel_t" options="cStructField">
+               <description>LowLevel Interface</description>
+            </reference>
+
+            <integer id="txRingSize" label="TX Ring size" type="uint8_t" options="cStructField"/>
+            <integer id="rxRingSize" label="RX Ring size" type="uint8_t" options="cStructField"/>
+            <bool id="boolEnableHostname" label="Enable hostname" options="cStructField"/>
+         </struct>
+
+        <!-- network interface -->
+         <struct id="netifcfg_t" label="Available network interfaces">
+            <bool id="boolIface" label="Enable iface" options="cStructField"/>
+            <string id="hostname" label="Host name" options="cStructField" enable="$parent.boolIface.getValue() == `true`"/>
+            <string id="macAddress" label="MAC address" options="cStructField" enable="$parent.boolIface.getValue() == `true`">
+               <description>The MAC address, 6 octets, using the following format: 22:33:44:55:66:77.</description>
+               <validation>
+                  <constraint cond_expr="regexMatch($this.getValue(), `[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}`)" level="error" description="MAC must match the following format: 22:33:44:55:66:77!"/>
+               </validation>
+            </string>
+            <bool id="boolDhcp" label="Enable DHCP" options="cStructField" enable="$parent.boolIface.getValue() == `true`"/>
+            <bool id="boolAutoip" label="Enable AUTOIP" options="cStructField" enable="$parent.boolIface.getValue() == `true`"/>
+            <string id="ipv4Address" label="IPv4 address" options="cStructField" enable="$parent.boolIface.getValue() == `true`">
+               <validation>
+                  <constraint cond_expr="($this.getValue() != ``)" level="error" description="IPv4 address must not be empty"/>
+               </validation>
+            </string>
+            <string id="ipv4Subnet" label="IPv4 subnet Mask" options="cStructField" enable="$parent.boolIface.getValue() == `true`">
+               <validation>
+                  <constraint cond_expr="($this.getValue() != ``)" level="error" description="IPv4 subnet mask must not be empty"/>
+               </validation>
+            </string>
+            <string id="ipv4Gateway" label="IPv4 default gateway" options="cStructField" enable="$parent.boolIface.getValue() == `true`">
+               <validation>
+                  <constraint cond_expr="($this.getValue() != ``)" level="error" description="IPv4 gateway must not be empty"/>
+               </validation>
+            </string>
+            <bool id="boolIpv6" label="Enable IPV6" options="cStructField" enable="$parent.boolIface.getValue() == `true`"/>
+         </struct>
+
+         <!-- /* data link layer */ -->
+         <struct id="datalink_t" label="data link structure for tcpip" from="datalink_t">
+            <description>data link configurations</description>
+            <reference id="miiMode" label="MII mode" type="mii_mode_t" options="cStructField">
+               <description>MII mode</description>
+            </reference>
+            <reference id="miiSpeed" label="MII speed" type="mii_speed_t" options="cStructField">
+               <description>MII speed</description>
+            </reference>
+            <bool id="boolARP" label="Enable ARP" options="cStructField"/>
+            <integer id="arpTableSize" label="ARP Table Size" type="uint16_t" options="cStructField" enable="$parent.boolARP.getValue() == `true`"/>
+            <bool id="boolARPQueue" label="ARP Queueing" options="cStructField" enable="$parent.boolARP.getValue() == `true`"/>
+         </struct>
+
+         <!-- /* network layer */ -->
+         <struct id="network_t" label="network structure for tcpip" from="network_t" options="ShowContentAs=Tabs">
+            <description>ip network configurations</description>
+            <struct id="ipv4_id" label="Internet Protocol version 4 (IPv4)" from="configIPv4_t">
+               <bool id="boolIpv4" label="Enable IPv4" options="cStructField"/>
+               <struct id="ipv4_auto_id" label="IPv4 Dynamic" enable="$configSet.network_tab.ipv4_id.boolIpv4.getValue() == `true`">
+                  <integer id="dhcp2autoipTries" label="DHCP->AUTOIP tries" type="uint8_t" options="cStructField"/>
+               </struct>
+               <struct id="ipv4_extensions_id" label="IPv4 Extensions" enable="$configSet.network_tab.ipv4_id.boolIpv4.getValue() == `true`">
+                  <bool id="ipforward" label="IP Forward" options="cStructField"/>
+                  <bool id="ipreassembly" label="IP Reassembly" options="cStructField"/>
+                  <bool id="ipfrag" label="IP Frag" options="cStructField"/>
+               </struct>
+               <struct id="ipv4_icmp" label="Internet Control Message Protocol (ICMP)" enable="$configSet.network_tab.ipv4_id.boolIpv4.getValue() == `true`">
+                  <bool id="icmp_enable" label="Enable" options="cStructField"/>
+                  <integer id="icmp_ttl" label="Time to live" type="uint8_t" options="cStructField" enable="$configSet.network_tab.ipv4_id.ipv4_icmp.icmp_enable.getValue() == `true`"/>
+               </struct>
+               <struct id="ipv4_igmp" label="Internet Group Management Protocol (IGMP)" enable="$configSet.network_tab.ipv4_id.boolIpv4.getValue() == `true`">
+                  <bool id="igmp_enable" label="IGMP Enable" options="cStructField"/>
+               </struct>
+            </struct>
+         </struct>
+
+         <!-- /* Transport layer */ -->
+         <struct id="transport_t" label="transport structure for tcpip" from="transport_t">
+            <description>transport protocol settings</description>
+            <struct id="tcp_id" label="Transmission Control Protocol (TCP)">
+               <bool id="boolTcp" label="Enable TCP" options="cStructField"/>
+               <bool id="boolQueue" label="Queue out of order segments" options="cStructField" enable="$configSet.transport_tab.tcp_id.boolTcp.getValue() == `true`"/>
+               <integer id="ttl" label="Time to live" type="uint8_t" options="cStructField" enable="$configSet.transport_tab.tcp_id.boolTcp.getValue() == `true`"/>
+               <integer id="mss" label="Maximum segment size" type="uint32_t" options="cStructField" enable="$configSet.transport_tab.tcp_id.boolTcp.getValue() == `true`"/>
+               <integer id="snd_buf" label="Sender buffer space (bytes)" type="uint32_t" options="cStructField" enable="$configSet.transport_tab.tcp_id.boolTcp.getValue() == `true`"/>
+               <integer id="wnd" label="Receive window" type="uint16_t" options="cStructField" enable="$configSet.transport_tab.tcp_id.boolTcp.getValue() == `true`"/>
+               <integer id="maxrtx" label="Maximum number of retransmissions of data segments" type="uint32_t" options="cStructField" enable="$configSet.transport_tab.tcp_id.boolTcp.getValue() == `true`"/>
+               <integer id="synmaxrtx" label="Maximum number of retransmissions of SYN segments" type="uint32_t" options="cStructField" enable="$configSet.transport_tab.tcp_id.boolTcp.getValue() == `true`"/>
+            </struct>
+            <struct id="udp_id" label="User Datagram Protocol (UDP)">
+               <bool id="boolUdp" label="Enable UDP" options="cStructField"/>
+               <integer id="ttl" label="Time to live" type="uint8_t" options="cStructField" enable="$configSet.transport_tab.udp_id.boolUdp.getValue() == `true`"/>
+            </struct>
+         </struct>
+
+         <!-- /* Application layer */ -->
+         <struct id="application_t" label="application choices structure for tcpip" from="application_t">
+            <description>applications definitions</description>
+            <struct id="raw" label="Callback or Raw API Applications:" from="raw">
+               <struct id="rawSettings" label="Callback-style APIs settings">
+                  <bool id="enableRaw" label="LWIP_RAW"/>
+               </struct>
+               <bool id="boolHttpdRaw" label="HTTPD" options="cStructField" available="$parent.rawSettings.enableRaw.getValue() == `true`"/>
+               <bool id="boolTcpechoRaw" label="TCP_ECHO" options="cStructField" available="$parent.rawSettings.enableRaw.getValue() == `true`"/>
+               <bool id="boolUdpechoRaw" label="UDP_ECHO" options="cStructField" available="$parent.rawSettings.enableRaw.getValue() == `true`"/>
+               <bool id="boolLwiperf" label="LWIPERF" options="cStructField" available="$parent.rawSettings.enableRaw.getValue() == `true`"/>
+               <bool id="boolNetbios" label="NETBIOS" options="cStructField" available="$parent.rawSettings.enableRaw.getValue() == `true`"/>
+               <bool id="boolSntp" label="SNTP" options="cStructField" available="$parent.rawSettings.enableRaw.getValue() == `true`"/>
+               <bool id="boolNetio" label="NETIO" options="cStructField" available="$parent.rawSettings.enableRaw.getValue() == `true`"/>
+            </struct>
+            <struct id="netconn" label="Sequential API Applications [Netconn]" from="netconn" available="$configSet.generic_tab.osEnable.getValue() == `true`">
+               <struct id="netconnSettings" label="Thread-safe APIs Netconn settings">
+                  <integer type="uint8_t" id="netconn_semPerThread" label="LWIP_NETCONN_SEM_PER_THREAD" options="cStructField">
+                     <description>If equals 1, then use ONE (thread-local) semaphore per thread calling socket/netconn functions instead of allocating one semaphore per netconn (and per select etc.) ATTENTION: a thread-local semaphore for API calls is needed.</description>
+                  </integer>
+               </struct>
+               <bool id="boolHttpdNetconn" label="HTTPD_NETCONN" options="cStructField"/>
+               <bool id="boolTcpechoNetconn" label="TCP_ECHO_NETCONN" options="cStructField"/>
+               <bool id="boolUdpechoNetconn" label="UDP_ECHO_NETCONN" options="cStructField"/>
+               <bool id="boolDns" label="DNS" options="cStructField"/>
+               <bool id="boolShell" label="SHELL" options="cStructField"/>
+            </struct>
+            <struct id="socket" label="Sequential API Applications [Socket]" from="socket" available="$configSet.generic_tab.osEnable.getValue() == `true`">
+               <bool id="boolChargenSocket" label="CHARGEN" options="cStructField"/>
+               <bool id="boolSocketExamples" label="SOCKET_EXAMPLES" options="cStructField"/>
+               <bool id="boolRtp" label="RTP" options="cStructField"/>
+               <bool id="boolSslechoSocket" label="SSL_ECHO" options="cStructField" available="false"/>
+            </struct>
+         </struct>
+
+         <!-- Memory Options -->
+         <struct id="memory_t" label="Memory Options" from="memory_t">
+            <integer id="memAlign" label="Memory alignment" type="uint8_t" options="cStructField">
+               <description>MEM_ALIGNMENT: should be set to the alignment of the CPU for which lwIP is compiled. 4 byte alignment -> define MEM_ALIGNMENT to 4, 2 byte alignment -> define MEM_ALIGNMENT to 2.</description>
+            </integer>
+            <integer id="memHeapSize" label="Memory heap size" type="uint16_t" options="cStructField">
+               <description>MEM_SIZE: the size of the heap memory. If the application will send a lot of data that needs to be copied, this should be set high.</description>
+            </integer>
+            <integer id="noPacketBuf" label="No of packet buffer" type="uint8_t" options="cStructField">
+               <description>MEMP_NUM_PBUF: the number of memp struct pbufs. If the application sends a lot of data out of ROM (or other static memory), this should be set high.</description>
+            </integer>
+            <integer id="noRawPcb" label="No of RAW PCB" type="uint8_t" options="cStructField">
+               <description>MEMP_NUM_RAW_PCB: the number of UDP protocol control blocks. One per active RAW connection.</description>
+            </integer>
+            <integer id="noUdpPcb" label="No of UDP PCB" type="uint8_t" options="cStructField">
+               <description>MEMP_NUM_UDP_PCB: the number of UDP protocol control blocks. One per active UDP connection.</description>
+            </integer>
+            <integer id="noTcpPcb" label="No of TCP PCB" type="uint8_t" options="cStructField">
+               <description>MEMP_NUM_TCP_PCB: the number of simultaneously active TCP connections.</description>
+            </integer>
+            <integer id="noListenTcpPcb" label="No of listen TCP PCB" type="uint8_t" options="cStructField"/>
+            <integer id="noSegmentTcpPcb" label="No of segment TCP PCB" type="uint8_t" options="cStructField"/>
+            <integer id="noActiveTimeouts" label="No of active timeouts" type="uint8_t" options="cStructField"/>
+            <integer id="noStructNetbufs" label="No of struct netbufs" type="uint8_t" options="cStructField"/>
+            <integer id="noStructNetconns" label="No of struct netconns" type="uint8_t" options="cStructField"/>
+            <integer id="noStructTcpipMsgApi" label="No of struct tcpip_msg_api" type="uint8_t" options="cStructField"/>
+            <integer id="noStructTcpipMsgInpkt" label="No of struct tcpip_msg_inpkt" type="uint8_t" options="cStructField"/>
+            <integer id="noBufferInPool" label="No of buffers in pbuf pool" type="uint8_t" options="cStructField">
+               <description>PBUF_POOL_SIZE: the number of buffers in the pbuf pool.</description>
+            </integer>
+         </struct>
+
+         <!-- Checksum -->
+         <struct id="checksum_t" label="Checksum Settings" from="checksum_t">
+            <bool id="boolEnableCksum" label="Enable software checksum" options="cStructField">
+               <description>Enable/Disable software checksum</description>
+            </bool>
+            <struct id="checksum_id" label="Software checksum settings" from="configChecksum_t" enable="$configSet.checksum_tab.boolEnableCksum.getValue() == `true`">
+               <bool id="boolCksumPerNetif" label="Generate/Validate per NetIf Checksum" options="cStructField">
+                  <description>Checksum generation/check can be enabled/disabled per network interface. ATTENTION: If enabled, the CHECKSUM_GEN_* and CHECKSUM_CHECK_* defines must be enabled!</description>
+               </bool>
+               <bool id="boolCksumIPGen" label="Generate IP Checksum" options="cStructField"/>
+               <bool id="boolCksumUDPGen" label="Generate UDP Checksum" options="cStructField"/>
+               <bool id="boolCksumTCPGen" label="Generate TCP Checksum" options="cStructField"/>
+               <bool id="boolCksumICMPGen" label="Generate ICMP Checksum" options="cStructField"/>
+               <bool id="boolCksumIPValid" label="Validate IP Checksum" options="cStructField"/>
+               <bool id="boolCksumUDPValid" label="Validate UDP Checksum" options="cStructField"/>
+               <bool id="boolCksumTCPValid" label="Validate TCP Checksum" options="cStructField"/>
+               <bool id="boolCksumICMPValid" label="Validate ICMP Checksum" options="cStructField"/>
+               <bool id="boolCksumOnCopy" label="Calculate Checksum on-the-fly when copying data using memcpy" options="cStructField"/>
+            </struct>
+         </struct>
+
+         <!-- Debug LWIP -->
+         <struct id="debug_t" label="Debug" from="debug_t">
+            <bool id="enableDebug" label="Enable LWIP_DEBUG" options="cStructField"/>
+            <struct id="messageTypeDebug" label="Debug Message Types(LWIP_DBG_TYPES_ON)" enable="$parent.enableDebug.getValue() == `true`">
+               <bool id="debugTrace" label="LWIP_DBG_TRACE" options="cStructField">
+                  <description>flag for LWIP_DEBUGF indicating a tracing message (to follow program flow)</description>
+               </bool>
+               <bool id="debugState" label="LWIP_DBG_STATE" options="cStructField">
+                  <description>flag for LWIP_DEBUGF indicating a state debug message (to follow module states)</description>
+               </bool>
+               <bool id="debugFresh" label="LWIP_DBG_FRESH" options="cStructField">
+                  <description>flag for LWIP_DEBUGF indicating newly added code, not thoroughly tested yet</description>
+               </bool>
+               <bool id="debugHalt" label="LWIP_DBG_HALT" options="cStructField">
+                  <description>flag for LWIP_DEBUGF to halt after printing this debug message</description>
+               </bool>
+            </struct>
+            <reference id="minDebugLevel" label="LWIP_DEBUG_MIN_LEVEL" type="debug_min_level_t" options="cStructField" enable="$parent.enableDebug.getValue() == `true`"/>
+            <struct id="protocolDebug" label="Protocol Debug" enable="$parent.enableDebug.getValue() == `true`">
+               <bool id="etharpDebug" label="ETHARP_DEBUG" options="cStructField"/>
+               <bool id="netifDebug" label="NETIF_DEBUG" options="cStructField"/>
+               <bool id="pbufDebug" label="PBUF_DEBUG" options="cStructField"/>
+               <bool id="apiLibDebug" label="API_LIB_DEBUG" options="cStructField"/>
+               <bool id="apiMsgDebug" label="API_MSG_DEBUG" options="cStructField"/>
+               <bool id="socketsDebug" label="SOCKETS_DEBUG" options="cStructField"/>
+               <bool id="icmpDebug" label="ICMP_DEBUG" options="cStructField"/>
+               <bool id="igmpDebug" label="IGMP_DEBUG" options="cStructField"/>
+               <bool id="inetDebug" label="INET_DEBUG" options="cStructField"/>
+               <bool id="ipDebug" label="IP_DEBUG" options="cStructField"/>
+               <bool id="ipReassDebug" label="IP_REASS_DEBUG" options="cStructField"/>
+               <bool id="rawDebug" label="RAW_DEBUG" options="cStructField"/>
+               <bool id="memDebug" label="MEM_DEBUG" options="cStructField"/>
+               <bool id="mempDebug" label="MEMP_DEBUG" options="cStructField"/>
+               <bool id="sysDebug" label="SYS_DEBUG" options="cStructField"/>
+               <bool id="timersDebug" label="TIMERS_DEBUG" options="cStructField"/>
+               <bool id="tcpDebug" label="TCP_DEBUG" options="cStructField"/>
+               <bool id="tcpInputDebug" label="TCP_INPUT_DEBUG" options="cStructField"/>
+               <bool id="tcpFrDebug" label="TCP_FR_DEBUG" options="cStructField"/>
+               <bool id="tcpRtoDebug" label="TCP_RTO_DEBUG" options="cStructField"/>
+               <bool id="tcpCwndDebug" label="TCP_CWND_DEBUG" options="cStructField"/>
+               <bool id="tcpWndDebug" label="TCP_WND_DEBUG" options="cStructField"/>
+               <bool id="tcpOutputDebug" label="TCP_OUTPUT_DEBUG" options="cStructField"/>
+               <bool id="tcpRstDebug" label="TCP_RST_DEBUG" options="cStructField"/>
+               <bool id="tcpQlenDebug" label="TCP_QLEN_DEBUG" options="cStructField"/>
+               <bool id="udpDebug" label="UDP_DEBUG" options="cStructField"/>
+               <bool id="tcpipDebug" label="TCPIP_DEBUG" options="cStructField"/>
+               <bool id="slipDebug" label="SLIP_DEBUG" options="cStructField"/>
+               <bool id="dhcpDebug" label="DHCP_DEBUG" options="cStructField"/>
+               <bool id="autoipDebug" label="AUTOIP_DEBUG" options="cStructField"/>
+               <bool id="dnsDebug" label="DNS_DEBUG" options="cStructField"/>
+               <bool id="ip6Debug" label="IP6_DEBUG" options="cStructField"/>
+               <bool id="pppDebug" label="PPP_DEBUG" options="cStructField"/>
+               <bool id="mdnsDebug" label="MDNS_DEBUG" options="cStructField"/>
+               <bool id="mqttDebug" label="MQTT_DEBUG" options="cStructField"/>
+               <bool id="snmpDebug" label="SNMP_DEBUG" options="cStructField"/>
+               <bool id="sntpDebug" label="SNTP_DEBUG" options="cStructField"/>
+               <bool id="tftpDebug" label="TFTP_DEBUG" options="cStructField"/>
+               <bool id="pingDebug" label="PING_DEBUG" options="cStructField"/>
+               <bool id="httpdDebug" label="HTTPD_DEBUG" options="cStructField"/>
+               <bool id="rtpDebug" label="RTP_DEBUG" options="cStructField"/>
+               <bool id="smtpDebug" label="SMTP_DEBUG" options="cStructField"/>
+            </struct>
+         </struct>
+
+         <!-- /* User settings */ -->
+         <struct id="user_t" label="User Additional Settings" from="user_t">
+            <description>User additional settings</description>
+            <string id="configUSER_SETTINGS" label="User settings" options="cStructField;UI_MULTI_LINE=10"/>
+            <bool id="boolTimevalPrivate" label="LWIP_TIMEVAL_PRIVATE" options="cStructField"/>
+         </struct>
+
+      </user_types>
+      <settings>
+         <reference id="generic_tab" label="Generic" type="generic_t" config_set_id="tcpip_cfg" component_id="tcpip" available="true">
+            <description>generic configurations</description>
+         </reference>
+         <array id="netifcfg_tab" label="NetIface" type="netifcfg_t" options="ShowContentAs=Table">
+           <description>Configure in detail for each available network interface.</description>
+           <item_defaults>
+               <set_default id="boolIface" value_expr="x -> (`false`)"/>
+               <set_default id="boolDhcp" value_expr="x -> (`false`)"/>
+               <set_default id="boolAutoip" value_expr="x -> (`false`)"/>
+               <set_default id="ipv4Subnet" value_expr="x -> (`255.255.255.0`)"/>
+               <set_default id="ipv4Gateway" value_expr="x -> (`192.168.0.1`)"/>
+               <set_default id="boolIpv6" value_expr="x -> (`false`)"/>
+           </item_defaults>
+           <validation>
+             <constraint cond_expr="($this.size() &gt; 0)" level="error" description="The number of network interfaces must be at least 1!"/>
+             <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`hostname`).value()).length() == 0" level="error" description="There are some duplicated `Host name` in the configuration"/>
+             <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`macAddress`).value()).length() == 0" level="error" description="There are some duplicated `Mac address` in the configuration"/>
+             <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`ipv4Address`).value()).length() == 0" level="error" description="There are some duplicated `IPv4 address` in the configuration"/>
+           </validation>
+         </array>
+         <reference id="datalink_tab" label="Data Link" type="datalink_t" config_set_id="tcpip_cfg" component_id="tcpip" available="true">
+            <description>data link configurations</description>
+         </reference>
+         <reference id="network_tab" label="IP Network" type="network_t" config_set_id="tcpip_cfg" component_id="tcpip" available="true">
+            <description>ip network configurations</description>
+         </reference>
+         <reference id="transport_tab" label="Transport" type="transport_t" config_set_id="tcpip_cfg" component_id="tcpip" available="true">
+            <description>transport layer configurations</description>
+         </reference>
+         <reference id="application_tab" label="Applications" type="application_t" config_set_id="tcpip_cfg" component_id="tcpip" available="true">
+            <description>applications layer configurations</description>
+         </reference>
+         <reference id="memory_tab" label="Memory" type="memory_t" config_set_id="tcpip_cfg" component_id="tcpip" available="true"/>
+         <reference id="checksum_tab" label="Checksum" type="checksum_t" config_set_id="tcpip_cfg" component_id="tcpip" available="true"/>
+         <reference id="debug_tab" label="Debug" type="debug_t" config_set_id="tcpip_cfg" component_id="tcpip" available="true"/>
+         <reference id="user_tab" label="User Settings" type="user_t" config_set_id="tcpip_cfg" component_id="tcpip" available="true"/>
+
+         <variable value="`true`" id="generate_header_and_c"></variable>
+         <variable value="`tcpip_CodeGenerator`" id="codegen_class"></variable>
+         <variable value="`../tcpip/tcpip_codegen.js`" id="codegen_file"></variable>
+         <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+         <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+         <variable value="`TcpipToolchainSettings`" id="toolchain_settings_class"></variable>
+         <variable value="`../tcpip/tcpip_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+       </settings>
+   </config_set>
+</component:config_component>

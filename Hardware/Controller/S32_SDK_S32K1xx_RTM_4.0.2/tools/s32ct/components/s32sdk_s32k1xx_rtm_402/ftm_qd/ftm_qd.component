@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="flexTimer_qd" label="flexTimer_qd" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.ftm_qd" version="1.0.0"/>
+   <description>FTM configuration</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>FTM_QD general mode</description>
+      <config_set_refs>
+         <config_set_ref>ftm_qd</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>FTM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="ftm_qd" label="Configuration" from_source="ftm_qd_driver.h">
+      <description>FTM_QD Driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="default_value0"
+                          label="Default Value"
+                          available="!featureDefined(`FEATURE_FTM` + getPeriphInstanceIndex($instance.getPeripheral()).toString() + `_HAS_QUAD`)">
+            <set id="ftmUserConfig.quadDecoderConfiguration.initCountValue">0</set>
+            <set id="ftmUserConfig.quadDecoderConfiguration.maxCountValue">65535</set>
+            <set id="ftmUserConfig.DebugMode">FTM_BDM_MODE_11</set>
+            <set id="ftmUserConfig.ClockSource">FTM_CLOCK_SOURCE_NONE</set>
+         </quick_selection>
+         <quick_selection id="default_value1"
+                          label="Default Values"
+                          available="featureDefined(`FEATURE_FTM` + getPeriphInstanceIndex($instance.getPeripheral()).toString() + `_HAS_QUAD`)">
+            <set id="ftmUserConfig.quadDecoderConfiguration.initCountValue">0</set>
+            <set id="ftmUserConfig.quadDecoderConfiguration.maxCountValue">65535</set>
+            <set id="ftmUserConfig.DebugMode">FTM_BDM_MODE_11</set>
+            <set id="ftmUserConfig.ClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+         </quick_selection>
+         <default>default_value</default>
+      </quick_selections>
+      <settings>
+         <reference id="ftmUserConfig" label="User configurations" type="ftm_user_config_t" option="ShowContentAs=MasterDetail">
+         </reference>
+         <variable value="`../ftm_qd/ftm_qd_codegen.js`" id="codegen_file"></variable>
+         <variable value="`FTM_QD_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+      <user_types>
+         <struct id="ftm_user_config_t" label="FTM QD User configurations" type="ftm_user_config_t">
+
+            <reference id="ClockSource" label="FTM clock source" type="ftm_clock_source_t" enable="true">
+              <validation>
+                 <constraint cond_expr="featureDefined(`FEATURE_FTM` + getPeriphInstanceIndex($instance.getPeripheral()).toString() + `_HAS_QUAD`)
+                                        || ($this.getValue() == `FTM_CLOCK_SOURCE_NONE`)"
+                             level="error"
+                             description="The Quadrature is only available on FTM_1 or FTM_2."/>
+              </validation>
+            </reference>
+
+            <info id="Name_ModuleClock"
+                  value="getFeature(`FEATURE_FTM_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="Name_ExternalClock"
+                  value="getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="SystemClockFrequency"
+                  label="System Clock(Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_SYS_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="false">
+            </info>
+
+            <info id="DisplayNoneClock"
+                  label="Frequency of source clock (Hz)"
+                  value="0"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_NONE`)">
+            </info>
+
+            <info id="DisplaySystemClock"
+                  label="Frequency of source clock (Hz)"
+                  value="$parent.SystemClockFrequency.getValue()"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_SYSTEMCLK`)">
+            </info>
+            <info id="DisplayExternalClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               $parent.Name_ExternalClock.getValue(),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_EXTERNALCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 4))"
+                              level="error"
+                              description="The frequency of the external clock source must not exceed 1/4 of the FTM input clock frequency"/>
+               </validation>
+            </info>
+            <info id="DisplayFixedClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_FIX_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_FIXEDCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 2))"
+                              level="error"
+                              description="The frequency of the fixed frequency clock must not exceed 1/2 of the FTM input clock frequency"/>
+               </validation>
+            </info>
+
+            <reference id="ClockSourcePrescaler" label="Clock source prescaler" type="ftm_clock_ps_t">
+            </reference>
+
+            <info id="DisplayCounterClock_None"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayNoneClock.getValue()"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_NONE`)">
+            </info>
+            <info id="DisplayCounterClock_System"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplaySystemClock.getValue() / toInt($parent.ClockSourcePrescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_SYSTEMCLK`)">
+            </info>
+            <info id="DisplayCounterClock_External"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayExternalClock.getValue() / toInt($parent.ClockSourcePrescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_EXTERNALCLK`)">
+            </info>
+            <info id="DisplayCounterClock_Fixed"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayFixedClock.getValue() / toInt($parent.ClockSourcePrescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_FIXEDCLK`)">
+            </info>
+
+            <reference id="DebugMode" label="Debug mode" type="ftm_Debug_mode_t">
+            </reference>
+            <bool id="TimerOverInterrupt" label="Timer overflow interrupt">
+            </bool>
+            <bool id="InitializationTrigger" label="Initialization Trigger">
+            </bool>
+            <reference id="quadDecoderConfiguration" label="Quadrature decoder configurations" type="quadDecoderConfig">
+            </reference>
+         </struct>
+
+         <struct id="quadDecoderConfig"
+                 label="Quadrature decoder configurations"
+                 type="quadDecoderConfig"
+                 enable="!($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_NONE`)">
+            <info id="configName" label="Name" enable="false" value="$instance.getLabel() + `_QuadDecoderConfig`">
+            </info>
+            <reference id="quadDecoderMode" label="Quadrature decoder mode" type="ftm_quad_decode_mode_t">
+            </reference>
+            <integer id="initCountValue" label="Initial count value" type="uint16_t" min_expr="0" max_expr="65535">
+            </integer>
+            <integer id="maxCountValue" label="Maximum count value" type="uint16_t" min_expr="0" max_expr="65535">
+            </integer>
+            <struct id="quadPhaseAConfig" label="Quadrature phase A configurations" type="quadPhaseAConfig">
+               <bool id="phaseAInputFilter" label="Phase A input filter">
+               </bool>
+               <integer id="phaseAInputValue"
+                        label="Phase A input value"
+                        type="uint16_t" min_expr="0"
+                        max_expr="15"
+                        enable="$parent.phaseAInputFilter.getValue()">
+               </integer>
+               <reference id="ftm_quad_phaseA_polarity_t" label="Phase A polarity" type="ftm_quad_phase_polarity_t">
+               </reference>
+            </struct>
+            <struct id="quadPhaseBConfig" label="Quadrature phase B configurations" type="quadPhaseBConfig">
+               <bool id="phaseBInputFilter" label="Phase B input filter">
+               </bool>
+               <integer id="phaseBInputValue"
+                        label="Phase B input value"
+                        type="uint16_t" min_expr="0"
+                        max_expr="15"
+                        enable="$parent.phaseBInputFilter.getValue()">
+               </integer>
+               <reference id="ftm_quad_phaseB_polarity_t" label="Phase B polarity" type="ftm_quad_phase_polarity_t">
+               </reference>
+            </struct>
+         </struct>
+
+         <enum id="ftm_clock_source_t" label="FTM clock source" from="ftm_clock_source_t">
+            <description></description>
+            <item id="FTM_CLOCK_SOURCE_NONE" label="No clock, module disabled" available="true"/>
+            <item id="FTM_CLOCK_SOURCE_SYSTEMCLK" label="System clock" available="true"/>
+            <item id="FTM_CLOCK_SOURCE_EXTERNALCLK" label="External clock" available="featureDefined(`FEATURE_FTM_HAS_EXT_CLOCK_SOURCE`)"/>
+            <item id="FTM_CLOCK_SOURCE_FIXEDCLK" label="Fixed clock" available="featureDefined(`FEATURE_FTM_HAS_FIXED_CLOCK_SOURCE`)"/>
+         </enum>
+         <enum id="power_modes_t" label="Power modes enumeration" from="power_modes_t">
+            <item id="DRUN" label="DRUN"/>
+            <item id="RUN0" label="RUN0"/>
+            <item id="RUN1" label="RUN1"/>
+            <item id="RUN2" label="RUN2"/>
+            <item id="RUN3" label="RUN3"/>
+         </enum>
+         <enum id="ftm_clock_ps_t" label="Clock source prescaler" from="ftm_clock_ps_t">
+            <description></description>
+            <item id="1" label="1"/>
+            <item id="2" label="2"/>
+            <item id="4" label="4"/>
+            <item id="8" label="8"/>
+            <item id="16" label="16"/>
+            <item id="32" label="32"/>
+            <item id="64" label="64"/>
+            <item id="128" label="128"/>
+         </enum>
+         <enum id="ftm_Debug_mode_t" label="Debug mode" from="ftm_Debug_mode_t">
+            <description>
+                Mode 0: FTM counter stopped, CH(n)F bit can be set, FTM channels in functional mode, writes to MOD,CNTIN and C(n)V registers bypass the register buffers.
+                Mode 1: FTM counter stopped, CH(n)F bit is not set, FTM channels outputs are forced to their safe value , writes to MOD,CNTIN and C(n)V registers bypass the register buffers.
+                Mode 2: FTM counter stopped, CH(n)F bit is not set, FTM channels outputs are frozen when chip enters in BDM mode, writes to MOD, CNTIN and C(n)V registers bypass the register buffers.
+                Mode 3: FTM counter in functional mode, CH(n)F bit can be set,FTM channels in functional mode, writes to MOD,CNTIN and C(n)V registers is in fully functional mode.
+            </description>
+            <item id="FTM_BDM_MODE_00" label="Mode 0"/>
+            <item id="FTM_BDM_MODE_01" label="Mode 1"/>
+            <item id="FTM_BDM_MODE_10" label="Mode 2"/>
+            <item id="FTM_BDM_MODE_11" label="Mode 3"/>
+         </enum>
+         <enum id="ftm_quad_decode_mode_t" label="Quadrature decoder mode" from="ftm_quad_decode_mode_t">
+            <description></description>
+            <item id="FTM_QUAD_PHASE_ENCODE" label="Phase encode"/>
+            <item id="FTM_QUAD_COUNT_AND_DIR" label="Speed and direction mode"/>
+         </enum>
+         <enum id="ftm_quad_phase_polarity_t" label="Phase polarity" from="ftm_quad_phase_polarity_t">
+            <description></description>
+            <item id="FTM_QUAD_PHASE_NORMAL" label="Normal polarity"/>
+            <item id="FTM_QUAD_PHASE_INVERT" label="Inverted polarity"/>
+         </enum>
+      </user_types>
+   </config_set>
+</component:config_component>

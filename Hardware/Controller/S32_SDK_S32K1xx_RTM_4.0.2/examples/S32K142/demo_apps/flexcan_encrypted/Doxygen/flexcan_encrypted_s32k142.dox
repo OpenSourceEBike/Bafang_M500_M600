@@ -1,0 +1,86 @@
+/*!
+    @page flexcan_encrypted_s32k142_group FlexCAN Encrypted
+    @brief Demo application showing the FlexCAN functionalities
+
+    @note <b>If running the encrypted communication:</b> The encryption uses the first non-volatile user key, which needs to be configured by running the <b>CSEc Key Configuration</b> in the driver examples folder.
+    @note <b>Encrypted communication works only for CSEc enabled parts.</b> SIM_SDID indicates whether CSEc is available on your device.
+    @note <b>If one of the user keys was loaded using the CSEc Key Configuration, any further full erase of the Flash requires a Challenge-Authentication process.</b> This can be done by running the CSEc Key Configuration example again and setting the ERASE_ALL_KEYS macro to 1.
+
+    ## Application description ##
+    _____
+    The purpose of this demo application is to show you the usage of the FlexCAN module configured to use Flexible Data Rate and the CSEc module from the S32K142 CPU using the S32 SDK API.
+     - In the first part, the application will setup the board clocks, pins and other system functions.
+     - Then it will configure the FlexCAN module features such as FD, Bitrate and Message buffers
+     - The application will wait for frames to be received on the configured message buffer or for an event raised by pressing one of the two buttons which will trigger a frame send to the recipient.
+     - Pressing SW3 button of board 1 shall trigger a CAN transfer that results in toggling the RED led on board 2.
+     - Pressing SW2 button of board 1 shall trigger a CAN transfer that results in toggling the GREEN led on board 2.
+     - Pressing both SW3 and SW2 buttons shall enable the encrypted communication. This event is signaled by the BLUE led being ON.
+     - The frames are sent in plain text by default.
+     - This demo application requires two boards, one configured as master and the other one configured as slave (see MASTER/SLAVE defines in application code).
+
+    ## Prerequisites ##
+    _____
+    To run the example you will need to have the following items:
+    - 2 S32K142 boards
+    - 1 Power Adapter 12V
+    - 3 Dupont female to famale cables
+    - 1 Personal Computer
+    - 1 PEMicro Debugger / 1 Jlink Lite Debugger (optional, users can use Open SDA)
+
+    ## Boards supported ##
+    _____
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+    - S32K142-MB
+
+    ## Hardware Wiring ##
+    _____
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION         |   S32K142EVB-Q100               |   S32K142-MB
+    ---------------------|---------------------------------|--------------
+    CAN HIGH (\b *)      |  CAN HIGH - J13.1               |   CAN HIGH - J60.2
+    CAN LOW (\b *)       |  CAN LOW - J13.2                |   CAN LOW - J60.3
+    GND (\b GND)         |  GND - J13.4                    |   GND - J6
+    BUTTON 1 (\b PTC13)  |  SW3 - wired on the board       |   BTN2 - wired on the board
+    BUTTON 2 (\b PTC12)  |  SW2  - wired on the board      |   BTN3 - wired on the board
+    RED_LED (\b PTD15)   |  RGB_RED - wired on the board   |   LED3 - wired on the board  
+    GREEN_LED (\b PTD16) |  RGB_GREEN - wired on the board |   LED2 - wired on the board
+    BLUE_LED (\b PTD0)   |  RGB_GREEN - wired on the board |   LED1 - wired on the board
+
+
+    <b>(*) Those lines must be modulated using a transceiver, if it is not specified the boards already include the CAN transceiver
+           The CAN transceiver should be in Forced Normal Mode operation (default mode).
+           To reset the CAN transceiver to default mode connect the SBC transceiver in next configuration with the board S32K142EVB-Q100 power off :
+               • pin RSTN from SBC is held LOW 
+               • CANH(J13.1) is pulled up to VBAT(J11.2) 
+               • CANL(J13.2) is pulled down to GND(J13.4) 
+           Power on the board with external supply 12V (J16)</b>
+
+    ## How to run ##
+    _____
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New \b S32DS \b Project \b From... and select \b flexcan_encrypted_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    #### 2. Generating the S32CT configuration ####
+    First go to \b Project \b Explorer View in S32 DS and select the current project(\b flexcan_encrypted_s32k142). Then go to \b Project and click on \b Generate \b Processor \b Expert \b Code \n
+    Wait for the code generation to be completed before continuing to the next step.
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be four debug configurations for this project:
+     Configuration Name | Description
+     -------------------|------------
+     \b flexcan_encrypted_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debuggers 
+     \b flexcan_encrypted_s32k142_debug_ram_pemicro | Debug the RAM configuration using PEMicro debuggers 
+     \b flexcan_encrypted_s32k142_debug_flash_jlink | Debug the FLASH configuration using Segger J-Link debuggers 
+     \b flexcan_encrypted_s32k142_debug_ram_jlink | Debug the RAM configuration using Segger J-Link debuggers 
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+
+*/
+

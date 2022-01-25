@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="C0" description="CMP Control Register 0">
+    <alias type="CMSIS" value="C0"/>
+    <bit_field offset="0" width="2" name="HYSTCTR" access="RW" reset_value="0" description="Comparator hard block hysteresis control. See chip data sheet to get the actual hystersis value with each level">
+      <alias type="CMSIS" value="CMP_C0_HYSTCTR(x)"/>
+      <bit_field_value name="C0_HYSTCTR_0b00" value="0b00" description="The hard block output has level 0 hysteresis internally."/>
+      <bit_field_value name="C0_HYSTCTR_0b01" value="0b01" description="The hard block output has level 1 hysteresis internally."/>
+      <bit_field_value name="C0_HYSTCTR_0b10" value="0b10" description="The hard block output has level 2 hysteresis internally."/>
+      <bit_field_value name="C0_HYSTCTR_0b11" value="0b11" description="The hard block output has level 3 hysteresis internally."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="OFFSET" access="RW" reset_value="0" description="Comparator hard block offset control. See chip data sheet to get the actual offset value with each level">
+      <alias type="CMSIS" value="CMP_C0_OFFSET(x)"/>
+      <bit_field_value name="C0_OFFSET_0b0" value="0b0" description="The comparator hard block output has level 0 offset internally."/>
+      <bit_field_value name="C0_OFFSET_0b1" value="0b1" description="The comparator hard block output has level 1 offset internally."/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <bit_field offset="4" width="3" name="FILTER_CNT" access="RW" reset_value="0" description="Filter Sample Count">
+      <alias type="CMSIS" value="CMP_C0_FILTER_CNT(x)"/>
+      <bit_field_value name="C0_FILTER_CNT_0b000" value="0b000" description="Filter is disabled. If SE = 1, then COUT is a logic zero (this is not a legal state, and is not recommended). If SE = 0, COUT = COUTA."/>
+      <bit_field_value name="C0_FILTER_CNT_0b001" value="0b001" description="1 consecutive sample must agree (comparator output is simply sampled)."/>
+      <bit_field_value name="C0_FILTER_CNT_0b010" value="0b010" description="2 consecutive samples must agree."/>
+      <bit_field_value name="C0_FILTER_CNT_0b011" value="0b011" description="3 consecutive samples must agree."/>
+      <bit_field_value name="C0_FILTER_CNT_0b100" value="0b100" description="4 consecutive samples must agree."/>
+      <bit_field_value name="C0_FILTER_CNT_0b101" value="0b101" description="5 consecutive samples must agree."/>
+      <bit_field_value name="C0_FILTER_CNT_0b110" value="0b110" description="6 consecutive samples must agree."/>
+      <bit_field_value name="C0_FILTER_CNT_0b111" value="0b111" description="7 consecutive samples must agree."/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="1" name="EN" access="RW" reset_value="0" description="Comparator Module Enable">
+      <alias type="CMSIS" value="CMP_C0_EN(x)"/>
+      <bit_field_value name="C0_EN_0b0" value="0b0" description="Analog Comparator is disabled."/>
+      <bit_field_value name="C0_EN_0b1" value="0b1" description="Analog Comparator is enabled."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="OPE" access="RW" reset_value="0" description="Comparator Output Pin Enable">
+      <alias type="CMSIS" value="CMP_C0_OPE(x)"/>
+      <bit_field_value name="C0_OPE_0b0" value="0b0" description="When OPE is 0, the comparator output (after window/filter settings dependent on software configuration) is not available to a packaged pin."/>
+      <bit_field_value name="C0_OPE_0b1" value="0b1" description="When OPE is 1, and if the software has configured the comparator to own a packaged pin, the comparator is available in a packaged pin."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="COS" access="RW" reset_value="0" description="Comparator Output Select">
+      <alias type="CMSIS" value="CMP_C0_COS(x)"/>
+      <bit_field_value name="C0_COS_0b0" value="0b0" description="Set CMPO to equal COUT (filtered comparator output)."/>
+      <bit_field_value name="C0_COS_0b1" value="0b1" description="Set CMPO to equal COUTA (unfiltered comparator output)."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="INVT" access="RW" reset_value="0" description="Comparator invert">
+      <alias type="CMSIS" value="CMP_C0_INVT(x)"/>
+      <bit_field_value name="C0_INVT_0b0" value="0b0" description="Does not invert the comparator output."/>
+      <bit_field_value name="C0_INVT_0b1" value="0b1" description="Inverts the comparator output."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="PMODE" access="RW" reset_value="0" description="Power Mode Select">
+      <alias type="CMSIS" value="CMP_C0_PMODE(x)"/>
+      <bit_field_value name="C0_PMODE_0b0" value="0b0" description="Low Speed (LS) comparison mode is selected."/>
+      <bit_field_value name="C0_PMODE_0b1" value="0b1" description="High Speed (HS) comparison mode is selected, in VLPx mode, or Stop mode switched to Low Speed (LS) mode."/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="1" reset_value="0"/>
+    <bit_field offset="14" width="1" name="WE" access="RW" reset_value="0" description="Windowing Enable">
+      <alias type="CMSIS" value="CMP_C0_WE(x)"/>
+      <bit_field_value name="C0_WE_0b0" value="0b0" description="Windowing mode is not selected."/>
+      <bit_field_value name="C0_WE_0b1" value="0b1" description="Windowing mode is selected."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="SE" access="RW" reset_value="0" description="Sample Enable">
+      <alias type="CMSIS" value="CMP_C0_SE(x)"/>
+      <bit_field_value name="C0_SE_0b0" value="0b0" description="Sampling mode is not selected."/>
+      <bit_field_value name="C0_SE_0b1" value="0b1" description="Sampling mode is selected."/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="FPR" access="RW" reset_value="0" description="Filter Sample Period">
+      <alias type="CMSIS" value="CMP_C0_FPR(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="COUT" access="RO" reset_value="0" description="Analog Comparator Output">
+      <alias type="CMSIS" value="CMP_C0_COUT(x)"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="CFF" access="W1C" reset_value="0" description="Analog Comparator Flag Falling">
+      <alias type="CMSIS" value="CMP_C0_CFF(x)"/>
+      <bit_field_value name="C0_CFF_0b0" value="0b0" description="A falling edge has not been detected on COUT."/>
+      <bit_field_value name="C0_CFF_0b1" value="0b1" description="A falling edge on COUT has occurred."/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="CFR" access="W1C" reset_value="0" description="Analog Comparator Flag Rising">
+      <alias type="CMSIS" value="CMP_C0_CFR(x)"/>
+      <bit_field_value name="C0_CFR_0b0" value="0b0" description="A rising edge has not been detected on COUT."/>
+      <bit_field_value name="C0_CFR_0b1" value="0b1" description="A rising edge on COUT has occurred."/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="IEF" access="RW" reset_value="0" description="Comparator Interrupt Enable Falling">
+      <alias type="CMSIS" value="CMP_C0_IEF(x)"/>
+      <bit_field_value name="C0_IEF_0b0" value="0b0" description="Interrupt is disabled."/>
+      <bit_field_value name="C0_IEF_0b1" value="0b1" description="Interrupt is enabled."/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="IER" access="RW" reset_value="0" description="Comparator Interrupt Enable Rising">
+      <alias type="CMSIS" value="CMP_C0_IER(x)"/>
+      <bit_field_value name="C0_IER_0b0" value="0b0" description="Interrupt is disabled."/>
+      <bit_field_value name="C0_IER_0b1" value="0b1" description="Interrupt is enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="1" reset_value="0"/>
+    <bit_field offset="30" width="1" name="DMAEN" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="CMP_C0_DMAEN(x)"/>
+      <bit_field_value name="C0_DMAEN_0b0" value="0b0" description="DMA is disabled."/>
+      <bit_field_value name="C0_DMAEN_0b1" value="0b1" description="DMA is enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="31" width="1" reset_value="0"/>
+  </register>
+  <register offset="0x4" width="32" name="C1" description="CMP Control Register 1">
+    <alias type="CMSIS" value="C1"/>
+    <bit_field offset="0" width="8" name="VOSEL" access="RW" reset_value="0" description="DAC Output Voltage Select">
+      <alias type="CMSIS" value="CMP_C1_VOSEL(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="MSEL" access="RW" reset_value="0" description="Minus Input MUX Control">
+      <alias type="CMSIS" value="CMP_C1_MSEL(x)"/>
+      <bit_field_value name="C1_MSEL_0b000" value="0b000" description="IN0"/>
+      <bit_field_value name="C1_MSEL_0b001" value="0b001" description="IN1"/>
+      <bit_field_value name="C1_MSEL_0b010" value="0b010" description="IN2"/>
+      <bit_field_value name="C1_MSEL_0b011" value="0b011" description="IN3"/>
+      <bit_field_value name="C1_MSEL_0b100" value="0b100" description="IN4"/>
+      <bit_field_value name="C1_MSEL_0b101" value="0b101" description="IN5"/>
+      <bit_field_value name="C1_MSEL_0b110" value="0b110" description="IN6"/>
+      <bit_field_value name="C1_MSEL_0b111" value="0b111" description="IN7"/>
+    </bit_field>
+    <bit_field offset="11" width="3" name="PSEL" access="RW" reset_value="0" description="Plus Input MUX Control">
+      <alias type="CMSIS" value="CMP_C1_PSEL(x)"/>
+      <bit_field_value name="C1_PSEL_0b000" value="0b000" description="IN0"/>
+      <bit_field_value name="C1_PSEL_0b001" value="0b001" description="IN1"/>
+      <bit_field_value name="C1_PSEL_0b010" value="0b010" description="IN2"/>
+      <bit_field_value name="C1_PSEL_0b011" value="0b011" description="IN3"/>
+      <bit_field_value name="C1_PSEL_0b100" value="0b100" description="IN4"/>
+      <bit_field_value name="C1_PSEL_0b101" value="0b101" description="IN5"/>
+      <bit_field_value name="C1_PSEL_0b110" value="0b110" description="IN6"/>
+      <bit_field_value name="C1_PSEL_0b111" value="0b111" description="IN7"/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="VRSEL" access="RW" reset_value="0" description="Supply Voltage Reference Source Select">
+      <alias type="CMSIS" value="CMP_C1_VRSEL(x)"/>
+      <bit_field_value name="C1_VRSEL_0b0" value="0b0" description="Vin1 is selected as resistor ladder network supply reference Vin."/>
+      <bit_field_value name="C1_VRSEL_0b1" value="0b1" description="Vin2 is selected as resistor ladder network supply reference Vin."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="DACEN" access="RW" reset_value="0" description="DAC Enable">
+      <alias type="CMSIS" value="CMP_C1_DACEN(x)"/>
+      <bit_field_value name="C1_DACEN_0b0" value="0b0" description="DAC is disabled."/>
+      <bit_field_value name="C1_DACEN_0b1" value="0b1" description="DAC is enabled."/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="CHN0" access="RW" reset_value="0" description="Channel 0 input enable">
+      <alias type="CMSIS" value="CMP_C1_CHN0(x)"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="CHN1" access="RW" reset_value="0" description="Channel 1 input enable">
+      <alias type="CMSIS" value="CMP_C1_CHN1(x)"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="CHN2" access="RW" reset_value="0" description="Channel 2 input enable">
+      <alias type="CMSIS" value="CMP_C1_CHN2(x)"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="CHN3" access="RW" reset_value="0" description="Channel 3 input enable">
+      <alias type="CMSIS" value="CMP_C1_CHN3(x)"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="CHN4" access="RW" reset_value="0" description="Channel 4 input enable">
+      <alias type="CMSIS" value="CMP_C1_CHN4(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="CHN5" access="RW" reset_value="0" description="Channel 5 input enable">
+      <alias type="CMSIS" value="CMP_C1_CHN5(x)"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="CHN6" access="RW" reset_value="0" description="Channel 6 input enable">
+      <alias type="CMSIS" value="CMP_C1_CHN6(x)"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="CHN7" access="RW" reset_value="0" description="Channel 7 input enable">
+      <alias type="CMSIS" value="CMP_C1_CHN7(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="INNSEL" access="RW" reset_value="0" description="Selection of the input to the negative port of the comparator">
+      <alias type="CMSIS" value="CMP_C1_INNSEL(x)"/>
+      <bit_field_value name="C1_INNSEL_0b00" value="0b00" description="IN0, from the 8-bit DAC output"/>
+      <bit_field_value name="C1_INNSEL_0b01" value="0b01" description="IN1, from the analog 8-1 mux"/>
+      <bit_field_value name="C1_INNSEL_0b10" value="0b10" description="Reserved"/>
+      <bit_field_value name="C1_INNSEL_0b11" value="0b11" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="1" reset_value="0"/>
+    <bit_field offset="27" width="2" name="INPSEL" access="RW" reset_value="0" description="Selection of the input to the positive port of the comparator">
+      <alias type="CMSIS" value="CMP_C1_INPSEL(x)"/>
+      <bit_field_value name="C1_INPSEL_0b00" value="0b00" description="IN0, from the 8-bit DAC output"/>
+      <bit_field_value name="C1_INPSEL_0b01" value="0b01" description="IN1, from the analog 8-1 mux"/>
+      <bit_field_value name="C1_INPSEL_0b10" value="0b10" description="Reserved"/>
+      <bit_field_value name="C1_INPSEL_0b11" value="0b11" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="1" reset_value="0"/>
+    <reserved_bit_field offset="30" width="2" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="C2" description="CMP Control Register 2">
+    <alias type="CMSIS" value="C2"/>
+    <bit_field offset="0" width="8" name="ACOn" access="RW" reset_value="0" description="The result of the input comparison for channel n . This field stores the latest comparison result of the input channel n with the fixed mux port. Reading this bit returns the latest comparison result. Writing this field defines the pre-set state of channel n.">
+      <alias type="CMSIS" value="CMP_C2_ACOn(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="6" name="INITMOD" access="RW" reset_value="0" description="Comparator and DAC initialization delay modulus.">
+      <alias type="CMSIS" value="CMP_C2_INITMOD(x)"/>
+      <bit_field_value name="C2_INITMOD_0b000000" value="0b000000" description="The modulus is set to 64(same with 111111)."/>
+    </bit_field>
+    <bit_field offset="14" width="2" name="NSAM" access="RW" reset_value="0" description="Number of sample clocks">
+      <alias type="CMSIS" value="CMP_C2_NSAM(x)"/>
+      <bit_field_value name="C2_NSAM_0b00" value="0b00" description="The comparison result is sampled as soon as the active channel is scanned in one round-robin clock."/>
+      <bit_field_value name="C2_NSAM_0b01" value="0b01" description="The sampling takes place 1 round-robin clock cycle after the next cycle of the round-robin clock."/>
+      <bit_field_value name="C2_NSAM_0b10" value="0b10" description="The sampling takes place 2 round-robin clock cycles after the next cycle of the round-robin clock."/>
+      <bit_field_value name="C2_NSAM_0b11" value="0b11" description="The sampling takes place 3 round-robin clock cycles after the next cycle of the round-robin clock."/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="CH0F" access="W1C" reset_value="0" description="Channel 0 input changed flag. This bit is set If the channel 0 input changed from the last comparison with the fixed mux port.">
+      <alias type="CMSIS" value="CMP_C2_CH0F(x)"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="CH1F" access="W1C" reset_value="0" description="Channel 1 input changed flag. This bit is set If the channel 1 input changed from the last comparison with the fixed mux port.">
+      <alias type="CMSIS" value="CMP_C2_CH1F(x)"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="CH2F" access="W1C" reset_value="0" description="Channel 2 input changed flag. This bit is set If the channel 2 input changed from the last comparison with the fixed mux port.">
+      <alias type="CMSIS" value="CMP_C2_CH2F(x)"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="CH3F" access="W1C" reset_value="0" description="Channel 3 input changed flag. This bit is set If the channel 3 input changed from the last comparison with the fixed mux port.">
+      <alias type="CMSIS" value="CMP_C2_CH3F(x)"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="CH4F" access="W1C" reset_value="0" description="Channel 4 input changed flag. This bit is set If the channel 4 input changed from the last comparison with the fixed mux port.">
+      <alias type="CMSIS" value="CMP_C2_CH4F(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="CH5F" access="W1C" reset_value="0" description="Channel 5 input changed flag. This bit is set If the channel 5 input changed from the last comparison with the fixed mux port.">
+      <alias type="CMSIS" value="CMP_C2_CH5F(x)"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="CH6F" access="W1C" reset_value="0" description="Channel 6 input changed flag. This bit is set If the channel 6 input changed from the last comparison with the fixed mux port.">
+      <alias type="CMSIS" value="CMP_C2_CH6F(x)"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="CH7F" access="W1C" reset_value="0" description="Channel 7 input changed flag. This bit is set If the channel 7 input changed from the last comparison with the fixed mux port.">
+      <alias type="CMSIS" value="CMP_C2_CH7F(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="1" reset_value="0"/>
+    <bit_field offset="25" width="3" name="FXMXCH" access="RW" reset_value="0" description="Fixed channel selection">
+      <alias type="CMSIS" value="CMP_C2_FXMXCH(x)"/>
+      <bit_field_value name="C2_FXMXCH_0b000" value="0b000" description="Channel 0 is selected as the fixed reference input for the fixed mux port."/>
+      <bit_field_value name="C2_FXMXCH_0b001" value="0b001" description="Channel 1 is selected as the fixed reference input for the fixed mux port."/>
+      <bit_field_value name="C2_FXMXCH_0b010" value="0b010" description="Channel 2 is selected as the fixed reference input for the fixed mux port."/>
+      <bit_field_value name="C2_FXMXCH_0b011" value="0b011" description="Channel 3 is selected as the fixed reference input for the fixed mux port."/>
+      <bit_field_value name="C2_FXMXCH_0b100" value="0b100" description="Channel 4 is selected as the fixed reference input for the fixed mux port."/>
+      <bit_field_value name="C2_FXMXCH_0b101" value="0b101" description="Channel 5 is selected as the fixed reference input for the fixed mux port."/>
+      <bit_field_value name="C2_FXMXCH_0b110" value="0b110" description="Channel 6 is selected as the fixed reference input for the fixed mux port."/>
+      <bit_field_value name="C2_FXMXCH_0b111" value="0b111" description="Channel 7 is selected as the fixed reference input for the fixed mux port."/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="1" reset_value="0"/>
+    <bit_field offset="29" width="1" name="FXMP" access="RW" reset_value="0" description="Fixed MUX Port">
+      <alias type="CMSIS" value="CMP_C2_FXMP(x)"/>
+      <bit_field_value name="C2_FXMP_0b0" value="0b0" description="The Plus port is fixed. Only the inputs to the Minus port are swept in each round."/>
+      <bit_field_value name="C2_FXMP_0b1" value="0b1" description="The Minus port is fixed. Only the inputs to the Plus port are swept in each round."/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="RRIE" access="RW" reset_value="0" description="Round-Robin interrupt enable">
+      <alias type="CMSIS" value="CMP_C2_RRIE(x)"/>
+      <bit_field_value name="C2_RRIE_0b0" value="0b0" description="The round-robin interrupt is disabled."/>
+      <bit_field_value name="C2_RRIE_0b1" value="0b1" description="The round-robin interrupt is enabled when a comparison result changes from the last sample."/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="RRE" access="RW" reset_value="0" description="Round-Robin Enable">
+      <alias type="CMSIS" value="CMP_C2_RRE(x)"/>
+      <bit_field_value name="C2_RRE_0b0" value="0b0" description="Round-robin operation is disabled."/>
+      <bit_field_value name="C2_RRE_0b1" value="0b1" description="Round-robin operation is enabled."/>
+    </bit_field>
+  </register>
+</regs:peripheral>

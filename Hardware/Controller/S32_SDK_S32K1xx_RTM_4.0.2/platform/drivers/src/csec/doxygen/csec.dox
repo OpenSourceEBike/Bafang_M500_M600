@@ -1,0 +1,218 @@
+/*!
+    @defgroup csec Cryptographic Services Engine (CSEc)
+    @details
+    The S32 SDK provides a Peripheral Driver for the Cryptographic Services Engine (CSEc) module of S32 SDK devices.
+
+    The FTFC module has added features to comply with the SHE specification. By
+    using an embedded processor, firmware and hardware assisted AES-128 sub-block,
+    the FTFC macro enables encryption, decryption and message generation and
+    authentication algorithms for secure messaging applications. Additionally a TRNG and
+    Miyaguchi-Prenell compression sub-blocks enables true random number generation
+    (entropy generator for PRNG in AES sub-block).
+
+    ## Hardware background ##
+
+    Features of the CSEc module include:
+        - Secure cryptographic key storage (ranging from 3 to 21 user keys)
+        - AES-128 encryption and decryption
+        - AES-128 CMAC (Cipher-based Message Authentication Code) calculation and authentication
+        - ECB (Electronic Cypher Book) Mode - encryption and decryption
+        - CBC (Cipher Block Chaining) Mode - encryption and decryption
+        - True and Pseudo random number generation
+        - Miyaguchi-Prenell compression function
+        - Secure Boot Mode (user configurable)
+            - Sequential Boot Mode
+            - Parallel Boot Mode
+            - Strict Sequential Boot Mode (unchangeable once set)
+
+    @addtogroup csec_driver
+    @ingroup csec
+
+    ## How to use the CSEc driver in your application ##
+
+    To access the command feature set, the part must be configured for EEE operation, using
+    the PGMPART command. This can be implemented by using the Flash driver. By enabling
+    security features and configuring a number of user keys, the total size of the 4 KByte
+    EEERAM will be reduced by the space required to store the user keys. The user key
+    space will then effectively be unaddressable space in the EEERAM.
+
+    At the bottom of this page is an example of making this configuration using the Flash
+    driver. For more details related to the FLASH_DRV_DEFlashPartition function, please
+    refer to the Flash driver documentation. Please note that this configuration is required
+    only once and should not be lanched from Flash memory.
+
+    In order to use the CSEc driver in your application, the <b>CSEC_DRV_Init</b> function
+    should be called prior to using the rest of the API. The parameter of this function
+    is used for holding the internal state of the driver throughout the lifetime of the
+    application.
+
+    ## Key/seed/random number generation ##
+
+    This is the high level flow in which to initialize and generate random numbers.
+    1. Run <b>CSEC_DRV_InitRNG</b> to initialize a random seed from the internal TRNG
+        - <b>CSEC_DRV_InitRNG</b> must be run after every POR, and
+        before the first execution of CSEC_DRV_GenerateRND
+        - Note that if the next step (run <b>CSEC_DRV_GenerateRND</b>) is run
+        without initializing the seed, <b>CSEC_RNG_SEED</b> will be returned.
+    2. Run <b>CSEC_DRV_GenerateRND</b> to generate a random numer
+    The PRNG uses the PRNG_STATE/KEY and Seed per SHE spec and the AIS20
+    standard.
+    3. For additional random numbers the user may continue executing <b>CSEC_DRV_GenerateRND</b> unless
+    a POR event occurred.
+
+    ## Memory update protocol ##
+
+    In order to update a key, the user must have knowledge of a valid authentication secret,
+    i.e. another key (AuthID). If the key AuthID is empty, the key update will only work if
+    AuthID = ID (the key that will be updated will represent the AuthID from now on), otherwise
+    <b>CSEC_KEY_EMPTY</b> is returned.
+
+    The M1-M3 values need to be computed according to the SHE Specification in order to update a
+    key slot. The <b>CSEC_DRV_LoadKey</b> function will require those values. After successfully updating
+    the key slot, two verification values will be returned: M4 and M5. The user can compute the
+    two values and compare them with the ones returned by the <b>CSEC_DRV_LoadKey</b> function in order
+    to ensure the slot was updated as desired. Please refer to the CSEc driver example for a reference
+    implementation of the memory update protocol.
+
+## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\csec\csec_driver.c
+${S32SDK_PATH}\platform\drivers\src\csec\csec_hw_access.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Preprocessor symbols ###
+
+No special symbols are required for this component
+
+### Important Note ###
+While executing CSEC_DRV_GenerateMACAddrMode and CSEC_DRV_VerifyMACAddrMode functions,
+it is not possible to execute code from the FLASH block targeted by the current operation.
+This includes interrupt handlers for any interrupt that might occur during this time.
+It is the responsibility of the application to ensure that any such code is placed in a different FLASH block or in RAM.
+Functions can be placed in RAM section by using the START/END_FUNCTION_DEFINITION/DECLARATION_RAMSECTION macros.
+
+### Dependencies ###
+
+\ref interrupt_manager
+\ref osif
+
+<b>Examples:</b>
+
+<b>Using the Flash driver to partition Flash for CSEc operation, the below code section applies for S32K14x:</b>
+@code
+    flash_ssd_config_t flashSSDConfig;
+
+    FLASH_DRV_Init(&flash1_InitConfig0, &flashSSDConfig);
+
+    /* Configure the part for EEE operation, with 20 keys for CSEc */
+    FLASH_DRV_DEFlashPartition(&flashSSDConfig, 0x2, 0x4, 0x3, false, true);
+@endcode
+
+<b>The example partition code for S32K11x:</b>
+@code
+    flash_ssd_config_t flashSSDConfig;
+
+    FLASH_DRV_Init(&flash1_InitConfig0, &flashSSDConfig);
+
+    /* Configure the part for EEE operation, with 20 keys for CSEc */
+    FLASH_DRV_DEFlashPartition(&flashSSDConfig, 0x3, 0x3, 0x3, false, true);
+@endcode
+
+<b>Encryption using AES EBC mode</b>
+@code
+    uint8_t plainText[16] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88,
+        0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF};
+    uint8_t plainKey[16] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+        0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
+
+    csec_error_code_t stat;
+    uint8_t cipherText[16];
+
+    csec_state_t csecState;
+
+    CSEC_DRV_Init(&csecState);
+
+    stat = CSEC_DRV_LoadPlainKey(plainKey);
+    if (stat != CSEC_NO_ERROR)
+    {
+        /* Loading the key failed, encryption will not have the expected result */
+        return false;
+    }
+
+    stat = CSEC_DRV_EncryptECB(CSEC_RAM_KEY, plainText, 16U, cipherText, 1U);
+    if (stat != CSEC_NO_ERROR)
+    {
+        /* Encryption was successful */
+        return true;
+    }
+@endcode
+
+<b>Generating and verifying CMAC for a message</b>
+@code
+    uint8_t plainKey[16] = {0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab,
+        0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
+    uint8_t msg[16] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+        0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
+    uint8_t cmac[16];
+    bool verifStatus;
+    csec_error_code_t stat;
+
+    csec_state_t csecState;
+
+    CSEC_DRV_Init(&csecState);
+
+    stat = CSEC_DRV_LoadPlainKey(plainKey);
+    if (stat != CSEC_NO_ERROR)
+        return false;
+
+    stat = CSEC_DRV_GenerateMAC(CSEC_RAM_KEY, msg, 128U, cmac, 1U);
+    if (stat != CSEC_NO_ERROR)
+        return false;
+
+    stat = CSEC_DRV_VerifyMAC(CSEC_RAM_KEY, msg, 128U, cmac, 128U, &verifStatus, 1U);
+    if (stat != CSEC_NO_ERROR)
+        return false;
+
+    if (!verifStatus)
+    {
+        /* The given CMAC did not matched with the one computed internally */
+        return false;
+    }
+@endcode
+
+<b>Generating random bits</b>
+@code
+    csec_error_code_t stat;
+    csec_status_t status;
+    uint8_t rnd[16];
+
+    csec_state_t csecState;
+
+    CSEC_DRV_Init(&csecState);
+
+    stat = CSEC_DRV_InitRNG();
+    if (stat != CSEC_NO_ERROR)
+        return false;
+
+    /* Check RNG is initialized */
+    status = CSEC_DRV_GetStatus();
+    if (!(status & CSEC_STATUS_RND_INIT))
+        return false;
+
+    stat = CSEC_DRV_GenerateRND(rnd);
+    if (stat != CSEC_NO_ERROR)
+        return false;
+@endcode
+
+@}*/

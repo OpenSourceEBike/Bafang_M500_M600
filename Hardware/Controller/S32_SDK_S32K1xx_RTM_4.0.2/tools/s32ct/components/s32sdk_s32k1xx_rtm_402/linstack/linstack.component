@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="linstack_config" label="linstack_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="middleware" max_instances="1">
+   <sw_comp_ref name="platform.middleware.linstack" version="1.0.0"/>
+   <description>LINSTACK Component</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>LINSTACK General</description>
+      <config_set_refs>
+         <config_set_ref>linstack</config_set_ref>
+      </config_set_refs>
+   </mode>
+   <config_set id="linstack" label="LINSTACK configuration set" from_source="linstack_driver.h">
+      <description>I2C Driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+
+      <quick_selections>
+         <quick_selection id="default_linstack" label="Default Configuration" available="true">
+            <description>Default Configuration</description>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.NetworkName">LI0</set>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.ArrListOfSr.0.SlaveName">Motor1</set>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.ArrListOfSr.0.Sr0">1</set>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.ArrListOfSr.0.Sr1">1</set>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.ArrListOfSr.0.Sr2">1</set>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.ArrListOfSr.0.Sr3">1</set>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.ArrListOfSr.1.SlaveName">Motor2</set>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.ArrListOfSr.1.Sr0">1</set>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.ArrListOfSr.1.Sr1">1</set>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.ArrListOfSr.1.Sr2">1</set>
+            <set id="linstackCfg.RefNetworkConfig.ArrListOfNetwork.0.RefNetworkDetail.ArrListOfSr.1.Sr3">1</set>
+            <set id="linstackCfg.RefNetworkConfig.TimeOutUnit">500</set>
+            <set id="linstackCfg.RefNetworkConfig.InterleaveTimeOut">1000</set>
+            <set id="linstackCfg.RefNetworkConfig.LDFCheckingFirstTime">falue</set>
+         </quick_selection>
+         <default>default_linstack</default>
+      </quick_selections>
+
+      <user_types>
+         <enum id="EnumNodeFunction" label="Node function enum" from="EnumNodeFunction">
+            <item id="SLAVE" label="SLAVE"/>
+            <item id="MASTER" label="MASTER"/>
+         </enum>
+         <enum id="EnumDiagClass" label="Diagnotic Class enum" from="EnumDiagClass">
+            <item id="Class1" label="Class 1"/>
+            <item id="Class2" label="Class 2"/>
+            <item id="Class3" label="Class 3"/>
+         </enum>
+
+         <!--Lin Driver Configuration-->
+         <struct id="LinDriverConfig" label="Detail For Lin driver Configuration" from="LinDriverConfig">
+            <description>Lin driver configuration</description>
+            <dynamic_enum id="LinDrvLinDriver" label="LIN Driver" items="$group.getComponentInstances(`lin`).filter(item -> item.isEnabled())">
+               <description>Add and select LIN driver component.</description>
+               <validation>
+                 <constraint cond_expr="$root.countOccurrences(item -> (item.getID() == `linUserConfiguation` &amp;&amp; item.isEnabled()), true) &gt; 0" level="error" description="Please add LIN driver component and enable it!"/>
+               </validation>
+            </dynamic_enum>
+            <dynamic_enum id="LinDrvLinConfig" label="LIN Configuration" items="createArray().merge((getComponentInstances($group,`lin`).filter(x -> x.getID() == $parent.LinDrvLinDriver.getEnumItemValue()).size() &gt; 0)? getComponentInstances($group,`lin`).filter(x -> x.getID() == $parent.LinDrvLinDriver.getEnumItemValue()).getFirst().getSetting(`lin_driver.linUserConfiguation.linConfiguration`).map(item -> item.getSetting(`name`).getValue()):createArray())"> 
+               <description>Add and select LIN driver configuration.</description>
+               <validation>
+                 <constraint cond_expr="$root.countOccurrences(item -> (item.getID() == `linUserConfiguation` &amp;&amp; item.isEnabled()), true) &gt; 0" level="error" description="Please add LIN driver component and enable it!"/>
+               </validation>
+            </dynamic_enum>
+            <string id="LinDrvDevice" label="Device" enable="false">
+               <description>LPUART Device</description>
+            </string>
+            <string id="LinDrvBaudRateConfig" label="Baud Rate" enable="false">
+               <description>LPUART baud rate</description>
+            </string>
+            <string id="LinDrvNodeFunc" label="Node Function" type="EnumNodeFunction" enable="false">
+               <description>Lin driver node function</description>
+            </string>
+            <bool id="LinDrvAutobaud" label="Autobaud" enable="false">
+               <description>Autobaud feature (Only supported in slave interface)</description>
+            </bool>
+            <string id="LinDrvIntCallback" label="Timer get time interval callback" enable="false">
+               <description>Callback function to get time interval in nano seconds</description>
+            </string>
+            <string id="LinDrvPidType" label="Checksum type" enable="false">
+               <description>Checksum type</description>
+            </string>
+            <string id="LinDrvPidClassicChecksum" label="List of PIDs use classic checksum" enable="false">
+               <description>List of PIDs use classic checksum</description>
+            </string>
+         </struct>
+         <!--Lin Driver Configuration-->
+
+         <!--List Of Serial Number-->
+         <struct id="ListOfSr" label="List Of Serial Number Array" from="ListOfSr">
+            <description>List Of Serial Number</description>
+            <string id="SlaveName" label="Slave Name" enable="false">
+               <description>Slave Name</description>
+            </string>
+            <string id="Sr0" label="Serial 0">
+               <description>Serial 0</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue().length() &lt; 5)" level="error" description="Value above admissible range! Min 0x00, Max 0xFF"/>
+               </validation>
+            </string>
+            <string id="Sr1" label="Serial 1">
+               <description>Serial 0</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue().length() &lt; 5)" level="error" description="Value above admissible range! Min 0x00, Max 0xFF"/>
+               </validation>
+            </string>
+            <string id="Sr2" label="Serial 2">
+               <description>Serial 0</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue().length() &lt; 5)" level="error" description="Value above admissible range! Min 0x00, Max 0xFF"/>
+               </validation>
+            </string>
+            <string id="Sr3" label="Serial 3">
+               <description>Serial 0</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue().length() &lt; 5)" level="error" description="Value above admissible range! Min 0x00, Max 0xFF"/>
+               </validation>
+            </string>
+         </struct>
+         <!--List Of Serial Number-->
+
+         <!--Network Detail-->
+         <struct id="NetworkDetailInfo" label="Detail For Selected Row" from="NetworkDetailInfo">
+            <description>Network Configuration</description>
+            <integer id="NetworkNum" label="Network Number" type="uint8_t" available="false">
+               <description>Number of Network</description>
+            </integer>
+            <string id="StrErrorInfo" label="LDF Error Information" available="false">
+               <description>Error Information</description>
+            </string>
+            <string id="NetworkName" label="Network name">
+               <description>Name of network</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="IsLDFAbsolutePath" label="Support LDF Absolute Path">
+               <description>Select .ldf absolute or relative path</description>
+            </bool>
+            <file id="LDFAbsolutePath" label="LDF Absolute Path" type="text" available="$parent.IsLDFAbsolutePath.getValue()">
+               <description>The absolute path of lin description file(*.ldf)</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue().length() > 0) || (!($parent.IsLDFAbsolutePath.getValue()))" level="error" description="LDF absolute path is not available."/>
+               </validation>
+            </file>
+            <string id="LDFRelativePath" label="LDF Relative Path" available="!($parent.IsLDFAbsolutePath.getValue())">
+               <description>The relative path of lin description file(*.ldf)</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue().length() > 0) || ($parent.IsLDFAbsolutePath.getValue())" level="error" description="LDF relative file path is not available."/>
+               </validation>
+            </string>
+            <info id="ProjectLocation"  label="Project Location:" value="getEnv(`ProjDirPath`)" available="false"/>
+            <info id="ErrorInfo" label="LDF Error Information" value="$parent.StrErrorInfo.getValue()" available="false">
+            </info>
+            <string id="ProtocolVersion" label="Protocol Version" enable="false">
+               <description>Protocol verison of LDF file</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue().length() > 0)" level="error" description="Protocol version error. Please check LDF file"/>
+               </validation>
+            </string>
+            <dynamic_enum id="RefNodeName" label="Node name" items="$configSet.linstack_java.getValue().get($parent.NetworkNum.getValue().toInt())">
+               <description>Name of node</description>
+            </dynamic_enum>
+            <string id="NodeProtocol" label="Node Protocol" enable="false">
+               <description>ServiceProInfo</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() > 1)" level="error" description="Node protocol error. Please check node name to get node protocol"/>
+               </validation>
+            </string>
+            <reference id="RefDiagClass" label="Diagnostic" type="EnumDiagClass" enable="($parent.NodeProtocol.getValue() == `2.x`) || ($parent.NodeProtocol.getValue() == `J2602`) || ($parent.NodeProtocol.getValue() == `2.0`)">
+               <description>Diagnostic layer (Class 2 and class 3 are only supported in LIN 2.1, 2.2 or 2.2A protocol)</description>
+            </reference>
+            <integer id="IdleTimeout" label="Idle timeout (s)" type="uint8_t" >
+               <description>Time until a node shall automatically enter sleep mode in case of bus inactivity (Range: 4-10 seconds)</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue() > 3) &amp;&amp; ($this.getValue() &lt; 11))" level="error" description="Admissible range for this item: from 4 to 10"/>
+               </validation>
+            </integer>
+            <integer id="MaxMessageLength" label="Max message length (bytes)" type="uint16_t" >
+               <description>Maximum length of a diagnostic message in bytes (For diagnostic class 1: 6 bytes, for class 2, 3: 4095 bytes)</description>
+               <validation>
+                  <constraint cond_expr="((($this.getValue() &lt; 7) &amp;&amp; ($this.getValue() > 0)) || $parent.RefDiagClass.getValue() != `Class1`)" level="error" description="Max value for diagnostic class 1 is 6 bytes"/>
+                  <constraint cond_expr="(($this.getValue() &lt; 4096) &amp;&amp; ($this.getValue() > 0))" level="error" description="Max value for diagnostic class 2, 3 is 6 bytes"/>
+               </validation>
+            </integer>
+            <array id="ArrListOfSr"  label="List Of serial number" type="ListOfSr" options="ShowContentAs=Table">
+               <description>List Of serial number</description>
+               <item_defaults>
+                  <set_default id="Sr0" value_expr="x -> 1"/>
+                  <set_default id="Sr1" value_expr="x -> 1"/>
+                  <set_default id="Sr2" value_expr="x -> 1"/>
+                  <set_default id="Sr3" value_expr="x -> 1"/>
+               </item_defaults>
+            </array>
+         </struct>
+         <!--Network Detail-->
+
+         <!--List Of SIDs-->
+         <struct id="ListOfSIDs" label="List Of SIDs Array" from="ListOfSIDs">
+            <description>List Of SIDs</description>
+            <string id="SID_Name" label="NAME">
+               <description>Name</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue().length() > 0)" level="error" description="Please fill SID name"/>
+               </validation>
+            </string>
+            <string id="SID_ID" label="SID">
+               <description>SID</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue().length() &lt; 5)" level="error" description="Value above admissible range! Min 0x00, Max 0xFF"/>
+               </validation>
+            </string>
+         </struct>
+         <!--List Of SIDs-->
+
+         <!--Support Service-->
+         <struct id="SupportedService" label="Detail For Selected Row" from="SupportedService">
+            <description>Network Configuration</description>
+            <string id="ServiceNodeProtocol" label="Node Protocol" available="false">
+               <description>ServiceProInfo</description>
+            </string>
+            <string id="ServiceClassInfo" label="ClassInfo" available="false">
+               <description>ClassInfo</description>
+            </string>
+            <string id="ServiceNodeFunc" label="Node Function Info" available="false">
+               <description>Node Function Information</description>
+            </string>
+            <bool id="ServiceAssignNAD" label="Assign NAD (0xB0)" enable="$parent.ServiceNodeProtocol.getValue() != `1.3` &amp;&amp; $parent.ServiceNodeProtocol.getValue() != `` &amp;&amp; $parent.ServiceNodeFunc.getValue() == `SLAVE`">
+               <description>Assign NAD service, SID = 0xB0</description>
+            </bool>
+            <bool id="ServiceAssignFrameIdentifier" label="Assign frame identifier (0xB1)" enable="$parent.ServiceNodeProtocol.getValue() == `J2602` &amp;&amp; $parent.ServiceNodeFunc.getValue() == `SLAVE`">
+               <description>Assign frame identifier service, SID = 0xB1</description>
+            </bool>
+            <bool id="ServiceReadByIdentifier" label="Read by identifier (0xB2)" enable="$parent.ServiceNodeProtocol.getValue() == `J2602` &amp;&amp; $parent.ServiceNodeFunc.getValue() == `SLAVE`">
+               <description>Read by identifier service, SID = 0xB2</description>
+            </bool>
+            <bool id="ServiceConditionalChangeNAD" label="Conditional change NAD (0xB3)" enable="$parent.ServiceNodeProtocol.getValue() != `1.3` &amp;&amp; $parent.ServiceNodeProtocol.getValue() != `` &amp;&amp; $parent.ServiceNodeFunc.getValue() == `SLAVE`">
+               <description>Conditional change NAD service, SID = 0xB3</description>
+            </bool>
+            <bool id="ServiceDataDump" label="Data dump (0xB4)" enable="$parent.ServiceNodeProtocol.getValue() != `1.3` &amp;&amp; $parent.ServiceNodeProtocol.getValue() != `` &amp;&amp; $parent.ServiceNodeFunc.getValue() == `SLAVE`">
+               <description>Data dump service, SID = 0xB4</description>
+            </bool>
+            <bool id="ServiceSaveConfiguration" label="Save configuration (0xB6)" enable="$parent.ServiceNodeProtocol.getValue() == `2.x` &amp;&amp; $parent.ServiceClassInfo.getValue() != `Class3` &amp;&amp; $parent.ServiceNodeFunc.getValue() == `SLAVE`">
+               <description>Save configuration service, SID = 0xB6</description>
+            </bool>
+            <bool id="ServiceAssignFrameIdenRange" label="Assign frame identifier range (0xB7)" enable="false">
+               <description>Assign frame identifier range service, SID = 0xB7</description>
+            </bool>
+            <bool id="ServiceReadDataByIdentifier" label="Read data by identifier (0x22)" enable="false">
+               <description>Read data by identifier service, SID = 0x22</description>
+            </bool>
+            <bool id="ServiceWriteDataByIdentifier" label="Write data by identifier (0x2E)" enable="$parent.ServiceNodeProtocol.getValue() == `2.x` &amp;&amp; $parent.ServiceClassInfo.getValue() != `Class1` &amp;&amp; $parent.ServiceNodeFunc.getValue() == `SLAVE`">
+               <description>Write data by identifier service, SID = 0x2E</description>
+            </bool>
+            <bool id="ServiceSessionControl" label="Session control (0x10)" enable="false">
+               <description>Session control service, SID = 0x10</description>
+            </bool>
+            <bool id="ServiceIOControlByIdentifier" label="I/O control by identifier (0x2F)" enable="false">
+               <description>I/O control by identifier service, SID = 0x2F</description>
+            </bool>
+            <bool id="ServiceFaultMemoryRead" label="Fault memory read (0x19)" enable="false">
+               <description>Fault memory read service, SID = 0x19</description>
+            </bool>
+            <bool id="ServiceFaultMemoryClear" label="Fault memory clear (0x14)" enable="false">
+               <description>Fault memory clear service, SID = 0x14</description>
+            </bool>
+            <bool id="ServiceTargetReset" label="Target reset service (0xB5)" enable="false">
+               <description>Target reset service, SID = 0xB5 (only supported in J2602 protocol)</description>
+            </bool>
+            <bool id="SupportSID" label="User SID supported" enable="($parent.ServiceNodeProtocol.getValue() == `2.x` || $parent.ServiceNodeProtocol.getValue() == `J2602`) &amp;&amp; $parent.ServiceClassInfo.getValue() == `Class3` &amp;&amp; $parent.ServiceNodeFunc.getValue() == `SLAVE`">
+               <description>User define SID Supported (only supported in diagnostic class 3)</description>
+            </bool>
+            <array id="ArrListOfSIDs"  label="List Of SIDs" type="ListOfSIDs" enable="$parent.SupportSID.getValue()" options="ShowContentAs=Table">
+               <description>List Of SIDs</description>
+               <validation>
+                  <constraint cond_expr="($this.getSize() != 0) || !($parent.SupportSID.getValue())" level="error" description="There must be at least one configuration"/>
+               </validation>
+               <item_defaults>
+                  <set_default id="SID_Name" value_expr="x -> (`USER_TL`)"/>
+                  <set_default id="SID_ID" value_expr="x -> (0x0)"/>
+               </item_defaults>
+            </array>
+         </struct>
+         <!--Support Service-->
+
+         <!--List of Network-->
+         <struct id="ListOfNetworkTable" label="List of network array" from="ListOfNetworkTable">
+            <reference id="RefLinDriverConfig" label="Lin Driver Detail Configuration" type="LinDriverConfig">
+               <description>Lin Driver Detail Configuration</description>
+            </reference>
+            <reference id="RefNetworkDetail" label="Network Detail" type="NetworkDetailInfo">
+               <description>Network Configuration</description>
+            </reference>
+            <reference id="RefSupportedService" label="Node Configuration Service" type="SupportedService">
+               <description>Select Support Service</description>
+            </reference>
+            <string id="StrLDFInfo" label="LDF Information" available="false">
+               <description>LDF Information</description>
+            </string>
+         </struct>
+         <!--List of Network-->
+
+         <!--Tab-1: Network Configuration-->
+         <struct id="NetworkConfig" label="Network Configuration" from="NetworkConfig">
+            <bool id="UseTransportLayer" label="Use Transport Layer">
+               <description>Tick this box if you want to use transport layer</description>
+            </bool>
+            <bool id="SupportDiagnoticService" label="Support Diagnotic Service">
+               <description>Tick this box if you want to use diagnostic service</description>
+            </bool>
+            <integer id="TimeOutUnit" label="Time Out Unit (us)" type="uint32_t">
+               <description>Time period (in microseconds) between two consecutive calls to lin_lld_timeout_service function in Timer Interrupt handler for LIN</description>
+            </integer>
+            <integer id="InterleaveTimeOut" label="Interleave Time Out (ms)" type="uint16_t">
+               <description>Slave node interleaved diagnostic response timeout</description>
+            </integer>
+            <array id="ArrListOfNetwork"  label="List Of Networks Table" type="ListOfNetworkTable" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+               <description>A list of networks</description>
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`RefNetworkDetail.NetworkName`).value()).length() == 0" level="error" description="There are some duplicated network name"/>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`RefLinDriverConfig.LinDrvLinDriver`).value()).length() == 0" level="error" description="There are some duplicated device Lin Driver"/>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`RefLinDriverConfig.LinDrvLinConfig`).value()).length() == 0" level="error" description="There are some duplicated LIN driver configuration name"/>
+                  <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one network"/>
+               </validation>
+               <item_defaults>
+                  <set_default id="RefNetworkDetail.NetworkName" value_expr="x -> (`LI` + x.getID())"/>
+                  <set_default id="RefNetworkDetail.IsLDFAbsolutePath" value_expr="x -> false"/>
+                  <set_default id="RefNetworkDetail.LDFRelativePath" value_expr="x -> (`src\LIN21.ldf`)"/>
+                  <set_default id="RefNetworkDetail.IdleTimeout" value_expr="x -> 5"/>
+                  <set_default id="RefNetworkDetail.MaxMessageLength" value_expr="x -> 6"/>
+                  <set_default id="RefSupportedService.ServiceNodeFunc" value_expr="x -> (`MASTER`)"/>
+               </item_defaults>
+            </array>
+         </struct>
+
+         <!--Tab-2: LIN Description File-->
+         <struct id="LinDescriptionFile" label="LIN Description File" from="LinDescriptionFile">
+         </struct>
+
+         <!-- -->
+         <!--                       LinStack Detail Configuration                   -->
+         <!-- -->
+         <struct id="linstack_detailConfig" label="LinStack Detail configurations" from="linstack_detailConfig" options="ShowContentAs=Tabs" available="true">
+            <reference id="RefNetworkConfig" label="Network Configuration" type="NetworkConfig">
+               <description>Network Configuration</description>
+            </reference>
+            <reference id="RefLinDescriptionFile" label="LIN Description File" type="LinDescriptionFile" available="false">
+               <description>LIN Description File Information</description>
+            </reference>
+         </struct>
+         <!--                       LinStack Detail Configuration                   -->
+      </user_types>
+
+      <settings>
+         <reference id="linstackCfg" label="LINSTACK User Configuration" type="linstack_detailConfig" config_set_id="linstack" component_id="linstack_config" available="true">
+            <description>LINSTACK configuration</description>
+         </reference>
+         <variable value="$configSet.execScript(`../linstack/linstack_ldfprocess.js`)" id="linstack_java"/>
+         <variable value="`../linstack/linstack_codegen.js`" id="codegen_file"></variable>
+         <variable value="`LINSTACKCodeGen`" id="codegen_class"></variable>
+         <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+         <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

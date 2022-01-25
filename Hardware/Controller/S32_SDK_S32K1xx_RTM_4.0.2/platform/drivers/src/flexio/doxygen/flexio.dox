@@ -1,0 +1,28 @@
+/*!
+@defgroup flexio Flexible I/O (FlexIO)
+@details The FlexIO is a highly configurable module providing a wide range of functionality
+including:
+ - Emulation of a variety of serial communication protocols, such as SPI, I2C, I2S or UART, 
+ while requiring low CPU overhead and being more efficient that having multiple dedicated 
+ peripherals for each protocol.
+ - Flexible 16-bit timers with support for a variety of trigger, reset, enable and disable
+conditions
+ - PWM/Waveform generation
+<p>
+Several drivers are provided for this device, implementing a variety of communication protocols. There 
+is also a common layer on which all the drivers are based, allowing more driver instances, either of the same 
+type or different types, to function in parallel on the same FlexIO device. Each driver instance needs a 
+certain number of FlexIO resources (shifters and timers) and as long as there are enough free resources 
+new driver instances can be initialized. The table below shows the driver types and the number of 
+resources needed by each one:
+</p>
+| Drivers | Timers | Shifters | Pins  |
+| ------: | :----: | :------: | :---: |
+| SPI     | 2      | 2        | 4     |
+| I2C     | 2      | 2        | 2     |
+| I2S     | 2      | 2        | 4     |
+| UART    | 1      | 1        | 1     |
+<p>
+The number of timers and shifters available on a specific device can be found in the reference manual.
+</p>
+ */

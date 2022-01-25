@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="8" name="CTRL" description="Control Register">
+    <alias type="CMSIS" value="CTRL"/>
+    <bit_field offset="0" width="1" name="EWMEN" access="WONCE" reset_value="0" description="EWM enable.">
+      <alias type="CMSIS" value="EWM_CTRL_EWMEN(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ASSIN" access="WONCE" reset_value="0" description="EWM_in's Assertion State Select.">
+      <alias type="CMSIS" value="EWM_CTRL_ASSIN(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="INEN" access="WONCE" reset_value="0" description="Input Enable.">
+      <alias type="CMSIS" value="EWM_CTRL_INEN(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="INTEN" access="RW" reset_value="0" description="Interrupt Enable.">
+      <alias type="CMSIS" value="EWM_CTRL_INTEN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x1" width="8" name="SERV" description="Service Register">
+    <alias type="CMSIS" value="SERV"/>
+    <bit_field offset="0" width="8" name="SERVICE" access="WORZ" reset_value="0" description="SERVICE">
+      <alias type="CMSIS" value="EWM_SERV_SERVICE(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x2" width="8" name="CMPL" description="Compare Low Register">
+    <alias type="CMSIS" value="CMPL"/>
+    <bit_field offset="0" width="8" name="COMPAREL" access="WONCE" reset_value="0" description="COMPAREL">
+      <alias type="CMSIS" value="EWM_CMPL_COMPAREL(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x3" width="8" name="CMPH" description="Compare High Register">
+    <alias type="CMSIS" value="CMPH"/>
+    <bit_field offset="0" width="8" name="COMPAREH" access="WONCE" reset_value="0xFF" description="COMPAREH">
+      <alias type="CMSIS" value="EWM_CMPH_COMPAREH(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x5" width="8" name="CLKPRESCALER" description="Clock Prescaler Register">
+    <alias type="CMSIS" value="CLKPRESCALER"/>
+    <bit_field offset="0" width="8" name="CLK_DIV" access="WONCE" reset_value="0" description="CLK_DIV">
+      <alias type="CMSIS" value="EWM_CLKPRESCALER_CLK_DIV(x)"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

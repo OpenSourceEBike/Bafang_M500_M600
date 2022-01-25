@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="system" label="SYSTEM" global_only="true" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <description>Fsl system component</description>
+
+   <!-- Interrupt definition based on info item -->
+   <config_set id="interrupt_peripheral" label="Interrupt" from_source="interrupt_manager.h">
+      <description>Fsl interrupt resource</description>
+      <generated_types/>
+      <user_types>
+         <struct id="interrupt_vector_t" label="NVIC interrupt vector type." from="IRQn" public="true">
+            <dynamic_enum id="IRQn"  label="Interrupt" items="getResource(`interrupts`, $instance.getCoreId()).arrayToEnumItems(
+                                                                enumItem -> (enumItem.getSetting(`devices`).searchInArray(
+                                                                  item -> (((!$parent.hasOption(`irq_function`)) || (item.getSetting(`function`).getValue() == $parent.optionValue(`irq_function`))) &amp;&amp; 
+                                                                           ((!$parent.hasOption(`irq_channel`)) || (item.getSetting(`channel`).getValue() == $parent.optionValue(`irq_channel`)))  &amp;&amp;
+                                                                           (item.getSetting(`id`).getValue() == $instance.getPeripheral()))
+                                                                  ) >= 0 ), 
+                                                                enumItem -> enumItem.getSetting(`id`).getValue(),
+                                                                enumItem -> enumItem.getSetting(`id`).getValue(),
+                                                                enumItem -> enumItem.getSetting(`id`).getValue())">
+               <validation>
+                  <constraint cond_expr="$this.getCValue() != ``" level="error" description="An interrupt must be selected."/>
+               </validation>
+            </dynamic_enum>
+
+            <bool id="enable_priority" label="Enable priority initialization">
+               <description>When is this option enabled the interrupt priority is enabled and priority initialization code is generated.</description>
+            </bool>
+            <integer id="priority" label="Priority" type="uint8_t" available="$parent.enable_priority.getValue()"/>               
+            <bool id="enable_custom_name" label="Enable custom handler name">
+               <description>When is this option enabled a user custom name of the handler is allowed to set in a settings below.
+                            Note: The interrupt handler is used for implementation of the interrupt subroutine. User must define this interrupt subroutine that is added into interupt table. 
+               </description>
+            </bool>
+            <string id="handler_custom_name" label="Handler name" available="$parent.enable_custom_name.getValue()">
+               <description>The interrupt handler is used for implementation of the interrupt subroutine. User must define this interrupt subroutine that is added into interupt table.</description>
+            </string>
+            <info id="IRQhandler" label="Interrupt handler full name" value="$parent.enable_custom_name.getValue() ? $parent.handler_custom_name.getValue() : toUpperCase($instance.getFnGroupPrefix() + $instance.getID() + `_IRQHandler`)">
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Handler name is not valid C identifier!"/>
+                  <!--constraint cond_expr="" level="warning" description="Handler name is not unique!"/-->
+               </validation>
+            </info>
+         </struct>
+      </user_types>
+      <settings>
+      </settings>
+      <fragment_defs>
+         <def fragment="include" public="true">
+            <expr>`#include "` + $param.file + `"`</expr><br/>             
+         </def>
+         <def fragment="define" public="true">
+            <expr>`/* ` + $param.description + ` */`</expr><br/>
+            <expr>`#define ` + $param.name + ` ` + $param.value</expr><br/> 
+         </def>         
+         
+         <!-- IRQ macroprocessor definitions IRQn, IRQ_PRIORITY and IRQHandler 
+              The  interrupt_vector_t structure must hanbdled as $this
+         -->
+         <def fragment="IRQ_definitions" public="true">
+            <fragment id="define">
+               <param id="name" expr="toUpperCase($instance.getFnGroupPrefix() + $instance.getID() +
+                                                  ($this.hasOption(`irq_function`) ? (`_` + $this.optionValue(`irq_function`)) : ``) +  
+                                                  ($this.hasOption(`irq_channel`) ? (`_` + $this.optionValue(`irq_channel`)) : ``) +  
+                                                  `_IRQn`)"/>
+               <param id="value" expr="$this.IRQn.getValue()"/> 
+               <param id="description" expr="$instance.getID() + ` interrupt vector ID (number).`"/>
+            </fragment>
+            <fragment id="define" if_expr="$this.enable_priority.getValue()">
+               <param id="name" expr="toUpperCase($instance.getFnGroupPrefix() + $instance.getID() + 
+                                                  ($this.hasOption(`irq_function`) ? (`_` + $this.optionValue(`irq_function`)) : ``) +  
+                                                  ($this.hasOption(`irq_channel`) ? (`_` + $this.optionValue(`irq_channel`)) : ``) +  
+                                                  `_IRQ_PRIORITY`)"/>
+               <param id="value" expr="$this.priority.getCValue()"/>
+               <param id="description" expr="$instance.getID() + ` interrupt vector priority.`"/>
+            </fragment>
+            <fragment id="define">
+               <param id="name" expr="$this.IRQhandler.getValue()"/>
+               <param id="value" expr="($this.IRQn.getCValue() == ``) ? `` : (getResource(`interrupts`, $instance.getCoreId()).findFirst(item -> (item.getSetting(`id`).getValue() == $this.IRQn.getCValue())).getSetting(`handler_id`).getValue())"/> 
+               <param id="description" expr="$instance.getID() + ` interrupt handler identifier.`"/>
+            </fragment>
+         </def>
+
+
+         <def fragment="IRQn_enable_default" public="true">
+            <expr>leftPadding(`/* Enable interrupt `, 1)</expr><expr>$this.IRQn.getValue()</expr><text> request in the NVIC */</text><br/>
+<!--            <expr>`  INT_SYS_EnableIRQ(` + $this.IRQn.getValue() + `);`</expr><br/>-->
+            <expr>leftPadding(`INT_SYS_EnableIRQ(`, 1) + toUpperCase($instance.getFnGroupPrefix() + $instance.getID() +
+                                              ($this.hasOption(`irq_function`) ? (`_` + $this.optionValue(`irq_function`)) : ``) +  
+                                              ($this.hasOption(`irq_channel`) ? (`_` + $this.optionValue(`irq_channel`)) : ``) +  
+                                              `_IRQn`) 
+                                + `);`</expr><br/>
+         </def>
+         <def fragment="IRQn_set_priority_default" public="true">
+            <if expr="$this.enable_priority.getValue()">
+               <expr>leftPadding(`/* Interrupt vector `, 1) + $this.IRQn.getValue()</expr><text> priority settings in the NVIC */</text><br/>
+<!--               <expr>`  INT_SYS_SetPriority(` + $this.IRQn.getValue() + `, `+ $this.priority.getCValue() +`);`</expr><br/>-->
+               <expr>leftPadding(`INT_SYS_SetPriority(`, 1) + toUpperCase($instance.getFnGroupPrefix() + $instance.getID() +
+                                                         ($this.hasOption(`irq_function`) ? (`_` + $this.optionValue(`irq_function`)) : ``) +  
+                                                         ($this.hasOption(`irq_channel`) ? (`_` + $this.optionValue(`irq_channel`)) : ``) +  
+                                                         `_IRQn`) + 
+                                           `, ` + 
+                                             toUpperCase($instance.getFnGroupPrefix() + $instance.getID() + 
+                                                         ($this.hasOption(`irq_function`) ? (`_` + $this.optionValue(`irq_function`)) : ``) +  
+                                                         ($this.hasOption(`irq_channel`) ? (`_` + $this.optionValue(`irq_channel`)) : ``) +  
+                                                         `_IRQ_PRIORITY`)
+                                        +`);`</expr><br/>
+            </if>   
+         </def>
+
+         <!-- IRQn_enable fragment definition -->
+         <!-- Parameters:
+                  IRQn - ID of the interrupt request that is defined as the enum type in the IO maps of the MCU (MCU specific type)
+         -->
+         <def fragment="IRQn_enable" public="true">
+            <expr>leftPadding(`/* Enable interrupt `, 1) </expr><expr>$param.IRQn</expr><text> request in the NVIC */</text><br/>
+            <expr>leftPadding(`INT_SYS_EnableIRQ(` + $param.IRQn + `);`, 1)</expr><br/>
+         </def>
+         
+         <!-- IRQn_set_priority fragment definition -->
+         <!-- Parameters:
+                  IRQn - ID of the interrupt request that is defined as the enum type in the IO maps of the MCU (MCU specific type)
+                  priority - the interrupt vector priority number (range is defined according to CPU core type - CM4, CM0P,...)
+         -->
+         <def fragment="IRQn_set_priority" public="true">
+            <expr>leftPadding(`/* Interrupt vector `, 1) + $param.IRQn</expr><text> priority settings in the NVIC */</text><br/>
+            <expr>leftPadding(`INT_SYS_SetPriority(`, 1) + $param.IRQn + `, `+ $param.priority +`);`</expr><br/>
+         </def>
+      </fragment_defs>
+      <code></code>
+      <quick_selections>
+      </quick_selections>
+   </config_set>
+   
+   <!-- TO DO leftPadding
+      excample:
+                   <expr>leftPadding(`.`, 2) + $this.getID() + ` = ` + $this.getCValue().extractChannelID().regexSubstr(`.*?(\d+).*`, 1)</expr>
+   -->
+   <!-- TO DO getCoreId()
+      $instance.getCoreID() (the implementation must be fixed to provide ID instead of the name
+   -->
+   
+   <config_set id="common_code_templates" label="Common code templates." from_source="all">
+      <description>Common code templates.</description>
+      <generated_types/>
+      <user_types/>
+      <settings>
+         <bool id="code" label="code"/>
+      </settings>
+      <fragment_defs>
+         <def fragment="include" public="true">
+            <expr>`#include "` + $param.filename + `"`</expr>
+            <br/>
+         </def>
+         <def fragment="fn_prefix" public="true">
+            <expr>$instance.getFnGroupName()</expr>
+         </def>
+         <def fragment="peripheral" public="true">
+            <expr>$instance.getPeripheral()</expr>
+         </def>
+         <def fragment="define" public="true">
+            <if expr="paramExists(`description`)">
+               <expr>`/* ` + $param.description + ` */`</expr><br/>
+            </if>   
+            <if expr="!paramExists(`description`)"> <!-- TO DO add condition for the verification mode of the Tools - for internal development purposes only -->
+               <text>/* TO DO - add parameter description */</text><br/>
+            </if>
+             <text>#define </text>
+            <expr>$param.name + ` ` + $param.value</expr>
+            <br/>
+         </def>
+         <def fragment="comment" public="true">
+            <expr>leftPadding(`/* ` + $param.content + ` */`, $param.paddingLevel)</expr>
+            <br/>
+         </def>
+         <def fragment="init_line" public="true">
+            <fragment id="comment">
+               <param id="content" expr="$param.description"></param>
+               <param id="paddingLevel" expr="$param.paddingLevel"></param>
+            </fragment>
+            <expr>leftPadding($param.code, $param.paddingLevel)</expr>
+            <br/>
+         </def>
+         <def fragment="field" public="true">
+            <if expr="(!$this.hasOption(`remove_from_struct_init`) &amp;&amp; !$this.hasOption(`transform_by_regex`)) &amp;&amp; ((getType($this) != `info`) || $this.hasOption(`add_to_struct`))">
+               <expr if_expr="getType($this) == `integer` || getType($this) == `float` || getType($this) == `bool` || getType($this) == `enum`">
+                  leftPadding(`.`, $param.paddingLevel) + $this.getID() + ` = ` + $this.getCValue()
+               </expr>
+               <expr if_expr="getType($this) == `info` &amp;&amp; $this.hasOption(`add_to_struct`)">
+                  leftPadding(`.`, $param.paddingLevel) + $this.getID() + ` = ` + $this.getValue()
+               </expr>
+               <expr if_expr="getType($this) == `set`">
+                  leftPadding(`.`, $param.paddingLevel) + $this.getID() + ` = ` + (($this.getCValue()==``) ? `0` : $this.getCValue())
+               </expr>
+               <expr if_expr="getType($this) == `struct`">
+                  leftPadding(`.`, $param.paddingLevel) + $this.getID() + ` = {&#xA;` 
+               </expr>
+               <fragment if_expr="getType($this) == `struct`" id="field" for_elements_of="$this">
+ <!-- TO DO - need a fix in the Tools, check the functionality of the struct inside a struct when the bug is fixed (see also FTM component), see MCUXCON-1770                
+                   <param id="paddingLevel" expr="$param.paddingLevel + 1"/>-->
+                  <param id="paddingLevel" expr="2"/>
+               </fragment>
+               <expr if_expr="getType($this) == `struct`">
+                  leftPadding(`}`, $param.paddingLevel)
+               </expr>
+               <expr> ($param._last ? ``: `,`) </expr>
+               <br/>
+            </if> 
+            <if expr="($this.hasOption(`transform_by_regex`) &amp;&amp; (getType($this) != `struct`))">
+               <expr>leftPadding(`.`, $param.paddingLevel) + $this.getID() + ` = ` + ($this.hasOption(`prefix`) ? $this.getOptionValue(`prefix`):``) + ($this.getCValue().regexMatch(`` + $this.getOptionValue(`transform_by_regex`)) ? $this.getCValue().regexSubstr(`` + $this.getOptionValue(`transform_by_regex`), 1): ``) + ($this.hasOption(`postfix`)? $this.getOptionValue(`postfix`):``)</expr>
+               <expr> ($param._last ? ``: `,`) </expr>
+               <br/>
+            </if>
+         </def>
+         <def fragment="const_struct" public="true">
+            <text>const </text>
+            <expr>$param.type + ` ` + $param.name</expr>
+            <text> = {</text>
+            <br/>
+            <fragment id="field" for_elements_of="$this.filter(item -> ((!item.hasOption(`remove_from_struct_init`)) &amp;&amp; 
+                                                                       ((getType(item) != `info`) || (item.hasOption(`transform_by_regex`)) || (item.hasOption(`add_to_struct`)))) )">
+               <param id="paddingLevel" expr="1"/>
+            </fragment>
+               
+            <!-- apply in context of each item in the set/structure/array -->
+            <text>};</text>
+            <br/>
+         </def>
+         <def fragment="const_var" public="true">
+            <expr>`const ` + $param.type + ` ` + $param.name + ` = ` + $this.getCValue() + `;`</expr><br/>
+         </def>
+         <def fragment="extern_const" public="true">
+            <text>extern const </text>
+            <expr>$param.type + ` ` + $param.name</expr>
+            <text>;</text>
+            <br/>
+         </def>
+         <def fragment="extern_var" public="true">
+            <expr>`extern ` + $param.type + ` ` + $param.name + `;`</expr><br/>
+         </def>
+         <def fragment="extern_const_var" public="true">
+            <expr>`extern const ` + $param.type + ` ` + $param.name + `;`</expr><br/>
+         </def>
+         <def fragment="extern_fcn_def" public="true">
+            <expr>`/* `+ $param.description + `*/`</expr><br/>
+            <expr>`extern ` + $param.type + ` ` + $param.name + `(` + $param.params +`);`</expr><br/>
+         </def>
+         <def fragment="extern_var_array" public="true">
+            <expr>`extern ` + $param.type + ` ` + $param.name + `[` + $param.size + `]` + `;`</expr><br/>
+         </def>
+         <def fragment="global_var" public="true">
+            <expr>$param.type + ` ` + $param.name + `;`</expr><br/>
+         </def>
+         <def fragment="global_var_array" public="true">
+            <expr>$param.type + ` ` + $param.name + `[` + $param.size + `]` + `;`</expr><br/>
+         </def>
+         
+      </fragment_defs>
+      <quick_selections/>
+   </config_set>
+</component:config_component>

@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="enet_config" label="enet_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.enet" version="1.0.0"/>
+   <description>Ethernet Configuration</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>Ethernet general mode</description>
+      <config_set_refs>
+         <config_set_ref>enet</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>ENET</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="enet" label="Ethernet configuration set" from_source="enet_driver.h">
+      <description>Ethernet Driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="dv_enet" label="Default Values for Ethernet" available="true">
+            <description>Ethernet configuration</description>
+            <set id="enet_state_name">enetState</set>
+            <set id="enet_mac">22:33:44:55:66:77</set>
+            <set id="enetCfg.name">enetInitConfig</set>
+            <set id="enetCfg.enetCfg_maxFrameLen">1518</set>
+            <set id="enetCfg.callback">NULL</set>
+            <set id="enetCfg.enetCfg_miiConfig.enetCfg_miiMode">ENET_RMII_MODE</set>
+            <set id="enetCfg.enetCfg_miiConfig.enetCfg_miiSpeed">ENET_MII_SPEED_100M</set>
+            <set id="enetCfg.enetCfg_miiConfig.enetCfg_miiDuplex">ENET_MII_FULL_DUPLEX</set>
+            <set id="enetTimerCfg.name">enetTimerInitConfig</set>
+            <set id="enetTimerCfg.enetTimerCfg_callback">NULL</set>
+            <set id="enetTimerCfg.enetTimerCfg_timerPeriod">1000000000</set>
+            <set id="enetTimerCfg.enetTimerCfg_timerInc">1</set>
+            <set id="enetCfg_ringConfig.0.enet_rx_size">1</set>
+            <set id="enetCfg_ringConfig.0.enet_tx_size">1</set>
+         </quick_selection>
+         <default>dv_enet</default>
+      </quick_selections>
+      <settings>
+         <string id="enet_state_name" label="Driver state structure name">
+            <description>Driver state structure name.</description>
+            <validation>
+               <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="State structure name must be a valid C identifier!"/>
+            </validation>
+         </string>
+         <string id="enet_mac" label="MAC Address">
+            <description>The MAC address, 6 octets, using the following format: 22:33:44:55:66:77.</description>
+            <validation>
+               <constraint cond_expr="regexMatch($this.getValue(), `[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}`)" level="error" description="MAC must match the following format: 22:33:44:55:66:77!"/>
+            </validation>
+         </string>
+         <reference id="enetCfg" label="ENET Configuration" type="enet_config_t">
+           <description>Defines a structure to initialize the ENET module.</description>
+         </reference>
+         <array id="enetCfg_ringConfig" label="Rings configuration" type="enet_ring_config_t" options="ShowContentAs=Table" min_expr="1" max_expr="getFeature(`FEATURE_ENET_RING_COUNT`)"
+            key_selector_expr="x -> (`Ring ` + x.getID())">
+           <description>Configure the size of the reception and transmission rings.</description>
+            <item_defaults>
+                <set_default id="enet_rx_size" value_expr="x -> 1"/>
+                <set_default id="enet_tx_size" value_expr="x -> 1"/>
+            </item_defaults>
+           <validation>
+             <constraint cond_expr="($this.size() &gt; 0)" level="error" description="The number of rings must be at least 1!"/>
+           </validation>
+         </array>
+         <bool id="enetTimerCfg_enable" label="Enable Adjustable Timer">
+            <description>Enables/Disables the adjustable timer. If enabled, an associated configurated structure will be generated.</description>
+         </bool>
+         <reference id="enetTimerCfg" label="Adjustable Timer" type="enet_timer_config_t" enable="getValue($configSet.enetTimerCfg_enable)==`true`">
+           <description>Defines a structure to configure the adjustable timer.</description>
+         </reference>
+         <array id="enetTimerCfg_channels" label="Adjustable Timer Channels" type="enet_timer_channel_config_t" options="ShowContentAs=Table" enable="getValue($configSet.enetTimerCfg_enable)==`true`" min_expr="0" max_expr="getFeature(`FEATURE_ENET_TIMER_CHANNEL_COUNT`)" key_selector_expr="x -> (`Channel ` + x.getID())">
+           <description>Configure the channels of the adjustable timer.</description>
+            <item_defaults>
+                <set_default id="name" value_expr="x -> (`enetTimerChn` + x.getID())"/>
+            </item_defaults>
+         </array>
+         <variable value="`../enet/enet_codegen.js`" id="codegen_file"></variable>
+         <variable value="`ENETCodeGen`" id="codegen_class"></variable>
+         <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+         <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+      </settings>
+      <generated_types>
+         <fixme id="enet_callback_t" label="Callback function invoked when one of the events in &quot;enet_event_t&quot; is encountered Implements : enet_callback_t_Class" type="void(*"/>
+         <fixme id="enet_timer_callback_t" label="Callback function invoked when a timer event is encountered" type="void(*">
+            <description>Implements : enet_timer_callback_t_Class</description>
+         </fixme>
+         <enum id="enet_mii_mode_t" label="Media Independent Interface mode selection Implements : enet_mii_mode_t_Class" from="enet_mii_mode_t">
+            <item id="ENET_MII_MODE" label="MII mode for data interface"/>
+            <item id="ENET_RMII_MODE" label="RMII mode for data interface"/>
+            <item id="ENET_RGMII_MODE" label="RGMII mode for data interface" available="featureDefined(`FEATURE_ENET_NO_RGMII`) == false"/>
+         </enum>
+         <enum id="enet_mii_speed_t" label="Media Independent Interface speed selection Implements : enet_mii_speed_t_Class" from="enet_mii_speed_t">
+            <item id="ENET_MII_SPEED_10M" label="Speed 10 Mbps"/>
+            <item id="ENET_MII_SPEED_100M" label="Speed 100 Mbps"/>
+            <item id="ENET_MII_SPEED_1000M" label="Speed 1000 Mbps" available="featureDefined(`FEATURE_ENET_NO_RGMII`) == false"/>
+         </enum>
+         <enum id="enet_mii_duplex_t" label="Media Independent Interface full-/half-duplex selection Implements : enet_mii_duplex_t_Class" from="enet_mii_duplex_t">
+            <item id="ENET_MII_HALF_DUPLEX" label="Half-duplex mode"/>
+            <item id="ENET_MII_FULL_DUPLEX" label="Full-duplex mode"/>
+         </enum>
+         <enum id="enet_rx_special_config_t" label="Special receive control configurations Implements : enet_rx_special_config_t_Class" from="enet_rx_special_config_t">
+            <item id="ENET_RX_CONFIG_ENABLE_PAYLOAD_LEN_CHECK" label=""/>
+            <item id="ENET_RX_CONFIG_STRIP_CRC_FIELD" label=""/>
+            <item id="ENET_RX_CONFIG_FORWARD_PAUSE_FRAMES" label=""/>
+            <item id="ENET_RX_CONFIG_REMOVE_PADDING" label=""/>
+            <item id="ENET_RX_CONFIG_ENABLE_FLOW_CONTROL" label=""/>
+            <item id="ENET_RX_CONFIG_REJECT_BROADCAST_FRAMES" label=""/>
+            <item id="ENET_RX_CONFIG_ENABLE_PROMISCUOUS_MODE" label=""/>
+            <item id="ENET_RX_CONFIG_ENABLE_MII_LOOPBACK" label=""/>
+         </enum>
+         <enum id="enet_tx_special_config_t" label="Special transmit control configurations Implements : enet_tx_special_config_t_Class" from="enet_tx_special_config_t">
+            <item id="ENET_TX_CONFIG_DISABLE_CRC_APPEND" label=""/>
+            <item id="ENET_TX_CONFIG_ENABLE_MAC_ADDR_INSERTION" label=""/>
+         </enum>
+         <enum id="enet_interrupt_t" label="Interrupt sources Implements : enet_interrupt_t_Class" from="enet_interrupt_t">
+            <item id="ENET_BABR_INTERRUPT" label=""/>
+            <item id="ENET_BABT_INTERRUPT" label=""/>
+            <item id="ENET_GRACE_STOP_INTERRUPT" label=""/>
+            <item id="ENET_TX_FRAME_INTERRUPT" label=""/>
+            <item id="ENET_TX_BUFFER_INTERRUPT" label=""/>
+            <item id="ENET_RX_FRAME_INTERRUPT" label=""/>
+            <item id="ENET_RX_BUFFER_INTERRUPT" label=""/>
+            <item id="ENET_MII_INTERRUPT" label=""/>
+            <item id="ENET_EBERR_INTERRUPT" label=""/>
+            <item id="ENET_LATE_COLLISION_INTERRUPT" label=""/>
+            <item id="ENET_RETRY_LIMIT_INTERRUPT" label=""/>
+            <item id="ENET_UNDERRUN_INTERRUPT" label=""/>
+            <item id="ENET_PAYLOAD_RX_INTERRUPT" label=""/>
+            <item id="ENET_WAKEUP_INTERRUPT" label=""/>
+            <item id="ENET_TS_AVAIL_INTERRUPT" label=""/>
+            <item id="ENET_TS_TIMER_INTERRUPT" label=""/>
+            <item id="ENET_RX_FLUSH_2_INTERRUPT" label=""/>
+            <item id="ENET_RX_FLUSH_1_INTERRUPT" label=""/>
+            <item id="ENET_RX_FLUSH_0_INTERRUPT" label=""/>
+            <item id="ENET_TX_FRAME_1_INTERRUPT" label=""/>
+            <item id="ENET_TX_BUFFER_1_INTERRUPT" label=""/>
+            <item id="ENET_RX_FRAME_1_INTERRUPT" label=""/>
+            <item id="ENET_RX_BUFFER_1_INTERRUPT" label=""/>
+            <item id="ENET_TX_FRAME_2_INTERRUPT" label=""/>
+            <item id="ENET_TX_BUFFER_2_INTERRUPT" label=""/>
+            <item id="ENET_RX_FRAME_2_INTERRUPT" label=""/>
+            <item id="ENET_RX_BUFFER_2_INTERRUPT" label=""/>
+            <item id="ENET_PARSERERR_INTERRUPT" label=""/>
+            <item id="ENET_PARSRF_INTERRUPT" label=""/>
+         </enum>
+         <enum id="enet_tx_accelerator_t" label="Transmit accelerator configurations Implements : enet_tx_accelerator_t_Class" from="enet_tx_accelerator_t">
+            <item id="ENET_TX_ACCEL_ENABLE_SHIFT16" label=""/>
+            <item id="ENET_TX_ACCEL_INSERT_IP_CHECKSUM" label=""/>
+            <item id="ENET_TX_ACCEL_INSERT_PROTO_CHECKSUM" label=""/>
+         </enum>
+         <enum id="enet_rx_accelerator_t" label="Receive accelerator configurations Implements : enet_rx_accelerator_t_Class" from="enet_rx_accelerator_t">
+            <item id="ENET_RX_ACCEL_REMOVE_PAD" label=""/>
+            <item id="ENET_RX_ACCEL_ENABLE_IP_CHECK" label=""/>
+            <item id="ENET_RX_ACCEL_ENABLE_PROTO_CHECK" label=""/>
+            <item id="ENET_RX_ACCEL_ENABLE_MAC_CHECK" label=""/>
+            <item id="ENET_RX_ACCEL_ENABLE_SHIFT16" label=""/>
+         </enum>
+         <enum id="enet_event_t" label="Event specifier for the callback function Implements : enet_event_t_Class" from="enet_event_t">
+            <item id="ENET_RX_EVENT" label=""/>
+            <item id="ENET_TX_EVENT" label=""/>
+            <item id="ENET_ERR_EVENT" label=""/>
+            <item id="ENET_WAKE_UP_EVENT" label=""/>
+            <item id="ENET_PARSER_EVENT" label=""/>
+         </enum>
+         <enum id="enet_counter_t" label="Statistics counters enumeration Implements : enet_counter_t_Class" from="enet_counter_t">
+            <item id="ENET_CTR_RMON_T_DROP" label=""/>
+            <item id="ENET_CTR_RMON_T_PACKETS" label=""/>
+            <item id="ENET_CTR_RMON_T_BC_PKT" label=""/>
+            <item id="ENET_CTR_RMON_T_MC_PKT" label=""/>
+            <item id="ENET_CTR_RMON_T_CRC_ALIGN" label=""/>
+            <item id="ENET_CTR_RMON_T_UNDERSIZE" label=""/>
+            <item id="ENET_CTR_RMON_T_OVERSIZE" label=""/>
+            <item id="ENET_CTR_RMON_T_FRAG" label=""/>
+            <item id="ENET_CTR_RMON_T_JAB" label=""/>
+            <item id="ENET_CTR_RMON_T_COL" label=""/>
+            <item id="ENET_CTR_RMON_T_P64" label=""/>
+            <item id="ENET_CTR_RMON_T_P65TO127" label=""/>
+            <item id="ENET_CTR_RMON_T_P128TO255" label=""/>
+            <item id="ENET_CTR_RMON_T_P256TO511" label=""/>
+            <item id="ENET_CTR_RMON_T_P512TO1023" label=""/>
+            <item id="ENET_CTR_RMON_T_P1024TO2047" label=""/>
+            <item id="ENET_CTR_RMON_T_P_GTE2048" label=""/>
+            <item id="ENET_CTR_RMON_T_OCTETS" label=""/>
+            <item id="ENET_CTR_IEEE_T_DROP" label=""/>
+            <item id="ENET_CTR_IEEE_T_FRAME_OK" label=""/>
+            <item id="ENET_CTR_IEEE_T_1COL" label=""/>
+            <item id="ENET_CTR_IEEE_T_MCOL" label=""/>
+            <item id="ENET_CTR_IEEE_T_DEF" label=""/>
+            <item id="ENET_CTR_IEEE_T_LCOL" label=""/>
+            <item id="ENET_CTR_IEEE_T_EXCOL" label=""/>
+            <item id="ENET_CTR_IEEE_T_MACERR" label=""/>
+            <item id="ENET_CTR_IEEE_T_CSERR" label=""/>
+            <item id="ENET_CTR_IEEE_T_SQE" label=""/>
+            <item id="ENET_CTR_IEEE_T_FDXFC" label=""/>
+            <item id="ENET_CTR_IEEE_T_OCTETS_OK" label=""/>
+            <item id="ENET_CTR_RMON_R_PACKETS" label=""/>
+            <item id="ENET_CTR_RMON_R_BC_PKT" label=""/>
+            <item id="ENET_CTR_RMON_R_MC_PKT" label=""/>
+            <item id="ENET_CTR_RMON_R_CRC_ALIGN" label=""/>
+            <item id="ENET_CTR_RMON_R_UNDERSIZE" label=""/>
+            <item id="ENET_CTR_RMON_R_OVERSIZE" label=""/>
+            <item id="ENET_CTR_RMON_R_FRAG" label=""/>
+            <item id="ENET_CTR_RMON_R_JAB" label=""/>
+            <item id="ENET_CTR_RMON_R_RESVD_0" label=""/>
+            <item id="ENET_CTR_RMON_R_P64" label=""/>
+            <item id="ENET_CTR_RMON_R_P65TO127" label=""/>
+            <item id="ENET_CTR_RMON_R_P128TO255" label=""/>
+            <item id="ENET_CTR_RMON_R_P256TO511" label=""/>
+            <item id="ENET_CTR_RMON_R_P512TO1023" label=""/>
+            <item id="ENET_CTR_RMON_R_P1024TO2047" label=""/>
+            <item id="ENET_CTR_RMON_R_P_GTE2048" label=""/>
+            <item id="ENET_CTR_RMON_R_OCTETS" label=""/>
+            <item id="ENET_CTR_IEEE_R_DROP" label=""/>
+            <item id="ENET_CTR_IEEE_R_FRAME_OK" label=""/>
+            <item id="ENET_CTR_IEEE_R_CRC" label=""/>
+            <item id="ENET_CTR_IEEE_R_ALIGN" label=""/>
+            <item id="ENET_CTR_IEEE_R_MACERR" label=""/>
+            <item id="ENET_CTR_IEEE_R_FDXFC" label=""/>
+            <item id="ENET_CTR_IEEE_R_OCTETS_OK" label=""/>
+         </enum>
+         <enum id="enet_timer_channel_mode_t" label="Timer channels configuration modes" from="enet_timer_channel_mode_t">
+            <item id="ENET_TIMER_IC_RISING_EDGE" label="Timer Channel is configured for Input Capture on rising edge"/>
+            <item id="ENET_TIMER_IC_FALLING_EDGE" label="Timer Channel is configured for Input Capture on falling edge"/>
+            <item id="ENET_TIMER_IC_BOTH_EDGES" label="Timer Channel is configured for Input Capture on both edges"/>
+            <item id="ENET_TIMER_OC_SOFTWARE" label="Timer Channel is configured for Output Compare - software only"/>
+            <item id="ENET_TIMER_OC_TOGGLE_ON_COMP" label="Timer Channel is configured for Output Compare - toggle output on compare"/>
+            <item id="ENET_TIMER_OC_CLEAR_ON_COMP" label="Timer Channel is configured for Output Compare - clear output on compare"/>
+            <item id="ENET_TIMER_OC_SET_ON_COMP" label="Timer Channel is configured for Output Compare - set output on compare"/>
+            <item id="ENET_TIMER_OC_CLEAR_ON_COMP_SET_ON_OVF" label="Timer Channel is configured for Output Compare - clear output on compare, set output on overflow"/>
+            <item id="ENET_TIMER_OC_SET_ON_COMP_CLEAR_ON_OVF" label="Timer Channel is configured for Output Compare - set output on compare, clear output on overflow"/>
+            <item id="ENET_TIMER_OC_PULSE_LOW_ON_COMP" label="Timer Channel is configured for Output Compare - pulse output low on compare"/>
+            <item id="ENET_TIMER_OC_PULSE_HIGH_ON_COMP" label="Timer Channel is configured for Output Compare - pulse output high on compare"/>
+         </enum>
+         <enum id="enet_tx_scheme_t" label="Transmitter queue selection/arbitration schemes" from="enet_tx_scheme_t">
+            <item id="ENET_CBS_SCHEME" label=""/>
+            <item id="ENET_ROUND_ROBIN_SCHEME" label=""/>
+         </enum>
+         <enum id="enet_fifo_threshold_t" label="Available FIFO threshold levels" from="enet_fifo_threshold_t">
+            <item id="ENET_RX_SECTION_FULL" label=""/>
+            <item id="ENET_RX_SECTION_EMPTY" label=""/>
+            <item id="ENET_RX_ALMOST_EMPTY" label=""/>
+            <item id="ENET_RX_ALMOST_FULL" label=""/>
+            <item id="ENET_TX_SECTION_EMPTY" label="Value, in 64-bit words, of the transmit FIFO section empty threshold"/>
+            <item id="ENET_TX_ALMOST_EMPTY" label="Value, in 64-bit words, of the transmit FIFO almost empty threshold"/>
+            <item id="ENET_TX_ALMOST_FULL" label="Value, in 64-bit words, of the transmit FIFO almost full threshold"/>
+         </enum>
+         <enum id="enet_rx_parser_counter_t" label="Receive parser statistics counters" from="enet_rx_parser_counter_t">
+            <item id="ENET_RX_PARSER_CNT_DISCARD" label="Number of frames rejected by the receive parser due to no matching, inverse matching, or parser programming error"/>
+            <item id="ENET_RX_PARSER_CNT_ACCEPT_0" label="Number of frames accepted by the receive parser for queue 0"/>
+            <item id="ENET_RX_PARSER_CNT_REJECT_0" label="Number of frames rejected by the receive parser for queue 0"/>
+            <item id="ENET_RX_PARSER_CNT_ACCEPT_1" label="Number of frames accepted by the receive parser for queue 1"/>
+            <item id="ENET_RX_PARSER_CNT_REJECT_1" label="Number of frames rejected by the receive parser for queue 1"/>
+            <item id="ENET_RX_PARSER_CNT_ACCEPT_2" label="Number of frames accepted by the receive parser for queue 2"/>
+            <item id="ENET_RX_PARSER_CNT_REJECT_2" label="Number of frames rejected by the receive parser for queue 2"/>
+         </enum>
+         <enum id="enet_rx_parser_status_t" label="Receive parser status" from="enet_rx_parser_status_t">
+            <item id="ENET_RX_PARSER_STAT_MXINDERR" label="Frame rejected due to parser error as table entry index greater than or equal to number of valid entries within the table"/>
+            <item id="ENET_RX_PARSER_STAT_TBLDPTERR" label="Frame rejected due to parser error as table entry index larger than or equal to parser table physical depth"/>
+            <item id="ENET_RX_PARSER_STAT_NOMTCERR" label="Frame rejected due to parser error as no match or invert match found after end of parsing"/>
+            <item id="ENET_RX_PARSER_STAT_FMOFFERR" label="Frame rejected due to parser error as frame offset is larger than expected maximum frame offset value"/>
+            <item id="ENET_RX_PARSER_STAT_PRSENDERR" label="Frame parsing started for the next frame before end of parsing for the current frame"/>
+            <item id="ENET_RX_PARSER_STAT_INVMAXIDX" label="Set to 1 if the parser is currently enabled, but the number of valid entries within the table is set to 0 or is larger than the physical table depth"/>
+            <item id="ENET_RX_PARSER_STAT_RXPRSDN" label="Asserted to indicate that the parser is in idle state"/>
+         </enum>
+         <struct id="enet_buffer_t" label="Send/Receive buffer information for the user Implements : enet_buffer_t_Class" from="enet_buffer_t">
+            <fixme id="data" label="" type="uint8_t *"/>
+            <integer id="length" label="" type="uint16_t"/>
+         </struct>
+         <struct id="enet_buffer_descriptor_t" label="Send/Receive internal buffer descriptor Implements : enet_buffer_descriptor_t_Class" from="enet_buffer_descriptor_t">
+            <integer id="control" label="Buffer descriptor control and status" type="uint16_t">
+               <description>Buffer descriptor control and status.</description>
+            </integer>
+            <integer id="length" label="Buffer descriptor data length" type="uint16_t">
+               <description>Buffer descriptor data length.</description>
+            </integer>
+            <fixme id="buffer" label="Data buffer pointer" type="uint8_t *">
+               <description>Data buffer pointer.</description>
+            </fixme>
+            <integer id="enh1" label="First word of the extended part of the buffer descriptor" type="uint32_t">
+               <description>First word of the extended part of the buffer descriptor.</description>
+            </integer>
+            <integer id="enh2" label="Second word of the extended part of the buffer descriptor" type="uint32_t">
+               <description>Second word of the extended part of the buffer descriptor.</description>
+            </integer>
+            <integer id="enh3" label="Third word of the extended part of the buffer descriptor" type="uint32_t">
+               <description>Third word of the extended part of the buffer descriptor.</description>
+            </integer>
+            <integer id="timestamp" label="Timestamp of the frame" type="uint32_t">
+               <description>Timestamp of the frame.</description>
+            </integer>
+            <integer id="reserved1" label="Reserved" type="uint32_t">
+               <description>Reserved.</description>
+            </integer>
+            <integer id="reserved2" label="Reserved" type="uint32_t">
+               <description>Reserved.</description>
+            </integer>
+         </struct>
+         <struct id="enet_buffer_config_t" label="Defines the ENET buffer descriptors ring configuration structure Implements : enet_buffer_config_t_Class" from="enet_buffer_config_t">
+            <integer id="rxRingSize" label="Receive buffer descriptors number" type="uint16_t">
+               <description>Receive buffer descriptors number.</description>
+            </integer>
+            <integer id="txRingSize" label="Transmit buffer descriptors number" type="uint16_t">
+               <description>Transmit buffer descriptors number.</description>
+            </integer>
+            <fixme id="rxRingAligned" label="Aligned receive buffer descriptor ring start address" type="enet_buffer_descriptor_t *">
+               <description>Aligned receive buffer descriptor ring start address.</description>
+            </fixme>
+            <fixme id="txRingAligned" label="Aligned transmit buffer descriptor ring start address" type="enet_buffer_descriptor_t *">
+               <description>Aligned transmit buffer descriptor ring start address.</description>
+            </fixme>
+            <fixme id="rxBufferAligned" label="Receive data buffers start address" type="uint8_t *">
+               <description>Receive data buffers start address.</description>
+            </fixme>
+         </struct>
+         <struct id="enet_config_t" label="Defines the ENET module configuration structure Implements : enet_config_t_Class" from="enet_config_t">
+            <integer id="rxAccelerConfig" label="Receive accelerator, A logical OR of &quot;enet_rx_accelerator_t&quot;" type="uint8_t">
+               <description>Receive accelerator, A logical OR of &quot;enet_rx_accelerator_t&quot;.</description>
+            </integer>
+            <integer id="txAccelerConfig" label="Transmit accelerator, A logical OR of &quot;enet_tx_accelerator_t&quot;" type="uint8_t">
+               <description>Transmit accelerator, A logical OR of &quot;enet_tx_accelerator_t&quot;.</description>
+            </integer>
+            <integer id="maxFrameLen" label="Maximum frame length" type="uint16_t">
+               <description>Maximum frame length.</description>
+            </integer>
+            <integer id="interrupts" label="MAC interrupt source" type="uint32_t">
+               <description>MAC interrupt source. A logical OR of &quot;enet_interrupt_t&quot;.</description>
+            </integer>
+            <reference id="miiMode" label="MII mode" type="enet_mii_mode_t">
+               <description>MII mode.</description>
+            </reference>
+            <reference id="miiSpeed" label="MII Speed" type="enet_mii_speed_t">
+               <description>MII Speed.</description>
+            </reference>
+            <reference id="miiDuplex" label="MII duplex" type="enet_mii_duplex_t">
+               <description>MII duplex.</description>
+            </reference>
+            <integer id="rxConfig" label="MAC receive special configuration" type="uint32_t">
+               <description>MAC receive special configuration. A logical OR of &quot;enet_rx_special_config_t&quot;.</description>
+            </integer>
+            <integer id="txConfig" label="MAC transmit special configuration" type="uint32_t">
+               <description>MAC transmit special configuration. A logical OR of &quot;enet_tx_special_config_t&quot;.</description>
+            </integer>
+            <reference id="callback" label="" type="enet_callback_t"/>
+            <integer id="ringCount" label="The number of rings to be used by the driver" type="uint8_t">
+               <description>The number of rings to be used by the driver.</description>
+            </integer>
+         </struct>
+         <struct id="enet_state_t" label="Internal driver state structure Implements : enet_state_t_Class" from="enet_state_t">
+            <fixme id="rxBdBase" label="Receive buffer descriptor base address pointer array" type="enet_buffer_descriptor_t *">
+               <description>Receive buffer descriptor base address pointer array.</description>
+            </fixme>
+            <fixme id="rxBdCurrent" label="The current available receive buffer descriptor pointer array" type="enet_buffer_descriptor_t *">
+               <description>The current available receive buffer descriptor pointer array.</description>
+            </fixme>
+            <fixme id="rxBdAlloc" label="Pointer array used for enqueuing Rx buffers provided using ENET_DRV_ProvideRxBuff" type="enet_buffer_descriptor_t *">
+               <description>Pointer array used for enqueuing Rx buffers provided using ENET_DRV_ProvideRxBuff.</description>
+            </fixme>
+            <fixme id="txBdBase" label="Transmit buffer descriptor base address pointer array" type="enet_buffer_descriptor_t *">
+               <description>Transmit buffer descriptor base address pointer array.</description>
+            </fixme>
+            <fixme id="txBdCurrent" label="The current available transmit buffer descriptor pointer array" type="enet_buffer_descriptor_t *">
+               <description>The current available transmit buffer descriptor pointer array.</description>
+            </fixme>
+            <reference id="callback" label="Callback function" type="enet_callback_t">
+               <description>Callback function.</description>
+            </reference>
+            <reference id="timerCallback" label="Timer callback function" type="enet_timer_callback_t">
+               <description>Timer callback function.</description>
+            </reference>
+            <integer id="ringCount" label="The number of rings used by the driver" type="uint8_t">
+               <description>The number of rings used by the driver.</description>
+            </integer>
+         </struct>
+         <struct id="enet_rx_enh_info_t" label="Enhanced information related to a receive buffer descriptor Implements : enet_rx_enh_info_t_Class" from="enet_rx_enh_info_t">
+            <integer id="errMask" label="Mask of ENET_RX_ENH_ERR_*, representing the errors that occurred" type="uint32_t">
+               <description>Mask of ENET_RX_ENH_ERR_*, representing the errors that occurred.</description>
+            </integer>
+            <integer id="timestamp" label="Timestamp of the received frame" type="uint32_t">
+               <description>Timestamp of the received frame.</description>
+            </integer>
+            <integer id="checksum" label="One&apos;s complement sum of the payload section of the IP frame" type="uint16_t">
+               <description>One&apos;s complement sum of the payload section of the IP frame.</description>
+            </integer>
+            <integer id="vlanPrio" label="Frame priority level" type="uint8_t">
+               <description>Frame priority level. Valid values are from 0 (best effort) to 7 (highest).</description>
+            </integer>
+            <integer id="headerLen" label="Number of 32-bit words found within the IP and its following protocol headers" type="uint8_t">
+               <description>Number of 32-bit words found within the IP and its following protocol headers.</description>
+            </integer>
+            <integer id="proto" label="The 8-bit protocol field found within the IP header of the frame" type="uint8_t">
+               <description>The 8-bit protocol field found within the IP header of the frame.</description>
+            </integer>
+            <bool id="unicast" label="Indicates that the frame is an unicast frame">
+               <description>Indicates that the frame is an unicast frame.</description>
+            </bool>
+            <bool id="ipv6" label="Indicates that the frame is an IPv6 frame">
+               <description>Indicates that the frame is an IPv6 frame.</description>
+            </bool>
+            <bool id="ipv4Frag" label="Indicates that the frame is an IPv4 fragment frame">
+               <description>Indicates that the frame is an IPv4 fragment frame.</description>
+            </bool>
+         </struct>
+         <struct id="enet_tx_enh_info_t" label="Enhanced information related to a transmit buffer descriptor Implements : enet_tx_enh_info_t_Class" from="enet_tx_enh_info_t">
+            <integer id="errMask" label="Mask of ENET_TX_ENH_ERR_*, representing the errors that occurred" type="uint32_t">
+               <description>Mask of ENET_TX_ENH_ERR_*, representing the errors that occurred.</description>
+            </integer>
+            <integer id="timestamp" label="Timestamp of the transmitted frame" type="uint32_t">
+               <description>Timestamp of the transmitted frame.</description>
+            </integer>
+         </struct>
+         <struct id="enet_timer_config_t" label="Configuration of the adjustable timer" from="enet_timer_config_t">
+            <integer id="timerPeriod" label="When the timer reaches this value, the period event occurs and the timer restarts" type="uint32_t">
+               <description>When the timer reaches this value, the period event occurs and the timer restarts.</description>
+            </integer>
+            <integer id="timerInc" label="The timer increments by this amount each clock cycle" type="uint8_t">
+               <description>The timer increments by this amount each clock cycle.</description>
+            </integer>
+            <integer id="correctionPeriod" label="Defines after how many timer clock cycles the correction counter should be reset and triggers a correction increment on the timer" type="uint32_t">
+               <description>Defines after how many timer clock cycles the correction counter should be reset and triggers a correction increment on the timer.</description>
+            </integer>
+            <integer id="correctionInc" label="This value is added every time the correction timer expires" type="uint8_t">
+               <description>This value is added every time the correction timer expires.</description>
+            </integer>
+            <bool id="irqEnable" label="Generate an interrupt when a timer event occurs">
+               <description>Generate an interrupt when a timer event occurs.</description>
+            </bool>
+            <reference id="callback" label="Callback to be invoked when a timer event occurs" type="enet_timer_callback_t">
+               <description>Callback to be invoked when a timer event occurs.</description>
+            </reference>
+         </struct>
+         <struct id="enet_timer_channel_config_t" label="Configuration structure of the timer channels" from="enet_timer_channel_config_t">
+            <reference id="mode" label="The mode in which the timer channel shall be configured" type="enet_timer_channel_mode_t">
+               <description>The mode in which the timer channel shall be configured.</description>
+            </reference>
+            <bool id="irqEnable" label="Enable timer interrupt for this channel">
+               <description>Enable timer interrupt for this channel. Note: When enabling a channel interrupt, the timer interrupt must also be enabled.</description>
+            </bool>
+            <bool id="dmaEnable" label="Enable DMA request for this channel">
+               <description>Enable DMA request for this channel.</description>
+            </bool>
+         </struct>
+         <struct id="enet_tx_options_t" label="Transmit options for a particular frame" from="enet_tx_options_t">
+            <bool id="noCRC" label="Do not append CRC">
+               <description>Do not append CRC. It will be provided by the application.</description>
+            </bool>
+            <bool id="noInt" label="Do not generate a transmit interrupt">
+               <description>Do not generate a transmit interrupt.</description>
+            </bool>
+            <bool id="useTLT" label="If true, use transmit launch time">
+               <description>If true, use transmit launch time.</description>
+            </bool>
+            <integer id="TLT" label="The value of the transmit launch time" type="uint32_t">
+               <description>The value of the transmit launch time.</description>
+            </integer>
+         </struct>
+         <struct id="enet_rx_parser_config_t" label="Receive parser configuration" from="enet_rx_parser_config_t">
+            <bool id="acceptEndError" label="Accept the current frame when parsing is not completed for the current frame and parsing for the next frame has started">
+               <description>Accept the current frame when parsing is not completed for the current frame and parsing for the next frame has started.</description>
+            </bool>
+            <integer id="endErrorQueue" label="Queue number for the accepted frames that encounter the Parser End Error" type="uint8_t">
+               <description>Queue number for the accepted frames that encounter the Parser End Error.</description>
+            </integer>
+            <bool id="clearCounters" label="Clear Parser Statistics Counter">
+               <description>Clear Parser Statistics Counter</description>
+            </bool>
+            <bool id="inverseByteOrder" label="When true, the byte order within a frame word is changed before comparison">
+               <description>When true, the byte order within a frame word is changed before comparison.</description>
+            </bool>
+         </struct>
+         <struct id="enet_rx_parser_rule_t" label="Receive parser rule" from="enet_rx_parser_rule_t">
+            <integer id="compareValue" label="Data to be matched" type="uint32_t">
+               <description>Data to be matched.</description>
+            </integer>
+            <integer id="compareMask" label="Matching mask" type="uint32_t">
+               <description>Matching mask.</description>
+            </integer>
+            <integer id="compareOffset" label="Points to the word, from the start of the frame, to be compared for matching" type="uint8_t">
+               <description>Points to the word, from the start of the frame, to be compared for matching.</description>
+            </integer>
+         </struct>
+      </generated_types>
+      <user_types>
+         <struct id="enet_ring_config_t" label="Configures the sizes of the Rx and Tx rings">
+            <integer id="enet_rx_size" label="Reception ring size" type="uint16_t"/>
+            <integer id="enet_tx_size" label="Transmission ring size" type="uint16_t"/>
+         </struct>
+         <struct id="enet_tx_accelerator_t" label="Transmit accelerator configurations" from="enet_tx_accelerator_t">
+            <bool id="ENET_TX_ACCEL_ENABLE_SHIFT16" label="TX FIFO Shift-16">
+              <description>Indicates to the transmit data FIFO that the written frames contain two additional octets before the
+frame data. This means the actual frame begins at bit 16 of the first word written into the FIFO. This
+function allows putting the frame payload on a 32-bit boundary in memory, as the 14-byte Ethernet
+header is extended to a 16-byte header.</description>
+            </bool>
+            <bool id="ENET_TX_ACCEL_INSERT_IP_CHECKSUM" label="Insertion of IP header checksum">
+              <description>If an IP frame is transmitted, the checksum is inserted automatically. The IP header checksum field
+must be cleared. If a non-IP frame is transmitted the frame is not modified.</description>
+            </bool>
+            <bool id="ENET_TX_ACCEL_INSERT_PROTO_CHECKSUM" label="Insertion of protocol checksum">
+              <description>If an IP frame with a known protocol is transmitted, the checksum is inserted automatically into the
+frame. The checksum field must be cleared. The other frames are not modified.</description>
+            </bool>
+         </struct>
+         <struct id="enet_rx_accelerator_t" label="Receive accelerator configurations" from="enet_rx_accelerator_t">
+            <bool id="ENET_RX_ACCEL_REMOVE_PAD" label="Padding Removal For Short IP Frames">
+              <description>Any bytes following the IP payload section of the frame are removed from the frame.</description>
+            </bool>
+            <bool id="ENET_RX_ACCEL_ENABLE_IP_CHECK" label="Discard Of Frames With Wrong IPv4 Header Checksum">
+              <description>If an IPv4 frame is received with a mismatching header checksum, the frame is discarded. IPv6 has no
+header checksum and is not affected by this setting. Discarding is only available when the RX FIFO
+operates in store and forward mode (RSFL cleared).</description>
+            </bool>
+            <bool id="ENET_RX_ACCEL_ENABLE_PROTO_CHECK" label="Discard Of Frames With Wrong Protocol Checksum">
+              <description>If a TCP/IP, UDP/IP, or ICMP/IP frame is received that has a wrong TCP, UDP, or ICMP checksum,
+the frame is discarded. Discarding is only available when the RX FIFO operates in store and forward
+mode (RSFL cleared).</description>
+            </bool>
+            <bool id="ENET_RX_ACCEL_ENABLE_MAC_CHECK" label="Discard Of Frames With MAC Layer Errors">
+              <description>Any frame received with a CRC, length, or PHY error is automatically discarded and not forwarded to
+the user application interface.</description>
+            </bool>
+            <bool id="ENET_RX_ACCEL_ENABLE_SHIFT16" label="RX FIFO Shift-16">
+              <description>When this field is set, the actual frame data starts at bit 16 of the first word read from the RX FIFO aligning
+the Ethernet payload on a 32-bit boundary.
+NOTE: This function only affects the FIFO storage and has no influence on the statistics, which use the
+actual length of the frame received.</description>
+            </bool>
+         </struct>
+         <struct id="enet_rx_special_config_t" label="Special receive control configurations" from="enet_rx_special_config_t">
+            <bool id="ENET_RX_CONFIG_ENABLE_PAYLOAD_LEN_CHECK" label="Payload Length Check">
+              <description>The core checks the frame's payload length with the frame length/type field. Errors are indicated in the
+EIR[PLC] field.</description>
+            </bool>
+            <bool id="ENET_RX_CONFIG_STRIP_CRC_FIELD" label="Strip Received CRC">
+              <description>Specifies whether the CRC field of received frames is transmitted or stripped.
+NOTE: If padding function is enabled (PADEN = 1), CRCFWD is ignored and the CRC field is checked
+and always terminated and removed.</description>
+            </bool>
+            <bool id="ENET_RX_CONFIG_FORWARD_PAUSE_FRAMES" label="Forward Pause Frames">
+              <description>If a TCP/IP, UDP/IP, or ICMP/IP frame is received that has a wrong TCP, UDP, or ICMP checksum,
+the frame is discarded. Discarding is only available when the RX FIFO operates in store and forward
+mode (RSFL cleared).</description>
+            </bool>
+            <bool id="ENET_RX_CONFIG_REMOVE_PADDING" label="Padding Remove On Receive">
+              <description>Padding is removed from received frames.</description>
+            </bool>
+            <bool id="ENET_RX_CONFIG_ENABLE_FLOW_CONTROL" label="Flow Control Enable">
+              <description>If set, the receiver detects PAUSE frames. Upon PAUSE frame detection, the transmitter stops
+transmitting data frames for a given duration.</description>
+            </bool>
+            <bool id="ENET_RX_CONFIG_REJECT_BROADCAST_FRAMES" label="Broadcast Frame Reject">
+              <description>If set, frames with destination address (DA) equal to 0xFFFF_FFFF_FFFF are rejected unless the PROM
+field is set. If BC_REJ and PROM are set, frames with broadcast DA are accepted and the MISS (M) is set
+in the receive buffer descriptor.</description>
+            </bool>
+            <bool id="ENET_RX_CONFIG_ENABLE_PROMISCUOUS_MODE" label="Promiscuous Mode">
+              <description>All frames are accepted regardless of address matching.</description>
+            </bool>
+            <bool id="ENET_RX_CONFIG_ENABLE_MII_LOOPBACK" label="MII Loopback">
+              <description>Transmitted frames are looped back internal to the device and transmit MII output signals are not
+asserted.</description>
+            </bool>
+         </struct>
+         <struct id="enet_tx_special_config_t" label="Special transmit control configurations" from="enet_tx_special_config_t">
+            <bool id="ENET_TX_CONFIG_DISABLE_CRC_APPEND" label="Do not append CRC">
+              <description>The transmitter does not append any CRC to transmitted frames, as it is expecting a frame with CRC
+from the application.</description>
+            </bool>
+            <bool id="ENET_TX_CONFIG_ENABLE_MAC_ADDR_INSERTION" label="Set MAC Address On Transmit">
+              <description>he MAC overwrites the source MAC address with the programmed MAC address according to
+ADDSEL.</description>
+            </bool>
+         </struct>
+         <struct id="enet_mii_config_t" label="MII Configuration">
+           <reference id="enetCfg_miiMode" label="MII mode" type="enet_mii_mode_t">
+              <description>MII mode</description>
+           </reference>
+           <reference id="enetCfg_miiSpeed" label="MII speed" type="enet_mii_speed_t">
+              <description>MII speed</description>
+           </reference>
+           <reference id="enetCfg_miiDuplex" label="MII duplex" type="enet_mii_duplex_t">
+              <description>MII duplex</description>
+           </reference>
+         </struct>
+         <struct id="enet_interrupts_t" label="Interrupts">
+           <bool id="enetCfg_rxInt" label="Receive">
+             <description>Enable/disable reception interrupts</description>
+           </bool>
+           <bool id="enetCfg_txInt" label="Transmit">
+             <description>Enable/disable transmission interrupts</description>
+           </bool>
+           <bool id="enetCfg_errInt" label="Error">
+             <description>Enable/disable error interrupts</description>
+           </bool>
+           <bool id="enetCfg_wakeInt" label="Wakeup">
+             <description>Enable/disable wakeup interrupts</description>
+           </bool>
+           <bool id="enetCfg_parserInt" label="Parser" available="featureDefined(`FEATURE_ENET_PARSER_INTERRUPT`) == false">
+             <description>Enable/disable interrupts related to the parser</description>
+           </bool>
+           <bool id="enetCfg_timerInt" label="Timer">
+             <description>Enable/disable interrupts related to the timer</description>
+           </bool>
+        </struct>
+         <struct id="enet_config_t" label="Defines the ENET module configuration structure" from="enet_config_t">
+           <string id="name" label="Name">
+              <description>Configuration name.</description>
+              <validation>
+                 <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+              </validation>
+           </string>
+           <bool id="readonly" label="Read-only">
+              <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+           </bool>
+           <integer id="enetCfg_maxFrameLen" label="Maximum frame length (bytes)" type="uint32_t" min_expr ="64" max_expr ="16383" >
+             <description>Transmit frames longer than this value cause the BABT interrupt to occur. Receive frames longer than
+this value cause the BABR interrupt to occur and set the LG field in the end of frame receive buffer
+descriptor. The recommended default value is 1518 or 1522 if VLAN tags are
+supported.</description>
+           </integer>
+           <string id="callback" label="Callback" type="enet_callback_t">
+             <description>Callback function invoked when one of the events in &quot;enet_event_t&quot; is encountered</description>
+             <validation>
+                <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+             </validation>
+           </string>
+           <reference id="enetCfg_interrupts" label="Interrupts" type="enet_interrupts_t">
+             <description>Enable/Disable interrupts.</description>
+           </reference>
+           <reference id="enetCfg_miiConfig" label="MII Configuration" type="enet_mii_config_t">
+             <description>MII Configuration</description>
+           </reference>
+           <reference id="enetCfg_txAccelerConfig" label="Transmission acceleration options" type="enet_tx_accelerator_t">
+             <description>Enable/Disable available transmission acceleration options.</description>
+           </reference>
+           <reference id="enetCfg_rxAccelerConfig" label="Reception acceleration options" type="enet_rx_accelerator_t">
+             <description>Enable/Disable available reception acceleration options.</description>
+           </reference>
+           <reference id="enetCfg_rxSpecialConfig" label="Reception special options" type="enet_rx_special_config_t">
+             <description>Enable/Disable available reception special options.</description>
+           </reference>
+           <reference id="enetCfg_txSpecialConfig" label="Transmission special options" type="enet_tx_special_config_t">
+             <description>Enable/Disable available transmission special options.</description>
+           </reference>
+         </struct>
+         <struct id="enet_timer_config_t" label="Configuration of the adjustable timer" from="enet_timer_config_t">
+           <string id="name" label="Name">
+             <description>Timer configuration structure name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+           </string>
+           <bool id="readonly" label="Read-only">
+             <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+           </bool>
+           <integer id="enetTimerCfg_timerPeriod" label="Timer period" min_expr="1" type="uint32_t" options="cStructField">
+               <description>When the timer reaches this value, the period event occurs and the timer restarts.</description>
+            </integer>
+            <integer id="enetTimerCfg_timerInc" label="Timer increment" min_expr="1" type="uint8_t" options="cStructField">
+               <description>The timer increments by this amount each clock cycle.</description>
+            </integer>
+            <integer id="enetTimerCfg_correctionPeriod" label="Timer correction period" min_expr="1" type="uint32_t" options="cStructField">
+               <description>Defines after how many timer clock cycles the correction counter should be reset and triggers a correction increment on the timer.</description>
+            </integer>
+            <integer id="enetTimerCfg_correctionInc" label="Timer correction increment" min_expr="1" type="uint8_t" options="cStructField">
+               <description>This value is added every time the correction timer expires.</description>
+            </integer>
+            <bool id="enetTimerCfg_irqEnable" label="Enable interrupt" options="cStructField">
+               <description>Generate an interrupt when a timer event occurs.</description>
+            </bool>
+            <string id="enetTimerCfg_callback" label="Callback" type="enet_timer_callback_t" options="cStructField">
+               <description>Callback to be invoked when a timer event occurs.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+                  <constraint cond_expr="($this.getValue() == `NULL`) || ($this.getValue() != $configSet.enetCfg.callback.getValue())" level="error" description="Callback name already used!"/>
+               </validation>
+            </string>
+         </struct>
+         <struct id="enet_timer_channel_config_t" label="Configuration structure of the timer channels" from="enet_timer_channel_config_t">
+           <string id="name" label="Name">
+             <description>Channel configuration structure name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+           </string>
+            <reference id="enetChnCfg_mode" label="Mode" type="enet_timer_channel_mode_t" options="cStructField">
+               <description>The mode in which the timer channel shall be configured.</description>
+            </reference>
+            <bool id="enetChnCfg_irqEnable" label="Enable Interrupt" options="cStructField">
+               <description>Enable timer interrupt for this channel. Note: When enabling a channel interrupt, the timer interrupt must also be enabled.</description>
+            </bool>
+            <bool id="enetChnCfg_dmaEnable" label="Enable DMA request" options="cStructField">
+               <description>Enable DMA request for this channel.</description>
+            </bool>
+         </struct>
+      </user_types>
+   </config_set>
+</component:config_component>

@@ -14,7 +14,6 @@ Help test our firmwares, join discussions, fork the repository or send us releva
 - `/Firmwares/Official` - Provides firmwares originally provided by Bafang themselves
 - `/Firmwares/Custom` - Provides hacked firmwares created by this projects, that contain customised settings
 - `/hardware` - Provides Documentation for everything we know about the Bafang hardware and it's controller
-- `/Laws and Regulations/EU` - Aims to document all legal complication surrounding customised ebike motors in the EU
 
 ## Disclaimer
 

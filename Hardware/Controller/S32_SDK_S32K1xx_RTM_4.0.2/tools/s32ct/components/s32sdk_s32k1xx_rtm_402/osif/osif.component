@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="osif" label="osif" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.osif" version="1.0.0"/>
+   <description>OSIF configuration</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>OSIF general mode</description>
+      <config_set_refs>
+         <config_set_ref>osif</config_set_ref>
+      </config_set_refs>
+   </mode>
+   <config_set id="osif" label="OSIF configuration" from_source="osif.h">
+      <description>TBD</description>
+      <fragment_defs/>
+      <code/>
+      <validation>
+      </validation>
+      <quick_selections/>
+      <generated_types/>
+
+      <user_types>
+      </user_types>
+
+      <settings>
+         <variable value="`osif_CodeGenerator`" id="codegen_class"></variable>
+         <variable value="`OsifToolchainSettings`" id="toolchain_settings_class"></variable>
+         <variable value="`../osif/osif_codegen.js`" id="codegen_file"></variable>
+         <variable value="`../osif/osif_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

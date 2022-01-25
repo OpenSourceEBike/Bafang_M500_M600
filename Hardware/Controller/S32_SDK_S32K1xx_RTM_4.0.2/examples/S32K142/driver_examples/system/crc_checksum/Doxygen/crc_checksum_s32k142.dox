@@ -1,0 +1,93 @@
+/*!
+    @page crc_checksum_s32k142_group CRC Checksum
+    @brief Example application showing the usage of the CRC module
+
+    ## Application description ##
+    ______
+    The purpose of this demo application is to show you how to use the Cyclic Redundancy Check of the S32K142 with this SDK.
+
+    In this example, The CRC is configured to generate a configuration for CCITT standard following:
+
+    - CCITT 16 bits standard:
+    \code{.c}
+    {
+        .crcWidth = CRC_BITS_16,
+        .seed = 0xFFFFU,
+        .polynomial = 0x1021U,
+        .writeTranspose = CRC_TRANSPOSE_NONE,
+        .readTranspose = CRC_TRANSPOSE_NONE,
+        .complementChecksum = false
+    }
+    \endcode
+
+    The application:
+        -# After reset starts with both GREEN and RED LED turned off.
+        -# Initializes CRC module with the above CCITT 16 bits standard configuration.
+        -# Pressing the SW button CRC calculation is initialized with CRC_data array from input_data.c file.
+        -# If the result is correct GREEN LED is turned on. Otherwise RED LED will be turned on.
+        -# The program stops.
+
+    ## Prerequisites ##
+    ______
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board cannot be powered from the USB port)
+    - 2 Dupont female to female cables
+    - 1 Personal Computer
+    - Debug probe (JLink, PEmicro, OpenSDA)
+
+    ## Boards supported ##
+    ______
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+    - S32K142-MB
+
+    ## Hardware Wiring ##
+    ______
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION         | S32K142EVB-Q100                 | S32K142-MB
+    ---------------------|---------------------------------|-----------
+    LED0 (\b PTD15/PTC1) | RGB_RED - wired on the board    | J12.17 - J11.31
+    LED1 (\b PTD16/PTC1) | RGB_GREEN - wired on the board  | J12.16 - J11.30
+    SW   (\b PTC12/PTC12)| SW2 - wired on the board        | BUTTON2 - wired on the board
+
+    ## How to run ##
+    ______
+
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New \b S32DS \b Project \b From \bExample and select \b crc_checksum_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    Wait for the S32 Configuration was initialized and ready.
+
+    #### 2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    Left click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar).
+    In S32 Configuration menu, click on the desired configurator (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components.
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user.
+    Make the desired changes (if any) then click "Update Code".
+
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) or \b RAM (Debug_RAM) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be four debug configurations for this project:
+     Configuration Name | Description
+     -------------------|------------
+     \b crc_checksum_s32k142_debug_ram_jlink | Debug the RAM configuration using Segger Jlink debuggers
+     \b crc_checksum_s32k142_debug_flash_jlink | Debug the FLASH configuration using Segger Jlink debuggers
+     \b crc_checksum_s32k142_debug_ram_pemicro | Debug the RAM configuration using PEMicro debuggers
+     \b crc_checksum_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    ## Notes ##
+    ______
+
+    The CRC module in S32K platform supports both big endian and little endian in source data.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+*/
+

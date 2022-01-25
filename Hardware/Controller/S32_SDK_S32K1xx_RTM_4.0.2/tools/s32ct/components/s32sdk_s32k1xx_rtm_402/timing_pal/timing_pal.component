@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="timing_pal_config" label="timing_pal" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+   <sw_comp_ref name="platform.pal.timing" version="1.0.0"/>
+   <description>S32 SDK Peripheral Abstraction Layer for Timer (TIMING PAL)</description>
+   <mode id="general" label="General" available="true">
+      <description>TIMING PAL general mode</description>
+      <config_set_refs>
+         <config_set_ref>timing_pal</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>LPIT</peripheral_type>
+         <peripheral_type>LPTMR</peripheral_type>
+         <peripheral_type>FTM</peripheral_type>
+         <peripheral_type>PIT</peripheral_type>
+         <peripheral_type>STM</peripheral_type>
+         <peripheral_type>ETIMER</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="timing_pal" label="General TIMING_PAL Configuration" from_source="timing_pal.h">
+      <description>TIMING PAL configuration</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="timing_pal_over_pit0_default" label="Default values for TIMING PAL OVER PIT_0" available="getPeripheral($instance) == `PIT_0`">
+            <description>TIMING PAL OVER PIT default configuration</description>
+            <set id="timingPalInst.name">timingPitInst0</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">0</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_PIT</set>
+            <set id="timingPalConfig.name">timingPit_InitConfig0</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_pit0_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_pit1_default" label="Default values for TIMING PAL OVER PIT_1" available="getPeripheral($instance) == `PIT_1`">
+            <description>TIMING PAL OVER PIT default configuration</description>
+            <set id="timingPalInst.name">timingPitInst1</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">1</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_PIT</set>
+            <set id="timingPalConfig.name">timingPit_InitConfig1</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_pit1_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_stm0_default" label="Default values for TIMING PAL OVER STM_0" available="getPeripheral($instance) == `STM_0`">
+            <description>TIMING PAL OVER STM default configuration</description>
+            <set id="timingPalInst.name">timingStmInst0</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">0</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_STM</set>
+            <set id="timingPalConfig.name">timingStm_InitConfig0</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.stmExt.stmClockSource">STM_CLOCK_FXOSC</set>
+            <set id="timingPalConfig.stmExt.stmPrescaler">0</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_stm0_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_stm1_default" label="Default values for TIMING PAL OVER STM_1" available="getPeripheral($instance) == `STM_1`">
+            <description>TIMING PAL OVER STM default configuration</description>
+            <set id="timingPalInst.name">timingStmInst1</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">1</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_STM</set>
+            <set id="timingPalConfig.name">timingStm_InitConfig1</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.stmExt.stmClockSource">STM_CLOCK_FXOSC</set>
+            <set id="timingPalConfig.stmExt.stmPrescaler">0</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_stm1_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_stm2_default" label="Default values for TIMING PAL OVER STM_2" available="getPeripheral($instance) == `STM_2`">
+            <description>TIMING PAL OVER STM default configuration</description>
+            <set id="timingPalInst.name">timingStmInst2</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">2</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_STM</set>
+            <set id="timingPalConfig.name">timingStm_InitConfig2</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.stmExt.stmClockSource">STM_CLOCK_FXOSC</set>
+            <set id="timingPalConfig.stmExt.stmPrescaler">0</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_stm2_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_stm3_default" label="Default values for TIMING PAL OVER STM_3" available="getPeripheral($instance) == `STM_3`">
+            <description>TIMING PAL OVER STM default configuration</description>
+            <set id="timingPalInst.name">timingStmInst3</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">3</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_STM</set>
+            <set id="timingPalConfig.name">timingStm_InitConfig3</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.stmExt.stmClockSource">STM_CLOCK_FXOSC</set>
+            <set id="timingPalConfig.stmExt.stmPrescaler">0</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_stm3_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_stm4_default" label="Default values for TIMING PAL OVER STM_4" available="getPeripheral($instance) == `STM_4`">
+            <description>TIMING PAL OVER STM default configuration</description>
+            <set id="timingPalInst.name">timingStmInst4</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">4</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_STM</set>
+            <set id="timingPalConfig.name">timingStm_InitConfig4</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.stmExt.stmClockSource">STM_CLOCK_FXOSC</set>
+            <set id="timingPalConfig.stmExt.stmPrescaler">0</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_stm4_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_stm5_default" label="Default values for TIMING PAL OVER STM_5" available="getPeripheral($instance) == `STM_5`">
+            <description>TIMING PAL OVER STM default configuration</description>
+            <set id="timingPalInst.name">timingStmInst5</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">5</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_STM</set>
+            <set id="timingPalConfig.name">timingStm_InitConfig5</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.stmExt.stmClockSource">STM_CLOCK_FXOSC</set>
+            <set id="timingPalConfig.stmExt.stmPrescaler">0</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_stm5_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_stm6_default" label="Default values for TIMING PAL OVER STM_6" available="getPeripheral($instance) == `STM_6`">
+            <description>TIMING PAL OVER STM default configuration</description>
+            <set id="timingPalInst.name">timingStmInst6</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">6</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_STM</set>
+            <set id="timingPalConfig.name">timingStm_InitConfig6</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.stmExt.stmClockSource">STM_CLOCK_FXOSC</set>
+            <set id="timingPalConfig.stmExt.stmPrescaler">0</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_stm6_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_stm7_default" label="Default values for TIMING PAL OVER STM_7" available="getPeripheral($instance) == `STM_7`">
+            <description>TIMING PAL OVER STM default configuration</description>
+            <set id="timingPalInst.name">timingStmInst7</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">7</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_STM</set>
+            <set id="timingPalConfig.name">timingStm_InitConfig7</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.stmExt.stmClockSource">STM_CLOCK_FXOSC</set>
+            <set id="timingPalConfig.stmExt.stmPrescaler">0</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_stm7_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_stmTS_default" label="Default values for TIMING PAL OVER STM_TS" available="getPeripheral($instance) == `STM_TS`">
+            <description>TIMING PAL OVER STM default configuration</description>
+            <set id="timingPalInst.name">timingStmInstTS</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">8</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_STM</set>
+            <set id="timingPalConfig.name">timingStm_InitConfigTS</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.stmExt.stmClockSource">STM_CLOCK_FXOSC</set>
+            <set id="timingPalConfig.stmExt.stmPrescaler">0</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_stmTS_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_ftm0_default" label="Default values for TIMING PAL OVER FTM_0" available="getPeripheral($instance) == `FTM_0`">
+            <description>TIMING PAL OVER FTM default configuration</description>
+            <set id="timingPalInst.name">timingFtmInst0</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">0</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_FTM</set>
+            <set id="timingPalConfig.name">timingFtm_InitConfig0</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.ftmExt.ftmClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <set id="timingPalConfig.ftmExt.ftmPrescaler">FTM_CLOCK_DIVID_BY_1</set>
+            <set id="timingPalConfig.ftmExt.finalValue">65535</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_ftm0_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_ftm1_default" label="Default values for TIMING PAL OVER FTM_1" available="getPeripheral($instance) == `FTM_1`">
+            <description>TIMING PAL OVER FTM default configuration</description>
+            <set id="timingPalInst.name">timingFtmInst1</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">1</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_FTM</set>
+            <set id="timingPalConfig.name">timingFtm_InitConfig1</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.ftmExt.ftmClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <set id="timingPalConfig.ftmExt.ftmPrescaler">FTM_CLOCK_DIVID_BY_1</set>
+            <set id="timingPalConfig.ftmExt.finalValue">65535</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_ftm1_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_ftm2_default" label="Default values for TIMING PAL OVER FTM_2" available="getPeripheral($instance) == `FTM_2`">
+            <description>TIMING PAL OVER FTM default configuration</description>
+            <set id="timingPalInst.name">timingFtmInst2</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">2</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_FTM</set>
+            <set id="timingPalConfig.name">timingFtm_InitConfig2</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.ftmExt.ftmClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <set id="timingPalConfig.ftmExt.ftmPrescaler">FTM_CLOCK_DIVID_BY_1</set>
+            <set id="timingPalConfig.ftmExt.finalValue">65535</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_ftm2_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_ftm3_default" label="Default values for TIMING PAL OVER FTM_3" available="getPeripheral($instance) == `FTM_3`">
+            <description>TIMING PAL OVER FTM default configuration</description>
+            <set id="timingPalInst.name">timingFtmInst3</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">3</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_FTM</set>
+            <set id="timingPalConfig.name">timingFtm_InitConfig3</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.ftmExt.ftmClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <set id="timingPalConfig.ftmExt.ftmPrescaler">FTM_CLOCK_DIVID_BY_1</set>
+            <set id="timingPalConfig.ftmExt.finalValue">65535</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_ftm3_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_ftm4_default" label="Default values for TIMING PAL OVER FTM_4" available="getPeripheral($instance) == `FTM_4`">
+            <description>TIMING PAL OVER FTM default configuration</description>
+            <set id="timingPalInst.name">timingFtmInst4</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">4</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_FTM</set>
+            <set id="timingPalConfig.name">timingFtm_InitConfig4</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.ftmExt.ftmClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <set id="timingPalConfig.ftmExt.ftmPrescaler">FTM_CLOCK_DIVID_BY_1</set>
+            <set id="timingPalConfig.ftmExt.finalValue">65535</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_ftm4_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_ftm5_default" label="Default values for TIMING PAL OVER FTM_5" available="getPeripheral($instance) == `FTM_5`">
+            <description>TIMING PAL OVER FTM default configuration</description>
+            <set id="timingPalInst.name">timingFtmInst5</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">5</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_FTM</set>
+            <set id="timingPalConfig.name">timingFtm_InitConfig5</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.ftmExt.ftmClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <set id="timingPalConfig.ftmExt.ftmPrescaler">FTM_CLOCK_DIVID_BY_1</set>
+            <set id="timingPalConfig.ftmExt.finalValue">65535</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_ftm5_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_ftm6_default" label="Default values for TIMING PAL OVER FTM_6" available="getPeripheral($instance) == `FTM_6`">
+            <description>TIMING PAL OVER FTM default configuration</description>
+            <set id="timingPalInst.name">timingFtmInst6</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">6</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_FTM</set>
+            <set id="timingPalConfig.name">timingFtm_InitConfig6</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.ftmExt.ftmClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <set id="timingPalConfig.ftmExt.ftmPrescaler">FTM_CLOCK_DIVID_BY_1</set>
+            <set id="timingPalConfig.ftmExt.finalValue">65535</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_ftm6_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_ftm7_default" label="Default values for TIMING PAL OVER FTM_7" available="getPeripheral($instance) == `FTM_7`">
+            <description>TIMING PAL OVER FTM default configuration</description>
+            <set id="timingPalInst.name">timingFtmInst7</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">7</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_FTM</set>
+            <set id="timingPalConfig.name">timingFtm_InitConfig7</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.ftmExt.ftmClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <set id="timingPalConfig.ftmExt.ftmPrescaler">FTM_CLOCK_DIVID_BY_1</set>
+            <set id="timingPalConfig.ftmExt.finalValue">65535</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_ftm7_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_lptmr_default" label="Default values for TIMING PAL OVER LPTMR_0" available="getPeripheral($instance) == `LPTMR_0`">
+            <description>TIMING PAL OVER LPTMR default configuration</description>
+            <set id="timingPalInst.name">timingLptmrInst0</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">0</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_LPTMR</set>
+            <set id="timingPalConfig.name">timingLptmr_InitConfig0</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.lptmrExt.lptmrClockSource">LPTMR_CLOCKSOURCE_SIRCDIV2</set>
+            <set id="timingPalConfig.lptmrExt.lptmrPrescaler">LPTMR_PRESCALE_2</set>
+            <set id="timingPalConfig.lptmrExt.bypassPrescaler">false</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_lptmr0_default</default>
+         </quick_selection>
+         <quick_selection id="timing_pal_over_lpit_default" label="Default values for TIMING PAL OVER LPIT_0" available="getPeripheral($instance) == `LPIT_0`">
+            <description>TIMING PAL OVER LPIT default configuration</description>
+            <set id="timingPalInst.name">timingLpitInst0</set>
+            <set id="timingPalInst.readonly">true</set>
+            <set id="timingPalInst.instIdx">0</set>
+            <set id="timingPalInst.instType">TIMING_INST_TYPE_LPIT</set>
+            <set id="timingPalConfig.name">timingLpit_InitConfig0</set>
+            <set id="timingPalConfig.readonly">true</set>
+            <set id="timingPalConfig.chanConfigList.0.Channel">0</set>
+            <default>timing_pal_over_lpit_default</default>
+         </quick_selection>
+      </quick_selections>
+      <user_types>
+         <enum id="timing_inst_type_t" label="Enumeration with the types of peripherals supported by TIMING PAL" from="timing_inst_type_t">
+            <description>This enumeration contains the types of peripherals supported by TIMING PAL. Implements : timing_inst_type_t_Class</description>
+            <item id="TIMING_INST_TYPE_LPIT" available="featureDefined(`TIMING_PAL_SUPPORTS_LPIT`)" label="TIMING PAL over LPIT"/>
+            <item id="TIMING_INST_TYPE_LPTMR" available="featureDefined(`TIMING_PAL_SUPPORTS_LPTMR`)" label="TIMING PAL over LPTMR"/>
+            <item id="TIMING_INST_TYPE_FTM" available="featureDefined(`TIMING_PAL_SUPPORTS_FTM`)" label="TIMING PAL over FTM"/>
+            <item id="TIMING_INST_TYPE_PIT" available="featureDefined(`TIMING_PAL_SUPPORTS_PIT`)" label="TIMING PAL over PIT"/>
+            <item id="TIMING_INST_TYPE_STM" available="featureDefined(`TIMING_PAL_SUPPORTS_STM`)" label="TIMING PAL over STM"/>
+            <item id="TIMING_INST_TYPE_ETIMER" available="featureDefined(`TIMING_PAL_SUPPORTS_ETIMER`)" label="TIMING PAL over ETIMER"/>
+         </enum>
+         <enum id="timer_chan_type_t" label="Type options available for timer channel notification" from="timer_chan_type_t">
+            <description>This enumeration contains the type options available for timer channel notification supported by TIMING PAL. Implements : timer_chan_type_t_Class</description>
+            <item id="TIMER_CHAN_TYPE_CONTINUOUS" label="Continuous notification"/>
+            <item id="TIMER_CHAN_TYPE_ONESHOT" label="One-shot notification"/>
+         </enum>
+         <enum id="clockSourceSelect" label="Clock source options available for timer" from="clockSource">
+            <description>This enumeration contains the clock source options available for timer</description>
+            <item id="STM_CLOCK_SYSTEM" available="($instance.getPeripheral() == `STM_0` || $instance.getPeripheral() == `STM_1`)  &amp;&amp; (featureDefined(`FEATURE_STM_HAS_CLOCK_SELECT`) == true) &amp;&amp;(getFeature(`FEATURE_STM_HAS_CLOCK_SELECT`) == 1)" label="Internal system clock"/>
+            <item id="STM_CLOCK_FXOSC" available="($instance.getPeripheral() == `STM_0` || $instance.getPeripheral() == `STM_1`)  &amp;&amp; (featureDefined(`FEATURE_STM_HAS_CLOCK_SELECT`) == true) &amp;&amp;(getFeature(`FEATURE_STM_HAS_CLOCK_SELECT`) == 1)" label="Fast external crystal oscillator"/>
+            <item id="STM_CLOCK_PBRIDGEx" available="($instance.getPeripheral() == `STM_0` || $instance.getPeripheral() == `STM_1`) &amp;&amp; (featureDefined(`FEATURE_STM_HAS_CLOCK_SELECT`) == true) &amp;&amp;(getFeature(`FEATURE_STM_HAS_CLOCK_SELECT`) == 0)" label="Internal system clock"/>
+            <item id="FTM_CLOCK_SOURCE_SYSTEMCLK" available="($instance.getPeripheral() == `FTM_0` || $instance.getPeripheral() == `FTM_1` || $instance.getPeripheral() == `FTM_2` || $instance.getPeripheral() == `FTM_3` || $instance.getPeripheral() == `FTM_4` || $instance.getPeripheral() == `FTM_5` || $instance.getPeripheral() == `FTM_6` || $instance.getPeripheral() == `FTM_7`)" label="System clock"/>
+            <item id="FTM_CLOCK_SOURCE_FIXEDCLK" available="($instance.getPeripheral() == `FTM_0` || $instance.getPeripheral() == `FTM_1` || $instance.getPeripheral() == `FTM_2` || $instance.getPeripheral() == `FTM_3` || $instance.getPeripheral() == `FTM_4` || $instance.getPeripheral() == `FTM_5` || $instance.getPeripheral() == `FTM_6` || $instance.getPeripheral() == `FTM_7`) &amp;&amp;(getFeature(`FEATURE_FTM_HAS_FIXED_CLOCK_SOURCE`) == 1)" label="Fixed clock"/>
+            <item id="FTM_CLOCK_SOURCE_EXTERNALCLK" available="($instance.getPeripheral() == `FTM_0` || $instance.getPeripheral() == `FTM_1` || $instance.getPeripheral() == `FTM_2` || $instance.getPeripheral() == `FTM_3` || $instance.getPeripheral() == `FTM_4` || $instance.getPeripheral() == `FTM_5` || $instance.getPeripheral() == `FTM_6` || $instance.getPeripheral() == `FTM_7`) &amp;&amp;(getFeature(`FEATURE_FTM_HAS_EXT_CLOCK_SOURCE`) == 1)" label="External clock"/>
+            <item id="LPTMR_CLOCKSOURCE_SIRCDIV2" available="($instance.getPeripheral() == `LPTMR_0`)" label="SIRC DIV2 clock"/>
+            <item id="LPTMR_CLOCKSOURCE_1KHZ_LPO" available="($instance.getPeripheral() == `LPTMR_0`)" label="1kHz LPO clock"/>
+            <item id="LPTMR_CLOCKSOURCE_RTC" available="($instance.getPeripheral() == `LPTMR_0`)" label="RTC clock"/>
+            <item id="LPTMR_CLOCKSOURCE_PCC" available="($instance.getPeripheral() == `LPTMR_0`)" label="PCC configured clock"/>
+         </enum>
+         <enum id="ftmPrescalerOptions" label="Prescaler options available for timer" from="ftmPrescalerOptions">
+            <description>This enumeration contains the prescaler options available for timer</description>
+            <item id="FTM_CLOCK_DIVID_BY_1" label="Clock frequency is divided by 1"/>
+            <item id="FTM_CLOCK_DIVID_BY_2" label="Clock frequency is divided by 2"/>
+            <item id="FTM_CLOCK_DIVID_BY_4" label="Clock frequency is divided by 4"/>
+            <item id="FTM_CLOCK_DIVID_BY_8" label="Clock frequency is divided by 8"/>
+            <item id="FTM_CLOCK_DIVID_BY_16" label="Clock frequency is divided by 16"/>
+            <item id="FTM_CLOCK_DIVID_BY_32" label="Clock frequency is divided by 32"/>
+            <item id="FTM_CLOCK_DIVID_BY_64" label="Clock frequency is divided by 64"/>
+            <item id="FTM_CLOCK_DIVID_BY_128" label="Clock frequency is divided by 128"/>
+         </enum>
+         <enum id="lptmrPrescalerOptions" label="Prescaler options available for lptmr" from="lptmrPrescalerOptions">
+            <description>This enumeration contains the prescaler options available for lptmr</description>
+            <item id="LPTMR_PRESCALE_2" label="Clock frequency is divide by 2"/>
+            <item id="LPTMR_PRESCALE_4_GLITCHFILTER_2" label="Clock frequency is divide by 4"/>
+            <item id="LPTMR_PRESCALE_8_GLITCHFILTER_4" label="Clock frequency is divide by 8"/>
+            <item id="LPTMR_PRESCALE_16_GLITCHFILTER_8" label="Clock frequency is divide by 16"/>
+            <item id="LPTMR_PRESCALE_32_GLITCHFILTER_16" label="Clock frequency is divide by 32"/>
+            <item id="LPTMR_PRESCALE_64_GLITCHFILTER_32" label="Clock frequency is divide by 64"/>
+            <item id="LPTMR_PRESCALE_128_GLITCHFILTER_64" label="Clock frequency is divide by 128"/>
+            <item id="LPTMR_PRESCALE_256_GLITCHFILTER_128" label="Clock frequency is divide by 256"/>
+            <item id="LPTMR_PRESCALE_512_GLITCHFILTER_256" label="Clock frequency is divide by 512"/>
+            <item id="LPTMR_PRESCALE_1024_GLITCHFILTER_512" label="Clock frequency is divide by 1024"/>
+            <item id="LPTMR_PRESCALE_2048_GLITCHFILTER_1024" label="Clock frequency is divide by 2048"/>
+            <item id="LPTMR_PRESCALE_4096_GLITCHFILTER_2048" label="Clock frequency is divide by 4096"/>
+            <item id="LPTMR_PRESCALE_8192_GLITCHFILTER_4096" label="Clock frequency is divide by 8192"/>
+            <item id="LPTMR_PRESCALE_16384_GLITCHFILTER_8192" label="Clock frequency is divide by 16384"/>
+            <item id="LPTMR_PRESCALE_32768_GLITCHFILTER_16384" label="Clock frequency is divide by 32768"/>
+            <item id="LPTMR_PRESCALE_65536_GLITCHFILTER_32768" label="Clock frequency is divide by 65536"/>
+         </enum>
+         <enum id="channel_id" label="Timer channel" from="channel_id">
+               <description>The channel is selected</description>
+               <item id="0U" label="Channel 0" />
+               <item id="1U" label="Channel 1" available="(($instance.getPeripheral() == `FTM_0`)&amp;&amp;(featureDefined(`FEATURE_FTM_0_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_0_NUM_CHANS`) &gt; 1)) || (($instance.getPeripheral() == `FTM_1`)&amp;&amp;(featureDefined(`FEATURE_FTM_1_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_1_NUM_CHANS`) &gt; 1)) || (($instance.getPeripheral() == `FTM_2`)&amp;&amp;(featureDefined(`FEATURE_FTM_2_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_2_NUM_CHANS`) &gt; 1)) || (($instance.getPeripheral() == `FTM_3`)&amp;&amp;(featureDefined(`FEATURE_FTM_3_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_3_NUM_CHANS`) &gt; 1)) || (($instance.getPeripheral() == `FTM_4`)&amp;&amp;(featureDefined(`FEATURE_FTM_4_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_4_NUM_CHANS`) &gt; 1)) || (($instance.getPeripheral() == `FTM_5`)&amp;&amp;(featureDefined(`FEATURE_FTM_5_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_5_NUM_CHANS`) &gt; 1)) || (($instance.getPeripheral() == `FTM_6`)&amp;&amp;(featureDefined(`FEATURE_FTM_6_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_6_NUM_CHANS`) &gt; 1)) || (($instance.getPeripheral() == `FTM_7`)&amp;&amp;(featureDefined(`FEATURE_FTM_7_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_7_NUM_CHANS`) &gt; 1)) || (($instance.getPeripheral() != `LPTMR_0`)&amp;&amp;($instance.getPeripheral() != `FTM_0`)&amp;&amp;($instance.getPeripheral() != `FTM_1`)&amp;&amp;($instance.getPeripheral() != `FTM_2`)&amp;&amp;($instance.getPeripheral() != `FTM_3`))"/>
+               <item id="2U" label="Channel 2" available="(($instance.getPeripheral() == `FTM_0`)&amp;&amp;(featureDefined(`FEATURE_FTM_0_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_0_NUM_CHANS`) &gt; 2)) || (($instance.getPeripheral() == `FTM_1`)&amp;&amp;(featureDefined(`FEATURE_FTM_1_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_1_NUM_CHANS`) &gt; 2)) || (($instance.getPeripheral() == `FTM_2`)&amp;&amp;(featureDefined(`FEATURE_FTM_2_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_2_NUM_CHANS`) &gt; 2)) || (($instance.getPeripheral() == `FTM_3`)&amp;&amp;(featureDefined(`FEATURE_FTM_3_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_3_NUM_CHANS`) &gt; 2)) || (($instance.getPeripheral() == `FTM_4`)&amp;&amp;(featureDefined(`FEATURE_FTM_4_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_4_NUM_CHANS`) &gt; 2)) || (($instance.getPeripheral() == `FTM_5`)&amp;&amp;(featureDefined(`FEATURE_FTM_5_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_5_NUM_CHANS`) &gt; 2)) || (($instance.getPeripheral() == `FTM_6`)&amp;&amp;(featureDefined(`FEATURE_FTM_6_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_6_NUM_CHANS`) &gt; 2)) || (($instance.getPeripheral() == `FTM_7`)&amp;&amp;(featureDefined(`FEATURE_FTM_7_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_7_NUM_CHANS`) &gt; 2)) || (($instance.getPeripheral() != `LPTMR_0`)&amp;&amp;($instance.getPeripheral() != `FTM_0`)&amp;&amp;($instance.getPeripheral() != `FTM_1`)&amp;&amp;($instance.getPeripheral() != `FTM_2`)&amp;&amp;($instance.getPeripheral() != `FTM_3`))"/>
+               <item id="3U" label="Channel 3" available="(($instance.getPeripheral() == `FTM_0`)&amp;&amp;(featureDefined(`FEATURE_FTM_0_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_0_NUM_CHANS`) &gt; 3)) || (($instance.getPeripheral() == `FTM_1`)&amp;&amp;(featureDefined(`FEATURE_FTM_1_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_1_NUM_CHANS`) &gt; 3)) || (($instance.getPeripheral() == `FTM_2`)&amp;&amp;(featureDefined(`FEATURE_FTM_2_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_2_NUM_CHANS`) &gt; 3)) || (($instance.getPeripheral() == `FTM_3`)&amp;&amp;(featureDefined(`FEATURE_FTM_3_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_3_NUM_CHANS`) &gt; 3)) || (($instance.getPeripheral() == `FTM_4`)&amp;&amp;(featureDefined(`FEATURE_FTM_4_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_4_NUM_CHANS`) &gt; 3)) || (($instance.getPeripheral() == `FTM_5`)&amp;&amp;(featureDefined(`FEATURE_FTM_5_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_5_NUM_CHANS`) &gt; 3)) || (($instance.getPeripheral() == `FTM_6`)&amp;&amp;(featureDefined(`FEATURE_FTM_6_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_6_NUM_CHANS`) &gt; 3)) || (($instance.getPeripheral() == `FTM_7`)&amp;&amp;(featureDefined(`FEATURE_FTM_7_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_7_NUM_CHANS`) &gt; 3)) || (($instance.getPeripheral() != `LPTMR_0`)&amp;&amp;($instance.getPeripheral() != `FTM_0`)&amp;&amp;($instance.getPeripheral() != `FTM_1`)&amp;&amp;($instance.getPeripheral() != `FTM_2`)&amp;&amp;($instance.getPeripheral() != `FTM_3`))"/>
+               <item id="4U" label="Channel 4" available="(($instance.getPeripheral() == `PIT_0`)&amp;&amp;(featureDefined(`FEATURE_PIT_0_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_PIT_0_NUM_CHANS`) &gt; 4)) || (($instance.getPeripheral() == `PIT_1`)&amp;&amp;(featureDefined(`FEATURE_PIT_1_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_PIT_1_NUM_CHANS`) &gt; 4)) || ((($instance.getPeripheral() == `FTM_0`)&amp;&amp;(featureDefined(`FEATURE_FTM_0_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_0_NUM_CHANS`) &gt; 4)) || (($instance.getPeripheral() == `FTM_1`)&amp;&amp;(featureDefined(`FEATURE_FTM_1_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_1_NUM_CHANS`) &gt; 4)) || (($instance.getPeripheral() == `FTM_2`)&amp;&amp;(featureDefined(`FEATURE_FTM_2_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_2_NUM_CHANS`) &gt; 4)) || (($instance.getPeripheral() == `FTM_3`)&amp;&amp;(featureDefined(`FEATURE_FTM_3_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_3_NUM_CHANS`) &gt; 4)) || (($instance.getPeripheral() == `FTM_4`)&amp;&amp;(featureDefined(`FEATURE_FTM_4_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_4_NUM_CHANS`) &gt; 4)) || (($instance.getPeripheral() == `FTM_5`)&amp;&amp;(featureDefined(`FEATURE_FTM_5_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_5_NUM_CHANS`) &gt; 4)) || (($instance.getPeripheral() == `FTM_6`)&amp;&amp;(featureDefined(`FEATURE_FTM_6_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_6_NUM_CHANS`) &gt; 4)) || (($instance.getPeripheral() == `FTM_7`)&amp;&amp;(featureDefined(`FEATURE_FTM_7_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_7_NUM_CHANS`) &gt; 4)))"/>
+               <item id="5U" label="Channel 5" available="(($instance.getPeripheral() == `PIT_0`)&amp;&amp;(featureDefined(`FEATURE_PIT_0_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_PIT_0_NUM_CHANS`) &gt; 5)) || (($instance.getPeripheral() == `PIT_1`)&amp;&amp;(featureDefined(`FEATURE_PIT_1_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_PIT_1_NUM_CHANS`) &gt; 5)) || ((($instance.getPeripheral() == `FTM_0`)&amp;&amp;(featureDefined(`FEATURE_FTM_0_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_0_NUM_CHANS`) &gt; 5)) || (($instance.getPeripheral() == `FTM_1`)&amp;&amp;(featureDefined(`FEATURE_FTM_1_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_1_NUM_CHANS`) &gt; 5)) || (($instance.getPeripheral() == `FTM_2`)&amp;&amp;(featureDefined(`FEATURE_FTM_2_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_2_NUM_CHANS`) &gt; 5)) || (($instance.getPeripheral() == `FTM_3`)&amp;&amp;(featureDefined(`FEATURE_FTM_3_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_3_NUM_CHANS`) &gt; 5))|| (($instance.getPeripheral() == `FTM_4`)&amp;&amp;(featureDefined(`FEATURE_FTM_4_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_4_NUM_CHANS`) &gt; 5)) || (($instance.getPeripheral() == `FTM_5`)&amp;&amp;(featureDefined(`FEATURE_FTM_5_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_5_NUM_CHANS`) &gt; 5)) || (($instance.getPeripheral() == `FTM_6`)&amp;&amp;(featureDefined(`FEATURE_FTM_6_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_6_NUM_CHANS`) &gt; 5)) || (($instance.getPeripheral() == `FTM_7`)&amp;&amp;(featureDefined(`FEATURE_FTM_7_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_7_NUM_CHANS`) &gt; 5)))"/>
+               <item id="6U" label="Channel 6" available="(($instance.getPeripheral() == `PIT_0`)&amp;&amp;(featureDefined(`FEATURE_PIT_0_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_PIT_0_NUM_CHANS`) &gt; 6)) || (($instance.getPeripheral() == `PIT_1`)&amp;&amp;(featureDefined(`FEATURE_PIT_1_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_PIT_1_NUM_CHANS`) &gt; 6)) || ((($instance.getPeripheral() == `FTM_0`)&amp;&amp;(featureDefined(`FEATURE_FTM_0_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_0_NUM_CHANS`) &gt; 6)) || (($instance.getPeripheral() == `FTM_1`)&amp;&amp;(featureDefined(`FEATURE_FTM_1_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_1_NUM_CHANS`) &gt; 6)) || (($instance.getPeripheral() == `FTM_2`)&amp;&amp;(featureDefined(`FEATURE_FTM_2_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_2_NUM_CHANS`) &gt; 6)) || (($instance.getPeripheral() == `FTM_3`)&amp;&amp;(featureDefined(`FEATURE_FTM_3_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_3_NUM_CHANS`) &gt; 6))|| (($instance.getPeripheral() == `FTM_4`)&amp;&amp;(featureDefined(`FEATURE_FTM_4_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_4_NUM_CHANS`) &gt; 6)) || (($instance.getPeripheral() == `FTM_5`)&amp;&amp;(featureDefined(`FEATURE_FTM_5_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_5_NUM_CHANS`) &gt; 6)) || (($instance.getPeripheral() == `FTM_6`)&amp;&amp;(featureDefined(`FEATURE_FTM_6_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_6_NUM_CHANS`) &gt; 6)) || (($instance.getPeripheral() == `FTM_7`)&amp;&amp;(featureDefined(`FEATURE_FTM_7_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_7_NUM_CHANS`) &gt; 6)))"/>
+               <item id="7U" label="Channel 7" available="((($instance.getPeripheral() == `FTM_0`)&amp;&amp;(featureDefined(`FEATURE_FTM_0_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_0_NUM_CHANS`) &gt; 7)) || (($instance.getPeripheral() == `FTM_1`)&amp;&amp;(featureDefined(`FEATURE_FTM_1_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_1_NUM_CHANS`) &gt; 7)) || (($instance.getPeripheral() == `FTM_2`)&amp;&amp;(featureDefined(`FEATURE_FTM_2_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_2_NUM_CHANS`) &gt; 7)) || (($instance.getPeripheral() == `FTM_3`)&amp;&amp;(featureDefined(`FEATURE_FTM_3_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_3_NUM_CHANS`) &gt; 7))|| (($instance.getPeripheral() == `FTM_4`)&amp;&amp;(featureDefined(`FEATURE_FTM_4_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_4_NUM_CHANS`) &gt; 7)) || (($instance.getPeripheral() == `FTM_5`)&amp;&amp;(featureDefined(`FEATURE_FTM_5_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_5_NUM_CHANS`) &gt; 7)) || (($instance.getPeripheral() == `FTM_6`)&amp;&amp;(featureDefined(`FEATURE_FTM_6_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_6_NUM_CHANS`) &gt; 7)) || (($instance.getPeripheral() == `FTM_7`)&amp;&amp;(featureDefined(`FEATURE_FTM_7_NUM_CHANS`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_7_NUM_CHANS`) &gt; 7)))"/>
+         </enum>
+         <struct id="timingInstance" label="Structure storing PAL instance information" from="timingInstance">
+            <description>This structure is used for storing PAL instance information. Implements : timing_instance_t_Class</description>
+            <string id="name" label="Name" enable="true">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readonly" label="Read-only">
+               <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+            </bool>
+            <!-- <reference id="instType" label="Peripheral over which the PAL is used" type="timing_inst_type_t" options="cStructField">
+               <description>Peripheral over which the PAL is used</description>
+            </reference> -->
+            <info id="instIdx" label="Instance index of the peripheral over which the PAL is used" value="$instance.getPeripheral()" options="cStructField" />
+         </struct>
+         <struct id="stmExt" label="The STM extension configuration" from="stmExt">
+            <reference id="stmClockSource" label="Clock source" type="clockSourceSelect" available="($instance.getPeripheral() == `STM_0` || $instance.getPeripheral() == `STM_1` || $instance.getPeripheral() == `STM_2` || $instance.getPeripheral() == `STM_3` || $instance.getPeripheral() == `STM_4` || $instance.getPeripheral() == `STM_5` || $instance.getPeripheral() == `STM_6` || $instance.getPeripheral() == `STM_7` || $instance.getPeripheral() == `STM_TS`) &amp;&amp; (featureDefined(`FEATURE_STM_HAS_CLOCK_SELECT`) == true) &amp;&amp;(getFeature(`FEATURE_STM_HAS_CLOCK_SELECT`) != 0)">
+               <description>Clock source selection</description>
+            </reference>
+            <integer id="stmPrescaler" label="Prescaler" type="uint8_t" min_expr="0" max_expr="255">
+               <description>Pre-scaler factor selection for the clock source</description>
+            </integer>
+         </struct>
+         <struct id="ftmExt" label="The FTM extension configuration" from="ftmExt">
+            <reference id="ftmClockSource" label="Clock source" type="clockSourceSelect">
+               <description>Clock source selection</description>
+            </reference>
+            <reference id="ftmPrescaler" label="Prescaler" type="ftmPrescalerOptions" options="cStructField">
+               <description>Pre-scaler factor selection for the clock source</description>
+            </reference>
+            <integer id="finalValue" label="Final value of FTM counter" type="uint16_t" min_expr="1" max_expr="65535">
+               <description>The final value of FTM counter</description>
+            </integer>
+         </struct>
+         <struct id="lptmrExt" label="The LPTMR extension configuration" from="lptmrExt">
+            <reference id="lptmrClockSource" label=" Input clock source" type="clockSourceSelect">
+               <description>Clock source selection</description>
+            </reference>
+            <reference id="lptmrPrescaler" label="Prescaler" type="lptmrPrescalerOptions" options="cStructField">
+               <description>Pre-scaler factor selection for the clock source</description>
+            </reference>
+            <bool id="bypassPrescaler" label="Bypass Prescaler">
+               <description>Enables or disables bypass prescaler.</description>
+            </bool>
+         </struct>
+         <struct id="channelConfig" label="The structure holds the configuration settings for the timer channel notification" from="channelConfig">
+            <reference id="channel" label="Channel number" type="channel_id">
+               <description>Channel number</description>
+            </reference>
+            <reference id="chanType" label="Channel notification type" type="timer_chan_type_t">
+               <description>Continuous or One-shot</description>
+            </reference>
+            <string id="timerCallback" label="Channel callback" >
+               <description>Name of callback function registered in the timer_chan_config_t structure.</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="Callback name must be a C identifier!"/>
+               </validation>
+            </string>
+            <string id="callbackParameter" label="Callback parameter" >
+               <description>Name of callback parameter registered in the timer_chan_config_t structure.</description>
+               <!-- <validation>
+                  <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="Callback parameter must be a C identifier!"/>
+               </validation> -->
+            </string>
+         </struct>
+        <!--  <array id="chanConfigList" label="Channel configurations" type="channelConfig" options="ShowContentAs=Table">
+         </array> -->
+         <struct id="timingCfg" label="TIMING configuration" from="timingCfg">
+            <string id="name" label="Name" enable="true">
+               <description>Name of timing pal configuration structure.</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readonly" label="Read-only">
+               <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+            </bool>
+            <reference id="stmExt" label="STM extension configuration" type="stmExt" available="($instance.getPeripheral() == `STM_0` || $instance.getPeripheral() == `STM_1`
+                || $instance.getPeripheral() == `STM_2` || $instance.getPeripheral() == `STM_3` || $instance.getPeripheral() == `STM_4` || $instance.getPeripheral() == `STM_5`
+                || $instance.getPeripheral() == `STM_6` || $instance.getPeripheral() == `STM_7` || $instance.getPeripheral() == `STM_TS`)">
+               <description>TIMING PAL over STM extension configuration</description>
+            </reference>
+            <reference id="ftmExt" label="FTM extension configuration" type="ftmExt" available="($instance.getPeripheral() == `FTM_0` || $instance.getPeripheral() == `FTM_1` || $instance.getPeripheral() == `FTM_2` || $instance.getPeripheral() == `FTM_3` || $instance.getPeripheral() == `FTM_4` || $instance.getPeripheral() == `FTM_5` || $instance.getPeripheral() == `FTM_6` || $instance.getPeripheral() == `FTM_7`)">
+               <description>TIMING PAL over FTM extension configuration</description>
+            </reference>
+            <reference id="lptmrExt" label="LPTMR extension configuration" type="lptmrExt" available="($instance.getPeripheral() == `LPTMR_0`)">
+               <description>TIMING PAL over LPTMR extension configuration</description>
+            </reference>
+            <array id="chanConfigList" label="Channel configurations" type="channelConfig" options="ShowContentAs=Table">
+               <description>TIMING PAL channel configuration</description>
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`channel`).value()).length() == 0" level="error" description="There are some duplicated ` Channel number` in the configuration"/>
+                   <constraint cond_expr="$this.length() &gt; 0" level="error" description=" There is at least one channel configuration!"/>
+               </validation>
+               <item_defaults>
+                   <set_default id="timerCallback" value_expr="x -> `NULL`"/>
+                   <set_default id="callbackParameter" value_expr="x -> `NULL`"/>
+                   <set_default id="channel" value_expr="x -> (x.getID() + `U`)"/>
+               </item_defaults>
+            </array>
+         </struct>
+      </user_types>
+      <settings>
+         <reference id="timingPalInst" label="TIMING PAL Instance" type="timingInstance" config_set_id="timing_pal" component_id="timing_pal_config" available="true">
+            <description>TIMING PAL instance configuration</description>
+         </reference>
+         <reference id="timingPalConfig" label="TIMING PAL configuration" type="timingCfg" config_set_id="timing_pal" component_id="timing_pal_config" available="true">
+            <description>TIMING PAL configuration</description>
+         </reference>
+         <variable value="`../timing_pal/timing_pal_codegen.js`" id="codegen_file"></variable>
+         <variable value="`../timing_pal/timing_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+         <variable value="`timing_palCodeGen`" id="codegen_class"></variable>
+         <variable value="`TimingToolchainSettings`" id="toolchain_settings_class"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

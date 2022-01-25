@@ -1,0 +1,25 @@
+var structlpspi__state__t =
+[
+    [ "bitsPerFrame", "structlpspi__state__t.html#ae74b66d1df7eaf8e0cdb2adfc42a5aab", null ],
+    [ "bytesPerFrame", "structlpspi__state__t.html#a471e191297f23ad368e523c89f716257", null ],
+    [ "callback", "structlpspi__state__t.html#a04c04296732305246669644bf6adb151", null ],
+    [ "callbackParam", "structlpspi__state__t.html#a4d9d27cc6eab695492581dc7c24441f6", null ],
+    [ "dummy", "structlpspi__state__t.html#a44b7a3baf02bac7ad707e8f2f5eca1ca", null ],
+    [ "fifoSize", "structlpspi__state__t.html#a4c97b51607a7c04eda98c14c23790886", null ],
+    [ "isBlocking", "structlpspi__state__t.html#a0a4ca7b0f29b3468e8395bc4c912ca55", null ],
+    [ "isPcsContinuous", "structlpspi__state__t.html#aff29f3e26c0e3e8fde31f4614bf857a4", null ],
+    [ "isTransferInProgress", "structlpspi__state__t.html#a11da4b33dcf776f21d6754f24788e337", null ],
+    [ "lpspiSemaphore", "structlpspi__state__t.html#af512a988f5f19102024c767f67be4291", null ],
+    [ "lpspiSrcClk", "structlpspi__state__t.html#a935b42024e641eb1a10d95828c76610c", null ],
+    [ "lsb", "structlpspi__state__t.html#a5c0f3d64249ab9d636dc65ecfdcb16db", null ],
+    [ "rxBuff", "structlpspi__state__t.html#a0aa410ff8cbc01a00b2fa2189e1c2938", null ],
+    [ "rxCount", "structlpspi__state__t.html#a635251dd27c9150cf3dc71f4505b6e56", null ],
+    [ "rxDMAChannel", "structlpspi__state__t.html#af14f19b33a886e94a6526fab5475f2bf", null ],
+    [ "rxFrameCnt", "structlpspi__state__t.html#aa1120193709745305284aa0818a6a81e", null ],
+    [ "status", "structlpspi__state__t.html#ad89798fe41cbc51fc28f4b0d02e8301b", null ],
+    [ "transferType", "structlpspi__state__t.html#ae519708aa87ae17b66766d5bf344d714", null ],
+    [ "txBuff", "structlpspi__state__t.html#aa273a5a6ef5e2426562692030769f5d8", null ],
+    [ "txCount", "structlpspi__state__t.html#a0d5f322464f7b6dba3fe161f66d54174", null ],
+    [ "txDMAChannel", "structlpspi__state__t.html#ad9f8f2cf7ca8709d3097c1e47c36667b", null ],
+    [ "txFrameCnt", "structlpspi__state__t.html#a682b9f3e3baee44ebb79bd9568923e62", null ]
+];

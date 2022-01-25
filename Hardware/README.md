@@ -9,7 +9,7 @@ https://www.higoconnector.com/news/compact-transmission-connector-range
 
 ##### Connection diagram
 
-![connectiondiagram](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/Bafang%20Diagram.png)
+![connectiondiagram](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Battery%20and%20Wiring/img/Bafang%20Diagram.png)
 
 ### m600 Teardown
 
@@ -34,7 +34,7 @@ https://www.youtube.com/watch?v=muSNIUXNNaQ
 For both models the official Bafang battery includes a connector that might in the future include CANBUS integration for the battery.
 However: The motor controller, as of July 2021, does not require the battery to be CANBUS connected to function. This means connecting the battery power-wires to the motor controller is enough.
 
-![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/battery.jpg)
+![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Battery%20and%20Wiring/img/battery.jpg)
 
 ## Power
 
@@ -69,7 +69,30 @@ It should be noted that there is a safety cutoff for 48v controllers, that disab
 The reason Bafang does not supply a 52v battery (and you also don't have to try and ask them for it), is because the EU does not allow more than 48v charger connections  CE certification.
 The difference between 52v or 48v are, however, very small so it wouldn't actually pose a risk. But for Bafang they cannot supply it within regulations.
 
+## Electo Motor and nominal Wattage
+
+##### Nominal Wattage
+
+The nominal wattage, according to EU regulations, is determined by measuring the temperature at a certain continues load. This means that to comply to EU regulations, the actual **physical** motor unit has to be different.
+
+Bafang has done this by adapting the stator size (the power coil):
+
+m600:
+Size: 72.4mm
+Rating: 500w Nominal
+
+m500:
+Size: 63.4mm
+Rating: 250w Nominal
+
+##### m500 vs m600
+
+The m500 has, in fact, a motor unit that has a 250w rated stator. Whereas the m600 has a 500w rated stator. At the time of writing it's not 100% sure if the rotor also has significant changes between versions, besides the axle difference noted below.
+In practice this means that the m500 WILL overheat quicker than the m600. For this reason it's adviced not to run the m500 above 18A.
+
 ## Gearing
+
+##### m500 vs m600
 
 The m500 and m600 are mostly similair, with some exceptions:
 
@@ -83,6 +106,16 @@ m500: 7:32
 Here are a few pictures of people trying to find the stock gearing part numbers:
 `TODO: Insert images`
 
+##### Increasing motor power on the m500 (and gearing)
+
+The plastic gear in the m500, will NOT survive extremely increased power targets.
+If you go much above 13A it's adviced to have it replaced by a metal gear.
+
+##### Rotor Axle
+
+The rotor of the m600 has a different (longer/bigger) axle. This prevents easy swap of rotors between the two types and adding a m600 gearbox to the m600.
+It is, however, possible using professional mechanic equipment to build a m500 rotor with m600 axle. It has been done, but requires significant skill and knowhow.
+
 ## Controller hardware module
 
 
@@ -91,9 +124,9 @@ Here are a few pictures of people trying to find the stock gearing part numbers:
 These pictures highlight the most important components on the Controller Hardware Module
 
 
-![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/X1_Ludicrous_Controller_M600_-_Annotated_Top.jpg)
+![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Board/img/X1_Ludicrous_Controller_M600_-_Annotated_Top.jpg)
 
-![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/X1_Ludicrous_Controller_M600_-_Annotated_Bottom.jpg)
+![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Board/img/X1_Ludicrous_Controller_M600_-_Annotated_Bottom.jpg)
 
 
 
@@ -118,7 +151,7 @@ The board containers 1 or 2 shuntresistors of type `?` in parallel measuring the
 
 However the board does not contain any shunt resistors on the indivudual phases. How the single shunt resistor(s) can be used in this regard, is highlighted in the following documentation:
 
-![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/3-phase_bridge_motor_driver_example.jpg)
+![m600specs](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Controller/img/3-phase_bridge_motor_driver_example.jpg)
 https://github.com/OpenSourceEBike/Bafang_M500_M600/blob/main/Hardware/AN5327.pdf
 
 ##### m500 vs m600
@@ -126,7 +159,7 @@ https://github.com/OpenSourceEBike/Bafang_M500_M600/blob/main/Hardware/AN5327.pd
 It should technically be possible to transplant a m600 module into a m500, however: one would need to change the wiring from the board to the motor (phase wires) in such a way that the colors line up.
 The differences are mostly the fact that the m500 has 1 instead of 2 shunt resistors in the m600.
 
-![controllercomparison](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/img/controllercomparison.jpg)
+![controllercomparison](https://github.com/OpenSourceEBike/Bafang_M500_M600/raw/main/Hardware/Board/img/boardcomparison.jpg)
 
 
 ## Links

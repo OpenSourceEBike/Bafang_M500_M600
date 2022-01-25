@@ -1,0 +1,97 @@
+/*!
+@defgroup pins Pins Driver (PINS)
+@brief The S32 SDK provides Peripheral Drivers for the PINS module of S32K1xx, S32MTV,
+S32V234, MPC574xx and S32Rx7x devices.
+@details The module provides dedicated pad control to general-purpose pads that can be
+configured as either inputs or outputs. The PINS module provides registers that enable
+user software to read values from GPIO pads configured as inputs, and write values to
+GPIO pads configured as outputs:
+- When configured as output, you can write to an internal register to control the state
+driven on the associated output pad.
+- When configured as input, you can detect the state of the associated pad by reading
+the value from an internal register.
+- When configured as input and output, the pad value can be read back, which can be
+used as a method of checking if the written value appeared on the pad.
+
+The PINS supports these following features:
+For S32K1xx and S32MTV devices: Pins driver is based on PORT (Port Control and Interrupt) and GPIO
+(General-Purpose Input/Output) modules
+* Pin interrupt
+- Interrupt flag and enable registers for each pin
+- Support for edge sensitive (rising, falling, both) or level sensitive (low, high) configured per pin
+- Support for interrupt or DMA request configured per pin
+- Asynchronous wake-up in low-power modes
+- Pin interrupt is functional in all digital pin muxing modes
+- Peripheral trigger output (active high, low) configured per pin
+* Digital input filter
+- Digital input filter for each pin, usable by any digital peripheral muxed onto the pin
+- Individual enable or bypass control field per pin
+- Selectable clock source for digital input filter with a five bit resolution on filter size
+- Functional in all digital pin multiplexing modes
+* Port control
+- Individual pull control fields with pullup, pulldown, and pull-disable support
+- Individual drive strength field supporting high and low drive strength
+- Individual slew rate field supporting fast and slow slew rates
+- Individual input passive filter field supporting enable and disable of the individual input passive filter
+- Individual open drain field supporting enable and disable of the individual open drain output
+- Individual over-current detect enable with over-current detect flag and associated interrupt
+- Individual mux control field supporting analog or pin disabled, GPIO, and up to 6 chip-specific digital functions
+- Pad configuration fields are functional in all digital pin muxing modes
+For S32V234, MPC574xx and S32Rx7x devices: Pins driver is based on SIUL2 (System Integration Unit Lite2) module
+* The System Integration Unit Lite2 supports these distinctive features:
+- 1 to 32 GPIO ports with data control
+- Drive data to as many as 16 independent I/O channels
+- Sample data from as many as 16 independent I/O channels
+* Two 16-bit registers can be read/written with one access for a 32-bit port, if needed.
+* External interrupt/DMA request support with:
+- 1 to 4 system interrupt vectors for 1 to 4 interrupt sources with independent interrupt
+masks. For 32 external interrupt sources (REQ pins), four groups have eight interrupt
+sources each, and each of the four groups is assigned one system interrupt vector.
+- 1 to 32 programmable digital glitch filters, one for each REQ pin
+- 1 to 4 system DMA request channels up to 32 REQ pins, depending on device using
+- Edge detection
+* Additionally the SIUL2 contains the Multiplexed Signal Configuration Registers
+(MSCR) that configure the electrical parameters and settings for as many as 512
+functional pads. The number of these registers that is actually implemented varies by
+device. These registers configure the following pad features:
+- Drive strength
+- Output impedance control
+- Open drain/source output enable
+- Slew rate control
+- Hysteresis control
+- Inversion control
+- Internal pull control and pull selection
+- Pin function assignment
+- Control of analog path switches
+- Safe mode behavior configuration
+
+*/
+
+## Integration guideline ##
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+### For S32K1xx and S32MTV ###
+${S32SDK_PATH}\platform\drivers\src\pins\pins_driver.c
+${S32SDK_PATH}\platform\drivers\src\pins\pins_port_hw_access.c
+### For S32V234, MPC574xx and S32Rx7x ###
+${S32SDK_PATH}\platform\drivers\src\pins\pins_driver.c
+${S32SDK_PATH}\platform\drivers\src\pins\pins_siul2_hw_access.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+*/

@@ -1,0 +1,89 @@
+/** 
+@defgroup soc_support SoC Support
+@{
+@brief This module covers SoC support files
+
+@details This section describes the files that are used for supporting various SoCs.
+
+The support files are:
+-# Linker files
+-# Start-up files
+-# SVD file
+-# Header files
+
+### Linker files ###
+
+Linker files are used to control the linkage part of the project compilation and contain details regarding the following:
+-# memory areas definition (type  and ranges)
+-# data and code segments definition and their mapping to the memory areas.
+
+linker configuration files are provided for all supported linkers. Please see \ref Build_Tools for details.
+
+### Start-up files ###
+
+Start-up files are used to control the SoC bring-up part and contain:
+-# interrupt vector allocation
+-# start-up code and routines
+
+Start-up files are provided for all supported compilers. Please see \ref Build_Tools for details.
+
+### SVD file ###
+
+SVD file contains details about registers and can be used with an IDE to allow mapping of memory location to the register definition and information.
+
+### Header file ###
+
+For each SoC there are two header files provided in the SDK:
+-# <SoC_name>.h
+-# <SoC_name>_features.h
+
+The <SoC_name>.h file contains information related to registers that is used by the SDK drivers and code.
+The <SoC_name>_features.h contains information related to the integration of modules in the SoC.
+
+## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\devices\<SoC_name>\startup\system_<SoC_name>.c
+${S32SDK_PATH}\platform\devices\startup.c 
+${S32SDK_PATH}\platform\devices\<SoC_name>\startup\<Toolchain>\startup_<SoC_name>.S
+
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\devices
+${S32SDK_PATH}\platform\devices\<SoC_name>\
+${S32SDK_PATH}\platform\devices\startup\
+${S32SDK_PATH}\platform\devices\<SoC_name>\include\
+${S32SDK_PATH}\platform\devices\common 
+\endverbatim
+
+### Compile symbols ###
+
+\verbatim
+CPU_S32K144HFT0VLLT for S32K144
+CPU_<SoC_name>
+\endverbatim
+
+### Dependencies ###
+
+No special dependencies are required for this component
+
+### Limitations ###
+
+IAR: Function alignment is not supported using ALIGNED() macro.
+@}
+
+@defgroup soc_header SoC Header file (SoC Header )
+@{
+@brief This module covers SoC Header file
+
+@details This section describes the functionality supported by the header file.
+For usage please see \ref soc_header_usage
+@}
+*/

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="mpu" label="mpu_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.mpu" version="1.0.0"/>
+   <description>S32 SDK Peripheral Driver for Memory Protection Unit (MPU)</description>
+   <mode id="general" label="General" available="true">
+      <description>MPU general mode</description>
+      <config_set_refs>
+         <config_set_ref>mpu</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>MPU</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="mpu" label="MPU Configuration" from_source="mpu_driver.h">
+      <description>MPU Default Configuration</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="defaultConfig" label="Default values for MPU" available="true">
+            <description>MPU configuration</description>
+            <set id="MPUConfig.0.name">MPU_Cfg0</set>
+            <set id="MPUConfig.0.readonly">true</set>
+            <set id="MPUConfig.0.typeConfig">mpu_user_config_t</set>
+            <set id="MPUConfig.0.mpuRegionConfig.0.regionEnable">true</set>
+            <set id="MPUConfig.0.mpuRegionConfig.0.regionName">Region 0</set>
+            <set id="MPUConfig.0.mpuRegionConfig.0.startAddr">0x00000000</set>
+            <set id="MPUConfig.0.mpuRegionConfig.0.endAddr">0xFFFFFFFF</set>
+            <set id="MPUConfig.0.mpuRegionConfig.0.masterAccRight">AccessRightConfig0</set>
+            <set id="MPUConfig.0.mpuRegionConfig.0.processIdentifier">0x00</set>
+            <set id="MPUConfig.0.mpuRegionConfig.0.processIdMask">0x00</set>
+            <set id="mpuMasterAccessRight.0.accessRightName">AccessRightConfig0</set>
+            <set id="mpuMasterAccessRight.0.MasterAccessRightReadOnly">true</set>
+            <set id="mpuMasterAccessRight.0.mpuAccessRight.1.idTypeSuppervisor">MPU_SUPERVISOR</set>
+            <set id="mpuMasterAccessRight.0.mpuAccessRight.1.processIdentifierEnable">false</set>
+            <set id="mpuMasterAccessRight.0.mpuAccessRight.1.idTypeUser">USER_RWX</set>
+            <set id="mpuMasterAccessRight.0.mpuAccessRight.0.master">CORE</set>
+            <set id="mpuMasterAccessRight.0.mpuAccessRight.1.master">DEBUGGER</set>
+            <set id="mpuMasterAccessRight.0.mpuAccessRight.2.master">DMA</set>
+            <set id="mpuMasterAccessRight.0.mpuAccessRight.3.master">ENET</set>
+         </quick_selection>
+         <default>defaultConfig</default>
+      </quick_selections>
+      <generated_types>
+         <enum id="mpu_err_access_type_t" label="MPU access error Implements : mpu_err_access_type_t_Class" from="mpu_err_access_type_t">
+            <item id="MPU_ERR_TYPE_READ" label="MPU error type: read"/>
+            <item id="MPU_ERR_TYPE_WRITE" label="MPU error type: write"/>
+         </enum>
+         <enum id="mpu_err_attributes_t" label="MPU access error attributes Implements : mpu_err_attributes_t_Class" from="mpu_err_attributes_t">
+            <item id="MPU_INSTRUCTION_ACCESS_IN_USER_MODE" label="Access instruction error in user mode"/>
+            <item id="MPU_DATA_ACCESS_IN_USER_MODE" label="Access data error in user mode"/>
+            <item id="MPU_INSTRUCTION_ACCESS_IN_SUPERVISOR_MODE" label="Access instruction error in supervisor mode"/>
+            <item id="MPU_DATA_ACCESS_IN_SUPERVISOR_MODE" label="Access data error in supervisor mode"/>
+         </enum>
+         <struct id="mpu_access_err_info_t" label="MPU detail error access info Implements : mpu_access_err_info_t_Class" from="mpu_access_err_info_t">
+            <integer id="master" label="Access error master" type="uint8_t">
+               <description>Access error master</description>
+            </integer>
+            <reference id="attributes" label="Access error attributes" type="mpu_err_attributes_t">
+               <description>Access error attributes</description>
+            </reference>
+            <reference id="accessType" label="Access error type" type="mpu_err_access_type_t">
+               <description>Access error type</description>
+            </reference>
+            <integer id="accessCtr" label="Access error control" type="uint16_t">
+               <description>Access error control</description>
+            </integer>
+            <integer id="addr" label="Access error address" type="uint32_t">
+               <description>Access error address</description>
+            </integer>
+            <integer id="processorIdentification" label="Access error processor identification" type="uint8_t">
+               <description>Access error processor identification</description>
+            </integer>
+         </struct>
+      </generated_types>
+      <user_types>
+         <struct id="mpu_user_config_region_address_t" label="MPU user configuration address" from="mpu_user_config_region_address_t" min_expr="1">
+            <bool id = "regionEnable" label = "Region Enable" enable="$parent.regionName.getValue() != `Region 0`">
+                  <description>If true is Enable region, If false is Disable region</description>
+            </bool>
+            <string id="regionName" label="Region name" enable="$parent.regionEnable.getValue() &amp;&amp; $parent.regionName.getValue() != `Region 0`">
+               <description>Name of region configuration</description>
+            </string>
+            <integer id="startAddr" label="Start address" type="uint32_t" enable="$parent.regionEnable.getValue() &amp;&amp; $parent.regionName.getValue() != `Region 0`" options="cStructField">
+               <description>Memory region start address</description>
+            </integer>
+            <integer id="endAddr" label="End address" type="uint32_t" enable="$parent.regionEnable.getValue() &amp;&amp; $parent.regionName.getValue() != `Region 0`" options="cStructField">
+               <description>Memory region end address</description>
+            </integer>
+                <dynamic_enum id="masterAccRight" label="Master access right" items="createArray().merge($configSet.mpuMasterAccessRight.arrayToEnumItems(
+                  enumItem -> true,
+                  enumItem -> enumItem.getSetting(`accessRightName`).getValue(),
+                  enumItem -> enumItem.getSetting(`accessRightName`).getValue(),
+                  enumItem -> enumItem.getSetting(`accessRightName`).getValue()))" enable="$parent.regionEnable.getValue() &amp;&amp; $parent.regionName.getValue() != `Region 0`" options="cStructField">
+                    <description>Domain configuration.</description>
+                </dynamic_enum>
+            <integer id="processIdentifier" label="Process identifier" type="uint8_t" enable="$parent.regionEnable.getValue() &amp;&amp; $parent.regionName.getValue() != `Region 0`">
+               <description>Process identifier</description>
+            </integer>
+            <integer id="processIdMask" label="Process identifier mask" type="uint8_t" enable="$parent.regionEnable.getValue() &amp;&amp; $parent.regionName.getValue() != `Region 0`">
+               <description>Process identifier mask. The setting bit will ignore the same bit in process identifier</description>
+            </integer>
+         </struct>
+         <struct id="mpu_user_config_t" label="MPU user region configuration structure" from="mpu_user_config_t">
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readonly" label="Read Only">
+               <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+            </bool>
+            <info id="typeConfig" label="Type" value="`mpu_user_config_t`"/>
+            <array id="mpuRegionConfig" label="Region Configurations" type="mpu_user_config_region_address_t" config_set_id="mpu" options="ShowContentAs=Table" min_expr="1" max_expr="getFeature(`FEATURE_MPU_HAS_MAX_REGION_NUMBER`)">
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`regionName`).value()).length() == 0" level="error" description="There are some duplicated `Region Name` in the configuration"/>
+               </validation>
+               <description>MPU User Configurations</description>
+                  <item_defaults>
+                     <set_default id="regionEnable" value_expr="x -> (`true`)"/>
+                     <set_default id="regionName" value_expr="x -> + `Region ` + x.getID()"/>
+                     <set_default id="startAddr" value_expr="x -> + `0x00000000`"/>
+                     <set_default id="endAddr" value_expr="x -> + `0xFFFFFFFF`"/>
+                     <set_default id="processIdentifier" value_expr="x -> + `0x00`"/>
+                     <set_default id="processIdMask" value_expr="x -> + `0x00`"/>
+                  </item_defaults>
+            </array>
+         </struct>
+         <enum id="mpu_MasterNum_type" label="Master" from="mpu_MasterNum_type">
+            <item id="CORE" label="CORE"/>
+            <item id="DEBUGGER" label="DEBUGGER"/>
+            <item id="DMA" label="DMA"/>
+            <item id="ENET" label="ENET"/>
+         </enum>
+         <struct id="mpu_master_access_right_t" label="MPU master access rights" from="mpu_master_access_right_t">
+            <reference id="master" label="Master" type="mpu_MasterNum_type" options="cStructField" enable = "false">
+               <description>Master</description>
+            </reference>
+            <enum id="idTypeSuppervisor" label="Supervisor mode" from="idTypeSuppervisor">
+               <item id="MPU_SUPERVISOR_RWX" label="rwx"/>
+               <item id="MPU_SUPERVISOR_RX" label="r-x"/>
+               <item id="MPU_SUPERVISOR_RW" label="rw-"/>
+               <item id="MPU_SUPERVISOR" label="Same as User mode"/>
+            </enum>
+            <enum id="idTypeUser" label="User mode" from="idTypeUser">
+               <item id="USER_NONE" label="---"/>
+               <item id="USER_X" label="--x"/>
+               <item id="USER_W" label="-w-"/>
+               <item id="USER_WX" label="-wx"/>
+               <item id="USER_R" label="r--"/>
+               <item id="USER_RX" label="r-x"/>
+               <item id="USER_RW" label="rw-"/>
+               <item id="USER_RWX" label="rwx"/>
+            </enum>
+            <bool id="processIdentifierEnable" label="Process identifier enable">
+               <description>Enables or disables process identifier</description>
+            </bool>
+         </struct>
+         <struct id="mpu_user_config_master_access_t" label="Master access right configuration" from="mpu_user_config_master_access_t">
+            <string id="accessRightName" label="Access right name" type="massterAccRight" config_set_id="mpu" options="ShowContentAs=Table" enable=" $parent.accessRightName.getValue() != `AccessRightConfig0`">
+               <description>Name of access right configuration. The name is used to configuration structure declaration</description>
+            </string>
+            <bool id = "MasterAccessRightReadOnly" label = "Read only">
+                  <description>Specifies how will be configuration generated. Read only generated structures are declared with const qualifiers</description>
+            </bool>
+            <array id="mpuAccessRight" label="Access rights" type="mpu_master_access_right_t" config_set_id="mpu" options="ShowContentAs=Table;UI_ARRAY_INDICES_HIDDEN" min_expr="1" max_expr="getFeature(`FEATURE_MPU_HAS_MASTER_NUMBER`)" size="getFeature(`FEATURE_MPU_HAS_MASTER_NUMBER`)">
+               <description>MPU User Configurations</description>
+               <item_defaults>
+                  <set_default id="master" value_expr="x -> (x.getID() == 0 ? `CORE` : (x.getID() == 1 ? `DEBUGGER` :( x.getID() == 2 ? `DMA` : `ENET`)))"/>
+                  <set_default id="idTypeSuppervisor" value_expr="x -> `MPU_SUPERVISOR`"/>
+                  <set_default id="idTypeUser" value_expr="x -> `USER_RWX`"/>
+               </item_defaults>
+            </array>
+         </struct>
+      </user_types>
+      <settings>
+         <array id="MPUConfig" label="MPU User Configuration" type="mpu_user_config_t" config_set_id="mpu" component_id="mpu" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())" min_expr="1">
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+            </validation>
+            <description>MPU User Configurations</description>
+               <item_defaults>
+                  <set_default id="name" value_expr="x -> ($instance.getLabel() + `_Cfg` + x.getID())"/>
+                  <set_default id="readonly" value_expr="x -> (`true`)"/>
+               </item_defaults>
+         </array>
+         <array id="mpuMasterAccessRight" label="Master access right" type="mpu_user_config_master_access_t" config_set_id="mpu" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`accessRightName`).value())" min_expr="1">
+            <description>MPU User Configurations</description>
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`accessRightName`).value()).length() == 0" level="error" description="There are some duplicated `Access right name` in the configuration"/>
+               </validation>
+               <item_defaults>
+                  <set_default id="accessRightName" value_expr="x -> `AccessRightConfig` + x.getID()"/>
+                  <set_default id="MasterAccessRightReadOnly" value_expr="x -> (`true`)"/>
+               </item_defaults>
+         </array>
+            <variable value="`../mpu/mpu_codegen.js`" id="codegen_file"></variable>
+            <variable value="`MPU_CodeGen`" id="codegen_class"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

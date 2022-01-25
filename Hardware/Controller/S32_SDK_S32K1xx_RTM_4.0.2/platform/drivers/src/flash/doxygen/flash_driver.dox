@@ -1,0 +1,194 @@
+/*!
+@defgroup flash Flash Memory (Flash)
+@brief Flash Memory Module provides the general flash APIs
+@details
+Flash memory is ideal for single-supply applications, permitting in-the-field erase and
+reprogramming operations without the need for any external high voltage power sources.
+The flash module includes a memory controller that executes commands to modify flash
+memory contents. An erased bit reads '1' and a programmed bit reads '0'. The
+programming operation is unidirectional; it can only move bits from the '1' state (erased)
+to the '0' state (programmed). Only the erase operation restores bits from '0' to '1'; bits
+cannot be programmed from a '0' to a '1'.
+
+## C90TFS Flash Driver
+The C90TFS flash module includes the following accessible memory regions.
+1. Program flash memory for vector space and code store.
+2. FlexNVM for data store, additional code store and also non-volatile storage for the EEPROM
+filing system representing data written to the FlexRAM requiring highest endurance.
+3. FlexRAM for high-endurance EEPROM data store or traditional RAM.
+
+Some platforms may be designed to have only program flash memory or all of them.
+
+The S32 SDK provides the C90TFS Flash driver of S32K platforms.
+The driver includes general APIs to handle specific operations on C90TFS Flash module.
+The user can use those APIs directly in the application.
+
+## EEPROM feature
+
+For platforms with FlexNVM, the flash module provides a built-in hardware emulation scheme to emulate
+the characteristics of an EEPROM by effectively providing a high-endurance, byte write-able NVM.
+The EEPROM system is shown in the following figure.
+ <a NAME="figure1"></a>
+ @image html flash_EEPROM_architecture.jpg
+ <center><i>Figure 1. EEPROM Architecture</i></center>
+To handle with various customer's requirements, the FlexRAM and FlexNVM blocks can be split into partitions:
+1. EEPROM partition(EEESIZE) — The amount of FlexRAM used for EEPROM can be set from 0 Bytes (no EEPROM)
+to the maximum FlexRAM size. The remainder of the FlexRAM not used for EEPROM is not accessible while
+the FlexRAM is configured for EEPROM.The EEPROM partition grows upward from the bottom of the FlexRAM
+address space.
+2. Data flash partition(DEPART) — The amount of FlexNVM memory used for data flash can be programmed
+from 0 bytes (all of the FlexNVM block is available for EEPROM backup) to the maximum size of the FlexNVM block.
+3. FlexNVM EEPROM partition — The amount of FlexNVM memory used for EEPROM backup, which is equal to the
+FlexNVM block size minus the data flash memory partition size. The EEPROM backup size must be at least
+16 times the EEPROM partition size in FlexRAM.
+
+The partition information (EEESIZE, DEPART) is programmed using the <b>#FLASH_DRV_DEFlashPartition</b> API.
+
+The function of FlexRAM can be changed from EEPROM usage to  traditional RAM for
+accelerate programming in <b>#FLASH_DRV_ProgramSection</b> API and vice versa by <b>#FLASH_DRV_SetFlexRamFunction</b> API.
+
+This is example code of EEE usage sequence:
+
+~~~~~{.c}
+    /* Provide information about the flash blocks. */
+    /*! @brief Configuration structure flashCfg_0 */
+    const flash_user_config_t Flash_InitConfig0 = {
+    .PFlashBase  = 0x00000000U,                     /* Base address of Program Flash block */
+    .PFlashSize  = 0x00100000U,                     /* Size of Program Flash block */
+    .DFlashBase  = 0x10000000U,                     /* Base address of Data Flash block */
+    .EERAMBase   = 0x14000000U,                     /* Base address of FlexRAM block */
+    /* If using callback, any code reachable from this function must not be placed in a Flash block targeted for a program/erase operation.*/
+    .CallBack    = NULL_CALLBACK
+    };
+
+    /* Declare a FLASH configuration structure which is initialized by FlashInit, and will be used by all flash APIs */
+    flash_ssd_config_t flashSSDConfig;
+    status_t ret;        /* Store the driver APIs return code */
+
+    /* Data source for program operation */
+    #define BUFFER_SIZE         0x100u          /* Size of data source */
+	#define SIZE_WRITE_EEE      0x7u          /* Size of data write in EEPROM */
+    uint8_t sourceBuffer[BUFFER_SIZE];
+
+    /* Init source data */
+    for (i = 0u; i < BUFFER_SIZE; i++)
+    {
+        sourceBuffer[i] = i;
+    }
+
+    /* Always initialize the driver before calling other functions */
+    ret = FLASH_DRV_Init(&Flash_InitConfig0, &flashSSDConfig);
+    if (ret != STATUS_SUCCESS)
+    {
+        return ret;
+    }
+
+#if ((FEATURE_FLS_HAS_FLEX_NVM == 1u) & (FEATURE_FLS_HAS_FLEX_RAM == 1u))
+    /* Configure FlexRAM as EEPROM if it is currently used as traditional RAM */
+    if (flashSSDConfig.EEESize == 0u)
+    {
+        /* Configure FlexRAM as EEPROM and FlexNVM as EEPROM backup region,
+         * DEFlashPartition will be failed if the IFR region isn't blank.
+         * Refer to the device document for valid EEPROM Data Size Code
+         * and FlexNVM Partition Code. For example on S32K144:
+         * - EEEDataSizeCode = 0x02u: EEPROM size = 4 Kbytes
+         * - DEPartitionCode = 0x08u: EEPROM backup size = 64 Kbytes */
+        ret = FLASH_DRV_DEFlashPartition(&flashSSDConfig, 0x02u, 0x08u, 0x0, false, true);
+        DEV_ASSERT(STATUS_SUCCESS == ret);
+        else
+        {
+            /* Re-initialize the driver to update the new EEPROM configuration */
+            ret = FLASH_DRV_Init(&Flash_InitConfig0, &flashSSDConfig);
+            if (ret != STATUS_SUCCESS)
+            {
+                return ret;
+            }
+
+            /* Make FlexRAM available for EEPROM */
+            ret = FLASH_DRV_SetFlexRamFunction(&flashSSDConfig, EEE_ENABLE, 0x0u, NULL);
+            DEV_ASSERT(STATUS_SUCCESS == ret);
+        }
+    }
+    else    /* FLexRAM is already configured as EEPROM */
+    {
+        /* Make FlexRAM available for EEPROM, make sure that FlexNVM and FlexRAM
+         * are already partitioned successfully before */
+        ret = FLASH_DRV_SetFlexRamFunction(&flashSSDConfig, EEE_ENABLE, 0x0u, NULL);
+        DEV_ASSERT(STATUS_SUCCESS == ret);
+    }
+#endif
+
+    /* Erase the sixth PFlash sector */
+    /* Configure address, size to erase sector function. For example on S32K144 */
+    address = 6u * FEATURE_FLS_PF_BLOCK_SECTOR_SIZE; /* A sector size is 4KB */
+    size = FEATURE_FLS_PF_BLOCK_SECTOR_SIZE;
+    ret = FLASH_DRV_EraseSector(&flashSSDConfig, address, size);
+    DEV_ASSERT(STATUS_SUCCESS == ret);
+
+    /* Verify the erase operation at margin level value of 1, user read */
+    ret = FLASH_DRV_VerifySection(&flashSSDConfig, address, size, 1u);
+    DEV_ASSERT(STATUS_SUCCESS == ret);
+
+    /* Write some data to the erased PFlash sector */
+    size = BUFFER_SIZE;
+    ret = FLASH_DRV_Program(&flashSSDConfig, address, size, sourceBuffer);
+    DEV_ASSERT(STATUS_SUCCESS == ret);
+
+    /* Verify the program operation at margin level value of 1, user margin */
+    ret = FLASH_DRV_ProgramCheck(&flashSSDConfig, address, size, sourceBuffer, &failAddr, 1u);
+    DEV_ASSERT(STATUS_SUCCESS == ret);
+
+    /* Try to write data to EEPROM if FlexRAM is configured as EEPROM */
+    if (flashSSDConfig.EEESize != 0u)
+    {
+        address = flashSSDConfig.EERAMBase;
+        size =  SIZE_WRITE_EEE;
+        ret = FLASH_DRV_EEEWrite(&flashSSDConfig, address, size, sourceBuffer);
+        DEV_ASSERT(STATUS_SUCCESS == ret);
+    }
+~~~~~
+
+## Integration guideline ##
+ 
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\flash\flash_driver.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+
+## Important Note
+
+1. If using callback in the application, any code reachable from this function
+must not be placed in a Flash block targeted for a program/erase operation to avoid the RWW error.
+Functions can be placed in RAM section by using the START/END_FUNCTION_DEFINITION/DECLARATION_RAMSECTION macros.
+2. To suspend the sector erase operation for a simple method, invoke the
+<b>#FLASH_DRV_EraseSuspend</b> function within callback of <b>#FLASH_DRV_EraseSector</b>. In this case, the
+<b>#FLASH_DRV_EraseSuspend</b> must not be placed in the same block in which the Flash erase sector
+command is going on.
+3. <b>#FLASH_DRV_CommandSequence</b>, <b>#FLASH_DRV_EraseSuspend</b> and <b>#FLASH_DRV_EraseResume</b> should be executed from RAM
+or different Flash blocks which are targeted for writing to avoid the RWW error.
+<b>#FLASH_DRV_EraseSuspend</b> and <b>#FLASH_DRV_EraseResume</b> functions should be called in pairs.
+4. To guarantee the correct execution of this driver, the Flash cache in the Flash memory
+controller module should be disabled before invoking any API.
+5. Partitioning FlexNVM and FlexRAM for EEPROM usage shall be executed only once in the lifetime of the device.
+6. After successfully partitioning FlexNVM and FlexRAM for EEPROM usage, user needs to call <b>#FLASH_DRV_Init</b>
+to update memory information in global structure.
+7. Can not erase or program flash when MCU is high speed run mode or very low power mode.
+8. S32K14xW needs to enable FlexRAM as traditional RAM for the first time using silicon.
+@}*/

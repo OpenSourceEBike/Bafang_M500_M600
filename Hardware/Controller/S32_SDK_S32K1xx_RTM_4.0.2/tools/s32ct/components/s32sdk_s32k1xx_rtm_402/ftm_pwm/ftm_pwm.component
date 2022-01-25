@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="flexTimer_pwm" label="flexTimer_pwm" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.ftm_pwm" version="1.0.0"/>
+   <description>FTM configuration</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>FTM_PWM general mode</description>
+      <config_set_refs>
+         <config_set_ref>ftm_pwm</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>FTM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="ftm_pwm" label="FTM Configuration Set" from_source="ftm_pwm_driver.h">
+      <description>FTM_PWM Driver</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="default_value" label="Default Values for FTM PWM" available="true">
+            <description>FTM_PWM configuration</description>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmClkCfg.ClockSource">FTM_CLOCK_SOURCE_SYSTEMCLK</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmClkCfg.ftmprescaler">1</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmGlobalCfg.ftmMode">FTM_MODE_EDGE_ALIGNED_PWM</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmGlobalCfg.debugMode">FTM_BDM_MODE_11</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmGlobalCfg.timerOverInter">false</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmGlobalCfg.initTrigger">false</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.softTrigger">true</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.hardwareTrigger1">false</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.hardwareTrigger2">false</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.hardwareTrigger3">false</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.ftmSyncPoint">FTM_UPDATE_NOW</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.maxload">false</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.minload">false</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.AutoTrigClear">false</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.ftmRegisterUpdate">FTM_PWM_SYNC</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.ftmSoftwareOutControl">FTM_PWM_SYNC</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.ftmOutMaskSync">FTM_PWM_SYNC</set>
+            <set id="ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmRegSyncCfg.ftmCounterInitSync">FTM_PWM_SYNC</set>
+            <set id="ftmPwmUserConfig.ftmPwmConfiguration.ftmPwmGeneralCfg.periodInFreq">1000</set>
+            <set id="ftmPwmUserConfig.ftmPwmConfiguration.ftmPwmGeneralCfg.deadTimeValue">0</set>
+            <set id="ftmPwmUserConfig.ftmPwmConfiguration.ftmPwmGeneralCfg.deadTimePrescaler">FTM_DEADTIME_DIVID_BY_1</set>
+         </quick_selection>
+         <default>default_value</default>
+      </quick_selections>
+      <settings>
+         <reference id="ftmPwmUserConfig" label=" " type="ftm_pwm_init_config_t" options="ShowContentAs=Tabs">
+            <description>FTM PWM Configuration</description>
+         </reference>
+         <variable value="`../ftm_pwm/ftm_pwm_codegen.js`" id="codegen_file"></variable>
+         <variable value="`FTM_PWM_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+      <user_types>
+         <struct id="ftm_pwm_init_config_t" label="Initialization Config" from="ftm_pwm_init_config_t">
+            <reference id="ftmPwmInitConfig" label="initialization" type="initializationCfg" >
+               <description>Initialization section</description>
+            </reference>
+            <reference id="ftmPwmConfiguration" label="Configurations" type="ftmPwmConfig_t">
+               <description>FTM PWM Configurations</description>
+            </reference>
+         </struct>
+         <struct id="ftm_pwm_general_cfg_t" label="Initialization Config" from="ftm_pwm_general_cfg_t">
+            <integer id="periodInFreq" label="PWM Frequency[Hz]" type="uint32_t">
+               <description>User need to check the FTM frequency before enter the period in frequency of PWM. The min pwm frequency must be greater than (FTM counter frequency / 65536) </description>
+            </integer>
+            <integer id="deadTimeValue" label="Dead Time Value In [Ticks]" type="uint8_t" min_expr="0" max_expr="63">
+               <description>Dead time value in [ticks]</description>
+            </integer>
+            <reference id="deadTimePrescaler" label="Dead Time Pre-scaler" type="ftm_deadtime_ps_t">
+               <description>Dead time pre-scaler value[ticks]</description>
+            </reference>
+         </struct>
+         <struct id="ftmPwmConfig_t" label="Configurations" from="ftmPwmConfig_t">
+            <description>PWM Configurations</description>
+            <reference id="ftmPwmGeneralCfg" label="PWM General Configuration" type="ftm_pwm_general_cfg_t" >
+               <description>Initialization section</description>
+            </reference>
+             <reference id="FtmPwmConfigArr" label="      " type="ftm_pwm_param_t" options="ShowContentAs=Tabs">
+                <description></description>
+             </reference>
+         </struct>
+         <struct id="ftm_pwm_clock_config_t" label="Clock Configurations" from="ftm_pwm_clock_config_t">
+            <description>FTM clock configuration</description>
+            <reference id="ClockSource" label="FTM Clock Source" type="ftm_clock_source_t" enable="true">
+               <description>Clock source used by FTM counter</description>
+            </reference>
+
+            <info id="Name_ModuleClock"
+                  value="getFeature(`FEATURE_FTM_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="Name_ExternalClock"
+                  value="getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_PREFIX`) +
+                         getPeriphInstanceIndex($instance.getPeripheral()).toString() +
+                         getFeature(`FEATURE_FTM_EXT_CLOCK_NAME_SUFFIX`)"
+                  available="false">
+            </info>
+            <info id="SystemClockFrequency"
+                  label="System Clock(Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_SYS_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="false">
+            </info>
+            <info id="DisplaySystemClock"
+                  label="Frequency of source clock (Hz)"
+                  value="$parent.SystemClockFrequency.getValue()"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_SYSTEMCLK`)">
+            </info>
+            <info id="DisplayExternalClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               $parent.Name_ExternalClock.getValue(),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_EXTERNALCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 4))"
+                              level="error"
+                              description="The frequency of the external clock source must not exceed 1/4 of the FTM input clock frequency"/>
+               </validation>
+            </info>
+            <info id="DisplayFixedClock"
+                  label="Frequency of source clock (Hz)"
+                  value="toHertz(frequencyToString(getPeripheralClockFrequency($parent.Name_ModuleClock.getValue(),
+                                                                               getFeature(`FEATURE_FTM_FIX_CLOCK_NAME`),
+                                                                               getClockFunctionalGroups().get(0))))"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_FIXEDCLK`)">
+               <validation>
+                  <constraint cond_expr="!($this.getValue() &gt; ($parent.SystemClockFrequency.getValue() / 2))"
+                              level="error"
+                              description="The frequency of the fixed frequency clock must not exceed 1/2 of the FTM input clock frequency"/>
+               </validation>
+            </info>
+
+            <reference id="ftmprescaler" label="Clock Source Prescaler" type="ftm_clock_ps_t">
+               <description>Clock source used by FTM counter</description>
+            </reference>
+
+            <info id="DisplayCounterClock_None"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayNoneClock.getValue()"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_NONE`)">
+            </info>
+            <info id="DisplayCounterClock_System"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplaySystemClock.getValue() / toInt($parent.ftmprescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_SYSTEMCLK`)">
+            </info>
+            <info id="DisplayCounterClock_External"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayExternalClock.getValue() / toInt($parent.ftmprescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_EXTERNALCLK`)">
+            </info>
+            <info id="DisplayCounterClock_Fixed"
+                  label="Frequency of counter clock (Hz)"
+                  value="$parent.DisplayFixedClock.getValue() / toInt($parent.ftmprescaler.getValue())"
+                  available="($parent.ClockSource.getValue() == `FTM_CLOCK_SOURCE_FIXEDCLK`)">
+            </info>
+
+         </struct>
+         <struct id="ftm_pwm_global_config_t" label="Clock Configurations" from="ftm_pwm_global_config_t">
+            <description>FTM Global configuration</description>
+            <reference id="ftmMode" label="Mode Of Operation For FTM" type="ftm_config_mode_t">
+               <description>Mode of operation for FTM</description>
+            </reference>
+            <reference id="debugMode" label="Debug Mode" type="ftm_debug_mode_t">
+               <description>Clock source used by FTM counter</description>
+            </reference>
+            <bool id="timerOverInter" label="Timer Overflow Interrupt">
+               <description>true: enable interrupt, false: write interrupt is disabled</description>
+            </bool>
+            <bool id="initTrigger" label="Initialization Trigger">
+               <description></description>
+            </bool>
+         </struct>
+         <struct id="ftm_pwm_reg_sync_config_t" label="Register Sync Configurations" from="ftm_pwm_reg_sync_config_t">
+            <description>FTM Global configuration</description>
+            <bool id="softTrigger" label="Software Trigger" enable="!($parent.hardwareTrigger1.getValue() || $parent.hardwareTrigger2.getValue() || $parent.hardwareTrigger3.getValue())">
+               <description></description>
+            </bool>
+            <bool id="hardwareTrigger1" label="Hardware Trigger 1" enable="!$parent.softTrigger.getValue()">
+               <description>Enables/disables software trigger for register sync</description>
+            </bool>
+            <bool id="hardwareTrigger2" label="Hardware Trigger 2" enable="!$parent.softTrigger.getValue()">
+               <description>Enables/disables software trigger for register sync</description>
+            </bool>
+            <bool id="hardwareTrigger3" label="Hardware Trigger 3" enable="!$parent.softTrigger.getValue()">
+               <description>Enables/disables software trigger for register sync</description>
+            </bool>
+            <reference id="ftmSyncPoint" label="Sync Point" type="ftm_sync_point_t">
+               <description>Clock source used by FTM counter</description>
+            </reference>
+            <bool id="maxload" label="Max Loading Point" enable="($parent.ftmSyncPoint.getValue()==`FTM_WAIT_LOADING_POINTS`)">
+               <description>Enables/disables max counter value loading point</description>
+            </bool>
+            <bool id="minload" label="Min Loading Point" enable="($parent.ftmSyncPoint.getValue()==`FTM_WAIT_LOADING_POINTS`)">
+               <description>Enables/disables min counter value loading point</description>
+            </bool>
+            <bool id="AutoTrigClear" label="Automatic Trigger Clear">
+               <description>Enables/disables min counter value loading point</description>
+            </bool>
+            <reference id="ftmRegisterUpdate" label="Inverting Control Synchronization" type="ftm_sync_mode_t">
+               <description>Trigger for register update</description>
+            </reference>
+            <reference id="ftmSoftwareOutControl" label="Software Output Control Synchronization" type="ftm_sync_mode_t">
+               <description></description>
+            </reference>
+            <reference id="ftmOutMaskSync" label="Output Mask Synchronization" type="ftm_sync_mode_t">
+               <description></description>
+            </reference>
+            <reference id="ftmCounterInitSync" label="Counter Initial Synchronization" type="ftm_sync_mode_t">
+               <description></description>
+            </reference>
+         </struct>
+         <struct id="initializationCfg" label="FTM Module Clock Setup" from="initialization">
+            <description>FTM clock configuration</description>
+            <reference id="ftmPwmClkCfg" label="FTM Clock Configuration" type="ftm_pwm_clock_config_t">
+               <description>Clock source used by FTM counter</description>
+            </reference>
+            <reference id="ftmPwmGlobalCfg" label="FTM Global Configuration" type="ftm_pwm_global_config_t">
+               <description>Clock source used by FTM counter</description>
+            </reference>
+            <reference id="ftmPwmRegSyncCfg" label="FTM Register Sync Configuration" type="ftm_pwm_reg_sync_config_t">
+               <description>Clock source used by FTM counter</description>
+            </reference>
+      </struct>
+         <struct id="ftm_pwm_indepent_channel_config_t" label="PWM Independent Configuration" from="ftm_pwm_indepent_channel_config_t">
+            <description>PWM Independent Configuration</description>
+            <info id="ftmPwmNumOfIndeptChn" label="Number Of Independent Channels" value="0" options="cStructField"/>
+            <array id="pwmIndependentChannelConfig" label="Independent Chanels Configuration List" type="ftm_independent_ch_param_t" options="ShowContentAs=MasterDetail">
+               <description>Configuration for independent PWM channels</description>
+               <item_defaults>
+               <set_default id="ftmPwmIndptHwChnId" value_expr="x -> x.getID()"/>
+               </item_defaults>
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`ftmPwmIndptHwChnId`).value()).length() == 0" level="error" description="Duplicated Channel in PWM Independent Configuration"/>
+               </validation>
+            </array>
+         </struct>
+         <struct id="ftm_pwm_combined_channel_config_t" label="PWM Combined Channel Configuration" from="ftm_pwm_combined_channel_config_t">
+            <description>PWM Combined Channel  Configuration</description>
+            <info id="ftmPwmNumOfCombChn" label="Number Of Combined Channels" value="0" options="cStructField"/>
+            <array id="pwmCombinedChannelConfig" label="Combined Channels Configuration List" type="ftm_combined_ch_param_t" options="ShowContentAs=MasterDetail">
+               <description>Configuration for combined PWM channels</description>
+               <item_defaults>
+               <set_default id="ftmPwmCombHwChnId" value_expr="x -> (toInt(x.getID()) * 2)"/>
+               </item_defaults>
+               <validation>
+                  <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`ftmPwmCombHwChnId`).value()).length() == 0"
+                              level="error" description="Duplicated Channel in PWM Combined Configuration"/>
+               </validation>
+            </array>
+         </struct>
+      <struct id="ftm_pwm_param_t" label="FlexTimer Driver PWM parameters" from="ftm_pwm_param_t">
+            <description>Implements : ftm_pwm_param_t_Class</description>
+            <reference id="faultConfig" label="Fault Mode Initialization"
+                       type="ftm_pwm_fault_param_t"
+                       available="(featureDefined(`FEATURE_FTM_HAS_FAULT`)==true) &amp;&amp; (getFeature(`FEATURE_FTM_HAS_FAULT`)==1)">
+               <description>Configuration for PWM fault</description>
+            </reference>
+            <reference id="ftmPwmIndptChnCfg" label="PWM Independent Configuration" type="ftm_pwm_indepent_channel_config_t">
+               <description>Configuration for the independent channels</description>
+            </reference>
+            <reference id="ftmPwmCombChnCfg" label="PWM Combined Configuration" type="ftm_pwm_combined_channel_config_t">
+               <description>Configuration for combined PWM channels</description>
+            </reference>
+         </struct>
+      <enum id="ftm_clock_source_t" label="" from="ftm_clock_source_t">
+            <description></description>
+            <item id="FTM_CLOCK_SOURCE_SYSTEMCLK" label="System clock" available="true"/>
+            <item id="FTM_CLOCK_SOURCE_EXTERNALCLK" label="External clock" available="featureDefined(`FEATURE_FTM_HAS_EXT_CLOCK_SOURCE`)"/>
+            <item id="FTM_CLOCK_SOURCE_FIXEDCLK" label="Fixed clock" available="featureDefined(`FEATURE_FTM_HAS_FIXED_CLOCK_SOURCE`)"/>
+      </enum>
+      <enum id="ftm_clock_ps_t" label="" from="ftm_clock_ps_t">
+            <description></description>
+            <item id="1" label="1"/>
+            <item id="2" label="2"/>
+            <item id="4" label="4"/>
+            <item id="8" label="8"/>
+            <item id="16" label="16"/>
+            <item id="32" label="32"/>
+            <item id="64" label="64"/>
+            <item id="128" label="128"/>
+      </enum>
+      <enum id="ftm_debug_mode_t" label="" from="ftm_debug_mode_t">
+            <description></description>
+            <item id="FTM_BDM_MODE_00" label="Mode 0"/>
+            <item id="FTM_BDM_MODE_01" label="Mode 1"/>
+            <item id="FTM_BDM_MODE_10" label="Mode 2"/>
+            <item id="FTM_BDM_MODE_11" label="Mode 3"/>
+      </enum>
+      <enum id="ftm_sync_point_t" label="" from="ftm_sync_point_t">
+            <description></description>
+            <item id="FTM_UPDATE_NOW" label="Immediate"/>
+            <item id="FTM_WAIT_LOADING_POINTS" label="Next Loading Point"/>
+      </enum>
+      <enum id="ftm_sync_mode_t" label="" from="ftm_sync_mode_t">
+            <description></description>
+            <item id="FTM_SYSTEM_CLOCK" label="System Clock Synchronization"/>
+            <item id="FTM_PWM_SYNC" label="PWM Synchronization"/>
+      </enum>
+      <enum id="ftm_config_mode_t" label="FlexTimer operation mode" from="ftm_config_mode_t" from_source="ftm_common.h">
+         <description>Implements : ftm_config_mode_t_Class</description>
+         <item id="FTM_MODE_EDGE_ALIGNED_PWM" label="Edge Aligned PWM"/>
+         <item id="FTM_MODE_CEN_ALIGNED_PWM" label="Center Aligned PWM"/>
+      </enum>
+      <enum id="ftm_deadtime_ps_t" label="FlexTimer pre-scaler factor for the dead-time insertion" from="ftm_deadtime_ps_t" from_source="ftm_common.h">
+         <description>Implements : ftm_deadtime_ps_t_Class</description>
+         <item id="FTM_DEADTIME_DIVID_BY_1" label="Divided By 1"/>
+         <item id="FTM_DEADTIME_DIVID_BY_4" label="Divided By 4"/>
+         <item id="FTM_DEADTIME_DIVID_BY_16" label="Divided By 16"/>
+      </enum>
+      <enum id="ftm_pwm_channel_t" label="Hardware channel list" from="ftm_pwm_channel_t">
+            <description>Channel ID</description>
+            <item id="0" label="Channel 0" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 0"/>
+            <item id="1" label="Channel 1" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 1"/>
+            <item id="2" label="Channel 2" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 2"/>
+            <item id="3" label="Channel 3" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 3"/>
+            <item id="4" label="Channel 4" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 4"/>
+            <item id="5" label="Channel 5" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 5"/>
+            <item id="6" label="Channel 6" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 6"/>
+            <item id="7" label="Channel 7" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 7"/>
+      </enum>
+      <enum id="ftm_pwm_channel_pair_t" label="Hardware channel pair" from="ftm_pwm_channel_pair_t">
+            <description>Channel ID</description>
+            <item id="0" label="Channel 0_1" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 0"/>
+            <item id="2" label="Channel 2_3" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 2"/>
+            <item id="4" label="Channel 4_5" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 4"/>
+            <item id="6" label="Channel 6_7" available="getFeature(`FEATURE_FTM_NUM_CHANNELS`) &gt; 6"/>
+      </enum>
+      </user_types>
+      <generated_types>
+         <enum id="ftm_pwm_update_option_t" label="FlexTimer Configure type of PWM update in the duty cycle or in ticks" from="ftm_pwm_update_option_t">
+            <description>Implements : ftm_pwm_update_option_t_Class</description>
+            <item id="FTM_CLOCK_SOURCE_SYSTEMCLK" label="The type of PWM update in the duty cycle/pulse or also use in frequency update"/>
+            <item id="FTM_PWM_UPDATE_IN_TICKS" label="The type of PWM update in ticks"/>
+         </enum>
+         <enum id="ftm_polarity_t" label="FlexTimer PWM output pulse mode, high-true or low-true on match up" from="ftm_polarity_t">
+            <description>Implements : ftm_polarity_t_Class</description>
+            <item id="FTM_POLARITY_LOW" label="Active Low"/>
+            <item id="FTM_POLARITY_HIGH" label="Active High"/>
+         </enum>
+         <enum id="ftm_faultstates_t" label="This configuration allows to put the FTM outputs tri-stated when a fault event is ongoing" from="ftm_faultstates_t">
+            <item id="false" label="Safe values"/>
+            <item id="true"  label="Tri-stated"/>
+         </enum>
+         <enum id="ftm_second_channel_polarity_t" label="FlexTimer PWM channel (n+1) polarity for combine mode" from="ftm_second_channel_polarity_t">
+            <description>Implements : ftm_second_channel_polarity_t_Class</description>
+            <item id="FTM_MAIN_INVERTED" label="Invert Channel (n)"/>
+            <item id="FTM_MAIN_DUPLICATED" label="Duplicate Channel (n)"/>
+         </enum>
+         <enum id="ftm_fault_mode_t" label="FlexTimer fault control" from="ftm_fault_mode_t">
+            <description>Implements : ftm_fault_mode_t_Class</description>
+            <item id="FTM_FAULT_CONTROL_DISABLED" label="Disabled for all channels"/>
+            <item id="FTM_FAULT_CONTROL_MAN_ALL"  label="Enabled for all channels, and manual fault clearing"/>
+            <item id="FTM_FAULT_CONTROL_AUTO_ALL" label="Enabled for all channels, and automatic fault clearing"/>
+            <item id="FTM_FAULT_CONTROL_MAN_EVEN" label="Enabled for even channels only (0, 2, 4, and 6), and manual fault clearing"/>
+         </enum>
+         <enum id="ftm_safe_state_polarity_t" label="Select level of the channel (n) output at the beginning" from="ftm_safe_state_polarity_t">
+            <description>Implements : ftm_safe_state_polarity_t_Class</description>
+            <item id="FTM_LOW_STATE" label="Low Level"/>
+            <item id="FTM_HIGH_STATE" label="High Level"/>
+         </enum>
+         <struct id="ftm_pwm_ch_fault_param_t" label="FlexTimer driver PWM Fault channel parameters" from="ftm_pwm_ch_fault_param_t">
+            <description>Implements : ftm_pwm_ch_fault_param_t_Class</description>
+            <bool id="faultChannelEnabled" label="Enable fault">
+               <description>Fault channel state</description>
+            </bool>
+            <bool id="faultFilterEnabled" label="Enable filter">
+               <description>Fault channel filter state</description>
+            </bool>
+            <reference id="ftmFaultPinPolarity" label="Output state on fault" type="ftm_polarity_t">
+               <description>Channel output state on fault</description>
+            </reference>
+         </struct>
+         <struct id="ftm_pwm_fault_param_t" label="FlexTimer driver PWM Fault parameter" from="ftm_pwm_fault_param_t">
+            <description>Implements : ftm_pwm_fault_param_t_Class</description>
+            <info id="faultChannelsDefault"
+                  label="Default number of fault channels"
+                  value="getFeature(`FEATURE_FTM_DEFAULT_FAULT_CHANNELS`)"
+                  available="false"/>
+            <info id="faultChannels"
+                  label="Number of fault channels"
+                  value="getFeature(`FEATURE_FTM` + getPeriphInstanceIndex($instance.getPeripheral()).toString() + `_NUM_FAULT_CHANNELS`)"
+                  available="false"/>
+            <reference id="faultMode" label="Fault mode" type="ftm_fault_mode_t">
+               <description>Fault mode</description>
+            </reference>
+            <bool id="pwmFaultInterrupt" label="Fault interrupt">
+               <description>PWM fault interrupt state</description>
+            </bool>
+            <integer id="faultFilterValue" label="Fault filter value" type="uint8_t">
+               <description>Fault filter value (0 - 15)</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 16)" level="error" description="Valid range is 0 - 15"/>
+               </validation>
+            </integer>
+            <reference id="pwmOutputStateOnFault" label="PWM Output pin states on fault" type="ftm_faultstates_t">
+               <description>Output pin state on fault (safe state or tri-state)</description>
+            </reference>
+            <array id="ftmFaultChannelParam" label="Fault channels configuration"
+                   type="ftm_pwm_ch_fault_param_t"
+                   options="ShowContentAs=Table"
+                   size="$parent.faultChannels.getValue()">
+               <description>Fault channels configuration</description>
+            </array>
+         </struct>
+         <struct id="ftm_independent_ch_param_t" label="FlexTimer driver independent PWM parameter" from="ftm_independent_ch_param_t">
+            <description>Implements : ftm_independent_ch_param_t_Class</description>
+            <string id="ftmpwmIndptName" label="Name" enable='false'>
+               <description>Configuration name.</description>
+            </string>
+            <reference id="ftmPwmIndptHwChnId" label="Channel hardware ID" type="ftm_pwm_channel_t">
+               <description>Physical hardware channel ID</description>
+               <validation>
+                  <constraint cond_expr="!( featureDefined(`FEATURE_INSTANCE1_NUM_CHANNELS`) &amp;&amp;
+                                            (toInt($parent.ftmPwmIndptHwChnId.value()) &gt;= 2) &amp;&amp;
+                                            (getPeriphInstanceIndex($instance.getPeripheral()) == 1) )"
+                              level="error"
+                              description="FTM_1 in S32R45 has only channel 0 and 1."/>
+               </validation>
+            </reference>
+            <reference id="polarity" label="Channel Polarity" type="ftm_polarity_t">
+               <description>Polarity of the PWM signal generated on MCU pin.</description>
+            </reference>
+            <integer id="uDutyCyclePercent" label="Duty Cycle" type="uint16_t" min_expr="0" max_expr="0x8000">
+               <description>PWM pulse width, value should be between 0x0 (0%) to 0x8000(100%)</description>
+            </integer>
+            <bool id="enableExternalTrigger" label="External Trigger">
+               <description>true: enable the generation of a trigger is used for on-chip modules false: disable the generation of a trigger</description>
+            </bool>
+            <reference id="safeState" label="Output Safe State" type="ftm_safe_state_polarity_t">
+               <description>Logical state of the PWM channel when an fault is detected</description>
+            </reference>
+            <bool id="enableSecondChannelOutput"
+                  label="Enable Channel (n+1) Output"
+                  enable="(toInt($parent.ftmPwmIndptHwChnId.getValue()) % 2) == 0">
+               <description>Enable complementary mode on next channel</description>
+            </bool>
+            <reference id="secondChannelPolarity" label="Channel Complementary Mode" type="ftm_second_channel_polarity_t" enable="$parent.enableSecondChannelOutput.getValue()">
+               <description>Polarity of the channel n+1 relative to channel n</description>
+            </reference>
+            <bool id="IndptdeadTimeEn" label="Enable Deadtime" enable="$parent.enableSecondChannelOutput.getValue()">
+               <description>Enable/disable dead time for channel</description>
+            </bool>
+         </struct>
+         <struct id="ftm_combined_ch_param_t" label="FlexTimer driver combined PWM parameter" from="ftm_combined_ch_param_t">
+            <description>Implements : ftm_combined_ch_param_t_Class</description>
+               <validation>
+                  <constraint cond_expr="($configSet.ftmPwmUserConfig.ftmPwmInitConfig.ftmPwmGlobalCfg.ftmMode.getValue() != `FTM_MODE_CEN_ALIGNED_PWM`) " level="error" description="The combined channels are not available in the center aligned PWM mode"/>
+               </validation>
+            <string id="ftmPwmCombName" label="Name" enable='false'>
+               <description>Configuration name.</description>
+            </string>
+            <reference id="ftmPwmCombHwChnId" label="Channel Pair Hardware ID" type="ftm_pwm_channel_pair_t">
+               <description>Physical hardware channel ID for channel (n)</description>
+               <validation>
+                  <constraint cond_expr="!( featureDefined(`FEATURE_INSTANCE1_NUM_CHANNELS`) &amp;&amp;
+                                            (toInt($parent.ftmPwmCombHwChnId.value()) &gt;= 2) &amp;&amp;
+                                            (getPeriphInstanceIndex($instance.getPeripheral()) == 1) )"
+                              level="error"
+                              description="FTM_1 in S32R45 has only channel 0 and 1."/>
+               </validation>
+            </reference>
+            <integer id="firstEdge" label="First Edge Value" type="uint16_t">
+               <description>First edge time. This time is relative to signal period. The value for this parameter is between 0 and FTM_MAX_DUTY_CYCLE(0 = 0% from period and FTM_MAX_DUTY_CYCLE = 100% from period)</description>
+            </integer>
+            <integer id="secondEdge" label="Second Edge Value" type="uint16_t">
+               <description>Second edge time. This time is relative to signal period. The value for this parameter is between 0 and FTM_MAX_DUTY_CYCLE(0 = 0% from period and FTM_MAX_DUTY_CYCLE = 100% from period)</description>
+            </integer>
+            <bool id="CombDeadTimeEn" label="Enable Deadtime" enable="$parent.enCombSecondChannelOutput.getValue()">
+               <description>Enable/disable dead time for channel</description>
+               <validation>
+                   <constraint cond_expr="((($this.getValue() == true) &amp;&amp; ((($parent.secondCombChannelPolarity.getValue() == `FTM_MAIN_INVERTED`) &amp;&amp; ($parent.mainChannelSafeState.getValue() == $parent.secondChannelSafeState.getValue()))|| (($parent.secondCombChannelPolarity.getValue() != `FTM_MAIN_INVERTED`) &amp;&amp; ($parent.mainChannelSafeState.getValue() != $parent.secondChannelSafeState.getValue())))) || ($this.getValue() == false))" level="error" description="Deadtime can't used in this configuration. Change the safe states or polarities of channel (n+1)"/>
+               </validation>
+            </bool>
+            <bool id="enableModifiedCombine" label="Enable Modified Combine Mode" available="(featureDefined(`FEATURE_FTM_HAS_MODIFIED_COMBINE_MODE`)==true)&amp;&amp;(getFeature(`FEATURE_FTM_HAS_MODIFIED_COMBINE_MODE`)==1)">
+               <description>Enable/disable the modified combine mode for channels (n) and (n+1)</description>
+            </bool>
+            <reference id="mainChannelPolarity" label="Channel (n) Polarity" type="ftm_polarity_t">
+               <description>Polarity of the PWM signal generated on MCU pin for channel n.</description>
+            </reference>
+            <bool id="enCombSecondChannelOutput" label="Enable Channel (n+1) Output">
+               <description>Select if channel (n+1) output is enabled/disabled for the complementary mode</description>
+            </bool>
+            <reference id="secondCombChannelPolarity" label="Channel Complementary Mode" type="ftm_second_channel_polarity_t"  enable="$parent.enCombSecondChannelOutput.getValue()">
+               <description>Select channel (n+1) polarity relative to channel (n)</description>
+            </reference>
+            <bool id="enCombExternalTrigger" label="Channel (n) Extenal Trigger">
+               <description>The generation of the channel (n) trigger true: enable the generation of a trigger on the channel (n) false: disable the generation of a trigger on the channel (n)</description>
+            </bool>
+            <bool id="enCombExternalTriggerOnNextChn" label="Channel (n+1) Extenal Trigger">
+               <description>The generation of the channel (n+1) trigger true: enable the generation of a trigger on the channel (n+1) false: disable the generation of a trigger on the channel (n+1)</description>
+            </bool>
+            <reference id="mainChannelSafeState" label="Channel (n) Safe State " type="ftm_safe_state_polarity_t">
+               <description>The selection of the channel (n) state when fault is detected</description>
+            </reference>
+            <reference id="secondChannelSafeState" label="Channel (n+1) Safe State" type="ftm_safe_state_polarity_t"  enable="$parent.enCombSecondChannelOutput.getValue()">
+               <description>The selection of the channel (n+1) state when fault is detected</description>
+            </reference>
+         </struct>
+      </generated_types>
+   </config_set>
+</component:config_component>

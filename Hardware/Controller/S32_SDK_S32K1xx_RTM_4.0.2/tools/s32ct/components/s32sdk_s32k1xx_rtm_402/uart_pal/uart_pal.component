@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="uart_pal_config" label="uart_pal" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+   <sw_comp_ref name="platform.pal.uart" version="1.0.0"/>
+   <description>UART_PAL Component</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>UART PAL General</description>
+      <config_set_refs>
+         <config_set_ref>uart_pal</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>LPUART</peripheral_type>
+         <peripheral_type>FLEXIO</peripheral_type>
+         <peripheral_type>LINFlexD</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="uart_pal" label="UART_PAL configuration set" from_source="uart_pal.h">
+      <description>UART PAL</description>
+      <fragment_defs/>
+      <code>
+      </code>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="def_uart0" label="Default Values for UART PAL (LPUART_0)" available="getPeripheral($instance) == `LPUART_0`">
+            <description>UART PAL configuration</description>
+            <set id="uartPalInst.name">uart_instance_lu0</set>
+            <set id="uartCfgArray.0.uartCommonConfig.baudRate">9600</set>
+            <set id="uartCfgArray.0.uartCommonConfig.bitCount">UART_8_BITS_PER_CHAR</set>
+            <set id="uartCfgArray.0.uartCommonConfig.parityMode">UART_PARITY_DISABLED</set>
+            <set id="uartCfgArray.0.uartCommonConfig.stopBitCount">UART_ONE_STOP_BIT</set>
+            <set id="uartCfgArray.0.uartCommonConfig.transferType">UART_USING_INTERRUPTS</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxDMAChannel">0</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txDMAChannel">1</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.extension">NULL</set>
+         </quick_selection>
+         <quick_selection id="def_uart1" label="Default Values for UART PAL (LPUART_1)" available="getPeripheral($instance) == `LPUART_1`">
+            <description>UART PAL configuration</description>
+            <set id="uartPalInst.name">uart_instance_lu1</set>
+            <set id="uartCfgArray.0.uartCommonConfig.baudRate">9600</set>
+            <set id="uartCfgArray.0.uartCommonConfig.bitCount">UART_8_BITS_PER_CHAR</set>
+            <set id="uartCfgArray.0.uartCommonConfig.parityMode">UART_PARITY_DISABLED</set>
+            <set id="uartCfgArray.0.uartCommonConfig.stopBitCount">UART_ONE_STOP_BIT</set>
+            <set id="uartCfgArray.0.uartCommonConfig.transferType">UART_USING_INTERRUPTS</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxDMAChannel">0</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txDMAChannel">1</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.extension">NULL</set>
+         </quick_selection>
+         <quick_selection id="def_uart2" label="Default Values for UART PAL (LPUART_2)" available="getPeripheral($instance) == `LPUART_2`">
+            <description>UART PAL configuration</description>
+            <set id="uartPalInst.name">uart_instance_lu2</set>
+            <set id="uartCfgArray.0.uartCommonConfig.baudRate">9600</set>
+            <set id="uartCfgArray.0.uartCommonConfig.bitCount">UART_8_BITS_PER_CHAR</set>
+            <set id="uartCfgArray.0.uartCommonConfig.parityMode">UART_PARITY_DISABLED</set>
+            <set id="uartCfgArray.0.uartCommonConfig.stopBitCount">UART_ONE_STOP_BIT</set>
+            <set id="uartCfgArray.0.uartCommonConfig.transferType">UART_USING_INTERRUPTS</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxDMAChannel">0</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txDMAChannel">1</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.extension">NULL</set>
+         </quick_selection>
+         <quick_selection id="def_uart3" label="Default Values for UART PAL (LINFlexD_0)" available="getPeripheral($instance) == `LINFlexD_0`">
+            <description>UART PAL configuration</description>
+            <set id="uartPalInst.name">uart_instance_lf0</set>
+            <set id="uartCfgArray.0.uartCommonConfig.baudRate">9600</set>
+            <set id="uartCfgArray.0.uartCommonConfig.bitCount">UART_8_BITS_PER_CHAR</set>
+            <set id="uartCfgArray.0.uartCommonConfig.parityMode">UART_PARITY_DISABLED</set>
+            <set id="uartCfgArray.0.uartCommonConfig.stopBitCount">UART_ONE_STOP_BIT</set>
+            <set id="uartCfgArray.0.uartCommonConfig.transferType">UART_USING_INTERRUPTS</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxDMAChannel">0</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txDMAChannel">1</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.extension">NULL</set>
+         </quick_selection>
+         <quick_selection id="def_uart4" label="Default Values for UART PAL (LINFlexD_1)" available="getPeripheral($instance) == `LINFlexD_1`">
+            <description>UART PAL configuration</description>
+            <set id="uartPalInst.name">uart_instance_lf1</set>
+            <set id="uartCfgArray.0.uartCommonConfig.baudRate">9600</set>
+            <set id="uartCfgArray.0.uartCommonConfig.bitCount">UART_8_BITS_PER_CHAR</set>
+            <set id="uartCfgArray.0.uartCommonConfig.parityMode">UART_PARITY_DISABLED</set>
+            <set id="uartCfgArray.0.uartCommonConfig.stopBitCount">UART_ONE_STOP_BIT</set>
+            <set id="uartCfgArray.0.uartCommonConfig.transferType">UART_USING_INTERRUPTS</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxDMAChannel">0</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txDMAChannel">1</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.extension">NULL</set>
+         </quick_selection>
+         <quick_selection id="def_uart5" label="Default Values for UART PAL (LINFlexD_2)" available="getPeripheral($instance) == `LINFlexD_2`">
+            <description>UART PAL configuration</description>
+            <set id="uartPalInst.name">uart_instance_lf2</set>
+            <set id="uartCfgArray.0.uartCommonConfig.baudRate">9600</set>
+            <set id="uartCfgArray.0.uartCommonConfig.bitCount">UART_8_BITS_PER_CHAR</set>
+            <set id="uartCfgArray.0.uartCommonConfig.parityMode">UART_PARITY_DISABLED</set>
+            <set id="uartCfgArray.0.uartCommonConfig.stopBitCount">UART_ONE_STOP_BIT</set>
+            <set id="uartCfgArray.0.uartCommonConfig.transferType">UART_USING_INTERRUPTS</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxDMAChannel">0</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txDMAChannel">1</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.extension">NULL</set>
+         </quick_selection>
+         <quick_selection id="def_uart6" label="Default Values for UART PAL (FLEXIO)" available="getPeripheral($instance) == `FLEXIO`">
+            <description>UART PAL configuration</description>
+            <set id="uartPalInst.name">uart_instance_fi0</set>
+            <set id="uartPalInst.instType">UART_INST_TYPE_FLEXIO_UART</set>
+            <set id="uartCfgArray.0.uartExtConfig.name">uart_ext0</set>
+            <set id="uartCfgArray.0.uartExtConfig.dataPinTx">0</set>
+            <set id="uartCfgArray.0.uartExtConfig.dataPinRx">1</set>
+            <set id="uartCfgArray.0.uartCommonConfig.baudRate">115200</set>
+            <set id="uartCfgArray.0.uartCommonConfig.bitCount">UART_8_BITS_PER_CHAR</set>
+            <set id="uartCfgArray.0.uartCommonConfig.parityMode">UART_PARITY_DISABLED</set>
+            <set id="uartCfgArray.0.uartCommonConfig.stopBitCount">UART_ONE_STOP_BIT</set>
+            <set id="uartCfgArray.0.uartCommonConfig.transferType">UART_USING_INTERRUPTS</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxDMAChannel">0</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txDMAChannel">1</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.rxCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallback">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.txCallbackParam">NULL</set>
+            <set id="uartCfgArray.0.uartCommonConfig.extension">NULL</set>
+         </quick_selection>
+         <default>def_uart</default>
+      </quick_selections>
+      <generated_types/>
+      <user_types>
+
+         <enum id="uart_inst_type_t" label="Enumeration with the types of peripherals supported by UART PAL" from="uart_inst_type_t">
+            <description>This enumeration contains the types of peripherals supported by UART PAL. Implements : uart_inst_type_t_Class</description>
+            <item id="UART_INST_TYPE_LPUART" available="featureDefined(`UART_PAL_SUPPORTS_LPUART`)" label="UART PAL over LPUART"/>
+            <item id="UART_INST_TYPE_FLEXIO_UART" available="featureDefined(`UART_PAL_SUPPORTS_FLEXIO`)" label="UART PAL over FLEXIO"/>
+            <item id="UART_INST_TYPE_LINFLEXD" available="featureDefined(`UART_PAL_SUPPORTS_LINFLEXD`)" label="UART PAL over LINFLEXD"/>
+         </enum>
+
+         <struct id="uart_instance_t" label="Structure storing PAL instance information" from="uart_instance_t">
+            <description>This structure is used for storing PAL instance information. Implements : uart_instance_t_Class</description>
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readonly" label="Read-only">
+               <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+            </bool>
+
+            <reference id="instType" label="Peripheral over which the PAL is used" type="uart_inst_type_t" options="cStructField">
+               <description>Peripheral over which the PAL is used</description>
+            </reference>
+
+            <info id="instIdx" label="Instance index of the peripheral over which the PAL is used" value="getPeriphInstanceIndex(getPeripheral($instance))" options="cStructField" />
+         </struct>
+        <enum id="uart_transfer_type_t" label="Defines the transfer type" from="uart_transfer_type_t">
+            <description>Implements : uart_transfer_type_t_Class</description>
+            <item id="UART_USING_DMA" label="DMA"/>
+            <item id="UART_USING_INTERRUPTS" label="Interrupt"/>
+         </enum>
+         <enum id="uart_parity_mode_t" label="Defines the parity mode" from="uart_parity_mode_t">
+            <description>Implements : uart_parity_mode_t_Class</description>
+            <item id="UART_PARITY_DISABLED" label="Disabled"/>
+            <item id="UART_PARITY_EVEN" available="$instance.getPeripheral() != `FLEXIO`" label="Even"/>
+            <item id="UART_PARITY_ODD" available="$instance.getPeripheral() != `FLEXIO`" label="Odd"/>
+         </enum>
+         <enum id="uart_stop_bit_count_t" label="Defines the number of stop bits" from="uart_stop_bit_count_t">
+            <description>Implements : uart_stop_bit_count_t_Class</description>
+            <item id="UART_ONE_STOP_BIT" label="1"/>
+            <item id="UART_TWO_STOP_BIT" label="2"/>
+         </enum>
+         <enum id="uart_bit_count_per_char_t" label="Defines the number of bits in a character" from="uart_bit_count_per_char_t">
+            <description>Implements : uart_bit_count_per_char_t_Class</description>
+            <item id="UART_7_BITS_PER_CHAR"  label="7"/>
+            <item id="UART_8_BITS_PER_CHAR"  label="8"/>
+            <item id="UART_9_BITS_PER_CHAR" available="!(featureDefined(`UART_PAL_SUPPORTS_LINFLEXD`))" label="9"/>
+            <item id="UART_10_BITS_PER_CHAR" available="!(featureDefined(`UART_PAL_SUPPORTS_LINFLEXD`))" label="10"/>
+            <item id="UART_15_BITS_PER_CHAR" available="!(featureDefined(`UART_PAL_SUPPORTS_FLEXIO`) &amp;&amp; $instance.getPeripheral() != `FLEXIO`)" label="15"/>
+            <item id="UART_16_BITS_PER_CHAR" available="!(featureDefined(`UART_PAL_SUPPORTS_FLEXIO`) &amp;&amp; $instance.getPeripheral() != `FLEXIO`)"  label="16"/>
+         </enum>
+         <string id="uart_callback_t" label="UART callback function" >
+            <description>Name of callback function registered in the uart_common_config_t structure.</description>
+            <validation>
+               <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="'Callback function name is a C identifier!'"/>
+            </validation>
+         </string>
+         <struct id="uart_common_config_t" label="Defines the UART configuration structure" from="uart_common_config_t">
+            <description>Implements : uart_common_config_t_Class</description>
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readonly" label="Read-only">
+               <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+            </bool>
+
+            <variable id="uartPalInstance" value="getPeripheral($instance)"/>
+            <variable id="uartClocks" value="getClockFunctionalGroups().get(0)"/>
+            <variable id="lpuartName" value="`LPUART` + getPeriphInstanceIndex($parent.uartPalInstance.getValue()).toString()"/>
+            <variable id="lpuartClockName" value="$parent.lpuartName.getValue() + `_CLK`"/>
+
+            <!-- get clock for LPUART if available -->
+            <variable id="lpuartClock" value="getPeripheralClockFrequency($parent.lpuartName.getValue(), $parent.lpuartClockName.getValue(), $parent.uartClocks.getValue())"/>
+
+            <info id="lpuartClockInfo" label="LPUART Clock Frequency" value="frequencyToString($parent.lpuartClock.getValue())" available="getPeripheralType($parent.uartPalInstance.getValue()) == `LPUART`">
+                <description>LPUART clock frequency</description>
+            </info>
+
+            <!-- get clock for FLEXIO if available -->
+            <variable id="flexIOClock" value="getPeripheralClockFrequency(`FlexIO0_CLK`, `FlexIO0_CLK`, $parent.uartClocks.getValue())"/>
+
+            <info id="flexIOClockInfo" label="FLEXIO Clock Frequency" value="frequencyToString($parent.flexIOClock.getValue())" available="getPeripheralType($parent.uartPalInstance.getValue()) == `FLEXIO`">
+                <description>FLEXIO clock frequency</description>
+            </info>
+
+            <integer id="baudRate" label="Baudrate" type="uint32_t" available="true" options="cStructField">
+               <description>Baud rate for the UART transfer.</description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &gt; 0" level="error" description="Baudrate must be greater than 0"/>
+                  <constraint cond_expr="($this.getValue() &lt; ($parent.lpuartClock.getValue())/4)||($this.getValue() &lt; ($parent.flexIOClock.getValue())/4)" level="error" description="Baudrate must be less than module clock divide by 4"/>
+                  <constraint cond_expr="($parent.tmpDiv.getValue() &gt; 0) &amp;&amp; ($parent.tmpDiv.getValue() &lt;= 255)" when_expr="getPeripheralType($parent.uartPalInstance.getValue()) == `FLEXIO`" level="error" description="The input baudrate is not compatible for the given clock"/>
+               </validation>
+            </integer>
+
+            <variable id="actualLpuartBaud" value="`0`"/>
+            <info id="actualLpuartBaudInfo" label="Actual baud rate" value="$parent.actualLpuartBaud.getValue()" available="getPeripheralType($parent.uartPalInstance.getValue()) == `LPUART`">
+                <description>The actual baud rate that can be set by the driver. May be substantially different than the requested baud rate if the frequency of the input clock is too high or too low.</description>
+            </info>
+
+            <variable id="tmpDiv" value="(($parent.flexIOClock.getValue()+$parent.baudRate.getValue())/(2*$parent.baudRate.getValue()))-1"/>
+
+            <variable id="tmpDivLim" value="$parent.tmpDiv.getValue() &gt; 255 ? 255 : ($parent.tmpDiv.getValue() &lt; 0 ? 0 : $parent.tmpDiv.getValue())"/>
+
+            <variable id="actualFlexioBaud" value="($parent.baudRate.getValue() > 0) ? (($parent.flexIOClock.getValue() + $parent.tmpDivLim.getValue() + 1)/(2 * ($parent.tmpDivLim.getValue() + 1))) : 0"/>
+
+            <info id="actualFlexioBaudInfo" label="Actual baud rate" value="$parent.actualFlexioBaud.getValue()" available="getPeripheralType($parent.uartPalInstance.getValue()) == `FLEXIO`">
+                <description>The actual baud rate that can be set by the driver. May be substantially different than the requested baud rate if the frequency of the FLEXIO input clock is too high or too low. For best results it is recommended to use an input clock with a frequency 200-500 times greater than the desired baud rate.</description>
+            </info>
+
+            <reference id="parityMode" label="Parity Type" type="uart_parity_mode_t" options="cStructField">
+               <description>Parity mode, disabled (default), even, odd</description>
+            </reference>
+            <reference id="bitCount" label="Word Length" type="uart_bit_count_per_char_t" options="cStructField">
+               <description>Word length (number of data bits).</description>
+               <validation>
+                  <constraint cond_expr="!($this.getValue() == `UART_7_BITS_PER_CHAR` &amp;&amp; $parent.parityMode.getValue() == `UART_PARITY_DISABLED` &amp;&amp; featureDefined(`UART_PAL_SUPPORTS_LINFLEXD`))" level="error" description="UART over LINFLEXD doesn't support 7 bit + no parity mode"/>
+                  <constraint cond_expr="!($this.getValue() == `UART_15_BITS_PER_CHAR` &amp;&amp; $parent.parityMode.getValue() == `UART_PARITY_DISABLED` &amp;&amp; featureDefined(`UART_PAL_SUPPORTS_LINFLEXD`))" level="error" description="UART over LINFLEXD doesn't support 15 bit + no parity mode"/>
+                  <constraint cond_expr="!($this.getValue() == `UART_10_BITS_PER_CHAR` &amp;&amp; $parent.parityMode.getValue() != `UART_PARITY_DISABLED` &amp;&amp; featureDefined(`UART_PAL_SUPPORTS_LPUART`))" level="error" description="Parity should be disable when 10-bits per char is selected."/>
+                  <constraint cond_expr="!($this.getValue() != `UART_8_BITS_PER_CHAR` &amp;&amp; $parent.transferType.getValue() == `UART_USING_DMA` &amp;&amp; featureDefined(`UART_PAL_SUPPORTS_LPUART`))" when_expr="getPeripheralType($parent.uartPalInstance.getValue()) == `LPUART`" level="error" description="DMA mode only supports 8-bits per char."/>
+               </validation>
+            </reference>
+            <reference id="stopBitCount" label="Stop Bits" type="uart_stop_bit_count_t" options="cStructField">
+               <description>Number of stop bits, 1 stop bit (default) or 2 stop bits</description>
+            </reference>
+            <reference id="transferType" label="Transfer Type" type="uart_transfer_type_t" options="cStructField">
+               <description>Type of the transfer (interrupt/dma based)</description>
+               <validation>
+                  <constraint when_expr="$this.getValue() == `UART_USING_DMA`" cond_expr="$root.countOccurrences(item -> (item.getID() == `settings_edmaUserCfg`), true) &gt; 0" level="error" description_expr="`Please add EDMA component and choose two DMA channels same as Tx and Rx channel on uart_pal component`"/>
+               </validation>
+            </reference>
+            <integer id="rxDMAChannel" label="RX DMA Channel" type="uint32_t" enable="$parent.transferType.getValue() == `UART_USING_DMA`" options="cStructField">
+               <description>DMA channel used for reception.</description>
+               <validation>
+                  <constraint cond_expr="($parent.transferType.getValue() == `UART_USING_DMA`) &amp;&amp; ($this.getValue() != $parent.txDMAChannel.getValue())" level="error" description="Please use different channels for RX and TX!"/>
+                  <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> ((((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART0_RX`) &amp;&amp; getPeripheral($instance) == `LPUART_0`) || ((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART1_RX`) &amp;&amp; getPeripheral($instance) == `LPUART_1`) || ((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART2_RX`) &amp;&amp; getPeripheral($instance) == `LPUART_2`) || ((x.getSetting(`chReq`).value() == `MUX_0_LIN_0_RX`) &amp;&amp; getPeripheral($instance) == `LINFlexD_0`) || ((x.getSetting(`chReq`).value() == `MUX_0_LIN_1_RX`) &amp;&amp; getPeripheral($instance) == `LINFlexD_1`) || (((x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER0`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER1`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER2`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER3`)) &amp;&amp; getPeripheral($instance) == `FLEXIO`)) &amp;&amp; (x.getSetting(`virtCh`).value() == $this.getValue())))), true) &gt; 0)" level="warning" description="Please configure the correct source (LIN_x_RX/LPUARTx_RX/FLEXIO_SHIFTERx) for this channel, from the DMA component!"/>
+               </validation>
+            </integer>
+            <integer id="txDMAChannel" label="TX DMA Channel" type="uint32_t" enable="$parent.transferType.getValue() == `UART_USING_DMA`" options="cStructField">
+               <description>DMA channel used for transmission.</description>
+               <validation>
+                  <constraint cond_expr="($parent.transferType.getValue() == `UART_USING_DMA`) &amp;&amp; ($this.getValue() != $parent.rxDMAChannel.getValue())" level="error" description="Please use different channels for RX and TX!"/>
+                  <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> ((((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART0_TX`) &amp;&amp; getPeripheral($instance) == `LPUART_0`) || ((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART1_TX`) &amp;&amp; getPeripheral($instance) == `LPUART_1`) || ((x.getSetting(`chReq`).value() == `EDMA_REQ_LPUART2_TX`) &amp;&amp; getPeripheral($instance) == `LPUART_2`) || ((x.getSetting(`chReq`).value() == `MUX_0_LIN_0_TX`) &amp;&amp; getPeripheral($instance) == `LINFlexD_0`) || ((x.getSetting(`chReq`).value() == `MUX_0_LIN_1_TX`) &amp;&amp; getPeripheral($instance) == `LINFlexD_1`) || (((x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER0`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER1`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER2`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER3`)) &amp;&amp; getPeripheral($instance) == `FLEXIO`)) &amp;&amp; (x.getSetting(`virtCh`).value() == $this.getValue())))), true) &gt; 0)" level="warning" description="Please configure the correct source (LIN_x_TX/LPUARTx_TX/FLEXIO_SHIFTERx) for this channel, from the DMA component!"/>
+               </validation>
+            </integer>
+            <reference id="rxCallback" label="Rx Callback" type="uart_callback_t" options="cStructField">
+               <description>Callback to invoke for data receive(a pointer void*)</description>
+            </reference>
+            <string id="rxCallbackParam" label="Rx Callback Parameter" options="cStructField">
+               <description>Receive callback parameter(a pointer void*)</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="'RxCallback parameter is a C identifier!'"/>
+               </validation>
+            </string>
+            <reference id="txCallback" label="Tx Callback" type="uart_callback_t" options="cStructField">
+               <description>Callback to invoke for data send(a pointer void*)</description>
+            </reference>
+            <string id="txCallbackParam" label="Tx Callback Parameter" options="cStructField">
+               <description>Transmit callback parameter(a pointer void*)</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="'TxCallback parameter is a C identifier!'"/>
+               </validation>
+            </string>
+            <string id="extension" label="Extension" enable="getPeripheralType($parent.uartPalInstance.getValue()) == `FLEXIO`" options="cStructField">
+               <description>This field will be used to add extra settings to the basic configuration like FlexIO data pins(a pointer void*)</description>
+            </string>
+         </struct>
+         <struct id="flexio_ext" label="FLEXIO PIN Extension Available" from="flexio_ext">
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                  <constraint cond_expr="$this.getValue() != `NULL`" level="error" description="Invalid name!"/>
+               </validation>
+            </string>
+            <integer id="dataPinTx" label="Flexio pin to use as Tx pin" type="uint8_t" options="cStructField">
+               <description>Flexio pin to use as Tx pin</description>
+                  <validation>
+                     <constraint cond_expr="($this.getValue() != $parent.dataPinRx.getValue())" level="error" description="Please use different pins for RX and TX!"/>
+                     <constraint cond_expr="($this.getValue() &lt; 8)" level="warning" description="Flexio pin must be configured within 0-7"/>
+                  </validation>
+            </integer>
+            <integer id="dataPinRx" label="Flexio pin to use as Rx pin" type="uint8_t" options="cStructField">
+               <description>Flexio pin to use as Rx pin</description>
+                  <validation>
+                     <constraint cond_expr="($this.getValue() != $parent.dataPinTx.getValue())" level="error" description="Please use different pins for RX and TX!"/>
+                     <constraint cond_expr="($this.getValue() &lt; 8)" level="warning" description="Flexio pin must be configured within 0-7"/>
+                  </validation>
+            </integer>
+         </struct>
+         <struct id="uart_user_config_t" label="UART PAL User Configuration">
+            <reference id="uartCommonConfig" label="UART PAL Common Configuration" type="uart_common_config_t">
+               <description>UART PAL Common Configuration</description>
+            </reference>
+            <reference id="uartExtConfig" label="FLEXIO PIN Extension" available="$instance.getPeripheral() == `FLEXIO`" type="flexio_ext">
+               <description>Extension Configuration</description>
+            </reference>
+         </struct>
+         <array id="uartConfigArray" label="UART PAL configuration array" type="uart_user_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`uartCommonConfig.name`).value())">
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`uartCommonConfig.name`).value()).length() == 0" level="error" description="There are some duplicated `Name user configuration` fields in the configuration"/>
+               <constraint when_expr="$instance.getPeripheral() == `FLEXIO`" cond_expr="$this.findDuplicates(item -> item.getSetting(`uartExtConfig.name`).value()).length() == 0" level="error" description="There are some duplicated `Name extension` fields in the configuration"/>
+            </validation>
+            <item_defaults>
+               <set_default id="uartCommonConfig.name" value_expr="x -> (getPeripheral($instance) + `_uart_pal_config` + x.getID())"/>
+               <set_default id="uartCommonConfig.readonly" value_expr="x -> (`true`)"/>
+               <set_default id="uartCommonConfig.baudRate" value_expr="x -> (`9600`)"/>
+               <set_default id="uartCommonConfig.bitCount" value_expr="x -> (`UART_8_BITS_PER_CHAR`)"/>
+               <set_default id="uartCommonConfig.parityMode" value_expr="x -> (`UART_PARITY_DISABLED`)"/>
+               <set_default id="uartCommonConfig.stopBitCount" value_expr="x -> (`UART_ONE_STOP_BIT`)"/>
+               <set_default id="uartCommonConfig.transferType" value_expr="x -> (`UART_USING_INTERRUPTS`)"/>
+               <set_default id="uartCommonConfig.rxDMAChannel" value_expr="x -> (`0`)"/>
+               <set_default id="uartCommonConfig.txDMAChannel" value_expr="x -> (`1`)"/>
+               <set_default id="uartCommonConfig.rxCallback" value_expr="x -> (`NULL`)"/>
+               <set_default id="uartCommonConfig.rxCallbackParam" value_expr="x -> (`NULL`)"/>
+               <set_default id="uartCommonConfig.txCallback" value_expr="x -> (`NULL`)"/>
+               <set_default id="uartCommonConfig.txCallbackParam" value_expr="x -> (`NULL`)"/>
+               <set_default id="uartCommonConfig.extension" value_expr="x -> (`NULL`)"/>
+               <set_default id="uartExtConfig.name" value_expr="x -> (`uart_ext` + x.getID())"/>
+               <set_default id="uartExtConfig.dataPinTx" value_expr="x -> (`0`)"/>
+               <set_default id="uartExtConfig.dataPinRx" value_expr="x -> (`1`)"/>
+            </item_defaults>
+         </array>
+      </user_types>
+      <settings>
+         <reference id="uartPalInst" label="UART PAL Instance Config" type="uart_instance_t">
+            <description>UART PAL User Configuration</description>
+         </reference>
+         <reference id="uartCfgArray" label="UART PAL User Configuration" type="uartConfigArray">
+            <description>UART PAL User Configuration</description>
+         </reference>
+        <variable value="`../uart_pal/uartpal_codegen.js`" id="codegen_file"></variable>
+         <variable value="`UART_PALCodeGen`" id="codegen_class"></variable>
+         <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+         <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+         <variable value="`UartToolchainSettings`" id="toolchain_settings_class"></variable>
+         <variable value="`../uart_pal/UartToolchainSettings.js`" id="toolchain_settings_file"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

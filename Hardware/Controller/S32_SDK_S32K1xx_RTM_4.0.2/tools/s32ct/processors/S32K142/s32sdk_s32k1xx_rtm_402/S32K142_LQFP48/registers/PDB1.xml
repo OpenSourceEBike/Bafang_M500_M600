@@ -1,0 +1,301 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="SC" description="Status and Control register">
+    <alias type="CMSIS" value="SC"/>
+    <bit_field offset="0" width="1" name="LDOK" access="RW" reset_value="0" description="Load OK">
+      <alias type="CMSIS" value="PDB_SC_LDOK(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CONT" access="RW" reset_value="0" description="Continuous Mode Enable">
+      <alias type="CMSIS" value="PDB_SC_CONT(x)"/>
+      <bit_field_value name="SC_CONT_0b0" value="0b0" description="PDB operation in One-Shot mode"/>
+      <bit_field_value name="SC_CONT_0b1" value="0b1" description="PDB operation in Continuous mode"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="MULT" access="RW" reset_value="0" description="Multiplication Factor Select for Prescaler">
+      <alias type="CMSIS" value="PDB_SC_MULT(x)"/>
+      <bit_field_value name="SC_MULT_0b00" value="0b00" description="Multiplication factor is 1."/>
+      <bit_field_value name="SC_MULT_0b01" value="0b01" description="Multiplication factor is 10."/>
+      <bit_field_value name="SC_MULT_0b10" value="0b10" description="Multiplication factor is 20."/>
+      <bit_field_value name="SC_MULT_0b11" value="0b11" description="Multiplication factor is 40."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <bit_field offset="5" width="1" name="PDBIE" access="RW" reset_value="0" description="PDB Interrupt Enable">
+      <alias type="CMSIS" value="PDB_SC_PDBIE(x)"/>
+      <bit_field_value name="SC_PDBIE_0b0" value="0b0" description="PDB interrupt disabled."/>
+      <bit_field_value name="SC_PDBIE_0b1" value="0b1" description="PDB interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="PDBIF" access="RW" reset_value="0" description="PDB Interrupt Flag">
+      <alias type="CMSIS" value="PDB_SC_PDBIF(x)"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="PDBEN" access="RW" reset_value="0" description="PDB Enable">
+      <alias type="CMSIS" value="PDB_SC_PDBEN(x)"/>
+      <bit_field_value name="SC_PDBEN_0b0" value="0b0" description="PDB disabled. Counter is off."/>
+      <bit_field_value name="SC_PDBEN_0b1" value="0b1" description="PDB enabled."/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="TRGSEL" access="RW" reset_value="0" description="Trigger Input Source Select">
+      <alias type="CMSIS" value="PDB_SC_TRGSEL(x)"/>
+      <bit_field_value name="SC_TRGSEL_0b0000" value="0b0000" description="Trigger-In 0 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b0001" value="0b0001" description="Trigger-In 1 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b0010" value="0b0010" description="Trigger-In 2 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b0011" value="0b0011" description="Trigger-In 3 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b0100" value="0b0100" description="Trigger-In 4 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b0101" value="0b0101" description="Trigger-In 5 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b0110" value="0b0110" description="Trigger-In 6 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b0111" value="0b0111" description="Trigger-In 7 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b1000" value="0b1000" description="Trigger-In 8 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b1001" value="0b1001" description="Trigger-In 9 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b1010" value="0b1010" description="Trigger-In 10 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b1011" value="0b1011" description="Trigger-In 11 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b1100" value="0b1100" description="Trigger-In 12 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b1101" value="0b1101" description="Trigger-In 13 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b1110" value="0b1110" description="Trigger-In 14 is selected."/>
+      <bit_field_value name="SC_TRGSEL_0b1111" value="0b1111" description="Software trigger is selected."/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="PRESCALER" access="RW" reset_value="0" description="Prescaler Divider Select">
+      <alias type="CMSIS" value="PDB_SC_PRESCALER(x)"/>
+      <bit_field_value name="SC_PRESCALER_0b000" value="0b000" description="Counting uses the peripheral clock divided by MULT (the multiplication factor)."/>
+      <bit_field_value name="SC_PRESCALER_0b001" value="0b001" description="Counting uses the peripheral clock divided by 2 x MULT (the multiplication factor)."/>
+      <bit_field_value name="SC_PRESCALER_0b010" value="0b010" description="Counting uses the peripheral clock divided by 4 x MULT (the multiplication factor)."/>
+      <bit_field_value name="SC_PRESCALER_0b011" value="0b011" description="Counting uses the peripheral clock divided by 8 x MULT (the multiplication factor)."/>
+      <bit_field_value name="SC_PRESCALER_0b100" value="0b100" description="Counting uses the peripheral clock divided by 16 x MULT (the multiplication factor)."/>
+      <bit_field_value name="SC_PRESCALER_0b101" value="0b101" description="Counting uses the peripheral clock divided by 32 x MULT (the multiplication factor)."/>
+      <bit_field_value name="SC_PRESCALER_0b110" value="0b110" description="Counting uses the peripheral clock divided by 64 x MULT (the multiplication factor)."/>
+      <bit_field_value name="SC_PRESCALER_0b111" value="0b111" description="Counting uses the peripheral clock divided by 128 x MULT (the multiplication factor)."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="DMAEN" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="PDB_SC_DMAEN(x)"/>
+      <bit_field_value name="SC_DMAEN_0b0" value="0b0" description="DMA disabled."/>
+      <bit_field_value name="SC_DMAEN_0b1" value="0b1" description="DMA enabled."/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="SWTRIG" access="WORZ" reset_value="0" description="Software Trigger">
+      <alias type="CMSIS" value="PDB_SC_SWTRIG(x)"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="PDBEIE" access="RW" reset_value="0" description="PDB Sequence Error Interrupt Enable">
+      <alias type="CMSIS" value="PDB_SC_PDBEIE(x)"/>
+      <bit_field_value name="SC_PDBEIE_0b0" value="0b0" description="PDB sequence error interrupt disabled."/>
+      <bit_field_value name="SC_PDBEIE_0b1" value="0b1" description="PDB sequence error interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="18" width="2" name="LDMOD" access="RW" reset_value="0" description="Load Mode Select">
+      <alias type="CMSIS" value="PDB_SC_LDMOD(x)"/>
+      <bit_field_value name="SC_LDMOD_0b00" value="0b00" description="The internal registers are loaded with the values from their buffers, immediately after 1 is written to LDOK."/>
+      <bit_field_value name="SC_LDMOD_0b01" value="0b01" description="The internal registers are loaded with the values from their buffers when the PDB counter (CNT) = MOD + 1 CNT delay elapsed, after 1 is written to LDOK."/>
+      <bit_field_value name="SC_LDMOD_0b10" value="0b10" description="The internal registers are loaded with the values from their buffers when a trigger input event is detected, after 1 is written to LDOK."/>
+      <bit_field_value name="SC_LDMOD_0b11" value="0b11" description="The internal registers are loaded with the values from their buffers when either the PDB counter (CNT) = MOD + 1 CNT delay elapsed, or a trigger input event is detected, after 1 is written to LDOK."/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x4" width="32" name="MOD" description="Modulus register">
+    <alias type="CMSIS" value="MOD"/>
+    <bit_field offset="0" width="16" name="MOD" access="RW" reset_value="0xFFFF" description="PDB Modulus">
+      <alias type="CMSIS" value="PDB_MOD_MOD(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="CNT" description="Counter register">
+    <alias type="CMSIS" value="CNT"/>
+    <bit_field offset="0" width="16" name="CNT" access="RO" reset_value="0" description="PDB Counter">
+      <alias type="CMSIS" value="PDB_CNT_CNT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="IDLY" description="Interrupt Delay register">
+    <alias type="CMSIS" value="IDLY"/>
+    <bit_field offset="0" width="16" name="IDLY" access="RW" reset_value="0xFFFF" description="PDB Interrupt Delay">
+      <alias type="CMSIS" value="PDB_IDLY_IDLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="CH0C1" description="Channel n Control register 1">
+    <alias type="CMSIS" value="CHANNEL[0].CHC1"/>
+    <bit_field offset="0" width="8" name="EN" access="RW" reset_value="0" description="PDB Channel Pre-Trigger Enable">
+      <alias type="CMSIS" value="PDB_CHC1_EN(x)"/>
+      <bit_field_value name="CHANNEL_EN_0b00000000" value="0b00000000" description="PDB channel's corresponding pre-trigger disabled."/>
+      <bit_field_value name="CHANNEL_EN_0b00000001" value="0b00000001" description="PDB channel's corresponding pre-trigger enabled."/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="TOS" access="RW" reset_value="0" description="PDB Channel Pre-Trigger Output Select">
+      <alias type="CMSIS" value="PDB_CHC1_TOS(x)"/>
+      <bit_field_value name="CHANNEL_TOS_0b00000000" value="0b00000000" description="PDB channel's corresponding pre-trigger is in bypassed mode. The pre-trigger asserts one peripheral clock cycle after a rising edge is detected on selected trigger input source or software trigger is selected and SWTRIG is written with 1."/>
+      <bit_field_value name="CHANNEL_TOS_0b00000001" value="0b00000001" description="PDB channel's corresponding pre-trigger asserts when the counter reaches the channel delay register and one peripheral clock cycle after a rising edge is detected on selected trigger input source or software trigger is selected and SETRIG is written with 1."/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="BB" access="RW" reset_value="0" description="PDB Channel Pre-Trigger Back-to-Back Operation Enable">
+      <alias type="CMSIS" value="PDB_CHC1_BB(x)"/>
+      <bit_field_value name="CHANNEL_BB_0b00000000" value="0b00000000" description="PDB channel's corresponding pre-trigger back-to-back operation disabled."/>
+      <bit_field_value name="CHANNEL_BB_0b00000001" value="0b00000001" description="PDB channel's corresponding pre-trigger back-to-back operation enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="CH0S" description="Channel n Status register">
+    <alias type="CMSIS" value="CHANNEL[0].CHS"/>
+    <bit_field offset="0" width="8" name="ERR" access="RW" reset_value="0" description="PDB Channel Sequence Error Flags">
+      <alias type="CMSIS" value="PDB_CHS_ERR(x)"/>
+      <bit_field_value name="CHANNEL_ERR_0b00000000" value="0b00000000" description="Sequence error not detected on PDB channel's corresponding pre-trigger."/>
+      <bit_field_value name="CHANNEL_ERR_0b00000001" value="0b00000001" description="Sequence error detected on PDB channel's corresponding pre-trigger. ADCn block can be triggered for a conversion by one pre-trigger from PDB channel n. When one conversion, which is triggered by one of the pre-triggers from PDB channel n, is in progress, new trigger from PDB channel's corresponding pre-trigger m cannot be accepted by ADCn, and ERR[m] is set. Writing 0's to clear the sequence error flags."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="8" name="CF" access="RW" reset_value="0" description="PDB Channel Flags">
+      <alias type="CMSIS" value="PDB_CHS_CF(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="CH0DLY0" description="Channel n Delay 0 register">
+    <alias type="CMSIS" value="CHANNEL[0].CHDLY0"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY0_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="CH0DLY1" description="Channel n Delay 1 register">
+    <alias type="CMSIS" value="CHANNEL[0].CHDLY1"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY1_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="CH0DLY2" description="Channel n Delay 2 register">
+    <alias type="CMSIS" value="CHANNEL[0].CHDLY2"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY2_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x24" width="32" name="CH0DLY3" description="Channel n Delay 3 register">
+    <alias type="CMSIS" value="CHANNEL[0].CHDLY3"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY3_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x28" width="32" name="CH0DLY4" description="Channel n Delay 4 register">
+    <alias type="CMSIS" value="CHANNEL[0].CHDLY4"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY4_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x2C" width="32" name="CH0DLY5" description="Channel n Delay 5 register">
+    <alias type="CMSIS" value="CHANNEL[0].CHDLY5"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY5_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="CH0DLY6" description="Channel n Delay 6 register">
+    <alias type="CMSIS" value="CHANNEL[0].CHDLY6"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY6_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x34" width="32" name="CH0DLY7" description="Channel n Delay 7 register">
+    <alias type="CMSIS" value="CHANNEL[0].CHDLY7"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY7_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x38" width="32" name="CH1C1" description="Channel n Control register 1">
+    <alias type="CMSIS" value="CHANNEL[1].CHC1"/>
+    <bit_field offset="0" width="8" name="EN" access="RW" reset_value="0" description="PDB Channel Pre-Trigger Enable">
+      <alias type="CMSIS" value="PDB_CHC1_EN(x)"/>
+      <bit_field_value name="CHANNEL_EN_0b00000000" value="0b00000000" description="PDB channel's corresponding pre-trigger disabled."/>
+      <bit_field_value name="CHANNEL_EN_0b00000001" value="0b00000001" description="PDB channel's corresponding pre-trigger enabled."/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="TOS" access="RW" reset_value="0" description="PDB Channel Pre-Trigger Output Select">
+      <alias type="CMSIS" value="PDB_CHC1_TOS(x)"/>
+      <bit_field_value name="CHANNEL_TOS_0b00000000" value="0b00000000" description="PDB channel's corresponding pre-trigger is in bypassed mode. The pre-trigger asserts one peripheral clock cycle after a rising edge is detected on selected trigger input source or software trigger is selected and SWTRIG is written with 1."/>
+      <bit_field_value name="CHANNEL_TOS_0b00000001" value="0b00000001" description="PDB channel's corresponding pre-trigger asserts when the counter reaches the channel delay register and one peripheral clock cycle after a rising edge is detected on selected trigger input source or software trigger is selected and SETRIG is written with 1."/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="BB" access="RW" reset_value="0" description="PDB Channel Pre-Trigger Back-to-Back Operation Enable">
+      <alias type="CMSIS" value="PDB_CHC1_BB(x)"/>
+      <bit_field_value name="CHANNEL_BB_0b00000000" value="0b00000000" description="PDB channel's corresponding pre-trigger back-to-back operation disabled."/>
+      <bit_field_value name="CHANNEL_BB_0b00000001" value="0b00000001" description="PDB channel's corresponding pre-trigger back-to-back operation enabled."/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x3C" width="32" name="CH1S" description="Channel n Status register">
+    <alias type="CMSIS" value="CHANNEL[1].CHS"/>
+    <bit_field offset="0" width="8" name="ERR" access="RW" reset_value="0" description="PDB Channel Sequence Error Flags">
+      <alias type="CMSIS" value="PDB_CHS_ERR(x)"/>
+      <bit_field_value name="CHANNEL_ERR_0b00000000" value="0b00000000" description="Sequence error not detected on PDB channel's corresponding pre-trigger."/>
+      <bit_field_value name="CHANNEL_ERR_0b00000001" value="0b00000001" description="Sequence error detected on PDB channel's corresponding pre-trigger. ADCn block can be triggered for a conversion by one pre-trigger from PDB channel n. When one conversion, which is triggered by one of the pre-triggers from PDB channel n, is in progress, new trigger from PDB channel's corresponding pre-trigger m cannot be accepted by ADCn, and ERR[m] is set. Writing 0's to clear the sequence error flags."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="8" name="CF" access="RW" reset_value="0" description="PDB Channel Flags">
+      <alias type="CMSIS" value="PDB_CHS_CF(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x40" width="32" name="CH1DLY0" description="Channel n Delay 0 register">
+    <alias type="CMSIS" value="CHANNEL[1].CHDLY0"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY0_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x44" width="32" name="CH1DLY1" description="Channel n Delay 1 register">
+    <alias type="CMSIS" value="CHANNEL[1].CHDLY1"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY1_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x48" width="32" name="CH1DLY2" description="Channel n Delay 2 register">
+    <alias type="CMSIS" value="CHANNEL[1].CHDLY2"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY2_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x4C" width="32" name="CH1DLY3" description="Channel n Delay 3 register">
+    <alias type="CMSIS" value="CHANNEL[1].CHDLY3"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY3_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x50" width="32" name="CH1DLY4" description="Channel n Delay 4 register">
+    <alias type="CMSIS" value="CHANNEL[1].CHDLY4"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY4_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x54" width="32" name="CH1DLY5" description="Channel n Delay 5 register">
+    <alias type="CMSIS" value="CHANNEL[1].CHDLY5"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY5_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x58" width="32" name="CH1DLY6" description="Channel n Delay 6 register">
+    <alias type="CMSIS" value="CHANNEL[1].CHDLY6"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY6_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x5C" width="32" name="CH1DLY7" description="Channel n Delay 7 register">
+    <alias type="CMSIS" value="CHANNEL[1].CHDLY7"/>
+    <bit_field offset="0" width="16" name="DLY" access="RW" reset_value="0" description="PDB Channel Delay">
+      <alias type="CMSIS" value="PDB_CHDLY7_DLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x190" width="32" name="POEN" description="Pulse-Out n Enable register">
+    <alias type="CMSIS" value="POEN"/>
+    <bit_field offset="0" width="8" name="POEN" access="RW" reset_value="0" description="PDB Pulse-Out Enable">
+      <alias type="CMSIS" value="PDB_POEN_POEN(x)"/>
+      <bit_field_value name="POEN_POEN_0b00000000" value="0b00000000" description="PDB Pulse-Out disabled"/>
+      <bit_field_value name="POEN_POEN_0b00000001" value="0b00000001" description="PDB Pulse-Out enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x194" width="32" name="PO0DLY" description="Pulse-Out n Delay register">
+    <alias type="CMSIS" value="PO0DLY"/>
+    <bit_field offset="0" width="16" name="DLY2" access="RW" reset_value="0" description="PDB Pulse-Out Delay 2">
+      <alias type="CMSIS" value="PDB_PO0DLY_DLY2(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="16" name="DLY1" access="RW" reset_value="0" description="PDB Pulse-Out Delay 1">
+      <alias type="CMSIS" value="PDB_PO0DLY_DLY1(x)"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

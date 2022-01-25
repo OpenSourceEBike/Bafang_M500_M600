@@ -1,0 +1,83 @@
+/*!
+    @page lin_master_s32k142_group LIN MASTER
+    @brief Example that shows the usage of the LIN driver in master mode
+
+    ## Application description ##
+    __________
+   This example demonstrates the LIN communication between S32K142 Master and Slave using
+    unconditional frames.
+    - The Master SeatECU is in NormalTable schedule table and it uses the LIN frame Motor1State_Cycl to receive temperature signal Motor1Temp
+    from Slave Motor1 and send selection signal Motor1Selection to Slave Motor1 by frame Motor1Control. The first turn on GREEN_LED,
+    then 5s GREEN_LED and BLUE_LED will toggle alternately.
+    - If value of temperature signal is higher than MOTOR1_OVER_TEMP value, Master SeatECU will send STOP command
+    through Motor1Selection signal to stop motor and turn on RED_LED.
+    - If value of temperature signal is in range from MOTOR1_MAX_TEMP value to MOTOR1_OVER_TEMP value, master SeatECU
+    will send DECREASE MOTOR SPEED command through Motor1Selection signal to reduce motor speed and turn on BLUE_LED.
+    - If value of temperature signal is lower than MOTOR1_MAX_TEMP value, master will send INCREASE MOTOR SPEED
+    command through Motor1Selection signal to increase motor speed and turn on GREEN_LED.
+    - When users press button BUTTON 0 on the Master board, the Master SeatECU switches its schedule table to go-to-sleep table.
+    So the Slave and Master enter sleep mode, RGB LEDS are off.
+    - When LIN cluster is in sleep mode, users press button BUTTON 1 on the Master board, the Master board sends a wakeup signal to wakeup slave nodes,
+    then switches its table to NormalTable.
+    ## Prerequisites ##
+    __________
+    To run the example you will need to have the following items:
+    - 2 S32K142  boards
+    - 1 Power Adapter 12V
+    - 2 Dupont female to female cable
+    - 1 Personal Computer
+    - 1 Jlink Lite Debugger (optional, users can use Open SDA)
+
+    ## Boards supported ##
+    __________
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+
+    ## Hardware Wiring ##
+    __________
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION         |      S32K142EVB-Q100-Master        |      S32K142EVB-Q100-Slave          |
+    ---------------------|------------------------------------|-------------------------------------|
+    BUTTON 0 (\b PTC12)  | SW2 - wired on the board           | SW2 - wired on the board            |
+    BUTTON 1 (\b PTC13)  | SW3 - wired on the board           | SW3 - wired on the board            |
+    RED_LED (\b PTD15)   | RGB_RED - wired on the board       | RGB_RED - wired on the board        |
+    GREEN_LED (\b PTD16) | RGB_GREEN - wired on the board     | RGB_GREEN - wired on the board      |
+    BLUE_LED (\b PTD0)   | RGB_BLUE - wired on the board      | RGB_BLUE - wired on the board       |
+    LIN (\b *)           | J11-1 - LIN                        | J11-1 - LIN                         |
+    RX-WORKAROUND        | J5-18 - J6-9                       | J5-18 - J6-9                        |
+    TX-WORKAROUND        | J5-16 - J6-11                      | J5-16 - J6-11                       |
+    GND (\b GND)         | J11-4 - GND                        | J11-4 - GND                         |
+
+    <b>(*) Those lines must be modulated using a transceiver, if it is not specified the boards already include the LIN transceiver</b>
+
+    ## How to run ##
+    __________
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New \b S32DS \b Project \b From... and select \b lin_master_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    #### 2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    First go to \b Project \b Explorer View in S32 DS and select the current project(\b lin_master_s32k142).
+    Select the "ConfigTools" menu then click on the desired configuration (Pins, Clocks, Peripherals etc...). Clicking on any one of those will generate all the components.
+    Make the desired changes(if any) then click on the "ConfigTools->Update Code" button.
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be four debug configurations for this project:
+     Configuration Name                         | Description
+     -------------------------------------------|--------------------------------------------------
+     \b lin_master_s32k142_debug_flash_pemicro  | Debug the FLASH configuration using Segger Jlink debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+    ## Notes ##
+    ______
+    The default configuration of this example supports S32K142 EVB RevD.\n
+    RX-WORKAROUND and TX-WORKAROUND Pin Function do not need to be set up when using RevD with the Default Configuration of example.\n
+
+*/
+

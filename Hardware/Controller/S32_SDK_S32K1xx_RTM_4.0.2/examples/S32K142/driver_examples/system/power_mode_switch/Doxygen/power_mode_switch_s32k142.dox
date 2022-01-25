@@ -1,0 +1,126 @@
+/*!
+    @page power_mode_switch_s32k142_group Power Mode Switch
+    @brief Example application demonstrating S32K142 power modes
+
+    ## Application description ##
+    ______
+    The purpose of the application is to show the user how to enter various power modes of the S32K142 SoC using the S32 SDK API.
+
+    The application displays on the host PC terminal a menu in which the user can select to enter:
+
+    - High Speed Run (HSRUN)
+    - Normal Run (RUN)
+    - Very Low Power Run (VLPR)
+    - STOP mode 1 (STOP1)
+    - STOP mode 2 (STOP2)
+    - Very Low Power Stop (VLPS)
+
+    When user selects a mode, PC terminal will show the following text:
+
+    Press:\n
+    1) for HSRUN\n
+    2) for RUN\n
+    3) for VLPR\n
+    4) for STOP1\n
+    5) for STOP2\n
+    6) for VLPS\n
+    -->Press SW3 to wake up the CPU from STOP1,STOP2 or VLPS mode\n
+    Enter your input:\n
+
+
+    Expected Output:
+    - If STOP1, STOP2 or VLPS is selected by entering the character: '4', '5' or '6' into PC terminal, LED_RED will turn on, LED_GREEN will turn off
+    and the PC terminal will show:\n
+      Mode              | The content informs              |
+    --------------------|----------------------------------|
+      STOP1             | ******** CPU is going in STOP1 mode...|
+      STOP2             | ******** CPU is going in STOP2 mode...|
+      VLPS              | ******** CPU is going in VLPS mode...|
+
+    - The CPU can be woken up from sleep modes by pressing button SW3 in EVB board,
+    then LED_RED turn off, LED_GREEN turn on and PC terminal will show:\n
+      Mode              | The content informs              |
+    --------------------|----------------------------------|
+      STOP1             | CPU was entered STOP1 mode successfully and then woke up to exit STOP1 mode.|
+      STOP2             | CPU was entered STOP2 mode successfully and then woke up to exit STOP2 mode.|
+      VLPS              | CPU was entered VLPS mode successfully and then woke up to exit VLPS mode.|
+
+
+    - If user selects HSRUN, RUN or VLPR, the PC terminal will show:\n
+      Mode              | The content informs                                     |
+    --------------------|---------------------------------------------------------|
+      HSRUN             | ************************ CPU is in HSRUN mode\n************************ Core frequency: 112000000[Hz]\n|
+      RUN               | ************************ CPU is in RUN mode\n************************ Core frequency: 48000000[Hz]\n|
+      VLPR              | ************************ CPU is in VLPR mode\n************************ Core frequency: 4000000[Hz]|
+
+
+    ## Prerequisites ##
+    ______
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board cannot be powered from the USB port)
+    - 1 Personal Computer
+    - 1 Jlink Lite Debugger (optional, users can use Open SDA)
+
+    ## Boards supported ##
+    ______
+    The following boards are supported by this application:
+    - S32K142EVB-Q100
+
+    ## Hardware Wiring ##
+    ______
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION         |  S32K142EVB-Q100                  |
+    ---------------------|-----------------------------------|
+    LPUART1 TX (\b PTC7) |  UART_TX - wired on the board     |
+    LPUART1 RX (\b PTC6) |  UART_RX - wired on the board     |
+    BUTTON (\b PTC13)    |  SW3 - wired on the board         |
+    LED_0                |  green led - wired on the board   |
+    LED_1                |  red led - wired on the board     |
+
+    ## How to run ##
+    _____
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New \b S32DS \b Project \b From \bExample and select \b power_mode_switch_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    Wait for the S32 Configuration was initialized and ready.
+
+    #### 2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.\n
+    The initial configuration will have the same settings as the default example settings.
+    Left click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar).\n
+    In S32 Configuration menu, click on the desired configurator (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components.\n
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user.
+    Make the desired changes (if any) then click "Update Code".
+
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be four debug configurations for this project:
+     Configuration Name | Description
+     -------------------|------------
+     \b power_mode_switch_s32k142_debug_flash_jlink | Debug the FLASH configuration using Segger Jlink debuggers
+     \b power_mode_switch_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debuggers.
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+    ## Notes ##
+    ______
+
+    Due to limited RAM size, this example contains only one build configuration for target flash memory (and the associated debug configuration).
+
+    For this example it is necessary to open a terminal emulator and configure it with:
+    - 9600 baud
+    - One stop bit
+    - No parity
+    - No flow control
+    - '\\n' line ending
+
+    Clock source is remained in SIRC (8 MHz) before MCU switches from RUN to VLP mode.\n
+    In order to set to default clock for RUN mode. User presses option for RUN or re-initializes clock configuration.
+*/
+

@@ -1,0 +1,113 @@
+/*!
+    @page freertos_s32k142_group FreeRTOS
+    @brief Demo application showing the integration of FreeRTOS and S32 SDK
+
+    ## Application description ##
+    _____
+    The purpose of this demo application is to show you how to use the FreeRTOS with the S32 SDK for the S32K142 MCU.
+
+    This project defines a very simple demo that creates two tasks,
+    one queue, and one timer.  It also demonstrates how Cortex-M4 interrupts can
+    interact with FreeRTOS tasks/timers.
+
+    This simple demo project runs 'stand alone' (without the rest of the tower
+    system) on the Freedom Board or Validation Board, which is populated with a
+    S32K142 Cortex-M4 microcontroller.
+
+    The idle hook function:
+    The idle hook function demonstrates how to query the amount of FreeRTOS heap
+    space that is remaining (see vApplicationIdleHook() defined in this file).
+
+    The main() Function:
+    main() creates one software timer, one queue, and two tasks.  It then starts
+    the scheduler.
+
+    The Queue Send Task:
+    The queue send task is implemented by the prvQueueSendTask() function in
+    this file.  prvQueueSendTask() sits in a loop that causes it to repeatedly
+    block for 200 milliseconds, before sending the value 100 to the queue that
+    was created within main().  Once the value is sent, the task loops back
+    around to block for another 200 milliseconds.
+
+    The Queue Receive Task:
+    The queue receive task is implemented by the prvQueueReceiveTask() function
+    in this file.  prvQueueReceiveTask() sits in a loop that causes it to
+    repeatedly attempt to read data from the queue that was created within
+    main().  When data is received, the task checks the value of the data, and
+    if the value equals the expected 100, toggles the green LED.  The 'block
+    time' parameter passed to the queue receive function specifies that the task
+    should be held in the Blocked state indefinitely to wait for data to be
+    available on the queue.  The queue receive task will only leave the Blocked
+    state when the queue send task writes to the queue.  As the queue send task
+    writes to the queue every 200 milliseconds, the queue receive task leaves the
+    Blocked state every 200 milliseconds, and therefore toggles the green LED
+    every 200 milliseconds.
+
+    The LED Software Timer and the Button Interrupt:
+    The user button BTN1 is configured to generate an interrupt each time it is
+    pressed.  The interrupt service routine switches the red LED on, and
+    resets the LED software timer.  The LED timer has a 5000 millisecond (5
+    second) period, and uses a callback function that is defined to just turn the
+    LED off again.  Therefore, pressing the user button will turn the LED on, and
+    the LED will remain on until a full five seconds pass without the button
+    being pressed.
+
+    ## Prerequisites ##
+    _____
+    To run the example you will need to have the following items:
+    - 1 S32K142 board
+    - 1 Power Adapter 12V (if the board cannot be powered from the USB port)
+    - 2 Dupont male to male cable
+    - 1 Personal Computer
+    - 1 PEMicro Multilink Debugger
+
+    ## Boards supported ##
+    ______
+    The following boards are supported by this application:
+    - S32K14xCVD-Q064 with S32K-MB
+
+    ## Hardware Wiring ##
+    _____
+    The following connections must be done to for this example application to work:
+
+    PIN FUNCTION         |   S32K142EVB-Q100              |   S32K142-MB
+    ---------------------|--------------------------------|--------------
+    RED_LED (\b PTD15)   |RGB_RED - wired on the board    |   J12.17 - J11.31
+    GREEN_LED (\b PTD16) |RGB_GREEN - wired on the board  | J12.16 - J11.30
+    BTN (\b PTC13)       |BTN1  - wired on the board      |   BTN3 - wired on the board
+
+    ## How to run ##
+    ______
+    #### 1. Importing the project into the workspace ####
+    After opening S32 Design Studio, go to \b File -> \b New -> \b S32DS \b Project \b From \bExample and select \b freertos_s32k142. Then click on \b Finish. \n
+    The project should now be copied into you current workspace.
+    Wait for the S32 Configuration to be initialized and ready.
+
+    #### 2. Generating the S32 configuration ####
+    The example will run without an active configuration, however if any changes are required, a configuration needs to be generated.
+    The initial configuration will have the same settings as the default example settings.
+    Left click on the current project, then click "Open S32 Configuration" (it has blue chip symbol on the top of the toolbar).
+    In S32 Configuration menu, click on the desired configurator (Pins, Clock, Peripherals, etc.). Clicking on any one of those will generate all the components.
+    Pay attention to any error and warning message. If any configured value is invalid, they will be shown for user.
+    Make the desired changes (if any) then click "Update Code"
+
+    #### 3. Building the project ####
+    Select the configuration to be built \b FLASH (Debug_FLASH) or \b RAM (Debug_RAM) by left clicking on the downward arrow corresponding to the \b build button(@image hammer.png).
+    Wait for the build action to be completed before continuing to the next step.
+
+    #### 4. Running the project ####
+    Go to \b Run and select \b Debug \b Configurations. There will be four debug configurations for this project:
+     Configuration Name | Description
+     -------------------|------------
+     \b freertos_s32k142_debug_ram_jlink | Debug the RAM configuration using Segger Jlink debuggers
+     \b freertos_s32k142_debug_flash_jlink | Debug the FLASH configuration using Segger Jlink debuggers
+     \b freertos_s32k142_debug_ram_pemicro | Debug the RAM configuration using PEMicro debuggers
+     \b freertos_s32k142_debug_flash_pemicro | Debug the FLASH configuration using PEMicro debuggers
+    \n Select the desired debug configuration and click on \b Launch. Now the perspective will change to the \b Debug \b Perspective. \n
+    Use the controls to control the program flow.
+
+    @note For more detailed information related to S32 Design Studio usage please consult the available documentation.
+
+
+*/
+

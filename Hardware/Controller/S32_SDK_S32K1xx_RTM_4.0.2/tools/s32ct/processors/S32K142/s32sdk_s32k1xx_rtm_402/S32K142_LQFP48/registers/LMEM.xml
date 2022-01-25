@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="PCCCR" description="Cache control register">
+    <alias type="CMSIS" value="PCCCR"/>
+    <bit_field offset="0" width="1" name="ENCACHE" access="RW" reset_value="0" description="Cache enable">
+      <alias type="CMSIS" value="LMEM_PCCCR_ENCACHE(x)"/>
+      <bit_field_value name="PCCCR_ENCACHE_0b0" value="0b0" description="Cache disabled"/>
+      <bit_field_value name="PCCCR_ENCACHE_0b1" value="0b1" description="Cache enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <bit_field offset="2" width="1" name="PCCR2" access="RW" reset_value="0" description="Forces all cacheable spaces to write through">
+      <alias type="CMSIS" value="LMEM_PCCCR_PCCR2(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="PCCR3" access="RW" reset_value="0" description="Forces no allocation on cache misses (must also have PCCR2 asserted)">
+      <alias type="CMSIS" value="LMEM_PCCCR_PCCR3(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="20" reset_value="0"/>
+    <bit_field offset="24" width="1" name="INVW0" access="RW" reset_value="0" description="Invalidate Way 0">
+      <alias type="CMSIS" value="LMEM_PCCCR_INVW0(x)"/>
+      <bit_field_value name="PCCCR_INVW0_0b0" value="0b0" description="No operation"/>
+      <bit_field_value name="PCCCR_INVW0_0b1" value="0b1" description="When setting the GO bit, invalidate all lines in way 0."/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="PUSHW0" access="RW" reset_value="0" description="Push Way 0">
+      <alias type="CMSIS" value="LMEM_PCCCR_PUSHW0(x)"/>
+      <bit_field_value name="PCCCR_PUSHW0_0b0" value="0b0" description="No operation"/>
+      <bit_field_value name="PCCCR_PUSHW0_0b1" value="0b1" description="When setting the GO bit, push all modified lines in way 0"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="INVW1" access="RW" reset_value="0" description="Invalidate Way 1">
+      <alias type="CMSIS" value="LMEM_PCCCR_INVW1(x)"/>
+      <bit_field_value name="PCCCR_INVW1_0b0" value="0b0" description="No operation"/>
+      <bit_field_value name="PCCCR_INVW1_0b1" value="0b1" description="When setting the GO bit, invalidate all lines in way 1"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="PUSHW1" access="RW" reset_value="0" description="Push Way 1">
+      <alias type="CMSIS" value="LMEM_PCCCR_PUSHW1(x)"/>
+      <bit_field_value name="PCCCR_PUSHW1_0b0" value="0b0" description="No operation"/>
+      <bit_field_value name="PCCCR_PUSHW1_0b1" value="0b1" description="When setting the GO bit, push all modified lines in way 1"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="3" reset_value="0"/>
+    <bit_field offset="31" width="1" name="GO" access="RW" reset_value="0" description="Initiate Cache Command">
+      <alias type="CMSIS" value="LMEM_PCCCR_GO(x)"/>
+      <bit_field_value name="PCCCR_GO_0b0" value="0b0" description="Write: no effect. Read: no cache command active."/>
+      <bit_field_value name="PCCCR_GO_0b1" value="0b1" description="Write: initiate command indicated by bits 27-24. Read: cache command active."/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="PCCLCR" description="Cache line control register">
+    <alias type="CMSIS" value="PCCLCR"/>
+    <bit_field offset="0" width="1" name="LGO" access="RW" reset_value="0" description="Initiate Cache Line Command">
+      <alias type="CMSIS" value="LMEM_PCCLCR_LGO(x)"/>
+      <bit_field_value name="PCCLCR_LGO_0b0" value="0b0" description="Write: no effect. Read: no line command active."/>
+      <bit_field_value name="PCCLCR_LGO_0b1" value="0b1" description="Write: initiate line command indicated by bits 27-24. Read: line command active."/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <bit_field offset="2" width="12" name="CACHEADDR" access="RW" reset_value="0" description="Cache address">
+      <alias type="CMSIS" value="LMEM_PCCLCR_CACHEADDR(x)"/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="WSEL" access="RW" reset_value="0" description="Way select">
+      <alias type="CMSIS" value="LMEM_PCCLCR_WSEL(x)"/>
+      <bit_field_value name="PCCLCR_WSEL_0b0" value="0b0" description="Way 0"/>
+      <bit_field_value name="PCCLCR_WSEL_0b1" value="0b1" description="Way 1"/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="1" name="TDSEL" access="RW" reset_value="0" description="Tag/Data Select">
+      <alias type="CMSIS" value="LMEM_PCCLCR_TDSEL(x)"/>
+      <bit_field_value name="PCCLCR_TDSEL_0b0" value="0b0" description="Data"/>
+      <bit_field_value name="PCCLCR_TDSEL_0b1" value="0b1" description="Tag"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="3" reset_value="0"/>
+    <bit_field offset="20" width="1" name="LCIVB" access="RW" reset_value="0" description="Line Command Initial Valid Bit">
+      <alias type="CMSIS" value="LMEM_PCCLCR_LCIVB(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="LCIMB" access="RW" reset_value="0" description="Line Command Initial Modified Bit">
+      <alias type="CMSIS" value="LMEM_PCCLCR_LCIMB(x)"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="LCWAY" access="RW" reset_value="0" description="Line Command Way">
+      <alias type="CMSIS" value="LMEM_PCCLCR_LCWAY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="2" name="LCMD" access="RW" reset_value="0" description="Line Command">
+      <alias type="CMSIS" value="LMEM_PCCLCR_LCMD(x)"/>
+      <bit_field_value name="PCCLCR_LCMD_0b00" value="0b00" description="Search and read or write"/>
+      <bit_field_value name="PCCLCR_LCMD_0b01" value="0b01" description="Invalidate"/>
+      <bit_field_value name="PCCLCR_LCMD_0b10" value="0b10" description="Push"/>
+      <bit_field_value name="PCCLCR_LCMD_0b11" value="0b11" description="Clear"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="LADSEL" access="RW" reset_value="0" description="Line Address Select">
+      <alias type="CMSIS" value="LMEM_PCCLCR_LADSEL(x)"/>
+      <bit_field_value name="PCCLCR_LADSEL_0b0" value="0b0" description="Cache address"/>
+      <bit_field_value name="PCCLCR_LADSEL_0b1" value="0b1" description="Physical address"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="LACC" access="RW" reset_value="0" description="Line access type">
+      <alias type="CMSIS" value="LMEM_PCCLCR_LACC(x)"/>
+      <bit_field_value name="PCCLCR_LACC_0b0" value="0b0" description="Read"/>
+      <bit_field_value name="PCCLCR_LACC_0b1" value="0b1" description="Write"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="PCCSAR" description="Cache search address register">
+    <alias type="CMSIS" value="PCCSAR"/>
+    <bit_field offset="0" width="1" name="LGO" access="RW" reset_value="0" description="Initiate Cache Line Command">
+      <alias type="CMSIS" value="LMEM_PCCSAR_LGO(x)"/>
+      <bit_field_value name="PCCSAR_LGO_0b0" value="0b0" description="Write: no effect. Read: no line command active."/>
+      <bit_field_value name="PCCSAR_LGO_0b1" value="0b1" description="Write: initiate line command indicated by bits CLCR[27:24]. Read: line command active."/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <bit_field offset="2" width="30" name="PHYADDR" access="RW" reset_value="0" description="Physical Address">
+      <alias type="CMSIS" value="LMEM_PCCSAR_PHYADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xC" width="32" name="PCCCVR" description="Cache read/write value register">
+    <alias type="CMSIS" value="PCCCVR"/>
+    <bit_field offset="0" width="32" name="DATA" access="RW" reset_value="0" description="Cache read/write Data">
+      <alias type="CMSIS" value="LMEM_PCCCVR_DATA(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="32" name="PCCSRR" description="Cache soft reset register">
+    <alias type="CMSIS" value="PCCSRR"/>
+    <bit_field offset="0" width="2" name="RESET" access="RW" reset_value="0" description="Issue soft reset">
+      <alias type="CMSIS" value="LMEM_PCCSRR_RESET(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="PCCRMR" description="Cache regions mode register">
+    <alias type="CMSIS" value="PCCRMR"/>
+    <bit_field offset="0" width="2" name="R15" access="RW" reset_value="0" description="Region 15 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R15(x)"/>
+      <bit_field_value name="PCCRMR_R15_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R15_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R15_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R15_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="R14" access="RW" reset_value="0" description="Region 14 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R14(x)"/>
+      <bit_field_value name="PCCRMR_R14_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R14_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R14_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R14_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="R13" access="RW" reset_value="0" description="Region 13 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R13(x)"/>
+      <bit_field_value name="PCCRMR_R13_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R13_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R13_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R13_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="R12" access="RW" reset_value="0" description="Region 12 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R12(x)"/>
+      <bit_field_value name="PCCRMR_R12_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R12_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R12_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R12_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="8" width="2" name="R11" access="RW" reset_value="0" description="Region 11 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R11(x)"/>
+      <bit_field_value name="PCCRMR_R11_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R11_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R11_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R11_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="10" width="2" name="R10" access="RW" reset_value="0" description="Region 10 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R10(x)"/>
+      <bit_field_value name="PCCRMR_R10_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R10_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R10_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R10_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="12" width="2" name="R9" access="RW" reset_value="0x2" description="Region 9 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R9(x)"/>
+      <bit_field_value name="PCCRMR_R9_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R9_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R9_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R9_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="14" width="2" name="R8" access="RW" reset_value="0x2" description="Region 8 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R8(x)"/>
+      <bit_field_value name="PCCRMR_R8_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R8_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R8_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R8_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="16" width="2" name="R7" access="RW" reset_value="0x3" description="Region 7 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R7(x)"/>
+      <bit_field_value name="PCCRMR_R7_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R7_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R7_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R7_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="18" width="2" name="R6" access="RW" reset_value="0x3" description="Region 6 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R6(x)"/>
+      <bit_field_value name="PCCRMR_R6_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R6_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R6_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R6_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="20" width="2" name="R5" access="RW" reset_value="0" description="Region 5 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R5(x)"/>
+      <bit_field_value name="PCCRMR_R5_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R5_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R5_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R5_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="22" width="2" name="R4" access="RW" reset_value="0" description="Region 4 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R4(x)"/>
+      <bit_field_value name="PCCRMR_R4_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R4_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R4_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R4_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="R3" access="RW" reset_value="0x2" description="Region 3 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R3(x)"/>
+      <bit_field_value name="PCCRMR_R3_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R3_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R3_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R3_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="26" width="2" name="R2" access="RW" reset_value="0x2" description="Region 2 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R2(x)"/>
+      <bit_field_value name="PCCRMR_R2_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R2_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R2_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R2_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="28" width="2" name="R1" access="RW" reset_value="0x2" description="Region 1 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R1(x)"/>
+      <bit_field_value name="PCCRMR_R1_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R1_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R1_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R1_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+    <bit_field offset="30" width="2" name="R0" access="RW" reset_value="0x2" description="Region 0 mode">
+      <alias type="CMSIS" value="LMEM_PCCRMR_R0(x)"/>
+      <bit_field_value name="PCCRMR_R0_0b00" value="0b00" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R0_0b01" value="0b01" description="Non-cacheable"/>
+      <bit_field_value name="PCCRMR_R0_0b10" value="0b10" description="Write-through"/>
+      <bit_field_value name="PCCRMR_R0_0b11" value="0b11" description="Write-back"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

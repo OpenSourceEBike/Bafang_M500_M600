@@ -1,0 +1,103 @@
+/*!
+    @defgroup ftm_qd_driver FlexTimer Quadrature Decoder Driver (FTM_QD)
+    @ingroup ftm
+    @details
+    @brief FlexTimer Quadrature Decoder Peripheral Driver.
+
+    ## Hardware background ##
+    The FTM of the S32K1xx is based on a 16 bits counter and supports: input capture, output compare, PWM and some instances
+    include quadrature decoder.
+
+    ## How to use FTM driver in your application ##
+    For all operation modes (without Quadrature Decoder mode) the user need to configure ftm_user_config_t. This structure will be used for initialization
+    (FTM_DRV_Init). The next functions used are specific for each operation mode.
+
+    ### Quadrature decoder mode ###
+    For this mode the user needs to configure parameters like: maximum counter value, initial counter value, mode (Count and Direction Encoding mode),
+    and for both input phases polarity and filtering. All this information is included in ftm_quad_decode_config_t.
+    In this mode, the counter is clocked by the phase A and phase B. The current state of the decoder can be obtained using FTM_DRV_QuadGetState.
+
+    #### Hardware limitation: ####
+    In count and direction mode if initial value of the PHASE_A is HIGH the counter will be incremented.
+
+    ## Integration guideline ##
+
+    ### Compilation units ###
+
+    The following files need to be compiled in the project:
+    \verbatim
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_qd_driver.c
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_common.c
+    ${S32SDK_PATH}\platform\drivers\src\ftm\ftm_hw_access.c
+    \endverbatim
+
+    ### Include path ###
+
+    The following paths need to be added to the include path of the toolchain:
+    \verbatim
+    ${S32SDK_PATH}\platform\drivers\inc\
+    ${S32SDK_PATH}\platform\drivers\src\ftm\
+    \endverbatim
+
+    ### Compile symbols ###
+
+    No special symbols are required for this component
+
+    ### Dependencies ###
+
+    \ref clock_manager
+    \ref interrupt_manager
+
+   Example:
+    @code
+    /* The state structure of instance in the quadrature mode */
+    ftm_state_t stateQuad;
+    #define FTM_QUADRATURE_INSTANCE    1UL
+    ftm_quad_decoder_state_t quadra_state;
+    ftm_quad_decode_config_t quadrature_decoder_configuration =
+    {
+        FTM_QUAD_COUNT_AND_DIR,         /* Quadrature decoder mode */
+        0U,                             /* Initial counter value */
+        32500U,                         /* Maximum counter value */
+        {
+            false,                      /* Filter state */
+            0U,                         /* Filter value */
+            FTM_QUAD_PHASE_NORMAL       /* Phase polarity */
+        },
+        {
+            false,                      /* Filter state */
+            0U,                         /* Filter value */
+            FTM_QUAD_PHASE_NORMAL       /* Phase polarity */
+        }
+    };
+    /* Timer mode configuration for Quadrature */
+    /* Global configuration of Quadrature */
+    ftm_user_config_t  Quadrature_InitConfig =
+    {
+        {
+            false,                      /* Software trigger state */
+            false,                      /* Hardware trigger 1 state */
+            false,                      /* Hardware trigger 2 state */
+            false,                      /* Hardware trigger 3 state */
+            false,                      /* Maximum loading point state */
+            false,                      /* Min loading point state */
+            FTM_SYSTEM_CLOCK,           /* Update mode for INVCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for SWOCTRL register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for OUTMASK register */
+            FTM_SYSTEM_CLOCK,           /* Update mode for CNTIN register */
+            false,                      /* Auto clear trigger state for hardware trigger */
+            FTM_UPDATE_NOW,             /* Select synchronization method */
+        },
+        FTM_MODE_QUADRATURE_DECODER,    /* Mode of operation for FTM */
+        FTM_CLOCK_DIVID_BY_2,           /* FTM clock pre-scaler */
+        FTM_CLOCK_SOURCE_SYSTEMCLK,     /* FTM clock source */
+        FTM_BDM_MODE_11,                /* FTM debug mode */
+        false,                          /* Interrupt state */
+        false                           /* Initialization trigger */
+    };
+    FTM_DRV_Init(FTM_QUADRATURE_INSTANCE, &Quadrature_InitConfig, &stateQuad);
+    FTM_DRV_QuadDecodeStart(FTM_QUADRATURE_INSTANCE, &quadrature_decoder_configuration);
+    quadra_state = FTM_DRV_QuadGetState(FTM_QUADRATURE_INSTANCE);
+    @endcode
+
+@}*/

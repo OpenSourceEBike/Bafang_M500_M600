@@ -1,0 +1,2122 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="mpu_pal_config" label="mpu_pal_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+    <sw_comp_ref name="platform.pal.mpu_pal" version="1.0.0"/>
+    <description>MPU PAL module.</description>
+    <mode id="mpu_pal_basic_s32v" label="Basic MPU PAL for S32V" available="featureDefined(`FEATURE_XRDC_S32V`)==true">
+        <description>Basic MPU PAL.</description>
+        <config_set_refs>
+            <config_set_ref>mpu_pal_s32v</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>XRDC</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <mode id="mpu_pal_basic_s32s" label="Basic MPU PAL for S32S" available="featureDefined(`FEATURE_XRDC_S32S`)==true">
+        <description>Basic MPU PAL.</description>
+        <config_set_refs>
+            <config_set_ref>mpu_pal_s32s</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>XRDC</peripheral_type>
+            <peripheral_type>MPU_R52</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <mode id="mpu_pal_basic_s32g" label="Basic MPU PAL for S32G" available="featureDefined(`FEATURE_XRDC_S32G`)==true">
+        <description>Basic MPU PAL.</description>
+        <config_set_refs>
+            <config_set_ref>mpu_pal_s32g_s32r</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>XRDC</peripheral_type>
+            <peripheral_type>MPU_M7</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <mode id="mpu_pal_basic_s32r" label="Basic MPU PAL for S32R45" available="featureDefined(`FEATURE_XRDC_S32R`)==true">
+        <description>Basic MPU PAL.</description>
+        <config_set_refs>
+            <config_set_ref>mpu_pal_s32g_s32r</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>XRDC</peripheral_type>
+            <peripheral_type>MPU_M7</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <mode id="mpu_pal_basic_sja" label="Basic MPU PAL for SJA" available="featureDefined(`FEATURE_MPU_PAL_SJA`)==true">
+        <description>Basic MPU PAL.</description>
+        <config_set_refs>
+            <config_set_ref>mpu_pal_sja</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>SMPU</peripheral_type>
+            <peripheral_type>MPU_M7</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <mode id="mpu_pal_basic_s32k" label="Basic MPU PAL for S32K" available="featureDefined(`FEATURE_MPU_PAL_S32K`)==true">
+        <description>Basic MPU PAL.</description>
+        <config_set_refs>
+            <config_set_ref>mpu_pal_s32k</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>MPU</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set id="mpu_pal_s32v" label="General MPU PAL configuration" from_source="mpu_pal.h" available="featureDefined(`FEATURE_XRDC_S32V`)==true">
+        <description>Basic MPU PAL configuration.</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="mpu_pal_default" label="Default values for MPU PAL" available="true">
+                <description>MPU PAL default configuration.</description>
+                <!-- Default Memory Instance -->
+                <set id="mpu_pal_Memory.0.memInstance">2</set>
+                <!-- Default User Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.readOnly">true</set>
+                <!-- Default Domain Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_MasterConfig.0.readOnly">true</set>
+                <!-- Default Region Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.startAddr">0x0</set>
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.endAddr">0xFFFFFFFF</set>
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.extension">NULL</set>
+            </quick_selection>
+            <default>mpu_pal_default</default>
+        </quick_selections>
+        <user_types>
+            <!-- Enums -->
+            <enum id="mpu_pal_Instance_type" label="Memory instances" from="mpu_pal_Instance_type">
+                <item id="0" label="0"/>
+                <item id="1" label="1 (special)"/>
+                <item id="2" label="2"/>
+                <item id="3" label="3"/>
+                <item id="4" label="4"/>
+                <item id="5" label="5"/>
+                <item id="6" label="6"/>
+                <item id="7" label="7"/>
+            </enum>
+            <enum id="mpu_pal_DomainAccRights_type" label="Domain access rights" from="mpu_pal_DomainAccRights_type">
+                <item id="MPU_RW" label="Secure Priv RW User RW / Nonsecure Priv RW User RW"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_RW_USER_NONE" label="Secure Priv RW User RW / Nonsecure Priv RW User --"/>
+                <item id="MPU_SECURE_RW_NONSECURE_R" label="Secure Priv RW User RW / Nonsecure Priv R- User R-"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_R_USER_NONE" label="Secure Priv RW User RW / Nonsecure Priv R User --"/>
+                <item id="MPU_SECURE_RW_NONSECURE_NONE" label="Secure Priv RW User RW / Nonsecure Priv -- User --"/>
+                <item id="MPU_SECURE_PRIV_RW_USER_NONE_NONSECURE_NONE" label="Secure Priv RW User -- / Nonsecure Priv -- User --"/>
+                <item id="MPU_SECURE_R_NONSECURE_NONE" label="Secure Priv R- User R- / Nonsecure Priv -- User --"/>
+                <item id="MPU_NONE" label="Secure Priv -- User -- / Nonsecure Priv -- User --"/>
+            </enum>
+            <enum id="mpu_Lock_type" label="Lock configuration" from="mpu_Lock_type">
+                <item id="MPU_UNLOCK" label="Unlock"/>
+                <item id="MPU_OWNER_LOCK" label="Owner lock"/>
+                <item id="MPU_LOCKED_ALL" label="All lock"/>
+            </enum>
+            <!-- Master Configuration -->
+            <struct id="mpu_pal_Domain" label="Domain configuration">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <reference id="domain0" label="Domain 0" type="mpu_pal_DomainAccRights_type">
+                    <description>Domain 0 access rights</description>
+                </reference>
+                <reference id="domain1" label="Domain 1" type="mpu_pal_DomainAccRights_type">
+                    <description>Domain 1 access rights</description>
+                </reference>
+                <reference id="domain2" label="Domain 2" type="mpu_pal_DomainAccRights_type">
+                    <description>Domain 2 access rights</description>
+                </reference>
+                <reference id="domain3" label="Domain 3" type="mpu_pal_DomainAccRights_type">
+                    <description>Domain 3 access rights</description>
+                </reference>
+                <reference id="domain4" label="Domain 4" type="mpu_pal_DomainAccRights_type">
+                    <description>Domain 4 access rights</description>
+                </reference>
+                <reference id="domain5" label="Domain 5" type="mpu_pal_DomainAccRights_type">
+                    <description>Domain 5 access rights</description>
+                </reference>
+                <reference id="domain6" label="Domain 6" type="mpu_pal_DomainAccRights_type">
+                    <description>Domain 6 access rights</description>
+                </reference>
+                <reference id="domain7" label="Domain 7" type="mpu_pal_DomainAccRights_type">
+                    <description>Domain 7 access rights</description>
+                </reference>
+            </struct>
+            <!-- User Configuration -->
+            <struct id="mpu_pal_RegionConfig" label="Region configuration" from="mpu_region_config_t">
+                <info id="regionNum" label="Region number" value="0"/>
+                <integer id="startAddr" label="Start address" type="uint32_t" options="cStructField">
+                    <description>Region start address. This field defines the most significant bits of the 0-modulo-32 byte start address of the memory region.</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &lt; $parent.endAddr.getValue()" level="warning" description="Region start address should be less than end address!"/>
+                    </validation>
+                </integer>
+                <integer id="endAddr" label="End address" type="uint32_t" options="cStructField">
+                    <description>Region end address. This field defines the most significant bits of the 31-modulo-32 byte end address of the memory region.</description>
+                    <validation>
+                        <constraint cond_expr="$this.getValue() &gt; $parent.startAddr.getValue()" level="warning" description="Region end address should be greater than end address!"/>
+                    </validation>
+                </integer>
+                <dynamic_enum id="masterAccRight" label="Domain configuration" items="createArray().merge($configSet.mpu_pal_Configuration.mpu_pal_MasterConfig.arrayToEnumItems(
+                enumItem -> true,
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue()))" options="cStructField">
+                    <description>Domain configuration.</description>
+                </dynamic_enum>
+                <string id="extension" label="Extension" options="cStructField">
+                    <description>This field will be used to add extra settings to the basic region configuration</description>
+                    <validation>
+                        <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <struct id="mpu_pal_Region" label="Region configuration" from="mpu_pal_Region">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <info id="regionCnt" label="Region count" value="0"/>
+                <array id="mpu_pal_RegionConfig" label="Region configuration" type="mpu_pal_RegionConfig" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.length() &lt; 17" level="error" description="The number of regions are out of supported range!"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="startAddr" value_expr="x -> 0x0"/>
+                        <set_default id="endAddr" value_expr="x -> 0x1F"/>
+                        <set_default id="masterAccRight" value_expr="x -> $instance.getID() + `_DomainConfig0`"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Extension Configuration -->
+            <struct id="mpu_pal_Extension" label="Extension configuration" from="mpu_extension_xrdc_region_t">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="semaEnable" label="Semaphore enable" options="cStructField">
+                    <description>Semaphore enable.</description>
+                </bool>
+                <integer id="semaNum" label="Semaphore number" type="uint8_t" min_expr="0" max_expr="0xF" options="cStructField">
+                    <description>Semaphore number.</description>
+                </integer>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_Lock_type" options="cStructField">
+                    <description>Lock configuration.</description>
+                </reference>
+            </struct>
+            <!-- Configurations -->
+            <struct id="mpu_pal_Config" label="Configuration" options="ShowContentAs=Tabs">
+                <array id="mpu_pal_UserConfig" label="User configuration" type="mpu_pal_Region" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_RegionConfig` + x.getID()"/>
+                        <set_default id="readOnly" value_expr="x -> true"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_MasterConfig" label="Domain configuration" type="mpu_pal_Domain" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_DomainConfig` + x.getID()"/>
+                        <set_default id="readOnly" value_expr="x -> true"/>
+                        <set_default id="domain0" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain1" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain2" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain3" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain4" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain5" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain6" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain7" value_expr="x -> `MPU_RW`"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_ExtensionConfig" label="Extension configuration" type="mpu_pal_Extension" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_ExtensionConfig` + x.getID()"/>
+                        <set_default id="semaEnable" value_expr="x -> false"/>
+                        <set_default id="semaNum" value_expr="x -> 0"/>
+                        <set_default id="lockConfig" value_expr="x -> `MPU_UNLOCK`"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Memory instance -->
+            <struct id="mpu_pal_MemoryInstance" label="Memory instances">
+                <reference id="memInstance" label="Instance" type="mpu_pal_Instance_type">
+                    <description>Memory instances.</description>
+                </reference>
+                <info id="memInfo" label="Information" value="`N/A`"/>
+            </struct>
+        </user_types>
+        <settings>
+            <array id="mpu_pal_Memory" label="Memory instances" type="mpu_pal_MemoryInstance" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" component_id="mpu_pal_config" available="true">
+                <description>Memory Instances</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`memInstance`).value()).length() == 0" level="error" description="There are some duplicated `Memory instance` in the configuration"/>
+                </validation>
+                <item_defaults>
+                    <set_default id="memInstance" value_expr="x -> x.getID()"/>
+                </item_defaults>
+            </array>
+            <reference id="mpu_pal_Configuration" label="Configuration" type="mpu_pal_Config" component_id="mpu_pal_config" available="true">
+                <description>Configuration</description>
+            </reference>
+            <variable value="`../mpu_pal/mpu_pal_codegen.js`" id="codegen_file"></variable>
+            <variable value="`MPU_PAL_CodeGenerator`" id="codegen_class"></variable>
+            <variable value="`../mpu_pal/mpu_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+            <variable value="`MPU_PAL_AddDrivers`" id="toolchain_settings_class"></variable>
+        </settings>
+        <generated_types>
+            <enum id="mpu_inst_type_t" label="Enumeration with the types of peripherals supported by MPU PAL" from="mpu_inst_type_t">
+                <description>This enumeration contains the types of peripherals supported by MPU PAL. Implements : mpu_inst_type_t_Class</description>
+                <item id="MPU_INST_TYPE_MPU" label=""/>
+                <item id="MPU_INST_TYPE_SMPU" label=""/>
+                <item id="MPU_INST_TYPE_XRDC" label=""/>
+            </enum>
+            <enum id="mpu_access_permission_t" label="" from="mpu_access_permission_t">
+                <item id="MPU_NONE" label="All accesses are not allowed"/>
+                <item id="MPU_W_OR_SET_1" label="Write allowed, no Read; Specific access set 1"/>
+                <item id="MPU_R_OR_SET_2" label="Read allowed, no Write; Specific access set 2"/>
+                <item id="MPU_RW_OR_SET_3" label="Both Read and Write allowed; Specific access set 3"/>
+                <item id="MPU_RW" label="Mode: SecurePriv SecureUser NonsecurePriv NonsecureUser r, w r, w r, w r, w"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_RW_USER_NONE" label="r, w r, w r, w none"/>
+                <item id="MPU_SECURE_RW_NONSECURE_R" label="r, w r, w r r"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_R_USER_NONE" label="r, w r, w r none"/>
+                <item id="MPU_SECURE_RW_NONSECURE_NONE" label="r, w r, w none none"/>
+                <item id="MPU_SECURE_PRIV_RW_USER_NONE_NONSECURE_NONE" label="r, w none none none"/>
+                <item id="MPU_SECURE_R_NONSECURE_NONE" label="r r none none"/>
+                <item id="MPU_NONE" label="All accesses are not allowed"/>
+            </enum>
+            <enum id="mpu_error_access_type_t" label="MPU access error Implements : mpu_error_access_type_t_Class" from="mpu_error_access_type_t">
+                <item id="MPU_ERROR_TYPE_READ" label="Error type: read"/>
+                <item id="MPU_ERROR_TYPE_WRITE" label="Error type: write"/>
+            </enum>
+            <enum id="mpu_error_attributes_t" label="MPU access error attributes Implements : mpu_error_attributes_t_Class" from="mpu_error_attributes_t">
+                <item id="MPU_ERROR_USER_MODE_INSTRUCTION_ACCESS" label="Instruction access error in user mode"/>
+                <item id="MPU_ERROR_USER_MODE_DATA_ACCESS" label="Data access error in user mode"/>
+                <item id="MPU_ERROR_SUPERVISOR_MODE_INSTRUCTION_ACCESS" label="Instruction access error in supervisor mode"/>
+                <item id="MPU_ERROR_SUPERVISOR_MODE_DATA_ACCESS" label="Data access error in supervisor mode"/>
+            </enum>
+            <enum id="mpu_specific_access_permission_t" label="Specific access permission" from="mpu_specific_access_permission_t">
+                <description>Read (r) permission refers to the ability to access the referenced memory address using an operand (data) fetch.Write (w) permission refers to the ability to update the referenced memory address using a store (data) operation.Execute (x) permission refers to the ability to read the referenced memory address using an instruction fetch Implements : mpu_specific_access_permission_t_Class</description>
+                <item id="MPU_SUPERVISOR_NONE_USER_NONE" label="All accesses are not allowed"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_X" label="No access in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_W" label="No access in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_WX" label="No access in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_R" label="No access in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_RX" label="No access in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_RW" label="No access in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_RWX" label="No access in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_NONE" label="Allow Execute in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_X" label="Allow Execute in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_W" label="Allow Execute in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_WX" label="Allow Execute in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_R" label="Allow Execute in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_RX" label="Allow Execute in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_RW" label="Allow Execute in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_RWX" label="Allow Execute in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_NONE" label="Allow Write in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_X" label="Allow Write in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_W" label="Allow Write in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_WX" label="Allow Write in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_R" label="Allow Write in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_RX" label="Allow Write in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_RW" label="Allow Write in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_RWX" label="Allow Write in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_NONE" label="Allow Write, Execute in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_X" label="Allow Write, Execute in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_W" label="Allow Write, Execute in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_WX" label="Allow Write, Execute in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_R" label="Allow Write, Execute in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_RX" label="Allow Write, Execute in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_RW" label="Allow Write, Execute in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_RWX" label="Allow Write, Execute in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_NONE" label="Allow Read in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_X" label="Allow Read in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_W" label="Allow Read in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_WX" label="Allow Read in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_R" label="Allow Read in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_RX" label="Allow Read in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_RW" label="Allow Read in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_RWX" label="Allow Read in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_NONE" label="Allow Read, Execute in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_X" label="Allow Read, Execute in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_W" label="Allow Read, Execute in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_WX" label="Allow Read, Execute in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_R" label="Allow Read, Execute in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_RX" label="Allow Read, Execute in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_RW" label="Allow Read, Execute in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_RWX" label="Allow Read, Execute in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_NONE" label="Allow Read, Write in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_X" label="Allow Read, Write in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_W" label="Allow Read, Write in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_WX" label="Allow Read, Write in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_R" label="Allow Read, Write in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_RX" label="Allow Read, Write in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_RW" label="Allow Read, Write in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_RWX" label="Allow Read, Write in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_NONE" label="Allow Read, Write, Execute in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_X" label="Allow Read, Write, Execute in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_W" label="Allow Read, Write, Execute in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_WX" label="Allow Read, Write, Execute in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_R" label="Allow Read, Write, Execute in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_RX" label="Allow Read, Write, Execute in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_RW" label="Allow Read, Write, Execute in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_RWX" label="Allow Read, Write, Execute in supervisor mode; Allow Read, Write, Execute in user mode"/>
+            </enum>
+            <enum id="mpu_lock_t" label="Lock configuration" from="mpu_lock_t">
+                <item id="MPU_UNLOCK" label="Unlocked"/>
+                <item id="MPU_OWNER_LOCK" label="Locked by the master wrote this register and LCK bit Attempted writes by other masters are ignored"/>
+                <item id="MPU_ALL_LOCK" label="Attempted writes to any location in the region descriptor are ignored"/>
+                <item id="MPU_UNLOCK" label="Unlocked"/>
+                <item id="MPU_OWNER_LOCK" label="Locked by the master wrote this register and LCK bit Attempted writes by other masters are ignored"/>
+                <item id="MPU_LOCKED_ALL" label="Register is locked (read-only) until the next reset"/>
+            </enum>
+            <struct id="mpu_instance_t" label="Structure storing PAL instance information" from="mpu_instance_t">
+                <description>This structure is used for storing PAL instance information. Implements : mpu_instance_t_Class</description>
+                <reference id="instType" label="Peripheral over which the PAL is used" type="mpu_inst_type_t">
+                    <description>Peripheral over which the PAL is used</description>
+                </reference>
+                <integer id="instIdx" label="Instance index of the peripheral over which the PAL is used" type="uint32_t">
+                    <description>Instance index of the peripheral over which the PAL is used</description>
+                </integer>
+            </struct>
+            <struct id="mpu_error_info_t" label="MPU detail error access info Implements : mpu_error_info_t_Class" from="mpu_error_info_t">
+                <integer id="master" label="Access error master" type="uint8_t">
+                    <description>Access error master</description>
+                </integer>
+                <bool id="overrun" label="Access error master overrun">
+                    <description>Access error master overrun</description>
+                </bool>
+                <reference id="attributes" label="Access error attributes" type="mpu_error_attributes_t">
+                    <description>Access error attributes</description>
+                </reference>
+                <reference id="accessType" label="Access error type" type="mpu_error_access_type_t">
+                    <description>Access error type</description>
+                </reference>
+                <integer id="accessCtr" label="Access error control" type="uint32_t">
+                    <description>Access error control</description>
+                </integer>
+                <integer id="addr" label="Access error address" type="uint32_t">
+                    <description>Access error address</description>
+                </integer>
+                <integer id="processId" label="Access error process identification" type="uint8_t">
+                    <description>Access error process identification</description>
+                </integer>
+            </struct>
+            <struct id="mpu_master_access_permission_t" label="MPU master access permission" from="mpu_master_access_permission_t">
+                <integer id="masterNum" label="Master number" type="uint8_t">
+                    <description>Master number</description>
+                </integer>
+                <reference id="accessRight" label="Privilege right" type="mpu_access_permission_t">
+                    <description>Privilege right</description>
+                </reference>
+            </struct>
+            <struct id="mpu_region_config_t" label="MPU region configuration structure" from="mpu_region_config_t">
+                <integer id="startAddr" label="Memory region start address" type="uint32_t">
+                    <description>Memory region start address</description>
+                </integer>
+                <integer id="endAddr" label="Memory region end address" type="uint32_t">
+                    <description>Memory region end address</description>
+                </integer>
+                <fixme id="masterAccRight" label="Access permission for masters" type="const mpu_master_access_permission_t *">
+                    <description>Access permission for masters</description>
+                </fixme>
+                <integer id="processIdEnable" label="Process identifier enable For MPU: the bit index corresponding with masters For SMPU: disable if equal zero, otherwise enable" type="uint8_t">
+                    <description>Process identifier enable For MPU: the bit index corresponding with masters For SMPU: disable if equal zero, otherwise enable</description>
+                </integer>
+                <integer id="processIdentifier" label="Process identifier" type="uint8_t">
+                    <description>Process identifier</description>
+                </integer>
+                <integer id="processIdMask" label="Process identifier mask" type="uint8_t">
+                    <description>Process identifier mask. The setting bit will ignore the same bit in process identifier</description>
+                </integer>
+                <fixme id="extension" label="This field will be used to add extra settings to the basic region configuration" type="void *">
+                    <description>This field will be used to add extra settings to the basic region configuration</description>
+                </fixme>
+            </struct>
+            <struct id="mpu_region_lock_t" label="Region lock configuration structure" from="mpu_region_lock_t">
+                <integer id="regionNum" label="Region number" type="uint8_t">
+                    <description>Region number</description>
+                </integer>
+                <integer id="masterOwner" label="Master number" type="uint8_t">
+                    <description>Master number</description>
+                </integer>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_lock_t">
+                    <description>Lock configuration</description>
+                </reference>
+            </struct>
+            <struct id="mpu_extension_smpu_region_t" label="Defines the region extension structure for the MPU over SMPU Implements : mpu_extension_smpu_region_t_Class" from="mpu_extension_smpu_region_t">
+                <bool id="specAccessEnable" label="Specific access enable">
+                    <description>Specific access enable</description>
+                </bool>
+                <fixme id="specAccessSet" label="Specific access configurations" type="const mpu_specific_access_permission_t *">
+                    <description>Specific access configurations</description>
+                </fixme>
+                <bool id="cacheInhibitEnable" label="Cache Inhibit">
+                    <description>Cache Inhibit</description>
+                </bool>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_lock_t">
+                    <description>Lock configuration</description>
+                </reference>
+            </struct>
+            <struct id="mpu_extension_xrdc_region_t" label="Defines the region extension structure for the MPU over XRDC Implements : mpu_extension_xrdc_region_t_Class" from="mpu_extension_xrdc_region_t">
+                <bool id="semaEnable" label="Semaphore enable">
+                    <description>Semaphore enable</description>
+                </bool>
+                <integer id="semaNum" label="Semaphore number" type="uint8_t">
+                    <description>Semaphore number</description>
+                </integer>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_lock_t">
+                    <description>Lock configuration</description>
+                </reference>
+            </struct>
+        </generated_types>
+    </config_set>
+    <config_set id="mpu_pal_s32s" label="General MPU PAL configuration" from_source="mpu_pal.h" available="featureDefined(`FEATURE_XRDC_S32S`)==true">
+        <description>Basic MPU PAL configuration.</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="mpu_pal_default" label="Default values for MPU PAL" available="true">
+                <description>MPU PAL default configuration.</description>
+                <!-- Default Hardware configuration -->
+                <set id="mpu_pal_Hardware.readOnly">true</set>
+                <set id="mpu_pal_Hardware.defaultMapEn">true</set>
+                <!-- Default Memory Instance -->
+                <set id="mpu_pal_Memory.0"></set>
+                <!-- Default User Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.readOnly">true</set>
+                <!-- Default Domain Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_MasterConfig.0.readOnly">true</set>
+                <!-- Default Region Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.startAddr">0x0</set>
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.endAddr">0xFFFFFFFF</set>
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.extension">NULL</set>
+            </quick_selection>
+            <default>mpu_pal_default</default>
+        </quick_selections>
+        <user_types>
+            <!-- Enums -->
+            <enum id="mpu_pal_Instance_type" label="Memory instances" from="mpu_pal_Instance_type">
+                <item id="0" label="0" available="$instance.getPeripheral()==`XRDC_1`"/>
+                <item id="2" label="2" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="3" label="3" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="4" label="4" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="5" label="5" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="7" label="7" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="12" label="12" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="13" label="13" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="14" label="14" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="15" label="15" available="$instance.getPeripheral()==`XRDC_0`"/>
+            </enum>
+            <enum id="mpu_pal_DomainAccRights_type" label="Domain access rights" from="mpu_pal_DomainAccRights_type">
+                <item id="MPU_RW" label="Secure Priv RW User RW / Nonsecure Priv RW User RW" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_RW_USER_NONE" label="Secure Priv RW User RW / Nonsecure Priv RW User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_RW_NONSECURE_R" label="Secure Priv RW User RW / Nonsecure Priv R- User R-" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_R_USER_NONE" label="Secure Priv RW User RW / Nonsecure Priv R User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_RW_NONSECURE_NONE" label="Secure Priv RW User RW / Nonsecure Priv -- User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_PRIV_RW_USER_NONE_NONSECURE_NONE" label="Secure Priv RW User -- / Nonsecure Priv -- User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_R_NONSECURE_NONE" label="Secure Priv R- User R- / Nonsecure Priv -- User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_NONE" label="Secure Priv -- User -- / Nonsecure Priv -- User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_CORE_EL_RWX_OTHER_X" label="EL rwx | Other --x" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                    <description>EL read/write/execute and others execute.</description>
+                </item>
+                <item id="MPU_CORE_EL_RW_OTHER_NONE" label="EL rw- | Other ---" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                    <description>EL read/write and others none.</description>
+                </item>
+                <item id="MPU_CORE_EL_RWX_OTHER_RWX" label="EL rwx | Other rwx" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                    <description>EL read/write/execute and others read/write/execute.</description>
+                </item>
+                <item id="MPU_CORE_EL_RW_OTHER_RW" label="EL rw- | Other rw-" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                    <description>EL read/write and others read/write.</description>
+                </item>
+                <item id="MPU_CORE_EL_RX_OTHER_X" label="EL r-x | Other --x" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                    <description>EL read/execute and others execute.</description>
+                </item>
+                <item id="MPU_CORE_EL_R_OTHER_NONE" label="EL r-- | Other ---" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                    <description>EL read and others none.</description>
+                </item>
+                <item id="MPU_CORE_EL_RX_OTHER_RX" label="EL r-x | Other r-x" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                    <description>EL read/execute and others read/execute.</description>
+                </item>
+                <item id="MPU_CORE_EL_R_OTHER_R" label="EL r-- | Other r--" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                    <description>EL read and others read.</description>
+                </item>
+            </enum>
+            <enum id="mpu_Lock_type" label="Lock configuration" from="mpu_Lock_type">
+                <item id="MPU_UNLOCK" label="Unlock"/>
+                <item id="MPU_OWNER_LOCK" label="Owner lock"/>
+                <item id="MPU_LOCKED_ALL" label="All lock"/>
+            </enum>
+            <enum id="mpu_AttrNum_t" label="Attribute number" from="mpu_AttrNum_t">
+                <item id="0" label="0"/>
+                <item id="1" label="1"/>
+                <item id="2" label="2"/>
+                <item id="3" label="3"/>
+                <item id="4" label="4"/>
+                <item id="5" label="5"/>
+                <item id="6" label="6"/>
+                <item id="7" label="7"/>
+            </enum>
+            <enum id="mpu_MemType_t" label="Memory type" from="mpu_MemType_t">
+                <item id="MPU_R52_DEVICE_MEMORY" label="Device"/>
+                <item id="MPU_R52_NORMAL_MEMORY" label="Normal"/>
+            </enum>
+            <enum id="mpu_DeviceAttr_t" label="Device attribute" from="mpu_DeviceAttr_t">
+                <item id="MPU_R52_D_NONE" label="nGnRnE">
+                    <description>Non-Gathering, Non-Reodering and No Early Acknowledge.</description>
+                </item>
+                <item id="MPU_R52_D_EACK" label="nGnRE">
+                    <description>Non-Gathering, Non-Reodering and Early Acknowledge.</description>
+                </item>
+                <item id="MPU_R52_D_REODER_EACK" label="nGRE">
+                    <description>Non-Gathering, Reodering and No Early Acknowledge.</description>
+                </item>
+                <item id="MPU_R52_D_GATHER_REODER_EACK" label="GRE">
+                    <description>Gathering, Reodering and No Early Acknowledge.</description>
+                </item>
+            </enum>
+            <enum id="mpu_NormalAttr_t" label="Memory type" from="mpu_NormalAttr_t">
+                <item id="MPU_R52_N_W_THROUGH_W_ALLOCATE_TRANSIENT" label="W Through | W Allocate | Transient">
+                    <description>Write-Through Write-Allocate Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_THROUGH_R_ALLOCATE_TRANSIENT" label="W Through | R Allocate | Transient">
+                    <description>Write-Through Read-Allocate Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_THROUGH_RW_ALLOCATE_TRANSIENT" label="W Through | RW Allocate | Transient">
+                    <description>Write-Through Read/Write-Allocate Transient</description>
+                </item>
+                <item id="MPU_R52_N_NON_CACHEABLE" label="Non-cacheable">
+                    <description>Non-cacheable</description>
+                </item>
+                <item id="MPU_R52_N_W_BACK_W_ALLOCATE_TRANSIENT" label="W Back | W Allocate | Transient">
+                    <description>Write-Back Write-Allocate Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_BACK_R_ALLOCATE_TRANSIENT" label="W Back | W Allocate | Transient">
+                    <description>Write-Back Read-Allocate Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_BACK_RW_ALLOCATE_TRANSIENT" label="W Back | RW Allocate | Transient">
+                    <description>Write-Back Read/Write-Allocate Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_THROUGH" label="W Through">
+                    <description>Write-Through Non-Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_THROUGH_W_ALLOCATE" label="W Through | W Allocate">
+                    <description>Write-Through Write-Allocate Non-Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_THROUGH_R_ALLOCATE" label="W Through | R Allocate">
+                    <description>Write-Through Read-Allocate Non-Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_THROUGH_RW_ALLOCATE" label="W Through | RW Allocate">
+                    <description>Write-Through Read/Write-Allocate Non-Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_BACK" label="W Back">
+                    <description>Write-Back Non-Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_BACK_W_ALLOCATE" label="W Back | W Allocate">
+                    <description>Write-Back Write-Allocate Non-Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_BACK_R_ALLOCATE" label="W Back | R Allocate">
+                    <description>Write-Back Read-Allocate Non-Transient</description>
+                </item>
+                <item id="MPU_R52_N_W_BACK_RW_ALLOCATE" label="W Back | RW Allocate">
+                    <description>Write-Back Read/Write-Allocate Non-Transient</description>
+                </item>
+            </enum>
+            <enum id="mpu_Shareability_t" label="Shareability" from="mpu_Shareability_t">
+                <item id="MPU_R52_NON_SHAREABLE" label="Non-shareable">
+                    <description>Non-shareable.</description>
+                </item>
+                <item id="MPU_R52_OUTER_SHAREABLE" label="Outer shareable">
+                    <description>Outer shareable.</description>
+                </item>
+                <item id="MPU_R52_INNER_SHAREABLE" label="Inner shareable">
+                    <description>Inner shareable.</description>
+                </item>
+            </enum>
+            <!-- Master Configuration -->
+            <struct id="mpu_pal_Domain" label="Domain configuration">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <reference id="domain0" label="Domain 0" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 0 access rights</description>
+                </reference>
+                <reference id="domain1" label="Domain 1" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 1 access rights</description>
+                </reference>
+                <reference id="domain2" label="Domain 2" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 2 access rights</description>
+                </reference>
+                <reference id="domain3" label="Domain 3" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 3 access rights</description>
+                </reference>
+                <reference id="domain4" label="Domain 4" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 4 access rights</description>
+                </reference>
+                <reference id="domain5" label="Domain 5" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 5 access rights</description>
+                </reference>
+                <reference id="domain6" label="Domain 6" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 6 access rights</description>
+                </reference>
+                <reference id="domain7" label="Domain 7" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 7 access rights</description>
+                </reference>
+                <reference id="accessRight" label="Access right" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                    <description>Access rights</description>
+                </reference>
+            </struct>
+            <!-- User Configuration -->
+            <struct id="mpu_pal_RegionConfig" label="Region configuration" from="mpu_region_config_t">
+                <info id="regionNum" label="Region number" value="0"/>
+                <integer id="startAddr" label="Start address" type="uint32_t" options="cStructField">
+                    <description>Region start address. This field defines the 32 bits of the start address of the memory region. This field will combine with "Higher start address" from the extension if enabled.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; $parent.endAddr.getValue()) || ($parent.extension.getValue() != `NULL`)" level="warning" description="Region start address should be less than end address!"/>
+                    </validation>
+                </integer>
+                <integer id="endAddr" label="End address" type="uint32_t" options="cStructField">
+                    <description>Region end address. This field defines the 32 bits of the end address of the memory region. This field will combine with "Higher end address" from the extension if enabled.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt; $parent.startAddr.getValue()) || ($parent.extension.getValue() != `NULL`)" level="warning" description="Region end address should be greater than end address!"/>
+                    </validation>
+                </integer>
+                <dynamic_enum id="masterAccRight" label="Domain configuration" items="createArray().merge($configSet.mpu_pal_Configuration.mpu_pal_MasterConfig.arrayToEnumItems(
+                enumItem -> true,
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue()))" options="cStructField">
+                    <description>Domain configuration.</description>
+                </dynamic_enum>
+                <string id="extension" label="Extension" options="cStructField">
+                    <description>This field will be used to add extra settings to the basic region configuration</description>
+                    <validation>
+                        <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <struct id="mpu_pal_Region" label="Region configuration" from="mpu_pal_Region">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <info id="regionCnt" label="Region count" value="0"/>
+                <array id="mpu_pal_RegionConfig" label="Region configuration" type="mpu_pal_RegionConfig" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.length() &lt; 17" level="error" description="The number of regions are out of supported range!"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="startAddr" value_expr="x -> 0x0"/>
+                        <set_default id="endAddr" value_expr="x -> 0x1F"/>
+                        <set_default id="masterAccRight" value_expr="x -> $instance.getID() + `_DomainConfig0`"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Extension Configuration -->
+            <struct id="mpu_pal_Extension" label="Extension configuration" from="mpu_extension_xrdc_region_t">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <integer id="hStartAddr" label="Higher start address" type="uint8_t" min_expr="0" max_expr="0xF" enable="$instance.getPeripheral()==`XRDC_0`" options="cStructField">
+                    <description>Region higher start address. This field defines 4 most significant bits [35:32] of the start address.</description>
+                    <validation>
+                        <constraint cond_expr="!($this.getValue() &gt; $parent.hEndAddr.getValue())" level="warning" description="Region higher start address should be less than or equal to higher end address!"/>
+                    </validation>
+                </integer>
+                <integer id="hEndAddr" label="Higher end address" type="uint8_t" min_expr="0" max_expr="0xF" enable="$instance.getPeripheral()==`XRDC_0`" options="cStructField">
+                    <description>Region higher end address. This field defines 4 most significant bits [35:32] of the end address.</description>
+                    <validation>
+                        <constraint cond_expr="!($this.getValue() &lt; $parent.hStartAddr.getValue())" level="warning" description="Region higher end address should be greater than or equal to higher start address!"/>
+                    </validation>
+                </integer>
+                <bool id="semaEnable" label="Semaphore enable" options="cStructField">
+                    <description>Semaphore enable.</description>
+                </bool>
+                <integer id="semaNum" label="Semaphore number" type="uint8_t" min_expr="0" max_expr="0xF" options="cStructField">
+                    <description>Semaphore number.</description>
+                </integer>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_Lock_type" options="cStructField">
+                    <description>Lock configuration.</description>
+                </reference>
+            </struct>
+            <struct id="mpu_pal_Extension_Mpu_R52" label="Extension configuration" from="mpu_extension_mpu_r52_region_t">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <reference id="memSet" label="Attribute index" type="mpu_AttrNum_t" options="cStructField">
+                    <description>Indexes a set of memory attributes.</description>
+                </reference>
+                <reference id="shareability" label="Shareability" type="mpu_Shareability_t" options="cStructField">
+                    <description>Memory shareability.</description>
+                </reference>
+            </struct>
+            <!-- Configurations -->
+            <struct id="mpu_pal_Config" label="Configuration" options="ShowContentAs=Tabs">
+                <array id="mpu_pal_UserConfig" label="User configuration" type="mpu_pal_Region" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_RegionConfig` + x.getID()"/>
+                        <set_default id="readOnly" value_expr="x -> true"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_MasterConfig" label="Domain configuration" type="mpu_pal_Domain" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_DomainConfig` + x.getID()"/>
+                        <set_default id="readOnly" value_expr="x -> true"/>
+                        <set_default id="domain0" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain1" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain2" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain3" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain4" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain5" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain6" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain7" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="accessRight" value_expr="x -> `MPU_CORE_EL_RWX_OTHER_RWX`"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_ExtensionConfig" label="Extension configuration" type="mpu_pal_Extension" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_ExtensionConfig` + x.getID()"/>
+                        <set_default id="hStartAddr" value_expr="x -> 0"/>
+                        <set_default id="hEndAddr" value_expr="x -> 0"/>
+                        <set_default id="semaEnable" value_expr="x -> false"/>
+                        <set_default id="semaNum" value_expr="x -> 0"/>
+                        <set_default id="lockConfig" value_expr="x -> `MPU_UNLOCK`"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_ExtensionConfig_Mpu_R52" label="Extension configuration" type="mpu_pal_Extension_Mpu_R52" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_ExtensionConfig` + x.getID()"/>
+                        <set_default id="memSet" value_expr="x -> 0"/>
+                        <set_default id="shareability" value_expr="x -> `MPU_R52_NON_SHAREABLE`"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Memory instance -->
+            <struct id="mpu_pal_MemoryInstance" label="Memory instances">
+                <reference id="memInstance" label="Instance" type="mpu_pal_Instance_type">
+                    <description>Memory instances.</description>
+                </reference>
+                <info id="memInfo" label="Information" value="`N/A`"/>
+            </struct>
+            <!-- Memory attribute configuration -->
+            <struct id="mpu_pal_AttrConfig" label="Hardware configuration">
+                <reference id="attrNum" label="Index" type="mpu_AttrNum_t" options="cStructField">
+                    <description>Indexes a set of memory attributes.</description>
+                </reference>
+                <reference id="memType" label="Type" type="mpu_MemType_t" options="cStructField">
+                    <description>Indexes a set of memory attributes.</description>
+                </reference>
+                <reference id="deviceAttr" label="Device" type="mpu_DeviceAttr_t" enable="($parent.memType.getValue() == `MPU_R52_DEVICE_MEMORY`)" options="cStructField">
+                    <description>Indexes a set of memory attributes.</description>
+                </reference>
+                <reference id="normalOuterAttr" label="Outer cache" type="mpu_NormalAttr_t" enable="($parent.memType.getValue() == `MPU_R52_NORMAL_MEMORY`)" options="cStructField">
+                    <description>Indexes a set of memory attributes.</description>
+                </reference>
+                <reference id="normalInnerAttr" label="Inner index" type="mpu_NormalAttr_t" enable="($parent.memType.getValue() == `MPU_R52_NORMAL_MEMORY`)" options="cStructField">
+                    <description>Indexes a set of memory attributes.</description>
+                </reference>
+            </struct>
+        </user_types>
+        <settings>
+            <struct id="mpu_pal_Hardware" label="Hardware configuration" type="mpu_pal_Hardware" component_id="mpu_pal_config" available="($instance.getPeripheral()==`MPU_R52_0`) || ($instance.getPeripheral()==`MPU_R52_1`)">
+                <description>Hardware configuration</description>
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <bool id="defaultMapEn" label="Background" options="cStructField">
+                    <description>Background region enable.</description>
+                </bool>
+                <info id="attrCnt" label="Attribute count" value="0" options="cStructField"/>
+                <array id="mpu_pal_MemoryAttr" label="Memory attributes" type="mpu_pal_AttrConfig" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <description>Memory attributes.</description>
+                    <validation>
+                        <constraint cond_expr="$this.length() &lt; 9" level="error" description="The number of memory indexes are out of supported range!"/>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`attrNum`).value()).length() == 0" level="error" description="There are some duplicated `Index` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="attrNum" value_expr="x -> x.getID()"/>
+                        <set_default id="memType" value_expr="x -> `MPU_R52_NORMAL_MEMORY`"/>
+                        <set_default id="deviceAttr" value_expr="x -> `MPU_R52_D_NONE`"/>
+                        <set_default id="normalOuterAttr" value_expr="x -> `MPU_R52_N_NON_CACHEABLE`"/>
+                        <set_default id="normalInnerAttr" value_expr="x -> `MPU_R52_N_NON_CACHEABLE`"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <array id="mpu_pal_Memory" label="Memory instances" type="mpu_pal_MemoryInstance" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" component_id="mpu_pal_config" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                <description>Memory Instances</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`memInstance`).value()).length() == 0" level="error" description="There are some duplicated `Memory instance` in the configuration"/>
+                </validation>
+            </array>
+            <reference id="mpu_pal_Configuration" label="Configuration" type="mpu_pal_Config" component_id="mpu_pal_config" available="true">
+                <description>Configuration</description>
+            </reference>
+            <variable value="`../mpu_pal/mpu_pal_codegen.js`" id="codegen_file"></variable>
+            <variable value="`MPU_PAL_CodeGenerator`" id="codegen_class"></variable>
+            <variable value="`../mpu_pal/mpu_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+            <variable value="`MPU_PAL_AddDrivers`" id="toolchain_settings_class"></variable>
+        </settings>
+        <generated_types>
+            <enum id="mpu_inst_type_t" label="Enumeration with the types of peripherals supported by MPU PAL" from="mpu_inst_type_t">
+                <description>This enumeration contains the types of peripherals supported by MPU PAL. Implements : mpu_inst_type_t_Class</description>
+                <item id="MPU_INST_TYPE_MPU" label=""/>
+                <item id="MPU_INST_TYPE_SMPU" label=""/>
+                <item id="MPU_INST_TYPE_XRDC" label=""/>
+            </enum>
+            <enum id="mpu_access_permission_t" label="" from="mpu_access_permission_t">
+                <item id="MPU_NONE" label="All accesses are not allowed"/>
+                <item id="MPU_W_OR_SET_1" label="Write allowed, no Read; Specific access set 1"/>
+                <item id="MPU_R_OR_SET_2" label="Read allowed, no Write; Specific access set 2"/>
+                <item id="MPU_RW_OR_SET_3" label="Both Read and Write allowed; Specific access set 3"/>
+                <item id="MPU_RW" label="Mode: SecurePriv SecureUser NonsecurePriv NonsecureUser r, w r, w r, w r, w"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_RW_USER_NONE" label="r, w r, w r, w none"/>
+                <item id="MPU_SECURE_RW_NONSECURE_R" label="r, w r, w r r"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_R_USER_NONE" label="r, w r, w r none"/>
+                <item id="MPU_SECURE_RW_NONSECURE_NONE" label="r, w r, w none none"/>
+                <item id="MPU_SECURE_PRIV_RW_USER_NONE_NONSECURE_NONE" label="r, w none none none"/>
+                <item id="MPU_SECURE_R_NONSECURE_NONE" label="r r none none"/>
+                <item id="MPU_NONE" label="All accesses are not allowed"/>
+            </enum>
+            <enum id="mpu_error_access_type_t" label="MPU access error Implements : mpu_error_access_type_t_Class" from="mpu_error_access_type_t">
+                <item id="MPU_ERROR_TYPE_READ" label="Error type: read"/>
+                <item id="MPU_ERROR_TYPE_WRITE" label="Error type: write"/>
+            </enum>
+            <enum id="mpu_error_attributes_t" label="MPU access error attributes Implements : mpu_error_attributes_t_Class" from="mpu_error_attributes_t">
+                <item id="MPU_ERROR_USER_MODE_INSTRUCTION_ACCESS" label="Instruction access error in user mode"/>
+                <item id="MPU_ERROR_USER_MODE_DATA_ACCESS" label="Data access error in user mode"/>
+                <item id="MPU_ERROR_SUPERVISOR_MODE_INSTRUCTION_ACCESS" label="Instruction access error in supervisor mode"/>
+                <item id="MPU_ERROR_SUPERVISOR_MODE_DATA_ACCESS" label="Data access error in supervisor mode"/>
+            </enum>
+            <enum id="mpu_specific_access_permission_t" label="Specific access permission" from="mpu_specific_access_permission_t">
+                <description>Read (r) permission refers to the ability to access the referenced memory address using an operand (data) fetch.Write (w) permission refers to the ability to update the referenced memory address using a store (data) operation.Execute (x) permission refers to the ability to read the referenced memory address using an instruction fetch Implements : mpu_specific_access_permission_t_Class</description>
+                <item id="MPU_SUPERVISOR_NONE_USER_NONE" label="All accesses are not allowed"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_X" label="No access in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_W" label="No access in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_WX" label="No access in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_R" label="No access in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_RX" label="No access in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_RW" label="No access in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_NONE_USER_RWX" label="No access in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_NONE" label="Allow Execute in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_X" label="Allow Execute in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_W" label="Allow Execute in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_WX" label="Allow Execute in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_R" label="Allow Execute in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_RX" label="Allow Execute in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_RW" label="Allow Execute in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_X_USER_RWX" label="Allow Execute in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_NONE" label="Allow Write in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_X" label="Allow Write in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_W" label="Allow Write in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_WX" label="Allow Write in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_R" label="Allow Write in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_RX" label="Allow Write in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_RW" label="Allow Write in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_W_USER_RWX" label="Allow Write in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_NONE" label="Allow Write, Execute in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_X" label="Allow Write, Execute in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_W" label="Allow Write, Execute in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_WX" label="Allow Write, Execute in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_R" label="Allow Write, Execute in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_RX" label="Allow Write, Execute in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_RW" label="Allow Write, Execute in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_WX_USER_RWX" label="Allow Write, Execute in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_NONE" label="Allow Read in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_X" label="Allow Read in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_W" label="Allow Read in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_WX" label="Allow Read in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_R" label="Allow Read in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_RX" label="Allow Read in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_RW" label="Allow Read in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_R_USER_RWX" label="Allow Read in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_NONE" label="Allow Read, Execute in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_X" label="Allow Read, Execute in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_W" label="Allow Read, Execute in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_WX" label="Allow Read, Execute in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_R" label="Allow Read, Execute in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_RX" label="Allow Read, Execute in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_RW" label="Allow Read, Execute in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RX_USER_RWX" label="Allow Read, Execute in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_NONE" label="Allow Read, Write in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_X" label="Allow Read, Write in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_W" label="Allow Read, Write in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_WX" label="Allow Read, Write in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_R" label="Allow Read, Write in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_RX" label="Allow Read, Write in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_RW" label="Allow Read, Write in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RW_USER_RWX" label="Allow Read, Write in supervisor mode; Allow Read, Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_NONE" label="Allow Read, Write, Execute in supervisor mode; No access in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_X" label="Allow Read, Write, Execute in supervisor mode; Allow Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_W" label="Allow Read, Write, Execute in supervisor mode; Allow Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_WX" label="Allow Read, Write, Execute in supervisor mode; Allow Write, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_R" label="Allow Read, Write, Execute in supervisor mode; Allow Read in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_RX" label="Allow Read, Write, Execute in supervisor mode; Allow Read, Execute in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_RW" label="Allow Read, Write, Execute in supervisor mode; Allow Read, Write in user mode"/>
+                <item id="MPU_SUPERVISOR_RWX_USER_RWX" label="Allow Read, Write, Execute in supervisor mode; Allow Read, Write, Execute in user mode"/>
+            </enum>
+            <enum id="mpu_lock_t" label="Lock configuration" from="mpu_lock_t">
+                <item id="MPU_UNLOCK" label="Unlocked"/>
+                <item id="MPU_OWNER_LOCK" label="Locked by the master wrote this register and LCK bit Attempted writes by other masters are ignored"/>
+                <item id="MPU_ALL_LOCK" label="Attempted writes to any location in the region descriptor are ignored"/>
+                <item id="MPU_UNLOCK" label="Unlocked"/>
+                <item id="MPU_OWNER_LOCK" label="Locked by the master wrote this register and LCK bit Attempted writes by other masters are ignored"/>
+                <item id="MPU_LOCKED_ALL" label="Register is locked (read-only) until the next reset"/>
+            </enum>
+            <struct id="mpu_instance_t" label="Structure storing PAL instance information" from="mpu_instance_t">
+                <description>This structure is used for storing PAL instance information. Implements : mpu_instance_t_Class</description>
+                <reference id="instType" label="Peripheral over which the PAL is used" type="mpu_inst_type_t">
+                    <description>Peripheral over which the PAL is used</description>
+                </reference>
+                <integer id="instIdx" label="Instance index of the peripheral over which the PAL is used" type="uint32_t">
+                    <description>Instance index of the peripheral over which the PAL is used</description>
+                </integer>
+            </struct>
+            <struct id="mpu_error_info_t" label="MPU detail error access info Implements : mpu_error_info_t_Class" from="mpu_error_info_t">
+                <integer id="master" label="Access error master" type="uint8_t">
+                    <description>Access error master</description>
+                </integer>
+                <bool id="overrun" label="Access error master overrun">
+                    <description>Access error master overrun</description>
+                </bool>
+                <reference id="attributes" label="Access error attributes" type="mpu_error_attributes_t">
+                    <description>Access error attributes</description>
+                </reference>
+                <reference id="accessType" label="Access error type" type="mpu_error_access_type_t">
+                    <description>Access error type</description>
+                </reference>
+                <integer id="accessCtr" label="Access error control" type="uint32_t">
+                    <description>Access error control</description>
+                </integer>
+                <integer id="addr" label="Access error address" type="uint32_t">
+                    <description>Access error address</description>
+                </integer>
+                <integer id="processId" label="Access error process identification" type="uint8_t">
+                    <description>Access error process identification</description>
+                </integer>
+            </struct>
+            <struct id="mpu_master_access_permission_t" label="MPU master access permission" from="mpu_master_access_permission_t">
+                <integer id="masterNum" label="Master number" type="uint8_t">
+                    <description>Master number</description>
+                </integer>
+                <reference id="accessRight" label="Privilege right" type="mpu_access_permission_t">
+                    <description>Privilege right</description>
+                </reference>
+            </struct>
+            <struct id="mpu_region_config_t" label="MPU region configuration structure" from="mpu_region_config_t">
+                <integer id="startAddr" label="Memory region start address" type="uint32_t">
+                    <description>Memory region start address</description>
+                </integer>
+                <integer id="endAddr" label="Memory region end address" type="uint32_t">
+                    <description>Memory region end address</description>
+                </integer>
+                <fixme id="masterAccRight" label="Access permission for masters" type="const mpu_master_access_permission_t *">
+                    <description>Access permission for masters</description>
+                </fixme>
+                <integer id="processIdEnable" label="Process identifier enable For MPU: the bit index corresponding with masters For SMPU: disable if equal zero, otherwise enable" type="uint8_t">
+                    <description>Process identifier enable For MPU: the bit index corresponding with masters For SMPU: disable if equal zero, otherwise enable</description>
+                </integer>
+                <integer id="processIdentifier" label="Process identifier" type="uint8_t">
+                    <description>Process identifier</description>
+                </integer>
+                <integer id="processIdMask" label="Process identifier mask" type="uint8_t">
+                    <description>Process identifier mask. The setting bit will ignore the same bit in process identifier</description>
+                </integer>
+                <fixme id="extension" label="This field will be used to add extra settings to the basic region configuration" type="void *">
+                    <description>This field will be used to add extra settings to the basic region configuration</description>
+                </fixme>
+            </struct>
+            <struct id="mpu_region_lock_t" label="Region lock configuration structure" from="mpu_region_lock_t">
+                <integer id="regionNum" label="Region number" type="uint8_t">
+                    <description>Region number</description>
+                </integer>
+                <integer id="masterOwner" label="Master number" type="uint8_t">
+                    <description>Master number</description>
+                </integer>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_lock_t">
+                    <description>Lock configuration</description>
+                </reference>
+            </struct>
+            <struct id="mpu_extension_smpu_region_t" label="Defines the region extension structure for the MPU over SMPU Implements : mpu_extension_smpu_region_t_Class" from="mpu_extension_smpu_region_t">
+                <bool id="specAccessEnable" label="Specific access enable">
+                    <description>Specific access enable</description>
+                </bool>
+                <fixme id="specAccessSet" label="Specific access configurations" type="const mpu_specific_access_permission_t *">
+                    <description>Specific access configurations</description>
+                </fixme>
+                <bool id="cacheInhibitEnable" label="Cache Inhibit">
+                    <description>Cache Inhibit</description>
+                </bool>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_lock_t">
+                    <description>Lock configuration</description>
+                </reference>
+            </struct>
+            <struct id="mpu_extension_xrdc_region_t" label="Defines the region extension structure for the MPU over XRDC Implements : mpu_extension_xrdc_region_t_Class" from="mpu_extension_xrdc_region_t">
+                <bool id="semaEnable" label="Semaphore enable">
+                    <description>Semaphore enable</description>
+                </bool>
+                <integer id="semaNum" label="Semaphore number" type="uint8_t">
+                    <description>Semaphore number</description>
+                </integer>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_lock_t">
+                    <description>Lock configuration</description>
+                </reference>
+            </struct>
+        </generated_types>
+    </config_set>
+    <config_set id="mpu_pal_s32g_s32r" label="General MPU PAL configuration" from_source="mpu_pal.h" available="featureDefined(`FEATURE_XRDC_S32G`)==true || featureDefined(`FEATURE_XRDC_S32R`)==true">
+        <description>Basic MPU PAL configuration.</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="mpu_pal_default" label="Default values for MPU PAL" available="true">
+                <description>MPU PAL default configuration.</description>
+                <!-- Default Hardware configuration -->
+                <set id="mpu_pal_Hardware.readOnly">true</set>
+                <set id="mpu_pal_Hardware.defaultMapEn">true</set>
+                <!-- Default Memory Instance -->
+                <set id="mpu_pal_Memory.0.memInstance">2</set>
+                <!-- Default User Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.readOnly">true</set>
+                <!-- Default Domain Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_MasterConfig.0.readOnly">true</set>
+                <!-- Default Region Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.startAddr">0x0</set>
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.endAddr">0xFFFFFFFF</set>
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.extension">NULL</set>
+            </quick_selection>
+            <default>mpu_pal_default</default>
+        </quick_selections>
+
+        <user_types>
+            <!-- Enums -->
+            <enum id="mpu_pal_Instance_type" label="Memory instances" from="mpu_pal_Instance_type">
+                <item id="0" label="0"/>
+                <item id="1" label="1" available="$instance.getPeripheral()==`XRDC_1`"/>
+                <item id="2" label="2"/>
+                <item id="3" label="3"/>
+                <item id="4" label="4"/>
+                <item id="5" label="5"/>
+                <item id="6" label="6" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="7" label="7" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="8" label="8" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="9" label="9" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="11" label="11" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="12" label="12" available="$instance.getPeripheral()==`XRDC_0`"/>
+                <item id="13" label="13" available="$instance.getPeripheral()==`XRDC_0`"/>
+            </enum>
+            <enum id="mpu_pal_DomainAccRights_type" label="Domain access rights" from="mpu_pal_DomainAccRights_type">
+                <item id="MPU_RW" label="Secure Priv RW User RW / Nonsecure Priv RW User RW" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_RW_USER_NONE" label="Secure Priv RW User RW / Nonsecure Priv RW User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_RW_NONSECURE_R" label="Secure Priv RW User RW / Nonsecure Priv R- User R-" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_R_USER_NONE" label="Secure Priv RW User RW / Nonsecure Priv R User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_RW_NONSECURE_NONE" label="Secure Priv RW User RW / Nonsecure Priv -- User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_PRIV_RW_USER_NONE_NONSECURE_NONE" label="Secure Priv RW User -- / Nonsecure Priv -- User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_SECURE_R_NONSECURE_NONE" label="Secure Priv R- User R- / Nonsecure Priv -- User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_NONE" label="Secure Priv -- User -- / Nonsecure Priv -- User --" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)"/>
+                <item id="MPU_CORE_PRIV_UNPRIV_NONE" label="Supervisor none | User none" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+                <item id="MPU_CORE_PRIV_RW_UNPRIV_NONE" label="Supervisor rw-| User none" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+                <item id="MPU_CORE_PRIV_RWX_UNPRIV_NONE" label="Supervisor rwx| User none" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+                <item id="MPU_CORE_PRIV_RW_UNPRIV_R" label="Supervisor rw-| User r" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+                <item id="MPU_CORE_PRIV_RWX_UNPRIV_RX" label="Supervisor rwx| User r-x" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+                <item id="MPU_CORE_PRIV_RW_UNPRIV_RW" label="Supervisor rw-| User rw-" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+                <item id="MPU_CORE_PRIV_RWX_UNPRIV_RWX" label="Supervisor rwx| User rwx" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+                <item id="MPU_CORE_PRIV_R_UNPRIV_NONE" label="Supervisor r| User none" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+                <item id="MPU_CORE_PRIV_RX_UNPRIV_NONE" label="Supervisor r-x| User none" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+                <item id="MPU_CORE_PRIV_R_UNPRIV_R" label="Supervisor r| User r" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+                <item id="MPU_CORE_PRIV_RX_UNPRIV_RX" label="Supervisor r-x| User r-x" available="($instance.getPeripheral()==`MPU_M7_0`)"/>
+            </enum>
+            <enum id="mpu_Lock_type" label="Lock configuration" from="mpu_Lock_type">
+                <item id="MPU_UNLOCK" label="Unlock"/>
+                <item id="MPU_OWNER_LOCK" label="Owner lock"/>
+                <item id="MPU_LOCKED_ALL" label="All lock"/>
+            </enum>
+            <enum id="mpu_m7memory_type" label="Attribute number" from="mpu_m7memory_type">
+                <item id="MPU_M7_MEM_STRONG_ORDER" label="Strongly ordered"/>
+                <item id="MPU_M7_MEM_DEVICE_SHARED" label="Shared device"/>
+                <item id="MPU_M7_MEM_NORMAL_IO_WR_THROUGH" label="Outer and inner write-through, no write allocate"/>
+                <item id="MPU_M7_MEM_NORMAL_IO_WR_BACK1" label="Outer and inner write-back, no write allocate"/>
+                <item id="MPU_M7_MEM_NORMAL_IO_NO_CACHE" label="Outer and inner Non-cacheable"/>
+                <item id="MPU_M7_MEM_NORMAL_IO_WR_BACK2" label="Outer and inner write-back; write and read allocate"/>
+                <item id="MPU_M7_MEM_DEVICE_NOSHARE" label="Non-shared device"/>
+                <item id="MPU_M7_MEM_NORMAL_CACHEABLE" label="Normal Memory Cache policy enabled"/>
+            </enum>
+            <enum id="mpu_m7CachePolicy_type" label="Attribute number" from="mpu_m7CachePolicy_type">
+                <item id="MPU_M7_CACHE_POLICY_NO_CACHE" label="Non-cacheable"/>
+                <item id="MPU_M7_CACHE_POLICY_W_BACK_WR_ALLOCATE" label="Write-back, write and read allocate"/>
+                <item id="MPU_M7_CACHE_POLICY_W_THROUGH_NO_W_ALLOCATE" label="Write-through, no write allocate"/>
+                <item id="MPU_M7_CACHE_POLICY_W_BACK_NO_W_ALLOCATE" label="Write-back, no write allocate"/>
+            </enum>
+
+            <!-- User Configuration -->
+            <struct id="mpu_pal_Region" from="mpu_pal_Region">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <info id="regionCnt" label="Region count" value="0"/>
+                <array id="mpu_pal_RegionConfig" label="Region configuration" type="mpu_pal_RegionConfig" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.length() &lt; 17" level="error" description="The number of regions are out of supported range!"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="startAddr" value_expr="x -> 0x0"/>
+                        <set_default id="endAddr" value_expr="x -> 0x1F"/>
+                        <set_default id="masterAccRight" value_expr="x -> $instance.getID() + `_DomainConfig0`"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <struct id="mpu_pal_RegionConfig" label="Region configuration" from="mpu_region_config_t">
+                <info id="regionNum" label="Region number" value="0"/>
+                <integer id="startAddr" label="Start address" type="uint32_t" options="cStructField">
+                    <description>Region start address. This field defines the 32 bits of the start address of the memory region. This field will combine with "Higher start address" from the extension if enabled.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; $parent.endAddr.getValue()) || ($parent.extension.getValue() != `NULL`)" level="warning" description="Region start address should be less than end address!"/>
+                    </validation>
+                </integer>
+                <integer id="endAddr" label="End address" type="uint32_t" options="cStructField">
+                    <description>Region end address. This field defines the 32 bits of the end address of the memory region. This field will combine with "Higher end address" from the extension if enabled.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt; $parent.startAddr.getValue()) || ($parent.extension.getValue() != `NULL`)" level="warning" description="Region end address should be greater than end address!"/>
+                    </validation>
+                </integer>
+                <dynamic_enum id="masterAccRight" label="Domain configuration" items="createArray().merge($configSet.mpu_pal_Configuration.mpu_pal_MasterConfig.arrayToEnumItems(
+                enumItem -> true,
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue()))" options="cStructField">
+                    <description>Domain configuration.</description>
+                </dynamic_enum>
+                <string id="extension" label="Extension" options="cStructField">
+                    <description>This field will be used to add extra settings to the basic region configuration</description>
+                    <validation>
+                        <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <!-- Master/Domain Configuration -->
+            <struct id="mpu_pal_Domain" label="Domain configuration">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <reference id="domain0" label="Domain 0" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 0 access rights</description>
+                </reference>
+                <reference id="domain1" label="Domain 1" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 1 access rights</description>
+                </reference>
+                <reference id="domain2" label="Domain 2" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 2 access rights</description>
+                </reference>
+                <reference id="domain3" label="Domain 3" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 3 access rights</description>
+                </reference>
+                <reference id="domain4" label="Domain 4" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 4 access rights</description>
+                </reference>
+                <reference id="domain5" label="Domain 5" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 5 access rights</description>
+                </reference>
+                <reference id="domain6" label="Domain 6" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 6 access rights</description>
+                </reference>
+                <reference id="domain7" label="Domain 7" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <description>Domain 7 access rights</description>
+                </reference>
+                <reference id="coreDomain" label="Core" type="mpu_pal_DomainAccRights_type" available="($instance.getPeripheral()==`MPU_M7_0`)">
+                    <description>The MPU Logical Bus Master Number for CORE master</description>
+                </reference>
+            </struct>
+
+            <!-- Extension Configuration -->
+            <!-- Extension for XRDC -->
+            <struct id="mpu_pal_Extension" label="Extension configuration" from="mpu_extension_xrdc_region_t">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <integer id="hStartAddr" label="Higher start address" type="uint8_t" min_expr="0" max_expr="0xF" enable="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)" options="cStructField">
+                    <description>Region higher start address. This field defines 4 most significant bits [35:32] of the start address.</description>
+                    <validation>
+                        <constraint cond_expr="!($this.getValue() &gt; $parent.hEndAddr.getValue())" level="warning" description="Region higher start address should be less than or equal to higher end address!"/>
+                    </validation>
+                </integer>
+                <integer id="hEndAddr" label="Higher end address" type="uint8_t" min_expr="0" max_expr="0xF" enable="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)" options="cStructField">
+                    <description>Region higher end address. This field defines 4 most significant bits [35:32] of the end address.</description>
+                    <validation>
+                        <constraint cond_expr="!($this.getValue() &lt; $parent.hStartAddr.getValue())" level="warning" description="Region higher end address should be greater than or equal to higher start address!"/>
+                    </validation>
+                </integer>
+                <bool id="semaEnable" label="Semaphore enable" options="cStructField">
+                    <description>Semaphore enable.</description>
+                </bool>
+                <integer id="semaNum" label="Semaphore number" type="uint8_t" min_expr="0" max_expr="0xF" options="cStructField">
+                    <description>Semaphore number.</description>
+                </integer>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_Lock_type" options="cStructField">
+                    <description>Lock configuration.</description>
+                </reference>
+            </struct>
+            <!-- Extension for MPU_M7 -->
+            <!-- Extension config -->
+            <struct id="mpu_pal_extensionConfig_Mpu_M7">
+                <string id="name" label="Extension Name">
+                    <description>Extension configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <reference id="memType" label="Memory Type" type="mpu_m7memory_type" options="cStructField">
+                    <description>Memorytype of Region.</description>
+                </reference>
+                <dynamic_enum id="cachePtr" label="Cache Configuration" items="createArray().merge($configSet.mpu_pal_Configuration.mpu_pal_ExtensionConfigurations_Mpu_M7.mpu_pal_cacheConfig_Mpu_M7.arrayToEnumItems(
+                enumItem -> true,
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue()))" enable="$parent.memType.getValue()==`MPU_M7_MEM_NORMAL_CACHEABLE`" options="cStructField">
+                    <description>Cache Configuration.</description>
+                </dynamic_enum>
+                <integer id="subRegMask" label="SubRegion Mask" type="uint8_t" min_expr="0" max_expr="255" options="cStructField">
+                    <description>SubRegion Enable Mask.</description>
+                </integer>
+                <bool id="shareable" label="Shareable" options="cStructField">
+                    <description>Enable or disable shareability</description>
+                </bool>
+            </struct>
+            <struct id="mpu_pal_cacheConfig_Mpu_M7">
+                <string id="name" label="Cache Configuration Name">
+                    <description>Cache configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="inOutCache" label="In / Out" options="cStructField">
+                    <description>True enables inner cache / False enables outer cache.</description>
+                </bool>
+                <reference id="cacheType" label="Cache type" type="mpu_m7CachePolicy_type" options="cStructField">
+                    <description>Memorytype of Region.</description>
+                </reference>
+            </struct>
+            <struct id="mpu_pal_Extension_Mpu_M7" label="Configuration" available="($instance.getPeripheral()==`MPU_M7_0`)">
+                <array id="mpu_pal_extensionConfig_Mpu_M7" label="Extension Configurations" type="mpu_pal_extensionConfig_Mpu_M7" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_ExtensionConfig` + x.getID()"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_cacheConfig_Mpu_M7" label="Cache configurations" type="mpu_pal_cacheConfig_Mpu_M7" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_CacheConfig` + x.getID()"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Hardware configurations -->
+            <struct id="mpu_pal_Hardware_Mpu_M7">
+                <string id="name" label="Hardware Configuration Name">
+                    <description>Hardware configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="defaultMapEn" label="Background Enable" options="cStructField">
+                    <description>Enable default memory map for privileged mode</description>
+                </bool>
+                <string id="extension" label="Hardware extension" options="cStructField">
+                    <description>Specifies hardware extension right for selected configuration.</description>
+                    <validation>
+                        <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <struct id="mpu_pal_HardwareExtension_Mpu_M7">
+                    <string id="name" label="Hardware Extension Name">
+                        <description>Hardware extension configuration name.</description>
+                        <validation>
+                            <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                        </validation>
+                    </string>
+                    <bool id="enableRunHFNMI" label="Use in exceptions" options="cStructField">
+                        <description>Enable default memory map for privileged mode</description>
+                    </bool>
+            </struct>
+            <struct id="mpu_pal_HWConfigExtension_Mpu_M7" label="Configuration" available="($instance.getPeripheral()==`MPU_M7_0`)">
+                <array id="mpu_pal_Hardware_Mpu_M7" label="Hardware Configurations" type="mpu_pal_Hardware_Mpu_M7" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_HwConfig` + x.getID()"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_HardwareExtension_Mpu_M7" label="Hardware Extension" type="mpu_pal_HardwareExtension_Mpu_M7" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_HwConfigExt` + x.getID()"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Configurations -->
+            <struct id="mpu_pal_Config" label="Configuration" options="ShowContentAs=Tabs">
+                <array id="mpu_pal_UserConfig" label="User configuration" type="mpu_pal_Region" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_RegionConfig` + x.getID()"/>
+                        <set_default id="readOnly" value_expr="x -> true"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_MasterConfig" label="Domain configuration" type="mpu_pal_Domain" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_DomainConfig` + x.getID()"/>
+                        <set_default id="readOnly" value_expr="x -> true"/>
+                        <set_default id="domain0" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain1" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain2" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain3" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain4" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain5" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain6" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="domain7" value_expr="x -> `MPU_RW`"/>
+                        <set_default id="coreDomain" value_expr="x -> `MPU_CORE_PRIV_RWX_UNPRIV_RWX`"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_ExtensionConfig" label="Extension configuration" type="mpu_pal_Extension" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_ExtensionConfig` + x.getID()"/>
+                        <set_default id="hStartAddr" value_expr="x -> 0"/>
+                        <set_default id="hEndAddr" value_expr="x -> 0"/>
+                        <set_default id="semaEnable" value_expr="x -> false"/>
+                        <set_default id="semaNum" value_expr="x -> 0"/>
+                        <set_default id="lockConfig" value_expr="x -> `MPU_UNLOCK`"/>
+                    </item_defaults>
+                </array>
+                <reference id="mpu_pal_ExtensionConfigurations_Mpu_M7" label="Extension Configuration" type="mpu_pal_Extension_Mpu_M7" >
+                </reference>
+                <reference id="mpu_pal_hardwareExtensionConfig_Mpu_M7" label="Hardware Configuration" type="mpu_pal_HWConfigExtension_Mpu_M7" >
+                </reference>
+            </struct>
+            <!-- Memory instance -->
+            <struct id="mpu_pal_MemoryInstance" label="Memory instances">
+                <reference id="memInstance" label="Instance" type="mpu_pal_Instance_type">
+                    <description>Memory instances.</description>
+                </reference>
+                <info id="memInfo" label="Information" value="`N/A`"/>
+            </struct>
+        </user_types>
+        <settings>
+            <array id="mpu_pal_Memory" label="Memory instances" type="mpu_pal_MemoryInstance" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" component_id="mpu_pal_config" available="($instance.getPeripheral()==`XRDC_0`) || ($instance.getPeripheral()==`XRDC_1`)">
+                <description>Memory Instances</description>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`memInstance`).value()).length() == 0" level="error" description="There are some duplicated `Memory instance` in the configuration"/>
+                </validation>
+            </array>
+            <reference id="mpu_pal_Configuration" label="MPU_PAL Configuration" type="mpu_pal_Config" component_id="mpu_pal_config" available="true">
+                <description>Configuration</description>
+            </reference>
+            <variable value="`../mpu_pal/mpu_pal_codegen.js`" id="codegen_file"></variable>
+            <variable value="`MPU_PAL_CodeGenerator`" id="codegen_class"></variable>
+            <variable value="`../mpu_pal/mpu_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+            <variable value="`MPU_PAL_AddDrivers`" id="toolchain_settings_class"></variable>
+        </settings>
+        <generated_types>
+            <enum id="mpu_inst_type_t" label="Enumeration with the types of peripherals supported by MPU PAL" from="mpu_inst_type_t">
+                <description>This enumeration contains the types of peripherals supported by MPU PAL. Implements : mpu_inst_type_t_Class</description>
+                <item id="MPU_INST_TYPE_MPU" label=""/>
+                <item id="MPU_INST_TYPE_SMPU" label=""/>
+                <item id="MPU_INST_TYPE_XRDC" label=""/>
+            </enum>
+            <enum id="mpu_access_permission_t" label="" from="mpu_access_permission_t">
+                <item id="MPU_NONE" label="All accesses are not allowed"/>
+                <item id="MPU_W_OR_SET_1" label="Write allowed, no Read; Specific access set 1"/>
+                <item id="MPU_R_OR_SET_2" label="Read allowed, no Write; Specific access set 2"/>
+                <item id="MPU_RW_OR_SET_3" label="Both Read and Write allowed; Specific access set 3"/>
+                <item id="MPU_RW" label="Mode: SecurePriv SecureUser NonsecurePriv NonsecureUser r, w r, w r, w r, w"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_RW_USER_NONE" label="r, w r, w r, w none"/>
+                <item id="MPU_SECURE_RW_NONSECURE_R" label="r, w r, w r r"/>
+                <item id="MPU_SECURE_RW_NONSECURE_PRIV_R_USER_NONE" label="r, w r, w r none"/>
+                <item id="MPU_SECURE_RW_NONSECURE_NONE" label="r, w r, w none none"/>
+                <item id="MPU_SECURE_PRIV_RW_USER_NONE_NONSECURE_NONE" label="r, w none none none"/>
+                <item id="MPU_SECURE_R_NONSECURE_NONE" label="r r none none"/>
+                <item id="MPU_NONE" label="All accesses are not allowed"/>
+            </enum>
+            <enum id="mpu_error_access_type_t" label="MPU access error Implements : mpu_error_access_type_t_Class" from="mpu_error_access_type_t">
+                <item id="MPU_ERROR_TYPE_READ" label="Error type: read"/>
+                <item id="MPU_ERROR_TYPE_WRITE" label="Error type: write"/>
+            </enum>
+            <enum id="mpu_error_attributes_t" label="MPU access error attributes Implements : mpu_error_attributes_t_Class" from="mpu_error_attributes_t">
+                <item id="MPU_ERROR_USER_MODE_INSTRUCTION_ACCESS" label="Instruction access error in user mode"/>
+                <item id="MPU_ERROR_USER_MODE_DATA_ACCESS" label="Data access error in user mode"/>
+                <item id="MPU_ERROR_SUPERVISOR_MODE_INSTRUCTION_ACCESS" label="Instruction access error in supervisor mode"/>
+                <item id="MPU_ERROR_SUPERVISOR_MODE_DATA_ACCESS" label="Data access error in supervisor mode"/>
+            </enum>
+            <enum id="mpu_lock_t" label="Lock configuration" from="mpu_lock_t">
+                <item id="MPU_UNLOCK" label="Unlocked"/>
+                <item id="MPU_OWNER_LOCK" label="Locked by the master wrote this register and LCK bit Attempted writes by other masters are ignored"/>
+                <item id="MPU_ALL_LOCK" label="Attempted writes to any location in the region descriptor are ignored"/>
+                <item id="MPU_UNLOCK" label="Unlocked"/>
+                <item id="MPU_OWNER_LOCK" label="Locked by the master wrote this register and LCK bit Attempted writes by other masters are ignored"/>
+                <item id="MPU_LOCKED_ALL" label="Register is locked (read-only) until the next reset"/>
+            </enum>
+            <struct id="mpu_instance_t" label="Structure storing PAL instance information" from="mpu_instance_t">
+                <description>This structure is used for storing PAL instance information. Implements : mpu_instance_t_Class</description>
+                <reference id="instType" label="Peripheral over which the PAL is used" type="mpu_inst_type_t">
+                    <description>Peripheral over which the PAL is used</description>
+                </reference>
+                <integer id="instIdx" label="Instance index of the peripheral over which the PAL is used" type="uint32_t">
+                    <description>Instance index of the peripheral over which the PAL is used</description>
+                </integer>
+            </struct>
+            <struct id="mpu_error_info_t" label="MPU detail error access info Implements : mpu_error_info_t_Class" from="mpu_error_info_t">
+                <integer id="master" label="Access error master" type="uint8_t">
+                    <description>Access error master</description>
+                </integer>
+                <bool id="overrun" label="Access error master overrun">
+                    <description>Access error master overrun</description>
+                </bool>
+                <reference id="attributes" label="Access error attributes" type="mpu_error_attributes_t">
+                    <description>Access error attributes</description>
+                </reference>
+                <reference id="accessType" label="Access error type" type="mpu_error_access_type_t">
+                    <description>Access error type</description>
+                </reference>
+                <integer id="accessCtr" label="Access error control" type="uint32_t">
+                    <description>Access error control</description>
+                </integer>
+                <integer id="addr" label="Access error address" type="uint32_t">
+                    <description>Access error address</description>
+                </integer>
+                <integer id="processId" label="Access error process identification" type="uint8_t">
+                    <description>Access error process identification</description>
+                </integer>
+            </struct>
+            <struct id="mpu_master_access_permission_t" label="MPU master access permission" from="mpu_master_access_permission_t">
+                <integer id="masterNum" label="Master number" type="uint8_t">
+                    <description>Master number</description>
+                </integer>
+                <reference id="accessRight" label="Privilege right" type="mpu_access_permission_t">
+                    <description>Privilege right</description>
+                </reference>
+            </struct>
+            <struct id="mpu_region_config_t" label="MPU region configuration structure" from="mpu_region_config_t">
+                <integer id="startAddr" label="Memory region start address" type="uint32_t">
+                    <description>Memory region start address</description>
+                </integer>
+                <integer id="endAddr" label="Memory region end address" type="uint32_t">
+                    <description>Memory region end address</description>
+                </integer>
+                <fixme id="masterAccRight" label="Access permission for masters" type="const mpu_master_access_permission_t *">
+                    <description>Access permission for masters</description>
+                </fixme>
+                <integer id="processIdEnable" label="Process identifier enable For MPU: the bit index corresponding with masters For SMPU: disable if equal zero, otherwise enable" type="uint8_t">
+                    <description>Process identifier enable For MPU: the bit index corresponding with masters For SMPU: disable if equal zero, otherwise enable</description>
+                </integer>
+                <integer id="processIdentifier" label="Process identifier" type="uint8_t">
+                    <description>Process identifier</description>
+                </integer>
+                <integer id="processIdMask" label="Process identifier mask" type="uint8_t">
+                    <description>Process identifier mask. The setting bit will ignore the same bit in process identifier</description>
+                </integer>
+                <fixme id="extension" label="This field will be used to add extra settings to the basic region configuration" type="void *">
+                    <description>This field will be used to add extra settings to the basic region configuration</description>
+                </fixme>
+            </struct>
+            <struct id="mpu_region_lock_t" label="Region lock configuration structure" from="mpu_region_lock_t">
+                <integer id="regionNum" label="Region number" type="uint8_t">
+                    <description>Region number</description>
+                </integer>
+                <integer id="masterOwner" label="Master number" type="uint8_t">
+                    <description>Master number</description>
+                </integer>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_lock_t">
+                    <description>Lock configuration</description>
+                </reference>
+            </struct>
+            <struct id="mpu_extension_smpu_region_t" label="Defines the region extension structure for the MPU over SMPU Implements : mpu_extension_smpu_region_t_Class" from="mpu_extension_smpu_region_t">
+                <bool id="specAccessEnable" label="Specific access enable">
+                    <description>Specific access enable</description>
+                </bool>
+                <fixme id="specAccessSet" label="Specific access configurations" type="const mpu_specific_access_permission_t *">
+                    <description>Specific access configurations</description>
+                </fixme>
+                <bool id="cacheInhibitEnable" label="Cache Inhibit">
+                    <description>Cache Inhibit</description>
+                </bool>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_lock_t">
+                    <description>Lock configuration</description>
+                </reference>
+            </struct>
+            <struct id="mpu_extension_xrdc_region_t" label="Defines the region extension structure for the MPU over XRDC Implements : mpu_extension_xrdc_region_t_Class" from="mpu_extension_xrdc_region_t">
+                <bool id="semaEnable" label="Semaphore enable">
+                    <description>Semaphore enable</description>
+                </bool>
+                <integer id="semaNum" label="Semaphore number" type="uint8_t">
+                    <description>Semaphore number</description>
+                </integer>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_lock_t">
+                    <description>Lock configuration</description>
+                </reference>
+            </struct>
+        </generated_types>
+    </config_set>
+    <config_set id="mpu_pal_sja" label="General MPU PAL configuration" from_source="mpu_pal.h" available="featureDefined(`FEATURE_MPU_PAL_SJA`)==true">
+        <description>Basic MPU PAL configuration.</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="mpu_pal_default" label="Default values for MPU PAL" available="true">
+                <description>MPU PAL default configuration.</description>
+                <!-- Default User Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.readOnly">true</set>
+                <!-- Default Domain Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_MasterConfig.0.readOnly">true</set>
+                <!-- Default Region Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.startAddr">0x0</set>
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.endAddr">0xFFFFFFFF</set>
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.extension">NULL</set>
+            </quick_selection>
+            <default>mpu_pal_default</default>
+        </quick_selections>
+        <user_types>
+            <!-- Enums -->
+            <enum id="mpu_pal_DomainAccRights_type" label="Domain access rights" from="mpu_pal_DomainAccRights_type">
+                <item id="MPU_NONE" label="--" available="($instance.getPeripheral()==`SMPU_0`) || ($instance.getPeripheral()==`SMPU_1`)"/>
+                <item id="MPU_W_OR_SET_1" label="-W" available="($instance.getPeripheral()==`SMPU_0`) || ($instance.getPeripheral()==`SMPU_1`)"/>
+                <item id="MPU_R_OR_SET_2" label="R-" available="($instance.getPeripheral()==`SMPU_0`) || ($instance.getPeripheral()==`SMPU_1`)"/>
+                <item id="MPU_RW_OR_SET_3" label="RW" available="($instance.getPeripheral()==`SMPU_0`) || ($instance.getPeripheral()==`SMPU_1`)"/>
+                <item id="MPU_CORE_PRIV_UNPRIV_NONE" label="Supervisor none | User none" available="($instance.getPeripheral()==`MPU_M7`)"/>
+                <item id="MPU_CORE_PRIV_RW_UNPRIV_NONE" label="Supervisor rw-| User none" available="($instance.getPeripheral()==`MPU_M7`)"/>
+                <item id="MPU_CORE_PRIV_RWX_UNPRIV_NONE" label="Supervisor rwx| User none" available="($instance.getPeripheral()==`MPU_M7`)"/>
+                <item id="MPU_CORE_PRIV_RW_UNPRIV_R" label="Supervisor rw-| User r" available="($instance.getPeripheral()==`MPU_M7`)"/>
+                <item id="MPU_CORE_PRIV_RWX_UNPRIV_RX" label="Supervisor rwx| User r-x" available="($instance.getPeripheral()==`MPU_M7`)"/>
+                <item id="MPU_CORE_PRIV_RW_UNPRIV_RW" label="Supervisor rw-| User rw-" available="($instance.getPeripheral()==`MPU_M7`)"/>
+                <item id="MPU_CORE_PRIV_RWX_UNPRIV_RWX" label="Supervisor rwx| User rwx" available="($instance.getPeripheral()==`MPU_M7`)"/>
+                <item id="MPU_CORE_PRIV_R_UNPRIV_NONE" label="Supervisor r| User none" available="($instance.getPeripheral()==`MPU_M7`)"/>
+                <item id="MPU_CORE_PRIV_RX_UNPRIV_NONE" label="Supervisor r-x| User none" available="($instance.getPeripheral()==`MPU_M7`)"/>
+                <item id="MPU_CORE_PRIV_R_UNPRIV_R" label="Supervisor r| User r" available="($instance.getPeripheral()==`MPU_M7`)"/>
+                <item id="MPU_CORE_PRIV_RX_UNPRIV_RX" label="Supervisor r-x| User r-x" available="($instance.getPeripheral()==`MPU_M7`)"/>
+            </enum>
+            <enum id="mpu_Lock_type" label="Lock configuration" from="mpu_Lock_type">
+                <item id="MPU_UNLOCK" label="Unlock"/>
+                <item id="MPU_LOCKED_ALL" label="All lock"/>
+            </enum>
+            <enum id="mpu_m7memory_type" label="Attribute number" from="mpu_m7memory_type">
+                <item id="MPU_M7_MEM_STRONG_ORDER" label="Strongly ordered"/>
+                <item id="MPU_M7_MEM_DEVICE_SHARED" label="Shared device"/>
+                <item id="MPU_M7_MEM_NORMAL_IO_WR_THROUGH" label="Outer and inner write-through, no write allocate"/>
+                <item id="MPU_M7_MEM_NORMAL_IO_WR_BACK1" label="Outer and inner write-back, no write allocate"/>
+                <item id="MPU_M7_MEM_NORMAL_IO_NO_CACHE" label="Outer and inner Non-cacheable"/>
+                <item id="MPU_M7_MEM_NORMAL_IO_WR_BACK2" label="Outer and inner write-back; write and read allocate"/>
+                <item id="MPU_M7_MEM_DEVICE_NOSHARE" label="Non-shared device"/>
+                <item id="MPU_M7_MEM_NORMAL_CACHEABLE" label="Normal Memory Cache policy enabled"/>
+            </enum>
+            <enum id="mpu_m7CachePolicy_type" label="Attribute number" from="mpu_m7CachePolicy_type">
+                <item id="MPU_M7_CACHE_POLICY_NO_CACHE" label="Non-cacheable"/>
+                <item id="MPU_M7_CACHE_POLICY_W_BACK_WR_ALLOCATE" label="Write-back, write and read allocate"/>
+                <item id="MPU_M7_CACHE_POLICY_W_THROUGH_NO_W_ALLOCATE" label="Write-through, no write allocate"/>
+                <item id="MPU_M7_CACHE_POLICY_W_BACK_NO_W_ALLOCATE" label="Write-back, no write allocate"/>
+            </enum>
+            <!-- User Configuration -->
+            <struct id="mpu_pal_RegionConfig" label="Region configuration" from="mpu_pal_RegionConfig">
+                <info id="regionNum" label="Region number" value="0"/>
+                <integer id="startAddr" label="Start address" type="uint32_t" options="cStructField">
+                    <description>Region start address. This field defines the 32 bits of the start address of the memory region.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; $parent.endAddr.getValue())" level="warning" description="Region start address should be less than end address!"/>
+                    </validation>
+                </integer>
+                <integer id="endAddr" label="End address" type="uint32_t" options="cStructField">
+                    <description>Region end address. This field defines the 32 bits of the end address of the memory region.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt; $parent.startAddr.getValue())" level="warning" description="Region end address should be greater than end address!"/>
+                    </validation>
+                </integer>
+                <dynamic_enum id="masterAccRight" label="Master access right" items="createArray().merge($configSet.mpu_pal_Configuration.mpu_pal_MasterConfig.arrayToEnumItems(
+                enumItem -> true,
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue()))" options="cStructField">
+                    <description>Master access right.</description>
+                </dynamic_enum>
+                <string id="extension" label="Extension" options="cStructField">
+                    <description>This field will be used to add extra settings to the basic region configuration</description>
+                    <validation>
+                        <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <struct id="mpu_pal_Region" from="mpu_pal_Region">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <info id="regionCnt" label="Region count" value="0"/>
+                <array id="mpu_pal_RegionConfig" label="Region configuration" type="mpu_pal_RegionConfig" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.length() &lt; 17" level="error" description="The number of regions are out of supported range!"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="startAddr" value_expr="x -> 0x0"/>
+                        <set_default id="endAddr" value_expr="x -> 0x1F"/>
+                        <set_default id="masterAccRight" value_expr="x -> $instance.getID() + `_AccessRightConfig0`"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Master/Domain Configuration -->
+            <struct id="mpu_pal_Domain" label="Master configuration">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <reference id="coreDomain" label="CORE" type="mpu_pal_DomainAccRights_type" options="cStructField" available="($instance.getPeripheral()==`MPU_M7`)">
+                    <description>The MPU Logical Bus Master Number for CORE master</description>
+                </reference>
+                <reference id="CORE" label="CORE" type="mpu_pal_DomainAccRights_type" options="cStructField" available="($instance.getPeripheral()==`SMPU_0`) || ($instance.getPeripheral()==`SMPU_1`)">
+                    <description>The MPU Logical Bus Master Number for CORE master</description>
+                </reference>
+                <reference id="DEBUG" label="DEBUG" type="mpu_pal_DomainAccRights_type" options="cStructField" available="($instance.getPeripheral()==`SMPU_0`) || ($instance.getPeripheral()==`SMPU_1`)">
+                    <description>The MPU Logical Bus Master Number for DEBUG master</description>
+                </reference>
+                <reference id="DMA" label="DMA" type="mpu_pal_DomainAccRights_type" options="cStructField" available="($instance.getPeripheral()==`SMPU_0`) || ($instance.getPeripheral()==`SMPU_1`)">
+                    <description>The MPU Logical Bus Master Number for DMA master</description>
+                </reference>
+                <reference id="ENET" label="ENET" type="mpu_pal_DomainAccRights_type" options="cStructField" available="($instance.getPeripheral()==`SMPU_0`) || ($instance.getPeripheral()==`SMPU_1`)">
+                    <description>The MPU Logical Bus Master Number for ENET master</description>
+                </reference>
+                <reference id="SPIHAP" label="SPIHAP" type="mpu_pal_DomainAccRights_type" options="cStructField" available="($instance.getPeripheral()==`SMPU_1`)">
+                    <description>The MPU Logical Bus Master Number for SPIHAP master</description>
+                </reference>
+                <reference id="CCC" label="CCC" type="mpu_pal_DomainAccRights_type" options="cStructField" available="($instance.getPeripheral()==`SMPU_1`)">
+                    <description>The MPU Logical Bus Master Number for CCC master</description>
+                </reference>
+            </struct>
+            <!-- Extension Configuration -->
+            <!-- Extension for SMPU -->
+            <struct id="mpu_pal_Extension" label="Extension configuration" from="mpu_pal_Extension">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="cacheInhibitEnable" label="Cache Inhibit" options="cStructField">
+                    <description>Cache Inhibit.</description>
+                </bool>
+                <reference id="lockConfig" label="Lock configuration" type="mpu_Lock_type" options="cStructField">
+                    <description>Lock configuration.</description>
+                </reference>
+            </struct>
+            <!-- Extension for MPU_M7 -->
+            <!-- Extension config -->
+            <struct id="mpu_pal_extensionConfig_Mpu_M7">
+                <string id="name" label="Extension Name">
+                    <description>Extension configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <reference id="memType" label="Memory Type" type="mpu_m7memory_type" options="cStructField">
+                    <description>Memorytype of Region.</description>
+                </reference>
+                <dynamic_enum id="cachePtr" label="Cache Configuration" items="createArray().merge($configSet.mpu_pal_Configuration.mpu_pal_ExtensionConfigurations_Mpu_M7.mpu_pal_cacheConfig_Mpu_M7.arrayToEnumItems(
+                enumItem -> true,
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue()))" enable="$parent.memType.getValue()==`MPU_M7_MEM_NORMAL_CACHEABLE`" options="cStructField">
+                    <description>Cache Configuration.</description>
+                </dynamic_enum>
+                <integer id="subRegMask" label="SubRegion Mask" type="uint8_t" min_expr="0" max_expr="255" options="cStructField">
+                    <description>SubRegion Enable Mask.</description>
+                </integer>
+                <bool id="shareable" label="Shareable" options="cStructField">
+                    <description>Enable or disable shareability</description>
+                </bool>
+            </struct>
+            <struct id="mpu_pal_cacheConfig_Mpu_M7">
+                <string id="name" label="Cache Configuration Name">
+                    <description>Cache configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="inOutCache" label="In / Out" options="cStructField">
+                    <description>True enables inner cache / False enables outer cache.</description>
+                </bool>
+                <reference id="cacheType" label="Cache type" type="mpu_m7CachePolicy_type" options="cStructField">
+                    <description>Memorytype of Region.</description>
+                </reference>
+            </struct>
+            <struct id="mpu_pal_Extension_Mpu_M7" label="Configuration">
+                <array id="mpu_pal_extensionConfig_Mpu_M7" label="Extension Configurations" type="mpu_pal_extensionConfig_Mpu_M7" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_ExtensionConfig` + x.getID()"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_cacheConfig_Mpu_M7" label="Cache configurations" type="mpu_pal_cacheConfig_Mpu_M7" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_CacheConfig` + x.getID()"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Hardware configurations -->
+            <struct id="mpu_pal_Hardware_Mpu_M7">
+                <string id="name" label="Hardware Configuration Name">
+                    <description>Hardware configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="defaultMapEn" label="Background Enable" options="cStructField">
+                    <description>Enable default memory map for privileged mode</description>
+                </bool>
+                <string id="extension" label="Hardware extension" options="cStructField">
+                    <description>Specifies hardware extension right for selected configuration.</description>
+                    <validation>
+                        <constraint cond_expr="(($this.getValue()==``) || (isCIdentifier($this.getValue())))" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+            </struct>
+            <struct id="mpu_pal_HardwareExtension_Mpu_M7">
+                    <string id="name" label="Hardware Extension Name">
+                        <description>Hardware extension configuration name.</description>
+                        <validation>
+                            <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                        </validation>
+                    </string>
+                    <bool id="enableRunHFNMI" label="Use in exceptions" options="cStructField">
+                        <description>Enable default memory map for privileged mode</description>
+                    </bool>
+            </struct>
+            <struct id="mpu_pal_HWConfigExtension_Mpu_M7" label="Configuration">
+                <array id="mpu_pal_Hardware_Mpu_M7" label="Hardware Configurations" type="mpu_pal_Hardware_Mpu_M7" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_HwConfig` + x.getID()"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_HardwareExtension_Mpu_M7" label="Hardware Extension" type="mpu_pal_HardwareExtension_Mpu_M7" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_HwConfigExt` + x.getID()"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Configurations -->
+            <struct id="mpu_pal_Config" label="Configuration" options="ShowContentAs=Tabs">
+                <array id="mpu_pal_UserConfig" label="User configuration" type="mpu_pal_Region" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_RegionConfig` + x.getID()"/>
+                        <set_default id="readOnly" value_expr="x -> true"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_MasterConfig" label="Master configuration" type="mpu_pal_Domain" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_AccessRightConfig` + x.getID()"/>
+                        <set_default id="readOnly" value_expr="x -> true"/>
+                        <set_default id="coreDomain" value_expr="x -> `MPU_CORE_PRIV_RWX_UNPRIV_RWX`"/>
+                        <set_default id="CORE" value_expr="x -> `MPU_RW_OR_SET_3`"/>
+                        <set_default id="DEBUG" value_expr="x -> `MPU_RW_OR_SET_3`"/>
+                        <set_default id="DMA" value_expr="x -> `MPU_RW_OR_SET_3`"/>
+                        <set_default id="ENET" value_expr="x -> `MPU_RW_OR_SET_3`"/>
+                        <set_default id="SPIHAP" value_expr="x -> `MPU_RW_OR_SET_3`"/>
+                        <set_default id="CCC" value_expr="x -> `MPU_RW_OR_SET_3`"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_ExtensionConfig" label="Extension configuration" type="mpu_pal_Extension" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" available="($instance.getPeripheral()==`SMPU_0`) || ($instance.getPeripheral()==`SMPU_1`)">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_ExtensionConfig` + x.getID()"/>
+                        <set_default id="cacheInhibitEnable" value_expr="x -> false"/>
+                        <set_default id="lockConfig" value_expr="x -> `MPU_UNLOCK`"/>
+                    </item_defaults>
+                </array>
+                <reference id="mpu_pal_ExtensionConfigurations_Mpu_M7" label="Extension Configuration" type="mpu_pal_Extension_Mpu_M7" available="($instance.getPeripheral()==`MPU_M7`)">
+                </reference>
+                <reference id="mpu_pal_hardwareExtensionConfig_Mpu_M7" label="Hardware Configuration" type="mpu_pal_HWConfigExtension_Mpu_M7" available="($instance.getPeripheral()==`MPU_M7`)">
+                </reference>
+            </struct>
+        </user_types>
+        <settings>
+            <reference id="mpu_pal_Configuration" label="MPU_PAL Configuration" type="mpu_pal_Config" component_id="mpu_pal_config" available="true">
+                <description>Configuration</description>
+            </reference>
+            <variable value="`../mpu_pal/mpu_pal_codegen.js`" id="codegen_file"></variable>
+            <variable value="`MPU_PAL_CodeGenerator`" id="codegen_class"></variable>
+            <variable value="`../mpu_pal/mpu_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+            <variable value="`MPU_PAL_AddDrivers`" id="toolchain_settings_class"></variable>
+        </settings>
+        <generated_types/>
+    </config_set>
+    <config_set id="mpu_pal_s32k" label="General MPU PAL configuration" from_source="mpu_pal.h" available="featureDefined(`FEATURE_MPU_PAL_S32K`)==true">
+        <description>Basic MPU PAL configuration.</description>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="mpu_pal_default" label="Default values for MPU PAL" available="true">
+                <description>MPU PAL default configuration.</description>
+                <!-- Default User Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.readOnly">true</set>
+                <!-- Default Domain Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_MasterConfig.0.readOnly">true</set>
+                <set id="mpu_pal_Configuration.mpu_pal_MasterConfig.0.mpu_pal_Master.0.masterNum">FEATURE_MPU_MASTER_CORE</set>
+                <set id="mpu_pal_Configuration.mpu_pal_MasterConfig.0.mpu_pal_Master.1.masterNum">FEATURE_MPU_MASTER_DEBUGGER</set>
+                <set id="mpu_pal_Configuration.mpu_pal_MasterConfig.0.mpu_pal_Master.2.masterNum">FEATURE_MPU_MASTER_DMA</set>
+                <set id="mpu_pal_Configuration.mpu_pal_MasterConfig.0.mpu_pal_Master.3.masterNum">FEATURE_MPU_MASTER_ENET</set>
+                <!-- Default Region Configuration -->
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.startAddr">0x0</set>
+                <set id="mpu_pal_Configuration.mpu_pal_UserConfig.0.mpu_pal_RegionConfig.0.endAddr">0xFFFFFFFF</set>
+            </quick_selection>
+            <default>mpu_pal_default</default>
+        </quick_selections>
+        <user_types>
+            <!-- Enums -->
+            <enum id="mpu_pal_MasterNum_type" label="Master" from="mpu_pal_MasterNum_type">
+                <item id="FEATURE_MPU_MASTER_CORE" label="CORE"/>
+                <item id="FEATURE_MPU_MASTER_DEBUGGER" label="DEBUGGER">
+                    <description>Force to default configuration when using for region 0.</description>
+                </item>
+                <item id="FEATURE_MPU_MASTER_DMA" label="DMA">
+                    <description>PID is unused.</description>
+                </item>
+                <item id="FEATURE_MPU_MASTER_ENET" label="ENET">
+                    <description>PID is unused. This feature is only supported on S32K148 device.</description>
+                </item>
+            </enum>
+            <enum id="mpu_pal_SupervisorAccRights_type" label="Supervisor access rights" from="mpu_pal_SupervisorAccRights_type">
+                <item id="MPU_SUPERVISOR_RWX" label="rwx"/>
+                <item id="MPU_SUPERVISOR_RX" label="r-x"/>
+                <item id="MPU_SUPERVISOR_RW" label="rw-"/>
+                <item id="MPU_SUPERVISOR" label="Same as User mode"/>
+            </enum>
+            <enum id="mpu_pal_UserAccRights_type" label="User access rights" from="mpu_pal_UserAccRights_type">
+                <item id="USER_NONE" label="---"/>
+                <item id="USER_X" label="--x"/>
+                <item id="USER_W" label="-w-"/>
+                <item id="USER_WX" label="-wx"/>
+                <item id="USER_R" label="r--"/>
+                <item id="USER_RX" label="r-x"/>
+                <item id="USER_RW" label="rw-"/>
+                <item id="USER_RWX" label="rwx"/>
+            </enum>
+            <!-- User Configuration -->
+            <struct id="mpu_pal_RegionConfig" label="Region configuration" from="mpu_pal_RegionConfig">
+                <info id="regionNum" label="Region number" value="0"/>
+                <integer id="startAddr" label="Start address" type="uint32_t" options="cStructField">
+                    <description>Region start address. This field defines the 32 bits of the start address of the memory region. Default for region 0 is 0x00000000U.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &lt; $parent.endAddr.getValue())" level="warning" description="Region start address should be less than end address!"/>
+                    </validation>
+                </integer>
+                <integer id="endAddr" label="End address" type="uint32_t" options="cStructField">
+                    <description>Region end address. This field defines the 32 bits of the end address of the memory region. Default for region 0 is 0xFFFFFFFFU.</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt; $parent.startAddr.getValue())" level="warning" description="Region end address should be greater than end address!"/>
+                    </validation>
+                </integer>
+                <dynamic_enum id="masterAccRight" label="Master access right" items="createArray().merge($configSet.mpu_pal_Configuration.mpu_pal_MasterConfig.arrayToEnumItems(
+                enumItem -> true,
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue()))" options="cStructField">
+                    <description>Master access right. DEBUGGER always have default configuration in region 0</description>
+                </dynamic_enum>
+                <integer id="processIdentifier" label="Process identifier" type="uint8_t" options="cStructField">
+                    <description>Process identifier. Default for region 0 is 0x00U.</description>
+                </integer>
+                <integer id="processIdMask" label="Process identifier mask" type="uint8_t" options="cStructField">
+                    <description>Process identifier mask. The setting bit will ignore the same bit in process identifier. Default for region 0 is 0x00U.</description>
+                </integer>
+            </struct>
+            <struct id="mpu_pal_Region" from="mpu_pal_Region">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <info id="regionCnt" label="Region count" value="0"/>
+                <array id="mpu_pal_RegionConfig" label="Region configuration" type="mpu_pal_RegionConfig" min_expr="0" max_expr="getFeature(`FEATURE_MPU_HAS_MAX_REGION_NUMBER`)" options="ShowContentAs=Table;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN">
+                    <item_defaults>
+                        <set_default id="startAddr" value_expr="x -> 0x0"/>
+                        <set_default id="endAddr" value_expr="x -> 0xFFFFFFFF"/>
+                        <set_default id="masterAccRight" value_expr="x -> $instance.getID() + `_AccessRightConfig0`"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Master/Domain Configuration -->
+            <struct id="mpu_pal_MasterAccessRight" label="Master access right">
+                <reference id="masterNum" label="Master" type="mpu_pal_MasterNum_type" enable="false" options="cStructField">
+                    <description>Master</description>
+                </reference>
+                <reference id="supervisorAccessRight" label="Supervisor" type="mpu_pal_SupervisorAccRights_type" options="cStructField">
+                    <description>Access right</description>
+                </reference>
+                <reference id="userAccessRight" label="User" type="mpu_pal_UserAccRights_type" options="cStructField">
+                    <description>Access right</description>
+                </reference>
+                <bool id="pidEnable" label="PID Enable" enable="($parent.masterNum.getValue() == `FEATURE_MPU_MASTER_CORE`) || ($parent.masterNum.getValue() == `FEATURE_MPU_MASTER_DEBUGGER`)">
+                    <description>PID Enable</description>
+                </bool>
+            </struct>
+            <struct id="mpu_pal_Domain" label="Master configuration">
+                <string id="name" label="Name">
+                    <description>Configuration name.</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read Only" >
+                    <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier.</description>
+                </bool>
+                <array id="mpu_pal_Master" label="User configuration" type="mpu_pal_MasterAccessRight" size="getFeature(`FEATURE_MPU_HAS_MASTER_NUMBER`)" options="ShowContentAs=Table;UI_ARRAY_INDICES_HIDDEN">
+                    <item_defaults>
+                        <set_default id="masterNum" value_expr="x -> `FEATURE_MPU_MASTER_` + (x.getID() == 0 ? `CORE` : (x.getID() == 1 ? `DEBUGGER` : (x.getID() == 2 ? `DMA` : `ENET`)))"/>
+                        <set_default id="supervisorAccessRight" value_expr="x -> `MPU_SUPERVISOR`"/>
+                        <set_default id="userAccessRight" value_expr="x -> `USER_RWX`"/>
+                    </item_defaults>
+                </array>
+            </struct>
+            <!-- Configurations -->
+            <struct id="mpu_pal_Config" label="Configuration" options="ShowContentAs=Tabs">
+                <array id="mpu_pal_UserConfig" label="User configuration" type="mpu_pal_Region" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_RegionConfig` + x.getID()"/>
+                        <set_default id="readOnly" value_expr="x -> true"/>
+                    </item_defaults>
+                </array>
+                <array id="mpu_pal_MasterConfig" label="Master configuration" type="mpu_pal_Domain" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+                    <validation>
+                        <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` in the configuration"/>
+                    </validation>
+                    <item_defaults>
+                        <set_default id="name" value_expr="x -> $instance.getID() + `_AccessRightConfig` + x.getID()"/>
+                        <set_default id="readOnly" value_expr="x -> true"/>
+                    </item_defaults>
+                </array>
+            </struct>
+        </user_types>
+        <settings>
+            <reference id="mpu_pal_Configuration" label="MPU_PAL Configuration" type="mpu_pal_Config" component_id="mpu_pal_config" available="true">
+                <description>Configuration</description>
+            </reference>
+            <variable value="`../mpu_pal/mpu_pal_codegen.js`" id="codegen_file"></variable>
+            <variable value="`MPU_PAL_CodeGenerator`" id="codegen_class"></variable>
+            <variable value="`../mpu_pal/mpu_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+            <variable value="`MPU_PAL_AddDrivers`" id="toolchain_settings_class"></variable>
+        </settings>
+        <generated_types/>
+    </config_set>
+</component:config_component>

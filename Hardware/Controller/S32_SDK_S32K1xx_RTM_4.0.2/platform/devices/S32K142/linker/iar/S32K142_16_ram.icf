@@ -1,0 +1,91 @@
+/*
+** ###################################################################
+**     Processor:           S32K142 with 16 KB SRAM
+**     Compiler:            IAR ANSI C/C++ Compiler for ARM
+**
+**     Abstract:
+**         Linker file for the IAR ANSI C/C++ Compiler for ARM
+**
+**     Copyright (c) 2015-2016 Freescale Semiconductor, Inc.
+**     Copyright 2017, 2021 NXP
+**     All rights reserved.
+**
+**     NXP Confidential. This software is owned or controlled by NXP and may only be
+**     used strictly in accordance with the applicable license terms. By expressly
+**     accepting such terms or by downloading, installing, activating and/or otherwise
+**     using the software, you are agreeing that you have read, and that you agree to
+**     comply with and are bound by, such license terms. If you do not agree to be
+**     bound by the applicable license terms, then you may not retain, install,
+**     activate or otherwise use the software. The production use license in
+**     Section 2.3 is expressly granted for this software.
+**
+**     http:                 www.nxp.com
+**
+** ###################################################################
+*/
+
+/* SRAM_L */
+define symbol m_interrupts_start       = 0x1FFFE000;
+define symbol m_interrupts_end         = 0x1FFFE3FF;
+
+define symbol m_text_start             = 0x1FFFE400;
+define symbol m_text_end               = 0x1FFFFFFF;
+
+/* SRAM_U */
+define symbol m_data_start             = 0x20000000;
+define symbol m_data_end               = 0x20000FFF;
+
+/* Sizes */
+if (isdefinedsymbol(__stack_size__)) {
+  define symbol __size_cstack__        = __stack_size__;
+} else {
+  define symbol __size_cstack__        = 0x00000400;
+}
+
+if (isdefinedsymbol(__heap_size__)) {
+  define symbol __size_heap__          = __heap_size__;
+} else {
+  define symbol __size_heap__          = 0x00000400;
+}
+
+define exported symbol __VECTOR_TABLE          = m_interrupts_start;
+define exported symbol __VECTOR_RAM            = m_interrupts_start;
+define exported symbol __RAM_VECTOR_TABLE_SIZE = 0x0;
+
+define exported symbol __RAM_START             = m_interrupts_start;
+define exported symbol __RAM_END               = m_data_end;
+
+define memory mem with size = 4G;
+define region TEXT_region   = mem:[from m_interrupts_start to m_interrupts_end]
+                            | mem:[from m_text_start to m_text_end];
+define region DATA_region   = mem:[from m_data_start to m_data_end-__size_cstack__];
+define region CSTACK_region = mem:[from m_data_end-__size_cstack__+1 to m_data_end];
+
+
+define block CSTACK    with alignment = 8, size = __size_cstack__   { };
+define block HEAP      with alignment = 8, size = __size_heap__     { };
+define block RW        { readwrite };
+define block ZI        { zi };
+
+/* Custom Section Block that can be used to place data at absolute address. */
+/* Use __attribute__((section (".customSection"))) to place data here. */
+define block customSectionBlock { section .customSection };
+define block __CODE_RAM   { section .textrw  };
+define block __CODE_ROM   { section .textrw_init };
+
+initialize manually { section .bss };
+initialize manually { section .customSection };
+initialize manually { section .textrw };
+initialize manually { section __DLIB_PERTHREAD };
+do not initialize   { section .noinit, section .bss, section __DLIB_PERTHREAD, section .customSection };
+
+place at address mem: m_interrupts_start    { readonly section .intvec };
+place in TEXT_region                        { readonly };
+place in TEXT_region                        { block __CODE_ROM };
+place in DATA_region                        { first block customSectionBlock };
+place in DATA_region                        { block RW };
+place in DATA_region                        { block __CODE_RAM };
+place in DATA_region                        { block ZI };
+place in DATA_region                        { last block HEAP };
+place in CSTACK_region                      { block CSTACK };
+

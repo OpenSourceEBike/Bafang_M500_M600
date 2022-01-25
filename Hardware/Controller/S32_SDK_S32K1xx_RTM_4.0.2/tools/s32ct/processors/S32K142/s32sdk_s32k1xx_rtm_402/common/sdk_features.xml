@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<features:sdk_features xmlns:features="http://swtools.freescale.net/XSD/features/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/features/1.0 http://swtools.freescale.net/XSD/features/1.0/features.xsd" prefix="FSL_FEATURE_">
+    <soc_specific id="SOC">
+    <feature name="ADC_PAL_SUPPORTS_ADC_S32K1xx" value="1" description="S32K1xx platform with ADC_PAL support."/>
+    <feature name="FEATURE_ADC_MAX_NUM_EXT_CHANS" value="16" description="Maximum number of external channels ADC can use."/>
+    <feature name="FEATURE_ADC_HAS_CHANNEL_2" value="1" description="ADC has channel 2 available."/>
+    <feature name="FEATURE_ADC_HAS_CHANNEL_8" value="1" description="ADC has channel 8 available."/>
+    <feature name="FEATURE_LPI2C_AVAILABLE" value="1" description="LPI2C available on board."/>
+    <feature name="FEATURE_POWER_HAS_SET_SLEEP_ON_EXIT" value="1" description="Support setting sleep on exit value."/>
+    <feature name="FEATURE_POWER_HAS_HSRUN_MODE"          value="1" description="Support HSRUN mode."/>
+    <feature name="FEATURE_POWER_HAS_RUN_MODE"          value="1" description="Support RUN mode."/>
+    <feature name="FEATURE_POWER_HAS_VLPR_MODE"         value="1" description="Support VLPR mode."/>
+    <feature name="FEATURE_POWER_HAS_STOP1_MODE"        value="1" description="Support STOP1 mode."/>
+    <feature name="FEATURE_POWER_HAS_STOP2_MODE"        value="1" description="Support STOP2 mode."/>
+    <feature name="FEATURE_POWER_HAS_VLPS_MODE"         value="1" description="Support VLPS mode."/>
+    <feature name="FEATURE_MPU_PAL_S32K" value="1" description="MPU_PAL on S32K."/>
+    <feature name="I2S_PAL_SUPPORTS_FLEXIO" value="1" description="I2S_OVER_FLEXIO."/>
+    <feature name="SOC_WDOG_COUNT" value="1" description="WDOG availability on the SoC."/>
+    <feature name="UART_PAL_SUPPORTS_FLEXIO"            value="1" description="UART_PAL supports FLEXIO."/>
+    <feature name="UART_PAL_SUPPORTS_LPUART"            value="2" description="UART_PAL supports LPUART."/>
+    </soc_specific>
+    <module_specific id="CAN">
+        <feature name="FEATURE_CAN_HAS_DMA_ENABLE" value="1" description="DMA feature for CAN."/>
+        <feature name="FEATURE_CAN_HAS_FD" value="1" description="FD feature for CAN."/>
+        <feature name="FEATURE_CAN_HAS_PE_CLKSRC_SELECT" value="1" description="PE Clock Select feature for CAN."/>
+        <feature name="FEATURE_CAN_HAS_PRETENDED_NETWORKING" value="1" description="Pretended Network feature for CAN."/>
+    </module_specific>
+    <module_specific id="PDB">
+        <feature name="FEATURE_PDB_HAS_INSTANCE_BACKTOBACK" value="1" description="PDB supports instance back to back mode - between PDB0 CH0 and PDB1 CH0 pre-triggers (PDB0_CH0_pretrigger7 -> PDB1_CH0_pretrigger0 and PDB1_CH0_pretrigger7 -> PDB0_CH0_pretrigger0)."/>
+    </module_specific>
+    <module_specific id="EIM">
+        <feature name="FEATURE_EIM_NUM_OF_CHANNELS" value="2" description="Number of EIM channels."/>
+        <feature name="FEATURE_EIM_CH0_CBMASK" value="127" description="Max value for EIM channel 0 Checkbit Mask."/>
+        <feature name="FEATURE_EIM_CH1_CBMASK" value="127" description="Max value for EIM channel 1 Checkbit Mask."/>
+    </module_specific>
+    <module_specific id="ERM">
+        <feature name="FEATURE_ERM_NUM_OF_CHANNELS" value="2" description="Number of ERM channels."/>
+    </module_specific>
+    <module_specific id="RTC_FEATURES">
+        <feature name="FEATURE_RTC_API_SUPPORT" value="false" description="RTC instance API support."/>
+    </module_specific>
+    <module_specific id="CRC_FEATURES">
+        <feature name="FEATURE_CRC_MODE" value="`SOFTWARE`" description="CRC instance type supported in SOC. Can be SOFTWARE or HARDWARE."/>
+    </module_specific>
+    <module_specific id="TIMING_PAL_FEATURES">
+        <feature name="TIMING_PAL_SUPPORTS_LPIT" value="1" description="TIMING_PAL supports LPIT."/>
+        <feature name="TIMING_PAL_SUPPORTS_LPTMR" value="1" description="TIMING_PAL supports LPTMR."/>
+        <feature name="TIMING_PAL_SUPPORTS_FTM" value="1" description="TIMING_PAL supports FTM."/>
+        <feature name="FEATURE_FTM_0_NUM_CHANS" value="8" description="Number of FTM channels support for instance 0 on S32K142."/>
+        <feature name="FEATURE_FTM_1_NUM_CHANS" value="8" description="Number of FTM channels support for instance 1 on S32K142."/>
+        <feature name="FEATURE_FTM_2_NUM_CHANS" value="8" description="Number of FTM channels support for instance 2 on S32K142."/>
+        <feature name="FEATURE_FTM_3_NUM_CHANS" value="8" description="Number of FTM channels support for instance 3 on S32K142."/>
+        <feature name="FEATURE_FTM_HAS_FIXED_CLOCK_SOURCE" value="1" description="The FTM has the fixed clock source"/>
+        <feature name="FEATURE_FTM_HAS_EXT_CLOCK_SOURCE" value="1" description="The FTM has the external clock source"/>
+    </module_specific>
+    <module_specific id="EDMA">
+        <feature name="FEATURE_DMA_HWV2" value="1" description="EDMA hardware version 2."/>
+        <feature name="FEATURE_DMA_MAX_NUM_CH" value="16" description="EDMA maximum number of channels."/>
+        <feature name="FEATURE_DMA_16PRIO" value="16" description="EDMA Channels have 16 priority levels."/>
+        <feature name="FEATURE_DMA_REQ_S32K142" value="4" description="Platform."/>
+    </module_specific>
+    <module_specific id="WDOG">
+        <feature name="FEATURE_WDOG_HAS_DEBUG_MODE" value="1" description="DEBUG feature for WDOG"/>
+        <feature name="FEATURE_WDOG_HAS_STOP_MODE" value="1" description="STOP feature for WDOG"/>
+        <feature name="FEATURE_WDOG_HAS_WAIT_MODE" value="0" description="WAIT feature for WDOG"/>
+    </module_specific>
+    <module_specific id="FTM">
+        <feature name="FEATURE_FTM_NUM_CHANNELS" value="8" description="The numer of FTM channels"/>
+        <feature name="FEATURE_FTM_NUM_FILTER_CHANNELS" value="4" description="The numer of FTM channels"/>
+        <feature name="FEATURE_FTM_HAS_FAULT" value="1" description="The Fault input for FTM."/>
+        <feature name="FEATURE_FTM_DEFAULT_FAULT_CHANNELS" value="4" description="The default number of Fault channels"/>
+        <feature name="FEATURE_FTM0_NUM_FAULT_CHANNELS" value="4" description="The numer of Fault channels on FTM_0"/>
+        <feature name="FEATURE_FTM1_NUM_FAULT_CHANNELS" value="4" description="The numer of Fault channels on FTM_1"/>
+        <feature name="FEATURE_FTM2_NUM_FAULT_CHANNELS" value="4" description="The numer of Fault channels on FTM_2"/>
+        <feature name="FEATURE_FTM3_NUM_FAULT_CHANNELS" value="4" description="The numer of Fault channels on FTM_3"/>
+        <feature name="FEATURE_FTM_HAS_MODIFIED_COMBINE_MODE" value="1" description="The Modified combine mode on PWM output signal."/>
+        <feature name="FEATURE_FTM_HAS_FIXED_CLOCK_SOURCE" value="1" description="The FTM has the fixed clock source"/>
+        <feature name="FEATURE_FTM_HAS_EXT_CLOCK_SOURCE" value="1" description="The FTM has the external clock source"/>
+        <feature name="FEATURE_FTM_CLOCK_NAME_PREFIX" value="`FTM`" description="The prefix name of FTM module clock"/>
+        <feature name="FEATURE_FTM_CLOCK_NAME_SUFFIX" value="`_CLK`" description="The suffix name of FTM module clock"/>
+        <feature name="FEATURE_FTM_SYS_CLOCK_NAME" value="`SYS_CLK`" description="The name of FTM system clock"/>
+        <feature name="FEATURE_FTM_FIX_CLOCK_NAME" value="`RTC_CLK`" description="The name of fixed frequency clock"/>
+        <feature name="FEATURE_FTM_EXT_CLOCK_NAME_PREFIX" value="`FTM`" description="The prefix name of FTM external clock"/>
+        <feature name="FEATURE_FTM_EXT_CLOCK_NAME_SUFFIX" value="`_CLK`" description="The suffix name of FTM external clock"/>
+        <feature name="FEATURE_FTM1_HAS_QUAD" value="1" description="The FTM instance has quadrature decoder"/>
+        <feature name="FEATURE_FTM2_HAS_QUAD" value="1" description="The FTM instance has quadrature decoder"/>
+    </module_specific>
+    <module_specific id="MPU">
+        <feature name="FEATURE_MPU_HAS_MASTER_NUMBER" value="3" description="Number of master for MPU"/>
+        <feature name="FEATURE_MPU_HAS_MAX_REGION_NUMBER" value="8" description="Number of maximum region for MPU"/>
+    </module_specific>
+    <module_specific id="FLASH">
+        <feature name="FEATURE_FLASH_DEFAULT_NUM_PFLASH_SIZE" value="`0x40000`" description="Default number of Pflash size"/>
+		<feature name="FEATURE_FLASH_MAX_NUM_PFLASH_SIZE" value="0x40000" description="Maximum number of Pflash size"/>
+    </module_specific>
+    <module_specific id="AMMCLIB">
+        <feature name="FEATURE_AMMCLIB_HAS_FIXED_POINT" value="1" description="Support fixed point"/>
+        <feature name="FEATURE_AMMCLIB_HAS_FLOAT" value="1" description="Support float"/>
+        <feature name="FEATURE_AMMCLIB_FIXED_POINT_ALWAYS_ENABLE" value="1" description="Fixed point feature always is enabled. This is a workaround for AMMCLib version 1.1.22."/>
+    </module_specific>
+</features:sdk_features>

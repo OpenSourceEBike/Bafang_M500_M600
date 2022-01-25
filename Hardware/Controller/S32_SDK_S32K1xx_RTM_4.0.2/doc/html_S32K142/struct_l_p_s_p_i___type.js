@@ -1,0 +1,25 @@
+var struct_l_p_s_p_i___type =
+[
+    [ "CCR", "struct_l_p_s_p_i___type.html#ad0a7561ce407ad052568fc58f2e9f546", null ],
+    [ "CFGR0", "struct_l_p_s_p_i___type.html#a1c1d12233ff0d4877543a1de3fa54536", null ],
+    [ "CFGR1", "struct_l_p_s_p_i___type.html#a8bf20b39a8b56d6f7b28e43418a22bde", null ],
+    [ "CR", "struct_l_p_s_p_i___type.html#afa8ba49c3c8db3ed2d7f4312226bad5e", null ],
+    [ "DER", "struct_l_p_s_p_i___type.html#a35ff884325d38b960b9480bdd96c69a7", null ],
+    [ "DMR0", "struct_l_p_s_p_i___type.html#a366ba5cd3585ed025cc4386b9a8ceff6", null ],
+    [ "DMR1", "struct_l_p_s_p_i___type.html#aa968357f1c9a842f17377614f0138cfe", null ],
+    [ "FCR", "struct_l_p_s_p_i___type.html#a15bf1ce3c77503731e5ea0f3e02afb9b", null ],
+    [ "FSR", "struct_l_p_s_p_i___type.html#a7caaf6ca70b254480ec9189444f98107", null ],
+    [ "IER", "struct_l_p_s_p_i___type.html#aa3398349aaef55ca8c9c83c475aa046a", null ],
+    [ "PARAM", "struct_l_p_s_p_i___type.html#aecf4c04595fd544b547ded0e511a568c", null ],
+    [ "RDR", "struct_l_p_s_p_i___type.html#ad0f39e8a7d7439365e262fb6d71615ab", null ],
+    [ "RESERVED_0", "struct_l_p_s_p_i___type.html#ab5b3e978eb3ceb8a2aadaeeab28db00b", null ],
+    [ "RESERVED_1", "struct_l_p_s_p_i___type.html#ae93401f2965e0fe1e343d6ea380b624e", null ],
+    [ "RESERVED_2", "struct_l_p_s_p_i___type.html#a186e433a83d42ecd6b4e218ea63d9674", null ],
+    [ "RESERVED_3", "struct_l_p_s_p_i___type.html#a6c5f07c0d51983920ebca05f9e650883", null ],
+    [ "RESERVED_4", "struct_l_p_s_p_i___type.html#a71033e44d51c3ca5bd7d938bf1685d47", null ],
+    [ "RSR", "struct_l_p_s_p_i___type.html#a3b5ae6b6044cf08383708ddf52a67259", null ],
+    [ "SR", "struct_l_p_s_p_i___type.html#a5741cf0a79a57f81c828b29660b55d35", null ],
+    [ "TCR", "struct_l_p_s_p_i___type.html#a4231fcc2d2f03e898fe52edec0a8afcd", null ],
+    [ "TDR", "struct_l_p_s_p_i___type.html#af480454d6ad41afa42add27ad977a8bf", null ],
+    [ "VERID", "struct_l_p_s_p_i___type.html#ab7c35534225a1aae1c9121a1964fc40a", null ]
+];

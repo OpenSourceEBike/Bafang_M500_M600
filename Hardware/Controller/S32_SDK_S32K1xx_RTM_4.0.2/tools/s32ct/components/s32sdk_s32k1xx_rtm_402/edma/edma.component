@@ -1,0 +1,1408 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="edma_config" label="edma_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.edma" version="1.0.0"/>
+   <description>Extended Direct Memory Access</description>
+
+   <mode id="general" label="General Configuration" available="true">
+      <description>eDMA General Configuration</description>
+      <config_set_refs>
+         <config_set_ref>edma_driver</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>DMA</peripheral_type>
+      </master_peripheral>
+   </mode>
+
+   <config_set id="edma_driver" label="eDMA" from_source="edma_driver.h">
+      <description>Extended Direct Memory Access</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="edma_default" label="Default Values" available="true">
+            <description>eDMA Default User Configuration</description>
+            <set id="settings_edmaUserCfg.userStateStruct">dmaController_State</set>
+            <set id="settings_edmaUserCfg.array_userCfgStructs.0.userCfgName">dmaController_InitConfig0</set>
+            <set id="settings_edmaUserCfg.array_userCfgStructs.0.cfgType">edma_user_config_t</set>
+            <set id="settings_edmaUserCfg.array_userCfgStructs.0.readOnly">true</set>
+            <set id="settings_edmaUserCfg.array_userCfgStructs.0.chnArbitration">EDMA_ARBITRATION_FIXED_PRIORITY</set>
+            <set id="settings_edmaUserCfg.array_userCfgStructs.0.groupArbitration">EDMA_ARBITRATION_FIXED_PRIORITY</set>
+            <set id="settings_edmaUserCfg.array_userCfgStructs.0.groupPriority" available="featureDefined(`FEATURE_DMA_HWV2`)" >EDMA_GRP0_PRIO_HIGH_GRP1_PRIO_LOW</set>
+            <set id="settings_edmaUserCfg.array_userCfgStructs.0.haltOnError">false</set>
+            <set id="settings_array_edmaChCfg.array_chCfgStructs.0.virtCh">0</set>
+            <set id="settings_array_crcChCfgInst0.crcStateStructNameInst0">dmaCrc0_State</set>
+            <set id="settings_array_crcChCfgInst0.crcUserCfgInst0">dmaCrc0_InitConfig</set>
+            <set id="settings_array_crcChCfgInst0.crcUserCfgType">edma_crc_user_config_t</set>
+            <set id="settings_array_crcChCfgInst1.crcStateStructNameInst1">dmaCrc1_State</set>
+            <set id="settings_array_crcChCfgInst1.crcUserCfgInst1">dmaCrc1_InitConfig</set>
+            <set id="settings_array_crcChCfgInst1.crcUserCfgType">edma_crc_user_config_t</set>
+         </quick_selection>
+         <default>edma_default</default>
+      </quick_selections>
+
+      <settings>
+         <reference id="settings_edmaUserCfg" label="User Configuration Structures" type="userType_edmaUserCfg_t" config_set_id="edma_driver" component_id="edma_config" available="true">
+            <description>eDMA User Configuration</description>
+         </reference>
+
+         <reference id="settings_array_edmaChCfg" label="Channel Configuration Structures" type="userType_array_edmaChCfg_t" config_set_id="edma_driver" component_id="edma_config" available="true">
+            <description>eDMA Channel Configuration</description>
+         </reference>
+
+         <reference id="settings_array_crcChCfgInst0" label="DMA_CRC_0 Channel Configuration Structures" type="userType_array_crcChCfgInst0_t" config_set_id="edma_driver" component_id="edma_config" available="featureDefined(`FEATURE_DMA_SUPPORT_CRC`)">
+            <description>DMA_CRC_0 Channel Configuration</description>
+         </reference>
+
+         <reference id="settings_array_crcChCfgInst1" label="DMA_CRC_1 Channel Configuration Structures" type="userType_array_crcChCfgInst1_t" config_set_id="edma_driver" component_id="edma_config" available="featureDefined(`FEATURE_DMA_SUPPORT_CRC`)">
+            <description>DMA_CRC_1 Channel Configuration</description>
+         </reference>
+
+         <variable value="`../edma/edma_codegen.js`" id="codegen_file"></variable>
+         <variable value="`eDMA_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+
+      <generated_types>
+         <string id="edma_callback_t" label="Definition for the eDMA channel callback function" type="void(*">
+            <description>Prototype for the callback function registered in the eDMA driver. Implements : edma_callback_t_Class</description>
+         </string>
+         <enum id="edma_channel_interrupt_t" label="eDMA channel interrupts" from="edma_channel_interrupt_t">
+            <item id="EDMA_CHN_ERR_INT" label="Error interrupt"/>
+            <item id="EDMA_CHN_HALF_MAJOR_LOOP_INT" label="Half major loop interrupt"/>
+            <item id="EDMA_CHN_MAJOR_LOOP_INT" label="Complete major loop interrupt"/>
+         </enum>
+         <enum id="edma_arbitration_algorithm_t" label="eDMA channel arbitration algorithm used for selection among channels" from="edma_arbitration_algorithm_t">
+            <item id="EDMA_ARBITRATION_FIXED_PRIORITY" label="Fixed Priority"/>
+            <item id="EDMA_ARBITRATION_ROUND_ROBIN" label="Round-Robin Arbitration"/>
+         </enum>
+         <enum id="edma_channel_priority_t" label="eDMA channel priority setting Implements : edma_channel_priority_t_Class" from="edma_channel_priority_t">
+            <item id="EDMA_CHN_DEFAULT_PRIORITY" label="Default"/>
+            <item id="EDMA_CHN_PRIORITY_0" label="0" available="featureDefined(`FEATURE_DMA_4PRIO`)||featureDefined(`FEATURE_DMA_8PRIO`)||featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_1" label="1" available="featureDefined(`FEATURE_DMA_4PRIO`)||featureDefined(`FEATURE_DMA_8PRIO`)||featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_2" label="2" available="featureDefined(`FEATURE_DMA_4PRIO`)||featureDefined(`FEATURE_DMA_8PRIO`)||featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_3" label="3" available="featureDefined(`FEATURE_DMA_4PRIO`)||featureDefined(`FEATURE_DMA_8PRIO`)||featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_4" label="4" available="featureDefined(`FEATURE_DMA_8PRIO`)||featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_5" label="5" available="featureDefined(`FEATURE_DMA_8PRIO`)||featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_6" label="6" available="featureDefined(`FEATURE_DMA_8PRIO`)||featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_7" label="7" available="featureDefined(`FEATURE_DMA_8PRIO`)||featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_8" label="8" available="featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_9" label="9" available="featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_10" label="10" available="featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_11" label="11" available="featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_12" label="12" available="featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_13" label="13" available="featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_14" label="14" available="featureDefined(`FEATURE_DMA_16PRIO`)"/>
+            <item id="EDMA_CHN_PRIORITY_15" label="15" available="featureDefined(`FEATURE_DMA_16PRIO`)"/>
+         </enum>
+         <enum id="edma_group_priority_t" label="eDMA group priority setting Implements : edma_group_priority_t_Class" from="edma_group_priority_t">
+            <item id="EDMA_CHN_GROUP_0" label="Group 0" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_1" label="Group 1" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_2" label="Group 2" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_3" label="Group 3" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_4" label="Group 4" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_5" label="Group 5" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_6" label="Group 6" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_7" label="Group 7" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_8" label="Group 8" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_9" label="Group 9" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_10" label="Group 10" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_11" label="Group 11" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_12" label="Group 12" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_13" label="Group 13" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_14" label="Group 14" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_15" label="Group 15" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_16" label="Group 16" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_17" label="Group 17" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_18" label="Group 18" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_19" label="Group 19" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_20" label="Group 20" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_21" label="Group 21" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_22" label="Group 22" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_23" label="Group 23" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_24" label="Group 24" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_25" label="Group 25" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_26" label="Group 26" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_27" label="Group 27" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_28" label="Group 28" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_29" label="Group 29" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_30" label="Group 30" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_CHN_GROUP_31" label="Group 31" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+            <item id="EDMA_GRP0_PRIO_HIGH_GRP1_PRIO_LOW" label="Group 0 - High Priority " available="featureDefined(`FEATURE_DMA_HWV2`)"/>
+            <item id="EDMA_GRP0_PRIO_LOW_GRP1_PRIO_HIGH" label="Group 1 - High Priority " available="featureDefined(`FEATURE_DMA_HWV2`)"/>
+         </enum>
+         <enum id="edma_modulo_t" label="eDMA modulo configuration Implements : edma_modulo_t_Class" from="edma_modulo_t">
+            <item id="EDMA_MODULO_OFF" label=""/>
+            <item id="EDMA_MODULO_2B" label=""/>
+            <item id="EDMA_MODULO_4B" label=""/>
+            <item id="EDMA_MODULO_8B" label=""/>
+            <item id="EDMA_MODULO_16B" label=""/>
+            <item id="EDMA_MODULO_32B" label=""/>
+            <item id="EDMA_MODULO_64B" label=""/>
+            <item id="EDMA_MODULO_128B" label=""/>
+            <item id="EDMA_MODULO_256B" label=""/>
+            <item id="EDMA_MODULO_512B" label=""/>
+            <item id="EDMA_MODULO_1KB" label=""/>
+            <item id="EDMA_MODULO_2KB" label=""/>
+            <item id="EDMA_MODULO_4KB" label=""/>
+            <item id="EDMA_MODULO_8KB" label=""/>
+            <item id="EDMA_MODULO_16KB" label=""/>
+            <item id="EDMA_MODULO_32KB" label=""/>
+            <item id="EDMA_MODULO_64KB" label=""/>
+            <item id="EDMA_MODULO_128KB" label=""/>
+            <item id="EDMA_MODULO_256KB" label=""/>
+            <item id="EDMA_MODULO_512KB" label=""/>
+            <item id="EDMA_MODULO_1MB" label=""/>
+            <item id="EDMA_MODULO_2MB" label=""/>
+            <item id="EDMA_MODULO_4MB" label=""/>
+            <item id="EDMA_MODULO_8MB" label=""/>
+            <item id="EDMA_MODULO_16MB" label=""/>
+            <item id="EDMA_MODULO_32MB" label=""/>
+            <item id="EDMA_MODULO_64MB" label=""/>
+            <item id="EDMA_MODULO_128MB" label=""/>
+            <item id="EDMA_MODULO_256MB" label=""/>
+            <item id="EDMA_MODULO_512MB" label=""/>
+            <item id="EDMA_MODULO_1GB" label=""/>
+            <item id="EDMA_MODULO_2GB" label=""/>
+         </enum>
+         <enum id="edma_transfer_size_t" label="eDMA transfer configuration Implements : edma_transfer_size_t_Class" from="edma_transfer_size_t">
+            <item id="EDMA_TRANSFER_SIZE_1B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_2B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_4B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_8B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_16B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_32B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_64B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_2B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_4B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_8B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_16B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_32B" label=""/>
+            <item id="EDMA_TRANSFER_SIZE_64B" label=""/>
+         </enum>
+         <enum id="edma_chn_status_t" label="Channel status for eDMA channel" from="edma_chn_status_t">
+            <description>A structure describing the eDMA channel status. The user can get the status by callback parameter or by calling EDMA_DRV_getStatus() function. Implements : edma_chn_status_t_Class</description>
+            <item id="EDMA_CHN_NORMAL" label="eDMA channel normal state"/>
+            <item id="EDMA_CHN_ERROR" label="An error occurred in the eDMA channel"/>
+         </enum>
+         <enum id="edma_transfer_type_t" label="A type for the DMA transfer" from="edma_transfer_type_t">
+            <item id="EDMA_TRANSFER_PERIPH2MEM" label="Transfer from peripheral to memory"/>
+            <item id="EDMA_TRANSFER_MEM2PERIPH" label="Transfer from memory to peripheral"/>
+            <item id="EDMA_TRANSFER_MEM2MEM" label="Transfer from memory to memory"/>
+            <item id="EDMA_TRANSFER_PERIPH2PERIPH" label="Transfer from peripheral to peripheral"/>
+         </enum>
+         <enum id="edma_crc_mode_polynomial_t" label="A mode polynomial for the DMA CRC" from="edma_crc_mode_polynomial_t">
+            <item id="EDMA_CRC_BITS_32_CCITT" label="EDMA_CRC_BITS_32_CCITT"/>
+            <item id="EDMA_CRC_BITS_32_ISCSI" label="EDMA_CRC_BITS_32_ISCSI"/>
+            <item id="EDMA_CRC_BITS_32_E2E" label="EDMA_CRC_BITS_32_E2E"/>
+            <item id="EDMA_CRC_BITS_16_CCITT" label="EDMA_CRC_BITS_16_CCITT"/>
+            <item id="EDMA_CRC_BITS_8_H2F" label="EDMA_CRC_BITS_8_H2F"/>
+            <item id="EDMA_CRC_BITS_8_VDA_CAN" label="EDMA_CRC_BITS_8_VDA_CAN"/>
+         </enum>
+         <enum id="edma_crc_sel_init_value_t" label="An initial value for the DMA CRC" from="edma_crc_sel_init_value_t">
+            <item id="EDMA_CRC_INIT_NEW_VALUE" label="EDMA_CRC_INIT_NEW_VALUE"/>
+            <item id="EDMA_CRC_CONTINUE_PREVIOUS_VALUE" label="EDMA_CRC_CONTINUE_PREVIOUS_VALUE"/>
+         </enum>
+         <struct id="edma_user_config_t" label="The user configuration structure for the eDMA driver" from="edma_user_config_t">
+            <description>Use an instance of this structure with the EDMA_DRV_Init() function. This allows the user to configure settings of the EDMA peripheral with a single function call. Implements : edma_user_config_t_Class</description>
+            <reference id="chnArbitration" label="eDMA channel arbitration" type="edma_arbitration_algorithm_t">
+               <description>eDMA channel arbitration.</description>
+            </reference>
+            <reference id="groupArbitration" label="eDMA group arbitration" type="edma_arbitration_algorithm_t" available="featureDefined(`FEATURE_DMA_HWV2`)">
+               <description>eDMA group arbitration.</description>
+            </reference>
+            <reference id="groupPriority" label="eDMA group priority" type="edma_group_priority_t" available="featureDefined(`FEATURE_DMA_HWV2`)">
+               <description>eDMA group priority. Used while eDMA group arbitration is set to fixed priority.</description>
+            </reference>
+            <bool id="haltOnError" label="Any error causes the HALT bit to set">
+               <description>Any error causes the HALT bit to set. Subsequently, all service requests are ignored until the HALT bit is cleared.</description>
+            </bool>
+         </struct>
+         <struct id="edma_chn_state_t" label="Data structure for the eDMA channel state" from="edma_chn_state_t">
+            <integer id="virtChn" label="Virtual channel number" type="uint8_t">
+               <description>Virtual channel number.</description>
+            </integer>
+            <reference id="callback" label="Callback function pointer for the eDMA channel" type="edma_callback_t">
+               <description>Callback function pointer for the eDMA channel. It will be called at the eDMA channel complete and eDMA channel error.</description>
+            </reference>
+            <fixme id="parameter" label="Parameter for the callback function pointer" type="void *">
+               <description>Parameter for the callback function pointer.</description>
+            </fixme>
+            <reference id="status" label="eDMA channel status" type="edma_chn_status_t">
+               <description>eDMA channel status.</description>
+            </reference>
+         </struct>
+         <struct id="edma_channel_config_t" label="The user configuration structure for the an eDMA driver channel" from="edma_channel_config_t">
+            <description>Use an instance of this structure with the EDMA_DRV_ChannelInit() function. This allows the user to configure settings of the EDMA channel with a single function call. Implements : edma_channel_config_t_Class</description>
+            <reference id="groupPriority" label="eDMA group priority" type="edma_group_priority_t">
+               <description>eDMA group priority. Used while eDMA group arbitration is set to fixed priority.</description>
+            </reference>
+            <reference id="channelPriority" label="eDMA channel priority - only used when channel arbitration mode is &apos;Fixed priority&apos;" type="edma_channel_priority_t">
+               <description>eDMA channel priority - only used when channel arbitration mode is &apos;Fixed priority&apos;.</description>
+            </reference>
+            <integer id="virtChnConfig" label="eDMA virtual channel number" type="uint8_t">
+               <description>eDMA virtual channel number</description>
+            </integer>
+            <reference id="source" label="Selects the source of the DMA request for this channel" type="edma_request_source_t">
+               <description>Selects the source of the DMA request for this channel</description>
+            </reference>
+            <reference id="callback" label="Callback that will be registered for this channel" type="edma_callback_t">
+               <description>Callback that will be registered for this channel</description>
+            </reference>
+            <string id="callbackParam" label="Parameter passed to the channel callback" type="void *">
+               <description>Parameter passed to the channel callback</description>
+            </string>
+            <bool id="enableTrigger" label="Enables the periodic trigger capability for the DMA channel">
+               <description>Enables the periodic trigger capability for the DMA channel.</description>
+            </bool>
+         </struct>
+         <struct id="edma_scatter_gather_list_t" label="Data structure for configuring a discrete memory transfer" from="edma_scatter_gather_list_t">
+            <integer id="address" label="Address of buffer" type="uint32_t">
+               <description>Address of buffer.</description>
+            </integer>
+            <integer id="length" label="Length of buffer" type="uint32_t">
+               <description>Length of buffer.</description>
+            </integer>
+            <reference id="type" label="Type of the DMA transfer" type="edma_transfer_type_t">
+               <description>Type of the DMA transfer</description>
+            </reference>
+         </struct>
+         <struct id="edma_state_t" label="Runtime state structure for the eDMA driver" from="edma_state_t">
+            <description>This structure holds data that is used by the eDMA peripheral driver to manage multi eDMA channels. The user passes the memory for this run-time state structure and the eDMA driver populates the members. Implements : edma_state_t_Class</description>
+            <struct id="virtChnState" label="Pointer array storing channel state" type="edma_chn_state_t *volatile">
+               <description>Pointer array storing channel state.</description>
+            </struct>
+         </struct>
+         <struct id="edma_loop_transfer_config_t" label="eDMA loop transfer configuration" from="edma_loop_transfer_config_t">
+            <description>This structure configures the basic minor/major loop attributes. Implements : edma_loop_transfer_config_t_Class</description>
+            <integer id="majorLoopIterationCount" label="Number of major loop iterations" type="uint32_t">
+               <description>Number of major loop iterations.</description>
+            </integer>
+            <bool id="srcOffsetEnable" label="Selects whether the minor loop offset is applied to the source address upon minor loop completion">
+               <description>Selects whether the minor loop offset is applied to the source address upon minor loop completion.</description>
+            </bool>
+            <bool id="dstOffsetEnable" label="Selects whether the minor loop offset is applied to the destination address upon minor loop completion">
+               <description>Selects whether the minor loop offset is applied to the destination address upon minor loop completion.</description>
+            </bool>
+            <integer id="minorLoopOffset" label="Sign-extended offset applied to the source or destination address to form the next-state value after the minor loop completes" type="int32_t">
+               <description>Sign-extended offset applied to the source or destination address to form the next-state value after the minor loop completes.</description>
+            </integer>
+            <bool id="minorLoopChnLinkEnable" label="Enables channel-to-channel linking on minor loop complete">
+               <description>Enables channel-to-channel linking on minor loop complete.</description>
+            </bool>
+            <integer id="minorLoopChnLinkNumber" label="The number of the next channel to be started by DMA engine when minor loop completes" type="uint8_t">
+               <description>The number of the next channel to be started by DMA engine when minor loop completes.</description>
+            </integer>
+            <bool id="majorLoopChnLinkEnable" label="Enables channel-to-channel linking on major loop complete">
+               <description>Enables channel-to-channel linking on major loop complete.</description>
+            </bool>
+            <integer id="majorLoopChnLinkNumber" label="The number of the next channel to be started by DMA engine when major loop completes" type="uint8_t">
+               <description>The number of the next channel to be started by DMA engine when major loop completes.</description>
+            </integer>
+         </struct>
+         <struct id="edma_transfer_config_t" label="eDMA transfer size configuration" from="edma_transfer_config_t">
+            <description>This structure configures the basic source/destination transfer attribute. Implements : edma_transfer_config_t_Class</description>
+            <integer id="srcAddr" label="Memory address pointing to the source data" type="uint32_t">
+               <description>Memory address pointing to the source data.</description>
+            </integer>
+            <integer id="destAddr" label="Memory address pointing to the destination data" type="uint32_t">
+               <description>Memory address pointing to the destination data.</description>
+            </integer>
+            <reference id="srcTransferSize" label="Source data transfer size" type="edma_transfer_size_t">
+               <description>Source data transfer size.</description>
+            </reference>
+            <reference id="destTransferSize" label="Destination data transfer size" type="edma_transfer_size_t">
+               <description>Destination data transfer size.</description>
+            </reference>
+            <integer id="srcOffset" label="Sign-extended offset applied to the current source address to form the next-state value as each source read/write is completed" type="int16_t">
+               <description>Sign-extended offset applied to the current source address to form the next-state value as each source read/write is completed.</description>
+            </integer>
+            <integer id="destOffset" label="Sign-extended offset applied to the current destination address to form the next-state value as each source read/write is completed" type="int16_t">
+               <description>Sign-extended offset applied to the current destination address to form the next-state value as each source read/write is completed.</description>
+            </integer>
+            <integer id="srcLastAddrAdjust" label="Last source address adjustment" type="int32_t">
+               <description>Last source address adjustment.</description>
+            </integer>
+            <integer id="destLastAddrAdjust" label="Last destination address adjustment" type="int32_t">
+               <description>Last destination address adjustment. Note here it is only valid when scatter/gather feature is not enabled.</description>
+            </integer>
+            <reference id="srcModulo" label="Source address modulo" type="edma_modulo_t">
+               <description>Source address modulo.</description>
+            </reference>
+            <reference id="destModulo" label="Destination address modulo" type="edma_modulo_t">
+               <description>Destination address modulo.</description>
+            </reference>
+            <integer id="minorByteTransferCount" label="Number of bytes to be transferred in each service request of the channel" type="uint32_t">
+               <description>Number of bytes to be transferred in each service request of the channel.</description>
+            </integer>
+            <bool id="scatterGatherEnable" label="Enable scatter gather feature">
+               <description>Enable scatter gather feature.</description>
+            </bool>
+            <integer id="scatterGatherNextDescAddr" label="The address of the next descriptor to be used, when scatter/gather feature is enabled" type="uint32_t">
+               <description>The address of the next descriptor to be used, when scatter/gather feature is enabled. Note: this value is not used when scatter/gather feature is disabled.</description>
+            </integer>
+            <bool id="interruptEnable" label="Enable the interrupt request when the major loop count completes">
+               <description>Enable the interrupt request when the major loop count completes</description>
+            </bool>
+            <struct id="loopTransferConfig" label="Pointer to loop transfer configuration structure (defines minor/major loop attributes) Note: this field is only used when minor loop mapping is enabled from DMA configuration" type="edma_loop_transfer_config_t *">
+               <description>Pointer to loop transfer configuration structure (defines minor/major loop attributes) Note: this field is only used when minor loop mapping is enabled from DMA configuration.</description>
+            </struct>
+         </struct>
+         <struct id="edma_software_tcd_t" label="eDMA TCD Implements : edma_software_tcd_t_Class" from="edma_software_tcd_t">
+            <integer id="SADDR" label="" type="uint32_t"/>
+            <integer id="SOFF" label="" type="int16_t"/>
+            <integer id="ATTR" label="" type="uint16_t"/>
+            <integer id="NBYTES" label="" type="uint32_t"/>
+            <integer id="SLAST" label="" type="int32_t"/>
+            <integer id="DADDR" label="" type="uint32_t"/>
+            <integer id="DOFF" label="" type="int16_t"/>
+            <integer id="CITER" label="" type="uint16_t"/>
+            <integer id="DLAST_SGA" label="" type="int32_t"/>
+            <integer id="CSR" label="" type="uint16_t"/>
+            <integer id="BITER" label="" type="uint16_t"/>
+         </struct>
+      </generated_types>
+
+      <user_types>
+         <struct id="edmaUserCfg_t" label="The user configuration structure array for the eDMA driver">
+            <description>List of eDMA user configurations</description>
+            <string id="userCfgName" label="User configuration name" type="string">
+                <description>User configuration name</description>
+                <validation>
+                    <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="User configuration name is not valid C identifier!"/>
+                </validation>
+            </string>
+            <string id="cfgType" label="User configuration type" type="string" enable="false">
+                <description>User configuration type</description>
+            </string>
+            <bool id="readOnly" label="Read-Only">
+                <description>Read Only.</description>
+            </bool>
+            <reference id="groupArbitration" label="Group Arbitration" type="edma_arbitration_algorithm_t" options="cStructField" available="featureDefined(`FEATURE_DMA_HWV2`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K116`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K118`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K142`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K146`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K148`)">
+                <description>eDMA group arbitration.</description>
+            </reference>
+            <reference id="groupPriority" label="Group Priority" type="edma_group_priority_t" options="cStructField" available="featureDefined(`FEATURE_DMA_HWV2`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K116`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K118`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K142`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K146`) &amp;&amp; !featureDefined(`FEATURE_DMA_REQ_S32K148`)">
+                <description>eDMA group priority. Used while eDMA group arbitration is set to fixed priority.</description>
+            </reference>
+            <reference id="chnArbitration" label="Channel Arbitration" type="edma_arbitration_algorithm_t" options="cStructField">
+                <description>eDMA channel arbitration.</description>
+            </reference>
+            <bool id="haltOnError" label="Set HALT bit on error" options="cStructField">
+                <description>Any error causes the HALT bit to set. Subsequently, all service requests are ignored until the HALT bit is cleared.</description>
+            </bool>
+         </struct>
+
+         <struct id="userType_edmaUserCfg_t" label="The user configuration structure for the eDMA driver">
+            <description>Use an instance of this structure with the EDMA_DRV_Init() function. This allows the user to configure settings of the EDMA peripheral with a single function call. Implements : edma_user_config_t_Class</description>
+            <string id="userStateStruct" label="Driver state structure name" type="string">
+                <description>Driver state structure name</description>
+                <validation>
+                    <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Driver state structure name is not valid C identifier!"/>
+                </validation>
+            </string>
+            <array id="array_userCfgStructs" type="edmaUserCfg_t" options="ShowContentAs=Table" label="Configurations list">
+                <item_defaults>
+                    <set_default id="userCfgName" value_expr="x -> (`dmaController_InitConfig` + x.getID())"/>
+                    <set_default id="cfgType" value_expr="x -> (`edma_user_config_t`)"/>
+                    <set_default id="readOnly" value_expr="x -> (`true`)"/>
+                    <set_default id="groupArbitration" value_expr="x -> (`EDMA_ARBITRATION_FIXED_PRIORITY`)"/>
+                    <set_default id="groupPriority" value_expr="x -> (`EDMA_GRP0_PRIO_HIGH_GRP1_PRIO_LOW`)" available="featureDefined(`FEATURE_DMA_HWV2`)"/>
+                    <set_default id="chnArbitration" value_expr="x -> (`EDMA_ARBITRATION_FIXED_PRIORITY`)"/>
+                    <set_default id="haltOnError" value_expr="x -> (`false`)"/>
+                </item_defaults>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`userCfgName`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+                    <constraint cond_expr="$this.getSize() != 0" level="error" description="There must be at least one configuration"/>
+                </validation>
+            </array>
+         </struct>
+
+         <struct id="userType_edmaChCfg_t" label="The user configuration structure for the an eDMA driver channel">
+            <description>Use an instance of this structure with the EDMA_DRV_ChannelInit() function. This allows the user to configure settings of the EDMA channel with a single function call. Implements : edma_channel_config_t_Class</description>
+            <string id="chStateStructName" label="Channel state structure name" type="string">
+                <description>Channel state structure name</description>
+                <validation>
+                    <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Channel state name is not valid C identifier!"/>
+                </validation>
+            </string>
+            <string id="chConfigName" label="Channel configuration name" type="string">
+                <description>Channel configuration name</description>
+                <validation>
+                    <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Channel configuration name is not valid C identifier!"/>
+                </validation>
+            </string>
+            <string id="chType" label="Channel configuration type" type="string" enable="false">
+                <description>Channel configuration type</description>
+            </string>
+            <integer id="virtCh" label="Virtual channel" type="uint8_t" >
+                <description>Virtual channel number.</description>
+                <validation>
+                    <constraint cond_expr="$this.value() &lt; getFeature(`FEATURE_DMA_MAX_NUM_CH`)" level="error" description="Virtual Channel value is invalid!"/>
+                </validation>
+            </integer>
+            <reference id="grPrio" label="Group priority" type="edma_group_priority_t" available="featureDefined(`FEATURE_DMA_HWV3`)">
+                <description>eDMA group priority - only used when channel arbitration mode is Fixed priority.</description>
+            </reference>
+            <reference id="chPrio" label="Channel priority" type="edma_channel_priority_t">
+                <description>eDMA channel priority - only used when channel arbitration mode is Fixed priority.</description>
+            </reference>
+            <reference id="chReq" label="Channel request" type="edma_request_source_t" available="(featureDefined(`FEATURE_DMA_REQ_SJA1110`)==false)">
+                <description>eDMA channel request.</description>
+                <validation>
+                    <constraint cond_expr="(((64 &gt; toInt($parent.chReq.getEnumItemValue())) &amp;&amp;
+                                             (16 &gt; $parent.virtCh.getValue()))||
+                                           (((63 &lt; toInt($parent.chReq.getEnumItemValue()))&amp;&amp;(128 &gt; toInt($parent.chReq.getEnumItemValue()))) &amp;&amp;
+                                             (15 &lt; $parent.virtCh.getValue()) &amp;&amp; (32 &gt; $parent.virtCh.getValue()))||
+                                           (((127 &lt; toInt($parent.chReq.getEnumItemValue()))&amp;&amp;(192 &gt; toInt($parent.chReq.getEnumItemValue()))) &amp;&amp;
+                                             (31 &lt; $parent.virtCh.getValue()) &amp;&amp; (48 &gt; $parent.virtCh.getValue()))||
+                                             ((191 &lt; toInt($parent.chReq.getEnumItemValue())) &amp;&amp;
+                                             (47 &lt; $parent.virtCh.getValue()) &amp;&amp; (64 &gt; $parent.virtCh.getValue())))
+                                            " level="error" description="REQ[0,63] -> CH[0,15] | REQ[64,127] -> CH[16,31] | REQ[128,191] -> CH[32,47] | REQ[192,255] -> CH[48,63]!"/>
+                </validation>
+            </reference>
+            <info id="chReqNoMux" label="Channel request no mux" available="(featureDefined(`FEATURE_DMA_REQ_SJA1110`)==true)" value="`N/A`">
+               <description>eDMA channel request for platform which has no DMA MUX</description>
+            </info>
+            <string id="chCallback" label="Channel callback name" type="string">
+                <description>Channel callback name</description>
+                <validation>
+                    <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name is not valid C identifier!"/>
+                </validation>
+            </string>
+            <string id="chCallbackParam" label="Channel callback parameter" type="string">
+                <description>Channel callback parameter name</description>
+                <validation>
+                    <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback parameter is not valid C identifier!"/>
+                </validation>
+            </string>
+            <bool id="enableTrigger" label="Enable periodic trigger">
+                <description>Enables the periodic trigger capability for the DMA channel.</description>
+            </bool>
+         </struct>
+
+         <struct id="userType_array_edmaChCfg_t" label="Array containing channels configuration structures.">
+            <array id="array_chCfgStructs" type="userType_edmaChCfg_t" options="ShowContentAs=Table" label="List">
+                <item_defaults>
+                    <set_default id="chStateStructName" value_expr="x -> (`dmaControllerChn` + x.getID() + `_State`)"/>
+                    <set_default id="chConfigName" value_expr="x -> (`dmaControllerChn` + x.getID() + `_Config`)"/>
+                    <set_default id="chType" value_expr="x.chType -> (`edma_channel_config_t`)"/>
+                    <set_default id="virtCh" value_expr="x -> (x.getID())"/>
+                    <set_default id="grPrio" value_expr="x.grPrio -> (`EDMA_CHN_GROUP_0`)" available="featureDefined(`FEATURE_DMA_HWV3`)"/>
+                    <set_default id="chPrio" value_expr="x.chPrio -> (`EDMA_CHN_DEFAULT_PRIORITY`)"/>
+                    <set_default id="chCallback" value_expr="x.chCallback -> (`NULL`)"/>
+                    <set_default id="chCallbackParam" value_expr="x.chCallbackParam -> (`NULL`)"/>
+                </item_defaults>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`virtCh`).value()).length() == 0" level="error" description="Duplicated virtual channel!"/>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`chStateStructName`).value()).length() == 0" level="error" description="Duplicated state name!"/>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`chConfigName`).value()).length() == 0" level="error" description="Duplicated configuration channel!"/>
+                </validation>                    
+            </array>
+         </struct>
+
+         <struct id="userType_crcChnCfgInst0_t" label="The user configuration structure for the a DMA CRC channel">
+            <string id="crcChnStateStructName" label="Channel state structure name" type="string">
+                  <description>DMA CRC channel state structure name</description>
+                  <validation>
+                     <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Channel state name is not valid C identifier!"/>
+                  </validation>
+            </string>
+            <string id="crcChnConfigName" label="Channel configuration name" type="string">
+                  <description>DMA CRC channel configuration name</description>
+                  <validation>
+                     <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Channel configuration name is not valid C identifier!"/>
+                  </validation>
+            </string>
+            <string id="crcChnType" label="Channel configuration type" type="string" enable="false">
+                  <description>DMA CRC channel configuration type</description>
+            </string>
+            <integer id="crcChn" label="CRC channel" type="uint8_t" >
+                  <description>CRC channel number.</description>
+                  <validation>
+                     <constraint cond_expr="$this.value() &lt; getFeature(`FEATURE_DMA_CRC_MAX_NUM_CH`)" level="error" description="Allowed DMA CRC Channel values: 0 to 7"/>
+                  </validation>
+            </integer>
+            <integer id="dmaVirtChn" label="DMA virtual channel" type="uint8_t" >
+                  <description>DMA virtual channel number.</description>
+                  <validation>
+                     <constraint cond_expr="$this.value() &lt; getFeature(`FEATURE_DMA_MAX_NUM_CH`) / 2" level="error" description="DMA_CRC_0 must select DMA virtual channel from 0 to 31"/>
+                  </validation>
+            </integer>
+            <reference id="polynomial" label="Polynomial" type="edma_crc_mode_polynomial_t">
+                  <description>Polynomial for DMA CRC</description>
+            </reference>
+            <reference id="initValue" label="Initial values" type="edma_crc_sel_init_value_t">
+                  <description>Select initial values of the DMA CRC (with new value or continue accumulating previous CRC values )</description>
+            </reference>
+            <integer id="seedValue" label="Seed value" type="uint32_t" >
+                  <description>Seed value of CRC</description>
+                  <validation>
+                     <constraint cond_expr="$this.value() &lt; 4294967296" level="error" description="Allowed Seed values: 0 to 0xFFFFFFFF"/>
+                  </validation>
+            </integer>
+            <bool id="enableCRC" label="Enable CRC logic">
+                <description>Enables/Disables CRC logic</description>
+            </bool>
+         </struct>
+         
+         <struct id="userType_crcChnCfgInst1_t" label="The user configuration structure for the a DMA CRC channel">
+            <string id="crcChnStateStructName" label="Channel state structure name" type="string">
+                  <description>DMA CRC channel state structure name</description>
+                  <validation>
+                     <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Channel state name is not valid C identifier!"/>
+                  </validation>
+            </string>
+            <string id="crcChnConfigName" label="Channel configuration name" type="string">
+                  <description>DMA CRC channel configuration name</description>
+                  <validation>
+                     <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Channel configuration name is not valid C identifier!"/>
+                  </validation>
+            </string>
+            <string id="crcChnType" label="Channel configuration type" type="string" enable="false">
+                  <description>DMA CRC channel configuration type</description>
+            </string>
+            <integer id="crcChn" label="CRC channel" type="uint8_t" >
+                  <description>CRC channel number.</description>
+                  <validation>
+                     <constraint cond_expr="$this.value() &lt; getFeature(`FEATURE_DMA_CRC_MAX_NUM_CH`)" level="error" description="Allowed DMA CRC Channel values: 0 to 7"/>
+                  </validation>
+            </integer>
+            <integer id="dmaVirtChn" label="DMA virtual channel" type="uint8_t" >
+                  <description>DMA virtual channel number.</description>
+                  <validation>
+                     <constraint cond_expr="($this.value() &lt; getFeature(`FEATURE_DMA_MAX_NUM_CH`)) &amp;&amp; ($this.value() &gt;= getFeature(`FEATURE_DMA_MAX_NUM_CH`) / 2)" level="error" description="DMA_CRC_1 must select DMA virtual channel from 32 to 63"/>
+                  </validation>
+            </integer>
+            <reference id="polynomial" label="Polynomial" type="edma_crc_mode_polynomial_t">
+                  <description>Polynomial for DMA CRC</description>
+            </reference>
+            <reference id="initValue" label="Initial values" type="edma_crc_sel_init_value_t">
+                  <description>Select initial values of the DMA CRC (with new value or continue accumulating previous CRC values )</description>
+            </reference>
+            <integer id="seedValue" label="Seed value" type="uint32_t" >
+                  <description>Seed value of CRC</description>
+                  <validation>
+                     <constraint cond_expr="$this.value() &lt; 4294967296" level="error" description="Allowed Seed values: 0 to 0xFFFFFFFF"/>
+                  </validation>
+            </integer>
+            <bool id="enableCRC" label="Enable CRC logic">
+                <description>Enables/Disables CRC logic</description>
+            </bool>
+         </struct>
+
+         <struct id="userType_array_crcChCfgInst0_t" label="Array containing CRC channels instance 0 configuration structures.">
+            <string id="crcStateStructNameInst0" label="State structure name" type="string">
+               <description>DMA_CRC_0 state structure name</description>
+               <validation>
+                   <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="State name is not valid C identifier!"/>
+               </validation>
+            </string>
+            <string id="crcUserCfgInst0" label="User configuration name" type="string">
+               <description>DMA_CRC_0 user structure name</description>
+               <validation>
+                   <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="User configuration name is not valid C identifier!"/>
+               </validation>
+            </string>
+            <string id="crcUserCfgType" label="User configuration type" type="string" enable="false">
+                <description>User configuration type</description>
+            </string>
+            <bool id="swapByte" label="Swap byte">
+                <description>Swap byte on input data</description>
+            </bool>
+            <bool id="swapBit" label="Swap bit">
+                <description>Swap bit on input data</description>
+            </bool>
+            <array id="array_crcChnCfgStructs" type="userType_crcChnCfgInst0_t" options="ShowContentAs=Table" label="List">
+                <item_defaults>
+                    <set_default id="crcChnStateStructName" value_expr="x -> (`dmaCrc0Chn` + x.getID() + `_State`)"/>
+                    <set_default id="crcChnConfigName" value_expr="x -> (`dmaCrc0Chn` + x.getID() + `_Config`)"/>
+                    <set_default id="crcChnType" value_expr="x.crcChnType -> (`edma_crc_channel_config_t`)"/>
+                    <set_default id="crcChn" value_expr="x -> (x.getID())"/>
+                    <set_default id="dmaVirtChn" value_expr="x -> (x.getID())"/>
+                    <set_default id="polynomial" value_expr="x.polynomial -> (`EDMA_CRC_BITS_32_CCITT`)"/>
+                    <set_default id="initValue" value_expr="x.initValue -> (`EDMA_CRC_INIT_NEW_VALUE`)"/>
+                    <set_default id="seedValue" value_expr="x.seedValue -> (`0xFFFFFFFF`)"/>
+                    <set_default id="enableCRC" value_expr="x.enableCRC -> true"/>
+                </item_defaults>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`crcChn`).value()).length() == 0" level="error" description="Duplicated crc channel!"/>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`dmaVirtChn`).value()).length() == 0" level="error" description="Duplicated virtual channel!"/>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`crcChnStateStructName`).value()).length() == 0" level="error" description="Duplicated state name!"/>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`crcChnConfigName`).value()).length() == 0" level="error" description="Duplicated configuration channel!"/>
+                </validation>
+            </array>
+         </struct>
+
+         <struct id="userType_array_crcChCfgInst1_t" label="Array containing CRC channels instance 1 configuration structures.">
+            <string id="crcStateStructNameInst1" label="State structure name" type="string">
+               <description>DMA_CRC_1 state structure name</description>
+               <validation>
+                   <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="State name is not valid C identifier!"/>
+               </validation>
+            </string>
+            <string id="crcUserCfgInst1" label="User configuration name" type="string">
+               <description>DMA_CRC_1 user structure name</description>
+               <validation>
+                   <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="User configuration name is not valid C identifier!"/>
+               </validation>
+            </string>
+            <string id="crcUserCfgType" label="User configuration type" type="string" enable="false">
+                <description>User configuration type</description>
+            </string>
+            <bool id="swapByte" label="Swap byte">
+                <description>Swap byte on input data</description>
+            </bool>
+            <bool id="swapBit" label="Swap bit">
+                <description>Swap bit on input data</description>
+            </bool>
+            <array id="array_crcChnCfgStructs" type="userType_crcChnCfgInst1_t" options="ShowContentAs=Table" label="List">
+                <item_defaults>
+                    <set_default id="crcChnStateStructName" value_expr="x -> (`dmaCrc1Chn` + x.getID() + `_State`)"/>
+                    <set_default id="crcChnConfigName" value_expr="x -> (`dmaCrc1Chn` + x.getID() + `_Config`)"/>
+                    <set_default id="crcChnType" value_expr="x.crcChnType -> (`edma_crc_channel_config_t`)"/>
+                    <set_default id="crcChn" value_expr="x -> (x.getID())"/>
+                    <set_default id="dmaVirtChn" value_expr="x -> (x.getID())"/>
+                    <set_default id="polynomial" value_expr="x.polynomial -> (`EDMA_CRC_BITS_32_CCITT`)"/>
+                    <set_default id="initValue" value_expr="x.initValue -> (`EDMA_CRC_INIT_NEW_VALUE`)"/>
+                    <set_default id="seedValue" value_expr="x.seedValue -> (`0xFFFFFFFF`)"/>
+                    <set_default id="enableCRC" value_expr="x.enableCRC -> true"/>
+                </item_defaults>
+                <validation>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`crcChn`).value()).length() == 0" level="error" description="Duplicated crc channel!"/>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`dmaVirtChn`).value()).length() == 0" level="error" description="Duplicated virtual channel!"/>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`crcChnStateStructName`).value()).length() == 0" level="error" description="Duplicated state name!"/>
+                    <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`crcChnConfigName`).value()).length() == 0" level="error" description="Duplicated configuration channel!"/>
+                </validation>                    
+            </array>
+         </struct>
+
+         <enum id="edma_request_source_t" label="eDMA Channel Request" from="edma_request_source_t">
+            <!-- S32V234 eDMA Channel Request -->
+            <item id="EDMA_REQ_S32V23X_000" label="EDMA_REQ_MUX_0_DISABLED"            value="0"  available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_001" label="EDMA_REQ_DSPI_0_TFFF"               value="1"  available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_002" label="EDMA_REQ_DSPI_0_RFDF"               value="2"  available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_003" label="EDMA_REQ_DSPI_2_TFFF"               value="3"  available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_004" label="EDMA_REQ_DSPI_2_RFDF"               value="4"  available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_005" label="EDMA_REQ_IIC_0_RX"                  value="5"  available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_006" label="EDMA_REQ_IIC_0_TX"                  value="6"  available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_007" label="EDMA_REQ_SIUL_CH_0"                 value="7"  available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_008" label="EDMA_REQ_SIUL_CH_1"                 value="8"  available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_009" label="EDMA_REQ_SIUL_CH_2"                 value="9"  available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_010" label="EDMA_REQ_SIUL_CH_3"                 value="10" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_012" label="EDMA_REQ_FTM_0_CH_0"                value="12" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_013" label="EDMA_REQ_FTM_0_CH_1"                value="13" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_014" label="EDMA_REQ_FTM_0_CH_2"                value="14" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_015" label="EDMA_REQ_FTM_0_CH_3"                value="15" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_016" label="EDMA_REQ_FTM_0_CH_4"                value="16" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_017" label="EDMA_REQ_FTM_0_CH_5"                value="17" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_018" label="EDMA_REQ_ADC_0"                     value="18" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_019" label="EDMA_REQ_LIN_0_TX"                  value="19" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_020" label="EDMA_REQ_LIN_0_RX"                  value="20" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_021" label="EDMA_REQ_CANFD_0"                   value="21" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_023" label="EDMA_REQ_ENET_IEEE1588_TMR_0"       value="23" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_024" label="EDMA_REQ_SIPI_CH_0"                 value="24" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_025" label="EDMA_REQ_SIPI_CH_1"                 value="25" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_026" label="EDMA_REQ_SIPI_CH_2"                 value="26" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_027" label="EDMA_REQ_SIPI_CH_3"                 value="27" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_028" label="EDMA_REQ_uSDHC"                     value="28" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_029" label="EDMA_REQ_DSPI_0_XSPI"               value="29" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_030" label="EDMA_REQ_DSPI_2_XSPI"               value="30" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_031" label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_0"    value="31" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_032" label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_1"    value="32" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_033" label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_2"    value="33" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_034" label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_3"    value="34" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_035" label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_4"    value="35" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_036" label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_5"    value="36" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_064" label="EDMA_REQ_MUX_1_DISABLED"            value="64" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_065" label="EDMA_REQ_DSPI_1_TFFF"               value="65" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_066" label="EDMA_REQ_DSPI_1_RFDF"               value="66" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_067" label="EDMA_REQ_DSPI_3_TFFF"               value="67" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_068" label="EDMA_REQ_DSPI_3_RFDF"               value="68" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_069" label="EDMA_REQ_FTM_1_CH_0"                value="69" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_070" label="EDMA_REQ_FTM_1_CH_1"                value="70" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_071" label="EDMA_REQ_FTM_1_CH_2"                value="71" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_072" label="EDMA_REQ_FTM_1_CH_3"                value="72" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_073" label="EDMA_REQ_FTM_1_CH_4"                value="73" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_074" label="EDMA_REQ_FTM_1_CH_5"                value="74" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_076" label="EDMA_REQ_LIN_1_TX"                  value="76" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_077" label="EDMA_REQ_LIN_1_RX"                  value="77" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_078" label="EDMA_REQ_IIC_1_RX"                  value="78" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_079" label="EDMA_REQ_IIC_1_TX"                  value="79" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_080" label="EDMA_REQ_IIC_2_RX"                  value="80" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_081" label="EDMA_REQ_IIC_2_TX"                  value="81" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_082" label="EDMA_REQ_QUADSPI_0_TX"              value="82" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_083" label="EDMA_REQ_QUADSPI_0_RX"              value="83" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_084" label="EDMA_REQ_CANFD_1"                   value="84" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_086" label="EDMA_REQ_SEQUENCER_REQ_0"           value="86" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_087" label="EDMA_REQ_SEQUENCER_REQ_1"           value="87" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_088" label="EDMA_REQ_SEQUENCER_REQ_2"           value="88" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_089" label="EDMA_REQ_SEQUENCER_REQ_3"           value="89" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_092" label="EDMA_REQ_DSPI_1_XSPI"               value="92" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_093" label="EDMA_REQ_DSPI_3_XSPI"               value="93" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_094" label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_0"    value="94" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_095" label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_1"    value="95" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_096" label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_2"    value="96" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_097" label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_3"    value="97" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_098" label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_4"    value="98" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            <item id="EDMA_REQ_S32V23X_099" label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_5"    value="99" available="featureDefined(`FEATURE_DMA_REQ_S32V23X`)"/>
+            
+            <!-- S32S247 eDMA Channel Request -->
+            <item id="EDMA_REQ_S32S247TV_000" label="EDMA_REQ_MUX_0_DISABLED"                      value="0"   available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_001" label="EDMA_REQ_MUX_0_FCAN_0"                        value="1"   available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_002" label="EDMA_REQ_MUX_0_FCAN_1"                        value="2"   available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_003" label="EDMA_REQ_MUX_0_LIN_0_TX"                      value="3"   available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_004" label="EDMA_REQ_MUX_0_LIN_0_RX"                      value="4"   available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_005" label="EDMA_REQ_MUX_0_LIN_1_TX"                      value="5"   available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_006" label="EDMA_REQ_MUX_0_LIN_1_RX"                      value="6"   available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_007" label="EDMA_REQ_MUX_0_DSPI_0_TX_FIFO_F"              value="7"   available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_008" label="EDMA_REQ_MUX_0_DSPI_0_RX_FIFO_D"              value="8"   available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_009" label="EDMA_REQ_MUX_0_DSPI_0_CMD_FIFO_F"             value="9"   available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_010" label="EDMA_REQ_MUX_0_DSPI_1_TX_FIFO_F"              value="10"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_011" label="EDMA_REQ_MUX_0_DSPI_1_RX_FIFO_D"              value="11"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_012" label="EDMA_REQ_MUX_0_DSPI_1_CMD_FIFO_F"             value="12"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_013" label="EDMA_REQ_MUX_0_DSPI_2_TX_FIFO_F"              value="13"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_014" label="EDMA_REQ_MUX_0_DSPI_2_RX_FIFO_D"              value="14"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_015" label="EDMA_REQ_MUX_0_DSPI_2_CMD_FIFO_F"             value="15"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_016" label="EDMA_REQ_MUX_0_I2C_0_RX"                      value="16"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_017" label="EDMA_REQ_MUX_0_I2C_0_TX"                      value="17"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_018" label="EDMA_REQ_MUX_0_I2C_1_RX"                      value="18"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_019" label="EDMA_REQ_MUX_0_I2C_1_TX"                      value="19"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_025" label="EDMA_REQ_MUX_0_SIUL2_0_CH_0"                  value="25"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_026" label="EDMA_REQ_MUX_0_SIUL2_0_CH_1"                  value="26"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_027" label="EDMA_REQ_MUX_0_SIUL2_0_CH_4"                  value="27"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_028" label="EDMA_REQ_MUX_0_SIUL2_0_CH_5"                  value="28"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_029" label="EDMA_REQ_MUX_0_SIUL2_0_CH_8"                  value="29"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_030" label="EDMA_REQ_MUX_0_SIUL2_0_CH_9"                  value="30"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_036" label="EDMA_REQ_MUX_0_SIUL2_1_CH_4"                  value="36"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_037" label="EDMA_REQ_MUX_0_SIUL2_1_CH_5"                  value="37"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_038" label="EDMA_REQ_MUX_0_FCAN_4"                        value="38"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_039" label="EDMA_REQ_MUX_0_FCAN_5"                        value="39"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_044" label="EDMA_REQ_MUX_0_SIUL2_1_CH_6"                  value="44"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_045" label="EDMA_REQ_MUX_0_SIUL2_1_CH_7"                  value="45"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_046" label="EDMA_REQ_MUX_0_SIUL2_1_CH_12"                 value="46"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_047" label="EDMA_REQ_MUX_0_SIUL2_1_CH_13"                 value="47"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_048" label="EDMA_REQ_MUX_0_PSI5_S_0_COMPLETE_ACCESS_1"    value="48"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_049" label="EDMA_REQ_MUX_0_PSI5_S_0_UART_TX"              value="49"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_050" label="EDMA_REQ_MUX_0_PSI5_S_0_UART_RX"              value="50"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_051" label="EDMA_REQ_MUX_0_SIUL2_1_CH_14"                 value="51"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_056" label="EDMA_REQ_MUX_0_eMIOS_0_eMIOS_0_CH25"          value="56"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_057" label="EDMA_REQ_MUX_0_eMIOS_0_eMIOS_0_CH26"          value="57"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_058" label="EDMA_REQ_MUX_0_eMIOS_0_eMIOS_0_CH28"          value="58"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_059" label="EDMA_REQ_MUX_0_eMIOS_0_eMIOS_0_CH30"          value="59"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_060" label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_0"              value="60"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_061" label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_1"              value="61"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_062" label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_2"              value="62"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_063" label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_3"              value="63"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_064" label="EDMA_REQ_MUX_1_DISABLED"                      value="64"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_065" label="EDMA_REQ_MUX_1_FCAN_2"                        value="65"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_066" label="EDMA_REQ_MUX_1_FCAN_3"                        value="66"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_067" label="EDMA_REQ_MUX_1_LIN_2_TX"                      value="67"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_068" label="EDMA_REQ_MUX_1_LIN_2_RX"                      value="68"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_069" label="EDMA_REQ_MUX_1_QUADSPI_TX"                    value="69"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_070" label="EDMA_REQ_MUX_1_QUADSPI_RX"                    value="70"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_071" label="EDMA_REQ_MUX_1_DSPI_3_TX_FIFO_F"              value="71"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_072" label="EDMA_REQ_MUX_1_DSPI_3_RX_FIFO_D"              value="72"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_073" label="EDMA_REQ_MUX_1_DSPI_3_CMD_FIFO_F"             value="73"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_074" label="EDMA_REQ_MUX_1_DSPI_4_TX_FIFO_F"              value="74"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_075" label="EDMA_REQ_MUX_1_DSPI_4_RX_FIFO_D"              value="75"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_076" label="EDMA_REQ_MUX_1_DSPI_4_CMD_FIFO_F"             value="76"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_077" label="EDMA_REQ_MUX_1_DSPI_5_TX_FIFO_F"              value="77"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_078" label="EDMA_REQ_MUX_1_DSPI_5_RX_FIFO_D"              value="78"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_079" label="EDMA_REQ_MUX_1_DSPI_5_CMD_FIFO_F"             value="79"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_080" label="EDMA_REQ_MUX_1_I2C_2_RX"                      value="80"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_081" label="EDMA_REQ_MUX_1_I2C_2_TX"                      value="81"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_082" label="EDMA_REQ_MUX_1_I2C_3_RX"                      value="82"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_083" label="EDMA_REQ_MUX_1_I2C_3_TX"                      value="83"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_084" label="EDMA_REQ_MUX_1_I2C_4_RX"                      value="84"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_085" label="EDMA_REQ_MUX_1_I2C_4_TX"                      value="85"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_086" label="EDMA_REQ_MUX_1_GMAC_0_CH_0"                   value="86"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_087" label="EDMA_REQ_MUX_1_GMAC_0_CH_1"                   value="87"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_088" label="EDMA_REQ_MUX_1_GMAC_0_CH_2"                   value="88"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_089" label="EDMA_REQ_MUX_1_SIUL2_0_CH_2"                  value="89"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_090" label="EDMA_REQ_MUX_1_SIUL2_0_CH_3"                  value="90"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_091" label="EDMA_REQ_MUX_1_SIUL2_0_CH_6"                  value="91"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_092" label="EDMA_REQ_MUX_1_SIUL2_0_CH_7"                  value="92"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_093" label="EDMA_REQ_MUX_1_SIUL2_0_CH_10"                 value="93"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_094" label="EDMA_REQ_MUX_1_SIUL2_0_CH_11"                 value="94"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_097" label="EDMA_REQ_MUX_1_GMAC_0_CH_3"                   value="97"  available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_100" label="EDMA_REQ_MUX_1_SIUL2_1_CH_15"                 value="100" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_101" label="EDMA_REQ_MUX_1_SIUL2_1_CH_20"                 value="101" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_102" label="EDMA_REQ_MUX_1_FCAN_6"                        value="102" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_103" label="EDMA_REQ_MUX_1_FCAN_7"                        value="103" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_104" label="EDMA_REQ_MUX_1_SENT_0_Fast"                   value="104" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_105" label="EDMA_REQ_MUX_1_SENT_0_Slow"                   value="105" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_106" label="EDMA_REQ_MUX_1_SENT_1_Fast"                   value="106" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_107" label="EDMA_REQ_MUX_1_SENT_1_Slow"                   value="107" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_110" label="EDMA_REQ_MUX_1_SIUL2_1_CH_21"                 value="110" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_111" label="EDMA_REQ_MUX_1_SIUL2_1_CH_22"                 value="111" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_112" label="EDMA_REQ_MUX_1_PSI5_S_1_COMPLETE_ACCESS_1"    value="112" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_113" label="EDMA_REQ_MUX_1_PSI5_S_1_UART_TX"              value="113" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_114" label="EDMA_REQ_MUX_1_PSI5_S_1_UART_RX"              value="114" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_115" label="EDMA_REQ_MUX_1_SIUL2_1_CH_23"                 value="115" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_120" label="EDMA_REQ_MUX_1_eMIOS_1_CH_25"                 value="120" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_121" label="EDMA_REQ_MUX_1_eMIOS_1_CH_26"                 value="121" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_122" label="EDMA_REQ_MUX_1_eMIOS_1_CH_28"                 value="122" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_123" label="EDMA_REQ_MUX_1_eMIOS_1_CH_30"                 value="123" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_124" label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_0"              value="124" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_125" label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_1"              value="125" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_126" label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_2"              value="126" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_127" label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_3"              value="127" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_128" label="EDMA_REQ_MUX_2_DISABLED"                      value="128" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_129" label="EDMA_REQ_MUX_2_FCAN_0"                        value="129" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_130" label="EDMA_REQ_MUX_2_FCAN_1"                        value="130" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_131" label="EDMA_REQ_MUX_2_LIN_0_TX"                      value="131" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_132" label="EDMA_REQ_MUX_2_LIN_0_RX"                      value="132" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_133" label="EDMA_REQ_MUX_2_LIN_1_TX"                      value="133" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_134" label="EDMA_REQ_MUX_2_LIN_1_RX"                      value="134" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_135" label="EDMA_REQ_MUX_2_DSPI_0_TX_FIFO_F"              value="135" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_136" label="EDMA_REQ_MUX_2_DSPI_0_RX_FIFO_D"              value="136" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_137" label="EDMA_REQ_MUX_2_DSPI_0_CMD_FIFO_F"             value="137" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_138" label="EDMA_REQ_MUX_2_DSPI_1_TX_FIFO_F"              value="138" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_139" label="EDMA_REQ_MUX_2_DSPI_1_RX_FIFO_D"              value="139" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_140" label="EDMA_REQ_MUX_2_DSPI_1_CMD_FIFO_F"             value="140" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_141" label="EDMA_REQ_MUX_2_DSPI_2_TX_FIFO_F"              value="141" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_142" label="EDMA_REQ_MUX_2_DSPI_2_RX_FIFO_D"              value="142" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_143" label="EDMA_REQ_MUX_2_DSPI_2_CMD_FIFO_F"             value="143" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_144" label="EDMA_REQ_MUX_2_I2C_0_RX"                      value="144" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_145" label="EDMA_REQ_MUX_2_I2C_0_TX"                      value="145" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_146" label="EDMA_REQ_MUX_2_I2C_1_RX"                      value="146" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_147" label="EDMA_REQ_MUX_2_I2C_1_TX"                      value="147" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_153" label="EDMA_REQ_MUX_2_SIUL2_0_CH_0"                  value="153" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_154" label="EDMA_REQ_MUX_2_SIUL2_0_CH_1"                  value="154" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_155" label="EDMA_REQ_MUX_2_SIUL2_0_CH_4"                  value="155" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_156" label="EDMA_REQ_MUX_2_SIUL2_0_CH_5"                  value="156" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_157" label="EDMA_REQ_MUX_2_SIUL2_0_CH_8"                  value="157" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_158" label="EDMA_REQ_MUX_2_SIUL2_0_CH_9"                  value="158" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_164" label="EDMA_REQ_MUX_2_SIUL2_1_CH_4"                  value="164" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_165" label="EDMA_REQ_MUX_2_SIUL2_1_CH_5"                  value="165" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_166" label="EDMA_REQ_MUX_2_FCAN_4"                        value="166" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_167" label="EDMA_REQ_MUX_2_FCAN_5"                        value="167" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_172" label="EDMA_REQ_MUX_2_SIUL2_1_CH_6"                  value="172" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_173" label="EDMA_REQ_MUX_2_SIUL2_1_CH_7"                  value="173" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_174" label="EDMA_REQ_MUX_2_SIUL2_1_CH_12"                 value="174" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_175" label="EDMA_REQ_MUX_2_SIUL2_1_CH_13"                 value="175" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_176" label="EDMA_REQ_MUX_2_PSI5_S_0_COMPLETE_ACCESS_1"    value="176" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_177" label="EDMA_REQ_MUX_2_PSI5_S_0_UART_TX"              value="177" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_178" label="EDMA_REQ_MUX_2_PSI5_S_0_UART_RX"              value="178" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_179" label="EDMA_REQ_MUX_2_SIUL2_1_CH_14"                 value="179" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_184" label="EDMA_REQ_MUX_2_eMIOS_0_eMIOS_0_CH25"          value="184" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_185" label="EDMA_REQ_MUX_2_eMIOS_0_eMIOS_0_CH26"          value="185" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_186" label="EDMA_REQ_MUX_2_eMIOS_0_eMIOS_0_CH28"          value="186" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_187" label="EDMA_REQ_MUX_2_eMIOS_0_eMIOS_0_CH30"          value="187" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_188" label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_0"              value="188" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_189" label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_1"              value="189" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_190" label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_2"              value="190" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_191" label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_3"              value="191" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_192" label="EDMA_REQ_MUX_3_DISABLED"                      value="192" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_193" label="EDMA_REQ_MUX_3_FCAN_2"                        value="193" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_194" label="EDMA_REQ_MUX_3_FCAN_3"                        value="194" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_195" label="EDMA_REQ_MUX_3_LIN_2_TX"                      value="195" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_196" label="EDMA_REQ_MUX_3_LIN_2_RX"                      value="196" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_197" label="EDMA_REQ_MUX_3_QUADSPI_TX"                    value="197" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_198" label="EDMA_REQ_MUX_3_QUADSPI_RX"                    value="198" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_199" label="EDMA_REQ_MUX_3_DSPI_3_TX_FIFO_F"              value="199" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_200" label="EDMA_REQ_MUX_3_DSPI_3_RX_FIFO_D"              value="200" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_201" label="EDMA_REQ_MUX_3_DSPI_3_CMD_FIFO_F"             value="201" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_202" label="EDMA_REQ_MUX_3_DSPI_4_TX_FIFO_F"              value="202" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_203" label="EDMA_REQ_MUX_3_DSPI_4_RX_FIFO_D"              value="203" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_204" label="EDMA_REQ_MUX_3_DSPI_4_CMD_FIFO_F"             value="204" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_205" label="EDMA_REQ_MUX_3_DSPI_5_TX_FIFO_F"              value="205" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_206" label="EDMA_REQ_MUX_3_DSPI_5_RX_FIFO_D"              value="206" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_207" label="EDMA_REQ_MUX_3_DSPI_5_CMD_FIFO_F"             value="207" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_208" label="EDMA_REQ_MUX_3_I2C_2_RX"                      value="208" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_209" label="EDMA_REQ_MUX_3_I2C_2_TX"                      value="209" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_210" label="EDMA_REQ_MUX_3_I2C_3_RX"                      value="210" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_211" label="EDMA_REQ_MUX_3_I2C_3_TX"                      value="211" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_212" label="EDMA_REQ_MUX_3_I2C_4_RX"                      value="212" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_213" label="EDMA_REQ_MUX_3_I2C_4_TX"                      value="213" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_214" label="EDMA_REQ_MUX_3_GMAC_0_CH_0"                   value="214" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_215" label="EDMA_REQ_MUX_3_GMAC_0_CH_1"                   value="215" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_216" label="EDMA_REQ_MUX_3_GMAC_0_CH_2"                   value="216" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_217" label="EDMA_REQ_MUX_3_SIUL2_0_CH_2"                  value="217" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_218" label="EDMA_REQ_MUX_3_SIUL2_0_CH_3"                  value="218" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_219" label="EDMA_REQ_MUX_3_SIUL2_0_CH_6"                  value="219" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_220" label="EDMA_REQ_MUX_3_SIUL2_0_CH_7"                  value="220" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_221" label="EDMA_REQ_MUX_3_SIUL2_0_CH_10"                 value="221" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_222" label="EDMA_REQ_MUX_3_SIUL2_0_CH_11"                 value="222" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_225" label="EDMA_REQ_MUX_3_GMAC_0_CH_3"                   value="225" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_228" label="EDMA_REQ_MUX_3_SIUL2_1_CH_15"                 value="228" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_229" label="EDMA_REQ_MUX_3_SIUL2_1_CH_20"                 value="229" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_230" label="EDMA_REQ_MUX_3_FCAN_6"                        value="230" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_231" label="EDMA_REQ_MUX_3_FCAN_7"                        value="231" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_232" label="EDMA_REQ_MUX_3_SENT_0_Fast"                   value="232" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_233" label="EDMA_REQ_MUX_3_SENT_0_Slow"                   value="233" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_234" label="EDMA_REQ_MUX_3_SENT_1_Fast"                   value="234" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_235" label="EDMA_REQ_MUX_3_SENT_1_Slow"                   value="235" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_238" label="EDMA_REQ_MUX_3_SIUL2_1_CH_21"                 value="238" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_239" label="EDMA_REQ_MUX_3_SIUL2_1_CH_22"                 value="239" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_240" label="EDMA_REQ_MUX_3_PSI5_S_1_COMPLETE_ACCESS_1"    value="240" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_241" label="EDMA_REQ_MUX_3_PSI5_S_1_UART_TX"              value="241" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_242" label="EDMA_REQ_MUX_3_PSI5_S_1_UART_RX"              value="242" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_243" label="EDMA_REQ_MUX_3_SIUL2_1_CH_23"                 value="243" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_248" label="EDMA_REQ_MUX_3_eMIOS_1_CH_25"                 value="248" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_249" label="EDMA_REQ_MUX_3_eMIOS_1_CH_26"                 value="249" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_250" label="EDMA_REQ_MUX_3_eMIOS_1_CH_28"                 value="250" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_251" label="EDMA_REQ_MUX_3_eMIOS_1_CH_30"                 value="251" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_252" label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_0"              value="252" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_253" label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_1"              value="253" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_254" label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_2"              value="254" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+            <item id="EDMA_REQ_S32S247TV_255" label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_3"              value="255" available="featureDefined(`FEATURE_DMA_REQ_S32S247TV`)"/>
+
+            <!-- S32G274A eDMA Channel Request -->
+            <item id="EDMA_REQ_S32G274A_000"  label="EDMA_REQ_MUX_0_DISABLED"                       value="0"    available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_001"  label="EDMA_REQ_MUX_0_CAN_FD_0"                       value="1"    available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_002"  label="EDMA_REQ_MUX_0_CAN_FD_1"                       value="2"    available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_003"  label="EDMA_REQ_MUX_0_LIN_0_TX"                       value="3"    available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_004"  label="EDMA_REQ_MUX_0_LIN_0_RX"                       value="4"    available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_005"  label="EDMA_REQ_MUX_0_LIN_1_TX"                       value="5"    available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_006"  label="EDMA_REQ_MUX_0_LIN_1_RX"                       value="6"    available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_007"  label="EDMA_REQ_MUX_0_DSPI_0_TX_FIFO_F"               value="7"    available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_008"  label="EDMA_REQ_MUX_0_DSPI_0_RX_FIFO_D"               value="8"    available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_009"  label="EDMA_REQ_MUX_0_DSPI_0_CMD_FIFO_F"              value="9"    available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_010"  label="EDMA_REQ_MUX_0_DSPI_1_TX_FIFO_F"               value="10"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_011"  label="EDMA_REQ_MUX_0_DSPI_1_RX_FIFO_D"               value="11"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_012"  label="EDMA_REQ_MUX_0_DSPI_1_CMD_FIFO_F"              value="12"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_013"  label="EDMA_REQ_MUX_0_DSPI_2_TX_FIFO_F"               value="13"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_014"  label="EDMA_REQ_MUX_0_DSPI_2_RX_FIFO_D"               value="14"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_015"  label="EDMA_REQ_MUX_0_DSPI_2_CMD_FIFO_F"              value="15"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_016"  label="EDMA_REQ_MUX_0_I2C_0_RX"                       value="16"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_017"  label="EDMA_REQ_MUX_0_I2C_0_TX"                       value="17"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_018"  label="EDMA_REQ_MUX_0_I2C_1_RX"                       value="18"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_019"  label="EDMA_REQ_MUX_0_I2C_1_TX"                       value="19"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_020"  label="EDMA_REQ_MUX_0_CTU_FIFO0"                      value="20"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_021"  label="EDMA_REQ_MUX_0_CTU_FIFO1"                      value="21"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_022"  label="EDMA_REQ_MUX_0_CTU_FIFO2"                      value="22"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_023"  label="EDMA_REQ_MUX_0_CTU_FIFO3"                      value="23"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_024"  label="EDMA_REQ_MUX_0_CTU_COMMAND_REQUEST"            value="24"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_025"  label="EDMA_REQ_MUX_0_SIUL0_CH_0"                     value="25"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_026"  label="EDMA_REQ_MUX_0_SIUL0_CH_1"                     value="26"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_027"  label="EDMA_REQ_MUX_0_SIUL0_CH_4"                     value="27"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_028"  label="EDMA_REQ_MUX_0_SIUL0_CH_5"                     value="28"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_029"  label="EDMA_REQ_MUX_0_SIUL0_CH_8"                     value="29"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_030"  label="EDMA_REQ_MUX_0_SIUL0_CH_9"                     value="30"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_032"  label="EDMA_REQ_MUX_0_SARADC_0"                       value="32"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_047"  label="EDMA_REQ_MUX_0_SIUL1_CH_0"                     value="47"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_048"  label="EDMA_REQ_MUX_0_SIUL1_CH_1"                     value="48"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_049"  label="EDMA_REQ_MUX_0_SIUL1_CH_4"                     value="49"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_050"  label="EDMA_REQ_MUX_0_SIUL1_CH_5"                     value="50"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_052"  label="EDMA_REQ_MUX_0_FTM_0_CH_0"                     value="52"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_053"  label="EDMA_REQ_MUX_0_FTM_0_CH_1"                     value="53"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_054"  label="EDMA_REQ_MUX_0_FTM_0_CH_2"                     value="54"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_055"  label="EDMA_REQ_MUX_0_FTM_0_CH_3"                     value="55"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_056"  label="EDMA_REQ_MUX_0_FTM_0_CH_4"                     value="56"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_057"  label="EDMA_REQ_MUX_0_FTM_0_CH_5"                     value="57"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_058"  label="EDMA_REQ_MUX_0_FTM_0_CH_6"                     value="58"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_059"  label="EDMA_REQ_MUX_0_FTM_0_CH_7"                     value="59"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_060"  label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_0"               value="60"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_061"  label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_1"               value="61"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_062"  label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_2"               value="62"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_063"  label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_3"               value="63"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_064"  label="EDMA_REQ_MUX_1_DISABLED"                       value="64"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_065"  label="EDMA_REQ_MUX_1_CAN_FD_2"                       value="65"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_066"  label="EDMA_REQ_MUX_1_CAN_FD_3"                       value="66"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_067"  label="EDMA_REQ_MUX_1_LIN_2_TX"                       value="67"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_068"  label="EDMA_REQ_MUX_1_LIN_2_RX"                       value="68"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_069"  label="EDMA_REQ_MUX_1_QUADSPI_TX"                     value="69"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_070"  label="EDMA_REQ_MUX_1_QUADSPI_RX"                     value="70"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_071"  label="EDMA_REQ_MUX_1_DSPI_3_TX_FIFO_F"               value="71"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_072"  label="EDMA_REQ_MUX_1_DSPI_3_RX_FIFO_D"               value="72"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_073"  label="EDMA_REQ_MUX_1_DSPI_3_CMD_FIFO_F"              value="73"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_074"  label="EDMA_REQ_MUX_1_DSPI_4_TX_FIFO_F"               value="74"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_075"  label="EDMA_REQ_MUX_1_DSPI_4_RX_FIFO_D"               value="75"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_076"  label="EDMA_REQ_MUX_1_DSPI_4_CMD_FIFO_F"              value="76"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_077"  label="EDMA_REQ_MUX_1_DSPI_5_TX_FIFO_F"               value="77"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_078"  label="EDMA_REQ_MUX_1_DSPI_5_RX_FIFO_D"               value="78"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_079"  label="EDMA_REQ_MUX_1_DSPI_5_CMD_FIFO_F"              value="79"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_080"  label="EDMA_REQ_MUX_1_I2C_2_RX"                       value="80"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_081"  label="EDMA_REQ_MUX_1_I2C_2_TX"                       value="81"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_082"  label="EDMA_REQ_MUX_1_I2C_3_RX"                       value="82"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_083"  label="EDMA_REQ_MUX_1_I2C_3_TX"                       value="83"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_084"  label="EDMA_REQ_MUX_1_I2C_4_RX"                       value="84"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_085"  label="EDMA_REQ_MUX_1_I2C_4_TX"                       value="85"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_086"  label="EDMA_REQ_MUX_1_ENET_MAC0_TIMER_CH_0"           value="86"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_087"  label="EDMA_REQ_MUX_1_ENET_MAC0_TIMER_CH_1"           value="87"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_088"  label="EDMA_REQ_MUX_1_ENET_MAC0_TIMER_CH_2"           value="88"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_089"  label="EDMA_REQ_MUX_1_SIUL0_CH_2"                     value="89"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_090"  label="EDMA_REQ_MUX_1_SIUL0_CH_3"                     value="90"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_091"  label="EDMA_REQ_MUX_1_SIUL0_CH_6"                     value="91"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_092"  label="EDMA_REQ_MUX_1_SIUL0_CH_7"                     value="92"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_093"  label="EDMA_REQ_MUX_1_SIUL0_CH_10"                    value="93"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_094"  label="EDMA_REQ_MUX_1_SIUL0_CH_11"                    value="94"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_096"  label="EDMA_REQ_MUX_1_SARADC_1"                       value="96"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_097"  label="EDMA_REQ_MUX_1_ENET_MAC0_TIMER_CH_3"           value="97"   available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_101"  label="EDMA_REQ_MUX_1_PFE_MAC0"                       value="101"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_102"  label="EDMA_REQ_MUX_1_PFE_MAC1"                       value="102"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_103"  label="EDMA_REQ_MUX_1_PFE_MAC2"                       value="103"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_111"  label="EDMA_REQ_MUX_1_SIUL1_CH_2"                     value="111"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_112"  label="EDMA_REQ_MUX_1_SIUL1_CH_3"                     value="112"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_113"  label="EDMA_REQ_MUX_1_SIUL1_CH_6"                     value="113"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_114"  label="EDMA_REQ_MUX_1_SIUL1_CH_7"                     value="114"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_116"  label="EDMA_REQ_MUX_1_FTM_1_CH_0"                     value="116"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_117"  label="EDMA_REQ_MUX_1_FTM_1_CH_1"                     value="117"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_118"  label="EDMA_REQ_MUX_1_FTM_1_CH_2"                     value="118"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_119"  label="EDMA_REQ_MUX_1_FTM_1_CH_3"                     value="119"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_120"  label="EDMA_REQ_MUX_1_FTM_1_CH_4"                     value="120"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_121"  label="EDMA_REQ_MUX_1_FTM_1_CH_5"                     value="121"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_122"  label="EDMA_REQ_MUX_1_FTM_1_CH_6"                     value="122"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_123"  label="EDMA_REQ_MUX_1_FTM_1_CH_7"                     value="123"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_124"  label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_0"               value="124"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_125"  label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_1"               value="125"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_126"  label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_2"               value="126"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_127"  label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_3"               value="127"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_128"  label="EDMA_REQ_MUX_2_DISABLED"                       value="128"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_129"  label="EDMA_REQ_MUX_2_CANFD_0"                        value="129"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_130"  label="EDMA_REQ_MUX_2_CANFD_1"                        value="130"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_131"  label="EDMA_REQ_MUX_2_LIN_0_TX"                       value="131"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_132"  label="EDMA_REQ_MUX_2_LIN_0_RX"                       value="132"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_133"  label="EDMA_REQ_MUX_2_LIN_1_TX"                       value="133"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_134"  label="EDMA_REQ_MUX_2_LIN_1_RX"                       value="134"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_135"  label="EDMA_REQ_MUX_2_DSPI_0_TX_FIFO_F"               value="135"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_136"  label="EDMA_REQ_MUX_2_DSPI_0_RX_FIFO_D"               value="136"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_137"  label="EDMA_REQ_MUX_2_DSPI_0_CMD_FIFO_F"              value="137"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_138"  label="EDMA_REQ_MUX_2_DSPI_1_TX_FIFO_F"               value="138"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_139"  label="EDMA_REQ_MUX_2_DSPI_1_RX_FIFO_D"               value="139"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_140"  label="EDMA_REQ_MUX_2_DSPI_1_CMD_FIFO_F"              value="140"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_141"  label="EDMA_REQ_MUX_2_DSPI_2_TX_FIFO_"                value="141"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_142"  label="EDMA_REQ_MUX_2_DSPI_2_RX_FIFO_"                value="142"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_143"  label="EDMA_REQ_MUX_2_DSPI_2_CMD_FIFO_F"              value="143"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_144"  label="EDMA_REQ_MUX_2_I2C_0_RX"                       value="144"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_145"  label="EDMA_REQ_MUX_2_I2C_0_TX"                       value="145"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_146"  label="EDMA_REQ_MUX_2_I2C_1_RX"                       value="146"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_147"  label="EDMA_REQ_MUX_2_I2C_1_TX"                       value="147"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_148"  label="EDMA_REQ_MUX_2_CTU_FIFO0"                      value="148"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_149"  label="EDMA_REQ_MUX_2_CTU_FIFO1"                      value="149"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_150"  label="EDMA_REQ_MUX_2_CTU_FIFO2"                      value="150"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_151"  label="EDMA_REQ_MUX_2_CTU_FIFO3"                      value="151"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_152"  label="EDMA_REQ_MUX_2_CTU_COMMAND_REQUEST"            value="152"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_153"  label="EDMA_REQ_MUX_2_SIUL0_CH_0"                     value="153"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_154"  label="EDMA_REQ_MUX_2_SIUL0_CH_1"                     value="154"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_155"  label="EDMA_REQ_MUX_2_SIUL0_CH_4"                     value="155"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_156"  label="EDMA_REQ_MUX_2_SIUL0_CH_5"                     value="156"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_157"  label="EDMA_REQ_MUX_2_SIUL0_CH_8"                     value="157"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_158"  label="EDMA_REQ_MUX_2_SIUL0_CH_9"                     value="158"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_160"  label="EDMA_REQ_MUX_2_SARADC_0"                       value="160"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_175"  label="EDMA_REQ_MUX_2_SIUL1_CH_0"                     value="175"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_176"  label="EDMA_REQ_MUX_2_SIUL1_CH_1"                     value="176"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_177"  label="EDMA_REQ_MUX_2_SIUL1_CH_4"                     value="177"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_178"  label="EDMA_REQ_MUX_2_SIUL1_CH_5"                     value="178"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_180"  label="EDMA_REQ_MUX_2_FTM_0_CH_0"                     value="180"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_181"  label="EDMA_REQ_MUX_2_FTM_0_CH_1"                     value="181"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_182"  label="EDMA_REQ_MUX_2_FTM_0_CH_2"                     value="182"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_183"  label="EDMA_REQ_MUX_2_FTM_0_CH_3"                     value="183"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_184"  label="EDMA_REQ_MUX_2_FTM_0_CH_4"                     value="184"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_185"  label="EDMA_REQ_MUX_2_FTM_0_CH_5"                     value="185"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_186"  label="EDMA_REQ_MUX_2_FTM_0_CH_6"                     value="186"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_187"  label="EDMA_REQ_MUX_2_FTM_0_CH_7"                     value="187"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_188"  label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_0"               value="188"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_189"  label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_1"               value="189"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_190"  label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_2"               value="190"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_191"  label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_3"               value="191"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_192"  label="EDMA_REQ_MUX_3_DISABLED"                       value="192"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_193"  label="EDMA_REQ_MUX_3_CAN_FD_2"                       value="193"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_194"  label="EDMA_REQ_MUX_3_CAN_FD_3"                       value="194"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_195"  label="EDMA_REQ_MUX_3_LIN_2_TX"                       value="195"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_196"  label="EDMA_REQ_MUX_3_LIN_2_RX"                       value="196"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_197"  label="EDMA_REQ_MUX_3_QUADSPI_TX"                     value="197"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_198"  label="EDMA_REQ_MUX_3_QUADSPI_RX"                     value="198"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_199"  label="EDMA_REQ_MUX_3_DSPI_3_TX_FIFO_F"               value="199"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_200"  label="EDMA_REQ_MUX_3_DSPI_3_RX_FIFO_D"               value="200"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_201"  label="EDMA_REQ_MUX_3_DSPI_3_CMD_FIFO_F"              value="201"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_202"  label="EDMA_REQ_MUX_3_DSPI_4_TX_FIFO_F"               value="202"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_203"  label="EDMA_REQ_MUX_3_DSPI_4_RX_FIFO_D"               value="203"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_204"  label="EDMA_REQ_MUX_3_DSPI_4_CMD_FIFO_F"              value="204"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_205"  label="EDMA_REQ_MUX_3_DSPI_5_TX_FIFO_F"               value="205"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_206"  label="EDMA_REQ_MUX_3_DSPI_5_RX_FIFO_D"               value="206"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_207"  label="EDMA_REQ_MUX_3_DSPI_5_CMD_FIFO_F"              value="207"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_208"  label="EDMA_REQ_MUX_3_I2C_2_RX"                       value="208"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_209"  label="EDMA_REQ_MUX_3_I2C_2_TX"                       value="209"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_210"  label="EDMA_REQ_MUX_3_I2C_3_RX"                       value="210"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_211"  label="EDMA_REQ_MUX_3_I2C_3_TX"                       value="211"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_212"  label="EDMA_REQ_MUX_3_I2C_4_RX"                       value="212"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_213"  label="EDMA_REQ_MUX_3_I2C_4_TX"                       value="213"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_214"  label="EDMA_REQ_MUX_3_ENET_MAC0_TIMER_CH_0"           value="214"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_215"  label="EDMA_REQ_MUX_3_ENET_MAC0_TIMER_CH_1"           value="215"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_216"  label="EDMA_REQ_MUX_3_ENET_MAC0_TIMER_CH_2"           value="216"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_217"  label="EDMA_REQ_MUX_3_SIUL0_CH_2"                     value="217"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_218"  label="EDMA_REQ_MUX_3_SIUL0_CH_3"                     value="218"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_219"  label="EDMA_REQ_MUX_3_SIUL0_CH_6"                     value="219"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_220"  label="EDMA_REQ_MUX_3_SIUL0_CH_7"                     value="220"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_221"  label="EDMA_REQ_MUX_3_SIUL0_CH_10"                    value="221"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_222"  label="EDMA_REQ_MUX_3_SIUL0_CH_11"                    value="222"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_224"  label="EDMA_REQ_MUX_3_SARADC_1"                       value="224"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_225"  label="EDMA_REQ_MUX_3_ENET_MAC0_TIMER_CH_3"           value="225"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_229"  label="EDMA_REQ_MUX_3_PFE_MAC0"                       value="229"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_230"  label="EDMA_REQ_MUX_3_PFE_MAC1"                       value="230"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_231"  label="EDMA_REQ_MUX_3_PFE_MAC2"                       value="231"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_239"  label="EDMA_REQ_MUX_3_SIUL1_CH_2"                     value="239"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_240"  label="EDMA_REQ_MUX_3_SIUL1_CH_3"                     value="240"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_241"  label="EDMA_REQ_MUX_3_SIUL1_CH_6"                     value="241"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_242"  label="EDMA_REQ_MUX_3_SIUL1_CH_7"                     value="242"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_244"  label="EDMA_REQ_MUX_3_FTM_1_CH_0"                     value="244"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_245"  label="EDMA_REQ_MUX_3_FTM_1_CH_1"                     value="245"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_246"  label="EDMA_REQ_MUX_3_FTM_1_CH_2"                     value="246"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_247"  label="EDMA_REQ_MUX_3_FTM_1_CH_3"                     value="247"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_248"  label="EDMA_REQ_MUX_3_FTM_1_CH_4"                     value="248"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_249"  label="EDMA_REQ_MUX_3_FTM_1_CH_5"                     value="249"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_250"  label="EDMA_REQ_MUX_3_FTM_1_CH_6"                     value="250"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_251"  label="EDMA_REQ_MUX_3_FTM_1_CH_7"                     value="251"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_252"  label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_0"               value="252"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_253"  label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_1"               value="253"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_254"  label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_2"               value="254"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+            <item id="EDMA_REQ_S32G274A_255"  label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_3"               value="255"  available="featureDefined(`FEATURE_DMA_REQ_S32G274A`)"/>
+
+            <!-- S32R45 eDMA Channel Request -->
+            <item id="EDMA_REQ_S32R45_000"  label="EDMA_REQ_MUX_0_DISABLED"                      value="0"    available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_001"  label="EDMA_REQ_MUX_0_CAN_FD_0"                      value="1"    available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_002"  label="EDMA_REQ_MUX_0_CAN_FD_1"                      value="2"    available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_003"  label="EDMA_REQ_MUX_0_LIN_0_TX"                      value="3"    available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_004"  label="EDMA_REQ_MUX_0_LIN_0_RX"                      value="4"    available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_005"  label="EDMA_REQ_MUX_0_LIN_1_TX"                      value="5"    available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_006"  label="EDMA_REQ_MUX_0_LIN_1_RX"                      value="6"    available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_007"  label="EDMA_REQ_MUX_0_DSPI_0_TX_FIFO_F"              value="7"    available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_008"  label="EDMA_REQ_MUX_0_DSPI_0_RX_FIFO_D"              value="8"    available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_009"  label="EDMA_REQ_MUX_0_DSPI_0_CMD_FIFO_F"             value="9"    available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_010"  label="EDMA_REQ_MUX_0_DSPI_1_TX_FIFO_F"              value="10"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_011"  label="EDMA_REQ_MUX_0_DSPI_1_RX_FIFO_D"              value="11"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_012"  label="EDMA_REQ_MUX_0_DSPI_1_CMD_FIFO_F"             value="12"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_013"  label="EDMA_REQ_MUX_0_DSPI_2_TX_FIFO_F"              value="13"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_014"  label="EDMA_REQ_MUX_0_DSPI_2_RX_FIFO_D"              value="14"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_015"  label="EDMA_REQ_MUX_0_DSPI_2_CMD_FIFO_F"             value="15"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_016"  label="EDMA_REQ_MUX_0_I2C_0_RX"                      value="16"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_017"  label="EDMA_REQ_MUX_0_I2C_0_TX"                      value="17"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_018"  label="EDMA_REQ_MUX_0_I2C_1_RX"                      value="18"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_019"  label="EDMA_REQ_MUX_0_I2C_1_TX"                      value="19"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_020"  label="EDMA_REQ_MUX_0_CTU_FIFO0"                     value="20"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_021"  label="EDMA_REQ_MUX_0_CTU_FIFO1"                     value="21"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_022"  label="EDMA_REQ_MUX_0_CTU_FIFO2"                     value="22"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_023"  label="EDMA_REQ_MUX_0_CTU_FIFO3"                     value="23"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_024"  label="EDMA_REQ_MUX_0_CTU_COMMAND_REQUEST"           value="24"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_032"  label="EDMA_REQ_MUX_0_SARADC_0"                      value="32"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_036"  label="EDMA_REQ_MUX_0_FTM_0_CH_0"                    value="36"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_037"  label="EDMA_REQ_MUX_0_FTM_0_CH_1"                    value="37"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_038"  label="EDMA_REQ_MUX_0_CTE"                           value="38"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_041"  label="EDMA_REQ_MUX_0_CAN_FD_4"                      value="41"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_042"  label="EDMA_REQ_MUX_0_CAN_FD_5"                      value="42"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_043"  label="EDMA_REQ_MUX_0_SIUL2_ORED_3_0"                value="43"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_044"  label="EDMA_REQ_MUX_0_SIUL2_ORED_7_4"                value="44"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_045"  label="EDMA_REQ_MUX_0_SIUL2_ORED_11_8"               value="45"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_046"  label="EDMA_REQ_MUX_0_SIUL2_ORED_15_12"              value="46"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_047"  label="EDMA_REQ_MUX_0_CORESIGHT_DEBUG_0"             value="47"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_048"  label="EDMA_REQ_MUX_0_CORESIGHT_DEBUG_1"             value="48"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_049"  label="EDMA_REQ_MUX_0_MIPICSI2_0"                    value="49"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_050"  label="EDMA_REQ_MUX_0_MIPICSI2_1"                    value="50"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_051"  label="EDMA_REQ_MUX_0_MIPICSI2_2"                    value="51"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_052"  label="EDMA_REQ_MUX_0_MIPICSI2_3"                    value="52"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_053"  label="EDMA_REQ_MUX_0_FTM_0_CH_2"                    value="53"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_054"  label="EDMA_REQ_MUX_0_FTM_0_CH_3"                    value="54"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_055"  label="EDMA_REQ_MUX_0_FTM_0_CH_4"                    value="55"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_056"  label="EDMA_REQ_MUX_0_FTM_0_CH_5"                    value="56"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_057"  label="EDMA_REQ_MUX_0_FTM_0_CH_6"                    value="57"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_058"  label="EDMA_REQ_MUX_0_FTM_0_CH_7"                    value="58"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_060"  label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_0"              value="60"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_061"  label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_1"              value="61"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_062"  label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_2"              value="62"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_063"  label="EDMA_REQ_MUX_0_ALWAYS_ENABLED_3"              value="63"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_064"  label="EDMA_REQ_MUX_1_DISABLED"                      value="64"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_065"  label="EDMA_REQ_MUX_1_CAN_FD_2"                      value="65"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_066"  label="EDMA_REQ_MUX_1_CAN_FD_3"                      value="66"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_069"  label="EDMA_REQ_MUX_1_QUADSPI_TX"                    value="69"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_070"  label="EDMA_REQ_MUX_1_QUADSPI_RX"                    value="70"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_071"  label="EDMA_REQ_MUX_1_DSPI_3_TX_FIFO_F"              value="71"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_072"  label="EDMA_REQ_MUX_1_DSPI_3_RX_FIFO_D"              value="72"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_073"  label="EDMA_REQ_MUX_1_DSPI_3_CMD_FIFO_F"             value="73"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_074"  label="EDMA_REQ_MUX_1_DSPI_4_TX_FIFO_F"              value="74"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_075"  label="EDMA_REQ_MUX_1_DSPI_4_RX_FIFO_D"              value="75"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_076"  label="EDMA_REQ_MUX_1_DSPI_4_CMD_FIFO_F"             value="76"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_077"  label="EDMA_REQ_MUX_1_DSPI_5_TX_FIFO_F"              value="77"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_078"  label="EDMA_REQ_MUX_1_DSPI_5_RX_FIFO_D"              value="78"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_079"  label="EDMA_REQ_MUX_1_DSPI_5_CMD_FIFO_F"             value="79"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_086"  label="EDMA_REQ_MUX_1_GMAC0_CH_0"                    value="86"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_087"  label="EDMA_REQ_MUX_1_GMAC0_CH_1"                    value="87"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_088"  label="EDMA_REQ_MUX_1_GMAC0_CH_2"                    value="88"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_096"  label="EDMA_REQ_MUX_1_SARADC_1"                      value="96"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_097"  label="EDMA_REQ_MUX_1_GMAC0_CH_3"                    value="97"   available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_104"  label="EDMA_REQ_MUX_1_CAN_FD_6"                      value="104"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_105"  label="EDMA_REQ_MUX_1_CAN_FD_7"                      value="105"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_106"  label="EDMA_REQ_MUX_1_GMAC1_CH_0"                    value="106"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_107"  label="EDMA_REQ_MUX_1_GMAC1_CH_1"                    value="107"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_108"  label="EDMA_REQ_MUX_1_GMAC1_CH_2"                    value="108"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_109"  label="EDMA_REQ_MUX_1_GMAC1_CH_3"                    value="109"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_110"  label="EDMA_REQ_MUX_1_SIUL2_ORED_19_16 "             value="110"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_111"  label="EDMA_REQ_MUX_1_SIUL2_ORED_23_20 "             value="111"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_112"  label="EDMA_REQ_MUX_1_SIUL2_ORED_27_24 "             value="112"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_113"  label="EDMA_REQ_MUX_1_SIUL2_ORED_31_28 "             value="113"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_114"  label="EDMA_REQ_MUX_1_FTM_1_CH_0"                    value="114"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_115"  label="EDMA_REQ_MUX_1_FTM_1_CH_1"                    value="115"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_116"  label="EDMA_REQ_MUX_1_FTM_1_CH_2"                    value="116"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_117"  label="EDMA_REQ_MUX_1_FTM_1_CH_3"                    value="117"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_118"  label="EDMA_REQ_MUX_1_FTM_1_CH_4"                    value="118"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_119"  label="EDMA_REQ_MUX_1_FTM_1_CH_5"                    value="119"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_120"  label="EDMA_REQ_MUX_1_FTM_1_CH_6"                    value="120"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_121"  label="EDMA_REQ_MUX_1_FTM_1_CH_7"                    value="121"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_124"  label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_0"              value="124"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_125"  label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_1"              value="125"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_126"  label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_2"              value="126"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_127"  label="EDMA_REQ_MUX_1_ALWAYS_ENABLED_3"              value="127"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_128"  label="EDMA_REQ_MUX_2_DISABLED"                      value="128"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_129"  label="EDMA_REQ_MUX_2_CAN_FD_0"                       value="129"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_130"  label="EDMA_REQ_MUX_2_CAN_FD_1"                       value="130"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_131"  label="EDMA_REQ_MUX_2_LIN_0_TX"                      value="131"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_132"  label="EDMA_REQ_MUX_2_LIN_0_RX"                      value="132"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_133"  label="EDMA_REQ_MUX_2_LIN_1_TX"                      value="133"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_134"  label="EDMA_REQ_MUX_2_LIN_1_RX"                      value="134"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_135"  label="EDMA_REQ_MUX_2_DSPI_0_TX_FIFO_F"              value="135"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_136"  label="EDMA_REQ_MUX_2_DSPI_0_RX_FIFO_D"              value="136"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_137"  label="EDMA_REQ_MUX_2_DSPI_0_CMD_FIFO_F"             value="137"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_138"  label="EDMA_REQ_MUX_2_DSPI_1_TX_FIFO_F"              value="138"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_139"  label="EDMA_REQ_MUX_2_DSPI_1_RX_FIFO_D"              value="139"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_140"  label="EDMA_REQ_MUX_2_DSPI_1_CMD_FIFO_F"             value="140"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_141"  label="EDMA_REQ_MUX_2_DSPI_2_TX_FIFO_F"              value="141"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_142"  label="EDMA_REQ_MUX_2_DSPI_2_RX_FIFO_D"              value="142"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_143"  label="EDMA_REQ_MUX_2_DSPI_2_CMD_FIFO_F"             value="143"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_144"  label="EDMA_REQ_MUX_2_I2C_0_RX"                      value="144"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_145"  label="EDMA_REQ_MUX_2_I2C_0_TX"                      value="145"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_146"  label="EDMA_REQ_MUX_2_I2C_1_RX"                      value="146"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_147"  label="EDMA_REQ_MUX_2_I2C_1_TX"                      value="147"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_148"  label="EDMA_REQ_MUX_2_CTU_FIFO0"                     value="148"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_149"  label="EDMA_REQ_MUX_2_CTU_FIFO1"                     value="149"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_150"  label="EDMA_REQ_MUX_2_CTU_FIFO2"                     value="150"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_151"  label="EDMA_REQ_MUX_2_CTU_FIFO3"                     value="151"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_152"  label="EDMA_REQ_MUX_2_CTU_COMMAND_REQUEST"           value="152"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_160"  label="EDMA_REQ_MUX_2_SARADC_0"                      value="160"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_164"  label="EDMA_REQ_MUX_2_FTM_0_CH_0"                    value="164"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_165"  label="EDMA_REQ_MUX_2_FTM_0_CH_1"                    value="165"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_166"  label="EDMA_REQ_MUX_2_CTE"                           value="166"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_169"  label="EDMA_REQ_MUX_2_CAN_FD_4"                       value="169"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_170"  label="EDMA_REQ_MUX_2_CAN_FD_5"                       value="170"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_171"  label="EDMA_REQ_MUX_2_SIUL2_ORED_3_0"                value="171"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_172"  label="EDMA_REQ_MUX_2_SIUL2_ORED_7_4"                value="172"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_173"  label="EDMA_REQ_MUX_2_SIUL2_ORED_11_8"               value="173"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_174"  label="EDMA_REQ_MUX_2_SIUL2_ORED_15_12"              value="174"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_175"  label="EDMA_REQ_MUX_2_CORESIGHT_DEBUG_0"             value="175"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_176"  label="EDMA_REQ_MUX_2_CORESIGHT_DEBUG_1"             value="176"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_177"  label="EDMA_REQ_MUX_2_MIPICSI2_0"                    value="177"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_178"  label="EDMA_REQ_MUX_2_MIPICSI2_1"                    value="178"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_179"  label="EDMA_REQ_MUX_2_MIPICSI2_2"                    value="179"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_180"  label="EDMA_REQ_MUX_2_MIPICSI2_3"                    value="180"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_181"  label="EDMA_REQ_MUX_2_FTM_0_CH_2"                    value="181"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_182"  label="EDMA_REQ_MUX_2_FTM_0_CH_3"                    value="182"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_183"  label="EDMA_REQ_MUX_2_FTM_0_CH_4"                    value="183"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_184"  label="EDMA_REQ_MUX_2_FTM_0_CH_5"                    value="184"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_185"  label="EDMA_REQ_MUX_2_FTM_0_CH_6"                    value="185"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_186"  label="EDMA_REQ_MUX_2_FTM_0_CH_7"                    value="186"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_188"  label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_0"              value="188"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_189"  label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_1"              value="189"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_190"  label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_2"              value="190"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_191"  label="EDMA_REQ_MUX_2_ALWAYS_ENABLED_3"              value="191"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_192"  label="EDMA_REQ_MUX_3_DISABLED"                      value="192"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_193"  label="EDMA_REQ_MUX_3_CAN_FD_2"                      value="193"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_194"  label="EDMA_REQ_MUX_3_CAN_FD_3"                      value="194"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_197"  label="EDMA_REQ_MUX_3_QUADSPI_TX"                    value="197"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_198"  label="EDMA_REQ_MUX_3_QUADSPI_RX"                    value="198"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_199"  label="EDMA_REQ_MUX_3_DSPI_3_TX_FIFO_F"              value="199"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_200"  label="EDMA_REQ_MUX_3_DSPI_3_RX_FIFO_D"              value="200"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_201"  label="EDMA_REQ_MUX_3_DSPI_3_CMD_FIFO_F"             value="201"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_202"  label="EDMA_REQ_MUX_3_DSPI_4_TX_FIFO_F"              value="202"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_203"  label="EDMA_REQ_MUX_3_DSPI_4_RX_FIFO_D"              value="203"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_204"  label="EDMA_REQ_MUX_3_DSPI_4_CMD_FIFO_F"             value="204"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_205"  label="EDMA_REQ_MUX_3_DSPI_5_TX_FIFO_F"              value="205"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_206"  label="EDMA_REQ_MUX_3_DSPI_5_RX_FIFO_D"              value="206"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_207"  label="EDMA_REQ_MUX_3_DSPI_5_CMD_FIFO_F"             value="207"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_214"  label="EDMA_REQ_MUX_3_GMAC0_CH_0"                    value="214"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_215"  label="EDMA_REQ_MUX_3_GMAC0_CH_1"                    value="215"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_216"  label="EDMA_REQ_MUX_3_GMAC0_CH_2"                    value="216"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_224"  label="EDMA_REQ_MUX_3_SARADC_1"                      value="224"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_225"  label="EDMA_REQ_MUX_3_GMAC0_CH_3"                    value="225"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_232"  label="EDMA_REQ_MUX_3_CAN_FD_6"                      value="232"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_233"  label="EDMA_REQ_MUX_3_CAN_FD_7"                      value="233"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_234"  label="EDMA_REQ_MUX_3_GMAC1_CH_0"                    value="234"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_235"  label="EDMA_REQ_MUX_3_GMAC1_CH_1"                    value="235"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_236"  label="EDMA_REQ_MUX_3_GMAC1_CH_2"                    value="236"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_237"  label="EDMA_REQ_MUX_3_GMAC1_CH_3"                    value="237"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_238"  label="EDMA_REQ_MUX_3_SIUL2_ORED_19_16"              value="238"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_239"  label="EDMA_REQ_MUX_3_SIUL2_ORED_23_20"              value="239"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_240"  label="EDMA_REQ_MUX_3_SIUL2_ORED_27_24"              value="240"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_241"  label="EDMA_REQ_MUX_3_SIUL2_ORED_31_28"              value="241"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_242"  label="EDMA_REQ_MUX_3_FTM_1_CH_0"                    value="242"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_243"  label="EDMA_REQ_MUX_3_FTM_1_CH_1"                    value="243"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_244"  label="EDMA_REQ_MUX_3_FTM_1_CH_2"                    value="244"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_245"  label="EDMA_REQ_MUX_3_FTM_1_CH_3"                    value="245"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_246"  label="EDMA_REQ_MUX_3_FTM_1_CH_4"                    value="246"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_247"  label="EDMA_REQ_MUX_3_FTM_1_CH_5"                    value="247"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_248"  label="EDMA_REQ_MUX_3_FTM_1_CH_6"                    value="248"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_249"  label="EDMA_REQ_MUX_3_FTM_1_CH_7"                    value="249"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_252"  label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_0"              value="252"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_253"  label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_1"              value="253"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_254"  label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_2"              value="254"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+            <item id="EDMA_REQ_S32R45_255"  label="EDMA_REQ_MUX_3_ALWAYS_ENABLED_3"              value="255"  available="featureDefined(`FEATURE_DMA_REQ_S32R45`)"/>
+
+            <!-- S32K1xx eDMA Channel Request -->
+            <item id="EDMA_REQ_DISABLED"                label="EDMA_REQ_DISABLED"                          value="0"    available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_ENET_TIMER_CH0_CH3"      label="EDMA_REQ_ENET_TIMER_CH0_CH3"                value="1"    available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPUART0_RX"              label="EDMA_REQ_LPUART0_RX"                        value="2"    available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPUART0_TX"              label="EDMA_REQ_LPUART0_TX"                        value="3"    available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPUART1_RX"              label="EDMA_REQ_LPUART1_RX"                        value="4"    available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPUART1_TX"              label="EDMA_REQ_LPUART1_TX"                        value="5"    available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPUART2_RX"              label="EDMA_REQ_LPUART2_RX"                        value="6"    available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPUART2_TX"              label="EDMA_REQ_LPUART2_TX"                        value="7"    available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPI2C1_RX"              label="EDMA_REQ_LPI2C1_RX"                          value="8"    available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPI2C1_TX"              label="EDMA_REQ_LPI2C1_TX"                          value="9"    available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FLEXIO_SHIFTER0"         label="EDMA_REQ_FLEXIO_SHIFTER0"                   value="10"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FLEXIO_SHIFTER1"         label="EDMA_REQ_FLEXIO_SHIFTER1"                   value="11"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FLEXIO_SHIFTER2"         label="EDMA_REQ_FLEXIO_SHIFTER2"                   value="12"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`)"/>
+            <item id="EDMA_REQ_FLEXIO_SHIFTER3"         label="EDMA_REQ_FLEXIO_SHIFTER3"                   value="13"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`)"/>
+            <item id="EDMA_REQ_FLEXIO_SHIFTER2_SAI1_RX" label="EDMA_REQ_FLEXIO_SHIFTER2_SAI1_RX"           value="12"   available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FLEXIO_SHIFTER3_SAI1_TX" label="EDMA_REQ_FLEXIO_SHIFTER3_SAI1_TX"           value="13"   available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPSPI0_RX"               label="EDMA_REQ_LPSPI0_RX"                         value="14"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPSPI0_TX"               label="EDMA_REQ_LPSPI0_TX"                         value="15"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPSPI1_RX"               label="EDMA_REQ_LPSPI1_RX"                         value="16"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPSPI1_TX"               label="EDMA_REQ_LPSPI1_TX"                         value="17"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPSPI2_RX"               label="EDMA_REQ_LPSPI2_RX"                         value="18"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPSPI2_TX"               label="EDMA_REQ_LPSPI2_TX"                         value="19"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM1_CHANNEL_0"          label="EDMA_REQ_FTM1_CHANNEL_0"                    value="20"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM1_CHANNEL_1"          label="EDMA_REQ_FTM1_CHANNEL_1"                    value="21"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM1_CHANNEL_2"          label="EDMA_REQ_FTM1_CHANNEL_2"                    value="22"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM1_CHANNEL_3"          label="EDMA_REQ_FTM1_CHANNEL_3"                    value="23"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM1_CHANNEL_4"          label="EDMA_REQ_FTM1_CHANNEL_4"                    value="24"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM1_CHANNEL_5"          label="EDMA_REQ_FTM1_CHANNEL_5"                    value="25"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM1_CHANNEL_6"          label="EDMA_REQ_FTM1_CHANNEL_6"                    value="26"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM1_CHANNEL_7"          label="EDMA_REQ_FTM1_CHANNEL_7"                    value="27"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM2_CHANNEL_0"          label="EDMA_REQ_FTM2_CHANNEL_0"                    value="28"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM2_CHANNEL_1"          label="EDMA_REQ_FTM2_CHANNEL_1"                    value="29"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM2_CHANNEL_2"          label="EDMA_REQ_FTM2_CHANNEL_2"                    value="30"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM2_CHANNEL_3"          label="EDMA_REQ_FTM2_CHANNEL_3"                    value="31"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM2_CHANNEL_4"          label="EDMA_REQ_FTM2_CHANNEL_4"                    value="32"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM2_CHANNEL_5"          label="EDMA_REQ_FTM2_CHANNEL_5"                    value="33"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM2_CHANNEL_6"          label="EDMA_REQ_FTM2_CHANNEL_6"                    value="34"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM2_CHANNEL_7"          label="EDMA_REQ_FTM2_CHANNEL_7"                    value="35"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM0_OR_CH0_CH7"         label="EDMA_REQ_FTM0_OR_CH0_CH7"                   value="36"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM3_OR_CH0_CH7"         label="EDMA_REQ_FTM3_OR_CH0_CH7"                   value="37"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM4_OR_CH0_CH7"         label="EDMA_REQ_FTM4_OR_CH0_CH7"                   value="38"   available="featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM5_OR_CH0_CH7"         label="EDMA_REQ_FTM5_OR_CH0_CH7"                   value="39"   available="featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM6_OR_CH0_CH7"         label="EDMA_REQ_FTM6_OR_CH0_CH7"                   value="40"   available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FTM7_OR_CH0_CH7"         label="EDMA_REQ_FTM7_OR_CH0_CH7"                   value="41"   available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_ADC0"                    label="EDMA_REQ_ADC0"                              value="42"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_ADC1"                    label="EDMA_REQ_ADC1"                              value="43"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPI2C0_RX"               label="EDMA_REQ_LPI2C0_RX"                         value="44"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPI2C0_TX"               label="EDMA_REQ_LPI2C0_TX"                         value="45"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_PDB0"                    label="EDMA_REQ_PDB0"                              value="46"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_PDB1"                    label="EDMA_REQ_PDB1"                              value="47"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_CMP0"                    label="EDMA_REQ_CMP0"                              value="48"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_PORTA"                   label="EDMA_REQ_PORTA"                             value="49"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_PORTB"                   label="EDMA_REQ_PORTB"                             value="50"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_PORTC"                   label="EDMA_REQ_PORTC"                             value="51"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_PORTD"                   label="EDMA_REQ_PORTD"                             value="52"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_PORTE"                   label="EDMA_REQ_PORTE"                             value="53"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FLEXCAN0"                label="EDMA_REQ_FLEXCAN0"                          value="54"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FLEXCAN1"                label="EDMA_REQ_FLEXCAN1"                          value="55"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_FLEXCAN2"                label="EDMA_REQ_FLEXCAN2"                          value="56"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_SAI0_RX"                 label="EDMA_REQ_SAI0_RX"                           value="57"   available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_SAI0_TX"                 label="EDMA_REQ_SAI0_TX"                           value="58"   available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_LPTMR0"                  label="EDMA_REQ_LPTMR0"                            value="59"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_QUADSPI_RX"              label="EDMA_REQ_QUADSPI_RX"                        value="60"   available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_QUADSPI_TX"              label="EDMA_REQ_QUADSPI_TX"                        value="61"   available="featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_DMAMUX_ALWAYS_ENABLED0"  label="EDMA_REQ_DMAMUX_ALWAYS_ENABLED0"            value="62"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+            <item id="EDMA_REQ_DMAMUX_ALWAYS_ENABLED1"  label="EDMA_REQ_DMAMUX_ALWAYS_ENABLED1"            value="63"   available="featureDefined(`FEATURE_DMA_REQ_S32K1xxW`) || featureDefined(`FEATURE_DMA_REQ_S32K116`) || featureDefined(`FEATURE_DMA_REQ_S32K118`) || featureDefined(`FEATURE_DMA_REQ_S32K142`) || featureDefined(`FEATURE_DMA_REQ_S32K146`) || featureDefined(`FEATURE_DMA_REQ_S32K148`)"/>
+         </enum>"
+      </user_types>
+
+   </config_set>
+</component:config_component>

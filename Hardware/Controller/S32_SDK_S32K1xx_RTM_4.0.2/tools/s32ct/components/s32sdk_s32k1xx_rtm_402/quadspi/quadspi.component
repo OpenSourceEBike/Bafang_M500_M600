@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="quadspi_config" label="quadspi_config" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.quadspi" version="1.0.0"/>
+   <description>QuadSPI Component</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>QuadSPI General</description>
+      <config_set_refs>
+         <config_set_ref>quadspi_driver</config_set_ref>
+      </config_set_refs>
+      <master_peripheral exclusive="false">
+         <peripheral_type>QuadSPI</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="quadspi_driver" label="QuadSPI Configuration Settings" from_source="quadspi_driver.h">
+      <description>QuadSPI Component</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="qspi_default" label="Default Values for QuadSPI" available="(featureDefined(`FEATURE_QSPI_SJA`) == false) || (getFeature(`FEATURE_QSPI_SJA`) == 0)">
+            <description>QuadSPI configuration</description>
+            <set id="qspi_state_name">qspiState</set>
+            <set id="qspiCfg.name">qspiInitConfig</set>
+            <set id="qspiCfg.dataRate">QSPI_DATE_RATE_SDR</set>
+            <set id="qspiCfg.dmaSupport">false</set>
+            <set id="qspiCfg.dmaChannel" available="(featureDefined(`FEATURE_QSPI_FIXED_DMA_CHANNELS`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_FIXED_DMA_CHANNELS`) == 0)">0</set>
+            <set id="qspiCfg.callback">NULL</set>
+            <set id="qspiCfg.callbackParam">NULL</set>
+            <set id="qspiCfg.memSizeA1" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)">0x800000</set>
+            <set id="qspiCfg.memSizeA2" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)">0x800000</set>
+            <set id="qspiCfg.memSizeB1" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)">0x800000</set>
+            <set id="qspiCfg.memSizeB2" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)">0x800000</set>
+            <set id="qspiCfg.side" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 0)">QSPI_FLASH_SIDE_A</set>
+            <set id="qspiCfg.memSize" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 0)">0x800000</set>
+            <set id="qspiCfg.csHoldTime">1</set>
+            <set id="qspiCfg.csSetupTime">1</set>
+            <set id="qspiCfg.columnAddr">0</set>
+            <set id="qspiCfg.wordAddresable">false</set>
+            <set id="qspiCfg.readMode">QSPI_READ_MODE_INTERNAL_DQS</set>
+            <set id="qspiCfg.sampleDelay">QSPI_SAMPLE_DELAY_1</set>
+            <set id="qspiCfg.samplePhase">QSPI_SAMPLE_PHASE_NON_INVERTED</set>
+            <set id="qspiCfg.coarseDelay" available="(featureDefined(`FEATURE_QSPI_COARSE_DELAY`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_COARSE_DELAY`) == 1)">QSPI_COARSE_DELAY_0</set>
+            <set id="qspiCfg.dllMode" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">QSPI_DLL_BYPASSED</set>
+            <set id="qspiCfg.dllfreqEnable" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">false</set>
+            <set id="qspiCfg.dllfineDelay" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">0</set>
+            <set id="qspiCfg.dllcoarseDelay" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">1</set>
+            <set id="qspiCfg.dllreferenceCounter" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">1</set>
+            <set id="qspiCfg.dllresolution" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">6</set>
+            <set id="qspiCfg.dlltapSelect" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">4</set>
+            <set id="qspiCfg.dqsDelayA" available="(featureDefined(`FEATURE_QSPI_HAS_SOCCR`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_SOCCR`) == 1)">0</set>
+            <set id="qspiCfg.dqsDelayB" available="(featureDefined(`FEATURE_QSPI_HAS_SOCCR`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_SOCCR`) == 1)">0</set>
+            <set id="qspiCfg.dqsInvert">false</set>
+            <set id="qspiCfg.dqsLatency">false</set>
+            <set id="qspiCfg.dataAlign">QSPI_FLASH_DATA_ALIGN_REFCLK</set>
+            <set id="qspiCfg.endianess" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_ENDIAN`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_ENDIAN`) == 1)">QSPI_END_64BIT_LE</set>
+            <set id="qspiCfg.clock_src">QSPI_CLK_SRC_FIRC_DIV1</set>
+            <set id="qspiCfg.divider">1</set>
+            <set id="qspiCfg.dozeMode" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_DOZE`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_DOZE`) == 1)">false</set>
+            <set id="qspiCfg.byteSwap" available="(featureDefined(`FEATURE_QSPI_BYTE_SWAP`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_BYTE_SWAP`) == 1)">false</set>
+            <set id="qspiCfg.io2IdleValue" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_ISD`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_ISD`) == 1)">1</set>
+            <set id="qspiCfg.io3IdleValue" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_ISD`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_ISD`) == 1)">1</set>
+         </quick_selection>
+         <quick_selection id="qspi_default" label="Default Values for QuadSPI" available="(featureDefined(`FEATURE_QSPI_SJA`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_SJA`) == 1)">
+            <description>QuadSPI configuration</description>
+            <set id="qspi_state_name">qspiState</set>
+            <set id="qspiCfg.name">qspiInitConfig</set>
+            <set id="qspiCfg.dataRate">QSPI_DATE_RATE_SDR</set>
+            <set id="qspiCfg.dmaSupport">false</set>
+            <set id="qspiCfg.dmaChannel" available="(featureDefined(`FEATURE_QSPI_FIXED_DMA_CHANNELS`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_FIXED_DMA_CHANNELS`) == 0)">0</set>
+            <set id="qspiCfg.callback">NULL</set>
+            <set id="qspiCfg.callbackParam">NULL</set>
+            <set id="qspiCfg.memSizeA1" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)">0x800000</set>
+            <set id="qspiCfg.memSizeA2" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)">0x800000</set>
+            <set id="qspiCfg.memSizeB1" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)">0x800000</set>
+            <set id="qspiCfg.memSizeB2" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)">0x800000</set>
+            <set id="qspiCfg.side" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 0)">QSPI_FLASH_SIDE_A</set>
+            <set id="qspiCfg.memSize" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 0)">0x800000</set>
+            <set id="qspiCfg.csHoldTime">1</set>
+            <set id="qspiCfg.csSetupTime">1</set>
+            <set id="qspiCfg.columnAddr">0</set>
+            <set id="qspiCfg.wordAddresable">false</set>
+            <set id="qspiCfg.readMode">QSPI_READ_MODE_INTERNAL_SAMPLING</set>
+            <set id="qspiCfg.sampleDelay">QSPI_SAMPLE_DELAY_1</set>
+            <set id="qspiCfg.samplePhase">QSPI_SAMPLE_PHASE_NON_INVERTED</set>
+            <set id="qspiCfg.coarseDelay" available="(featureDefined(`FEATURE_QSPI_COARSE_DELAY`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_COARSE_DELAY`) == 1)">QSPI_COARSE_DELAY_0</set>
+            <set id="qspiCfg.dllMode" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">QSPI_DLL_BYPASSED</set>
+            <set id="qspiCfg.dllfreqEnable" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">false</set>
+            <set id="qspiCfg.dllfineDelay" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">0</set>
+            <set id="qspiCfg.dllcoarseDelay" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">1</set>
+            <set id="qspiCfg.dllreferenceCounter" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">1</set>
+            <set id="qspiCfg.dllresolution" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">6</set>
+            <set id="qspiCfg.dlltapSelect" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)">4</set>
+            <set id="qspiCfg.dqsDelayA" available="(featureDefined(`FEATURE_QSPI_HAS_SOCCR`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_SOCCR`) == 1)">0</set>
+            <set id="qspiCfg.dqsDelayB" available="(featureDefined(`FEATURE_QSPI_HAS_SOCCR`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_SOCCR`) == 1)">0</set>
+            <set id="qspiCfg.dqsInvert">false</set>
+            <set id="qspiCfg.dqsLatency">false</set>
+            <set id="qspiCfg.dataAlign">QSPI_FLASH_DATA_ALIGN_REFCLK</set>
+            <set id="qspiCfg.endianess" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_ENDIAN`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_ENDIAN`) == 1)">QSPI_END_64BIT_LE</set>
+            <set id="qspiCfg.clock_src">QSPI_CLK_SRC_FIRC_DIV1</set>
+            <set id="qspiCfg.divider">1</set>
+            <set id="qspiCfg.dozeMode" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_DOZE`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_DOZE`) == 1)">false</set>
+            <set id="qspiCfg.byteSwap" available="(featureDefined(`FEATURE_QSPI_BYTE_SWAP`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_BYTE_SWAP`) == 1)">false</set>
+            <set id="qspiCfg.io2IdleValue" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_ISD`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_ISD`) == 1)">1</set>
+            <set id="qspiCfg.io3IdleValue" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_ISD`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_ISD`) == 1)">1</set>
+         </quick_selection>
+         <default>qspi_default</default>
+      </quick_selections>
+      <generated_types>
+         <fixme id="qspi_callback_t" label="QuadSPI callback function type" type="void(*"/>
+         <enum id="qspi_lut_commands_t" label="Lut commands Implements : qspi_lut_commands_t_Class" from="qspi_lut_commands_t">
+            <item id="QSPI_LUT_CMD_STOP" label="End of sequence"/>
+            <item id="QSPI_LUT_CMD_CMD" label="Command"/>
+            <item id="QSPI_LUT_CMD_ADDR" label="Address"/>
+            <item id="QSPI_LUT_CMD_DUMMY" label="Dummy cycles"/>
+            <item id="QSPI_LUT_CMD_MODE" label="8-bit mode"/>
+            <item id="QSPI_LUT_CMD_MODE2" label="2-bit mode"/>
+            <item id="QSPI_LUT_CMD_MODE4" label="4-bit mode"/>
+            <item id="QSPI_LUT_CMD_READ" label="Read data"/>
+            <item id="QSPI_LUT_CMD_WRITE" label="Write data"/>
+            <item id="QSPI_LUT_CMD_JMP_ON_CS" label="Jump on chip select deassert"/>
+            <item id="QSPI_LUT_CMD_ADDR_DDR" label="Address - DDR mode"/>
+            <item id="QSPI_LUT_CMD_MODE_DDR" label="8-bit mode - DDR mode"/>
+            <item id="QSPI_LUT_CMD_MODE2_DDR" label="2-bit mode - DDR mode"/>
+            <item id="QSPI_LUT_CMD_MODE4_DDR" label="4-bit mode - DDR mode"/>
+            <item id="QSPI_LUT_CMD_READ_DDR" label="Read data - DDR mode"/>
+            <item id="QSPI_LUT_CMD_WRITE_DDR" label="Write data - DDR mode"/>
+            <item id="QSPI_LUT_CMD_CMD_DDR" label="Command - DDR mode"/>
+            <item id="QSPI_LUT_CMD_CADDR" label="Column address"/>
+            <item id="QSPI_LUT_CMD_CADDR_DDR" label="Column address - DDR mode"/>
+         </enum>
+         <enum id="qspi_lut_pads_t" label="Lut pad options Implements : qspi_lut_pads_t_Class" from="qspi_lut_pads_t">
+            <item id="QSPI_LUT_PADS_1" label="1 Pad"/>
+            <item id="QSPI_LUT_PADS_2" label="2 Pads"/>
+            <item id="QSPI_LUT_PADS_4" label="4 Pads"/>
+            <item id="QSPI_LUT_PADS_8" label="8 Pads"/>
+         </enum>
+         <enum id="qspi_transfer_type_t" label="Driver type Implements : qspi_transfer_type_t_Class" from="qspi_transfer_type_t">
+            <item id="QSPI_TRANSFER_TYPE_SYNC" label="Synchronous transfer using polling"/>
+            <item id="QSPI_TRANSFER_TYPE_ASYNC_INT" label="Interrupt-based asynchronous transfer"/>
+            <item id="QSPI_TRANSFER_TYPE_ASYNC_DMA" label="DMA-based asynchronous transfer"/>
+         </enum>
+         <enum id="qspi_read_mode_t" label="Read mode Implements : qspi_read_mode_t_Class" from="qspi_read_mode_t">
+            <item id="QSPI_READ_MODE_INTERNAL_SAMPLING" label="Sample on internal reference clock edge"/>
+            <item id="QSPI_READ_MODE_INTERNAL_DQS" label="Use internally generated strobe signal"/>
+            <item id="QSPI_READ_MODE_LOOPBACK_DQS" label="Use loopback clock from PAD as strobe signal"/>
+            <item id="QSPI_READ_MODE_EXTERNAL_DQS" label="Use external strobe signal"/>
+         </enum>
+         <enum id="qspi_endianess_t" label="Endianess options Implements : qspi_endianess_t_Class" from="qspi_endianess_t">
+            <item id="QSPI_END_64BIT_BE" label="64-bit, Big Endian"/>
+            <item id="QSPI_END_32BIT_LE" label="32-bit, Little Endian"/>
+            <item id="QSPI_END_32BIT_BE" label="32-bit, Big Endian"/>
+            <item id="QSPI_END_64BIT_LE" label="64-bit, Little Endian"/>
+         </enum>
+         <enum id="qspi_clock_src_t" label="Source of QuadSPI internal reference clock Implements : qspi_clock_src_t_Class" from="qspi_clock_src_t">
+            <item id="QSPI_CLK_SRC_PLL_DIV1" label="PLL_DIV1 is clock source of QuadSPI internal reference clock"/>
+            <item id="QSPI_CLK_SRC_FIRC_DIV1" label="FIRC_DIV1 is clock source of QuadSPI internal reference clock"/>
+         </enum>
+         <enum id="qspi_date_rate_t" label="Clock phase used for sampling Rx data Implements : qspi_date_rate_t_Class" from="qspi_date_rate_t">
+            <item id="QSPI_DATE_RATE_SDR" label="Single data rate"/>
+            <item id="QSPI_DATE_RATE_DDR" label="Double data rate"/>
+         </enum>
+         <enum id="qspi_flash_side_t" label="External flash connection options (side A/B) Implements : qspi_flash_side_t_Class" from="qspi_flash_side_t">
+            <item id="QSPI_FLASH_SIDE_A" label="Serial flash connected to A-side"/>
+            <item id="QSPI_FLASH_SIDE_B" label="Serial flash connected to B-side"/>
+         </enum>
+         <enum id="qspi_sample_delay_t" label="Delay used for sampling Rx data Implements : qspi_sample_delay_t_Class" from="qspi_sample_delay_t">
+            <item id="QSPI_SAMPLE_DELAY_1" label="One clock cycle delay"/>
+            <item id="QSPI_SAMPLE_DELAY_2" label="Two clock cycles delay"/>
+         </enum>
+         <enum id="qspi_sample_phase_t" label="Clock phase used for sampling Rx data Implements : qspi_sample_phase_t_Class" from="qspi_sample_phase_t">
+            <item id="QSPI_SAMPLE_PHASE_NON_INVERTED" label="Sampling at non-inverted clock"/>
+            <item id="QSPI_SAMPLE_PHASE_INVERTED" label="Sampling at inverted clock"/>
+         </enum>
+         <enum id="qspi_coarse_delay_t" label="DQS coarse delay configuration Implements : qspi_coarse_delay_t_Class" from="qspi_coarse_delay_t">
+            <item id="QSPI_COARSE_DELAY_0" label="No delay on internal DQS"/>
+            <item id="QSPI_COARSE_DELAY_0_50" label="Shift by 1/2 flash clock cycle on internal DQS"/>
+            <item id="QSPI_COARSE_DELAY_0_25" label="Shift by 1/4 flash clock cycle on internal DQS"/>
+            <item id="QSPI_COARSE_DELAY_1" label="Shift by 1 flash clock cycle on internal DQS"/>
+            <item id="QSPI_COARSE_DELAY_0_75" label="Shift by 3/4 flash clock cycle on internal DQS"/>
+            <item id="QSPI_COARSE_DELAY_1_50" label="Shift by 1+ 1/2 flash clock cycle on internal DQS"/>
+            <item id="QSPI_COARSE_DELAY_1_25" label="Shift by 1+ 1/4 flash clock cycle on internal DQS"/>
+         </enum>
+         <enum id="qspi_flash_data_align_t" label="Alignment of outgoing data with serial clock Implements : qspi_flash_data_align_t_Class" from="qspi_flash_data_align_t">
+            <item id="QSPI_FLASH_DATA_ALIGN_REFCLK" label="Data aligned with the posedge of Internal reference clock of QuadSPI"/>
+            <item id="QSPI_FLASH_DATA_ALIGN_2X_REFCLK" label="Data aligned with 2x serial flash half clock"/>
+            <item id="QSPI_FLASH_DATA_ALIGN_4X_REFCLK" label="Data aligned with 4x serial flash half clock"/>
+         </enum>
+         <enum id="qspi_dll_mode_t" label="DLL configuration modes Implements : qspi_dll_mode_t_Class" from="qspi_dll_mode_t">
+            <item id="QSPI_DLL_BYPASSED" label="DLL bypass mode"/>
+            <item id="QSPI_DLL_MANUAL_UPDATE" label="DLL manual update mode"/>
+            <item id="QSPI_DLL_AUTO_UPDATE" label="DLL auto update mode"/>
+         </enum>
+         <struct id="qspi_user_config_t" label="Driver configuration structure" from="qspi_user_config_t">
+            <description>This structure is used to provide configuration parameters for the qspi driver at initialization time. Implements : qspi_user_config_t_Class</description>
+            <reference id="dataRate" label="Single/double data rate" type="qspi_date_rate_t">
+               <description>Single/double data rate</description>
+            </reference>
+            <bool id="dmaSupport" label="Enables DMA support in the driver">
+               <description>Enables DMA support in the driver</description>
+            </bool>
+            <integer id="dmaChannel" label="DMA channel number" type="uint8_t">
+               <description>DMA channel number. Only used if dmaSupport is true</description>
+            </integer>
+            <reference id="callback" label="User callback for reporting asynchronous events" type="qspi_callback_t">
+               <description>User callback for reporting asynchronous events</description>
+            </reference>
+            <fixme id="callbackParam" label="Parameter for user callback" type="void *">
+               <description>Parameter for user callback</description>
+            </fixme>
+            <integer id="memSizeA1" label="Size of serial flash A1" type="uint32_t">
+               <description>Size of serial flash A1</description>
+            </integer>
+            <integer id="memSizeA2" label="Size of serial flash A2" type="uint32_t">
+               <description>Size of serial flash A2</description>
+            </integer>
+            <integer id="memSizeB1" label="Size of serial flash B1" type="uint32_t">
+               <description>Size of serial flash B1</description>
+            </integer>
+            <integer id="memSizeB2" label="Size of serial flash B2" type="uint32_t">
+               <description>Size of serial flash B2</description>
+            </integer>
+            <reference id="side" label="Side on which the serial flash is connected" type="qspi_flash_side_t">
+               <description>Side on which the serial flash is connected</description>
+            </reference>
+            <integer id="memSize" label="Size of serial flash" type="uint32_t">
+               <description>Size of serial flash</description>
+            </integer>
+            <integer id="csHoldTime" label="CS hold time, expressed in serial clock cycles" type="uint8_t">
+               <description>CS hold time, expressed in serial clock cycles</description>
+            </integer>
+            <integer id="csSetupTime" label="CS setup time, expressed in serial clock cycles" type="uint8_t">
+               <description>CS setup time, expressed in serial clock cycles</description>
+            </integer>
+            <integer id="columnAddr" label="Width of the column address, 0 if not used" type="uint8_t">
+               <description>Width of the column address, 0 if not used</description>
+            </integer>
+            <bool id="wordAddresable" label="True if serial flash is word addressable">
+               <description>True if serial flash is word addressable</description>
+            </bool>
+            <reference id="readMode" label="Read mode for incoming data from serial flash" type="qspi_read_mode_t">
+               <description>Read mode for incoming data from serial flash</description>
+            </reference>
+            <reference id="sampleDelay" label="Delay (in clock cycles) used for sampling Rx data" type="qspi_sample_delay_t">
+               <description>Delay (in clock cycles) used for sampling Rx data</description>
+            </reference>
+            <reference id="samplePhase" label="Clock phase used for sampling Rx data" type="qspi_sample_phase_t">
+               <description>Clock phase used for sampling Rx data</description>
+            </reference>
+            <integer id="coarseDelay" label="Coarse delay DLL slave delay chain" type="uint8_t">
+               <description>Coarse delay DLL slave delay chain</description>
+            </integer>
+            <reference id="dllMode" label="Mode in which DLL is used" type="qspi_dll_mode_t">
+               <description>Mode in which DLL is used</description>
+            </reference>
+            <bool id="freqEnable" label="Selects delay-chain for high frequency of operation">
+               <description>Selects delay-chain for high frequency of operation</description>
+            </bool>
+            <integer id="fineDelay" label="Fine delay DLL slave delay chain" type="uint8_t">
+               <description>Fine delay DLL slave delay chain</description>
+            </integer>
+            <integer id="referenceCounter" label="DLL reference counter" type="uint8_t">
+               <description>DLL reference counter</description>
+            </integer>
+            <integer id="resolution" label="Minimum resolution for DLL phase detector to remain lock" type="uint8_t">
+               <description>Minimum resolution for DLL phase detector to remain lock</description>
+            </integer>
+            <integer id="tapSelect" label="Selects the Nth tap provided by the slave delay-chain" type="uint8_t">
+               <description>Selects the Nth tap provided by the slave delay-chain</description>
+            </integer>
+            <integer id="dqsDelayA" label="Fine delay for internal or loopback DQS mode - Side A" type="uint8_t">
+               <description>Fine delay for internal or loopback DQS mode - Side A</description>
+            </integer>
+            <integer id="dqsDelayB" label="Fine delay for internal or loopback DQS mode - Side B" type="uint8_t">
+               <description>Fine delay for internal or loopback DQS mode - Side B</description>
+            </integer>
+            <bool id="dqsInvert" label="Use inverted clock for internal or loopback DQS mode">
+               <description>Use inverted clock for internal or loopback DQS mode</description>
+            </bool>
+            <bool id="dqsLatency" label="Enable DQS latency for reads (Hyperflash)">
+               <description>Enable DQS latency for reads (Hyperflash)</description>
+            </bool>
+            <reference id="dataAlign" label="Alignment of output data sent to serial flash" type="qspi_flash_data_align_t">
+               <description>Alignment of output data sent to serial flash</description>
+            </reference>
+            <reference id="endianess" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_ENDIAN`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_ENDIAN`) == 1)" label="Endianess configuration" type="qspi_endianess_t">
+               <description>Endianess configuration</description>
+            </reference>
+            <reference id="clock_src" label="Clock source for QuadSPI device" type="qspi_clock_src_t">
+               <description>Clock source for QuadSPI device</description>
+            </reference>
+            <integer id="divider" label="(1 - 8) Divider value for input clock" type="uint8_t">
+               <description>(1 - 8) Divider value for input clock</description>
+            </integer>
+            <integer id="io2IdleValue" label="(0 / 1) Logic level of IO[2] signal when not used" type="uint8_t">
+               <description>(0 / 1) Logic level of IO[2] signal when not used</description>
+            </integer>
+            <integer id="io3IdleValue" label="(0 / 1) Logic level of IO[3] signal when not used" type="uint8_t">
+               <description>(0 / 1) Logic level of IO[3] signal when not used</description>
+            </integer>
+            <bool id="dozeMode" label="Enable Doze Mode">
+               <description>Enable Doze Mode</description>
+            </bool>
+         </struct>
+         <struct id="qspi_ahb_config_t" label="AHB configuration structure" from="qspi_ahb_config_t">
+            <description>This structure is used to provide configuration parameters for AHB access to the external flash Implements : qspi_ahb_config_t_Class</description>
+            <integer id="masters" label="List of AHB masters assigned to each buffer" type="uint8_t">
+               <description>List of AHB masters assigned to each buffer</description>
+            </integer>
+            <integer id="sizes" label="List of buffer sizes" type="uint16_t">
+               <description>List of buffer sizes</description>
+            </integer>
+            <bool id="allMasters" label="Indicates that any master may access the last buffer">
+               <description>Indicates that any master may access the last buffer</description>
+            </bool>
+            <bool id="highPriority" label="Indicates that the first buffer has high priority">
+               <description>Indicates that the first buffer has high priority</description>
+            </bool>
+         </struct>
+         <fixme id="qspi_state_t" label="XML structure file missing!" type="This structure is used by the driver for its internal logic. It must be provided by the application through the QSPI_DRV_Init() function, then it cannot be freed until the driver is de-initialized using QSPI_DRV_Deinit(). The application should make no assumptions about the content of this structure.">
+            <description>XML structure file missing!</description>
+         </fixme>
+      </generated_types>
+      <settings>
+         <variable id="switchInstance" value="$root.flatMap(x->x.getChildren()).filter(y->y.getType() == `switch_config`)"/>
+         <variable id="sjarev" value="$parent.switchInstance.getValue().get(0).getSetting(`switch.revision`).getValue()"/>
+         <string id="qspi_state_name" label="Driver State Structure Name">
+            <description>Driver state structure name.</description>
+            <validation>
+               <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="State structure name must be a valid C identifier!"/>
+            </validation>
+         </string>
+         <reference id="qspiCfg" label="QuadSPI Configuration" type="qspi_user_config_t" config_set_id="quadspi_driver" component_id="quadspi_config" available="true">
+            <description>QuadSPI configuration </description>
+         </reference>
+         <variable value="`../quadspi/quadspi_codegen.js`" id="codegen_file"></variable>
+         <variable value="`QuadSPICodeGen`" id="codegen_class"></variable>
+         <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+         <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+      </settings>
+      <user_types>
+         <enum id="qspi_date_rate_t" label="Clock phase used for sampling Rx data Implements : qspi_date_rate_t_Class" from="qspi_date_rate_t">
+            <item id="QSPI_DATE_RATE_SDR" label="Single data rate"/>
+            <item id="QSPI_DATE_RATE_DDR" available="(featureDefined(`FEATURE_QSPI_DDR_MODE`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_DDR_MODE`) == 1)" label="Double data rate"/>
+         </enum>
+         <enum id="qspi_flash_side_t" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 0)" label="External flash connection options (side A/B)" from="qspi_flash_side_t">
+            <item id="QSPI_FLASH_SIDE_A" label="Serial flash connected to A-side"/>
+            <item id="QSPI_FLASH_SIDE_B" available="(featureDefined(`FEATURE_QSPI_HAS_SIDE_B`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_SIDE_B`) == 1)" label="Serial flash connected to B-side"/>
+         </enum>
+         <enum id="qspi_read_mode_t" label="Read mode Implements : qspi_read_mode_t_Class" from="qspi_read_mode_t">
+            <item id="QSPI_READ_MODE_INTERNAL_SAMPLING" available="(featureDefined(`FEATURE_QSPI_INTERNAL_SAMPLING`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_INTERNAL_SAMPLING`) == 1)" label="Sample on internal reference clock edge"/>
+            <item id="QSPI_READ_MODE_INTERNAL_DQS" available="($configSet.sjarev.getValue() != `A`)" label="Use internally generated strobe signal"/>
+            <item id="QSPI_READ_MODE_LOOPBACK_DQS" available="(featureDefined(`FEATURE_QSPI_LOOPBACK_DQS`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_LOOPBACK_DQS`) == 1)" label="Use loopback clock from PAD as strobe signal"/>
+            <item id="QSPI_READ_MODE_EXTERNAL_DQS" available="(featureDefined(`FEATURE_QSPI_EXTERNAL_DQS`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_EXTERNAL_DQS`) == 1)" label="Use external strobe signal"/>
+         </enum>
+         <enum id="qspi_dll_mode_t" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)" label="DLL configuration modes Implements : qspi_dll_mode_t_Class" from="qspi_dll_mode_t">
+            <item id="QSPI_DLL_BYPASSED" label="DLL bypass mode"/>
+            <item id="QSPI_DLL_MANUAL_UPDATE" label="DLL manual update mode"/>
+            <item id="QSPI_DLL_AUTO_UPDATE" label="DLL auto update mode"/>
+         </enum>
+         <struct id="qspi_user_config_t" label="Driver configuration structure" from="qspi_user_config_t">
+            <description>This structure is used to provide configuration parameters for the qspi driver at initialization time. Implements : qspi_user_config_t_Class</description>
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readonly" label="Read-only">
+               <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+            </bool>
+            <reference id="clock_src" available="(featureDefined(`FEATURE_QSPI_HAS_SOCCR`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_SOCCR`) == 1)" label="Clock source for QuadSPI device" type="qspi_clock_src_t" options="cStructField">
+               <description>Clock source for QuadSPI device</description>
+            </reference>
+            <integer id="divider" available="(featureDefined(`FEATURE_QSPI_HAS_SOCCR`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_SOCCR`) == 1)" label="Clock divider" type="uint8_t" options="cStructField">
+               <description>Divider applied to the input clock source (1 - 8)</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &gt; 0) &amp;&amp; ($this.getValue() &lt; 9)" level="error" description="Valid range is 1-8"/>
+               </validation>
+            </integer>
+            <reference id="dataRate" label="Data rate" type="qspi_date_rate_t" options="cStructField">
+               <description>Single/double data rate</description>
+            </reference>
+            <bool id="dmaSupport" label="DMA support" options="cStructField">
+               <description>Enables DMA support in the driver</description>
+            </bool>
+            <integer id="dmaChannel" available="(featureDefined(`FEATURE_QSPI_FIXED_DMA_CHANNELS`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_FIXED_DMA_CHANNELS`) == 0)" label="DMA channel number" type="uint8_t" options="cStructField">
+               <description>DMA channel number. Only used if dmaSupport is true</description>
+            </integer>
+            <string id="callback" label="Callback function" type="qspi_callback_t" options="cStructField">
+              <description>User callback for reporting asynchronous events.</description>
+              <validation>
+                 <constraint cond_expr="isCIdentifier($this.getValue()) || ($this.getValue() == `NULL`)" level="error" description="Callback function name must be a valid C identifier!"/>
+              </validation>
+            </string>
+            <string id="callbackParam" label="Callback parameter" type="void *" options="cStructField">
+               <description>Parameter for user callback</description>
+               <validation>
+                 <constraint cond_expr="isCIdentifier($this.getValue()) || ($this.getValue() == `NULL`)" level="error" description="Parameter must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <integer id="memSizeA1" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)" label="Size of serial flash A1" type="uint32_t" options="cStructField">
+               <description>Size of serial flash A1</description>
+            </integer>
+            <integer id="memSizeA2" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)" label="Size of serial flash A2" type="uint32_t" options="cStructField">
+               <description>Size of serial flash A2</description>
+            </integer>
+            <integer id="memSizeB1" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)" label="Size of serial flash B1" type="uint32_t" options="cStructField">
+               <description>Size of serial flash B1</description>
+            </integer>
+            <integer id="memSizeB2" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 1)" label="Size of serial flash B2" type="uint32_t" options="cStructField">
+               <description>Size of serial flash B2</description>
+            </integer>
+            <reference id="side" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 0)" label="A/B Side" type="qspi_flash_side_t" options="cStructField">
+               <description>Side on which the serial flash is connected</description>
+            </reference>
+            <integer id="memSize" available="(featureDefined(`FEATURE_QSPI_MULTIPLE_DEVICES`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_MULTIPLE_DEVICES`) == 0)" label="Size of serial flash" type="uint32_t" options="cStructField">
+               <description>Size of serial flash B2</description>
+            </integer>
+            <integer id="csHoldTime" label="CS hold time" type="uint8_t" options="cStructField">
+               <description>CS hold time, expressed in serial clock cycles</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 16)" level="error" description="Valid range is 0-15"/>
+               </validation>
+            </integer>
+            <integer id="csSetupTime" label="CS setup time" type="uint8_t" options="cStructField">
+               <description>CS setup time, expressed in serial clock cycles</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 16)" level="error" description="Valid range is 0-15"/>
+               </validation>
+            </integer>
+            <integer id="columnAddr" label="Column address width" type="uint8_t" options="cStructField">
+               <description>Width of the column address, 0 if not used</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 16)" level="error" description="Valid range is 0-15"/>
+               </validation>
+            </integer>
+            <bool id="wordAddresable" label="Word addressable" options="cStructField">
+               <description>Specifies if serial flash is word addressable</description>
+            </bool>
+            <reference id="readMode" label="Read mode" type="qspi_read_mode_t" options="cStructField">
+               <description>Read mode for incoming data from serial flash</description>
+            </reference>
+            <reference id="sampleDelay" label="Rx data sampling delay" type="qspi_sample_delay_t" options="cStructField">
+               <description>Delay (in clock cycles) used for sampling Rx data</description>
+            </reference>
+            <reference id="samplePhase" label="Rx data sampling clock phase" type="qspi_sample_phase_t" options="cStructField">
+               <description>Clock phase used for sampling Rx data</description>
+            </reference>
+
+            <reference id="coarseDelay" available="(featureDefined(`FEATURE_QSPI_COARSE_DELAY`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_COARSE_DELAY`) == 1)" label="DQS coarse delay configuration" type="qspi_coarse_delay_t" options="cStructField">
+               <description>DQS coarse delay configuration</description>
+            </reference>
+
+            <reference id="dllMode" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)" label="Mode in which DLL is used" type="qspi_dll_mode_t" options="cStructField">
+               <description>Mode in which DLL is used</description>
+            </reference>
+            <bool id="dllfreqEnable" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)" label="Selects delay-chain for high frequency of operation" options="cStructField;overrideName=freqEnable">
+               <description>Selects delay-chain for high frequency of operation</description>
+            </bool>
+            <integer id="dllfineDelay" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)" label="Fine delay DLL slave delay chain" type="uint8_t" options="cStructField;overrideName=fineDelay">
+               <description>Fine delay DLL slave delay chain</description>
+               <validation>
+                  <constraint cond_expr="(($parent.dllMode.getValue() != `QSPI_DLL_BYPASSED`) || ($this.getValue() &lt; 8))" level="error" description="Valid range is 0-7"/>
+                  <constraint cond_expr="(($parent.dllMode.getValue() == `QSPI_DLL_BYPASSED`) || ($this.getValue() &lt; 16))" level="error" description="Valid range is 0-15"/>
+               </validation>
+            </integer>
+            <integer id="dllcoarseDelay" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)" label="Coarse delay DLL slave delay chain" type="uint8_t" options="cStructField;overrideName=coarseDelay">
+               <description>Coarse delay DLL slave delay chain</description>
+               <validation>
+                  <constraint cond_expr="(($parent.dllMode.getValue() != `QSPI_DLL_BYPASSED`) || ($this.getValue() &lt; 16))" level="error" description="Valid range is 0-15"/>
+                  <constraint cond_expr="(($parent.dllMode.getValue() == `QSPI_DLL_BYPASSED`) || ($this.getValue() &lt; 8))" level="error" description="Valid range is 0-7"/>
+               </validation>
+            </integer>
+            <integer id="dllreferenceCounter" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)" label="DLL reference counter" type="uint8_t" options="cStructField;overrideName=referenceCounter">
+               <description>DLL reference counter</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 16)" level="error" description="Valid range is 0-15"/>
+               </validation>
+            </integer>
+            <integer id="dllresolution" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)" label="Minimum resolution for DLL phase detector to remain lock" type="uint8_t" options="cStructField;overrideName=resolution">
+               <description>Minimum resolution for DLL phase detector to remain lock</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 16)" level="error" description="Valid range is 0-15"/>
+               </validation>
+            </integer>
+            <integer id="dlltapSelect" available="(featureDefined(`FEATURE_QSPI_HAS_DLL`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_DLL`) == 1)" label="Selects the Nth tap provided by the slave delay-chain" type="uint8_t" options="cStructField;overrideName=tapSelect">
+               <description>Selects the Nth tap provided by the slave delay-chain</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 8)" level="error" description="Valid range is 0-7"/>
+               </validation>
+            </integer>
+
+            <bool id="centerAlignedStrobe" available="(featureDefined(`FEATURE_QSPI_CENTER_ALIGNED_READ_STROBE`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CENTER_ALIGNED_READ_STROBE`) == 1)" label="Enable center-aligned read strobe" options="cStructField">
+               <description>Enable center-aligned read strobe</description>
+            </bool>
+            <bool id="differentialClock" available="(featureDefined(`FEATURE_QSPI_DIFFERENTIAL_CLOCK`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_DIFFERENTIAL_CLOCK`) == 1)" label="Enable clock on differential CKN pad" options="cStructField">
+               <description>Enable clock on differential CKN pad</description>
+            </bool>
+
+            <integer id="dqsDelayA" available="(featureDefined(`FEATURE_QSPI_HAS_SOCCR`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_SOCCR`) == 1) &amp;&amp;
+                                              ((featureDefined(`FEATURE_QSPI_OPTION_S32K148`) == false) || (getFeature(`FEATURE_QSPI_OPTION_S32K148`) == 0))"
+                     label="Fine delay - Side A" type="uint8_t" options="cStructField">
+               <description>Fine delay for internal or loopback DQS mode - Side A</description>
+            </integer>
+            <integer id="dqsDelayB" available="(featureDefined(`FEATURE_QSPI_HAS_SOCCR`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_SOCCR`) == 1) &amp;&amp;
+                                              ((featureDefined(`FEATURE_QSPI_OPTION_S32K148`) == false) || (getFeature(`FEATURE_QSPI_OPTION_S32K148`) == 0))"
+                     label="Fine delay - Side B" type="uint8_t" options="cStructField">
+               <description>Fine delay for internal or loopback DQS mode - Side B</description>
+            </integer>
+            <integer id="dqsDelay" available="(featureDefined(`FEATURE_QSPI_HAS_SOCCR`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_HAS_SOCCR`) == 1) &amp;&amp;
+                                              (featureDefined(`FEATURE_QSPI_OPTION_S32K148`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_OPTION_S32K148`) == 1)"
+                     label="DQS fine delay" type="uint8_t" options="cStructField">
+               <description>Fine delay for internal or loopback DQS mode (0 - 127)</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 128)" level="error" description="Valid range is 0-127"/>
+               </validation>
+            </integer>
+
+            <bool id="dqsInvert" label="Inverted clock" options="cStructField">
+               <description>Use inverted clock for internal or loopback DQS mode</description>
+            </bool>
+
+            <bool id="dqsLatency" available="(featureDefined(`FEATURE_QSPI_OPTION_S32K148`) == false) || (getFeature(`FEATURE_QSPI_OPTION_S32K148`) == 0)"
+                  label="DQS latency" options="cStructField">
+               <description>Enable DQS latency for reads (Hyperflash)</description>
+            </bool>
+            <reference id="dataAlign" available="(featureDefined(`FEATURE_QSPI_DDR_MODE`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_DDR_MODE`) == 1) &amp;&amp;
+                                                ((featureDefined(`FEATURE_QSPI_OPTION_S32K148`) == false) || (getFeature(`FEATURE_QSPI_OPTION_S32K148`) == 0))"
+                       label="Output data alignment" type="qspi_flash_data_align_t" options="cStructField">
+               <description>Alignment of output data sent to serial flash</description>
+            </reference>
+
+            <reference id="endianess" label="Endianess configuration" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_ENDIAN`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_ENDIAN`) == 1)" type="qspi_endianess_t" options="cStructField">
+               <description>Endianess configuration</description>
+            </reference>
+            <integer id="io2IdleValue" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_ISD`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_ISD`) == 1)" label="Logic level of IO[2]" type="uint8_t" options="cStructField">
+               <description>(0 / 1) Logic level of IO[2] signal when not used</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 2)" level="error" description="Valid range is 0-1"/>
+               </validation>
+            </integer>
+            <integer id="io3IdleValue" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_ISD`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_ISD`) == 1)" label="Logic level of IO[3]" type="uint8_t" options="cStructField">
+               <description>(0 / 1) Logic level of IO[3] signal when not used</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 2)" level="error" description="Valid range is 0-1"/>
+               </validation>
+            </integer>
+            <bool id="dozeMode" available="(featureDefined(`FEATURE_QSPI_CONFIGURABLE_DOZE`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_CONFIGURABLE_DOZE`) == 1)" label="Enable Doze Mode" options="cStructField">
+               <description>Enable externally controlled Doze Mode power-saving mechanism.</description>
+            </bool>
+            <bool id="byteSwap" available="(featureDefined(`FEATURE_QSPI_BYTE_SWAP`) == true) &amp;&amp; (getFeature(`FEATURE_QSPI_BYTE_SWAP`) == 1)" label="Enable byte swap in octal DDR mode" options="cStructField">
+               <description>Enable byte swap in octal DDR mode</description>
+            </bool>
+         </struct>
+      </user_types>
+   </config_set>
+</component:config_component>

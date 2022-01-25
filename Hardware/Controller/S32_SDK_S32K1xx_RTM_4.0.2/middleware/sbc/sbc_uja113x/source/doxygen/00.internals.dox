@@ -1,0 +1,151 @@
+/**
+  @addtogroup internals
+  @{
+ @section sec_internal Internals
+This section describes the philosophy of the library, naming conventions and
+how to start using this library.
+
+ @subsection general General description 
+<p>
+The SBC incorporates several registers allowing the user to configure it's 
+behaviour. Following the SBCs SPI protocol, these registers can be read/written
+to get the status of the device or change the configuration. The UJA113X_SbcTransfer()
+function is the foundation of this library, which can be used to read/write
+from/into the SBC.\n
+Several functions are available to configure specific functionality of the SBC,
+however, these just wrap the UJA113X_SbcTransfer() function at the end. Advantage 
+of these functions lies in just providing input parameters and the function 
+takes care of the address, frame length etc.\n
+As it makes no sense to provide different functions just to read a specific 
+register, the UJA113X_SbcTransfer() function should be used in such a case.
+</p>
+<p>
+Different SBC registers control specific functionality. The number of registers
+required to control each functionality differs, e.g. the SBC mode is controlled 
+by a single register but to configure CAN, several registers need to be written. 
+From this perspective dedicated functions are available to ease the 
+configuration. Some of these functions configure only one register 
+(e.g. UJA113X_SetWatchdog(), UJA113X_SetMode()) and thus bring only little 
+advantage over UJA113X_SbcTransfer(), whereas other configure whole group 
+(e.g. UJA113X_SetCan()). It's up to the user which form to use. See the @ref 
+howto subsection for details.
+</p>
+<p>
+Although the library supports connection of multiple UJA113x units to one MCU,
+the SDK doesn't allow to manipulate these from external user files. Thus the
+number of SBCs connected to the MCU is hardcoded to 2 in the source file.
+<p>
+Every SBC connected to the host MCU is represented by a structure (uja113x_driver_t) 
+holding internal data by the library. An array of such structures is defined in 
+the source code hidden from the user and is used throughout the library. Thus 
+each SBC instance has to be registered to initialize the SBC internal data.
+</p>
+<p>
+After an SBC has been registered, the user can configure each part of the SBC
+separately based on instance number and input arguments provided to the 
+UJA113X_SetXYZ functions. Configration of each functionality is described in 
+separate sections.
+</p>
+<p>
+In case there is no dedicated function for reading/writing a register, the 
+UJA113X_SbcTransfer() function can be used.
+</p>
+
+ @subsection naming Naming conventions
+This section describes the naming conventions used in the library to ease the
+navigation in the source code. Although effort has been put to obey these rules,
+it's not always possible or easy to follow them.
+<p>
+### Functions ###
+<p>
+A general naming scheme is used for functions:\n\n
+<b><sbc_family>_<action_name>(input_parameters)</b>\n
+For functions configuring specific functionality, the action name always starts
+with a <b>Set</b> keyword as follows:\n\n
+<sbc_family>_<b>Set</b><functionality> (e.g. UJA113X_SetCanPartNet())\n
+</p>
+### Structures ###
+A general naming scheme is used for configuration structure:\n\n
+<b><sbc_family>_<reg_fce_acronym>_cfg_t</b>\n
+The functionality acronym is derived either from a register name or
+in case of multiple registers dedicated to one functionality by the functionality.\n
+Examples:\n
+uja113x_fsc_cfg_t -> Fail-Safe Control congifuration structure\n
+uja113x_cpnc_cfg_t -> CAN Partial Networking Control configuration structure\n
+uja113x_dm_cfg_t -> Data Masks configuration structure\n
+
+### Enumerations ###
+A general naming scheme is used for enumeration types:\n\n
+<b><sbc_family>_<reg_acronym>_<reg_bit>_t</b>\n
+Examples:\n
+uja113x_canc_csc_t - CAN Control register, bit CSC: CAN Shutdown Control\n\n
+Naming scheme for enum members:\n
+<b><reg_bit>_<text>_<text>...</b>\n
+Examples:\n
+CMC_TRANSCEIVER_OFF - CAN Mode Control: Transceiver offline\n
+CSC_UNDERVOLTAGE - CAN Shutdown Control: Shutdown transceiver during undervoltage\n
+
+### Defines ###
+</p>
+
+ @subsection howto How to start
+<p>
+The first step before the SBC can be used is to configure the LPSPI peripheral,
+as the library relies on it. Afterwards the UJA113X_RegisterDevice() should be
+invoked for every SBC connected to the MCU. While registering a device, 
+important information about the SBC is stored internally. Once a device has 
+been registered, the rest of the functions can be invoked at will to configure 
+the device, read status etc.
+### Step-by-step summary ###
+<ul>
+<li>1. Initialize the LPSPI peripheral</li>
+<li>2. Declare and set the uja113x_drv_cfg_t structure for every SBC</li>
+<li>3. Invoke the UJA113X_RegisterDevice() for every SBC</li>
+<li>4. Configure SBC using the UJA113X_SbcTransfer() function or other library functions</li>
+<li>5. Change mode to Normal by invoking the UJA113X_SetMode() to run the SBC</li>
+<li>6. Implement your logic for error/interrupt/status handling
+</ul>
+
+Example:
+@code
+...
+...
+#define LPSPI_INSTANCE_0    0U    /* SPI instance */
+#define LPSPI_TIMEOUT       100U  /* 100 ms timeout */
+#define SBC0                0U    /* SBC instance */
+...
+...
+...
+void main (void)
+{
+    /* Init the MCU clock, system related stuff, peripherals etc */
+    ...
+
+    /* 1. Initialize the LPSPI periheral*/
+    ...
+
+    /* 2. Declare and set the uja113x_drv_cfg_t structure for every SBC */
+    uja113x_drv_cfg_t sbcConfig =
+    {
+        UJA1131HW5V0,
+        LPSPI_INSTANCE_0,
+        LPSPI_TIMEOUT
+    };
+    
+    /* 3. Invoke the UJA113X_RegisterDevice() for every SBC */
+    UJA113X_RegisterDevice(SBC0, &sbcConfig); /* Mandatory */
+
+    /* 4. Configure SBC using the UJA113X_SbcTransfer() function of other library functions */
+    UJA113X_SetWatchdog(...); /* Optional/application specific */
+    UJA113X_SbcTransfer(...); /* read back the written register - Optional/application specific */
+    UJA113X_SetCan(...);      /* Optional/application specific */
+    ...
+    ...
+    UJA113X_SetMtpnv(...);    /* Optional/application specific */
+    /* 5. Change mode to Normal by invoking the UJA113X_SetMode() to run the SBC */
+    UJA113X_SetMode(...);
+}
+@endcode
+</p>
+ @}
+ */

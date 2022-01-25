@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="wdg_pal" label="wdg_pal" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+   <sw_comp_ref name="platform.pal.wdg" version="1.0.0"/>
+   <description>S32 SDK Peripheral Abstraction Layer for Watchdog Timer (WDG PAL)</description>
+   <mode id="general" label="General" available="true">
+      <description>WDG PAL general mode</description>
+      <config_set_refs>
+         <config_set_ref>wdg_pal</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>SWT</peripheral_type>
+         <peripheral_type>WDOG</peripheral_type>
+         <peripheral_type>EWM</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="wdg_pal" label="WDG PAL Configuration" from_source="wdg_pal.h">
+      <description>WDG PAL configuration</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="defaultConfig_wdg_pal" label="Default values for WDG PAL" available="true">
+            <description>WDG PAL configuration</description>
+            <set id="wdg_pal_UserConfig.wdg_pal_Config.0.readonly">true</set>
+            <set id="wdg_pal_UserConfig.wdg_pal_Config.0.clkSource">WDG_PAL_SIRC_CLOCK</set>
+            <set id="wdg_pal_UserConfig.wdg_pal_Config.0.wait">false</set>
+            <set id="wdg_pal_UserConfig.wdg_pal_Config.0.stop">false</set>
+            <set id="wdg_pal_UserConfig.wdg_pal_Config.0.debug">false</set>
+            <set id="wdg_pal_UserConfig.wdg_pal_Config.0.intEnable">false</set>
+            <set id="wdg_pal_UserConfig.wdg_pal_Config.0.winEnable">false</set>
+            <set id="wdg_pal_UserConfig.wdg_pal_Config.0.prescalerEnable">false</set>
+            <set id="wdg_pal_UserConfig.wdg_pal_Config.0.percentWindow">0</set>
+            <set id="wdg_pal_UserConfig.wdg_pal_Config.0.extension">wdg_pal_Extension0</set>
+            <set id="wdg_pal_UserConfig.wdg_pal_ConfigExtension.0.name">wdg_pal_Extension0</set>
+         </quick_selection>
+         <default>defaultConfig_wdg_pal</default>
+      </quick_selections>
+      <generated_types>
+         <enum id="wdg_inst_type_t" label="Enumeration with the types of peripherals supported by Watchdog PAL" from="wdg_inst_type_t">
+            <description>This enumeration contains the types of peripherals supported by Watchdog PAL. Implements : wdg_inst_type_t_Class</description>
+            <item id="WDG_INST_TYPE_SWT" label=""/>
+            <item id="WDG_INST_TYPE_WDOG" label=""/>
+            <item id="WDG_INST_TYPE_EWM" label=""/>
+         </enum>
+         <struct id="wdg_instance_t" label="Structure storing PAL instance information" from="wdg_instance_t">
+            <description>This structure is used for storing PAL instance information. Implements : wdg_instance_t_Class</description>
+            <reference id="instType" label="Peripheral over which the PAL is used" type="wdg_inst_type_t">
+               <description>Peripheral over which the PAL is used</description>
+            </reference>
+            <integer id="instIdx" label="Instance index of the peripheral over which the PAL is used" type="uint32_t">
+               <description>Instance index of the peripheral over which the PAL is used</description>
+            </integer>
+         </struct>
+         <enum id="wdg_clock_source_t" label="Clock sources for the WDG PAL" from="wdg_clock_source_t">
+            <item id="WDG_PAL_BUS_CLOCK" label="Bus clock"/>
+            <item id="WDG_PAL_LPO_CLOCK" label="LPO clock"/>
+            <item id="WDG_PAL_SOSC_CLOCK" label="External  clock"/>
+            <item id="WDG_PAL_SIRC_CLOCK" label="Internal clock"/>
+         </enum>
+         <enum id="wdg_in_assert_logic_t" label="WDG PAL input pin configuration Configures if the input pin is enabled and when is asserted Implements : wdg_in_assert_logic_t_Class" from="wdg_in_assert_logic_t">
+            <item id="WDG_IN_ASSERT_DISABLED" label="Input pin disabled"/>
+            <item id="WDG_IN_ASSERT_ON_LOGIC_ZERO" label="Input pin asserts EWM when on logic 0"/>
+            <item id="WDG_IN_ASSERT_ON_LOGIC_ONE" label="Input pin asserts EWM when on logic 1"/>
+         </enum>
+         <struct id="wdg_option_mode_t" label="WDG PAL option mode configuration structure Implements : wdg_option_mode_t_Class" from="wdg_option_mode_t">
+            <bool id="wait" label="Wait mode">
+               <description>Wait mode</description>
+            </bool>
+            <bool id="stop" label="Stop mode">
+               <description>Stop mode</description>
+            </bool>
+            <bool id="debug" label="Debug mode">
+               <description>Debug mode</description>
+            </bool>
+         </struct>
+         <struct id="extension_ewm_for_wdg_t" label="The extension structure for the EWM over WDOG peripheral Implements : extension_ewm_for_wdg_t_Class" from="extension_ewm_for_wdg_t">
+            <reference id="assertLogic" label="Assert logic for EWM input pin" type="wdg_in_assert_logic_t">
+               <description>Assert logic for EWM input pin</description>
+            </reference>
+            <integer id="prescalerValue" label="EWM clock prescaler" type="uint8_t">
+               <description>EWM clock prescaler</description>
+            </integer>
+         </struct>
+         <struct id="wdg_config_t" label="WDG PAL configuration structure Implements : wdg_config_t_Class" from="wdg_config_t">
+            <reference id="clkSource" label="The clock source of the WDOG" type="wdg_clock_source_t">
+               <description>The clock source of the WDOG</description>
+            </reference>
+            <reference id="opMode" label="The modes in which the WDOG is functional" type="wdg_option_mode_t">
+               <description>The modes in which the WDOG is functional</description>
+            </reference>
+            <integer id="timeoutValue" label="The timeout value" type="uint32_t">
+               <description>The timeout value</description>
+            </integer>
+            <integer id="percentWindow" label="The window value compares to timeout value" type="uint8_t">
+               <description>The window value compares to timeout value. Maximum value is 100</description>
+            </integer>
+            <bool id="intEnable" label="If true, an interrupt request is generated before reset">
+               <description>If true, an interrupt request is generated before reset</description>
+            </bool>
+            <bool id="winEnable" label="If true, window mode is enabled">
+               <description>If true, window mode is enabled</description>
+            </bool>
+            <bool id="prescalerEnable" label="If true, prescaler is enabled( default prescaler = 256)">
+               <description>If true, prescaler is enabled( default prescaler = 256)</description>
+            </bool>
+            <fixme id="extension" label="This field will be add extra settings to EWM&apos;s configuration" type="void *">
+               <description>This field will be add extra settings to EWM&apos;s configuration</description>
+            </fixme>
+         </struct>
+      </generated_types>
+      <user_types>
+         <struct id="wdg_config_t" label="WDG PAL configuration structure" from="wdg_config_t">
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readonly" label="Read only" >
+               <description>Specifies how will be the configuration generated. Read only structures are declared with const qualifier</description>
+            </bool>
+            <reference id="clkSource" label="Clock Source" type="wdg_clock_source_t" enable="($instance.getPeripheral() == `WDOG`)" options="cStructField">
+               <description>Specifies clock configuration initialized in clock manager component.</description>
+            </reference>
+            <struct id="opMode" label="WDG PAL option mode configuration structure" from="wdg_option_mode_t" options="cStructField">
+               <bool id="wait" label="Wait mode  " enable="(($instance.getPeripheral() == `WDOG`) &amp;&amp; (getFeature(`FEATURE_WDOG_HAS_WAIT_MODE`)==1))" options="cStructField">
+                  <description>Wait mode</description>
+               </bool>
+               <bool id="stop" label="Stop mode  " enable="((featureDefined(`SOC_SWT_COUNT`) == true) || (($instance.getPeripheral() == `WDOG`) &amp;&amp; (getFeature(`FEATURE_WDOG_HAS_STOP_MODE`)==1)))" options="cStructField">
+                  <description>Stop mode</description>
+               </bool>
+               <bool id="debug" label="Debug mode  " enable="((featureDefined(`SOC_SWT_COUNT`) == true) || (($instance.getPeripheral() == `WDOG`) &amp;&amp; (getFeature(`FEATURE_WDOG_HAS_DEBUG_MODE`)==1)))" options="cStructField">
+                  <description>Debug mode</description>
+               </bool>
+            </struct>
+            <bool id="intEnable" label="Interrupt enable" options="cStructField">
+               <description>Specifies interrupt feature. If true, an interrupt request is generated before reset.</description>
+            </bool>
+            <bool id="prescalerEnable" label="Prescaler enable" enable="(featureDefined(`SOC_SWT_COUNT`) == false) || (1 > getFeature(`SOC_SWT_COUNT`))" options="cStructField">
+               <description>If true, prescaler is enabled(prescaler value is 256 with WDOG peripheral). This field isn't support for SWT peripheral.</description>
+            </bool>
+            <bool id="winEnable" label="Window enable" options="cStructField">
+               <description>Specifies if the software watchdog window mode is enabled. If enabled, the service sequence must be applied in the last part of the time-out period.</description>
+            </bool>
+            <integer id="percentWindow" label="Percent window" type="uint8_t" max_expr="100" enable="$parent.winEnable.getValue()" options="cStructField">
+               <description>The window value compares to timeout value.</description>
+            </integer>
+            <integer id="timeoutValue" label="Timeout value" type="uint32_t" options="cStructField">
+               <description>Specifies the timeout value for the software watchdog.</description>
+            </integer>
+            <dynamic_enum id="extension" label="Extension" available="$instance.getPeripheral() == `EWM`" options="cStructField" items="createArray().merge($configSet.wdg_pal_UserConfig.wdg_pal_ConfigExtension.arrayToEnumItems(
+                enumItem -> true,
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue(),
+                enumItem -> enumItem.getSetting(`name`).getValue()))">
+               <validation>
+                  <constraint cond_expr="$this.getCValue() != ``" level="error" description="An configuration extension must be selected."/>
+               </validation>
+            </dynamic_enum>
+          </struct>
+          <struct id="extension_ewm_for_wdg_t" label="The extension structure for the EWM over WDOG peripheral Implements : extension_ewm_for_wdg_t_Class" from="extension_ewm_for_wdg_t">
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <reference id="assertLogic" label="Assert logic for EWM input pin" type="wdg_in_assert_logic_t" options="cStructField">
+               <description>Assert logic for EWM input pin</description>
+            </reference>
+            <integer id="prescalerValue" label="EWM clock prescaler" type="uint8_t" max_expr="255" options="cStructField">
+               <description>EWM clock prescaler</description>
+            </integer>
+          </struct>
+      </user_types>
+      <settings>
+        <struct id="wdg_pal_UserConfig" label="WDG PAL User Configuration" options="ShowContentAs=Tabs">
+          <array id="wdg_pal_Config" label="WDG PAL Configuration" type="wdg_config_t" config_set_id="wdg_pal" component_id="wdg_pal" available="true"  options="ShowContentAs=MasterDetail">
+             <description>WDG PAL Configuration</description>
+             <item_defaults>
+                 <set_default id="name" value_expr="x -> ($instance.getID() + `_Config` + x.getID())"/>
+                 <set_default id="readonly" value_expr="x.readonly -> (true)"/>
+                 <set_default id="timeoutValue" value_expr="x.timeoutValue -> (($instance.getPeripheral() == `EWM`) ? 255 : (($instance.getPeripheral() == `WDOG`) ? 1024 : 256))"/>
+                 <set_default id="clkSource" value_expr="x.clkSource -> (($instance.getPeripheral() == `EWM`) ? `WDG_PAL_LPO_CLOCK` : `WDG_PAL_SIRC_CLOCK`)"/>
+             </item_defaults>
+          </array>
+          <array id="wdg_pal_ConfigExtension" label="WDG PAL Configuration Extension" type="extension_ewm_for_wdg_t" options="ShowContentAs=MasterDetail"  available="$instance.getPeripheral() == `EWM`">
+             <description>WDG PAL Configuration Extension</description>
+             <item_defaults>
+                 <set_default id="name" value_expr="x -> ($instance.getID() + `_Extension`) + x.getID()"/>
+             </item_defaults>
+          </array>
+        </struct>
+         <variable value="`../wdg_pal/wdg_pal_codegen.js`" id="codegen_file"></variable>
+         <variable value="`wdg_palCodeGen`" id="codegen_class"></variable>
+         <variable value="`../wdg_pal/wdg_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+         <variable value="`WDG_PAL_AddDrivers`" id="toolchain_settings_class"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="flexio_spi_config" label="flexio_spi_config" category="driver" global_only="false" hidden="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component-5.0.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <sw_comp_ref name="platform.driver.flexio_spi" version="1.0.0"/>
+    <description>Flexio SPI</description>
+    <mode id="general" label="General Mode" available="true">
+        <description>Flexio SPI general mode</description>
+        <config_set_refs>
+            <config_set_ref>flexio_spi_driver</config_set_ref>
+        </config_set_refs>
+        <master_peripheral exclusive="false">
+            <peripheral_type>FLEXIO</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set label="FlexIO SPI configuration" id="flexio_spi_driver" options="ShowContentAs=Tabs" from_source="flexio_spi_driver.h">
+        <description>FlexIO SPI configuration</description>
+        <quick_selections>
+            <quick_selection id="default_flexio_spi" label="Default Configuration" available="true">
+                <description>Default Configuration</description>
+                <set id="flexio_spi_master_Configuration.0"></set>
+                <set id="flexio_spi_slave_Configuration.0"></set>
+            </quick_selection>
+            <default>default_flexio_spi</default>
+        </quick_selections>
+        <generated_types>
+            <enum id="flexio_driver_type_t" label="Driver type: interrupts/polling/DMA Implements : flexio_driver_type_t_Class" from="flexio_driver_type_t" from_source="flexio_spi_driver.h">
+                <description></description>
+                <item id="FLEXIO_DRIVER_TYPE_INTERRUPTS" label="Driver uses interrupts for data transfers">
+                    <description>Driver uses interrupts for data transfers</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_POLLING" label="Driver is based on polling">
+                    <description>Driver is based on polling</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_DMA" label="Driver uses DMA for data transfers">
+                    <description>Driver uses DMA for data transfers</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_INTERRUPTS" label="Driver uses interrupts for data transfers">
+                    <description>Driver uses interrupts for data transfers</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_POLLING" label="Driver is based on polling">
+                    <description>Driver is based on polling</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_DMA" label="Driver uses DMA for data transfers">
+                    <description>Driver uses DMA for data transfers</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_INTERRUPTS" label="Driver uses interrupts for data transfers">
+                    <description>Driver uses interrupts for data transfers</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_POLLING" label="Driver is based on polling">
+                    <description>Driver is based on polling</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_DMA" label="Driver uses DMA for data transfers">
+                    <description>Driver uses DMA for data transfers</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_INTERRUPTS" label="Driver uses interrupts for data transfers">
+                    <description>Driver uses interrupts for data transfers</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_POLLING" label="Driver is based on polling">
+                    <description>Driver is based on polling</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_DMA" label="Driver uses DMA for data transfers">
+                    <description>Driver uses DMA for data transfers</description>
+                </item>
+            </enum>
+            <enum id="flexio_spi_transfer_bit_order_t" label="Order in which the data bits are transferred Implements : flexio_spi_transfer_bit_order_t_Class" from="flexio_spi_transfer_bit_order_t">
+                <description></description>
+                <item id="FLEXIO_SPI_TRANSFER_MSB_FIRST" label="MSB First">
+                    <description>Transmit data starting with most significant bit</description>
+                </item>
+                <item id="FLEXIO_SPI_TRANSFER_LSB_FIRST" label="LSB First">
+                    <description>Transmit data starting with least significant bit</description>
+                </item>
+            </enum>
+            <enum id="flexio_spi_transfer_size_t" label="Size of transferred data in bytes Implements : flexio_spi_transfer_size_t_Class" from="flexio_spi_transfer_size_t">
+                <description></description>
+                <item id="FLEXIO_SPI_TRANSFER_1BYTE" label="1-byte">
+                    <description>Data size is 1-byte</description>
+                </item>
+                <item id="FLEXIO_SPI_TRANSFER_2BYTE" label="2-bytes">
+                    <description>Data size is 2-bytes</description>
+                </item>
+                <item id="FLEXIO_SPI_TRANSFER_4BYTE" label="4-bytes">
+                    <description>Data size is 4-bytes</description>
+                </item>
+            </enum>
+            <struct id="flexio_spi_master_user_config_t" label="Master configuration structure" from="flexio_spi_master_user_config_t">
+                <description>This structure is used to provide configuration parameters for the flexio_spi master at initialization time. Implements : flexio_spi_master_user_config_t_Class</description>
+                <integer id="baudRate" label="Baud rate in hertz" type="uint32_t">
+                    <description>Baud rate in hertz</description>
+                </integer>
+                <reference id="driverType" label="Driver type: interrupts/polling/DMA" type="flexio_driver_type_t">
+                    <description>Driver type: interrupts/polling/DMA</description>
+                </reference>
+                <reference id="bitOrder" label="Bit order: LSB-first / MSB-first" type="flexio_spi_transfer_bit_order_t">
+                    <description>Bit order: LSB-first / MSB-first</description>
+                </reference>
+                <reference id="transferSize" label="Transfer size in bytes: 1/2/4" type="flexio_spi_transfer_size_t">
+                    <description>Transfer size in bytes: 1/2/4</description>
+                </reference>
+                <integer id="clockPolarity" label="Clock Polarity (CPOL) 0 = active-high clock; 1 = active-low clock" type="uint8_t">
+                    <description>Clock Polarity (CPOL) 0 = active-high clock; 1 = active-low clock</description>
+                </integer>
+                <integer id="clockPhase" label="Clock Phase (CPHA) 0 = sample on leading clock edge; 1 = sample on trailing clock edge" type="uint8_t">
+                    <description>Clock Phase (CPHA) 0 = sample on leading clock edge; 1 = sample on trailing clock edge</description>
+                </integer>
+                <integer id="mosiPin" label="Flexio pin to use as MOSI pin" type="uint8_t">
+                    <description>Flexio pin to use as MOSI pin</description>
+                </integer>
+                <integer id="misoPin" label="Flexio pin to use as MISO pin" type="uint8_t">
+                    <description>Flexio pin to use as MISO pin</description>
+                </integer>
+                <integer id="sckPin" label="Flexio pin to use as SCK pin" type="uint8_t">
+                    <description>Flexio pin to use as SCK pin</description>
+                </integer>
+                <integer id="ssPin" label="Flexio pin to use as SS pin" type="uint8_t">
+                    <description>Flexio pin to use as SS pin</description>
+                </integer>
+                <fixme id="callback" label="User callback function" type="spi_callback_t">
+                    <description>User callback function. Note that this function will be called from the interrupt service routine, so its execution time should be as small as possible. It can be NULL if it is not needed</description>
+                </fixme>
+                <fixme id="callbackParam" label="Parameter for the callback function" type="void *">
+                    <description>Parameter for the callback function</description>
+                </fixme>
+                <integer id="rxDMAChannel" label="Rx DMA channel number" type="uint8_t">
+                    <description>Rx DMA channel number. Only used in DMA mode</description>
+                </integer>
+                <integer id="txDMAChannel" label="Tx DMA channel number" type="uint8_t">
+                    <description>Tx DMA channel number. Only used in DMA mode</description>
+                </integer>
+            </struct>
+            <struct id="flexio_spi_slave_user_config_t" label="Slave configuration structure" from="flexio_spi_slave_user_config_t">
+                <description>This structure is used to provide configuration parameters for the flexio_spi slave at initialization time. Implements : flexio_spi_slave_user_config_t_Class</description>
+                <reference id="driverType" label="Driver type: interrupts/polling/DMA" type="flexio_driver_type_t">
+                    <description>Driver type: interrupts/polling/DMA</description>
+                </reference>
+                <reference id="bitOrder" label="Bit order: LSB-first / MSB-first" type="flexio_spi_transfer_bit_order_t">
+                    <description>Bit order: LSB-first / MSB-first</description>
+                </reference>
+                <reference id="transferSize" label="Transfer size in bytes: 1/2/4" type="flexio_spi_transfer_size_t">
+                    <description>Transfer size in bytes: 1/2/4</description>
+                </reference>
+                <integer id="clockPolarity" label="Clock Polarity (CPOL) 0 = active-low clock; 1 = active-high clock" type="uint8_t">
+                    <description>Clock Polarity (CPOL) 0 = active-low clock; 1 = active-high clock</description>
+                </integer>
+                <integer id="clockPhase" label="Clock Phase (CPHA) 0 = sample on leading clock edge; 1 = sample on trailing clock edge" type="uint8_t">
+                    <description>Clock Phase (CPHA) 0 = sample on leading clock edge; 1 = sample on trailing clock edge</description>
+                </integer>
+                <integer id="mosiPin" label="Flexio pin to use as MOSI pin" type="uint8_t">
+                    <description>Flexio pin to use as MOSI pin</description>
+                </integer>
+                <integer id="misoPin" label="Flexio pin to use as MISO pin" type="uint8_t">
+                    <description>Flexio pin to use as MISO pin</description>
+                </integer>
+                <integer id="sckPin" label="Flexio pin to use as SCK pin" type="uint8_t">
+                    <description>Flexio pin to use as SCK pin</description>
+                </integer>
+                <integer id="ssPin" label="Flexio pin to use as SS pin" type="uint8_t">
+                    <description>Flexio pin to use as SS pin</description>
+                </integer>
+                <fixme id="callback" label="User callback function" type="spi_callback_t">
+                    <description>User callback function. Note that this function will be called from the interrupt service routine, so its execution time should be as small as possible. It can be NULL if it is not needed</description>
+                </fixme>
+                <fixme id="callbackParam" label="Parameter for the callback function" type="void *">
+                    <description>Parameter for the callback function</description>
+                </fixme>
+                <integer id="rxDMAChannel" label="Rx DMA channel number" type="uint8_t">
+                    <description>Rx DMA channel number. Only used in DMA mode</description>
+                </integer>
+                <integer id="txDMAChannel" label="Tx DMA channel number" type="uint8_t">
+                    <description>Tx DMA channel number. Only used in DMA mode</description>
+                </integer>
+            </struct>
+        </generated_types>
+        <user_types>
+            <enum id="flexio_driver_type_t" label="Driver type: interrupts/polling/DMA Implements : flexio_driver_type_t_Class" from="flexio_driver_type_t" from_source="flexio_spi_driver.h">
+                <description></description>
+                <item id="FLEXIO_DRIVER_TYPE_INTERRUPTS" label="Interrupts">
+                    <description>Driver uses interrupts for data transfers</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_POLLING" label="Polling">
+                    <description>Driver is based on polling</description>
+                </item>
+                <item id="FLEXIO_DRIVER_TYPE_DMA" label="DMA">
+                    <description>Driver uses DMA for data transfers</description>
+                </item>
+            </enum>
+            <struct id="flexio_spi_master_user_config_t" label="Master configuration structure" from="flexio_spi_master_user_config_t">
+                <description>This structure is used to provide configuration parameters for the flexio_spi master at initialization time. Implements : flexio_spi_master_user_config_t_Class</description>
+                <string id="name" label="Name">
+                   <description>Configuration name.</description>
+                   <validation>
+                      <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                   </validation>
+                </string>
+                <bool id="readonly" label="Read-only">
+                   <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+                </bool>
+                <integer id="baudRate" label="Baud rate" type="uint32_t" options="cStructField">
+                    <description>Baud rate in hertz</description>
+                </integer>
+                <variable id="flexioClocks" value="getClockFunctionalGroups()"/>
+                <variable id="flexioClock" value="getPeripheralClockFrequency(`FlexIO0_CLK`, `FlexIO0_CLK`, $parent.flexioClocks.getValue().get(0))"/>
+                <variable id="tmpDiv" value="(($parent.flexioClock.getValue()+$parent.baudRate.getValue())/(2*$parent.baudRate.getValue()))-1"/>
+                <variable id="tmpDivLim" value="$parent.tmpDiv.getValue() &gt; 255 ? 255 : ($parent.tmpDiv.getValue() &lt; 1 ? 1 : $parent.tmpDiv.getValue())"/>
+                <info id="actualBaudRate" label="Actual baud rate in hertz" value="($parent.baudRate.getValue() > 0) ? (($parent.flexioClock.getValue() + $parent.tmpDivLim.getValue() + 1)/(2 * ($parent.tmpDivLim.getValue() + 1))) : 0">
+                    <description>The actual baud rate in Hz that can be set by the driver. May be substantially different than the requested baud rate if the frequency of the Flexio input clock is too high or too low. For best results it is recommended to use an input clock with a frequency 200-500 times greater than the desired baud rate.</description>
+                </info>
+                <reference id="driverType" label="Driver type" type="flexio_driver_type_t" options="cStructField">
+                    <description>Driver type: interrupts/polling/DMA</description>
+                </reference>
+                <reference id="bitOrder" label="Bit order" type="flexio_spi_transfer_bit_order_t" options="cStructField">
+                    <description>Bit order: LSB-first / MSB-first</description>
+                </reference>
+                <reference id="transferSize" label="Transfer size" type="flexio_spi_transfer_size_t" options="cStructField">
+                    <description>Transfer size in bytes: 1/2/4</description>
+                </reference>
+                <integer id="clockPolarity" label="Clock Polarity" type="uint8_t" options="cStructField">
+                    <description>Clock Polarity (CPOL) 0 = active-high clock; 1 = active-low clock</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 1)" level="error" description="Valid range is 0 - 1"/>
+                    </validation>
+                </integer>
+                <integer id="clockPhase" label="Clock Phase" type="uint8_t" options="cStructField">
+                    <description>Clock Phase (CPHA) 0 = sample on leading clock edge; 1 = sample on trailing clock edge</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 1)" level="error" description="Valid range is 0 - 1"/>
+                    </validation>
+                </integer>
+                <integer id="mosiPin" label="MOSI pin" type="uint8_t" options="cStructField">
+                    <description>Flexio pin to use as MOSI pin</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 7)" level="error" description="Valid range is 0 - 7"/>
+                    </validation>
+                </integer>
+                <integer id="misoPin" label="MISO pin" type="uint8_t" options="cStructField">
+                    <description>Flexio pin to use as MISO pin</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 7)" level="error" description="Valid range is 0 - 7"/>
+                        <constraint cond_expr="($this.getValue() != $parent.mosiPin.getValue())" level="error" description="Pins must be different"/>
+                    </validation>
+                </integer>
+                <integer id="sckPin" label="SCK pin" type="uint8_t" options="cStructField">
+                    <description>Flexio pin to use as SCK pin</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 7)" level="error" description="Valid range is 0 - 7"/>
+                        <constraint cond_expr="($this.getValue() != $parent.mosiPin.getValue())" level="error" description="Pins must be different"/>
+                        <constraint cond_expr="($this.getValue() != $parent.misoPin.getValue())" level="error" description="Pins must be different"/>
+                    </validation>
+                </integer>
+                <integer id="ssPin" label="SS pin" type="uint8_t" options="cStructField">
+                    <description>Flexio pin to use as SS pin</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 7)" level="error" description="Valid range is 0 - 7"/>
+                        <constraint cond_expr="($this.getValue() != $parent.mosiPin.getValue())" level="error" description="Pins must be different"/>
+                        <constraint cond_expr="($this.getValue() != $parent.misoPin.getValue())" level="error" description="Pins must be different"/>
+                        <constraint cond_expr="($this.getValue() != $parent.sckPin.getValue())" level="error" description="Pins must be different"/>
+                    </validation>
+                </integer>
+                <string id="callback" label="User callback function" options="cStructField">
+                    <description>User callback function. Note that this function will be called from the interrupt service routine, so its execution time should be as small as possible. It can be NULL if it is not needed</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <info id="callbackParam" label="Parameter for the callback function" value="`NULL`" options="cStructField">
+                    <description>Parameter for the callback function. Must be initialized at runtime if used.</description>
+                </info>
+                <variable id="dmaInstance" value="$root.flatMap(x->x.getChildren()).filter(y->y.getType() == `edma_config`)"/>
+                <variable id="dmaChannels" value="$parent.dmaInstance.getValue().get(0).getSetting(`edma_driver.settings_array_edmaChCfg`)"/>
+                <variable id="findRXDmaChannels" value="$parent.dmaChannels.getValue().getSetting(`array_chCfgStructs`).filter(y->y.getSetting(`virtCh`).getValue() == $parent.rxDMAChannel.getValue())"/>
+                <variable id="findTXDmaChannels" value="$parent.dmaChannels.getValue().getSetting(`array_chCfgStructs`).filter(y->y.getSetting(`virtCh`).getValue() == $parent.txDMAChannel.getValue())"/>
+                <integer id="rxDMAChannel" label="Rx DMA channel number" type="uint8_t" available="($parent.driverType.getValue()==`FLEXIO_DRIVER_TYPE_DMA`)" options="cStructField">
+                    <description>Rx DMA channel number. Only used in DMA mode</description>
+                    <validation>
+                        <constraint cond_expr="($parent.findRXDmaChannels.getValue().size() &gt; 0)" level="error" description="DMA channel not configured, please configure it in DMA component"/>
+                    </validation>
+                </integer>
+                <integer id="txDMAChannel" label="Tx DMA channel number" type="uint8_t" available="($parent.driverType.getValue()==`FLEXIO_DRIVER_TYPE_DMA`)" options="cStructField">
+                    <description>Tx DMA channel number. Only used in DMA mode</description>
+                    <validation>
+                        <constraint cond_expr="($parent.findTXDmaChannels.getValue().size() &gt; 0)" level="error" description="DMA channel not configured, please configure it in DMA component"/>
+                        <constraint cond_expr="($this.getValue() != $parent.rxDMAChannel.getValue())" level="error" description="DMA channels must be different"/>
+                    </validation>
+                </integer>
+            </struct>
+            <struct id="flexio_spi_slave_user_config_t" label="Slave configuration structure" from="flexio_spi_slave_user_config_t">
+                <description>This structure is used to provide configuration parameters for the flexio_spi slave at initialization time. Implements : flexio_spi_slave_user_config_t_Class</description>
+                <string id="name" label="Name">
+                   <description>Configuration name.</description>
+                   <validation>
+                      <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                   </validation>
+                </string>
+                <bool id="readonly" label="Read-only">
+                   <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+                </bool>
+                <reference id="driverType" label="Driver type" type="flexio_driver_type_t" options="cStructField">
+                    <description>Driver type: interrupts/polling/DMA</description>
+                </reference>
+                <reference id="bitOrder" label="Bit order" type="flexio_spi_transfer_bit_order_t" options="cStructField">
+                    <description>Bit order: LSB-first / MSB-first</description>
+                </reference>
+                <reference id="transferSize" label="Transfer size" type="flexio_spi_transfer_size_t" options="cStructField">
+                    <description>Transfer size in bytes: 1/2/4</description>
+                </reference>
+                <integer id="clockPolarity" label="Clock Polarity" type="uint8_t" options="cStructField">
+                    <description>Clock Polarity (CPOL) 0 = active-high clock; 1 = active-low clock</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 1)" level="error" description="Valid range is 0 - 1"/>
+                    </validation>
+                </integer>
+                <integer id="clockPhase" label="Clock Phase" type="uint8_t" options="cStructField">
+                    <description>Clock Phase (CPHA) 0 = sample on leading clock edge; 1 = sample on trailing clock edge</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 1)" level="error" description="Valid range is 0 - 1"/>
+                    </validation>
+                </integer>
+                <integer id="mosiPin" label="MOSI pin" type="uint8_t" options="cStructField">
+                    <description>Flexio pin to use as MOSI pin</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 7)" level="error" description="Valid range is 0 - 7"/>
+                    </validation>
+                </integer>
+                <integer id="misoPin" label="MISO pin" type="uint8_t" options="cStructField">
+                    <description>Flexio pin to use as MISO pin</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 7)" level="error" description="Valid range is 0 - 7"/>
+                        <constraint cond_expr="($this.getValue() != $parent.mosiPin.getValue())" level="error" description="Pins must be different"/>
+                    </validation>
+                </integer>
+                <integer id="sckPin" label="SCK pin" type="uint8_t" options="cStructField">
+                    <description>Flexio pin to use as SCK pin</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 7)" level="error" description="Valid range is 0 - 7"/>
+                        <constraint cond_expr="($this.getValue() != $parent.mosiPin.getValue())" level="error" description="Pins must be different"/>
+                        <constraint cond_expr="($this.getValue() != $parent.misoPin.getValue())" level="error" description="Pins must be different"/>
+                    </validation>
+                </integer>
+                <integer id="ssPin" label="SS pin" type="uint8_t" options="cStructField">
+                    <description>Flexio pin to use as SS pin</description>
+                    <validation>
+                        <constraint cond_expr="($this.getValue() &gt;= 0) &amp;&amp; ($this.getValue() &lt;= 7)" level="error" description="Valid range is 0 - 7"/>
+                        <constraint cond_expr="($this.getValue() != $parent.mosiPin.getValue())" level="error" description="Pins must be different"/>
+                        <constraint cond_expr="($this.getValue() != $parent.misoPin.getValue())" level="error" description="Pins must be different"/>
+                        <constraint cond_expr="($this.getValue() != $parent.sckPin.getValue())" level="error" description="Pins must be different"/>
+                    </validation>
+                </integer>
+                <string id="callback" label="User callback function" options="cStructField">
+                    <description>User callback function. Note that this function will be called from the interrupt service routine, so its execution time should be as small as possible. It can be NULL if it is not needed</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Callback name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <info id="callbackParam" label="Parameter for the callback function" value="`NULL`" options="cStructField">
+                    <description>Parameter for the callback function. Must be initialized at runtime if used.</description>
+                </info>
+                <variable id="dmaInstance" value="$root.flatMap(x->x.getChildren()).filter(y->y.getType() == `edma_config`)"/>
+                <variable id="dmaChannels" value="$parent.dmaInstance.getValue().get(0).getSetting(`edma_driver.settings_array_edmaChCfg`)"/>
+                <variable id="findRXDmaChannels" value="$parent.dmaChannels.getValue().getSetting(`array_chCfgStructs`).filter(y->y.getSetting(`virtCh`).getValue() == $parent.rxDMAChannel.getValue())"/>
+                <variable id="findTXDmaChannels" value="$parent.dmaChannels.getValue().getSetting(`array_chCfgStructs`).filter(y->y.getSetting(`virtCh`).getValue() == $parent.txDMAChannel.getValue())"/>
+                <integer id="rxDMAChannel" label="Rx DMA channel number" type="uint8_t" available="($parent.driverType.getValue()==`FLEXIO_DRIVER_TYPE_DMA`)" options="cStructField">
+                    <description>Rx DMA channel number. Only used in DMA mode</description>
+                    <validation>
+                        <constraint cond_expr="($parent.findRXDmaChannels.getValue().size() &gt; 0)" level="error" description="DMA channel not configured, please configure it in DMA component"/>
+                    </validation>
+                </integer>
+                <integer id="txDMAChannel" label="Tx DMA channel number" type="uint8_t" available="($parent.driverType.getValue()==`FLEXIO_DRIVER_TYPE_DMA`)" options="cStructField">
+                    <description>Tx DMA channel number. Only used in DMA mode</description>
+                    <validation>
+                        <constraint cond_expr="($parent.findTXDmaChannels.getValue().size() &gt; 0)" level="error" description="DMA channel not configured, please configure it in DMA component"/>
+                        <constraint cond_expr="($this.getValue() != $parent.rxDMAChannel.getValue())" level="error" description="DMA channels must be different"/>
+                    </validation>
+                </integer>
+            </struct>
+	        <array id="arrayFlexio_spiMasterConfig" label="Flexio_spi_master configuration" type="flexio_spi_master_user_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+			   	<item_defaults>
+			       <set_default id="name" value_expr="x -> (`Flexio_spi_master_Config` + x.getID())"/>
+			       <set_default id="readonly" value_expr="x -> (`true`)"/>
+				   <set_default id="baudRate" value_expr="x.baudRate-> (`100000`)"/>
+				   <set_default id="driverType" value_expr="x.driverType-> (`FLEXIO_DRIVER_TYPE_INTERRUPTS`)"/>
+				   <set_default id="bitOrder" value_expr="x.bitOrder-> (`FLEXIO_SPI_TRANSFER_MSB_FIRST`)"/>
+				   <set_default id="transferSize" value_expr="x.transferSize-> (`FLEXIO_SPI_TRANSFER_1BYTE`)"/>
+				   <set_default id="clockPolarity" value_expr="x.clockPolarity-> (`0`)"/>
+				   <set_default id="clockPhase" value_expr="x.clockPhase-> (`0`)"/>
+				   <set_default id="mosiPin" value_expr="x.mosiPin-> (`0`)"/>
+				   <set_default id="misoPin" value_expr="x.misoPin-> (`1`)"/>
+				   <set_default id="sckPin" value_expr="x.sckPin-> (`2`)"/>
+				   <set_default id="ssPin" value_expr="x.ssPin-> (`3`)"/>
+				   <set_default id="callback" value_expr="x.callback-> (`NULL`)"/>
+				   <set_default id="callbackParam" value_expr="x.callbackParam-> (`NULL`)"/>
+				   <set_default id="rxDMAChannel" value_expr="x.rxDMAChannel-> (`0`)"/>
+				   <set_default id="txDMAChannel" value_expr="x.txDMAChannel-> (`0`)"/>
+			   </item_defaults>
+               <validation>
+                   <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+               </validation>
+            </array>
+	        <array id="arrayFlexio_spiSlaveConfig" label="Flexio_spi_slave configuration" type="flexio_spi_slave_user_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`name`).value())">
+			   	<item_defaults>
+			       <set_default id="name" value_expr="x -> (`Flexio_spi_slave_Config` + x.getID())"/>
+			       <set_default id="readonly" value_expr="x -> (`true`)"/>
+				   <set_default id="driverType" value_expr="x.driverType-> (`FLEXIO_DRIVER_TYPE_INTERRUPTS`)"/>
+				   <set_default id="bitOrder" value_expr="x.bitOrder-> (`FLEXIO_SPI_TRANSFER_MSB_FIRST`)"/>
+				   <set_default id="transferSize" value_expr="x.transferSize-> (`FLEXIO_SPI_TRANSFER_1BYTE`)"/>
+				   <set_default id="clockPolarity" value_expr="x.clockPolarity-> (`0`)"/>
+				   <set_default id="clockPhase" value_expr="x.clockPhase-> (`0`)"/>
+				   <set_default id="mosiPin" value_expr="x.mosiPin-> (`0`)"/>
+				   <set_default id="misoPin" value_expr="x.misoPin-> (`1`)"/>
+				   <set_default id="sckPin" value_expr="x.sckPin-> (`2`)"/>
+				   <set_default id="ssPin" value_expr="x.ssPin-> (`3`)"/>
+				   <set_default id="callback" value_expr="x.callback-> (`NULL`)"/>
+				   <set_default id="callbackParam" value_expr="x.callbackParam-> (`NULL`)"/>
+				   <set_default id="rxDMAChannel" value_expr="x.rxDMAChannel-> (`0`)"/>
+				   <set_default id="txDMAChannel" value_expr="x.txDMAChannel-> (`0`)"/>
+			   </item_defaults>
+               <validation>
+                   <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`name`).value()).length() == 0" level="error" description="There are some duplicated `Name` fields in the configuration"/>
+               </validation>
+            </array>
+        </user_types>
+        <settings>
+            <reference id="flexio_spi_master_Configuration" label="FlexIO SPI Master configurations" type="arrayFlexio_spiMasterConfig" options="ShowContentAs=Tabs" config_set_id="flexio_spi_driver" component_id="flexio_spi_config" available="true">
+            </reference>
+            <reference id="flexio_spi_slave_Configuration" label="FlexIO SPI Slave configurations" type="arrayFlexio_spiSlaveConfig" options="ShowContentAs=Tabs" config_set_id="flexio_spi_driver" component_id="flexio_spi_config" available="true">
+            </reference>
+            <variable value="`../flexio_spi/flexio_spi_codegen.js`" id="codegen_file"></variable>
+            <variable value="`FlexioSPICodeGen`" id="codegen_class"></variable>
+            <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+            <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+        </settings>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+    </config_set>
+</component:config_component>

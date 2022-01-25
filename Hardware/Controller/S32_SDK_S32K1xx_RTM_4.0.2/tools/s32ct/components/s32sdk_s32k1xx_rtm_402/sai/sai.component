@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="sai_config" label="sai" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver">
+   <sw_comp_ref name="platform.driver.sai" version="1.0.0"/>
+   <description>Synchronous Audio Interface</description>
+
+   <mode id="general" label="General Configuration" available="true">
+      <description>SAI General Mode</description>
+      <config_set_refs>
+         <config_set_ref>sai_driver</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>SAI</peripheral_type>
+      </master_peripheral>
+   </mode>
+
+   <config_set id="sai_driver" label="SAI Configuration Set" from_source="sai_driver.h">
+      <description>Synchronous Audio Interface</description>
+      <fragment_defs/>
+      <code/>
+      <validation>
+      </validation>
+      <quick_selections>
+         <quick_selection id="def_sai0" label="Default Values for SAI0" available="getPeripheral($instance) == `SAI0`">
+            <description>SAI Default User Configuration for instance 0</description>
+            <set id="saiInst.name">sai0</set>
+            <set id="saiCfgArray.0.saiCommonConfig.readOnly">true</set>
+            <set id="saiCfgArray.0.saiSpecificConfig.saiChannel0">true</set>
+            <default>def_sai0</default>
+         </quick_selection>
+         <quick_selection id="def_sai1" label="Default Values for SAI1" available="getPeripheral($instance) == `SAI1`">
+            <description>SAI Default User Configuration for instance 1</description>
+            <set id="saiInst.name">sai1</set>
+            <set id="saiCfgArray.0.saiCommonConfig.readOnly">true</set>
+            <set id="saiCfgArray.0.saiSpecificConfig.saiChannel0">true</set>
+            <default>def_sai0</default>
+         </quick_selection>
+      </quick_selections>
+      <generated_types/>
+
+      <user_types>
+         <enum id="sai_transmitter_receiver_t" label="Tx or Rx" from="sai_transmitter_receiver_t">
+            <item id="SAI_TX"    label="Transmitter"/>
+            <item id="SAI_RX"    label="Receiver"/>
+         </enum>
+         <enum id="sai_transfer_type_t" label="Transfer type" from="sai_transfer_type_t">
+            <description>Implements : sai_transfer_type_t_Class</description>
+            <item id="SAI_INTERRUPT" label="Interrupt">
+               <description>Interrupt based communication</description>
+            </item>
+            <item id="SAI_DMA"       label="DMA">
+               <description>DMA based communication</description>
+            </item>
+         </enum>
+         <enum id="sai_element_size_t" label="Element size" from="sai_element_size_t">
+            <item id="1"    label="1"/>
+            <item id="2"    label="2"/>
+            <item id="4"    label="4"/>
+         </enum>
+         <string id="sai_callback_t" label="Sai callback function" >
+            <description>Name of callback function registered in the sai_common_config_t structure.</description>
+            <validation>
+               <constraint cond_expr="(($this.getValue() == ``) || isCIdentifier($this.getValue()))" level="error" description="'Callback function name is a C identifier!'"/>
+            </validation>
+         </string>
+         <enum id="sai_mode_t" label="Mode" from="sai_mode_t">
+            <item id="SAI_MASTER"   label="Master">
+               <description>Bit clock and frame sync are generated from internal</description>
+            </item>
+            <item id="SAI_SLAVE"    label="Slave">
+               <description>Bit clock and frame sync are generated from external</description>
+            </item>
+         </enum>
+         <enum id="sai_master_clk_source_t" label="Master clock source" from="sai_master_clk_source_t">
+            <description>Implements : sai_master_clk_source_t_Class</description>
+            <item id="SAI_BUS_CLK"          label="Sai bus clock"/>
+            <item id="SAI_EXTERNAL_CLK"     label="External clock"/>
+            <item id="SAI_SOSC_CLK"         label="SOSC clock"/>
+         </enum>
+         <enum id="sai_sync_mode_t" label="Sync mode" from="sai_sync_mode_t">
+            <description>Implements : sai_sync_mode_t_Class</description>
+            <item id="SAI_ASYNC"              label="Indepedent">
+               <description>Indepedent bit clock and frame sync</description>
+            </item>
+            <item id="SAI_SYNC_WITH_OTHER"    label="Sync with other">
+               <description>Bit clock and frame sync signal is taken from transmitter/receiver of the same instance</description>
+            </item>
+         </enum>
+         <enum id="sai_bit_clock_polar_t" label="Bit clock polar" from="sai_bit_clock_polar_t">
+            <item id="true"              label="Negative">
+               <description>For frame sync this means active low. For bit clock it means bit clock is active low with drive outputs on falling edge and sample inputs on rising edge</description>
+            </item>
+            <item id="false"             label="Positive">
+               <description>For frame sync this means active high. For bit clock it means bit clock is active high with drive outputs on rising edge and sample inputs on falling edge</description>
+            </item>
+         </enum>
+         <enum id="sai_sync_polar_t" label="Sync polar" from="sai_sync_polar_t">
+            <item id="true"              label="Negative">
+               <description>For frame sync this means active low. For bit clock it means bit clock is active low with drive outputs on falling edge and sample inputs on rising edge</description>
+            </item>
+            <item id="false"             label="Positive">
+               <description>For frame sync this means active high. For bit clock it means bit clock is active high with drive outputs on rising edge and sample inputs on falling edge</description>
+            </item>
+         </enum>
+         <enum id="sai_mask_mode_t" label="Mask mode" from="sai_mask_mode_t">
+            <description>Implements : sai_mask_mode_t_Class</description>
+            <item id="SAI_MASK_TRISTATE"              label="Tristate"/>
+            <item id="SAI_MASK_ZERO"                  label="Zero"/>
+         </enum>
+         <enum id="sai_bit_order_t" label="Bit order" from="sai_bit_order_t">
+            <item id="true"              label="MSB first"/>
+            <item id="false"             label="LSB first"/>
+         </enum>
+         <enum id="sai_mux_mode_t" label="Mux mode" from="sai_mux_mode_t">
+            <description>Implements : sai_mux_mode_t_Class</description>
+            <item id="SAI_MUX_DISABLED"              label="Mux disabled">
+               <description>Each channel has its own memory block and data line</description>
+            </item>
+            <item id="SAI_MUX_LINE"                  label="Line mux">
+               <description>Only one dataline is used. Words on data line is alternated between channels, each channel data is a seperate memory block</description>
+            </item>
+            <item id="SAI_MUX_MEM"                   label="Memory mux">
+               <description>Words in memory block is alternated between channels, each channel data is on a seperate data line</description>
+            </item>
+         </enum>
+         <enum id="sai_number_channel_t" label="Number of channel" from="sai_number_channel_t">
+            <item id="2"              label="2"/>
+            <item id="3"              label="3"/>
+            <item id="4"              label="4"/>
+         </enum>
+
+         <struct id="sai_common_config_t" label="Defines the Sai common configuration structure" from="sai_common_config_t">
+            <description>Implements : sai_common_config_t_Class</description>
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+            <bool id="readOnly" label="Read-only">
+               <description>Specifies the configuration structure access modifier; read-only configuration will be declared const.</description>
+            </bool>
+            <reference id="txOrRx" label="Tx or Rx" type="sai_transmitter_receiver_t" options="cStructField">
+               <description>Transmitter or Receiver</description>
+            </reference>
+            <bool id="runErr" label="Run error report">
+               <description>Execute the callback function on underrun/overrun event.</description>
+            </bool>
+            <bool id="syncErr" label="Sync error report">
+               <description>Execute the callback function when an error in external frame sync has occured.</description>
+            </bool>
+            <bool id="frameStart" label="Frame start report">
+               <description>Execute the callback function on frame start event.</description>
+            </bool>
+            <reference id="transferType" label="Transfer type" type="sai_transfer_type_t" options="cStructField">
+               <description>Transfer type (Interrupt or DMA base)</description>
+            </reference>
+            <integer id="dmaChannel0" label="DMA Channel 0" type="uint32_t" available="true" enable="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; (($configSet.countOccurrences(item -> (item.getID() == `saiChannel0` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel1` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel2` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel3` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true)) &gt; 0)" options="cStructField">
+               <description>DMA channel 0.</description>
+               <validation>
+                  <constraint cond_expr="$this.getValue() &lt; 16" level="error" description="The vaid channel is from 0 to 15"/>
+                  <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> (((x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER2_SAI1_RX`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_FLEXIO_SHIFTER3_SAI1_TX`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_SAI0_RX`) || (x.getSetting(`chReq`).value() == `EDMA_REQ_SAI0_TX`)) &amp;&amp; (x.getSetting(`virtCh`).value() == $this.getValue())))), true) &gt; 0)" level="warning" description="Please configure the correct source for this channel, from the DMA component!"/>
+               </validation>
+            </integer>
+            <integer id="dmaChannel1" label="DMA Channel 1" type="uint32_t" available="getPeripheral($instance) == `SAI0`" enable="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; (($configSet.countOccurrences(item -> (item.getID() == `saiChannel0` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel1` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel2` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel3` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true)) &gt; 1)" options="cStructField">
+               <description>DMA channel 1.</description>
+               <validation>
+                  <constraint cond_expr="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; ($this.getValue() != $parent.dmaChannel0.getValue())" level="error" description="Please use different DMA channel"/>
+                  <constraint cond_expr="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; ($this.getValue() != $parent.dmaChannel2.getValue())" level="error" description="Please use different DMA channel"/>
+                  <constraint cond_expr="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; ($this.getValue() != $parent.dmaChannel3.getValue())" level="error" description="Please use different DMA channel"/>
+                  <constraint cond_expr="$this.getValue() &lt; 16" level="error" description="The vaid channel is from 0 to 15"/>
+                  <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> ((x.getSetting(`virtCh`).value() == $this.getValue())))), true) &gt; 0)" level="warning" description="Please configure the correct source for this channel, from the DMA component!"/>
+               </validation>
+            </integer>
+            <integer id="dmaChannel2" label="DMA Channel 2" type="uint32_t" available="getPeripheral($instance) == `SAI0`" enable="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; (($configSet.countOccurrences(item -> (item.getID() == `saiChannel0` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel1` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel2` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel3` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true)) &gt; 2)" options="cStructField">
+               <description>DMA channel 2.</description>
+               <validation>
+                  <constraint cond_expr="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; ($this.getValue() != $parent.dmaChannel0.getValue())" level="error" description="Please use different DMA channel"/>
+                  <constraint cond_expr="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; ($this.getValue() != $parent.dmaChannel1.getValue())" level="error" description="Please use different DMA channel"/>
+                  <constraint cond_expr="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; ($this.getValue() != $parent.dmaChannel3.getValue())" level="error" description="Please use different DMA channel"/>
+                  <constraint cond_expr="$this.getValue() &lt; 16" level="error" description="The vaid channel is from 0 to 15"/>
+                  <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> ((x.getSetting(`virtCh`).value() == $this.getValue())))), true) &gt; 0)" level="warning" description="Please configure the correct source for this channel, from the DMA component!"/>
+               </validation>
+            </integer>
+            <integer id="dmaChannel3" label="DMA Channel 3" type="uint32_t" available="getPeripheral($instance) == `SAI0`" enable="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; (($configSet.countOccurrences(item -> (item.getID() == `saiChannel0` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel1` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel2` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel3` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true)) &gt; 3)" options="cStructField">
+               <validation>
+                  <constraint cond_expr="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; ($this.getValue() != $parent.dmaChannel0.getValue())" level="error" description="Please use different DMA channel"/>
+                  <constraint cond_expr="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; ($this.getValue() != $parent.dmaChannel1.getValue())" level="error" description="Please use different DMA channel"/>
+                  <constraint cond_expr="($parent.transferType.getValue() == `SAI_DMA`) &amp;&amp; ($this.getValue() != $parent.dmaChannel2.getValue())" level="error" description="Please use different DMA channel"/>
+                  <constraint cond_expr="$this.getValue() &lt; 16" level="error" description="The vaid channel is from 0 to 15"/>
+                  <constraint cond_expr="($root.countOccurrences(item -> (item.getID() == `array_chCfgStructs` &amp;&amp; item.anyMatch(x -> ((x.getSetting(`virtCh`).value() == $this.getValue())))), true) &gt; 0)" level="warning" description="Please configure the correct source for this channel, from the DMA component!"/>
+               </validation>
+            </integer>
+            <reference id="elementSize" label="Element size" type="sai_element_size_t" options="cStructField">
+               <description>Size in bytes of each read/write from/to buffer.</description>
+            </reference>
+            <reference id="callBack" label="Callback" type="sai_callback_t" options="cStructField">
+               <description>Callback(a pointer void*)</description>
+               <validation>
+                  <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                  <constraint cond_expr="$this.getValue() == `NULL` || ($root.countOccurrences(item -> (item.getID() == `saiCommonConfig` &amp;&amp; item.getSetting(`callBack`).value() == $this.getValue()), true) &lt; 2)" level="error" description="There are some duplicated `Callback` fields in the configuration"/>
+               </validation>
+            </reference>
+         </struct>
+
+         <struct id="sai_specific_config_t" label="Defines the Sai specific configuration structure" from="sai_specific_config_t">
+            <reference id="mode" label="Mode" type="sai_mode_t" enable="$parent.syncMode.getValue() == `SAI_ASYNC`" options="cStructField">
+               <description>Mode (Master or Slave).</description>
+            </reference>
+            <reference id="masterClkSource" label="Master clock source" type="sai_master_clk_source_t" enable="($parent.mode.getValue() == `SAI_MASTER` &amp;&amp; $parent.syncMode.getValue() == `SAI_ASYNC`)" options="cStructField">
+               <description>Master clock source.</description>
+            </reference>
+            <integer id="bitClkDivisor" label="Bit clock divisor" type="uint16_t" available="true" enable="($parent.mode.getValue() == `SAI_MASTER`) &amp;&amp; ($parent.masterClkSource.getValue() == `SAI_EXTERNAL_CLK` &amp;&amp; $parent.syncMode.getValue() == `SAI_ASYNC`)" options="cStructField">
+               <validation>
+                  <constraint cond_expr="$this.getValue() &gt; 0" level="error" description="The value must be greater than 0"/>
+               </validation>
+            </integer>
+            <integer id="sampleRate" label="Sample rate" type="uint32_t" available="true" enable="($parent.mode.getValue() == `SAI_MASTER`) &amp;&amp; (($parent.masterClkSource.getValue() == `SAI_BUS_CLK` || $parent.masterClkSource.getValue() == `SAI_SOSC_CLK`) &amp;&amp; $parent.syncMode.getValue() == `SAI_ASYNC`)" options="cStructField">
+               <validation>
+                  <constraint cond_expr="$this.getValue() &gt; 0" level="error" description="The value must be greater than 0"/>
+               </validation>
+            </integer>
+            <reference id="syncMode" label="Sync mode" type="sai_sync_mode_t" enable="true" options="cStructField">
+               <description>Sync mode.</description>
+            </reference>
+            <reference id="bitClkPolar" label="Bit clock polar" type="sai_bit_clock_polar_t" enable="true" options="cStructField">
+               <description>Positive or negative bit clock.</description>
+            </reference>
+            <integer id="syncWidth" label="Sync width" type="uint8_t" available="true" enable="true" options="cStructField">
+               <validation>
+                  <constraint cond_expr="$this.getValue() &gt; 0" level="error" description="The value must be greater than 0"/>
+                  <constraint cond_expr="$this.getValue() &lt; ($parent.firstWordWidth.getValue() + 1)" level="error" description="The value cannot longer than first word width"/>
+               </validation>
+            </integer>
+            <bool id="syncEarly" label="Sync early">
+               <description>Frame sync come one bit clock early.</description>
+            </bool>
+            <reference id="syncPolar" label="Sync polar" type="sai_sync_polar_t" enable="true" options="cStructField">
+               <description>Positive or negative polar.</description>
+            </reference>
+            <bool id="saiChannel0" label="SAI Channel 0">
+               <description>Enable or disable channel 0.</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() || $parent.saiChannel1.getValue() || $parent.saiChannel2.getValue() || $parent.saiChannel3.getValue())" level="error" description="Always enable at least one dataline"/>
+                  <constraint cond_expr="!(($configSet.countOccurrences(item -> (item.getID() == `transferType` &amp;&amp; item.getValue() == `SAI_INTERRUPT` &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) == 1) &amp;&amp; $parent.muxMode.getValue() == `SAI_MUX_LINE` &amp;&amp; (($configSet.countOccurrences(item -> (item.getID() == `saiChannel0` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel1` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel2` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel3` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true)) &gt; 1))" level="error" description="In line mux mode and interrupt, enable only one dataline"/>
+                  <constraint cond_expr="!(($configSet.countOccurrences(item -> (item.getID() == `transferType` &amp;&amp; item.getValue() == `SAI_INTERRUPT` &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) == 1) &amp;&amp; $parent.muxMode.getValue() == `SAI_MUX_MEM` &amp;&amp; !(($configSet.countOccurrences(item -> (item.getID() == `saiChannel0` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel1` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel2` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) + $configSet.countOccurrences(item -> (item.getID() == `saiChannel3` &amp;&amp; item.getValue() &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true)) &gt; 1))" level="error" description=" In memory mux mode and interrupt, channel have to be enabled at least two channels "/>
+                  <constraint cond_expr="!(($configSet.countOccurrences(item -> (item.getID() == `transferType` &amp;&amp; item.getValue() == `SAI_DMA` &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) == 1) &amp;&amp; ($parent.muxMode.getValue() == `SAI_MUX_LINE` || $parent.muxMode.getValue() == `SAI_MUX_MEM`) &amp;&amp; !($this.getValue() &amp;&amp; $parent.saiChannel1.getValue() &amp;&amp; ((!($parent.saiChannel2.getValue()) &amp;&amp; !($parent.saiChannel3.getValue())) || ($parent.saiChannel2.getValue() &amp;&amp; !($parent.saiChannel3.getValue())) || ($parent.saiChannel2.getValue() &amp;&amp; $parent.saiChannel3.getValue()))))" level="error" description=" In mux mode and dma, channel have to be enabled from channel 0, immediately above and at least two channels have to be enabled "/>
+               </validation>
+            </bool>
+            <bool id="saiChannel1" label="SAI Channel 1" available="getPeripheral($instance) == `SAI0`">
+               <description>Enable or disable channel 1.</description>
+            </bool>
+            <bool id="saiChannel2" label="SAI Channel 2" available="getPeripheral($instance) == `SAI0`">
+               <description>Enable or disable channel 2.</description>
+            </bool>
+            <bool id="saiChannel3" label="SAI Channel 3" available="getPeripheral($instance) == `SAI0`">
+               <description>Enable or disable channel 3.</description>
+            </bool>
+            <integer id="frameSize" label="Frame size" type="uint8_t" available="true" enable="true" options="cStructField">
+               <description>Frame size in number of word (1-16).</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &gt; 0)" level="error" description="The value must be from 1 to 16"/>
+                  <constraint cond_expr="($this.getValue() &lt; 17)" level="error" description="The value must be from 1 to 16"/>
+               </validation>
+            </integer>
+            <reference id="maskMode" label="Mask mode" type="sai_mask_mode_t" enable="getPeripheral($instance) == `SAI0`" options="cStructField">
+               <description>Mask mode for transmit, output tristate or zero when word is masked.</description>
+            </reference>
+            <reference id="bitOrder" label="Bit order" type="sai_bit_order_t" enable="true" options="cStructField">
+               <description>MSB or LSB first.</description>
+            </reference>
+            <integer id="firstWordWidth" label="First word width" type="uint8_t" available="true" enable="true" options="cStructField">
+               <description>First word width in number of bits. (1-32).</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &gt; 0)" level="error" description="The value must be from 1 to 32"/>
+                  <constraint cond_expr="($this.getValue() &lt; 33)" level="error" description="The value must be from 1 to 32"/>
+               </validation>
+            </integer>
+            <integer id="otherWordsWidth" label="Other words width" type="uint8_t" available="true" enable="true" options="cStructField">
+               <description>Other words width in number of bits. (1-32).</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &gt; 0)" level="error" description="The value must be from 1 to 32"/>
+                  <constraint cond_expr="($this.getValue() &lt; 33)" level="error" description="The value must be from 1 to 32"/>
+               </validation>
+            </integer>
+            <integer id="firstBitIndex" label="First bit index" type="uint8_t" available="true" enable="true" options="cStructField">
+               <description>Index from LSB of first bit to be transmitted/received, valid range from 0 to 31</description>
+               <validation>
+                  <constraint cond_expr="($this.getValue() &lt; 32)" level="error" description="The value must be from 0 to 31"/>
+               </validation>
+            </integer>
+            <reference id="muxMode" label="Mux mode" type="sai_mux_mode_t" enable="getPeripheral($instance) == `SAI0`" options="cStructField">
+               <description>Mux type.</description>
+            </reference>
+            <reference id="numberOfChannel" label="Number of channel" type="sai_number_channel_t" enable="getPeripheral($instance) == `SAI0` &amp;&amp; $parent.muxMode.getValue() == `SAI_MUX_LINE` &amp;&amp; $configSet.countOccurrences(item -> (item.getID() == `transferType` &amp;&amp; item.getValue() == `SAI_INTERRUPT` &amp;&amp; item.getParent().getParent().getID() == $parent.getParent().getID()), true) == 1" options="cStructField">
+               <description>Number of channels to enable, only used when both line mux mode and interrupt mode is selected.</description>
+            </reference>
+         </struct>
+
+         <struct id="sai_user_config_t" label="Sai User Configuration" options="ShowContentAs=Tabs">
+            <reference id="saiCommonConfig" label="Sai Generic Configuration" type="sai_common_config_t">
+               <description>SAI Common Configuration</description>
+            </reference>
+            <reference id="saiSpecificConfig" label="Sai Speicific Configuration" type="sai_specific_config_t">
+               <description>SAI Specific Configuration</description>
+            </reference>
+         </struct>
+
+         <array id="saiConfigArray" label="Sai configuration array" type="sai_user_config_t" options="ShowContentAs=MasterDetail;UI_ARRAY_REORDER;UI_ARRAY_INDICES_HIDDEN" key_selector_expr="x -> (x.getSetting(`saiCommonConfig.name`).value())">
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`saiCommonConfig.name`).value()).length() == 0" level="error" description="There are some duplicated `Name user configuration` fields in the configuration"/>
+            </validation>
+            <item_defaults>
+               <set_default id="saiCommonConfig.name" value_expr="x -> ($instance.getPeripheral() + `_InitConfig` + x.getID())"/>
+               <set_default id="saiCommonConfig.readOnly" value_expr="x -> (`true`)"/>
+               <set_default id="saiCommonConfig.callBack" value_expr="x -> (`NULL`)"/>
+               <set_default id="saiSpecificConfig.sampleRate" value_expr="x -> 16000"/>
+               <set_default id="saiSpecificConfig.syncWidth" value_expr="x -> 16"/>
+               <set_default id="saiSpecificConfig.syncEarly" value_expr="x -> (`true`)"/>
+               <set_default id="saiSpecificConfig.frameSize" value_expr="x -> 2"/>
+               <set_default id="saiSpecificConfig.firstWordWidth" value_expr="x -> 16"/>
+               <set_default id="saiSpecificConfig.otherWordsWidth" value_expr="x -> 16"/>
+               <set_default id="saiSpecificConfig.saiChannel0" value_expr="x -> (`true`)"/>
+            </item_defaults>
+         </array>
+      </user_types>
+
+      <settings>
+         <reference id="saiCfgArray" label="Sai Driver User Configuration" type="saiConfigArray">
+            <description>Sai User Configuration</description>
+         </reference>
+         <variable value="`../sai/sai_codegen.js`" id="codegen_file"></variable>
+         <variable value="`Sai_CodeGenerator`" id="codegen_class"></variable>
+      </settings>
+   </config_set>
+</component:config_component>

@@ -1,0 +1,95 @@
+/*!
+@defgroup power_manager_s32k1xx Power Manager Driver
+@ingroup power_manager
+@brief This module covers the device-specific power_manager functionality implemented for S32K1xx, s32k14xW and S32MTV SOC.
+
+## Hardware background ##
+
+System mode controller (SMC) is passing the system into and out of all low-power
+Stop and Run modes.\n Controls the power, clocks and memories of the system to achieve
+the power consumption and functionality of that mode.
+
+
+## Driver consideration ##
+
+Power mode entry and sleep-on-exit-value are provided at
+initialization time through the power manager user configuration structure.\n
+With platform is S32K14x, the available power mode entries are the following ones: HSRUN, RUN, VLPR, STOP1, STOP2 and VLPS.\n
+With platform is S32MTV,S32K11x and S32K14xW. The available power mode entries are the following ones: RUN, VLPR, STOP1, STOP2 and VLPS.
+
+This is an example of configuration:
+@code
+
+ power_manager_user_config_t pwrMan1_InitConfig0 = {
+     .powerMode = POWER_MANAGER_RUN,
+     .sleepOnExitValue = false,
+ };
+
+ power_manager_user_config_t *powerConfigsArr[] = {
+     &pwrMan1_InitConfig0
+ };
+
+ power_manager_callback_user_config_t * powerCallbacksConfigsArr[] = {(void *)0};
+
+ if (STATUS_SUCCESS != POWER_SYS_Init(&powerConfigsArr,1,&powerCallbacksConfigsArr,0)) {
+     ...
+ }
+ else {
+     ...
+ }
+
+ if (STATUS_SUCCESS != POWER_SYS_SetMode(0,POWER_MANAGER_POLICY_AGREEMENT)) {
+     ...
+ }
+ else {
+     ...
+ }
+
+@endcode
+
+### Compilation units ###
+
+The following files need to be compiled in the project:
+\verbatim
+${S32SDK_PATH}\platform\drivers\src\power_manager.c
+${S32SDK_PATH}\platform\drivers\src\S32K1xx\power_manager_S32K1xx.c
+${S32SDK_PATH}\platform\drivers\src\S32K1xx\power_smc_hw_access.c
+\endverbatim
+
+### Include path ###
+
+The following paths need to be added to the include path of the toolchain:
+\verbatim
+${S32SDK_PATH}\platform\drivers\inc\
+${S32SDK_PATH}\platform\drivers\src\power\
+${S32SDK_PATH}\platform\drivers\src\power\S32K1xx\
+\endverbatim
+
+### Compile symbols ###
+
+No special symbols are required for this component
+
+### Dependencies ###
+
+\ref clock_manager
+
+
+
+## Important Note
+1. ERR01077: The SCG_RCCR[SCS] and SCG_HCCR[SCS] may have a corrupted status during the interval
+by the software to ensure when the system clock is switching.\n This errata did workaround by the SCS
+field was read twice the system clock switch has completed.\n The clock configuration is not immediately
+updated after MCU switched from very low power mode to run or high speed mode. It may be taking longer time than expected.
+
+2. The power manager driver will disable SPLL, FIRC, SOSC source in RUN mode before MCU jumps from RUN,HSRUN
+to very low power mode.\n SIRC is clock source when MCU enters very low power mode.
+Driver will update initialize system clock configuration when MCU jumps to RUN or HSRUN mode again.\n
+It will enable all clock source again which is configured by clock configurations. This is executed when user calls the POWER_SYS_SetMode function
+for RUN or HSRUN.
+
+3. When MCU switches from HSRUN to STOP or VLP mode, the driver code will auto switch RUN mode before MCU enters next mode.
+
+4. Users need to take care peripherals clock frequency via SPLLDIVx_CLK, SIRCDIVx_CLK after MCU switched power mode.\n
+Clock configuration can be re-initialized when MCU returns to RUN mode. This way will make sure the clock for all peripherals.
+
+*/

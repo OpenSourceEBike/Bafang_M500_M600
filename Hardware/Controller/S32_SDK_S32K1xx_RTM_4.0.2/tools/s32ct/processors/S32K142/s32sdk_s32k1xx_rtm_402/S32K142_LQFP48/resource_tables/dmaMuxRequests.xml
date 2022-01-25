@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<resource:resource_table xmlns:resource="http://swtools.freescale.net/XSD/resource/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/resource/1.0 http://swtools.freescale.net/XSD/resource/1.0/resource.xsd" id="dmamux">
+  <user_types>
+    <struct id="dmamux" label="DMAMUX channel request">
+      <string id="requestNumber" label="Dmamux Request #"/>
+      <string id="id" label="Request ID"/>
+      <string id="label" label="Label of the request"/>
+      <string id="dmamux_dev" label="ID of DMA MUX device"/>
+      <array id="devices" label="Devices information" type="req_dev"/>
+    </struct>
+    <struct id="req_dev" label="DMA request device">
+      <string id="device" label="ID of the device"/>
+      <string id="function" label="function of the DMA requests"/>
+      <string id="channel" label="channel of the device"/>
+    </struct>
+    <struct id="dma_mux_info" label="Defines mapping from dma device to dmamux">
+      <string id="muxDevice" label="ID of DMA MUX device"/>
+      <string id="dmaDevice" label="ID of DMA device"/>
+      <string id="cores" label="Subset of cores accessing the DMA MUX; space separated list"/>
+      <string id="minChannel" label="Minimal index of DMA connected to DMA MUX"/>
+      <string id="maxChannel" label="Maximal index of DMA connected to DMA MUX"/>
+    </struct>
+  </user_types>
+  <definition>
+    <array id="dmaMuxInfo" label="Defines mapping from dma device to dmamux" type="dma_mux_info"/>
+    <array id="core0" label="DMAMUX requests list" type="dmamux"/>
+  </definition>
+  <data>
+    <array name="dmaMuxInfo">
+      <struct name="0">
+        <setting name="muxDevice" value="DMAMUX0"/>
+        <setting name="dmaDevice" value="DMA"/>
+        <setting name="cores" value="core0"/>
+        <setting name="minChannel" value="0"/>
+        <setting name="maxChannel" value="3"/>
+      </struct>
+    </array>
+    <array name="core0"/>
+  </data>
+</resource:resource_table>

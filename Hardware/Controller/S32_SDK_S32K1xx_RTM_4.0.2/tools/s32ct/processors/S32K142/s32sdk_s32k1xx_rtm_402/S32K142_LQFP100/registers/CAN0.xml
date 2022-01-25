@@ -1,0 +1,1118 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="MCR" description="Module Configuration Register">
+    <alias type="CMSIS" value="MCR"/>
+    <bit_field offset="0" width="7" name="MAXMB" access="RW" reset_value="0xF" description="Number Of The Last Message Buffer">
+      <alias type="CMSIS" value="CAN_MCR_MAXMB(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="2" name="IDAM" access="RW" reset_value="0" description="ID Acceptance Mode">
+      <alias type="CMSIS" value="CAN_MCR_IDAM(x)"/>
+      <bit_field_value name="MCR_IDAM_0b00" value="0b00" description="Format A: One full ID (standard and extended) per ID Filter Table element."/>
+      <bit_field_value name="MCR_IDAM_0b01" value="0b01" description="Format B: Two full standard IDs or two partial 14-bit (standard and extended) IDs per ID Filter Table element."/>
+      <bit_field_value name="MCR_IDAM_0b10" value="0b10" description="Format C: Four partial 8-bit Standard IDs per ID Filter Table element."/>
+      <bit_field_value name="MCR_IDAM_0b11" value="0b11" description="Format D: All frames rejected."/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="1" reset_value="0"/>
+    <bit_field offset="11" width="1" name="FDEN" access="RW" reset_value="0" description="CAN FD operation enable">
+      <alias type="CMSIS" value="CAN_MCR_FDEN(x)"/>
+      <bit_field_value name="MCR_FDEN_0b0" value="0b0" description="CAN FD is disabled. FlexCAN is able to receive and transmit messages in CAN 2.0 format."/>
+      <bit_field_value name="MCR_FDEN_0b1" value="0b1" description="CAN FD is enabled. FlexCAN is able to receive and transmit messages in both CAN FD and CAN 2.0 formats."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="AEN" access="RW" reset_value="0" description="Abort Enable">
+      <alias type="CMSIS" value="CAN_MCR_AEN(x)"/>
+      <bit_field_value name="MCR_AEN_0b0" value="0b0" description="Abort disabled."/>
+      <bit_field_value name="MCR_AEN_0b1" value="0b1" description="Abort enabled."/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="LPRIOEN" access="RW" reset_value="0" description="Local Priority Enable">
+      <alias type="CMSIS" value="CAN_MCR_LPRIOEN(x)"/>
+      <bit_field_value name="MCR_LPRIOEN_0b0" value="0b0" description="Local Priority disabled."/>
+      <bit_field_value name="MCR_LPRIOEN_0b1" value="0b1" description="Local Priority enabled."/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="PNET_EN" access="RW" reset_value="0" description="Pretended Networking Enable">
+      <alias type="CMSIS" value="CAN_MCR_PNET_EN(x)"/>
+      <bit_field_value name="MCR_PNET_EN_0b0" value="0b0" description="Pretended Networking mode is disabled."/>
+      <bit_field_value name="MCR_PNET_EN_0b1" value="0b1" description="Pretended Networking mode is enabled."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="DMA" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="CAN_MCR_DMA(x)"/>
+      <bit_field_value name="MCR_DMA_0b0" value="0b0" description="DMA feature for RX FIFO disabled."/>
+      <bit_field_value name="MCR_DMA_0b1" value="0b1" description="DMA feature for RX FIFO enabled."/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="IRMQ" access="RW" reset_value="0" description="Individual Rx Masking And Queue Enable">
+      <alias type="CMSIS" value="CAN_MCR_IRMQ(x)"/>
+      <bit_field_value name="MCR_IRMQ_0b0" value="0b0" description="Individual Rx masking and queue feature are disabled. For backward compatibility with legacy applications, the reading of C/S word locks the MB even if it is EMPTY."/>
+      <bit_field_value name="MCR_IRMQ_0b1" value="0b1" description="Individual Rx masking and queue feature are enabled."/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="SRXDIS" access="RW" reset_value="0" description="Self Reception Disable">
+      <alias type="CMSIS" value="CAN_MCR_SRXDIS(x)"/>
+      <bit_field_value name="MCR_SRXDIS_0b0" value="0b0" description="Self reception enabled."/>
+      <bit_field_value name="MCR_SRXDIS_0b1" value="0b1" description="Self reception disabled."/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="1" reset_value="0"/>
+    <reserved_bit_field offset="19" width="1" reset_value="0"/>
+    <bit_field offset="20" width="1" name="LPMACK" access="RO" reset_value="0x1" description="Low-Power Mode Acknowledge">
+      <alias type="CMSIS" value="CAN_MCR_LPMACK(x)"/>
+      <bit_field_value name="MCR_LPMACK_0b0" value="0b0" description="FlexCAN is not in a low-power mode."/>
+      <bit_field_value name="MCR_LPMACK_0b1" value="0b1" description="FlexCAN is in a low-power mode."/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="WRNEN" access="RW" reset_value="0" description="Warning Interrupt Enable">
+      <alias type="CMSIS" value="CAN_MCR_WRNEN(x)"/>
+      <bit_field_value name="MCR_WRNEN_0b0" value="0b0" description="TWRNINT and RWRNINT bits are zero, independent of the values in the error counters."/>
+      <bit_field_value name="MCR_WRNEN_0b1" value="0b1" description="TWRNINT and RWRNINT bits are set when the respective error counter transitions from less than 96 to greater than or equal to 96."/>
+    </bit_field>
+    <reserved_bit_field offset="22" width="1" reset_value="0"/>
+    <bit_field offset="23" width="1" name="SUPV" access="RW" reset_value="0x1" description="Supervisor Mode">
+      <alias type="CMSIS" value="CAN_MCR_SUPV(x)"/>
+      <bit_field_value name="MCR_SUPV_0b0" value="0b0" description="FlexCAN is in User mode. Affected registers allow both Supervisor and Unrestricted accesses."/>
+      <bit_field_value name="MCR_SUPV_0b1" value="0b1" description="FlexCAN is in Supervisor mode. Affected registers allow only Supervisor access. Unrestricted access behaves as though the access was done to an unimplemented register location."/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="FRZACK" access="RO" reset_value="0" description="Freeze Mode Acknowledge">
+      <alias type="CMSIS" value="CAN_MCR_FRZACK(x)"/>
+      <bit_field_value name="MCR_FRZACK_0b0" value="0b0" description="FlexCAN not in Freeze mode, prescaler running."/>
+      <bit_field_value name="MCR_FRZACK_0b1" value="0b1" description="FlexCAN in Freeze mode, prescaler stopped."/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="SOFTRST" access="RW" reset_value="0" description="Soft Reset">
+      <alias type="CMSIS" value="CAN_MCR_SOFTRST(x)"/>
+      <bit_field_value name="MCR_SOFTRST_0b0" value="0b0" description="No reset request."/>
+      <bit_field_value name="MCR_SOFTRST_0b1" value="0b1" description="Resets the registers affected by soft reset."/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="1" reset_value="0"/>
+    <bit_field offset="27" width="1" name="NOTRDY" access="RO" reset_value="0x1" description="FlexCAN Not Ready">
+      <alias type="CMSIS" value="CAN_MCR_NOTRDY(x)"/>
+      <bit_field_value name="MCR_NOTRDY_0b0" value="0b0" description="FlexCAN module is either in Normal mode, Listen-Only mode or Loop-Back mode."/>
+      <bit_field_value name="MCR_NOTRDY_0b1" value="0b1" description="FlexCAN module is either in Disable mode , Stop mode or Freeze mode."/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="HALT" access="RW" reset_value="0x1" description="Halt FlexCAN">
+      <alias type="CMSIS" value="CAN_MCR_HALT(x)"/>
+      <bit_field_value name="MCR_HALT_0b0" value="0b0" description="No Freeze mode request."/>
+      <bit_field_value name="MCR_HALT_0b1" value="0b1" description="Enters Freeze mode if the FRZ bit is asserted."/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="RFEN" access="RW" reset_value="0" description="Rx FIFO Enable">
+      <alias type="CMSIS" value="CAN_MCR_RFEN(x)"/>
+      <bit_field_value name="MCR_RFEN_0b0" value="0b0" description="Rx FIFO not enabled."/>
+      <bit_field_value name="MCR_RFEN_0b1" value="0b1" description="Rx FIFO enabled."/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="FRZ" access="RW" reset_value="0x1" description="Freeze Enable">
+      <alias type="CMSIS" value="CAN_MCR_FRZ(x)"/>
+      <bit_field_value name="MCR_FRZ_0b0" value="0b0" description="Not enabled to enter Freeze mode."/>
+      <bit_field_value name="MCR_FRZ_0b1" value="0b1" description="Enabled to enter Freeze mode."/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="MDIS" access="RW" reset_value="0x1" description="Module Disable">
+      <alias type="CMSIS" value="CAN_MCR_MDIS(x)"/>
+      <bit_field_value name="MCR_MDIS_0b0" value="0b0" description="Enable the FlexCAN module."/>
+      <bit_field_value name="MCR_MDIS_0b1" value="0b1" description="Disable the FlexCAN module."/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="CTRL1" description="Control 1 register">
+    <alias type="CMSIS" value="CTRL1"/>
+    <bit_field offset="0" width="3" name="PROPSEG" access="RW" reset_value="0" description="Propagation Segment">
+      <alias type="CMSIS" value="CAN_CTRL1_PROPSEG(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="LOM" access="RW" reset_value="0" description="Listen-Only Mode">
+      <alias type="CMSIS" value="CAN_CTRL1_LOM(x)"/>
+      <bit_field_value name="CTRL1_LOM_0b0" value="0b0" description="Listen-Only mode is deactivated."/>
+      <bit_field_value name="CTRL1_LOM_0b1" value="0b1" description="FlexCAN module operates in Listen-Only mode."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="LBUF" access="RW" reset_value="0" description="Lowest Buffer Transmitted First">
+      <alias type="CMSIS" value="CAN_CTRL1_LBUF(x)"/>
+      <bit_field_value name="CTRL1_LBUF_0b0" value="0b0" description="Buffer with highest priority is transmitted first."/>
+      <bit_field_value name="CTRL1_LBUF_0b1" value="0b1" description="Lowest number buffer is transmitted first."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="TSYN" access="RW" reset_value="0" description="Timer Sync">
+      <alias type="CMSIS" value="CAN_CTRL1_TSYN(x)"/>
+      <bit_field_value name="CTRL1_TSYN_0b0" value="0b0" description="Timer Sync feature disabled"/>
+      <bit_field_value name="CTRL1_TSYN_0b1" value="0b1" description="Timer Sync feature enabled"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="BOFFREC" access="RW" reset_value="0" description="Bus Off Recovery">
+      <alias type="CMSIS" value="CAN_CTRL1_BOFFREC(x)"/>
+      <bit_field_value name="CTRL1_BOFFREC_0b0" value="0b0" description="Automatic recovering from Bus Off state enabled."/>
+      <bit_field_value name="CTRL1_BOFFREC_0b1" value="0b1" description="Automatic recovering from Bus Off state disabled."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="SMP" access="RW" reset_value="0" description="CAN Bit Sampling">
+      <alias type="CMSIS" value="CAN_CTRL1_SMP(x)"/>
+      <bit_field_value name="CTRL1_SMP_0b0" value="0b0" description="Just one sample is used to determine the bit value."/>
+      <bit_field_value name="CTRL1_SMP_0b1" value="0b1" description="Three samples are used to determine the value of the received bit: the regular one (sample point) and 2 preceding samples; a majority rule is used."/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="1" reset_value="0"/>
+    <reserved_bit_field offset="9" width="1" reset_value="0"/>
+    <bit_field offset="10" width="1" name="RWRNMSK" access="RW" reset_value="0" description="Rx Warning Interrupt Mask">
+      <alias type="CMSIS" value="CAN_CTRL1_RWRNMSK(x)"/>
+      <bit_field_value name="CTRL1_RWRNMSK_0b0" value="0b0" description="Rx Warning Interrupt disabled."/>
+      <bit_field_value name="CTRL1_RWRNMSK_0b1" value="0b1" description="Rx Warning Interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="TWRNMSK" access="RW" reset_value="0" description="Tx Warning Interrupt Mask">
+      <alias type="CMSIS" value="CAN_CTRL1_TWRNMSK(x)"/>
+      <bit_field_value name="CTRL1_TWRNMSK_0b0" value="0b0" description="Tx Warning Interrupt disabled."/>
+      <bit_field_value name="CTRL1_TWRNMSK_0b1" value="0b1" description="Tx Warning Interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="LPB" access="RW" reset_value="0" description="Loop Back Mode">
+      <alias type="CMSIS" value="CAN_CTRL1_LPB(x)"/>
+      <bit_field_value name="CTRL1_LPB_0b0" value="0b0" description="Loop Back disabled."/>
+      <bit_field_value name="CTRL1_LPB_0b1" value="0b1" description="Loop Back enabled."/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="CLKSRC" access="RW" reset_value="0" description="CAN Engine Clock Source">
+      <alias type="CMSIS" value="CAN_CTRL1_CLKSRC(x)"/>
+      <bit_field_value name="CTRL1_CLKSRC_0b0" value="0b0" description="The CAN engine clock source is the oscillator clock. Under this condition, the oscillator clock frequency must be lower than the bus clock."/>
+      <bit_field_value name="CTRL1_CLKSRC_0b1" value="0b1" description="The CAN engine clock source is the peripheral clock."/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="ERRMSK" access="RW" reset_value="0" description="Error Interrupt Mask">
+      <alias type="CMSIS" value="CAN_CTRL1_ERRMSK(x)"/>
+      <bit_field_value name="CTRL1_ERRMSK_0b0" value="0b0" description="Error interrupt disabled."/>
+      <bit_field_value name="CTRL1_ERRMSK_0b1" value="0b1" description="Error interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="BOFFMSK" access="RW" reset_value="0" description="Bus Off Interrupt Mask">
+      <alias type="CMSIS" value="CAN_CTRL1_BOFFMSK(x)"/>
+      <bit_field_value name="CTRL1_BOFFMSK_0b0" value="0b0" description="Bus Off interrupt disabled."/>
+      <bit_field_value name="CTRL1_BOFFMSK_0b1" value="0b1" description="Bus Off interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="16" width="3" name="PSEG2" access="RW" reset_value="0" description="Phase Segment 2">
+      <alias type="CMSIS" value="CAN_CTRL1_PSEG2(x)"/>
+    </bit_field>
+    <bit_field offset="19" width="3" name="PSEG1" access="RW" reset_value="0" description="Phase Segment 1">
+      <alias type="CMSIS" value="CAN_CTRL1_PSEG1(x)"/>
+    </bit_field>
+    <bit_field offset="22" width="2" name="RJW" access="RW" reset_value="0" description="Resync Jump Width">
+      <alias type="CMSIS" value="CAN_CTRL1_RJW(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="PRESDIV" access="RW" reset_value="0" description="Prescaler Division Factor">
+      <alias type="CMSIS" value="CAN_CTRL1_PRESDIV(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8" width="32" name="TIMER" description="Free Running Timer">
+    <alias type="CMSIS" value="TIMER"/>
+    <bit_field offset="0" width="16" name="TIMER" access="RW" reset_value="0" description="Timer Value">
+      <alias type="CMSIS" value="CAN_TIMER_TIMER(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="RXMGMASK" description="Rx Mailboxes Global Mask Register">
+    <alias type="CMSIS" value="RXMGMASK"/>
+    <bit_field offset="0" width="32" name="MG" access="RW" reset_value="0" reset_mask="0" description="Rx Mailboxes Global Mask Bits">
+      <alias type="CMSIS" value="CAN_RXMGMASK_MG(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x14" width="32" name="RX14MASK" description="Rx 14 Mask register">
+    <alias type="CMSIS" value="RX14MASK"/>
+    <bit_field offset="0" width="32" name="RX14M" access="RW" reset_value="0" reset_mask="0" description="Rx Buffer 14 Mask Bits">
+      <alias type="CMSIS" value="CAN_RX14MASK_RX14M(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x18" width="32" name="RX15MASK" description="Rx 15 Mask register">
+    <alias type="CMSIS" value="RX15MASK"/>
+    <bit_field offset="0" width="32" name="RX15M" access="RW" reset_value="0" reset_mask="0" description="Rx Buffer 15 Mask Bits">
+      <alias type="CMSIS" value="CAN_RX15MASK_RX15M(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x1C" width="32" name="ECR" description="Error Counter">
+    <alias type="CMSIS" value="ECR"/>
+    <bit_field offset="0" width="8" name="TXERRCNT" access="RW" reset_value="0" description="Transmit Error Counter">
+      <alias type="CMSIS" value="CAN_ECR_TXERRCNT(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="RXERRCNT" access="RW" reset_value="0" description="Receive Error Counter">
+      <alias type="CMSIS" value="CAN_ECR_RXERRCNT(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="TXERRCNT_FAST" access="RW" reset_value="0" description="Transmit Error Counter for fast bits">
+      <alias type="CMSIS" value="CAN_ECR_TXERRCNT_FAST(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="RXERRCNT_FAST" access="RW" reset_value="0" description="Receive Error Counter for fast bits">
+      <alias type="CMSIS" value="CAN_ECR_RXERRCNT_FAST(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x20" width="32" name="ESR1" description="Error and Status 1 register">
+    <alias type="CMSIS" value="ESR1"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0"/>
+    <bit_field offset="1" width="1" name="ERRINT" access="W1C" reset_value="0" description="Error Interrupt">
+      <alias type="CMSIS" value="CAN_ESR1_ERRINT(x)"/>
+      <bit_field_value name="ESR1_ERRINT_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_ERRINT_0b1" value="0b1" description="Indicates setting of any Error Bit in the Error and Status Register."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="BOFFINT" access="W1C" reset_value="0" description="Bus Off Interrupt">
+      <alias type="CMSIS" value="CAN_ESR1_BOFFINT(x)"/>
+      <bit_field_value name="ESR1_BOFFINT_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_BOFFINT_0b1" value="0b1" description="FlexCAN module entered Bus Off state."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="RX" access="RO" reset_value="0" description="FlexCAN In Reception">
+      <alias type="CMSIS" value="CAN_ESR1_RX(x)"/>
+      <bit_field_value name="ESR1_RX_0b0" value="0b0" description="FlexCAN is not receiving a message."/>
+      <bit_field_value name="ESR1_RX_0b1" value="0b1" description="FlexCAN is receiving a message."/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="FLTCONF" access="RO" reset_value="0" description="Fault Confinement State">
+      <alias type="CMSIS" value="CAN_ESR1_FLTCONF(x)"/>
+      <bit_field_value name="ESR1_FLTCONF_0b00" value="0b00" description="Error Active"/>
+      <bit_field_value name="ESR1_FLTCONF_0b01" value="0b01" description="Error Passive"/>
+      <bit_field_value name="ESR1_FLTCONF_0b1x" value="0b1?" description="Bus Off"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="TX" access="RO" reset_value="0" description="FlexCAN In Transmission">
+      <alias type="CMSIS" value="CAN_ESR1_TX(x)"/>
+      <bit_field_value name="ESR1_TX_0b0" value="0b0" description="FlexCAN is not transmitting a message."/>
+      <bit_field_value name="ESR1_TX_0b1" value="0b1" description="FlexCAN is transmitting a message."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="IDLE" access="RO" reset_value="0" description="IDLE">
+      <alias type="CMSIS" value="CAN_ESR1_IDLE(x)"/>
+      <bit_field_value name="ESR1_IDLE_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_IDLE_0b1" value="0b1" description="CAN bus is now IDLE."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="RXWRN" access="RO" reset_value="0" description="Rx Error Warning">
+      <alias type="CMSIS" value="CAN_ESR1_RXWRN(x)"/>
+      <bit_field_value name="ESR1_RXWRN_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_RXWRN_0b1" value="0b1" description="RXERRCNT is greater than or equal to 96."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="TXWRN" access="RO" reset_value="0" description="TX Error Warning">
+      <alias type="CMSIS" value="CAN_ESR1_TXWRN(x)"/>
+      <bit_field_value name="ESR1_TXWRN_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_TXWRN_0b1" value="0b1" description="TXERRCNT is greater than or equal to 96."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="STFERR" access="RO" reset_value="0" description="Stuffing Error">
+      <alias type="CMSIS" value="CAN_ESR1_STFERR(x)"/>
+      <bit_field_value name="ESR1_STFERR_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_STFERR_0b1" value="0b1" description="A Stuffing Error occurred since last read of this register."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="FRMERR" access="RO" reset_value="0" description="Form Error">
+      <alias type="CMSIS" value="CAN_ESR1_FRMERR(x)"/>
+      <bit_field_value name="ESR1_FRMERR_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_FRMERR_0b1" value="0b1" description="A Form Error occurred since last read of this register."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="CRCERR" access="RO" reset_value="0" description="Cyclic Redundancy Check Error">
+      <alias type="CMSIS" value="CAN_ESR1_CRCERR(x)"/>
+      <bit_field_value name="ESR1_CRCERR_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_CRCERR_0b1" value="0b1" description="A CRC error occurred since last read of this register."/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="ACKERR" access="RO" reset_value="0" description="Acknowledge Error">
+      <alias type="CMSIS" value="CAN_ESR1_ACKERR(x)"/>
+      <bit_field_value name="ESR1_ACKERR_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_ACKERR_0b1" value="0b1" description="An ACK error occurred since last read of this register."/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="BIT0ERR" access="RO" reset_value="0" description="Bit0 Error">
+      <alias type="CMSIS" value="CAN_ESR1_BIT0ERR(x)"/>
+      <bit_field_value name="ESR1_BIT0ERR_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_BIT0ERR_0b1" value="0b1" description="At least one bit sent as dominant is received as recessive."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="BIT1ERR" access="RO" reset_value="0" description="Bit1 Error">
+      <alias type="CMSIS" value="CAN_ESR1_BIT1ERR(x)"/>
+      <bit_field_value name="ESR1_BIT1ERR_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_BIT1ERR_0b1" value="0b1" description="At least one bit sent as recessive is received as dominant."/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="RWRNINT" access="W1C" reset_value="0" description="Rx Warning Interrupt Flag">
+      <alias type="CMSIS" value="CAN_ESR1_RWRNINT(x)"/>
+      <bit_field_value name="ESR1_RWRNINT_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_RWRNINT_0b1" value="0b1" description="The Rx error counter transitioned from less than 96 to greater than or equal to 96."/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="TWRNINT" access="W1C" reset_value="0" description="Tx Warning Interrupt Flag">
+      <alias type="CMSIS" value="CAN_ESR1_TWRNINT(x)"/>
+      <bit_field_value name="ESR1_TWRNINT_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_TWRNINT_0b1" value="0b1" description="The Tx error counter transitioned from less than 96 to greater than or equal to 96."/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="SYNCH" access="RO" reset_value="0" description="CAN Synchronization Status">
+      <alias type="CMSIS" value="CAN_ESR1_SYNCH(x)"/>
+      <bit_field_value name="ESR1_SYNCH_0b0" value="0b0" description="FlexCAN is not synchronized to the CAN bus."/>
+      <bit_field_value name="ESR1_SYNCH_0b1" value="0b1" description="FlexCAN is synchronized to the CAN bus."/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="BOFFDONEINT" access="W1C" reset_value="0" description="Bus Off Done Interrupt">
+      <alias type="CMSIS" value="CAN_ESR1_BOFFDONEINT(x)"/>
+      <bit_field_value name="ESR1_BOFFDONEINT_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_BOFFDONEINT_0b1" value="0b1" description="FlexCAN module has completed Bus Off process."/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="ERRINT_FAST" access="W1C" reset_value="0" description="Error Interrupt for errors detected in the Data Phase of CAN FD frames with the BRS bit set">
+      <alias type="CMSIS" value="CAN_ESR1_ERRINT_FAST(x)"/>
+      <bit_field_value name="ESR1_ERRINT_FAST_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_ERRINT_FAST_0b1" value="0b1" description="Indicates setting of any Error Bit detected in the Data Phase of CAN FD frames with the BRS bit set."/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="ERROVR" access="W1C" reset_value="0" description="Error Overrun bit">
+      <alias type="CMSIS" value="CAN_ESR1_ERROVR(x)"/>
+      <bit_field_value name="ESR1_ERROVR_0b0" value="0b0" description="Overrun has not occurred."/>
+      <bit_field_value name="ESR1_ERROVR_0b1" value="0b1" description="Overrun has occurred."/>
+    </bit_field>
+    <reserved_bit_field offset="22" width="4" reset_value="0"/>
+    <bit_field offset="26" width="1" name="STFERR_FAST" access="RO" reset_value="0" description="Stuffing Error in the Data Phase of CAN FD frames with the BRS bit set">
+      <alias type="CMSIS" value="CAN_ESR1_STFERR_FAST(x)"/>
+      <bit_field_value name="ESR1_STFERR_FAST_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_STFERR_FAST_0b1" value="0b1" description="A Stuffing Error occurred since last read of this register."/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="FRMERR_FAST" access="RO" reset_value="0" description="Form Error in the Data Phase of CAN FD frames with the BRS bit set">
+      <alias type="CMSIS" value="CAN_ESR1_FRMERR_FAST(x)"/>
+      <bit_field_value name="ESR1_FRMERR_FAST_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_FRMERR_FAST_0b1" value="0b1" description="A Form Error occurred since last read of this register."/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="CRCERR_FAST" access="RO" reset_value="0" description="Cyclic Redundancy Check Error in the CRC field of CAN FD frames with the BRS bit set">
+      <alias type="CMSIS" value="CAN_ESR1_CRCERR_FAST(x)"/>
+      <bit_field_value name="ESR1_CRCERR_FAST_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_CRCERR_FAST_0b1" value="0b1" description="A CRC error occurred since last read of this register."/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="1" reset_value="0"/>
+    <bit_field offset="30" width="1" name="BIT0ERR_FAST" access="RO" reset_value="0" description="Bit0 Error in the Data Phase of CAN FD frames with the BRS bit set">
+      <alias type="CMSIS" value="CAN_ESR1_BIT0ERR_FAST(x)"/>
+      <bit_field_value name="ESR1_BIT0ERR_FAST_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_BIT0ERR_FAST_0b1" value="0b1" description="At least one bit sent as dominant is received as recessive."/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="BIT1ERR_FAST" access="RO" reset_value="0" description="Bit1 Error in the Data Phase of CAN FD frames with the BRS bit set">
+      <alias type="CMSIS" value="CAN_ESR1_BIT1ERR_FAST(x)"/>
+      <bit_field_value name="ESR1_BIT1ERR_FAST_0b0" value="0b0" description="No such occurrence."/>
+      <bit_field_value name="ESR1_BIT1ERR_FAST_0b1" value="0b1" description="At least one bit sent as recessive is received as dominant."/>
+    </bit_field>
+  </register>
+  <register offset="0x28" width="32" name="IMASK1" description="Interrupt Masks 1 register">
+    <alias type="CMSIS" value="IMASK1"/>
+    <bit_field offset="0" width="32" name="BUF31TO0M" access="RW" reset_value="0" description="Buffer MB i Mask">
+      <alias type="CMSIS" value="CAN_IMASK1_BUF31TO0M(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x30" width="32" name="IFLAG1" description="Interrupt Flags 1 register">
+    <alias type="CMSIS" value="IFLAG1"/>
+    <bit_field offset="0" width="1" name="BUF0I" access="W1C" reset_value="0" description="Buffer MB0 Interrupt Or Clear FIFO bit">
+      <alias type="CMSIS" value="CAN_IFLAG1_BUF0I(x)"/>
+      <bit_field_value name="IFLAG1_BUF0I_0b0" value="0b0" description="The corresponding buffer has no occurrence of successfully completed transmission or reception when MCR[RFEN]=0."/>
+      <bit_field_value name="IFLAG1_BUF0I_0b1" value="0b1" description="The corresponding buffer has successfully completed transmission or reception when MCR[RFEN]=0."/>
+    </bit_field>
+    <bit_field offset="1" width="4" name="BUF4TO1I" access="W1C" reset_value="0" description="Buffer MB i Interrupt Or &quot;reserved&quot;">
+      <alias type="CMSIS" value="CAN_IFLAG1_BUF4TO1I(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="BUF5I" access="W1C" reset_value="0" description="Buffer MB5 Interrupt Or &quot;Frames available in Rx FIFO&quot;">
+      <alias type="CMSIS" value="CAN_IFLAG1_BUF5I(x)"/>
+      <bit_field_value name="IFLAG1_BUF5I_0b0" value="0b0" description="No occurrence of MB5 completing transmission/reception when MCR[RFEN]=0, or of frame(s) available in the FIFO, when MCR[RFEN]=1"/>
+      <bit_field_value name="IFLAG1_BUF5I_0b1" value="0b1" description="MB5 completed transmission/reception when MCR[RFEN]=0, or frame(s) available in the Rx FIFO when MCR[RFEN]=1. It generates a DMA request in case of MCR[RFEN] and MCR[DMA] are enabled."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="BUF6I" access="W1C" reset_value="0" description="Buffer MB6 Interrupt Or &quot;Rx FIFO Warning&quot;">
+      <alias type="CMSIS" value="CAN_IFLAG1_BUF6I(x)"/>
+      <bit_field_value name="IFLAG1_BUF6I_0b0" value="0b0" description="No occurrence of MB6 completing transmission/reception when MCR[RFEN]=0, or of Rx FIFO almost full when MCR[RFEN]=1"/>
+      <bit_field_value name="IFLAG1_BUF6I_0b1" value="0b1" description="MB6 completed transmission/reception when MCR[RFEN]=0, or Rx FIFO almost full when MCR[RFEN]=1"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="BUF7I" access="W1C" reset_value="0" description="Buffer MB7 Interrupt Or &quot;Rx FIFO Overflow&quot;">
+      <alias type="CMSIS" value="CAN_IFLAG1_BUF7I(x)"/>
+      <bit_field_value name="IFLAG1_BUF7I_0b0" value="0b0" description="No occurrence of MB7 completing transmission/reception when MCR[RFEN]=0, or of Rx FIFO overflow when MCR[RFEN]=1"/>
+      <bit_field_value name="IFLAG1_BUF7I_0b1" value="0b1" description="MB7 completed transmission/reception when MCR[RFEN]=0, or Rx FIFO overflow when MCR[RFEN]=1"/>
+    </bit_field>
+    <bit_field offset="8" width="24" name="BUF31TO8I" access="W1C" reset_value="0" description="Buffer MBi Interrupt">
+      <alias type="CMSIS" value="CAN_IFLAG1_BUF31TO8I(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x34" width="32" name="CTRL2" description="Control 2 register">
+    <alias type="CMSIS" value="CTRL2"/>
+    <reserved_bit_field offset="0" width="11" reset_value="0"/>
+    <bit_field offset="11" width="1" name="EDFLTDIS" access="RW" reset_value="0" description="Edge Filter Disable">
+      <alias type="CMSIS" value="CAN_CTRL2_EDFLTDIS(x)"/>
+      <bit_field_value name="CTRL2_EDFLTDIS_0b0" value="0b0" description="Edge Filter is enabled."/>
+      <bit_field_value name="CTRL2_EDFLTDIS_0b1" value="0b1" description="Edge Filter is disabled."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="ISOCANFDEN" access="RW" reset_value="0" description="ISO CAN FD Enable">
+      <alias type="CMSIS" value="CAN_CTRL2_ISOCANFDEN(x)"/>
+      <bit_field_value name="CTRL2_ISOCANFDEN_0b0" value="0b0" description="FlexCAN operates using the non-ISO CAN FD protocol."/>
+      <bit_field_value name="CTRL2_ISOCANFDEN_0b1" value="0b1" description="FlexCAN operates using the ISO CAN FD protocol (ISO 11898-1)."/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="1" reset_value="0"/>
+    <bit_field offset="14" width="1" name="PREXCEN" access="RW" reset_value="0" description="Protocol Exception Enable">
+      <alias type="CMSIS" value="CAN_CTRL2_PREXCEN(x)"/>
+      <bit_field_value name="CTRL2_PREXCEN_0b0" value="0b0" description="Protocol Exception is disabled."/>
+      <bit_field_value name="CTRL2_PREXCEN_0b1" value="0b1" description="Protocol Exception is enabled."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="TIMER_SRC" access="RW" reset_value="0" description="Timer Source">
+      <alias type="CMSIS" value="CAN_CTRL2_TIMER_SRC(x)"/>
+      <bit_field_value name="CTRL2_TIMER_SRC_0b0" value="0b0" description="The Free Running Timer is clocked by the CAN bit clock, which defines the baud rate on the CAN bus."/>
+      <bit_field_value name="CTRL2_TIMER_SRC_0b1" value="0b1" description="The Free Running Timer is clocked by an external time tick. The period can be either adjusted to be equal to the baud rate on the CAN bus, or a different value as required. See the device specific section for details about the external time tick."/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="EACEN" access="RW" reset_value="0" description="Entire Frame Arbitration Field Comparison Enable For Rx Mailboxes">
+      <alias type="CMSIS" value="CAN_CTRL2_EACEN(x)"/>
+      <bit_field_value name="CTRL2_EACEN_0b0" value="0b0" description="Rx Mailbox filter's IDE bit is always compared and RTR is never compared despite mask bits."/>
+      <bit_field_value name="CTRL2_EACEN_0b1" value="0b1" description="Enables the comparison of both Rx Mailbox filter's IDE and RTR bit with their corresponding bits within the incoming frame. Mask bits do apply."/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="RRS" access="RW" reset_value="0" description="Remote Request Storing">
+      <alias type="CMSIS" value="CAN_CTRL2_RRS(x)"/>
+      <bit_field_value name="CTRL2_RRS_0b0" value="0b0" description="Remote Response Frame is generated."/>
+      <bit_field_value name="CTRL2_RRS_0b1" value="0b1" description="Remote Request Frame is stored."/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="MRP" access="RW" reset_value="0" description="Mailboxes Reception Priority">
+      <alias type="CMSIS" value="CAN_CTRL2_MRP(x)"/>
+      <bit_field_value name="CTRL2_MRP_0b0" value="0b0" description="Matching starts from Rx FIFO and continues on Mailboxes."/>
+      <bit_field_value name="CTRL2_MRP_0b1" value="0b1" description="Matching starts from Mailboxes and continues on Rx FIFO."/>
+    </bit_field>
+    <bit_field offset="19" width="5" name="TASD" access="RW" reset_value="0x14" description="Tx Arbitration Start Delay">
+      <alias type="CMSIS" value="CAN_CTRL2_TASD(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="RFFN" access="RW" reset_value="0" description="Number Of Rx FIFO Filters">
+      <alias type="CMSIS" value="CAN_CTRL2_RFFN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="1" reset_value="0"/>
+    <reserved_bit_field offset="29" width="1" reset_value="0"/>
+    <bit_field offset="30" width="1" name="BOFFDONEMSK" access="RW" reset_value="0" description="Bus Off Done Interrupt Mask">
+      <alias type="CMSIS" value="CAN_CTRL2_BOFFDONEMSK(x)"/>
+      <bit_field_value name="CTRL2_BOFFDONEMSK_0b0" value="0b0" description="Bus Off Done interrupt disabled."/>
+      <bit_field_value name="CTRL2_BOFFDONEMSK_0b1" value="0b1" description="Bus Off Done interrupt enabled."/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="ERRMSK_FAST" access="RW" reset_value="0" description="Error Interrupt Mask for errors detected in the Data Phase of fast CAN FD frames">
+      <alias type="CMSIS" value="CAN_CTRL2_ERRMSK_FAST(x)"/>
+      <bit_field_value name="CTRL2_ERRMSK_FAST_0b0" value="0b0" description="ERRINT_FAST Error interrupt disabled."/>
+      <bit_field_value name="CTRL2_ERRMSK_FAST_0b1" value="0b1" description="ERRINT_FAST Error interrupt enabled."/>
+    </bit_field>
+  </register>
+  <register offset="0x38" width="32" name="ESR2" description="Error and Status 2 register">
+    <alias type="CMSIS" value="ESR2"/>
+    <reserved_bit_field offset="0" width="13" reset_value="0"/>
+    <bit_field offset="13" width="1" name="IMB" access="RO" reset_value="0" description="Inactive Mailbox">
+      <alias type="CMSIS" value="CAN_ESR2_IMB(x)"/>
+      <bit_field_value name="ESR2_IMB_0b0" value="0b0" description="If ESR2[VPS] is asserted, the ESR2[LPTM] is not an inactive Mailbox."/>
+      <bit_field_value name="ESR2_IMB_0b1" value="0b1" description="If ESR2[VPS] is asserted, there is at least one inactive Mailbox. LPTM content is the number of the first one."/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="VPS" access="RO" reset_value="0" description="Valid Priority Status">
+      <alias type="CMSIS" value="CAN_ESR2_VPS(x)"/>
+      <bit_field_value name="ESR2_VPS_0b0" value="0b0" description="Contents of IMB and LPTM are invalid."/>
+      <bit_field_value name="ESR2_VPS_0b1" value="0b1" description="Contents of IMB and LPTM are valid."/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="7" name="LPTM" access="RO" reset_value="0" description="Lowest Priority Tx Mailbox">
+      <alias type="CMSIS" value="CAN_ESR2_LPTM(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="9" reset_value="0"/>
+  </register>
+  <register offset="0x44" width="32" name="CRCR" description="CRC Register">
+    <alias type="CMSIS" value="CRCR"/>
+    <bit_field offset="0" width="15" name="TXCRC" access="RO" reset_value="0" description="Transmitted CRC value">
+      <alias type="CMSIS" value="CAN_CRCR_TXCRC(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="7" name="MBCRC" access="RO" reset_value="0" description="CRC Mailbox">
+      <alias type="CMSIS" value="CAN_CRCR_MBCRC(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="9" reset_value="0"/>
+  </register>
+  <register offset="0x48" width="32" name="RXFGMASK" description="Rx FIFO Global Mask register">
+    <alias type="CMSIS" value="RXFGMASK"/>
+    <bit_field offset="0" width="32" name="FGM" access="RW" reset_value="0" reset_mask="0" description="Rx FIFO Global Mask Bits">
+      <alias type="CMSIS" value="CAN_RXFGMASK_FGM(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4C" width="32" name="RXFIR" description="Rx FIFO Information Register">
+    <alias type="CMSIS" value="RXFIR"/>
+    <bit_field offset="0" width="9" name="IDHIT" access="RO" reset_value="0" reset_mask="0" description="Identifier Acceptance Filter Hit Indicator">
+      <alias type="CMSIS" value="CAN_RXFIR_IDHIT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="23" reset_value="0" reset_mask="0"/>
+  </register>
+  <register offset="0x50" width="32" name="CBT" description="CAN Bit Timing Register">
+    <alias type="CMSIS" value="CBT"/>
+    <bit_field offset="0" width="5" name="EPSEG2" access="RW" reset_value="0" description="Extended Phase Segment 2">
+      <alias type="CMSIS" value="CAN_CBT_EPSEG2(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="5" name="EPSEG1" access="RW" reset_value="0" description="Extended Phase Segment 1">
+      <alias type="CMSIS" value="CAN_CBT_EPSEG1(x)"/>
+    </bit_field>
+    <bit_field offset="10" width="6" name="EPROPSEG" access="RW" reset_value="0" description="Extended Propagation Segment">
+      <alias type="CMSIS" value="CAN_CBT_EPROPSEG(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="5" name="ERJW" access="RW" reset_value="0" description="Extended Resync Jump Width">
+      <alias type="CMSIS" value="CAN_CBT_ERJW(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="10" name="EPRESDIV" access="RW" reset_value="0" description="Extended Prescaler Division Factor">
+      <alias type="CMSIS" value="CAN_CBT_EPRESDIV(x)"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="BTF" access="RW" reset_value="0" description="Bit Timing Format Enable">
+      <alias type="CMSIS" value="CAN_CBT_BTF(x)"/>
+      <bit_field_value name="CBT_BTF_0b0" value="0b0" description="Extended bit time definitions disabled."/>
+      <bit_field_value name="CBT_BTF_0b1" value="0b1" description="Extended bit time definitions enabled."/>
+    </bit_field>
+  </register>
+  <register offset="0x58" width="32" name="DBG1" description="Debug 1 register">
+    <alias type="CMSIS" value="DBG1"/>
+    <bit_field offset="0" width="7" name="CFSM" access="RO" reset_value="0" description="CAN Finite State Machine">
+      <alias type="CMSIS" value="CAN_DBG1_CFSM(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="9" reset_value="0"/>
+    <bit_field offset="16" width="10" name="CBN" access="RO" reset_value="0x1" description="CAN Bit Number">
+      <alias type="CMSIS" value="CAN_DBG1_CBN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x5C" width="32" name="DBG2" description="Debug 2 register">
+    <alias type="CMSIS" value="DBG2"/>
+    <bit_field offset="0" width="7" name="RMP" access="RO" reset_value="0" description="Rx Matching Pointer">
+      <alias type="CMSIS" value="CAN_DBG2_RMP(x)"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="MPP" access="RO" reset_value="0" description="Matching Process in Progress">
+      <alias type="CMSIS" value="CAN_DBG2_MPP(x)"/>
+      <bit_field_value name="DBG2_MPP_0b0" value="0b0" description="No matching process ongoing"/>
+      <bit_field_value name="DBG2_MPP_0b1" value="0b1" description="Matching process is in progress."/>
+    </bit_field>
+    <bit_field offset="8" width="7" name="TAP" access="RO" reset_value="0" description="Tx Arbitration Pointer">
+      <alias type="CMSIS" value="CAN_DBG2_TAP(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="APP" access="RO" reset_value="0" description="Arbitration Process in Progress">
+      <alias type="CMSIS" value="CAN_DBG2_APP(x)"/>
+      <bit_field_value name="DBG2_APP_0b0" value="0b0" description="No arbitration process ongoing"/>
+      <bit_field_value name="DBG2_APP_0b1" value="0b1" description="Arbitration process is in progress."/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x880" width="32" name="RXIMR0" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[0]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x884" width="32" name="RXIMR1" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[1]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x888" width="32" name="RXIMR2" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[2]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x88C" width="32" name="RXIMR3" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[3]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x890" width="32" name="RXIMR4" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[4]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x894" width="32" name="RXIMR5" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[5]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x898" width="32" name="RXIMR6" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[6]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x89C" width="32" name="RXIMR7" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[7]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8A0" width="32" name="RXIMR8" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[8]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8A4" width="32" name="RXIMR9" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[9]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8A8" width="32" name="RXIMR10" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[10]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8AC" width="32" name="RXIMR11" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[11]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8B0" width="32" name="RXIMR12" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[12]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8B4" width="32" name="RXIMR13" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[13]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8B8" width="32" name="RXIMR14" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[14]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8BC" width="32" name="RXIMR15" description="Rx Individual Mask Registers">
+    <alias type="CMSIS" value="RXIMR[15]"/>
+    <bit_field offset="0" width="32" name="MI" access="RW" reset_value="0" reset_mask="0" description="Individual Mask Bits">
+      <alias type="CMSIS" value="CAN_RXIMR_MI(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB00" width="32" name="CTRL1_PN" description="Pretended Networking Control 1 Register">
+    <alias type="CMSIS" value="CTRL1_PN"/>
+    <bit_field offset="0" width="2" name="FCS" access="RW" reset_value="0" description="Filtering Combination Selection">
+      <alias type="CMSIS" value="CAN_CTRL1_PN_FCS(x)"/>
+      <bit_field_value name="CTRL1_PN_FCS_0b00" value="0b00" description="Message ID filtering only"/>
+      <bit_field_value name="CTRL1_PN_FCS_0b01" value="0b01" description="Message ID filtering and payload filtering"/>
+      <bit_field_value name="CTRL1_PN_FCS_0b10" value="0b10" description="Message ID filtering occurring a specified number of times."/>
+      <bit_field_value name="CTRL1_PN_FCS_0b11" value="0b11" description="Message ID filtering and payload filtering a specified number of times"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="IDFS" access="RW" reset_value="0" description="ID Filtering Selection">
+      <alias type="CMSIS" value="CAN_CTRL1_PN_IDFS(x)"/>
+      <bit_field_value name="CTRL1_PN_IDFS_0b00" value="0b00" description="Match upon a ID contents against an exact target value"/>
+      <bit_field_value name="CTRL1_PN_IDFS_0b01" value="0b01" description="Match upon a ID value greater than or equal to a specified target value"/>
+      <bit_field_value name="CTRL1_PN_IDFS_0b10" value="0b10" description="Match upon a ID value smaller than or equal to a specified target value"/>
+      <bit_field_value name="CTRL1_PN_IDFS_0b11" value="0b11" description="Match upon a ID value inside a range, greater than or equal to a specified lower limit and smaller than or equal a specified upper limit"/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="PLFS" access="RW" reset_value="0" description="Payload Filtering Selection">
+      <alias type="CMSIS" value="CAN_CTRL1_PN_PLFS(x)"/>
+      <bit_field_value name="CTRL1_PN_PLFS_0b00" value="0b00" description="Match upon a payload contents against an exact target value"/>
+      <bit_field_value name="CTRL1_PN_PLFS_0b01" value="0b01" description="Match upon a payload value greater than or equal to a specified target value"/>
+      <bit_field_value name="CTRL1_PN_PLFS_0b10" value="0b10" description="Match upon a payload value smaller than or equal to a specified target value"/>
+      <bit_field_value name="CTRL1_PN_PLFS_0b11" value="0b11" description="Match upon a payload value inside a range, greater than or equal to a specified lower limit and smaller than or equal a specified upper limit"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="8" name="NMATCH" access="RW" reset_value="0x1" description="Number of Messages Matching the Same Filtering Criteria">
+      <alias type="CMSIS" value="CAN_CTRL1_PN_NMATCH(x)"/>
+      <bit_field_value name="CTRL1_PN_NMATCH_0b00000001" value="0b00000001" description="Received message must match the predefined filtering criteria for ID and/or PL once before generating a wake up event."/>
+      <bit_field_value name="CTRL1_PN_NMATCH_0b00000010" value="0b00000010" description="Received message must match the predefined filtering criteria for ID and/or PL twice before generating a wake up event."/>
+      <bit_field_value name="CTRL1_PN_NMATCH_0b11111111" value="0b11111111" description="Received message must match the predefined filtering criteria for ID and/or PL 255 times before generating a wake up event."/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="WUMF_MSK" access="RW" reset_value="0" description="Wake Up by Match Flag Mask Bit">
+      <alias type="CMSIS" value="CAN_CTRL1_PN_WUMF_MSK(x)"/>
+      <bit_field_value name="CTRL1_PN_WUMF_MSK_0b0" value="0b0" description="Wake up match event is disabled"/>
+      <bit_field_value name="CTRL1_PN_WUMF_MSK_0b1" value="0b1" description="Wake up match event is enabled"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="WTOF_MSK" access="RW" reset_value="0" description="Wake Up by Timeout Flag Mask Bit">
+      <alias type="CMSIS" value="CAN_CTRL1_PN_WTOF_MSK(x)"/>
+      <bit_field_value name="CTRL1_PN_WTOF_MSK_0b0" value="0b0" description="Timeout wake up event is disabled"/>
+      <bit_field_value name="CTRL1_PN_WTOF_MSK_0b1" value="0b1" description="Timeout wake up event is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="14" reset_value="0"/>
+  </register>
+  <register offset="0xB04" width="32" name="CTRL2_PN" description="Pretended Networking Control 2 Register">
+    <alias type="CMSIS" value="CTRL2_PN"/>
+    <bit_field offset="0" width="16" name="MATCHTO" access="RW" reset_value="0" description="Timeout for No Message Matching the Filtering Criteria">
+      <alias type="CMSIS" value="CAN_CTRL2_PN_MATCHTO(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0xB08" width="32" name="WU_MTC" description="Pretended Networking Wake Up Match Register">
+    <alias type="CMSIS" value="WU_MTC"/>
+    <reserved_bit_field offset="0" width="8" reset_value="0"/>
+    <bit_field offset="8" width="8" name="MCOUNTER" access="RO" reset_value="0" description="Number of Matches while in Pretended Networking">
+      <alias type="CMSIS" value="CAN_WU_MTC_MCOUNTER(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="WUMF" access="W1C" reset_value="0" description="Wake Up by Match Flag Bit">
+      <alias type="CMSIS" value="CAN_WU_MTC_WUMF(x)"/>
+      <bit_field_value name="WU_MTC_WUMF_0b0" value="0b0" description="No wake up by match event detected"/>
+      <bit_field_value name="WU_MTC_WUMF_0b1" value="0b1" description="Wake up by match event detected"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="WTOF" access="W1C" reset_value="0" description="Wake Up by Timeout Flag Bit">
+      <alias type="CMSIS" value="CAN_WU_MTC_WTOF(x)"/>
+      <bit_field_value name="WU_MTC_WTOF_0b0" value="0b0" description="No wake up by timeout event detected"/>
+      <bit_field_value name="WU_MTC_WTOF_0b1" value="0b1" description="Wake up by timeout event detected"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="14" reset_value="0"/>
+  </register>
+  <register offset="0xB0C" width="32" name="FLT_ID1" description="Pretended Networking ID Filter 1 Register">
+    <alias type="CMSIS" value="FLT_ID1"/>
+    <bit_field offset="0" width="29" name="FLT_ID1" access="RW" reset_value="0" description="ID Filter 1 for Pretended Networking filtering">
+      <alias type="CMSIS" value="CAN_FLT_ID1_FLT_ID1(x)"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="FLT_RTR" access="RW" reset_value="0" description="Remote Transmission Request Filter">
+      <alias type="CMSIS" value="CAN_FLT_ID1_FLT_RTR(x)"/>
+      <bit_field_value name="FLT_ID1_FLT_RTR_0b0" value="0b0" description="Reject remote frame (accept data frame)"/>
+      <bit_field_value name="FLT_ID1_FLT_RTR_0b1" value="0b1" description="Accept remote frame"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="FLT_IDE" access="RW" reset_value="0" description="ID Extended Filter">
+      <alias type="CMSIS" value="CAN_FLT_ID1_FLT_IDE(x)"/>
+      <bit_field_value name="FLT_ID1_FLT_IDE_0b0" value="0b0" description="Accept standard frame format"/>
+      <bit_field_value name="FLT_ID1_FLT_IDE_0b1" value="0b1" description="Accept extended frame format"/>
+    </bit_field>
+    <reserved_bit_field offset="31" width="1" reset_value="0"/>
+  </register>
+  <register offset="0xB10" width="32" name="FLT_DLC" description="Pretended Networking DLC Filter Register">
+    <alias type="CMSIS" value="FLT_DLC"/>
+    <bit_field offset="0" width="4" name="FLT_DLC_HI" access="RW" reset_value="0x8" description="Upper Limit for Length of Data Bytes Filter">
+      <alias type="CMSIS" value="CAN_FLT_DLC_FLT_DLC_HI(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="12" reset_value="0"/>
+    <bit_field offset="16" width="4" name="FLT_DLC_LO" access="RW" reset_value="0" description="Lower Limit for Length of Data Bytes Filter">
+      <alias type="CMSIS" value="CAN_FLT_DLC_FLT_DLC_LO(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0xB14" width="32" name="PL1_LO" description="Pretended Networking Payload Low Filter 1 Register">
+    <alias type="CMSIS" value="PL1_LO"/>
+    <bit_field offset="0" width="8" name="Data_byte_3" access="RW" reset_value="0" description="Payload Filter 1 low order bits for Pretended Networking payload filtering corresponding to the data byte 3.">
+      <alias type="CMSIS" value="CAN_PL1_LO_Data_byte_3(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_2" access="RW" reset_value="0" description="Payload Filter 1 low order bits for Pretended Networking payload filtering corresponding to the data byte 2.">
+      <alias type="CMSIS" value="CAN_PL1_LO_Data_byte_2(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_1" access="RW" reset_value="0" description="Payload Filter 1 low order bits for Pretended Networking payload filtering corresponding to the data byte 1.">
+      <alias type="CMSIS" value="CAN_PL1_LO_Data_byte_1(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_0" access="RW" reset_value="0" description="Payload Filter 1 low order bits for Pretended Networking payload filtering corresponding to the data byte 0.">
+      <alias type="CMSIS" value="CAN_PL1_LO_Data_byte_0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB18" width="32" name="PL1_HI" description="Pretended Networking Payload High Filter 1 Register">
+    <alias type="CMSIS" value="PL1_HI"/>
+    <bit_field offset="0" width="8" name="Data_byte_7" access="RW" reset_value="0" description="Payload Filter 1 high order bits for Pretended Networking payload filtering corresponding to the data byte 7.">
+      <alias type="CMSIS" value="CAN_PL1_HI_Data_byte_7(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_6" access="RW" reset_value="0" description="Payload Filter 1 high order bits for Pretended Networking payload filtering corresponding to the data byte 6.">
+      <alias type="CMSIS" value="CAN_PL1_HI_Data_byte_6(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_5" access="RW" reset_value="0" description="Payload Filter 1 high order bits for Pretended Networking payload filtering corresponding to the data byte 5.">
+      <alias type="CMSIS" value="CAN_PL1_HI_Data_byte_5(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_4" access="RW" reset_value="0" description="Payload Filter 1 high order bits for Pretended Networking payload filtering corresponding to the data byte 4.">
+      <alias type="CMSIS" value="CAN_PL1_HI_Data_byte_4(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB1C" width="32" name="FLT_ID2_IDMASK" description="Pretended Networking ID Filter 2 Register / ID Mask Register">
+    <alias type="CMSIS" value="FLT_ID2_IDMASK"/>
+    <bit_field offset="0" width="29" name="FLT_ID2_IDMASK" access="RW" reset_value="0" description="ID Filter 2 for Pretended Networking Filtering / ID Mask Bits for Pretended Networking ID Filtering">
+      <alias type="CMSIS" value="CAN_FLT_ID2_IDMASK_FLT_ID2_IDMASK(x)"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="RTR_MSK" access="RW" reset_value="0" description="Remote Transmission Request Mask Bit">
+      <alias type="CMSIS" value="CAN_FLT_ID2_IDMASK_RTR_MSK(x)"/>
+      <bit_field_value name="FLT_ID2_IDMASK_RTR_MSK_0b0" value="0b0" description="The corresponding bit in the filter is &quot;don't care&quot;"/>
+      <bit_field_value name="FLT_ID2_IDMASK_RTR_MSK_0b1" value="0b1" description="The corresponding bit in the filter is checked"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="IDE_MSK" access="RW" reset_value="0" description="ID Extended Mask Bit">
+      <alias type="CMSIS" value="CAN_FLT_ID2_IDMASK_IDE_MSK(x)"/>
+      <bit_field_value name="FLT_ID2_IDMASK_IDE_MSK_0b0" value="0b0" description="The corresponding bit in the filter is &quot;don't care&quot;"/>
+      <bit_field_value name="FLT_ID2_IDMASK_IDE_MSK_0b1" value="0b1" description="The corresponding bit in the filter is checked"/>
+    </bit_field>
+    <reserved_bit_field offset="31" width="1" reset_value="0"/>
+  </register>
+  <register offset="0xB20" width="32" name="PL2_PLMASK_LO" description="Pretended Networking Payload Low Filter 2 Register / Payload Low Mask Register">
+    <alias type="CMSIS" value="PL2_PLMASK_LO"/>
+    <bit_field offset="0" width="8" name="Data_byte_3" access="RW" reset_value="0" description="Payload Filter 2 low order bits / Payload Mask low order bits for Pretended Networking payload filtering corresponding to the data byte 3.">
+      <alias type="CMSIS" value="CAN_PL2_PLMASK_LO_Data_byte_3(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_2" access="RW" reset_value="0" description="Payload Filter 2 low order bits / Payload Mask low order bits for Pretended Networking payload filtering corresponding to the data byte 2.">
+      <alias type="CMSIS" value="CAN_PL2_PLMASK_LO_Data_byte_2(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_1" access="RW" reset_value="0" description="Payload Filter 2 low order bits / Payload Mask low order bits for Pretended Networking payload filtering corresponding to the data byte 1.">
+      <alias type="CMSIS" value="CAN_PL2_PLMASK_LO_Data_byte_1(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_0" access="RW" reset_value="0" description="Payload Filter 2 low order bits / Payload Mask low order bits for Pretended Networking payload filtering corresponding to the data byte 0.">
+      <alias type="CMSIS" value="CAN_PL2_PLMASK_LO_Data_byte_0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB24" width="32" name="PL2_PLMASK_HI" description="Pretended Networking Payload High Filter 2 low order bits / Payload High Mask Register">
+    <alias type="CMSIS" value="PL2_PLMASK_HI"/>
+    <bit_field offset="0" width="8" name="Data_byte_7" access="RW" reset_value="0" description="Payload Filter 2 high order bits / Payload Mask high order bits for Pretended Networking payload filtering corresponding to the data byte 7.">
+      <alias type="CMSIS" value="CAN_PL2_PLMASK_HI_Data_byte_7(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_6" access="RW" reset_value="0" description="Payload Filter 2 high order bits / Payload Mask high order bits for Pretended Networking payload filtering corresponding to the data byte 6.">
+      <alias type="CMSIS" value="CAN_PL2_PLMASK_HI_Data_byte_6(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_5" access="RW" reset_value="0" description="Payload Filter 2 high order bits / Payload Mask high order bits for Pretended Networking payload filtering corresponding to the data byte 5.">
+      <alias type="CMSIS" value="CAN_PL2_PLMASK_HI_Data_byte_5(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_4" access="RW" reset_value="0" description="Payload Filter 2 high order bits / Payload Mask high order bits for Pretended Networking payload filtering corresponding to the data byte 4.">
+      <alias type="CMSIS" value="CAN_PL2_PLMASK_HI_Data_byte_4(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB40" width="32" name="WMB0_CS" description="Wake Up Message Buffer Register for C/S">
+    <alias type="CMSIS" value="WMB[0].CS"/>
+    <reserved_bit_field offset="0" width="16" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DLC" access="RO" reset_value="0" description="Length of Data in Bytes">
+      <alias type="CMSIS" value="CAN_CS_DLC(x)"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="RTR" access="RO" reset_value="0" description="Remote Transmission Request Bit">
+      <alias type="CMSIS" value="CAN_CS_RTR(x)"/>
+      <bit_field_value name="WMB0_CS_RTR_0b0" value="0b0" description="Frame is data one (not remote)"/>
+      <bit_field_value name="WMB0_CS_RTR_0b1" value="0b1" description="Frame is a remote one"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="IDE" access="RO" reset_value="0" description="ID Extended Bit">
+      <alias type="CMSIS" value="CAN_CS_IDE(x)"/>
+      <bit_field_value name="WMB0_CS_IDE_0b0" value="0b0" description="Frame format is standard"/>
+      <bit_field_value name="WMB0_CS_IDE_0b1" value="0b1" description="Frame format is extended"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="SRR" access="RO" reset_value="0" description="Substitute Remote Request">
+      <alias type="CMSIS" value="CAN_CS_SRR(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="9" reset_value="0"/>
+  </register>
+  <register offset="0xB44" width="32" name="WMB0_ID" description="Wake Up Message Buffer Register for ID">
+    <alias type="CMSIS" value="WMB[0].ID"/>
+    <bit_field offset="0" width="29" name="ID" access="RO" reset_value="0" description="Received ID under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_ID_ID(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0xB48" width="32" name="WMB0_D03" description="Wake Up Message Buffer Register for Data 0-3">
+    <alias type="CMSIS" value="WMB[0].D03"/>
+    <bit_field offset="0" width="8" name="Data_byte_3" access="RO" reset_value="0" description="Received payload corresponding to the data byte 3 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_3(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_2" access="RO" reset_value="0" description="Received payload corresponding to the data byte 2 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_2(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_1" access="RO" reset_value="0" description="Received payload corresponding to the data byte 1 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_1(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_0" access="RO" reset_value="0" description="Received payload corresponding to the data byte 0 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB4C" width="32" name="WMB0_D47" description="Wake Up Message Buffer Register Data 4-7">
+    <alias type="CMSIS" value="WMB[0].D47"/>
+    <bit_field offset="0" width="8" name="Data_byte_7" access="RO" reset_value="0" description="Received payload corresponding to the data byte 7 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_7(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_6" access="RO" reset_value="0" description="Received payload corresponding to the data byte 6 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_6(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_5" access="RO" reset_value="0" description="Received payload corresponding to the data byte 5 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_5(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_4" access="RO" reset_value="0" description="Received payload corresponding to the data byte 4 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_4(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB50" width="32" name="WMB1_CS" description="Wake Up Message Buffer Register for C/S">
+    <alias type="CMSIS" value="WMB[1].CS"/>
+    <reserved_bit_field offset="0" width="16" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DLC" access="RO" reset_value="0" description="Length of Data in Bytes">
+      <alias type="CMSIS" value="CAN_CS_DLC(x)"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="RTR" access="RO" reset_value="0" description="Remote Transmission Request Bit">
+      <alias type="CMSIS" value="CAN_CS_RTR(x)"/>
+      <bit_field_value name="WMB1_CS_RTR_0b0" value="0b0" description="Frame is data one (not remote)"/>
+      <bit_field_value name="WMB1_CS_RTR_0b1" value="0b1" description="Frame is a remote one"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="IDE" access="RO" reset_value="0" description="ID Extended Bit">
+      <alias type="CMSIS" value="CAN_CS_IDE(x)"/>
+      <bit_field_value name="WMB1_CS_IDE_0b0" value="0b0" description="Frame format is standard"/>
+      <bit_field_value name="WMB1_CS_IDE_0b1" value="0b1" description="Frame format is extended"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="SRR" access="RO" reset_value="0" description="Substitute Remote Request">
+      <alias type="CMSIS" value="CAN_CS_SRR(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="9" reset_value="0"/>
+  </register>
+  <register offset="0xB54" width="32" name="WMB1_ID" description="Wake Up Message Buffer Register for ID">
+    <alias type="CMSIS" value="WMB[1].ID"/>
+    <bit_field offset="0" width="29" name="ID" access="RO" reset_value="0" description="Received ID under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_ID_ID(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0xB58" width="32" name="WMB1_D03" description="Wake Up Message Buffer Register for Data 0-3">
+    <alias type="CMSIS" value="WMB[1].D03"/>
+    <bit_field offset="0" width="8" name="Data_byte_3" access="RO" reset_value="0" description="Received payload corresponding to the data byte 3 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_3(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_2" access="RO" reset_value="0" description="Received payload corresponding to the data byte 2 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_2(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_1" access="RO" reset_value="0" description="Received payload corresponding to the data byte 1 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_1(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_0" access="RO" reset_value="0" description="Received payload corresponding to the data byte 0 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB5C" width="32" name="WMB1_D47" description="Wake Up Message Buffer Register Data 4-7">
+    <alias type="CMSIS" value="WMB[1].D47"/>
+    <bit_field offset="0" width="8" name="Data_byte_7" access="RO" reset_value="0" description="Received payload corresponding to the data byte 7 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_7(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_6" access="RO" reset_value="0" description="Received payload corresponding to the data byte 6 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_6(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_5" access="RO" reset_value="0" description="Received payload corresponding to the data byte 5 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_5(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_4" access="RO" reset_value="0" description="Received payload corresponding to the data byte 4 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_4(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB60" width="32" name="WMB2_CS" description="Wake Up Message Buffer Register for C/S">
+    <alias type="CMSIS" value="WMB[2].CS"/>
+    <reserved_bit_field offset="0" width="16" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DLC" access="RO" reset_value="0" description="Length of Data in Bytes">
+      <alias type="CMSIS" value="CAN_CS_DLC(x)"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="RTR" access="RO" reset_value="0" description="Remote Transmission Request Bit">
+      <alias type="CMSIS" value="CAN_CS_RTR(x)"/>
+      <bit_field_value name="WMB2_CS_RTR_0b0" value="0b0" description="Frame is data one (not remote)"/>
+      <bit_field_value name="WMB2_CS_RTR_0b1" value="0b1" description="Frame is a remote one"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="IDE" access="RO" reset_value="0" description="ID Extended Bit">
+      <alias type="CMSIS" value="CAN_CS_IDE(x)"/>
+      <bit_field_value name="WMB2_CS_IDE_0b0" value="0b0" description="Frame format is standard"/>
+      <bit_field_value name="WMB2_CS_IDE_0b1" value="0b1" description="Frame format is extended"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="SRR" access="RO" reset_value="0" description="Substitute Remote Request">
+      <alias type="CMSIS" value="CAN_CS_SRR(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="9" reset_value="0"/>
+  </register>
+  <register offset="0xB64" width="32" name="WMB2_ID" description="Wake Up Message Buffer Register for ID">
+    <alias type="CMSIS" value="WMB[2].ID"/>
+    <bit_field offset="0" width="29" name="ID" access="RO" reset_value="0" description="Received ID under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_ID_ID(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0xB68" width="32" name="WMB2_D03" description="Wake Up Message Buffer Register for Data 0-3">
+    <alias type="CMSIS" value="WMB[2].D03"/>
+    <bit_field offset="0" width="8" name="Data_byte_3" access="RO" reset_value="0" description="Received payload corresponding to the data byte 3 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_3(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_2" access="RO" reset_value="0" description="Received payload corresponding to the data byte 2 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_2(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_1" access="RO" reset_value="0" description="Received payload corresponding to the data byte 1 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_1(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_0" access="RO" reset_value="0" description="Received payload corresponding to the data byte 0 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB6C" width="32" name="WMB2_D47" description="Wake Up Message Buffer Register Data 4-7">
+    <alias type="CMSIS" value="WMB[2].D47"/>
+    <bit_field offset="0" width="8" name="Data_byte_7" access="RO" reset_value="0" description="Received payload corresponding to the data byte 7 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_7(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_6" access="RO" reset_value="0" description="Received payload corresponding to the data byte 6 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_6(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_5" access="RO" reset_value="0" description="Received payload corresponding to the data byte 5 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_5(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_4" access="RO" reset_value="0" description="Received payload corresponding to the data byte 4 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_4(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB70" width="32" name="WMB3_CS" description="Wake Up Message Buffer Register for C/S">
+    <alias type="CMSIS" value="WMB[3].CS"/>
+    <reserved_bit_field offset="0" width="16" reset_value="0"/>
+    <bit_field offset="16" width="4" name="DLC" access="RO" reset_value="0" description="Length of Data in Bytes">
+      <alias type="CMSIS" value="CAN_CS_DLC(x)"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="RTR" access="RO" reset_value="0" description="Remote Transmission Request Bit">
+      <alias type="CMSIS" value="CAN_CS_RTR(x)"/>
+      <bit_field_value name="WMB3_CS_RTR_0b0" value="0b0" description="Frame is data one (not remote)"/>
+      <bit_field_value name="WMB3_CS_RTR_0b1" value="0b1" description="Frame is a remote one"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="IDE" access="RO" reset_value="0" description="ID Extended Bit">
+      <alias type="CMSIS" value="CAN_CS_IDE(x)"/>
+      <bit_field_value name="WMB3_CS_IDE_0b0" value="0b0" description="Frame format is standard"/>
+      <bit_field_value name="WMB3_CS_IDE_0b1" value="0b1" description="Frame format is extended"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="SRR" access="RO" reset_value="0" description="Substitute Remote Request">
+      <alias type="CMSIS" value="CAN_CS_SRR(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="9" reset_value="0"/>
+  </register>
+  <register offset="0xB74" width="32" name="WMB3_ID" description="Wake Up Message Buffer Register for ID">
+    <alias type="CMSIS" value="WMB[3].ID"/>
+    <bit_field offset="0" width="29" name="ID" access="RO" reset_value="0" description="Received ID under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_ID_ID(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0xB78" width="32" name="WMB3_D03" description="Wake Up Message Buffer Register for Data 0-3">
+    <alias type="CMSIS" value="WMB[3].D03"/>
+    <bit_field offset="0" width="8" name="Data_byte_3" access="RO" reset_value="0" description="Received payload corresponding to the data byte 3 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_3(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_2" access="RO" reset_value="0" description="Received payload corresponding to the data byte 2 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_2(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_1" access="RO" reset_value="0" description="Received payload corresponding to the data byte 1 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_1(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_0" access="RO" reset_value="0" description="Received payload corresponding to the data byte 0 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D03_Data_byte_0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB7C" width="32" name="WMB3_D47" description="Wake Up Message Buffer Register Data 4-7">
+    <alias type="CMSIS" value="WMB[3].D47"/>
+    <bit_field offset="0" width="8" name="Data_byte_7" access="RO" reset_value="0" description="Received payload corresponding to the data byte 7 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_7(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="Data_byte_6" access="RO" reset_value="0" description="Received payload corresponding to the data byte 6 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_6(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="Data_byte_5" access="RO" reset_value="0" description="Received payload corresponding to the data byte 5 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_5(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="Data_byte_4" access="RO" reset_value="0" description="Received payload corresponding to the data byte 4 under Pretended Networking mode">
+      <alias type="CMSIS" value="CAN_D47_Data_byte_4(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xC00" width="32" name="FDCTRL" description="CAN FD Control Register">
+    <alias type="CMSIS" value="FDCTRL"/>
+    <bit_field offset="0" width="6" name="TDCVAL" access="RO" reset_value="0" description="Transceiver Delay Compensation Value">
+      <alias type="CMSIS" value="CAN_FDCTRL_TDCVAL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="5" name="TDCOFF" access="RW" reset_value="0x1" description="Transceiver Delay Compensation Offset">
+      <alias type="CMSIS" value="CAN_FDCTRL_TDCOFF(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="1" reset_value="0"/>
+    <bit_field offset="14" width="1" name="TDCFAIL" access="W1C" reset_value="0" description="Transceiver Delay Compensation Fail">
+      <alias type="CMSIS" value="CAN_FDCTRL_TDCFAIL(x)"/>
+      <bit_field_value name="FDCTRL_TDCFAIL_0b0" value="0b0" description="Measured loop delay is in range."/>
+      <bit_field_value name="FDCTRL_TDCFAIL_0b1" value="0b1" description="Measured loop delay is out of range."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="TDCEN" access="RW" reset_value="0" description="Transceiver Delay Compensation Enable">
+      <alias type="CMSIS" value="CAN_FDCTRL_TDCEN(x)"/>
+      <bit_field_value name="FDCTRL_TDCEN_0b0" value="0b0" description="TDC is disabled"/>
+      <bit_field_value name="FDCTRL_TDCEN_0b1" value="0b1" description="TDC is enabled"/>
+    </bit_field>
+    <bit_field offset="16" width="2" name="MBDSR0" access="RW" reset_value="0" description="Message Buffer Data Size for Region 0">
+      <alias type="CMSIS" value="CAN_FDCTRL_MBDSR0(x)"/>
+      <bit_field_value name="FDCTRL_MBDSR0_0b00" value="0b00" description="Selects 8 bytes per Message Buffer."/>
+      <bit_field_value name="FDCTRL_MBDSR0_0b01" value="0b01" description="Selects 16 bytes per Message Buffer."/>
+      <bit_field_value name="FDCTRL_MBDSR0_0b10" value="0b10" description="Selects 32 bytes per Message Buffer."/>
+      <bit_field_value name="FDCTRL_MBDSR0_0b11" value="0b11" description="Selects 64 bytes per Message Buffer."/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="1" reset_value="0"/>
+    <reserved_bit_field offset="19" width="2" reset_value="0"/>
+    <reserved_bit_field offset="21" width="1" reset_value="0"/>
+    <reserved_bit_field offset="22" width="2" reset_value="0"/>
+    <reserved_bit_field offset="24" width="1" reset_value="0"/>
+    <reserved_bit_field offset="25" width="2" reset_value="0"/>
+    <reserved_bit_field offset="27" width="4" reset_value="0"/>
+    <bit_field offset="31" width="1" name="FDRATE" access="RW" reset_value="0x1" description="Bit Rate Switch Enable">
+      <alias type="CMSIS" value="CAN_FDCTRL_FDRATE(x)"/>
+      <bit_field_value name="FDCTRL_FDRATE_0b0" value="0b0" description="Transmit a frame in nominal rate. The BRS bit in the Tx MB has no effect."/>
+      <bit_field_value name="FDCTRL_FDRATE_0b1" value="0b1" description="Transmit a frame with bit rate switching if the BRS bit in the Tx MB is recessive."/>
+    </bit_field>
+  </register>
+  <register offset="0xC04" width="32" name="FDCBT" description="CAN FD Bit Timing Register">
+    <alias type="CMSIS" value="FDCBT"/>
+    <bit_field offset="0" width="3" name="FPSEG2" access="RW" reset_value="0" description="Fast Phase Segment 2">
+      <alias type="CMSIS" value="CAN_FDCBT_FPSEG2(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="2" reset_value="0"/>
+    <bit_field offset="5" width="3" name="FPSEG1" access="RW" reset_value="0" description="Fast Phase Segment 1">
+      <alias type="CMSIS" value="CAN_FDCBT_FPSEG1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="2" reset_value="0"/>
+    <bit_field offset="10" width="5" name="FPROPSEG" access="RW" reset_value="0" description="Fast Propagation Segment">
+      <alias type="CMSIS" value="CAN_FDCBT_FPROPSEG(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="3" name="FRJW" access="RW" reset_value="0" description="Fast Resync Jump Width">
+      <alias type="CMSIS" value="CAN_FDCBT_FRJW(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="1" reset_value="0"/>
+    <bit_field offset="20" width="10" name="FPRESDIV" access="RW" reset_value="0" description="Fast Prescaler Division Factor">
+      <alias type="CMSIS" value="CAN_FDCBT_FPRESDIV(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="30" width="2" reset_value="0"/>
+  </register>
+  <register offset="0xC08" width="32" name="FDCRC" description="CAN FD CRC Register">
+    <alias type="CMSIS" value="FDCRC"/>
+    <bit_field offset="0" width="21" name="FD_TXCRC" access="RO" reset_value="0" description="Extended Transmitted CRC value">
+      <alias type="CMSIS" value="CAN_FDCRC_FD_TXCRC(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="3" reset_value="0"/>
+    <bit_field offset="24" width="7" name="FD_MBCRC" access="RO" reset_value="0" description="CRC Mailbox Number for FD_TXCRC">
+      <alias type="CMSIS" value="CAN_FDCRC_FD_MBCRC(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="31" width="1" reset_value="0"/>
+  </register>
+</regs:peripheral>

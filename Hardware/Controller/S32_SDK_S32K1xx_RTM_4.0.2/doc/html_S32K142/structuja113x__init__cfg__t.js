@@ -1,0 +1,27 @@
+var structuja113x__init__cfg__t =
+[
+    [ "bmcBatMonitorCfg", "structuja113x__init__cfg__t.html#a34b8fcdf1cee43ea94d38830e8b39d50", null ],
+    [ "cancCanCfg", "structuja113x__init__cfg__t.html#a9e04b1f7bd6c0495e477830da203ad59", null ],
+    [ "cpncCanPartNetCfg", "structuja113x__init__cfg__t.html#afe2b81e3291a6f98dd1f4805c44e696e", null ],
+    [ "dmCanDataMaskCfg", "structuja113x__init__cfg__t.html#aa6a498621e1c090d66a1d5e512bdc517", null ],
+    [ "fscCfg", "structuja113x__init__cfg__t.html#a68c2b228d6ccc2784709020fe98793d5", null ],
+    [ "hvioBank0Cfg", "structuja113x__init__cfg__t.html#a614166016be8d83ba979bc79d32edade", null ],
+    [ "hvioBank1Cfg", "structuja113x__init__cfg__t.html#ac8852f55fcb3de68d0a231e5f2089bf9", null ],
+    [ "lckcLockRegCfg", "structuja113x__init__cfg__t.html#a5c9a4a7e0292014bbb22eb69ae191e37", null ],
+    [ "linxLinCtrl", "structuja113x__init__cfg__t.html#a8c950679c854f016bcfc70ddcc412641", null ],
+    [ "mcSbcMode", "structuja113x__init__cfg__t.html#a360b2da9ecd4982bc90f0c8f9bf6b0ff", null ],
+    [ "memory0", "structuja113x__init__cfg__t.html#a61ff6e1b6a36e3431eb0d0c201903500", null ],
+    [ "memory1", "structuja113x__init__cfg__t.html#a4ae133a91bff26cc3144637906a7539c", null ],
+    [ "memory2", "structuja113x__init__cfg__t.html#ab9626a45ce28880f82bba06497fb69bd", null ],
+    [ "memory3", "structuja113x__init__cfg__t.html#af2b1948cafbff6ea3c2a95e01eee5f20", null ],
+    [ "rcRegulatorCfg", "structuja113x__init__cfg__t.html#a4476e45d1e7053b6da423b20c2629a15", null ],
+    [ "smpscSmpsCfg", "structuja113x__init__cfg__t.html#ab9c1e3536c1fc54eb4cda3a22c489ac2", null ],
+    [ "supieMask", "structuja113x__init__cfg__t.html#ac0a0603834906e1f07c2c5ad285143d8", null ],
+    [ "sysieMask", "structuja113x__init__cfg__t.html#a15a47d9d52017cadea658a87a72b6fd4", null ],
+    [ "tieMask", "structuja113x__init__cfg__t.html#a6d40f9e2268df0179a25ee9e6cbb6943", null ],
+    [ "timscTimer1Cfg", "structuja113x__init__cfg__t.html#a71da158106434d9aae077a530fcb6c05", null ],
+    [ "timscTimer2Cfg", "structuja113x__init__cfg__t.html#a58c698fa2f869a59bbfd4001162e4598", null ],
+    [ "timscTimer3Cfg", "structuja113x__init__cfg__t.html#aa7f3b3c1eee1832d2622c5032dc046b2", null ],
+    [ "timscTimer4Cfg", "structuja113x__init__cfg__t.html#a8aed98612e79f4f4e3154008e7044306", null ],
+    [ "wdcWatchdogCfg", "structuja113x__init__cfg__t.html#a4edf62756f8a1224d4ae0353d4ae332e", null ]
+];

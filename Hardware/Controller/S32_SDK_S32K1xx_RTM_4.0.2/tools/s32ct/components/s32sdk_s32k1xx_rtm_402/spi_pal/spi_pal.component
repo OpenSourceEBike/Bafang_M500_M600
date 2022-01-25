@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="spi_pal" label="spi_pal" global_only="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" category="driver_pal">
+   <sw_comp_ref name="platform.pal.spi_pal" version="1.0.0"/>
+   <description>SPI_PAL Component</description>
+   <mode id="general" label="General Mode" available="true">
+      <description>spi_pal general mode</description>
+      <config_set_refs>
+         <config_set_ref>spi_pal</config_set_ref>
+      </config_set_refs>
+      <master_peripheral>
+         <peripheral_type>DSPI</peripheral_type>
+         <peripheral_type>LPSPI</peripheral_type>
+         <peripheral_type>FLEXIO</peripheral_type>
+      </master_peripheral>
+   </mode>
+   <config_set id="spi_pal" label="spi_pal Configuration" from_source="spi_pal_driver.h">
+      <description>SPI_PAL</description>
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="spi_pal_default" label="Default Values" available="true">
+            <description>spi_pal Default Configuration</description>  
+            <set id="spi_palMasterConfig.0.transferType">SPI_USING_INTERRUPTS</set>
+            <set id="spi_palMasterConfig.0.frameSize">8</set>
+            <set id="spi_palMasterConfig.0.baudRate">500000</set>
+            <set id="spi_palMasterConfig.0.ssPolarity">SPI_ACTIVE_LOW</set>
+            <set id="spi_palMasterConfig.0.clockPolarity">SPI_ACTIVE_HIGH</set>
+            <set id="spi_palMasterConfig.0.clockPhase">READ_ON_ODD_EDGE</set>
+            <set id="spi_palMasterConfig.0.bitOrder">SPI_TRANSFER_MSB_FIRST</set>
+            <set id="spi_palMasterConfig.0.whichPcs">0</set>
+            <set id="spi_palMasterConfig.0.callback">NULL</set>
+            <set id="spi_palMasterConfig.0.callbackParam">NULL</set>
+            <set id="spi_palSlaveConfig.0.frameSize">8</set>
+            <set id="spi_palSlaveConfig.0.transferType">SPI_USING_INTERRUPTS</set>
+            <set id="spi_palSlaveConfig.0.clockPolarity">SPI_ACTIVE_HIGH</set>
+            <set id="spi_palSlaveConfig.0.clockPhase">READ_ON_ODD_EDGE</set>
+            <set id="spi_palSlaveConfig.0.bitOrder">SPI_TRANSFER_MSB_FIRST</set>
+            <set id="spi_palSlaveConfig.0.callback">NULL</set>
+            <set id="spi_palSlaveConfig.0.callbackParam">NULL</set>
+            <set id="spi_palSlaveConfig.0.ssPolarity">SPI_ACTIVE_LOW</set>
+         </quick_selection>
+         <default>spi_pal_default</default>
+      </quick_selections>
+      <settings>
+         <array id="spi_palMasterConfig" label="spi_pal User Master Configurations Structure" type="spi_master_t" config_set_id="spi_pal" component_id="spi_pal" available="true" options="ShowContentAs=MasterDetail">
+            <description>spi_pal User Slave Configurations Structure</description>
+            <item_defaults>
+                <set_default id="baudRate" value_expr="x -> 500000"/>
+                <set_default id="frameSize" value_expr="x -> 8"/>
+                <set_default id="transferType" value_expr="x -> `SPI_USING_INTERRUPTS`"/>
+                <set_default id="callback" value_expr="x -> `NULL`"/>   
+                <set_default id="callbackParam" value_expr="x -> `NULL`"/>
+                <set_default id="clockPolarity" value_expr="x -> `SPI_ACTIVE_HIGH`"/>
+                <set_default id="clockPhase" value_expr="x -> `READ_ON_ODD_EDGE`"/>
+                <set_default id="ssPolarity" value_expr="x -> `SPI_ACTIVE_LOW`"/>
+                <set_default id="bitOrder" value_expr="x -> `SPI_TRANSFER_MSB_FIRST`"/>
+                <set_default id="whichPcs" value_expr="x -> 0"/>
+                <set_default id="rxDMAChannel" value_expr="x -> 0"/>
+                <set_default id="txDMAChannel" value_expr="x -> 0"/>                
+            </item_defaults>
+         </array>
+         <array id="spi_palSlaveConfig" label="spi_pal User Slave Configurations Structure" type="spi_slave_t" config_set_id="spi_pal" component_id="spi_pal" available="true" options="ShowContentAs=MasterDetail">
+            <description>spi_pal User Slave Configurations Structure</description>
+            <item_defaults>
+                <set_default id="frameSize" value_expr="x -> 8"/>
+                <set_default id="transferType" value_expr="x -> `SPI_USING_INTERRUPTS`"/>
+                <set_default id="callback" value_expr="x -> `NULL`"/>   
+                <set_default id="callbackParam" value_expr="x -> `NULL`"/>
+                <set_default id="clockPolarity" value_expr="x -> `SPI_ACTIVE_HIGH`"/>
+                <set_default id="clockPhase" value_expr="x -> `READ_ON_ODD_EDGE`"/>
+                <set_default id="bitOrder" value_expr="x -> `SPI_TRANSFER_MSB_FIRST`"/>
+                <set_default id="ssPolarity" value_expr="x -> `SPI_ACTIVE_LOW`"/>
+                <set_default id="rxDMAChannel" value_expr="x -> 0"/>
+                <set_default id="txDMAChannel" value_expr="x -> 0"/>
+            </item_defaults>
+         </array>
+         <variable value="`../spi_pal/spi_pal_codegen.js`" id="codegen_file"></variable>
+     <variable value="`../spi_pal/spi_pal_toolchain_settings.js`" id="toolchain_settings_file"></variable>
+     <variable value="`spi_pal_CodeGenerator`" id="codegen_class"></variable>
+     <variable value="`SpiToolchainSettings`" id="toolchain_settings_class"></variable>
+      </settings>
+      <user_types>
+         <integer id="uint32_t" label="uint32_t" type="uint32_t" available="true">
+            <description>uint32_t</description>
+         </integer>
+      </user_types>
+      <generated_types>
+         <enum id="lpspi_which_pcs_t" label="LPSPI Peripheral Chip Select (PCS) configuration (which PCS to configure). Implements : lpspi_which_pcs_t_Class" from="lpspi_which_pcs_t">
+          <description></description>
+            <item id="0" label="PCS[0]">
+          <description>PCS[0]</description>
+            </item>
+            <item id="1" label="PCS[1]">
+          <description>PCS[1]</description>
+            </item>
+            <item id="2" label="PCS[2]">
+          <description>PCS[2]</description>
+            </item>
+            <item id="3" label="PCS[3]">
+          <description>PCS[3]</description>
+            </item>
+         </enum>
+         <enum id="spi_transfer_type_t" label="Defines the mechanism to update the rx or tx buffers Implements : spi_transfer_type_t_Class" from="spi_transfer_type_t">
+            <item id="SPI_USING_DMA" label="The driver will use DMA to perform SPI transfer"/>
+            <item id="SPI_USING_INTERRUPTS" label="The driver will use interrupts to perform SPI transfer"/>
+         </enum>
+         <enum id="spi_polarity_t" label="Defines the polarity of signals Implements : spi_polarity_t_Class" from="spi_polarity_t">
+            <item id="SPI_ACTIVE_HIGH" label="The signal is active high"/>
+            <item id="SPI_ACTIVE_LOW" label="The signal is active low"/>
+         </enum>
+         <enum id="spi_clock_phase_t" label="Defines the edges used for sampling and shifting Implements : spi_clock_phase_t_Class" from="spi_clock_phase_t">
+            <item id="READ_ON_ODD_EDGE" label="The SPI signal is read on odd edges of SCK and counting starts after SS activation"/>
+            <item id="READ_ON_EVEN_EDGE" label="The SPI signal is read on even edges of SCK and counting starts after SS activation"/>
+         </enum>
+         <enum id="spi_transfer_bit_order_t" label="Defines the bit order Implements : spi_transfer_bit_order_t_Class" from="spi_transfer_bit_order_t">
+            <item id="SPI_TRANSFER_MSB_FIRST" label="Transmit data starting with most significant bit"/>
+            <item id="SPI_TRANSFER_LSB_FIRST" label="Transmit data starting with least significant bit"/>
+         </enum>
+         <struct id="spi_master_t" label="Defines the configuration structure for SPI master Implements : spi_master_t_Class" from="spi_master_t">
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+            </string>
+            <integer id="baudRate" label="Clock frequency" type="uint32_t">
+               <description>Clock frequency</description>
+            </integer>
+            <integer id="frameSize" label="Size of frame in bits" type="uint8_t" min_expr="4" max_expr="32">
+               <description>Size of frame in bits</description>
+            </integer>
+            <reference id="bitOrder" label="Select if first bit is MSB or LSB" type="spi_transfer_bit_order_t">
+               <description>Select if first bit is MSB or LSB</description>
+            </reference>
+            <reference id="clockPolarity" label="Select polarity for Clock" type="spi_polarity_t">
+               <description>Select polarity for Clock</description>
+            </reference>
+            <reference id="ssPolarity" label="Select polarity for SS" type="spi_polarity_t">
+               <description>Select polarity for SS</description>
+            </reference>
+            <reference id="clockPhase" label="Select clock edges for sampling and shifting" type="spi_clock_phase_t">
+               <description>Select clock edges for sampling and shifting</description>
+            </reference>
+            <reference id="whichPcs" label="Select which SS is used" type="lpspi_which_pcs_t" enable="getPeripheral($instance)!=`FLEXIO`">
+               <description>Select which SS is used</description>
+            </reference>
+                <bool id="continuousSS" label="Continuous SS" available="featureDefined(`SPI_PAL_ENABLE_CONTINUOUS`)==true" >
+                <description>If true, continuous mode for SS is enabled.</description>
+            </bool>
+            <reference id="transferType" label="Select if buffers are managed by internal interrupt handler or by DMA" type="spi_transfer_type_t">
+               <description>Select if buffers are managed by internal interrupt handler or by DMA</description>
+            </reference>
+            <integer id="rxDMAChannel" label="Channel number for DMA rx channel" type="uint8_t" enable="($parent.transferType.getValue()!=`SPI_USING_INTERRUPTS`)">
+               <description>Channel number for DMA rx channel</description>
+               <validation>
+                  <constraint cond_expr="($parent.txDMAChannel.getValue()!=$this.getValue())" level="error" description="Duplicate DMA channel"/>
+               </validation>
+            </integer>
+            <integer id="txDMAChannel" label="Channel number for DMA tx channel" type="uint8_t" enable="($parent.transferType.getValue()!=`SPI_USING_INTERRUPTS`)">
+               <description>Channel number for DMA tx channel</description>
+            </integer>
+            <string id="callback" label="Callback" type="spi_callback_t">
+               <description>User callback function. Note that this function will be called from the interrupt service routine, so its execution time should be as small as possible. It can be NULL if it is not needed</description>
+            </string>
+            <string id="callbackParam" label="Callback Parameter" type="void *">
+               <description>Parameter for the callback function</description>
+            </string>
+               <integer id="mosiPin" label="MOSI pin" type="uint8_t" available="getPeripheral($instance)==`FLEXIO`">
+               <description>MOSI pin for flexio</description>
+            </integer>
+               <integer id="misoPin" label="MISO pin" type="uint8_t" available="getPeripheral($instance)==`FLEXIO`">
+               <description>MISO pin for flexio</description>
+            </integer>
+               <integer id="sckPin" label="SCK pin" type="uint8_t" available="getPeripheral($instance)==`FLEXIO`">
+               <description>SCK pin for flexio</description>
+            </integer>
+               <integer id="ssPin" label="SS pin" type="uint8_t" available="getPeripheral($instance)==`FLEXIO`">
+               <description>SS pin for flexio</description>
+            </integer>
+         </struct>
+         <struct id="spi_slave_t" label="Defines the configuration structure for SPI slave Implements : spi_slave_t_Class" from="spi_slave_t">
+            <string id="name" label="Name">
+               <description>Configuration name.</description>
+            </string>
+            <integer id="frameSize" label="Size of frame in bits" type="uint8_t" min_expr="4" max_expr="32">
+               <description>Size of frame in bits</description>
+            </integer>
+            <reference id="bitOrder" label="Select if first bit is MSB or LSB" type="spi_transfer_bit_order_t">
+               <description>Select if first bit is MSB or LSB</description>
+            </reference>
+            <reference id="clockPolarity" label="Select polarity for Clock" type="spi_polarity_t">
+               <description>Select polarity for Clock</description>
+            </reference>
+            <reference id="ssPolarity" label="Select polarity for SS" type="spi_polarity_t">
+               <description>Select polarity for SS</description>
+            </reference>
+            <reference id="clockPhase" label="Select clock edges for sampling and shifting" type="spi_clock_phase_t">
+               <description>Select clock edges for sampling and shifting</description>
+            </reference>
+            <reference id="transferType" label="Select if buffers are managed by internal interrupt handler or by DMA" type="spi_transfer_type_t">
+               <description>Select if buffers are managed by internal interrupt handler or by DMA</description>
+            </reference>
+            <integer id="rxDMAChannel" label="Channel number for DMA rx channel" type="uint8_t" enable="($parent.transferType.getValue()!=`SPI_USING_INTERRUPTS`)">
+               <description>Channel number for DMA rx channel</description>
+               <validation>
+                  <constraint cond_expr="($parent.txDMAChannel.getValue()!=$this.getValue())" level="error" description="Duplicate DMA channel"/>
+               </validation>
+            </integer>
+            <integer id="txDMAChannel" label="Channel number for DMA tx channel" type="uint8_t" enable="($parent.transferType.getValue()!=`SPI_USING_INTERRUPTS`)">
+               <description>Channel number for DMA tx channel</description>
+            </integer>
+            <string id="callback" label="Callback" type="spi_callback_t">
+               <description>User callback function. Note that this function will be called from the interrupt service routine, so its execution time should be as small as possible. It can be NULL if it is not needed</description>
+            </string>
+            <string id="callbackParam" label="Callback Parameter" type="void *">
+               <description>Parameter for the callback function</description>
+            </string>
+               <integer id="mosiPin" label="MOSI pin" type="uint8_t" available="getPeripheral($instance)==`FLEXIO`">
+               <description>MOSI pin for flexio</description>
+            </integer>
+               <integer id="misoPin" label="MISO pin" type="uint8_t" available="getPeripheral($instance)==`FLEXIO`">
+               <description>MISO pin for flexio</description>
+            </integer>
+               <integer id="sckPin" label="SCK pin" type="uint8_t" available="getPeripheral($instance)==`FLEXIO`">
+               <description>SCK pin for flexio</description>
+            </integer>
+               <integer id="ssPin" label="SS pin" type="uint8_t" available="getPeripheral($instance)==`FLEXIO`">
+               <description>SS pin for flexio</description>
+            </integer>
+         </struct>
+      </generated_types>
+   </config_set>
+</component:config_component>

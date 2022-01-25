@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="lpspi_config" label="lpspi" options="UI_COMPONENT_MODE_HIDDEN" category="driver" global_only="false" hidden="false" xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component-5.0.xsd" xmlns:component="http://swtools.freescale.net/XSD/component/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <sw_comp_ref name="platform.driver.lpspi" version="1.0.0"/>
+    <description>LPSPI configuration</description>
+    <mode id="general_soft" label="Comparator" available="true">
+        <description>LPSPI driver</description>
+        <config_set_refs>
+            <config_set_ref>lpspi</config_set_ref>
+        </config_set_refs>
+        <master_peripheral>
+            <peripheral_type>LPSPI</peripheral_type>
+        </master_peripheral>
+    </mode>
+    <config_set label="" id="lpspi" from_source="lpspi_driver.h">
+        <description>LPSPI driver</description>
+        <generated_types>
+            <enum id="lpspi_which_pcs_t" label="LPSPI Peripheral Chip Select (PCS) configuration (which PCS to configure). Implements : lpspi_which_pcs_t_Class" from="lpspi_which_pcs_t">
+                <description></description>
+                <item id="LPSPI_PCS0" label="PCS[0]">
+                    <description>PCS[0]</description>
+                </item>
+                <item id="LPSPI_PCS1" label="PCS[1]">
+                    <description>PCS[1]</description>
+                </item>
+                <item id="LPSPI_PCS2" label="PCS[2]">
+                    <description>PCS[2]</description>
+                </item>
+                <item id="LPSPI_PCS3" label="PCS[3]">
+                    <description>PCS[3]</description>
+                </item>
+            </enum>
+            <enum id="lpspi_signal_polarity_t" label="LPSPI Signal (PCS and Host Request) Polarity configuration" from="lpspi_signal_polarity_t">
+                <description></description>
+                <item id="LPSPI_ACTIVE_HIGH" label="Active high">
+                    <description>Signal is Active High (idles low).</description>
+                </item>
+                <item id="LPSPI_ACTIVE_LOW" label="Active low">
+                    <description>Signal is Active Low (idles high).</description>
+                </item>
+            </enum>
+            <enum id="lsbFirst" label="LPSPI Signal (PCS and Host Request) Polarity configuration" from="lsbFirst">
+                <description></description>
+                <item id="true" label="LSB">
+                    <description>Signal is Active High (idles low).</description>
+                </item>
+                <item id="false" label="MSB">
+                    <description>Signal is Active Low (idles high).</description>
+                </item>
+            </enum>
+            <enum id="lpspi_clock_phase_t" label="LPSPI clock phase configuration" from="lpspi_clock_phase_t">
+                <description></description>
+                <item id="LPSPI_CLOCK_PHASE_1ST_EDGE" label="Data captured on 1st edge, shift on 2nd">
+                    <description>Data captured on SCK 1st edge, changed on 2nd.</description>
+                </item>
+                <item id="LPSPI_CLOCK_PHASE_2ND_EDGE" label="Data shift on 1st edge, captured on 2nd">
+                    <description>Data changed on SCK 1st edge, captured on 2nd.</description>
+                </item>
+            </enum>
+            <enum id="lpspi_sck_polarity_t" label="LPSPI Clock Signal (SCK) Polarity configuration" from="lpspi_sck_polarity_t">
+                <description></description>
+                <item id="LPSPI_SCK_ACTIVE_HIGH" label="Active high">
+                    <description>Signal is Active High (idles low).</description>
+                </item>
+                <item id="LPSPI_SCK_ACTIVE_LOW" label="Active low">
+                    <description>Signal is Active Low (idles high).</description>
+                </item>
+            </enum>
+            <enum id="lpspi_transfer_type" label="Type of LPSPI transfer (based on interrupts or DMA). Implements : lpspi_transfer_type_Class" from="lpspi_transfer_type">
+                <description></description>
+                <item id="LPSPI_USING_DMA" label="DMA">
+                    <description>The driver will use DMA to perform SPI transfer</description>
+                </item>
+                <item id="LPSPI_USING_INTERRUPTS" label="Interrupt">
+                    <description>The driver will use interrupts to perform SPI transfer</description>
+                </item>
+            </enum>
+            <enum id="transfer_status_t" label="Type of error reported by LPSPI" from="transfer_status_t">
+                <description></description>
+                <item id="LPSPI_TRANSFER_OK" label="Transfer OK">
+                    <description>Transfer OK</description>
+                </item>
+                <item id="LPSPI_TRANSMIT_FAIL" label="Error during transmission">
+                    <description>Error during transmission</description>
+                </item>
+                <item id="LPSPI_RECEIVE_FAIL" label="Error during reception">
+                    <description>Error during reception</description>
+                </item>
+            </enum>
+            <struct id="lpspi_state_t" label="Runtime state structure for the LPSPI master driver" from="lpspi_state_t">
+                <description>This structure holds data that is used by the LPSPI peripheral driver to communicate between the transfer function and the interrupt handler. The interrupt handler also uses this information to keep track of its progress. The user must pass the memory for this run-time state structure. The LPSPI master driver populates the members. Implements : lpspi_state_t_Class</description>
+                <integer id="bitsPerFrame" label="Number of bits per frame: 8- to 4096-bits; needed for TCR programming" type="uint16_t">
+                    <description>Number of bits per frame: 8- to 4096-bits; needed for TCR programming</description>
+                </integer>
+                <integer id="bytesPerFrame" label="Number of bytes per frame: 1- to 512-bytes" type="uint16_t">
+                    <description>Number of bytes per frame: 1- to 512-bytes</description>
+                </integer>
+                <bool id="isPcsContinuous" label="Option to keep chip select asserted until transfer complete; needed for TCR programming">
+                    <description>Option to keep chip select asserted until transfer complete; needed for TCR programming</description>
+                </bool>
+                <bool id="isBlocking" label="Save the transfer type">
+                    <description>Save the transfer type</description>
+                </bool>
+                <integer id="lpspiSrcClk" label="Module source clock" type="uint32_t">
+                    <description>Module source clock</description>
+                </integer>
+                <bool id="isTransferInProgress" label="True if there is an active transfer">
+                    <description>True if there is an active transfer</description>
+                </bool>
+                <fixme id="txBuff" label="The buffer from which transmitted bytes are taken" type="const uint8_t *">
+                    <description>The buffer from which transmitted bytes are taken</description>
+                </fixme>
+                <fixme id="rxBuff" label="The buffer into which received bytes are placed" type="uint8_t *">
+                    <description>The buffer into which received bytes are placed</description>
+                </fixme>
+                <integer id="txCount" label="Number of bytes remaining to send" type="uint16_t">
+                    <description>Number of bytes remaining to send</description>
+                </integer>
+                <integer id="rxCount" label="Number of bytes remaining to receive" type="uint16_t">
+                    <description>Number of bytes remaining to receive</description>
+                </integer>
+                <integer id="txFrameCnt" label="Number of bytes from current frame which were already sent" type="uint16_t">
+                    <description>Number of bytes from current frame which were already sent</description>
+                </integer>
+                <integer id="rxFrameCnt" label="Number of bytes from current frame which were already received" type="uint16_t">
+                    <description>Number of bytes from current frame which were already received</description>
+                </integer>
+                <bool id="lsb" label="True if first bit is LSB and false if first bit is MSB">
+                    <description>True if first bit is LSB and false if first bit is MSB</description>
+                </bool>
+                <integer id="fifoSize" label="RX/TX fifo size" type="uint8_t">
+                    <description>RX/TX fifo size</description>
+                </integer>
+                <integer id="rxDMAChannel" label="Channel number for DMA rx channel" type="uint8_t">
+                    <description>Channel number for DMA rx channel</description>
+                    <validation>
+                        <constraint cond_expr="($parent.txDMAChannel.getValue()!=$this.getValue())" level="error" description="Duplicate DMA channel"/>
+                    </validation>
+                </integer>
+                <integer id="txDMAChannel" label="Channel number for DMA tx channel" type="uint8_t">
+                    <description>Channel number for DMA tx channel</description>
+                </integer>
+                <reference id="transferType" label="Type of LPSPI transfer" type="lpspi_transfer_type">
+                    <description>Type of LPSPI transfer</description>
+                </reference>
+                <fixme id="lpspiSemaphore" label="The semaphore used for blocking transfers" type="semaphore_t">
+                    <description>The semaphore used for blocking transfers</description>
+                </fixme>
+                <reference id="status" label="The status of the current" type="transfer_status_t">
+                    <description>The status of the current</description>
+                </reference>
+                <fixme id="callback" label="Select the callback to transfer complete" type="spi_callback_t">
+                    <description>Select the callback to transfer complete</description>
+                </fixme>
+                <fixme id="callbackParam" label="Select additional callback parameters if it&apos;s necessary" type="void *">
+                    <description>Select additional callback parameters if it&apos;s necessary</description>
+                </fixme>
+                <integer id="dummy" label="This field is used for the cases when TX is NULL and LPSPI is in DMA mode" type="uint32_t">
+                    <description>This field is used for the cases when TX is NULL and LPSPI is in DMA mode</description>
+                </integer>
+            </struct>
+            <struct id="lpspi_master_config_t" label="Data structure containing information about a device on the SPI bus" from="lpspi_master_config_t">
+                <description>The user must populate these members to set up the LPSPI master and properly communicate with the SPI device. Implements : lpspi_master_config_t_Class</description>
+                <string id="name" label="Name">
+                    <description>Configuration name</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read-only">
+                    <description>Specifies how the configuration will be generated. Read-only structures are declared with const qualifier.</description>
+                </bool>
+                <integer id="bitsPerSec" label="Baudrate" type="uint32_t" options="cStructField">
+                    <description>Baud rate in bits per second</description>
+                </integer>
+                <reference id="whichPcs" label="PCS" type="lpspi_which_pcs_t" options="cStructField">
+                    <description>Selects which PCS to use</description>
+                </reference>
+                <reference id="pcsPolarity" label="PCS polarity" type="lpspi_signal_polarity_t" options="cStructField">
+                    <description>PCS polarity</description>
+                </reference>
+                <bool id="isPcsContinuous" label="PCS continuous" options="cStructField">
+                    <description>Keeps PCS asserted until transfer complete</description>
+                </bool>
+                <integer id="bitcount" label="Bits/frame" type="uint16_t" options="cStructField">
+                    <description>Number of bits/frame, minimum is 8-bits</description>
+                </integer>
+                <integer id="lpspiSrcClk" label="Source clock" type="uint32_t" options="cStructField">
+                    <description>Module source clock</description>
+                </integer>
+                <reference id="clkPhase" label="Phase" type="lpspi_clock_phase_t" options="cStructField">
+                    <description>Selects which phase of clock to capture data</description>
+                </reference>
+                <reference id="clkPolarity" label="Clock polarity" type="lpspi_sck_polarity_t" options="cStructField">
+                    <description>Selects clock polarity</description>
+                </reference>
+                <reference id="lsbFirst" label="Direction" type="lsbFirst" options="cStructField">
+                    <description>Option to transmit LSB first</description>
+                </reference>
+                <reference id="transferType" label="Transfer type" type="lpspi_transfer_type" options="cStructField">
+                    <description>Type of LPSPI transfer</description>
+                </reference>
+                <integer id="rxDMAChannel" label="RX DMA channel" type="uint8_t" enable="($parent.transferType.getValue()!=`LPSPI_USING_INTERRUPTS`)" options="cStructField">
+                    <description>Channel number for DMA rx channel. If DMA mode isn&apos;t used this field will be ignored.</description>
+                    <validation>
+                        <constraint cond_expr="($parent.txDMAChannel.getValue()!=$this.getValue())" level="error" description="Duplicate DMA channel"/>
+                    </validation>
+                </integer>
+                <integer id="txDMAChannel" label="TX DMA channel" type="uint8_t" enable="($parent.transferType.getValue()!=`LPSPI_USING_INTERRUPTS`)" options="cStructField">
+                    <description>Channel number for DMA tx channel. If DMA mode isn&apos;t used this field will be ignored.</description>
+                </integer>
+                <string id="callback" label="Callback" type="spi_callback_t" options="cStructField">
+                    <description>Select the callback to transfer complete</description>
+                </string>
+                <string id="callbackParam" label="Callback parameter" type="void *" options="cStructField">
+                    <description>Select additional callback parameters if it&apos;s necessary</description>
+                </string>
+            </struct>
+            <struct id="lpspi_slave_config_t" label="User configuration structure for the SPI slave driver" from="lpspi_slave_config_t">
+                <description></description>
+                <string id="name" label="Name">
+                    <description>Configuration name</description>
+                    <validation>
+                        <constraint cond_expr="isCIdentifier($this.getValue())" level="error" description="Configuration name must be a valid C identifier!"/>
+                    </validation>
+                </string>
+                <bool id="readOnly" label="Read-only">
+                    <description>Specifies how the configuration will be generated. Read-only structures are declared with const qualifier.</description>
+                </bool>
+                <reference id="whichPcs" label="PCS" type="lpspi_which_pcs_t" options="cStructField">
+                    <description></description>
+                </reference>
+                <reference id="pcsPolarity" label="PCS polarity" type="lpspi_signal_polarity_t" options="cStructField">
+                    <description>PCS polarity</description>
+                </reference>
+                <integer id="bitcount" label="Bits/frame" type="uint16_t" options="cStructField">
+                    <description>Number of bits/frame, minimum is 8-bits</description>
+                </integer>
+                <reference id="clkPhase" label="Phase" type="lpspi_clock_phase_t" options="cStructField">
+                    <description>Selects which phase of clock to capture data</description>
+                </reference>
+                <reference id="clkPolarity" label="Clock polarity" type="lpspi_sck_polarity_t" options="cStructField">
+                    <description>Selects clock polarity</description>
+                </reference>
+                <reference id="lsbFirst" label="Direction" type="lsbFirst" options="cStructField">
+                    <description>Option to transmit LSB first</description>
+                </reference>
+                <reference id="transferType" label="Transfer type" type="lpspi_transfer_type" options="cStructField">
+                    <description>Type of LPSPI transfer</description>
+                </reference>
+                <integer id="rxDMAChannel" label="RX DMA channel" type="uint8_t" enable="($parent.transferType.getValue()!=`LPSPI_USING_INTERRUPTS`)" options="cStructField">
+                    <description>Channel number for DMA rx channel. If DMA mode isn&apos;t used this field will be ignored.</description>
+                    <validation>
+                        <constraint cond_expr="($parent.txDMAChannel.getValue()!=$this.getValue())" level="error" description="Duplicate DMA channel"/>
+                    </validation>
+                </integer>
+                <integer id="txDMAChannel" label="TX DMA channel" type="uint8_t" enable="($parent.transferType.getValue()!=`LPSPI_USING_INTERRUPTS`)" options="cStructField">
+                    <description>Channel number for DMA tx channel. If DMA mode isn&apos;t used this field will be ignored.</description>
+                </integer>
+                <string id="callback" label="Callback" type="spi_callback_t" options="cStructField">
+                    <description>Select the callback to transfer complete</description>
+                </string>
+                <string id="callbackParam" label="Callback parameter" type="void *" options="cStructField">
+                    <description>Select additional callback parameters if it&apos;s necessary</description>
+                </string>
+            </struct>
+        </generated_types>
+        <user_types/>
+        <settings>
+            <array id="lpspiMasterConfig" label="Master User Configuration" type="lpspi_master_config_t" config_set_id="lpspi" component_id="lpspi_config" available="true" options="ShowContentAs=MasterDetail" >
+                <description>LPSPI User Configuration Structure List</description>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> ($instance.getPeripheral().toLowerCase() +`_MasterConfig` + x.getID())"/>
+                    <set_default id="readOnly" value_expr="x -> (`true`)"/>
+                    <set_default id="bitsPerSec" value_expr="x -> (`100000`)"/>
+                    <set_default id="whichPcs" value_expr="x -> (`LPSPI_PCS0`)"/>
+                    <set_default id="pcsPolarity" value_expr="x -> (`LPSPI_ACTIVE_HIGH`)"/>
+                    <set_default id="isPcsContinuous" value_expr="x -> (`false`)"/>
+                    <set_default id="bitcount" value_expr="x -> (`8`)"/>
+                    <set_default id="lpspiSrcClk" value_expr="x -> (`8000000`)"/>
+                    <set_default id="clkPhase" value_expr="x -> (`LPSPI_CLOCK_PHASE_1ST_EDGE`)"/>
+                    <set_default id="clkPolarity" value_expr="x -> (`LPSPI_SCK_ACTIVE_HIGH`)"/>
+                    <set_default id="lsbFirst" value_expr="x -> (`false`)"/>
+                    <set_default id="transferType" value_expr="x -> (`LPSPI_USING_INTERRUPTS`)"/>
+                    <set_default id="callback" value_expr="x -> (`NULL`)"/>
+                    <set_default id="callbackParam" value_expr="x -> (`NULL`)"/>
+                    <set_default id="rxDMAChannel" value_expr="x -> 0"/>
+                    <set_default id="txDMAChannel" value_expr="x -> 0"/>
+                </item_defaults>
+            </array>
+            <array id="lpspiSlaveConfig" label="Slave User Configuration" type="lpspi_slave_config_t" config_set_id="lpspi" component_id="lpspi_config" available="true" options="ShowContentAs=MasterDetail" >
+                <description>LPSPI User Configuration Structure List</description>
+                <item_defaults>
+                    <set_default id="name" value_expr="x -> ($instance.getPeripheral().toLowerCase() +`_SlaveConfig` + x.getID())"/>
+                    <set_default id="readOnly" value_expr="x -> (`true`)"/>
+                    <set_default id="whichPcs" value_expr="x -> (`LPSPI_PCS0`)"/>
+                    <set_default id="pcsPolarity" value_expr="x -> (`LPSPI_ACTIVE_HIGH`)"/>
+                    <set_default id="bitcount" value_expr="x -> (`8`)"/>
+                    <set_default id="clkPhase" value_expr="x -> (`LPSPI_CLOCK_PHASE_1ST_EDGE`)"/>
+                    <set_default id="clkPolarity" value_expr="x -> (`LPSPI_SCK_ACTIVE_HIGH`)"/>
+                    <set_default id="lsbFirst" value_expr="x -> (`false`)"/>
+                    <set_default id="transferType" value_expr="x -> (`LPSPI_USING_INTERRUPTS`)"/>
+                    <set_default id="callback" value_expr="x -> (`NULL`)"/>
+                    <set_default id="callbackParam" value_expr="x -> (`NULL`)"/>
+                    <set_default id="rxDMAChannel" value_expr="x -> 0"/>
+                    <set_default id="txDMAChannel" value_expr="x -> 0"/>
+                </item_defaults>
+            </array>
+            <variable value="`../lpspi/lpspi_codegen.js`" id="codegen_file"></variable>
+            <variable value="`LPSPI_CodeGenerator`" id="codegen_class"></variable>
+            <variable value="`addOsifDefault`" id="toolchain_settings_class"></variable>
+            <variable value="`../system/add_osif_to_project.js`" id="toolchain_settings_file"></variable>
+        </settings>
+        <fragment_defs/>
+        <code/>
+        <validation/>
+        <quick_selections>
+            <quick_selection id="lpspi_default" label="Default Values" available="true">
+                <description>LPSPI Default Configuration</description>
+                <set id="lpspiMasterConfig.0.readOnly">true</set>
+                <set id="lpspiMasterConfig.0.bitsPerSec">1000000</set>
+                <set id="lpspiMasterConfig.0.whichPcs">LPSPI_PCS0</set>
+                <set id="lpspiMasterConfig.0.pcsPolarity">LPSPI_ACTIVE_HIGH</set>
+                <set id="lpspiMasterConfig.0.isPcsContinuous">false</set>
+                <set id="lpspiMasterConfig.0.bitcount">8</set>
+                <set id="lpspiMasterConfig.0.lpspiSrcClk">8000000</set>
+                <set id="lpspiMasterConfig.0.clkPhase">LPSPI_CLOCK_PHASE_1ST_EDGE</set>
+                <set id="lpspiMasterConfig.0.clkPolarity">LPSPI_SCK_ACTIVE_HIGH</set>
+                <set id="lpspiMasterConfig.0.lsbFirst">false</set>
+                <set id="lpspiMasterConfig.0.transferType">LPSPI_USING_INTERRUPTS</set>
+                <set id="lpspiMasterConfig.0.callback">NULL</set>
+                <set id="lpspiMasterConfig.0.callbackParam">NULL</set>
+                <set id="lpspiSlaveConfig.0.readOnly">true</set>
+                <set id="lpspiSlaveConfig.0.whichPcs">LPSPI_PCS0</set>
+                <set id="lpspiSlaveConfig.0.pcsPolarity">LPSPI_ACTIVE_HIGH</set>
+                <set id="lpspiSlaveConfig.0.bitcount">8</set>
+                <set id="lpspiSlaveConfig.0.clkPhase">LPSPI_CLOCK_PHASE_1ST_EDGE</set>
+                <set id="lpspiSlaveConfig.0.clkPolarity">LPSPI_SCK_ACTIVE_HIGH</set>
+                <set id="lpspiSlaveConfig.0.lsbFirst">false</set>
+                <set id="lpspiSlaveConfig.0.transferType">LPSPI_USING_INTERRUPTS</set>
+                <set id="lpspiSlaveConfig.0.callback">NULL</set>
+                <set id="lpspiSlaveConfig.0.callbackParam">NULL</set>
+            </quick_selection>
+            <default>lpspi_default</default>
+        </quick_selections>
+    </config_set>
+</component:config_component>

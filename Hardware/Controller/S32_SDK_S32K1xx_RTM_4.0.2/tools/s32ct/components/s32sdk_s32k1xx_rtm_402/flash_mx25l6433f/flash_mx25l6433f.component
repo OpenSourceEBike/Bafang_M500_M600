@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding= "UTF-8" ?>
+<component:config_component id="flash_mx25l6433f"
+                            label="flash_mx25l6433f"
+                            global_only="false"
+                            xsi:schemaLocation="http://swtools.freescale.net/XSD/component/1.0 http://swtools.freescale.net/XSD/component/1.0/component.xsd"
+                            xmlns:component="http://swtools.freescale.net/XSD/component/1.0"
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            category="driver">
+   <sw_comp_ref name="platform.driver.flash_mx25l6433f" version="1.0.0"/>
+
+   <description>FLASH MX25L6433F</description>
+
+   <mode id="general" label="General" available="true">
+      <description>Flash general mode</description>
+      <config_set_refs>
+         <config_set_ref>flash_mx25l6433f_driver</config_set_ref>
+      </config_set_refs>
+   </mode>
+
+   <config_set id="flash_mx25l6433f_driver" label="FLASH MX25L6433F Configuration" from_source="flash_mx25l6433f_driver.h">
+      <fragment_defs/>
+      <code/>
+      <validation/>
+      <quick_selections>
+         <quick_selection id="flash_default" label="Default Values" available="true">
+            <description>Default values</description>
+            <set id="flash_mx25l6433f_configurations.0.readOnly">true</set>
+            <set id="flash_mx25l6433f_configurations.0.dmaSupport">true</set>
+         </quick_selection>
+         <default>flash_default</default>
+      </quick_selections>
+
+      <user_types>
+         <array id="configArray" label="Configuration List" type="user_config_t" options="ShowContentAs=MasterDetail">
+            <item_defaults>
+            <set_default id="configName" value_expr="x -> ($instance.getLabel() + `_Config` + x.getID())"/>
+            <set_default id="readOnly"   value_expr="x -> (`true`)"/>
+            <set_default id="dmaSupport" value_expr="x -> (`true`)"/>
+            </item_defaults>
+            <validation>
+               <constraint cond_expr="$this.findDuplicates(item -> item.getSetting(`configName`).value()).length() == 0"
+                           level="error"
+                           description="There are some duplicated `configName` fields in the configuration"/>
+               <constraint cond_expr="$this.getSize() != 0"
+                           level="error"
+                           description="There must be at least one configuration"/>
+            </validation>
+         </array>
+
+         <enum id="output_driver_t" from="output_driver_t">
+            <description>Flash device drive strength.</description>
+            <item id="FLASH_MX25L6433F_DRV_STRENGTH_HIGH" label="Full driver strength"/>
+            <item id="FLASH_MX25L6433F_DRV_STRENGTH_LOW"  label="Low (1/4) driver strength"/>
+         </enum>
+
+         <struct id="user_config_t" label="FLASH configuration structure" from="user_config_t">
+            <string id="configName" label="Name">
+               <description>Configuration name</description>
+               <validation>
+                  <constraint cond_expr="(($this.getValue() == ``) || (isCIdentifier($this.getValue())))"
+                              level="error"
+                              description="Interrupt configuration name must be a valid C identifier!"/>
+               </validation>
+            </string>
+
+            <bool id="readOnly" label="Read-only" >
+               <description>Read-only structures are declared with const qualifier.</description>
+            </bool>
+
+            <bool id="dmaSupport" label="DMA support" >
+               <description>Read-only structures are declared with const qualifier.</description>
+            </bool>
+
+            <reference id="outputDriverStrength" label="Output driver strength" type="output_driver_t">
+            </reference>
+
+         </struct>
+      </user_types>
+
+      <settings>
+         <reference id="flash_mx25l6433f_configurations"
+                    label="User Configuration List"
+                    type="configArray"
+                    config_set_id="flash_mx25l6433f_driver"
+                    component_id="flash_mx25l6433f"
+                    available="true">
+            <description>EWM User Configuration List</description>
+         </reference>
+
+         <variable value="`../flash_mx25l6433f/flash_mx25l6433f.js`" id="codegen_file"></variable>
+         <variable value="`flash_mx25l6433f_CodeGen`" id="codegen_class"></variable>
+
+      </settings>
+      <generated_types>
+      </generated_types>
+   </config_set>
+</component:config_component>

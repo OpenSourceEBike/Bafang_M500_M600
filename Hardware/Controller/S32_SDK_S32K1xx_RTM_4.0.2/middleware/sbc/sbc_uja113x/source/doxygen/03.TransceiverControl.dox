@@ -1,0 +1,69 @@
+/**
+  @addtogroup tcr
+<p>
+The transceiver control regisers (0x20 - 0x2F) allow:
+<ul>
+<li>Configuring CAN (0x20)</li>
+<li>Configuring LIN1/2 (0x21)</li>
+<li>Read transceiver status (0x22)</li>
+<li>Enable transceiver interrupts (0x23)</li>
+<li>Configuring CAN partial networking</li>
+<ul>
+<li>Data rate (0x26)</li>
+<li>ID (0x27 - 0x2A)</li>
+<li>ID mask (0x2B - 0x2E)</li>
+<li>Frame control (0x2F)</li>
+<li>Data masks (0x68 - 0x6F) (part of interrupt and status registers 0x60 - 0x6F)</li>
+</ul>
+</ul>
+Interrupts and interrupt status is described in @ref isr.
+
+  @{
+  @defgroup cancconfig 01. CAN & CAN partial networking configuration
+  @defgroup lincconfig 02. LIN configuration
+  @}
+ */
+
+/**
+ @addtogroup cancconfig
+ @section can_intro Introduction
+<p>
+Except configuring mode and shutdown control during over-/undervoltages,
+the transceiver also suports CAN partial networking (CAN PN) (only devices with
+CAN partial networking feature). The PN feature allows to wake-up only a single 
+node connected to a bus. From this perspective, several parameters (ID, ID mask,
+data, data masks etc.) need to be configured to be able to wake up on a dedicated
+CAN wake-up frame.
+</p>
+@subsection canpn CAN Partial networking
+<p>
+To enable the CAN PN functionality and confirm it's configuration, the CPNC & 
+PNCOK bit in 0x20 register has to be written.  The write of PNCOK bit should 
+be done after the CAN PN registers were written, otherwise the PNCOK gets 
+cleared on any write access into registers related to the CAN PN. Thus it's 
+advised to write the CAN PN registers first (UJA113X_SetCanPartNet()
+& UJA113X_SetDataMasks()). The 0x20 register should be configured afterwards 
+(UJA113X_SetCan()).\n
+In case the CAN PN wake-up frame should not rely on data, the CAN data masks 
+configuration can be skipped. Thus the CAN PN configuration is split in two parts.
+</p>
+*/
+
+/**
+ @addtogroup lincconfig
+ @section lin_intro Introduction
+<p>
+A UJA113x device can incorporate up to 2 LIN transceivers minimum of 1. 
+Configurable LIN features are:
+<ul>
+<li>LIN slope</li>
+<li>LIN mode</li>
+</ul>
+
+To configure the LIN transceiver, UJA113X_SetLin() function can be used.
+@warning In case the user decides to implement his own function or use the 
+UJA113X_SbcTransfer(), to write the LIN control register (0x21), make sure
+LIN2 bits are cleared for devices with a single LIN transceiver (see reference
+manual, register 0x21 description, for details).
+</p>
+*/

@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="8" name="FSTAT" description="Flash Status Register">
+    <alias type="CMSIS" value="FSTAT"/>
+    <bit_field offset="0" width="1" name="MGSTAT0" access="RO" reset_value="0" description="Memory Controller Command Completion Status Flag">
+      <alias type="CMSIS" value="FTFC_FSTAT_MGSTAT0(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="3" reset_value="0"/>
+    <bit_field offset="4" width="1" name="FPVIOL" access="W1C" reset_value="0" description="Flash Protection Violation Flag">
+      <alias type="CMSIS" value="FTFC_FSTAT_FPVIOL(x)"/>
+      <bit_field_value name="FSTAT_FPVIOL_0b0" value="0b0" description="No protection violation detected"/>
+      <bit_field_value name="FSTAT_FPVIOL_0b1" value="0b1" description="Protection violation detected"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="ACCERR" access="W1C" reset_value="0" description="Flash Access Error Flag">
+      <alias type="CMSIS" value="FTFC_FSTAT_ACCERR(x)"/>
+      <bit_field_value name="FSTAT_ACCERR_0b0" value="0b0" description="No access error detected"/>
+      <bit_field_value name="FSTAT_ACCERR_0b1" value="0b1" description="Access error detected"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="RDCOLERR" access="W1C" reset_value="0" description="FTFC Read Collision Error Flag">
+      <alias type="CMSIS" value="FTFC_FSTAT_RDCOLERR(x)"/>
+      <bit_field_value name="FSTAT_RDCOLERR_0b0" value="0b0" description="No collision error detected"/>
+      <bit_field_value name="FSTAT_RDCOLERR_0b1" value="0b1" description="Collision error detected"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CCIF" access="W1C" reset_value="0x1" description="Command Complete Interrupt Flag">
+      <alias type="CMSIS" value="FTFC_FSTAT_CCIF(x)"/>
+      <bit_field_value name="FSTAT_CCIF_0b0" value="0b0" description="FTFC command or emulated EEPROM file system operation in progress"/>
+      <bit_field_value name="FSTAT_CCIF_0b1" value="0b1" description="FTFC command or emulated EEPROM file system operation has completed"/>
+    </bit_field>
+  </register>
+  <register offset="0x1" width="8" name="FCNFG" description="Flash Configuration Register">
+    <alias type="CMSIS" value="FCNFG"/>
+    <bit_field offset="0" width="1" name="EEERDY" access="RO" reset_value="0" description="EEERDY">
+      <alias type="CMSIS" value="FTFC_FCNFG_EEERDY(x)"/>
+      <bit_field_value name="FCNFG_EEERDY_0b0" value="0b0" description="FlexRAM is not available for emulated EEPROM operation"/>
+      <bit_field_value name="FCNFG_EEERDY_0b1" value="0b1" description="FlexRAM is available for EEPROM operations where: (1) reads from the FlexRAM return data previously written to the FlexRAM in emulated EEPROM mode and (2) writes launch an EEPROM operation to store the written data in the FlexRAM and EEPROM backup."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RAMRDY" access="RO" reset_value="0x1" description="RAM Ready">
+      <alias type="CMSIS" value="FTFC_FCNFG_RAMRDY(x)"/>
+      <bit_field_value name="FCNFG_RAMRDY_0b0" value="0b0" description="FlexRAM is not available for traditional RAM access"/>
+      <bit_field_value name="FCNFG_RAMRDY_0b1" value="0b1" description="FlexRAM is available as traditional RAM only; writes to the FlexRAM do not trigger EEPROM operations"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <bit_field offset="4" width="1" name="ERSSUSP" access="RW" reset_value="0" description="Erase Suspend">
+      <alias type="CMSIS" value="FTFC_FCNFG_ERSSUSP(x)"/>
+      <bit_field_value name="FCNFG_ERSSUSP_0b0" value="0b0" description="No suspend requested"/>
+      <bit_field_value name="FCNFG_ERSSUSP_0b1" value="0b1" description="Suspend the current Erase Flash Sector command execution"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="ERSAREQ" access="RO" reset_value="0" description="Erase All Request">
+      <alias type="CMSIS" value="FTFC_FCNFG_ERSAREQ(x)"/>
+      <bit_field_value name="FCNFG_ERSAREQ_0b0" value="0b0" description="No request or request complete"/>
+      <bit_field_value name="FCNFG_ERSAREQ_0b1" value="0b1" description="Request to: (1) run the Erase All Blocks command, (2) verify the erased state, (3) program the security byte in the Flash Configuration Field to the unsecure state, and (4) release MCU security by setting the FSEC[SEC] field to the unsecure state."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="RDCOLLIE" access="RW" reset_value="0" description="Read Collision Error Interrupt Enable">
+      <alias type="CMSIS" value="FTFC_FCNFG_RDCOLLIE(x)"/>
+      <bit_field_value name="FCNFG_RDCOLLIE_0b0" value="0b0" description="Read collision error interrupt disabled"/>
+      <bit_field_value name="FCNFG_RDCOLLIE_0b1" value="0b1" description="Read collision error interrupt enabled. An interrupt request is generated whenever an FTFC read collision error is detected (see the description of FSTAT[RDCOLERR])."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CCIE" access="RW" reset_value="0" description="Command Complete Interrupt Enable">
+      <alias type="CMSIS" value="FTFC_FCNFG_CCIE(x)"/>
+      <bit_field_value name="FCNFG_CCIE_0b0" value="0b0" description="Command complete interrupt disabled"/>
+      <bit_field_value name="FCNFG_CCIE_0b1" value="0b1" description="Command complete interrupt enabled. An interrupt request is generated whenever the FSTAT[CCIF] flag is set."/>
+    </bit_field>
+  </register>
+  <register offset="0x2" width="8" name="FSEC" description="Flash Security Register">
+    <alias type="CMSIS" value="FSEC"/>
+    <bit_field offset="0" width="2" name="SEC" access="RO" reset_value="0" reset_mask="0" description="Flash Security">
+      <alias type="CMSIS" value="FTFC_FSEC_SEC(x)"/>
+      <bit_field_value name="FSEC_SEC_0b00" value="0b00" description="MCU security status is secure"/>
+      <bit_field_value name="FSEC_SEC_0b01" value="0b01" description="MCU security status is secure"/>
+      <bit_field_value name="FSEC_SEC_0b10" value="0b10" description="MCU security status is unsecure (The standard shipping condition of the FTFC is unsecure.)"/>
+      <bit_field_value name="FSEC_SEC_0b11" value="0b11" description="MCU security status is secure"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="FSLACC" access="RO" reset_value="0" reset_mask="0" description="Factory Failure Analysis Access Code">
+      <alias type="CMSIS" value="FTFC_FSEC_FSLACC(x)"/>
+      <bit_field_value name="FSEC_FSLACC_0b00" value="0b00" description="Factory access granted"/>
+      <bit_field_value name="FSEC_FSLACC_0b01" value="0b01" description="Factory access denied"/>
+      <bit_field_value name="FSEC_FSLACC_0b10" value="0b10" description="Factory access denied"/>
+      <bit_field_value name="FSEC_FSLACC_0b11" value="0b11" description="Factory access granted"/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="MEEN" access="RO" reset_value="0" reset_mask="0" description="Mass Erase Enable Bits">
+      <alias type="CMSIS" value="FTFC_FSEC_MEEN(x)"/>
+      <bit_field_value name="FSEC_MEEN_0b00" value="0b00" description="Mass erase is enabled"/>
+      <bit_field_value name="FSEC_MEEN_0b01" value="0b01" description="Mass erase is enabled"/>
+      <bit_field_value name="FSEC_MEEN_0b10" value="0b10" description="Mass erase is disabled"/>
+      <bit_field_value name="FSEC_MEEN_0b11" value="0b11" description="Mass erase is enabled"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="KEYEN" access="RO" reset_value="0" reset_mask="0" description="Backdoor Key Security Enable">
+      <alias type="CMSIS" value="FTFC_FSEC_KEYEN(x)"/>
+      <bit_field_value name="FSEC_KEYEN_0b00" value="0b00" description="Backdoor key access disabled"/>
+      <bit_field_value name="FSEC_KEYEN_0b01" value="0b01" description="Backdoor key access disabled (preferred KEYEN state to disable backdoor key access)"/>
+      <bit_field_value name="FSEC_KEYEN_0b10" value="0b10" description="Backdoor key access enabled"/>
+      <bit_field_value name="FSEC_KEYEN_0b11" value="0b11" description="Backdoor key access disabled"/>
+    </bit_field>
+  </register>
+  <register offset="0x3" width="8" name="FOPT" description="Flash Option Register">
+    <alias type="CMSIS" value="FOPT"/>
+    <bit_field offset="0" width="8" name="OPT" access="RO" reset_value="0" reset_mask="0" description="Nonvolatile Option">
+      <alias type="CMSIS" value="FTFC_FOPT_OPT(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="8" name="FCCOB3" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[0]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x5" width="8" name="FCCOB2" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[1]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x6" width="8" name="FCCOB1" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[2]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x7" width="8" name="FCCOB0" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[3]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8" width="8" name="FCCOB7" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[4]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x9" width="8" name="FCCOB6" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[5]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xA" width="8" name="FCCOB5" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[6]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xB" width="8" name="FCCOB4" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[7]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xC" width="8" name="FCCOBB" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[8]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xD" width="8" name="FCCOBA" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[9]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xE" width="8" name="FCCOB9" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[10]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xF" width="8" name="FCCOB8" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[11]"/>
+    <bit_field offset="0" width="8" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FTFC_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="8" name="FPROT3" description="Program Flash Protection Registers">
+    <alias type="CMSIS" value="FPROT[0]"/>
+    <bit_field offset="0" width="8" name="PROT" access="RW" reset_value="0" reset_mask="0" description="Program Flash Region Protect">
+      <alias type="CMSIS" value="FTFC_FPROT_PROT(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x11" width="8" name="FPROT2" description="Program Flash Protection Registers">
+    <alias type="CMSIS" value="FPROT[1]"/>
+    <bit_field offset="0" width="8" name="PROT" access="RW" reset_value="0" reset_mask="0" description="Program Flash Region Protect">
+      <alias type="CMSIS" value="FTFC_FPROT_PROT(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x12" width="8" name="FPROT1" description="Program Flash Protection Registers">
+    <alias type="CMSIS" value="FPROT[2]"/>
+    <bit_field offset="0" width="8" name="PROT" access="RW" reset_value="0" reset_mask="0" description="Program Flash Region Protect">
+      <alias type="CMSIS" value="FTFC_FPROT_PROT(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x13" width="8" name="FPROT0" description="Program Flash Protection Registers">
+    <alias type="CMSIS" value="FPROT[3]"/>
+    <bit_field offset="0" width="8" name="PROT" access="RW" reset_value="0" reset_mask="0" description="Program Flash Region Protect">
+      <alias type="CMSIS" value="FTFC_FPROT_PROT(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x16" width="8" name="FEPROT" description="EEPROM Protection Register">
+    <alias type="CMSIS" value="FEPROT"/>
+    <bit_field offset="0" width="8" name="EPROT" access="RW" reset_value="0" reset_mask="0" description="EEPROM Region Protect">
+      <alias type="CMSIS" value="FTFC_FEPROT_EPROT(x)"/>
+      <bit_field_value name="FEPROT_EPROT_0b00000000" value="0b00000000" description="EEPROM region is protected"/>
+      <bit_field_value name="FEPROT_EPROT_0b00000001" value="0b00000001" description="EEPROM region is not protected"/>
+    </bit_field>
+  </register>
+  <register offset="0x17" width="8" name="FDPROT" description="Data Flash Protection Register">
+    <alias type="CMSIS" value="FDPROT"/>
+    <bit_field offset="0" width="8" name="DPROT" access="RW" reset_value="0" reset_mask="0" description="Data Flash Region Protect">
+      <alias type="CMSIS" value="FTFC_FDPROT_DPROT(x)"/>
+      <bit_field_value name="FDPROT_DPROT_0b00000000" value="0b00000000" description="Data Flash region is protected"/>
+      <bit_field_value name="FDPROT_DPROT_0b00000001" value="0b00000001" description="Data Flash region is not protected"/>
+    </bit_field>
+  </register>
+  <register offset="0x2C" width="8" name="FCSESTAT" description="Flash CSEc Status Register">
+    <alias type="CMSIS" value="FCSESTAT"/>
+    <bit_field offset="0" width="1" name="BSY" access="RO" reset_value="0" description="Busy">
+      <alias type="CMSIS" value="FTFC_FCSESTAT_BSY(x)"/>
+      <bit_field_value name="FCSESTAT_BSY_0b0" value="0b0" description="Command processing has completed"/>
+      <bit_field_value name="FCSESTAT_BSY_0b1" value="0b1" description="Command processing is in progress"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SB" access="RO" reset_value="0" description="Secure Boot">
+      <alias type="CMSIS" value="FTFC_FCSESTAT_SB(x)"/>
+      <bit_field_value name="FCSESTAT_SB_0b0" value="0b0" description="Secure boot not activated"/>
+      <bit_field_value name="FCSESTAT_SB_0b1" value="0b1" description="Secure boot is activated"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="BIN" access="RO" reset_value="0" description="Secure Boot Initialization">
+      <alias type="CMSIS" value="FTFC_FCSESTAT_BIN(x)"/>
+      <bit_field_value name="FCSESTAT_BIN_0b0" value="0b0" description="Secure boot personalization not completed."/>
+      <bit_field_value name="FCSESTAT_BIN_0b1" value="0b1" description="Secure boot personalization has completed"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="BFN" access="RO" reset_value="0" description="Secure Boot Finished">
+      <alias type="CMSIS" value="FTFC_FCSESTAT_BFN(x)"/>
+      <bit_field_value name="FCSESTAT_BFN_0b0" value="0b0" description="Secure Boot is not finished."/>
+      <bit_field_value name="FCSESTAT_BFN_0b1" value="0b1" description="Secure Boot has finished"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="BOK" access="RO" reset_value="0" description="Secure Boot OK">
+      <alias type="CMSIS" value="FTFC_FCSESTAT_BOK(x)"/>
+      <bit_field_value name="FCSESTAT_BOK_0b0" value="0b0" description="Secure boot is not complete, or secure boot failure"/>
+      <bit_field_value name="FCSESTAT_BOK_0b1" value="0b1" description="Secure boot was successful."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="RIN" access="RO" reset_value="0" description="Random Number Generator Initialized">
+      <alias type="CMSIS" value="FTFC_FCSESTAT_RIN(x)"/>
+      <bit_field_value name="FCSESTAT_RIN_0b0" value="0b0" description="Random number generator is not initialized."/>
+      <bit_field_value name="FCSESTAT_RIN_0b1" value="0b1" description="Random number generator is initialized."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="EDB" access="RO" reset_value="0" description="External Debug">
+      <alias type="CMSIS" value="FTFC_FCSESTAT_EDB(x)"/>
+      <bit_field_value name="FCSESTAT_EDB_0b0" value="0b0" description="External debugger not attached"/>
+      <bit_field_value name="FCSESTAT_EDB_0b1" value="0b1" description="External debugger is attached"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="IDB" access="RO" reset_value="0" description="Internal Debug">
+      <alias type="CMSIS" value="FTFC_FCSESTAT_IDB(x)"/>
+      <bit_field_value name="FCSESTAT_IDB_0b0" value="0b0" description="Internal debug functions are disabled"/>
+      <bit_field_value name="FCSESTAT_IDB_0b1" value="0b1" description="Internal debugger functions are enabled"/>
+    </bit_field>
+  </register>
+  <register offset="0x2E" width="8" name="FERSTAT" description="Flash Error Status Register">
+    <alias type="CMSIS" value="FERSTAT"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0"/>
+    <bit_field offset="1" width="1" name="DFDIF" access="W1C" reset_value="0" description="Double Bit Fault Detect Interrupt Flag">
+      <alias type="CMSIS" value="FTFC_FERSTAT_DFDIF(x)"/>
+      <bit_field_value name="FERSTAT_DFDIF_0b0" value="0b0" description="Double bit fault not detected during a valid flash read access from the platform flash controller"/>
+      <bit_field_value name="FERSTAT_DFDIF_0b1" value="0b1" description="Double bit fault detected (or FERCNFG[FDFD] is set) during a valid flash read access from the platform flash controller"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x2F" width="8" name="FERCNFG" description="Flash Error Configuration Register">
+    <alias type="CMSIS" value="FERCNFG"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0"/>
+    <bit_field offset="1" width="1" name="DFDIE" access="RW" reset_value="0" description="Double Bit Fault Detect Interrupt Enable">
+      <alias type="CMSIS" value="FTFC_FERCNFG_DFDIE(x)"/>
+      <bit_field_value name="FERCNFG_DFDIE_0b0" value="0b0" description="Double bit fault detect interrupt disabled"/>
+      <bit_field_value name="FERCNFG_DFDIE_0b1" value="0b1" description="Double bit fault detect interrupt enabled. An interrupt request is generated whenever the FERSTAT[DFDIF] flag is set."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="3" reset_value="0"/>
+    <bit_field offset="5" width="1" name="FDFD" access="RW" reset_value="0" description="Force Double Bit Fault Detect">
+      <alias type="CMSIS" value="FTFC_FERCNFG_FDFD(x)"/>
+      <bit_field_value name="FERCNFG_FDFD_0b0" value="0b0" description="FERSTAT[DFDIF] sets only if a double bit fault is detected during read access from the platform flash controller"/>
+      <bit_field_value name="FERCNFG_FDFD_0b1" value="0b1" description="FERSTAT[DFDIF] sets during any valid flash read access from the platform flash controller. An interrupt request is generated if the DFDIE bit is set."/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+  </register>
+</regs:peripheral>

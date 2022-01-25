@@ -1,0 +1,965 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/3.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="VERID" description="Version ID Register">
+    <alias type="CMSIS" value="VERID"/>
+    <bit_field_array offset="0" width="16" item_width="1" name="FEATURE" access="RO" reset_value="0" description="Feature Specification Number">
+      <alias type="CMSIS" value="FLEXIO_VERID_FEATURE(x)"/>
+      <bit_field_value name="VERID_FEATURE_0b0000000000000000" value="0b0" description="Standard features implemented."/>
+      <bit_field_value name="VERID_FEATURE_0b0000000000000001" value="0b1" description="Supports state, logic and parallel modes."/>
+    </bit_field_array>
+    <bit_field offset="16" width="8" name="MINOR" access="RO" reset_value="0x1" description="Minor Version Number">
+      <alias type="CMSIS" value="FLEXIO_VERID_MINOR(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="MAJOR" access="RO" reset_value="0x1" description="Major Version Number">
+      <alias type="CMSIS" value="FLEXIO_VERID_MAJOR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="PARAM" description="Parameter Register">
+    <alias type="CMSIS" value="PARAM"/>
+    <bit_field offset="0" width="8" name="SHIFTER" access="RO" reset_value="0x4" description="Shifter Number">
+      <alias type="CMSIS" value="FLEXIO_PARAM_SHIFTER(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="TIMER" access="RO" reset_value="0x4" description="Timer Number">
+      <alias type="CMSIS" value="FLEXIO_PARAM_TIMER(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="PIN" access="RO" reset_value="0x8" description="Pin Number">
+      <alias type="CMSIS" value="FLEXIO_PARAM_PIN(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="TRIGGER" access="RO" reset_value="0x4" description="Trigger Number">
+      <alias type="CMSIS" value="FLEXIO_PARAM_TRIGGER(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8" width="32" name="CTRL" description="FlexIO Control Register">
+    <alias type="CMSIS" value="CTRL"/>
+    <bit_field offset="0" width="1" name="FLEXEN" access="RW" reset_value="0" description="FlexIO Enable">
+      <alias type="CMSIS" value="FLEXIO_CTRL_FLEXEN(x)"/>
+      <bit_field_value name="CTRL_FLEXEN_0b0" value="0b0" description="FlexIO module is disabled."/>
+      <bit_field_value name="CTRL_FLEXEN_0b1" value="0b1" description="FlexIO module is enabled."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SWRST" access="RW" reset_value="0" description="Software Reset">
+      <alias type="CMSIS" value="FLEXIO_CTRL_SWRST(x)"/>
+      <bit_field_value name="CTRL_SWRST_0b0" value="0b0" description="Software reset is disabled"/>
+      <bit_field_value name="CTRL_SWRST_0b1" value="0b1" description="Software reset is enabled, all FlexIO registers except the Control Register are reset."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="FASTACC" access="RW" reset_value="0" description="Fast Access">
+      <alias type="CMSIS" value="FLEXIO_CTRL_FASTACC(x)"/>
+      <bit_field_value name="CTRL_FASTACC_0b0" value="0b0" description="Configures for normal register accesses to FlexIO"/>
+      <bit_field_value name="CTRL_FASTACC_0b1" value="0b1" description="Configures for fast register accesses to FlexIO"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="27" reset_value="0"/>
+    <bit_field offset="30" width="1" name="DBGE" access="RW" reset_value="0" description="Debug Enable">
+      <alias type="CMSIS" value="FLEXIO_CTRL_DBGE(x)"/>
+      <bit_field_value name="CTRL_DBGE_0b0" value="0b0" description="FlexIO is disabled in debug modes."/>
+      <bit_field_value name="CTRL_DBGE_0b1" value="0b1" description="FlexIO is enabled in debug modes"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="DOZEN" access="RW" reset_value="0" description="Doze Enable">
+      <alias type="CMSIS" value="FLEXIO_CTRL_DOZEN(x)"/>
+      <bit_field_value name="CTRL_DOZEN_0b0" value="0b0" description="FlexIO enabled in Doze modes."/>
+      <bit_field_value name="CTRL_DOZEN_0b1" value="0b1" description="FlexIO disabled in Doze modes."/>
+    </bit_field>
+  </register>
+  <register offset="0xC" width="32" name="PIN" description="Pin State Register">
+    <alias type="CMSIS" value="PIN"/>
+    <bit_field offset="0" width="8" name="PDI" access="RO" reset_value="0" description="Pin Data Input">
+      <alias type="CMSIS" value="FLEXIO_PIN_PDI(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="SHIFTSTAT" description="Shifter Status Register">
+    <alias type="CMSIS" value="SHIFTSTAT"/>
+    <bit_field offset="0" width="4" name="SSF" access="W1C" reset_value="0" description="Shifter Status Flag">
+      <alias type="CMSIS" value="FLEXIO_SHIFTSTAT_SSF(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="SHIFTERR" description="Shifter Error Register">
+    <alias type="CMSIS" value="SHIFTERR"/>
+    <bit_field offset="0" width="4" name="SEF" access="W1C" reset_value="0" description="Shifter Error Flags">
+      <alias type="CMSIS" value="FLEXIO_SHIFTERR_SEF(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="TIMSTAT" description="Timer Status Register">
+    <alias type="CMSIS" value="TIMSTAT"/>
+    <bit_field offset="0" width="4" name="TSF" access="W1C" reset_value="0" description="Timer Status Flags">
+      <alias type="CMSIS" value="FLEXIO_TIMSTAT_TSF(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="SHIFTSIEN" description="Shifter Status Interrupt Enable">
+    <alias type="CMSIS" value="SHIFTSIEN"/>
+    <bit_field offset="0" width="4" name="SSIE" access="RW" reset_value="0" description="Shifter Status Interrupt Enable">
+      <alias type="CMSIS" value="FLEXIO_SHIFTSIEN_SSIE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x24" width="32" name="SHIFTEIEN" description="Shifter Error Interrupt Enable">
+    <alias type="CMSIS" value="SHIFTEIEN"/>
+    <bit_field offset="0" width="4" name="SEIE" access="RW" reset_value="0" description="Shifter Error Interrupt Enable">
+      <alias type="CMSIS" value="FLEXIO_SHIFTEIEN_SEIE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x28" width="32" name="TIMIEN" description="Timer Interrupt Enable Register">
+    <alias type="CMSIS" value="TIMIEN"/>
+    <bit_field offset="0" width="4" name="TEIE" access="RW" reset_value="0" description="Timer Status Interrupt Enable">
+      <alias type="CMSIS" value="FLEXIO_TIMIEN_TEIE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="SHIFTSDEN" description="Shifter Status DMA Enable">
+    <alias type="CMSIS" value="SHIFTSDEN"/>
+    <bit_field offset="0" width="4" name="SSDE" access="RW" reset_value="0" description="Shifter Status DMA Enable">
+      <alias type="CMSIS" value="FLEXIO_SHIFTSDEN_SSDE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x80" width="32" name="SHIFTCTL0" description="Shifter Control N Register">
+    <alias type="CMSIS" value="SHIFTCTL[0]"/>
+    <bit_field offset="0" width="3" name="SMOD" access="RW" reset_value="0" description="Shifter Mode">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_SMOD(x)"/>
+      <bit_field_value name="SHIFTCTL0_SMOD_0b000" value="0b000" description="Disabled."/>
+      <bit_field_value name="SHIFTCTL0_SMOD_0b001" value="0b001" description="Receive mode. Captures the current Shifter content into the SHIFTBUF on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL0_SMOD_0b010" value="0b010" description="Transmit mode. Load SHIFTBUF contents into the Shifter on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL0_SMOD_0b011" value="0b011" description="Reserved."/>
+      <bit_field_value name="SHIFTCTL0_SMOD_0b100" value="0b100" description="Match Store mode. Shifter data is compared to SHIFTBUF content on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL0_SMOD_0b101" value="0b101" description="Match Continuous mode. Shifter data is continuously compared to SHIFTBUF contents."/>
+      <bit_field_value name="SHIFTCTL0_SMOD_0b110" value="0b110" description=""/>
+      <bit_field_value name="SHIFTCTL0_SMOD_0b111" value="0b111" description=""/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="4" reset_value="0"/>
+    <bit_field offset="7" width="1" name="PINPOL" access="RW" reset_value="0" description="Shifter Pin Polarity">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINPOL(x)"/>
+      <bit_field_value name="SHIFTCTL0_PINPOL_0b0" value="0b0" description="Pin is active high"/>
+      <bit_field_value name="SHIFTCTL0_PINPOL_0b1" value="0b1" description="Pin is active low"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="PINSEL" access="RW" reset_value="0" description="Shifter Pin Select">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <bit_field offset="16" width="2" name="PINCFG" access="RW" reset_value="0" description="Shifter Pin Configuration">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINCFG(x)"/>
+      <bit_field_value name="SHIFTCTL0_PINCFG_0b00" value="0b00" description="Shifter pin output disabled"/>
+      <bit_field_value name="SHIFTCTL0_PINCFG_0b01" value="0b01" description="Shifter pin open drain or bidirectional output enable"/>
+      <bit_field_value name="SHIFTCTL0_PINCFG_0b10" value="0b10" description="Shifter pin bidirectional output data"/>
+      <bit_field_value name="SHIFTCTL0_PINCFG_0b11" value="0b11" description="Shifter pin output"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="5" reset_value="0"/>
+    <bit_field offset="23" width="1" name="TIMPOL" access="RW" reset_value="0" description="Timer Polarity">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_TIMPOL(x)"/>
+      <bit_field_value name="SHIFTCTL0_TIMPOL_0b0" value="0b0" description="Shift on posedge of Shift clock"/>
+      <bit_field_value name="SHIFTCTL0_TIMPOL_0b1" value="0b1" description="Shift on negedge of Shift clock"/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="TIMSEL" access="RW" reset_value="0" description="Timer Select">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_TIMSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x84" width="32" name="SHIFTCTL1" description="Shifter Control N Register">
+    <alias type="CMSIS" value="SHIFTCTL[1]"/>
+    <bit_field offset="0" width="3" name="SMOD" access="RW" reset_value="0" description="Shifter Mode">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_SMOD(x)"/>
+      <bit_field_value name="SHIFTCTL1_SMOD_0b000" value="0b000" description="Disabled."/>
+      <bit_field_value name="SHIFTCTL1_SMOD_0b001" value="0b001" description="Receive mode. Captures the current Shifter content into the SHIFTBUF on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL1_SMOD_0b010" value="0b010" description="Transmit mode. Load SHIFTBUF contents into the Shifter on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL1_SMOD_0b011" value="0b011" description="Reserved."/>
+      <bit_field_value name="SHIFTCTL1_SMOD_0b100" value="0b100" description="Match Store mode. Shifter data is compared to SHIFTBUF content on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL1_SMOD_0b101" value="0b101" description="Match Continuous mode. Shifter data is continuously compared to SHIFTBUF contents."/>
+      <bit_field_value name="SHIFTCTL1_SMOD_0b110" value="0b110" description=""/>
+      <bit_field_value name="SHIFTCTL1_SMOD_0b111" value="0b111" description=""/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="4" reset_value="0"/>
+    <bit_field offset="7" width="1" name="PINPOL" access="RW" reset_value="0" description="Shifter Pin Polarity">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINPOL(x)"/>
+      <bit_field_value name="SHIFTCTL1_PINPOL_0b0" value="0b0" description="Pin is active high"/>
+      <bit_field_value name="SHIFTCTL1_PINPOL_0b1" value="0b1" description="Pin is active low"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="PINSEL" access="RW" reset_value="0" description="Shifter Pin Select">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <bit_field offset="16" width="2" name="PINCFG" access="RW" reset_value="0" description="Shifter Pin Configuration">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINCFG(x)"/>
+      <bit_field_value name="SHIFTCTL1_PINCFG_0b00" value="0b00" description="Shifter pin output disabled"/>
+      <bit_field_value name="SHIFTCTL1_PINCFG_0b01" value="0b01" description="Shifter pin open drain or bidirectional output enable"/>
+      <bit_field_value name="SHIFTCTL1_PINCFG_0b10" value="0b10" description="Shifter pin bidirectional output data"/>
+      <bit_field_value name="SHIFTCTL1_PINCFG_0b11" value="0b11" description="Shifter pin output"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="5" reset_value="0"/>
+    <bit_field offset="23" width="1" name="TIMPOL" access="RW" reset_value="0" description="Timer Polarity">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_TIMPOL(x)"/>
+      <bit_field_value name="SHIFTCTL1_TIMPOL_0b0" value="0b0" description="Shift on posedge of Shift clock"/>
+      <bit_field_value name="SHIFTCTL1_TIMPOL_0b1" value="0b1" description="Shift on negedge of Shift clock"/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="TIMSEL" access="RW" reset_value="0" description="Timer Select">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_TIMSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x88" width="32" name="SHIFTCTL2" description="Shifter Control N Register">
+    <alias type="CMSIS" value="SHIFTCTL[2]"/>
+    <bit_field offset="0" width="3" name="SMOD" access="RW" reset_value="0" description="Shifter Mode">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_SMOD(x)"/>
+      <bit_field_value name="SHIFTCTL2_SMOD_0b000" value="0b000" description="Disabled."/>
+      <bit_field_value name="SHIFTCTL2_SMOD_0b001" value="0b001" description="Receive mode. Captures the current Shifter content into the SHIFTBUF on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL2_SMOD_0b010" value="0b010" description="Transmit mode. Load SHIFTBUF contents into the Shifter on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL2_SMOD_0b011" value="0b011" description="Reserved."/>
+      <bit_field_value name="SHIFTCTL2_SMOD_0b100" value="0b100" description="Match Store mode. Shifter data is compared to SHIFTBUF content on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL2_SMOD_0b101" value="0b101" description="Match Continuous mode. Shifter data is continuously compared to SHIFTBUF contents."/>
+      <bit_field_value name="SHIFTCTL2_SMOD_0b110" value="0b110" description=""/>
+      <bit_field_value name="SHIFTCTL2_SMOD_0b111" value="0b111" description=""/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="4" reset_value="0"/>
+    <bit_field offset="7" width="1" name="PINPOL" access="RW" reset_value="0" description="Shifter Pin Polarity">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINPOL(x)"/>
+      <bit_field_value name="SHIFTCTL2_PINPOL_0b0" value="0b0" description="Pin is active high"/>
+      <bit_field_value name="SHIFTCTL2_PINPOL_0b1" value="0b1" description="Pin is active low"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="PINSEL" access="RW" reset_value="0" description="Shifter Pin Select">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <bit_field offset="16" width="2" name="PINCFG" access="RW" reset_value="0" description="Shifter Pin Configuration">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINCFG(x)"/>
+      <bit_field_value name="SHIFTCTL2_PINCFG_0b00" value="0b00" description="Shifter pin output disabled"/>
+      <bit_field_value name="SHIFTCTL2_PINCFG_0b01" value="0b01" description="Shifter pin open drain or bidirectional output enable"/>
+      <bit_field_value name="SHIFTCTL2_PINCFG_0b10" value="0b10" description="Shifter pin bidirectional output data"/>
+      <bit_field_value name="SHIFTCTL2_PINCFG_0b11" value="0b11" description="Shifter pin output"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="5" reset_value="0"/>
+    <bit_field offset="23" width="1" name="TIMPOL" access="RW" reset_value="0" description="Timer Polarity">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_TIMPOL(x)"/>
+      <bit_field_value name="SHIFTCTL2_TIMPOL_0b0" value="0b0" description="Shift on posedge of Shift clock"/>
+      <bit_field_value name="SHIFTCTL2_TIMPOL_0b1" value="0b1" description="Shift on negedge of Shift clock"/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="TIMSEL" access="RW" reset_value="0" description="Timer Select">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_TIMSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x8C" width="32" name="SHIFTCTL3" description="Shifter Control N Register">
+    <alias type="CMSIS" value="SHIFTCTL[3]"/>
+    <bit_field offset="0" width="3" name="SMOD" access="RW" reset_value="0" description="Shifter Mode">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_SMOD(x)"/>
+      <bit_field_value name="SHIFTCTL3_SMOD_0b000" value="0b000" description="Disabled."/>
+      <bit_field_value name="SHIFTCTL3_SMOD_0b001" value="0b001" description="Receive mode. Captures the current Shifter content into the SHIFTBUF on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL3_SMOD_0b010" value="0b010" description="Transmit mode. Load SHIFTBUF contents into the Shifter on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL3_SMOD_0b011" value="0b011" description="Reserved."/>
+      <bit_field_value name="SHIFTCTL3_SMOD_0b100" value="0b100" description="Match Store mode. Shifter data is compared to SHIFTBUF content on expiration of the Timer."/>
+      <bit_field_value name="SHIFTCTL3_SMOD_0b101" value="0b101" description="Match Continuous mode. Shifter data is continuously compared to SHIFTBUF contents."/>
+      <bit_field_value name="SHIFTCTL3_SMOD_0b110" value="0b110" description=""/>
+      <bit_field_value name="SHIFTCTL3_SMOD_0b111" value="0b111" description=""/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="4" reset_value="0"/>
+    <bit_field offset="7" width="1" name="PINPOL" access="RW" reset_value="0" description="Shifter Pin Polarity">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINPOL(x)"/>
+      <bit_field_value name="SHIFTCTL3_PINPOL_0b0" value="0b0" description="Pin is active high"/>
+      <bit_field_value name="SHIFTCTL3_PINPOL_0b1" value="0b1" description="Pin is active low"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="PINSEL" access="RW" reset_value="0" description="Shifter Pin Select">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <bit_field offset="16" width="2" name="PINCFG" access="RW" reset_value="0" description="Shifter Pin Configuration">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_PINCFG(x)"/>
+      <bit_field_value name="SHIFTCTL3_PINCFG_0b00" value="0b00" description="Shifter pin output disabled"/>
+      <bit_field_value name="SHIFTCTL3_PINCFG_0b01" value="0b01" description="Shifter pin open drain or bidirectional output enable"/>
+      <bit_field_value name="SHIFTCTL3_PINCFG_0b10" value="0b10" description="Shifter pin bidirectional output data"/>
+      <bit_field_value name="SHIFTCTL3_PINCFG_0b11" value="0b11" description="Shifter pin output"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="5" reset_value="0"/>
+    <bit_field offset="23" width="1" name="TIMPOL" access="RW" reset_value="0" description="Timer Polarity">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_TIMPOL(x)"/>
+      <bit_field_value name="SHIFTCTL3_TIMPOL_0b0" value="0b0" description="Shift on posedge of Shift clock"/>
+      <bit_field_value name="SHIFTCTL3_TIMPOL_0b1" value="0b1" description="Shift on negedge of Shift clock"/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="TIMSEL" access="RW" reset_value="0" description="Timer Select">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCTL_TIMSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x100" width="32" name="SHIFTCFG0" description="Shifter Configuration N Register">
+    <alias type="CMSIS" value="SHIFTCFG[0]"/>
+    <bit_field offset="0" width="2" name="SSTART" access="RW" reset_value="0" description="Shifter Start bit">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_SSTART(x)"/>
+      <bit_field_value name="SHIFTCFG0_SSTART_0b00" value="0b00" description="Start bit disabled for transmitter/receiver/match store, transmitter loads data on enable"/>
+      <bit_field_value name="SHIFTCFG0_SSTART_0b01" value="0b01" description="Start bit disabled for transmitter/receiver/match store, transmitter loads data on first shift"/>
+      <bit_field_value name="SHIFTCFG0_SSTART_0b10" value="0b10" description="Transmitter outputs start bit value 0 before loading data on first shift, receiver/match store sets error flag if start bit is not 0"/>
+      <bit_field_value name="SHIFTCFG0_SSTART_0b11" value="0b11" description="Transmitter outputs start bit value 1 before loading data on first shift, receiver/match store sets error flag if start bit is not 1"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="SSTOP" access="RW" reset_value="0" description="Shifter Stop bit">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_SSTOP(x)"/>
+      <bit_field_value name="SHIFTCFG0_SSTOP_0b00" value="0b00" description="Stop bit disabled for transmitter/receiver/match store"/>
+      <bit_field_value name="SHIFTCFG0_SSTOP_0b01" value="0b01" description="Reserved for transmitter/receiver/match store"/>
+      <bit_field_value name="SHIFTCFG0_SSTOP_0b10" value="0b10" description="Transmitter outputs stop bit value 0 on store, receiver/match store sets error flag if stop bit is not 0"/>
+      <bit_field_value name="SHIFTCFG0_SSTOP_0b11" value="0b11" description="Transmitter outputs stop bit value 1 on store, receiver/match store sets error flag if stop bit is not 1"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="1" name="INSRC" access="RW" reset_value="0" description="Input Source">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_INSRC(x)"/>
+      <bit_field_value name="SHIFTCFG0_INSRC_0b0" value="0b0" description="Pin"/>
+      <bit_field_value name="SHIFTCFG0_INSRC_0b1" value="0b1" description="Shifter N+1 Output"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <reserved_bit_field offset="16" width="3" reset_value="0"/>
+    <reserved_bit_field offset="19" width="13" reset_value="0"/>
+  </register>
+  <register offset="0x104" width="32" name="SHIFTCFG1" description="Shifter Configuration N Register">
+    <alias type="CMSIS" value="SHIFTCFG[1]"/>
+    <bit_field offset="0" width="2" name="SSTART" access="RW" reset_value="0" description="Shifter Start bit">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_SSTART(x)"/>
+      <bit_field_value name="SHIFTCFG1_SSTART_0b00" value="0b00" description="Start bit disabled for transmitter/receiver/match store, transmitter loads data on enable"/>
+      <bit_field_value name="SHIFTCFG1_SSTART_0b01" value="0b01" description="Start bit disabled for transmitter/receiver/match store, transmitter loads data on first shift"/>
+      <bit_field_value name="SHIFTCFG1_SSTART_0b10" value="0b10" description="Transmitter outputs start bit value 0 before loading data on first shift, receiver/match store sets error flag if start bit is not 0"/>
+      <bit_field_value name="SHIFTCFG1_SSTART_0b11" value="0b11" description="Transmitter outputs start bit value 1 before loading data on first shift, receiver/match store sets error flag if start bit is not 1"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="SSTOP" access="RW" reset_value="0" description="Shifter Stop bit">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_SSTOP(x)"/>
+      <bit_field_value name="SHIFTCFG1_SSTOP_0b00" value="0b00" description="Stop bit disabled for transmitter/receiver/match store"/>
+      <bit_field_value name="SHIFTCFG1_SSTOP_0b01" value="0b01" description="Reserved for transmitter/receiver/match store"/>
+      <bit_field_value name="SHIFTCFG1_SSTOP_0b10" value="0b10" description="Transmitter outputs stop bit value 0 on store, receiver/match store sets error flag if stop bit is not 0"/>
+      <bit_field_value name="SHIFTCFG1_SSTOP_0b11" value="0b11" description="Transmitter outputs stop bit value 1 on store, receiver/match store sets error flag if stop bit is not 1"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="1" name="INSRC" access="RW" reset_value="0" description="Input Source">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_INSRC(x)"/>
+      <bit_field_value name="SHIFTCFG1_INSRC_0b0" value="0b0" description="Pin"/>
+      <bit_field_value name="SHIFTCFG1_INSRC_0b1" value="0b1" description="Shifter N+1 Output"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <reserved_bit_field offset="16" width="3" reset_value="0"/>
+    <reserved_bit_field offset="19" width="13" reset_value="0"/>
+  </register>
+  <register offset="0x108" width="32" name="SHIFTCFG2" description="Shifter Configuration N Register">
+    <alias type="CMSIS" value="SHIFTCFG[2]"/>
+    <bit_field offset="0" width="2" name="SSTART" access="RW" reset_value="0" description="Shifter Start bit">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_SSTART(x)"/>
+      <bit_field_value name="SHIFTCFG2_SSTART_0b00" value="0b00" description="Start bit disabled for transmitter/receiver/match store, transmitter loads data on enable"/>
+      <bit_field_value name="SHIFTCFG2_SSTART_0b01" value="0b01" description="Start bit disabled for transmitter/receiver/match store, transmitter loads data on first shift"/>
+      <bit_field_value name="SHIFTCFG2_SSTART_0b10" value="0b10" description="Transmitter outputs start bit value 0 before loading data on first shift, receiver/match store sets error flag if start bit is not 0"/>
+      <bit_field_value name="SHIFTCFG2_SSTART_0b11" value="0b11" description="Transmitter outputs start bit value 1 before loading data on first shift, receiver/match store sets error flag if start bit is not 1"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="SSTOP" access="RW" reset_value="0" description="Shifter Stop bit">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_SSTOP(x)"/>
+      <bit_field_value name="SHIFTCFG2_SSTOP_0b00" value="0b00" description="Stop bit disabled for transmitter/receiver/match store"/>
+      <bit_field_value name="SHIFTCFG2_SSTOP_0b01" value="0b01" description="Reserved for transmitter/receiver/match store"/>
+      <bit_field_value name="SHIFTCFG2_SSTOP_0b10" value="0b10" description="Transmitter outputs stop bit value 0 on store, receiver/match store sets error flag if stop bit is not 0"/>
+      <bit_field_value name="SHIFTCFG2_SSTOP_0b11" value="0b11" description="Transmitter outputs stop bit value 1 on store, receiver/match store sets error flag if stop bit is not 1"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="1" name="INSRC" access="RW" reset_value="0" description="Input Source">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_INSRC(x)"/>
+      <bit_field_value name="SHIFTCFG2_INSRC_0b0" value="0b0" description="Pin"/>
+      <bit_field_value name="SHIFTCFG2_INSRC_0b1" value="0b1" description="Shifter N+1 Output"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <reserved_bit_field offset="16" width="3" reset_value="0"/>
+    <reserved_bit_field offset="19" width="13" reset_value="0"/>
+  </register>
+  <register offset="0x10C" width="32" name="SHIFTCFG3" description="Shifter Configuration N Register">
+    <alias type="CMSIS" value="SHIFTCFG[3]"/>
+    <bit_field offset="0" width="2" name="SSTART" access="RW" reset_value="0" description="Shifter Start bit">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_SSTART(x)"/>
+      <bit_field_value name="SHIFTCFG3_SSTART_0b00" value="0b00" description="Start bit disabled for transmitter/receiver/match store, transmitter loads data on enable"/>
+      <bit_field_value name="SHIFTCFG3_SSTART_0b01" value="0b01" description="Start bit disabled for transmitter/receiver/match store, transmitter loads data on first shift"/>
+      <bit_field_value name="SHIFTCFG3_SSTART_0b10" value="0b10" description="Transmitter outputs start bit value 0 before loading data on first shift, receiver/match store sets error flag if start bit is not 0"/>
+      <bit_field_value name="SHIFTCFG3_SSTART_0b11" value="0b11" description="Transmitter outputs start bit value 1 before loading data on first shift, receiver/match store sets error flag if start bit is not 1"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="SSTOP" access="RW" reset_value="0" description="Shifter Stop bit">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_SSTOP(x)"/>
+      <bit_field_value name="SHIFTCFG3_SSTOP_0b00" value="0b00" description="Stop bit disabled for transmitter/receiver/match store"/>
+      <bit_field_value name="SHIFTCFG3_SSTOP_0b01" value="0b01" description="Reserved for transmitter/receiver/match store"/>
+      <bit_field_value name="SHIFTCFG3_SSTOP_0b10" value="0b10" description="Transmitter outputs stop bit value 0 on store, receiver/match store sets error flag if stop bit is not 0"/>
+      <bit_field_value name="SHIFTCFG3_SSTOP_0b11" value="0b11" description="Transmitter outputs stop bit value 1 on store, receiver/match store sets error flag if stop bit is not 1"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <reserved_bit_field offset="7" width="1" reset_value="0"/>
+    <bit_field offset="8" width="1" name="INSRC" access="RW" reset_value="0" description="Input Source">
+      <alias type="CMSIS" value="FLEXIO_SHIFTCFG_INSRC(x)"/>
+      <bit_field_value name="SHIFTCFG3_INSRC_0b0" value="0b0" description="Pin"/>
+      <bit_field_value name="SHIFTCFG3_INSRC_0b1" value="0b1" description="Shifter N+1 Output"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <reserved_bit_field offset="16" width="3" reset_value="0"/>
+    <reserved_bit_field offset="19" width="13" reset_value="0"/>
+  </register>
+  <register offset="0x200" width="32" name="SHIFTBUF0" description="Shifter Buffer N Register">
+    <alias type="CMSIS" value="SHIFTBUF[0]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUF" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUF_SHIFTBUF(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x204" width="32" name="SHIFTBUF1" description="Shifter Buffer N Register">
+    <alias type="CMSIS" value="SHIFTBUF[1]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUF" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUF_SHIFTBUF(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x208" width="32" name="SHIFTBUF2" description="Shifter Buffer N Register">
+    <alias type="CMSIS" value="SHIFTBUF[2]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUF" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUF_SHIFTBUF(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x20C" width="32" name="SHIFTBUF3" description="Shifter Buffer N Register">
+    <alias type="CMSIS" value="SHIFTBUF[3]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUF" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUF_SHIFTBUF(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x280" width="32" name="SHIFTBUFBIS0" description="Shifter Buffer N Bit Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBIS[0]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBIS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBIS_SHIFTBUFBIS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x284" width="32" name="SHIFTBUFBIS1" description="Shifter Buffer N Bit Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBIS[1]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBIS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBIS_SHIFTBUFBIS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x288" width="32" name="SHIFTBUFBIS2" description="Shifter Buffer N Bit Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBIS[2]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBIS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBIS_SHIFTBUFBIS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x28C" width="32" name="SHIFTBUFBIS3" description="Shifter Buffer N Bit Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBIS[3]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBIS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBIS_SHIFTBUFBIS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x300" width="32" name="SHIFTBUFBYS0" description="Shifter Buffer N Byte Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBYS[0]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBYS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBYS_SHIFTBUFBYS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x304" width="32" name="SHIFTBUFBYS1" description="Shifter Buffer N Byte Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBYS[1]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBYS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBYS_SHIFTBUFBYS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x308" width="32" name="SHIFTBUFBYS2" description="Shifter Buffer N Byte Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBYS[2]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBYS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBYS_SHIFTBUFBYS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x30C" width="32" name="SHIFTBUFBYS3" description="Shifter Buffer N Byte Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBYS[3]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBYS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBYS_SHIFTBUFBYS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x380" width="32" name="SHIFTBUFBBS0" description="Shifter Buffer N Bit Byte Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBBS[0]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBBS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBBS_SHIFTBUFBBS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x384" width="32" name="SHIFTBUFBBS1" description="Shifter Buffer N Bit Byte Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBBS[1]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBBS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBBS_SHIFTBUFBBS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x388" width="32" name="SHIFTBUFBBS2" description="Shifter Buffer N Bit Byte Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBBS[2]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBBS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBBS_SHIFTBUFBBS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x38C" width="32" name="SHIFTBUFBBS3" description="Shifter Buffer N Bit Byte Swapped Register">
+    <alias type="CMSIS" value="SHIFTBUFBBS[3]"/>
+    <bit_field offset="0" width="32" name="SHIFTBUFBBS" access="RW" reset_value="0" description="Shift Buffer">
+      <alias type="CMSIS" value="FLEXIO_SHIFTBUFBBS_SHIFTBUFBBS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x400" width="32" name="TIMCTL0" description="Timer Control N Register">
+    <alias type="CMSIS" value="TIMCTL[0]"/>
+    <bit_field offset="0" width="2" name="TIMOD" access="RW" reset_value="0" description="Timer Mode">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TIMOD(x)"/>
+      <bit_field_value name="TIMCTL0_TIMOD_0b00" value="0b00" description="Timer Disabled."/>
+      <bit_field_value name="TIMCTL0_TIMOD_0b01" value="0b01" description="Dual 8-bit counters baud/bit mode."/>
+      <bit_field_value name="TIMCTL0_TIMOD_0b10" value="0b10" description="Dual 8-bit counters PWM mode."/>
+      <bit_field_value name="TIMCTL0_TIMOD_0b11" value="0b11" description="Single 16-bit counter mode."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="5" reset_value="0"/>
+    <bit_field offset="7" width="1" name="PINPOL" access="RW" reset_value="0" description="Timer Pin Polarity">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINPOL(x)"/>
+      <bit_field_value name="TIMCTL0_PINPOL_0b0" value="0b0" description="Pin is active high"/>
+      <bit_field_value name="TIMCTL0_PINPOL_0b1" value="0b1" description="Pin is active low"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="PINSEL" access="RW" reset_value="0" description="Timer Pin Select">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <bit_field offset="16" width="2" name="PINCFG" access="RW" reset_value="0" description="Timer Pin Configuration">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINCFG(x)"/>
+      <bit_field_value name="TIMCTL0_PINCFG_0b00" value="0b00" description="Timer pin output disabled"/>
+      <bit_field_value name="TIMCTL0_PINCFG_0b01" value="0b01" description="Timer pin open drain or bidirectional output enable"/>
+      <bit_field_value name="TIMCTL0_PINCFG_0b10" value="0b10" description="Timer pin bidirectional output data"/>
+      <bit_field_value name="TIMCTL0_PINCFG_0b11" value="0b11" description="Timer pin output"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="4" reset_value="0"/>
+    <bit_field offset="22" width="1" name="TRGSRC" access="RW" reset_value="0" description="Trigger Source">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGSRC(x)"/>
+      <bit_field_value name="TIMCTL0_TRGSRC_0b0" value="0b0" description="External trigger selected"/>
+      <bit_field_value name="TIMCTL0_TRGSRC_0b1" value="0b1" description="Internal trigger selected"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="TRGPOL" access="RW" reset_value="0" description="Trigger Polarity">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGPOL(x)"/>
+      <bit_field_value name="TIMCTL0_TRGPOL_0b0" value="0b0" description="Trigger active high"/>
+      <bit_field_value name="TIMCTL0_TRGPOL_0b1" value="0b1" description="Trigger active low"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="TRGSEL" access="RW" reset_value="0" description="Trigger Select">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x404" width="32" name="TIMCTL1" description="Timer Control N Register">
+    <alias type="CMSIS" value="TIMCTL[1]"/>
+    <bit_field offset="0" width="2" name="TIMOD" access="RW" reset_value="0" description="Timer Mode">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TIMOD(x)"/>
+      <bit_field_value name="TIMCTL1_TIMOD_0b00" value="0b00" description="Timer Disabled."/>
+      <bit_field_value name="TIMCTL1_TIMOD_0b01" value="0b01" description="Dual 8-bit counters baud/bit mode."/>
+      <bit_field_value name="TIMCTL1_TIMOD_0b10" value="0b10" description="Dual 8-bit counters PWM mode."/>
+      <bit_field_value name="TIMCTL1_TIMOD_0b11" value="0b11" description="Single 16-bit counter mode."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="5" reset_value="0"/>
+    <bit_field offset="7" width="1" name="PINPOL" access="RW" reset_value="0" description="Timer Pin Polarity">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINPOL(x)"/>
+      <bit_field_value name="TIMCTL1_PINPOL_0b0" value="0b0" description="Pin is active high"/>
+      <bit_field_value name="TIMCTL1_PINPOL_0b1" value="0b1" description="Pin is active low"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="PINSEL" access="RW" reset_value="0" description="Timer Pin Select">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <bit_field offset="16" width="2" name="PINCFG" access="RW" reset_value="0" description="Timer Pin Configuration">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINCFG(x)"/>
+      <bit_field_value name="TIMCTL1_PINCFG_0b00" value="0b00" description="Timer pin output disabled"/>
+      <bit_field_value name="TIMCTL1_PINCFG_0b01" value="0b01" description="Timer pin open drain or bidirectional output enable"/>
+      <bit_field_value name="TIMCTL1_PINCFG_0b10" value="0b10" description="Timer pin bidirectional output data"/>
+      <bit_field_value name="TIMCTL1_PINCFG_0b11" value="0b11" description="Timer pin output"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="4" reset_value="0"/>
+    <bit_field offset="22" width="1" name="TRGSRC" access="RW" reset_value="0" description="Trigger Source">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGSRC(x)"/>
+      <bit_field_value name="TIMCTL1_TRGSRC_0b0" value="0b0" description="External trigger selected"/>
+      <bit_field_value name="TIMCTL1_TRGSRC_0b1" value="0b1" description="Internal trigger selected"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="TRGPOL" access="RW" reset_value="0" description="Trigger Polarity">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGPOL(x)"/>
+      <bit_field_value name="TIMCTL1_TRGPOL_0b0" value="0b0" description="Trigger active high"/>
+      <bit_field_value name="TIMCTL1_TRGPOL_0b1" value="0b1" description="Trigger active low"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="TRGSEL" access="RW" reset_value="0" description="Trigger Select">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x408" width="32" name="TIMCTL2" description="Timer Control N Register">
+    <alias type="CMSIS" value="TIMCTL[2]"/>
+    <bit_field offset="0" width="2" name="TIMOD" access="RW" reset_value="0" description="Timer Mode">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TIMOD(x)"/>
+      <bit_field_value name="TIMCTL2_TIMOD_0b00" value="0b00" description="Timer Disabled."/>
+      <bit_field_value name="TIMCTL2_TIMOD_0b01" value="0b01" description="Dual 8-bit counters baud/bit mode."/>
+      <bit_field_value name="TIMCTL2_TIMOD_0b10" value="0b10" description="Dual 8-bit counters PWM mode."/>
+      <bit_field_value name="TIMCTL2_TIMOD_0b11" value="0b11" description="Single 16-bit counter mode."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="5" reset_value="0"/>
+    <bit_field offset="7" width="1" name="PINPOL" access="RW" reset_value="0" description="Timer Pin Polarity">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINPOL(x)"/>
+      <bit_field_value name="TIMCTL2_PINPOL_0b0" value="0b0" description="Pin is active high"/>
+      <bit_field_value name="TIMCTL2_PINPOL_0b1" value="0b1" description="Pin is active low"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="PINSEL" access="RW" reset_value="0" description="Timer Pin Select">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <bit_field offset="16" width="2" name="PINCFG" access="RW" reset_value="0" description="Timer Pin Configuration">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINCFG(x)"/>
+      <bit_field_value name="TIMCTL2_PINCFG_0b00" value="0b00" description="Timer pin output disabled"/>
+      <bit_field_value name="TIMCTL2_PINCFG_0b01" value="0b01" description="Timer pin open drain or bidirectional output enable"/>
+      <bit_field_value name="TIMCTL2_PINCFG_0b10" value="0b10" description="Timer pin bidirectional output data"/>
+      <bit_field_value name="TIMCTL2_PINCFG_0b11" value="0b11" description="Timer pin output"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="4" reset_value="0"/>
+    <bit_field offset="22" width="1" name="TRGSRC" access="RW" reset_value="0" description="Trigger Source">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGSRC(x)"/>
+      <bit_field_value name="TIMCTL2_TRGSRC_0b0" value="0b0" description="External trigger selected"/>
+      <bit_field_value name="TIMCTL2_TRGSRC_0b1" value="0b1" description="Internal trigger selected"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="TRGPOL" access="RW" reset_value="0" description="Trigger Polarity">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGPOL(x)"/>
+      <bit_field_value name="TIMCTL2_TRGPOL_0b0" value="0b0" description="Trigger active high"/>
+      <bit_field_value name="TIMCTL2_TRGPOL_0b1" value="0b1" description="Trigger active low"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="TRGSEL" access="RW" reset_value="0" description="Trigger Select">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x40C" width="32" name="TIMCTL3" description="Timer Control N Register">
+    <alias type="CMSIS" value="TIMCTL[3]"/>
+    <bit_field offset="0" width="2" name="TIMOD" access="RW" reset_value="0" description="Timer Mode">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TIMOD(x)"/>
+      <bit_field_value name="TIMCTL3_TIMOD_0b00" value="0b00" description="Timer Disabled."/>
+      <bit_field_value name="TIMCTL3_TIMOD_0b01" value="0b01" description="Dual 8-bit counters baud/bit mode."/>
+      <bit_field_value name="TIMCTL3_TIMOD_0b10" value="0b10" description="Dual 8-bit counters PWM mode."/>
+      <bit_field_value name="TIMCTL3_TIMOD_0b11" value="0b11" description="Single 16-bit counter mode."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="5" reset_value="0"/>
+    <bit_field offset="7" width="1" name="PINPOL" access="RW" reset_value="0" description="Timer Pin Polarity">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINPOL(x)"/>
+      <bit_field_value name="TIMCTL3_PINPOL_0b0" value="0b0" description="Pin is active high"/>
+      <bit_field_value name="TIMCTL3_PINPOL_0b1" value="0b1" description="Pin is active low"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="PINSEL" access="RW" reset_value="0" description="Timer Pin Select">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="5" reset_value="0"/>
+    <bit_field offset="16" width="2" name="PINCFG" access="RW" reset_value="0" description="Timer Pin Configuration">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_PINCFG(x)"/>
+      <bit_field_value name="TIMCTL3_PINCFG_0b00" value="0b00" description="Timer pin output disabled"/>
+      <bit_field_value name="TIMCTL3_PINCFG_0b01" value="0b01" description="Timer pin open drain or bidirectional output enable"/>
+      <bit_field_value name="TIMCTL3_PINCFG_0b10" value="0b10" description="Timer pin bidirectional output data"/>
+      <bit_field_value name="TIMCTL3_PINCFG_0b11" value="0b11" description="Timer pin output"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="4" reset_value="0"/>
+    <bit_field offset="22" width="1" name="TRGSRC" access="RW" reset_value="0" description="Trigger Source">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGSRC(x)"/>
+      <bit_field_value name="TIMCTL3_TRGSRC_0b0" value="0b0" description="External trigger selected"/>
+      <bit_field_value name="TIMCTL3_TRGSRC_0b1" value="0b1" description="Internal trigger selected"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="TRGPOL" access="RW" reset_value="0" description="Trigger Polarity">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGPOL(x)"/>
+      <bit_field_value name="TIMCTL3_TRGPOL_0b0" value="0b0" description="Trigger active high"/>
+      <bit_field_value name="TIMCTL3_TRGPOL_0b1" value="0b1" description="Trigger active low"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="TRGSEL" access="RW" reset_value="0" description="Trigger Select">
+      <alias type="CMSIS" value="FLEXIO_TIMCTL_TRGSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x480" width="32" name="TIMCFG0" description="Timer Configuration N Register">
+    <alias type="CMSIS" value="TIMCFG[0]"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0"/>
+    <bit_field offset="1" width="1" name="TSTART" access="RW" reset_value="0" description="Timer Start Bit">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TSTART(x)"/>
+      <bit_field_value name="TIMCFG0_TSTART_0b0" value="0b0" description="Start bit disabled"/>
+      <bit_field_value name="TIMCFG0_TSTART_0b1" value="0b1" description="Start bit enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="TSTOP" access="RW" reset_value="0" description="Timer Stop Bit">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TSTOP(x)"/>
+      <bit_field_value name="TIMCFG0_TSTOP_0b00" value="0b00" description="Stop bit disabled"/>
+      <bit_field_value name="TIMCFG0_TSTOP_0b01" value="0b01" description="Stop bit is enabled on timer compare"/>
+      <bit_field_value name="TIMCFG0_TSTOP_0b10" value="0b10" description="Stop bit is enabled on timer disable"/>
+      <bit_field_value name="TIMCFG0_TSTOP_0b11" value="0b11" description="Stop bit is enabled on timer compare and timer disable"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="3" name="TIMENA" access="RW" reset_value="0" description="Timer Enable">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMENA(x)"/>
+      <bit_field_value name="TIMCFG0_TIMENA_0b000" value="0b000" description="Timer always enabled"/>
+      <bit_field_value name="TIMCFG0_TIMENA_0b001" value="0b001" description="Timer enabled on Timer N-1 enable"/>
+      <bit_field_value name="TIMCFG0_TIMENA_0b010" value="0b010" description="Timer enabled on Trigger high"/>
+      <bit_field_value name="TIMCFG0_TIMENA_0b011" value="0b011" description="Timer enabled on Trigger high and Pin high"/>
+      <bit_field_value name="TIMCFG0_TIMENA_0b100" value="0b100" description="Timer enabled on Pin rising edge"/>
+      <bit_field_value name="TIMCFG0_TIMENA_0b101" value="0b101" description="Timer enabled on Pin rising edge and Trigger high"/>
+      <bit_field_value name="TIMCFG0_TIMENA_0b110" value="0b110" description="Timer enabled on Trigger rising edge"/>
+      <bit_field_value name="TIMCFG0_TIMENA_0b111" value="0b111" description="Timer enabled on Trigger rising or falling edge"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="1" reset_value="0"/>
+    <bit_field offset="12" width="3" name="TIMDIS" access="RW" reset_value="0" description="Timer Disable">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMDIS(x)"/>
+      <bit_field_value name="TIMCFG0_TIMDIS_0b000" value="0b000" description="Timer never disabled"/>
+      <bit_field_value name="TIMCFG0_TIMDIS_0b001" value="0b001" description="Timer disabled on Timer N-1 disable"/>
+      <bit_field_value name="TIMCFG0_TIMDIS_0b010" value="0b010" description="Timer disabled on Timer compare"/>
+      <bit_field_value name="TIMCFG0_TIMDIS_0b011" value="0b011" description="Timer disabled on Timer compare and Trigger Low"/>
+      <bit_field_value name="TIMCFG0_TIMDIS_0b100" value="0b100" description="Timer disabled on Pin rising or falling edge"/>
+      <bit_field_value name="TIMCFG0_TIMDIS_0b101" value="0b101" description="Timer disabled on Pin rising or falling edge provided Trigger is high"/>
+      <bit_field_value name="TIMCFG0_TIMDIS_0b110" value="0b110" description="Timer disabled on Trigger falling edge"/>
+      <bit_field_value name="TIMCFG0_TIMDIS_0b111" value="0b111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="3" name="TIMRST" access="RW" reset_value="0" description="Timer Reset">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMRST(x)"/>
+      <bit_field_value name="TIMCFG0_TIMRST_0b000" value="0b000" description="Timer never reset"/>
+      <bit_field_value name="TIMCFG0_TIMRST_0b001" value="0b001" description="Reserved"/>
+      <bit_field_value name="TIMCFG0_TIMRST_0b010" value="0b010" description="Timer reset on Timer Pin equal to Timer Output"/>
+      <bit_field_value name="TIMCFG0_TIMRST_0b011" value="0b011" description="Timer reset on Timer Trigger equal to Timer Output"/>
+      <bit_field_value name="TIMCFG0_TIMRST_0b100" value="0b100" description="Timer reset on Timer Pin rising edge"/>
+      <bit_field_value name="TIMCFG0_TIMRST_0b101" value="0b101" description="Reserved"/>
+      <bit_field_value name="TIMCFG0_TIMRST_0b110" value="0b110" description="Timer reset on Trigger rising edge"/>
+      <bit_field_value name="TIMCFG0_TIMRST_0b111" value="0b111" description="Timer reset on Trigger rising or falling edge"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="1" reset_value="0"/>
+    <bit_field offset="20" width="2" name="TIMDEC" access="RW" reset_value="0" description="Timer Decrement">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMDEC(x)"/>
+      <bit_field_value name="TIMCFG0_TIMDEC_0b00" value="0b00" description="Decrement counter on FlexIO clock, Shift clock equals Timer output."/>
+      <bit_field_value name="TIMCFG0_TIMDEC_0b01" value="0b01" description="Decrement counter on Trigger input (both edges), Shift clock equals Timer output."/>
+      <bit_field_value name="TIMCFG0_TIMDEC_0b10" value="0b10" description="Decrement counter on Pin input (both edges), Shift clock equals Pin input."/>
+      <bit_field_value name="TIMCFG0_TIMDEC_0b11" value="0b11" description="Decrement counter on Trigger input (both edges), Shift clock equals Trigger input."/>
+    </bit_field>
+    <reserved_bit_field offset="22" width="2" reset_value="0"/>
+    <bit_field offset="24" width="2" name="TIMOUT" access="RW" reset_value="0" description="Timer Output">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMOUT(x)"/>
+      <bit_field_value name="TIMCFG0_TIMOUT_0b00" value="0b00" description="Timer output is logic one when enabled and is not affected by timer reset"/>
+      <bit_field_value name="TIMCFG0_TIMOUT_0b01" value="0b01" description="Timer output is logic zero when enabled and is not affected by timer reset"/>
+      <bit_field_value name="TIMCFG0_TIMOUT_0b10" value="0b10" description="Timer output is logic one when enabled and on timer reset"/>
+      <bit_field_value name="TIMCFG0_TIMOUT_0b11" value="0b11" description="Timer output is logic zero when enabled and on timer reset"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x484" width="32" name="TIMCFG1" description="Timer Configuration N Register">
+    <alias type="CMSIS" value="TIMCFG[1]"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0"/>
+    <bit_field offset="1" width="1" name="TSTART" access="RW" reset_value="0" description="Timer Start Bit">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TSTART(x)"/>
+      <bit_field_value name="TIMCFG1_TSTART_0b0" value="0b0" description="Start bit disabled"/>
+      <bit_field_value name="TIMCFG1_TSTART_0b1" value="0b1" description="Start bit enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="TSTOP" access="RW" reset_value="0" description="Timer Stop Bit">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TSTOP(x)"/>
+      <bit_field_value name="TIMCFG1_TSTOP_0b00" value="0b00" description="Stop bit disabled"/>
+      <bit_field_value name="TIMCFG1_TSTOP_0b01" value="0b01" description="Stop bit is enabled on timer compare"/>
+      <bit_field_value name="TIMCFG1_TSTOP_0b10" value="0b10" description="Stop bit is enabled on timer disable"/>
+      <bit_field_value name="TIMCFG1_TSTOP_0b11" value="0b11" description="Stop bit is enabled on timer compare and timer disable"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="3" name="TIMENA" access="RW" reset_value="0" description="Timer Enable">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMENA(x)"/>
+      <bit_field_value name="TIMCFG1_TIMENA_0b000" value="0b000" description="Timer always enabled"/>
+      <bit_field_value name="TIMCFG1_TIMENA_0b001" value="0b001" description="Timer enabled on Timer N-1 enable"/>
+      <bit_field_value name="TIMCFG1_TIMENA_0b010" value="0b010" description="Timer enabled on Trigger high"/>
+      <bit_field_value name="TIMCFG1_TIMENA_0b011" value="0b011" description="Timer enabled on Trigger high and Pin high"/>
+      <bit_field_value name="TIMCFG1_TIMENA_0b100" value="0b100" description="Timer enabled on Pin rising edge"/>
+      <bit_field_value name="TIMCFG1_TIMENA_0b101" value="0b101" description="Timer enabled on Pin rising edge and Trigger high"/>
+      <bit_field_value name="TIMCFG1_TIMENA_0b110" value="0b110" description="Timer enabled on Trigger rising edge"/>
+      <bit_field_value name="TIMCFG1_TIMENA_0b111" value="0b111" description="Timer enabled on Trigger rising or falling edge"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="1" reset_value="0"/>
+    <bit_field offset="12" width="3" name="TIMDIS" access="RW" reset_value="0" description="Timer Disable">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMDIS(x)"/>
+      <bit_field_value name="TIMCFG1_TIMDIS_0b000" value="0b000" description="Timer never disabled"/>
+      <bit_field_value name="TIMCFG1_TIMDIS_0b001" value="0b001" description="Timer disabled on Timer N-1 disable"/>
+      <bit_field_value name="TIMCFG1_TIMDIS_0b010" value="0b010" description="Timer disabled on Timer compare"/>
+      <bit_field_value name="TIMCFG1_TIMDIS_0b011" value="0b011" description="Timer disabled on Timer compare and Trigger Low"/>
+      <bit_field_value name="TIMCFG1_TIMDIS_0b100" value="0b100" description="Timer disabled on Pin rising or falling edge"/>
+      <bit_field_value name="TIMCFG1_TIMDIS_0b101" value="0b101" description="Timer disabled on Pin rising or falling edge provided Trigger is high"/>
+      <bit_field_value name="TIMCFG1_TIMDIS_0b110" value="0b110" description="Timer disabled on Trigger falling edge"/>
+      <bit_field_value name="TIMCFG1_TIMDIS_0b111" value="0b111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="3" name="TIMRST" access="RW" reset_value="0" description="Timer Reset">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMRST(x)"/>
+      <bit_field_value name="TIMCFG1_TIMRST_0b000" value="0b000" description="Timer never reset"/>
+      <bit_field_value name="TIMCFG1_TIMRST_0b001" value="0b001" description="Reserved"/>
+      <bit_field_value name="TIMCFG1_TIMRST_0b010" value="0b010" description="Timer reset on Timer Pin equal to Timer Output"/>
+      <bit_field_value name="TIMCFG1_TIMRST_0b011" value="0b011" description="Timer reset on Timer Trigger equal to Timer Output"/>
+      <bit_field_value name="TIMCFG1_TIMRST_0b100" value="0b100" description="Timer reset on Timer Pin rising edge"/>
+      <bit_field_value name="TIMCFG1_TIMRST_0b101" value="0b101" description="Reserved"/>
+      <bit_field_value name="TIMCFG1_TIMRST_0b110" value="0b110" description="Timer reset on Trigger rising edge"/>
+      <bit_field_value name="TIMCFG1_TIMRST_0b111" value="0b111" description="Timer reset on Trigger rising or falling edge"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="1" reset_value="0"/>
+    <bit_field offset="20" width="2" name="TIMDEC" access="RW" reset_value="0" description="Timer Decrement">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMDEC(x)"/>
+      <bit_field_value name="TIMCFG1_TIMDEC_0b00" value="0b00" description="Decrement counter on FlexIO clock, Shift clock equals Timer output."/>
+      <bit_field_value name="TIMCFG1_TIMDEC_0b01" value="0b01" description="Decrement counter on Trigger input (both edges), Shift clock equals Timer output."/>
+      <bit_field_value name="TIMCFG1_TIMDEC_0b10" value="0b10" description="Decrement counter on Pin input (both edges), Shift clock equals Pin input."/>
+      <bit_field_value name="TIMCFG1_TIMDEC_0b11" value="0b11" description="Decrement counter on Trigger input (both edges), Shift clock equals Trigger input."/>
+    </bit_field>
+    <reserved_bit_field offset="22" width="2" reset_value="0"/>
+    <bit_field offset="24" width="2" name="TIMOUT" access="RW" reset_value="0" description="Timer Output">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMOUT(x)"/>
+      <bit_field_value name="TIMCFG1_TIMOUT_0b00" value="0b00" description="Timer output is logic one when enabled and is not affected by timer reset"/>
+      <bit_field_value name="TIMCFG1_TIMOUT_0b01" value="0b01" description="Timer output is logic zero when enabled and is not affected by timer reset"/>
+      <bit_field_value name="TIMCFG1_TIMOUT_0b10" value="0b10" description="Timer output is logic one when enabled and on timer reset"/>
+      <bit_field_value name="TIMCFG1_TIMOUT_0b11" value="0b11" description="Timer output is logic zero when enabled and on timer reset"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x488" width="32" name="TIMCFG2" description="Timer Configuration N Register">
+    <alias type="CMSIS" value="TIMCFG[2]"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0"/>
+    <bit_field offset="1" width="1" name="TSTART" access="RW" reset_value="0" description="Timer Start Bit">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TSTART(x)"/>
+      <bit_field_value name="TIMCFG2_TSTART_0b0" value="0b0" description="Start bit disabled"/>
+      <bit_field_value name="TIMCFG2_TSTART_0b1" value="0b1" description="Start bit enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="TSTOP" access="RW" reset_value="0" description="Timer Stop Bit">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TSTOP(x)"/>
+      <bit_field_value name="TIMCFG2_TSTOP_0b00" value="0b00" description="Stop bit disabled"/>
+      <bit_field_value name="TIMCFG2_TSTOP_0b01" value="0b01" description="Stop bit is enabled on timer compare"/>
+      <bit_field_value name="TIMCFG2_TSTOP_0b10" value="0b10" description="Stop bit is enabled on timer disable"/>
+      <bit_field_value name="TIMCFG2_TSTOP_0b11" value="0b11" description="Stop bit is enabled on timer compare and timer disable"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="3" name="TIMENA" access="RW" reset_value="0" description="Timer Enable">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMENA(x)"/>
+      <bit_field_value name="TIMCFG2_TIMENA_0b000" value="0b000" description="Timer always enabled"/>
+      <bit_field_value name="TIMCFG2_TIMENA_0b001" value="0b001" description="Timer enabled on Timer N-1 enable"/>
+      <bit_field_value name="TIMCFG2_TIMENA_0b010" value="0b010" description="Timer enabled on Trigger high"/>
+      <bit_field_value name="TIMCFG2_TIMENA_0b011" value="0b011" description="Timer enabled on Trigger high and Pin high"/>
+      <bit_field_value name="TIMCFG2_TIMENA_0b100" value="0b100" description="Timer enabled on Pin rising edge"/>
+      <bit_field_value name="TIMCFG2_TIMENA_0b101" value="0b101" description="Timer enabled on Pin rising edge and Trigger high"/>
+      <bit_field_value name="TIMCFG2_TIMENA_0b110" value="0b110" description="Timer enabled on Trigger rising edge"/>
+      <bit_field_value name="TIMCFG2_TIMENA_0b111" value="0b111" description="Timer enabled on Trigger rising or falling edge"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="1" reset_value="0"/>
+    <bit_field offset="12" width="3" name="TIMDIS" access="RW" reset_value="0" description="Timer Disable">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMDIS(x)"/>
+      <bit_field_value name="TIMCFG2_TIMDIS_0b000" value="0b000" description="Timer never disabled"/>
+      <bit_field_value name="TIMCFG2_TIMDIS_0b001" value="0b001" description="Timer disabled on Timer N-1 disable"/>
+      <bit_field_value name="TIMCFG2_TIMDIS_0b010" value="0b010" description="Timer disabled on Timer compare"/>
+      <bit_field_value name="TIMCFG2_TIMDIS_0b011" value="0b011" description="Timer disabled on Timer compare and Trigger Low"/>
+      <bit_field_value name="TIMCFG2_TIMDIS_0b100" value="0b100" description="Timer disabled on Pin rising or falling edge"/>
+      <bit_field_value name="TIMCFG2_TIMDIS_0b101" value="0b101" description="Timer disabled on Pin rising or falling edge provided Trigger is high"/>
+      <bit_field_value name="TIMCFG2_TIMDIS_0b110" value="0b110" description="Timer disabled on Trigger falling edge"/>
+      <bit_field_value name="TIMCFG2_TIMDIS_0b111" value="0b111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="3" name="TIMRST" access="RW" reset_value="0" description="Timer Reset">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMRST(x)"/>
+      <bit_field_value name="TIMCFG2_TIMRST_0b000" value="0b000" description="Timer never reset"/>
+      <bit_field_value name="TIMCFG2_TIMRST_0b001" value="0b001" description="Reserved"/>
+      <bit_field_value name="TIMCFG2_TIMRST_0b010" value="0b010" description="Timer reset on Timer Pin equal to Timer Output"/>
+      <bit_field_value name="TIMCFG2_TIMRST_0b011" value="0b011" description="Timer reset on Timer Trigger equal to Timer Output"/>
+      <bit_field_value name="TIMCFG2_TIMRST_0b100" value="0b100" description="Timer reset on Timer Pin rising edge"/>
+      <bit_field_value name="TIMCFG2_TIMRST_0b101" value="0b101" description="Reserved"/>
+      <bit_field_value name="TIMCFG2_TIMRST_0b110" value="0b110" description="Timer reset on Trigger rising edge"/>
+      <bit_field_value name="TIMCFG2_TIMRST_0b111" value="0b111" description="Timer reset on Trigger rising or falling edge"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="1" reset_value="0"/>
+    <bit_field offset="20" width="2" name="TIMDEC" access="RW" reset_value="0" description="Timer Decrement">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMDEC(x)"/>
+      <bit_field_value name="TIMCFG2_TIMDEC_0b00" value="0b00" description="Decrement counter on FlexIO clock, Shift clock equals Timer output."/>
+      <bit_field_value name="TIMCFG2_TIMDEC_0b01" value="0b01" description="Decrement counter on Trigger input (both edges), Shift clock equals Timer output."/>
+      <bit_field_value name="TIMCFG2_TIMDEC_0b10" value="0b10" description="Decrement counter on Pin input (both edges), Shift clock equals Pin input."/>
+      <bit_field_value name="TIMCFG2_TIMDEC_0b11" value="0b11" description="Decrement counter on Trigger input (both edges), Shift clock equals Trigger input."/>
+    </bit_field>
+    <reserved_bit_field offset="22" width="2" reset_value="0"/>
+    <bit_field offset="24" width="2" name="TIMOUT" access="RW" reset_value="0" description="Timer Output">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMOUT(x)"/>
+      <bit_field_value name="TIMCFG2_TIMOUT_0b00" value="0b00" description="Timer output is logic one when enabled and is not affected by timer reset"/>
+      <bit_field_value name="TIMCFG2_TIMOUT_0b01" value="0b01" description="Timer output is logic zero when enabled and is not affected by timer reset"/>
+      <bit_field_value name="TIMCFG2_TIMOUT_0b10" value="0b10" description="Timer output is logic one when enabled and on timer reset"/>
+      <bit_field_value name="TIMCFG2_TIMOUT_0b11" value="0b11" description="Timer output is logic zero when enabled and on timer reset"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x48C" width="32" name="TIMCFG3" description="Timer Configuration N Register">
+    <alias type="CMSIS" value="TIMCFG[3]"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0"/>
+    <bit_field offset="1" width="1" name="TSTART" access="RW" reset_value="0" description="Timer Start Bit">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TSTART(x)"/>
+      <bit_field_value name="TIMCFG3_TSTART_0b0" value="0b0" description="Start bit disabled"/>
+      <bit_field_value name="TIMCFG3_TSTART_0b1" value="0b1" description="Start bit enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="TSTOP" access="RW" reset_value="0" description="Timer Stop Bit">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TSTOP(x)"/>
+      <bit_field_value name="TIMCFG3_TSTOP_0b00" value="0b00" description="Stop bit disabled"/>
+      <bit_field_value name="TIMCFG3_TSTOP_0b01" value="0b01" description="Stop bit is enabled on timer compare"/>
+      <bit_field_value name="TIMCFG3_TSTOP_0b10" value="0b10" description="Stop bit is enabled on timer disable"/>
+      <bit_field_value name="TIMCFG3_TSTOP_0b11" value="0b11" description="Stop bit is enabled on timer compare and timer disable"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="3" name="TIMENA" access="RW" reset_value="0" description="Timer Enable">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMENA(x)"/>
+      <bit_field_value name="TIMCFG3_TIMENA_0b000" value="0b000" description="Timer always enabled"/>
+      <bit_field_value name="TIMCFG3_TIMENA_0b001" value="0b001" description="Timer enabled on Timer N-1 enable"/>
+      <bit_field_value name="TIMCFG3_TIMENA_0b010" value="0b010" description="Timer enabled on Trigger high"/>
+      <bit_field_value name="TIMCFG3_TIMENA_0b011" value="0b011" description="Timer enabled on Trigger high and Pin high"/>
+      <bit_field_value name="TIMCFG3_TIMENA_0b100" value="0b100" description="Timer enabled on Pin rising edge"/>
+      <bit_field_value name="TIMCFG3_TIMENA_0b101" value="0b101" description="Timer enabled on Pin rising edge and Trigger high"/>
+      <bit_field_value name="TIMCFG3_TIMENA_0b110" value="0b110" description="Timer enabled on Trigger rising edge"/>
+      <bit_field_value name="TIMCFG3_TIMENA_0b111" value="0b111" description="Timer enabled on Trigger rising or falling edge"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="1" reset_value="0"/>
+    <bit_field offset="12" width="3" name="TIMDIS" access="RW" reset_value="0" description="Timer Disable">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMDIS(x)"/>
+      <bit_field_value name="TIMCFG3_TIMDIS_0b000" value="0b000" description="Timer never disabled"/>
+      <bit_field_value name="TIMCFG3_TIMDIS_0b001" value="0b001" description="Timer disabled on Timer N-1 disable"/>
+      <bit_field_value name="TIMCFG3_TIMDIS_0b010" value="0b010" description="Timer disabled on Timer compare"/>
+      <bit_field_value name="TIMCFG3_TIMDIS_0b011" value="0b011" description="Timer disabled on Timer compare and Trigger Low"/>
+      <bit_field_value name="TIMCFG3_TIMDIS_0b100" value="0b100" description="Timer disabled on Pin rising or falling edge"/>
+      <bit_field_value name="TIMCFG3_TIMDIS_0b101" value="0b101" description="Timer disabled on Pin rising or falling edge provided Trigger is high"/>
+      <bit_field_value name="TIMCFG3_TIMDIS_0b110" value="0b110" description="Timer disabled on Trigger falling edge"/>
+      <bit_field_value name="TIMCFG3_TIMDIS_0b111" value="0b111" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="3" name="TIMRST" access="RW" reset_value="0" description="Timer Reset">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMRST(x)"/>
+      <bit_field_value name="TIMCFG3_TIMRST_0b000" value="0b000" description="Timer never reset"/>
+      <bit_field_value name="TIMCFG3_TIMRST_0b001" value="0b001" description="Reserved"/>
+      <bit_field_value name="TIMCFG3_TIMRST_0b010" value="0b010" description="Timer reset on Timer Pin equal to Timer Output"/>
+      <bit_field_value name="TIMCFG3_TIMRST_0b011" value="0b011" description="Timer reset on Timer Trigger equal to Timer Output"/>
+      <bit_field_value name="TIMCFG3_TIMRST_0b100" value="0b100" description="Timer reset on Timer Pin rising edge"/>
+      <bit_field_value name="TIMCFG3_TIMRST_0b101" value="0b101" description="Reserved"/>
+      <bit_field_value name="TIMCFG3_TIMRST_0b110" value="0b110" description="Timer reset on Trigger rising edge"/>
+      <bit_field_value name="TIMCFG3_TIMRST_0b111" value="0b111" description="Timer reset on Trigger rising or falling edge"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="1" reset_value="0"/>
+    <bit_field offset="20" width="2" name="TIMDEC" access="RW" reset_value="0" description="Timer Decrement">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMDEC(x)"/>
+      <bit_field_value name="TIMCFG3_TIMDEC_0b00" value="0b00" description="Decrement counter on FlexIO clock, Shift clock equals Timer output."/>
+      <bit_field_value name="TIMCFG3_TIMDEC_0b01" value="0b01" description="Decrement counter on Trigger input (both edges), Shift clock equals Timer output."/>
+      <bit_field_value name="TIMCFG3_TIMDEC_0b10" value="0b10" description="Decrement counter on Pin input (both edges), Shift clock equals Pin input."/>
+      <bit_field_value name="TIMCFG3_TIMDEC_0b11" value="0b11" description="Decrement counter on Trigger input (both edges), Shift clock equals Trigger input."/>
+    </bit_field>
+    <reserved_bit_field offset="22" width="2" reset_value="0"/>
+    <bit_field offset="24" width="2" name="TIMOUT" access="RW" reset_value="0" description="Timer Output">
+      <alias type="CMSIS" value="FLEXIO_TIMCFG_TIMOUT(x)"/>
+      <bit_field_value name="TIMCFG3_TIMOUT_0b00" value="0b00" description="Timer output is logic one when enabled and is not affected by timer reset"/>
+      <bit_field_value name="TIMCFG3_TIMOUT_0b01" value="0b01" description="Timer output is logic zero when enabled and is not affected by timer reset"/>
+      <bit_field_value name="TIMCFG3_TIMOUT_0b10" value="0b10" description="Timer output is logic one when enabled and on timer reset"/>
+      <bit_field_value name="TIMCFG3_TIMOUT_0b11" value="0b11" description="Timer output is logic zero when enabled and on timer reset"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x500" width="32" name="TIMCMP0" description="Timer Compare N Register">
+    <alias type="CMSIS" value="TIMCMP[0]"/>
+    <bit_field offset="0" width="16" name="CMP" access="RW" reset_value="0" description="Timer Compare Value">
+      <alias type="CMSIS" value="FLEXIO_TIMCMP_CMP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x504" width="32" name="TIMCMP1" description="Timer Compare N Register">
+    <alias type="CMSIS" value="TIMCMP[1]"/>
+    <bit_field offset="0" width="16" name="CMP" access="RW" reset_value="0" description="Timer Compare Value">
+      <alias type="CMSIS" value="FLEXIO_TIMCMP_CMP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x508" width="32" name="TIMCMP2" description="Timer Compare N Register">
+    <alias type="CMSIS" value="TIMCMP[2]"/>
+    <bit_field offset="0" width="16" name="CMP" access="RW" reset_value="0" description="Timer Compare Value">
+      <alias type="CMSIS" value="FLEXIO_TIMCMP_CMP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x50C" width="32" name="TIMCMP3" description="Timer Compare N Register">
+    <alias type="CMSIS" value="TIMCMP[3]"/>
+    <bit_field offset="0" width="16" name="CMP" access="RW" reset_value="0" description="Timer Compare Value">
+      <alias type="CMSIS" value="FLEXIO_TIMCMP_CMP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+</regs:peripheral>
