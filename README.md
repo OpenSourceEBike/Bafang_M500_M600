@@ -6,6 +6,17 @@ This project aims to provide guidance for modifying the Bafang m500 and m600 mot
 
 Help test our firmwares, join discussions, fork the repository or send us relevant information either by github-issue or email directly.
 
+## Ideas for projects
+### DIY OpenSource display
+Adapt the [EBike DIY OpenSource display](https://opensourceebike.github.io/) to control and show the motor data. We know the CAN commands to read data from the controller and to change max speed and wheel diameter. It should also be possible to flash the motor firmware. A display button combination can be used to quick change max speed (offroad mode).
+
+Needed steps:
+* Adapt the [EBike DIY OpenSource display](https://opensourceebike.github.io/) hardware by adding a SPI CAN module (cheap Arduino CAN module) to be able to communicate with Bafang M500/M600 motors
+* Add the CAN commands to the firmware and adapt the information being shown on the screen 
+
+Pictures pf [EBike DIY OpenSource display](https://opensourceebike.github.io/):
+![](diy_display.png)
+
 
 ## Project structure
 
