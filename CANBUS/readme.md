@@ -242,13 +242,13 @@ Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 
 **1. Start continuesly announcing that the host (pc) is ready to transfer a firmware update:**
 
-m500
+M500
 ``
 05FF3005 - 00 ( BESST "waiting in firmware update mode" or "Trying to transfer")
 05112000 - 88 45 02 00 (Polling: "Is Controller ready for firmware?")
 `` 
 
-m600
+M600
 ``
 05FF3005 - 00 ( BESST "waiting in firmware update mode" or "Trying to transfer")
 05112000 - 89 45 02 00 (Polling: "Is Controller ready for firmware?")
@@ -257,12 +257,12 @@ m600
 **2. Wait for Controller response:**
 Once you recieve this confirmation, you can stop announcing as stated in step 1.
 
-m500
+M500
 ```
 022A2000 - 88 45 82 (Response: "Controller ready to recieve firmware")
 ```
 
-m600
+M600
 ```
 022A2000 - 89 45 82 (Response: "Controller ready to recieve firmware")
 ```
