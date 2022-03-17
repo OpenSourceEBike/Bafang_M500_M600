@@ -35,7 +35,11 @@ Needed steps:
 * Add the CAN commands to the firmware and adapt the information being shown on the screen 
 
 Pictures of the [EBike DIY OpenSource display](https://opensourceebike.github.io/):<br>
-![](diy_display.png)
+![](diy_display-small.png)
+
+### Develop our own firmware for the original motor controller
+
+See **[Develop motor controller firmware](develop_motor_controller_firmware.md)**.
 
 ## Disclaimer
 
