@@ -2,7 +2,7 @@
 
 ## How to colaborate
 
-Help test our firmwares, join discussions, fork the repository or send us relevant information either by github-issue or [write a message on the forum](https://endless-sphere.com/forums/viewtopic.php?f=28&t=100777) or chat with us on [this Telegram channel](https://web.telegram.org/z/#-1748500567).
+Help test our firmwares, join discussions, fork the repository or send us relevant information either by github-issue or [write a message on the forum](https://endless-sphere.com/forums/viewtopic.php?f=28&t=100777) or chat with us on [this Telegram channel](https://t.me/+O5GciLgdbBc0ZGRkgit ).
 
 ## Project structure
 
