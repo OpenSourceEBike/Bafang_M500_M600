@@ -1,10 +1,8 @@
-# Bafang M500 and M600 Modification Project
-
-This project aims to provide guidance for modifying the Bafang M500 and M600 motors. Eventually we hope to be able to provide a fully opensource firmware, but for the time being we provide hacked firmwares and documentation.
+# Bafang M500 and M600 community OpenSource development
 
 ## How to colaborate
 
-Help test our firmwares, join discussions, fork the repository or send us relevant information either by github-issue or [write a message on the forum](https://endless-sphere.com/forums/viewtopic.php?f=28&t=100777).
+Help test our firmwares, join discussions, fork the repository or send us relevant information either by github-issue or [write a message on the forum](https://endless-sphere.com/forums/viewtopic.php?f=28&t=100777) or chat with us on [this Telegram channel](https://web.telegram.org/z/#-1748500567).
 
 ## Project structure
 

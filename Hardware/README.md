@@ -10,7 +10,7 @@ You can buy the connectors here:
 
 ### Connectors on the motor
 
-[See here the connectors pins description](Bafang_M500_M600_Connectors.pdf). 
+See [here the connectors pins description](Board/Bafang_M500_M600_Connectors.pdf) and [here](Board/Bafang_M500_M600_Controller_Connectors.pdf). 
 
 ![connectiondiagram](Battery_and_Wiring/img/M600_connectors.png)
 
@@ -26,11 +26,11 @@ https://www.youtube.com/watch?v=muSNIUXNNaQ
 ## Specifications
 
 ### M500
-![M500specs](../Hardware/img/M500_specs.PNG)
+![M500specs](../Hardware/img/m500_specs.PNG)
 
 
 ### M600
-![M600specs](../Hardware/img/M600_specs.PNG)
+![M600specs](../Hardware/img/m600_specs.PNG)
 
 
 ## Battery
@@ -73,7 +73,7 @@ It should be noted that there is a safety cutoff for 48v controllers, that disab
 The reason Bafang does not supply a 52v battery (and you also don't have to try and ask them for it), is because the EU does not allow more than 48v charger connections  CE certification.
 The difference between 52v or 48v are, however, very small so it wouldn't actually pose a risk. But for Bafang they cannot supply it within regulations.
 
-## Electo Motor and nominal Wattage
+## Electro Motor and nominal Wattage
 
 ### Nominal Wattage
 
