@@ -40,6 +40,12 @@ However: The motor controller, as of July 2021, does not require the battery to 
 
 ![M600specs](../Hardware/Battery_and_Wiring/img/battery.jpg)
 
+## Display
+
+See [here the notes about the displays DP C240 / 241](display_DP_C241.md).
+
+![](Display/DP_C240_241/DP-C241C-01.jpg)
+
 ## Power
 
 ### M600
