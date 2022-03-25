@@ -238,6 +238,17 @@ Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
 Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 ```
 
+##### Torque Sensor
+
+```
+ID: 01F83100
+Numbers Byte: 4
+Torque Byte 0/1		: EE 02
+Cadence Byte 2		: 00
+Progressive Byte 3	: 01
+```
+
+
 ## CANBUS controller update procedure
 
 **1. Start continuesly announcing that the host (pc) is ready to transfer a firmware update:**
