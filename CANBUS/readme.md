@@ -23,6 +23,7 @@ Bit Rate 250 kBit/s
 
 Level matching:
 |L9|L5|L3|Byte|
+|---|---|---|---|
 |W|W|W|06|
 |0|0|0|00|
 |1|||01|
