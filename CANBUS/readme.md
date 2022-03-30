@@ -20,8 +20,9 @@ HIGO-B5-Female:
 5 Black	: GND
 
 Bit Rate 250 kBit/s
+```
 
-Level matching:
+##### Level matching:
 |L9|L5|L3|Byte|
 |---|---|---|---|
 |W|W|W|06|
@@ -35,7 +36,6 @@ Level matching:
 |7|||16|
 |8|4||17|
 |9|5|3|03|
-```
 
 
 ##### The following Canbus frameid's have been identified:
