@@ -1,3 +1,8 @@
+**Table of Contents**
+- [Display DP C240 / C241](#display-dp-c240--c241)
+  - [Pictures of internals](#pictures-of-internals)
+- [How to turn on/off the Bafang M500/M600 motor controller](#how-to-turn-onoff-the-bafang-m500m600-motor-controller)
+
 # Display DP C240 / C241
 
 Seems this displays are just only one, that always include the Bluetooth hardware but probably the DP C240 has a different firmware with Bluetooth disabled.

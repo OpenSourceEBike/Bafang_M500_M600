@@ -1,9 +1,16 @@
+**Table of Contents**
+- [Maintenance and repair](#maintenance-and-repair)
+  - [Lubricate the gears and bearings](#lubricate-the-gears-and-bearings)
+- [Repair - known possible issues](#repair---known-possible-issues)
+  - [Broken clutch](#broken-clutch)
+  - [Middle or final gear broken](#middle-or-final-gear-broken)
+  - [Internal magnet unglued](#internal-magnet-unglued)
+
+# Maintenance and repair
 For maintenance or repair, you can buy all the motor parts, display and battery on [GreenBikeKit](https://www.greenbikekit.com/bafang-8fun-spare-parts/bafang-m600-m500-motor-with-parts.html) or on another shops like Aliexpress or Ebay.
 
 * [How to install the M600](https://www.youtube.com/watch?v=UI5Q5bvnHSQ)
 * [How to uninstall the M600](https://www.youtube.com/watch?v=mYS3WYp-xVw)
-
-# Maintenance
 
 ## Lubricate the gears and bearings
 

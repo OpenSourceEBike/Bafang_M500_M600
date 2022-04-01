@@ -1,3 +1,14 @@
+**Table of Contents**
+- [Bafang M500 and M600 community OpenSource development](#bafang-m500-and-m600-community-opensource-development)
+  - [How to colaborate](#how-to-colaborate)
+  - [Project structure](#project-structure)
+  - [How to build your EBike with M500/M600 motor](#how-to-build-your-ebike-with-m500m600-motor)
+  - [Maintenance and repair](#maintenance-and-repair)
+  - [Ideas for projects](#ideas-for-projects)
+    - [DIY OpenSource display](#diy-opensource-display)
+    - [Develop our own firmware for the original motor controller](#develop-our-own-firmware-for-the-original-motor-controller)
+  - [Disclaimer](#disclaimer)
+
 # Bafang M500 and M600 community OpenSource development
 
 ## How to colaborate

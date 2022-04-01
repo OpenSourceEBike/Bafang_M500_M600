@@ -1,4 +1,36 @@
-# Hardware Information for M500 and M600
+**Table of Contents**
+- [Hardware M500 and M600](#hardware-m500-and-m600)
+  - [Connectors](#connectors)
+    - [Connectors on the motor](#connectors-on-the-motor)
+    - [Connection diagram](#connection-diagram)
+  - [M600 Teardown](#m600-teardown)
+  - [Specifications](#specifications)
+    - [M500](#m500)
+    - [M600](#m600)
+  - [Battery](#battery)
+  - [Display](#display)
+  - [Power](#power)
+    - [M600](#m600-1)
+    - [M500](#m500-1)
+    - [Custom power setups](#custom-power-setups)
+  - [Electro Motor and nominal Wattage](#electro-motor-and-nominal-wattage)
+    - [Nominal Wattage](#nominal-wattage)
+    - [M500 vs M600](#m500-vs-m600)
+  - [Gearing](#gearing)
+    - [M500 vs M600](#m500-vs-m600-1)
+    - [Increasing motor power on the M500 (and gearing)](#increasing-motor-power-on-the-m500-and-gearing)
+    - [Rotor Axle](#rotor-axle)
+  - [Controller hardware module](#controller-hardware-module)
+    - [Teardown](#teardown)
+    - [Controller SoC](#controller-soc)
+    - [MOSFETS](#mosfets)
+    - [Power measurement and phase control](#power-measurement-and-phase-control)
+    - [Magnetic Rotary Encoder IC](#magnetic-rotary-encoder-ic)
+    - [M500 vs M600](#m500-vs-m600-2)
+  - [Links](#links)
+- [Hardware BESST](#hardware-besst)
+
+# Hardware M500 and M600
 
 ## Connectors
 
@@ -198,3 +230,21 @@ https://flx.bike/products/M600-motor-controller-version-3-2
 
 Development Boards and typical controller schematic
 https://www.nxp.com/design/development-boards/automotive-motor-control-solutions/arm-based-solutions-/s32k142-development-board-for-bldc-pmsm-motor-control:MCSXTE2BK142
+
+# Hardware BESST
+
+Datasheets:
+* [STM32f072rb](./BESST/STM32f072rb.pdf)
+* [Winbond-W25Q256JVFIQ](./BESST/Winbond-W25Q256JVFIQ.pdf)
+* [LM5007-S81B](./BESST/LM5007-S81B.pdf)
+* [COSMO-KAQW212](./BESST/COSMO-KAQW212.pdf)
+
+![](./BESST/BESST-01.jpg)
+![](./BESST/BESST-02.jpg)
+![](./BESST/BESST-03.jpg)
+![](./BESST/BESST-04.jpg)
+![](./BESST/BESST-05.jpg)
+![](./BESST/BESST-06.jpg)
+![](./BESST/BESST-07.jpg)
+![](./BESST/BESST-08.jpg)
+
