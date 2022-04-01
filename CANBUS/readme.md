@@ -20,16 +20,22 @@ HIGO-B5-Female:
 5 Black	: GND
 
 Bit Rate 250 kBit/s
-
-Level matching:
-L9  L5  L3	
-0   0   0	: FF FF
-1-2 1 		: 40 1F
-3-4 2   1	: 2C 1A
-5-6 3   2	: EC 13
-7-8 4		: AC 0D
-9   5   3	: 8C 0A
 ```
+
+##### Level matching:
+|L9|L5|L3|Byte|
+|---|---|---|---|
+|W|W|W|06|
+|0|0|0|00|
+|1|||01|
+|2|1||0B|
+|3||1|0C|
+|4|2||0D|
+|5||2|02|
+|6|3||15|
+|7|||16|
+|8|4||17|
+|9|5|3|03|
 
 
 ##### The following Canbus frameid's have been identified:
@@ -191,7 +197,7 @@ Numbers Byte: 8
 Byte 1/2/3              : 00 00 00
 Byte 4                  : EE
 Byte 5                  : 02
-Level Byte 6/7			: 0 = FF FF / 1 = 40 1F / 2 = 2C 1A / 3 = EC 13 / 4 = AC 0D / 5 = 8C 0A
+Level Byte 6/7			: FF FF
 ```
 
 ##### Controller Speed/Current/Voltage/Temperature Informations
@@ -223,7 +229,7 @@ Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 ID: 03106300
 Numbers Byte: 4
 Level number Byte 0		: 05
-Set Level Byte 1		: 0 = 00 / 1 = 0B / 2 = 0D / 3 = 15 / 4 = 17 / 5 = 03
+Set Level Byte 1		: W = 06 / 0 = 00 / 1 = 01 / 2 = 0B / 3 = 0C / 4 = 0D / 5 = 02 / 6 = 15 / 7 = 16 / 8 = 17 / 9 = 03
 Button Set level Byte 2	: Change Off = 00 / Change On = 02 / Change Off with light = 01 / Change On with light = 03
 On/Off Byte 3			: Off = 00 / On = 01
 ```
@@ -237,6 +243,17 @@ Speed Limit Byte 0/1	: 60.00km/h(1770Hex) = 70 17 / 25.00km/h(9C4Hex) = C4 09
 Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
 Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 ```
+
+##### Torque Sensor
+
+```
+ID: 01F83100
+Numbers Byte: 4
+Torque Byte 0/1		: EE 02
+Cadence Byte 2		: 00
+Progressive Byte 3	: 01
+```
+
 
 ## CANBUS controller update procedure
 
