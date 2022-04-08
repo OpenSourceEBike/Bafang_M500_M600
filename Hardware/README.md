@@ -42,7 +42,7 @@ You can buy the connectors here:
 
 ### Connectors on the motor
 
-See [here the connectors pins description](Board/Bafang_M500_M600_Connectors.pdf) and [here](Board/Bafang_M500_M600_Controller_Connectors.pdf). 
+See [here the connectors pins description](Board/Bafang%20M500_M600%20Connectors.pdf) and [here](Board/Bafang%20M500_M600%20Controller%20Connectors.pdf). 
 
 ![connectiondiagram](Battery_and_Wiring/img/M600_connectors.png)
 
