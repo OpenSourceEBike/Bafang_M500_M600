@@ -222,7 +222,6 @@ Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
 Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 ```
 
-
 ##### HMI Level/Light Setup
 
 ```
@@ -254,6 +253,30 @@ Cadence Byte 2		: 00
 Progressive Byte 3	: 01
 ```
 
+## CAN messages during operation
+
+##### Controler
+
+```
+02F83200 every 1500ms
+02F83201 every 280ms
+02F83202 every 100ms
+02F83203 every 450ms
+02F83204 every 300ms
+02F83205 every 490ms
+```
+
+##### HMI
+
+```
+03106300 every 100ms
+```
+
+##### Torque Sensor
+
+```
+01F83100 every 10ms
+```
 
 ## CANBUS controller update procedure
 
