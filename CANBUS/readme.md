@@ -255,7 +255,7 @@ Progressive Byte 3	: 01
 
 ## CAN messages during operation
 
-##### Controler
+##### Controller
 
 ```
 02F83200 every 1500ms
@@ -266,16 +266,47 @@ Progressive Byte 3	: 01
 02F83205 every 490ms
 ```
 
+##### Torque Sensor
+
+```
+01F83100 every 10ms
+```
+
+##### Battery
+
+```
+04F83400
+04F83401
+04F83402
+```
+
 ##### HMI
 
 ```
 03106300 every 100ms
 ```
-
-##### Torque Sensor
-
 ```
-01F83100 every 10ms
+Torque Sensor ondemand
+03096000 Hardware Version Number
+03096001 Software Version Number
+03096002 Model Number
+03096003 Serial Number
+03096004 Customer Number
+```
+```
+Controller ondemand
+03116000 Hardware Version Number
+03116001 Software Version Number
+03116002 Model Number
+03116003 Serial Number
+```
+```
+Battery ondemand
+03216000 Hardware Version Number
+03216001 Software Version Number
+03216002 Model Number
+03216003 Serial Number
+03216004 Customer Number
 ```
 
 ## CANBUS controller update procedure
