@@ -39,9 +39,10 @@ See the **[notes about the maintenance and repair of M500/M600 motor](maintenanc
 
 Adapt the [EBike DIY OpenSource display](https://opensourceebike.github.io/) to control and show the motor data. We know the CAN commands to read all data from the controller and to change max speed and wheel diameter. It should also be possible to flash the motor firmware. A display button combination can be used to quick change max speed (offroad mode).
 
-Needed steps:
-* Adapt the [EBike DIY OpenSource display](https://opensourceebike.github.io/) hardware by adding a SPI CAN module (cheap Arduino CAN module) to be able to communicate with Bafang M500/M600 motors
-* Add the CAN commands to the firmware and adapt the information being shown on the screen 
+Current status - see this video:
+
+[![](https://img.youtube.com/vi/6Nxme5Gt-_c/0.jpg)](https://www.youtube.com/watch?v=6Nxme5Gt-_c)
+
 
 Pictures of the [EBike DIY OpenSource display](https://opensourceebike.github.io/):<br>
 ![](diy_display-small.png)
