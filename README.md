@@ -16,7 +16,7 @@
 Help test our firmwares, join discussions, fork the repository or send us relevant information either by github-issue or [write a message on the forum](https://endless-sphere.com/forums/viewtopic.php?f=28&t=100777) or chat with us on [this Telegram channel](https://t.me/bafang_m500_m600_development).
 
 **Discount code for developers**<br>
-GreenBikeKit sells Bafang M500 and M600 motor kits, including the parts you may need to for maintenance and repair. If you are a developer, ask for the discount code on [the Telegram channel for development](https://t.me/bafang_m500_m600_development).
+[GreenBikeKit](https://t.me/bafang_m500_m600_development) sells Bafang M500 and M600 motor kits, including the parts you may need to for maintenance and repair. If you are a developer, ask for the discount code on [the Telegram channel for development](https://t.me/bafang_m500_m600_development).
 
 [![](logo_greenbikekit.png)](https://www.greenbikekit.com/bafang-8fun-spare-parts/bafang-m600-m500-motor-with-parts.html)
 
