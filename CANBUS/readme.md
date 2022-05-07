@@ -229,8 +229,8 @@ ID: 03106300
 Numbers Byte: 4
 Level number Byte 0		: 05
 Set Level Byte 1		: W = 06 / 0 = 00 / 1 = 01 / 2 = 0B / 3 = 0C / 4 = 0D / 5 = 02 / 6 = 15 / 7 = 16 / 8 = 17 / 9 = 03
-Button Set level Byte 2	: Change Off = 00 / Change On = 02 / Change Off with light = 01 / Change On with light = 03
-On/Off Byte 3			: Off = 00 / On = 01
+Button "+" Byte 2      	: Off = 00 / On = 02 / Off with light = 01 / On with light = 03
+Button "On/Off" Byte 3	: Off = 00 / On = 01
 ```
 
 ##### HMI Speed/Wheel/Circumference Setup
