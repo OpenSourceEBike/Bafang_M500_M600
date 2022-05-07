@@ -222,6 +222,14 @@ Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
 Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 ```
 
+##### Controller Brake Informations
+
+```
+ID: 02FF1200
+Numbers Byte: 1
+Brake	: 00=Off / 03=On
+```
+
 ##### HMI Level/Light Setup
 
 ```
@@ -262,8 +270,8 @@ Progressive Byte 3	: 01
 02F83201 every 280ms
 02F83202 every 100ms
 02F83203 every 450ms
-02F83204 every 300ms
-02F83205 every 490ms
+02F83205 every 300ms
+02FF1200 every 490ms
 ```
 
 ##### Torque Sensor
