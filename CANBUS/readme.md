@@ -200,12 +200,14 @@ Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
 Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 ```
 
-##### Controller Brake Informations
+##### Controller State Informations
 
 ```
 ID: 02FF1200
 Numbers Byte: 1
-Brake	: 00=Off / 03=On
+Bit 0: brake state
+Bit 1: motor stopped
+Bit 2: battery undervoltage
 ```
 
 ##### HMI Level/Light Setup
