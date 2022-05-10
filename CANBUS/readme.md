@@ -13,7 +13,7 @@ HIGO-B5-Female:
 │ 2         │
  \    3   4 │
     ────────┘
-1 Orange: VCC/Key
+1 Orange: VCC/Ctrl
 2 White	: CL
 3 Brown	: P+
 4 Green	: CH
@@ -147,9 +147,9 @@ https://ornias1993.github.io/Bafang_M500_M600/index.html
 ```
 ID: 05103203
 Numbers Byte: 6
-Speed Limit Byte 0/1	: 60.00km/h(1770Hex) = 70 17 / 25.00km/h(9C4Hex) = C4 09
-Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
-Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
+Speed Limit Byte 0/1    : 60.00km/h(0x1770) = 70 17 / 25.00km/h(0x09C4) = C4 09
+Wheel Size Byte 2/3     : 29.0(0x01D0) = D0 01 / 27.5(0x01B5) = B5 01
+Circumference Byte 4/5  : 2280(0x08E8) = E8 08 / 2240mm(0x08C0) = C0 08
 ```
 
 ##### BESST Torque Sensor Calibration
@@ -171,7 +171,7 @@ Numbers Bytes: 0
 ```
 ID: 02F83200
 Numbers Byte: 8
-% Battery Byte 0	    : 50%(32Hex) = 32
+% Battery Byte 0	    : 50%(0x32) = 32
 Byte 1/2/3              : 00 00 00
 Byte 4                  : EE
 Byte 5                  : 02
@@ -183,11 +183,11 @@ Level Byte 6/7			: FF FF
 ```
 ID: 02F83201
 Numbers Byte: 8
-Speed Byte 0/1			: 25.00km/h(9C4Hex) = C4 09
-Current Byte 2/3		: 10.00A(3E8Hex) = E8 03
-Voltage Byte 4/5		: 53.46V(14E2Hex) = E2 14
-Temp. Control. Byte 6   : 10°C = 10+40=50(32Hex) = 32
-Temp. Motor Byte 7	    : 20°C = 20+40=60(3CHex) = 3C
+Speed Byte 0/1			: 25.00km/h(0x09C4) = C4 09
+Current Byte 2/3		: 10.00A(0x03E8) = E8 03
+Voltage Byte 4/5		: 53.46V(0x14E2) = E2 14
+Temp. Control. Byte 6   : 10°C = 10+40=50(0x32) = 32
+Temp. Motor Byte 7	    : 20°C = 20+40=60(0x3C) = 3C
 ```
 
 ##### Controller Speed/Wheel/Circumference Informations
@@ -195,9 +195,9 @@ Temp. Motor Byte 7	    : 20°C = 20+40=60(3CHex) = 3C
 ```
 ID: 02F83203
 Numbers Byte: 6
-Speed Limit Byte 0/1	: 60.00km/h(1770Hex) = 70 17 / 25.00km/h(9C4Hex) = C4 09
-Wheel Size Byte 2/3		: 29.0(1DHex) = D0 01 / 27.5(1B5Hex) = B5 01
-Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
+Speed Limit Byte 0/1	: 60.00km/h(0x1770) = 70 17 / 25.00km/h(0x09C4) = C4 09
+Wheel Size Byte 2/3		: 29.0(0x01D0) = D0 01 / 27.5(0x01B5) = B5 01
+Circumference Byte 4/5	: 2280(0x08E8) = E8 08 / 2240mm(0x08C0) = C0 08
 ```
 
 ##### Controller State Informations
@@ -205,9 +205,9 @@ Circumference Byte 4/5	: 2280(8E8Hex) = E8 08 / 2240mm(8C0Hex) = C0 08
 ```
 ID: 02FF1200
 Numbers Byte: 1
-Bit 0: brake state
-Bit 1: motor stopped
-Bit 2: battery undervoltage
+Bit0 Brake state          : 1=Brake
+Bit1 Motor stopped        : 1=Stopped
+Bit2 Battery undervoltage : 1=Undervoltage
 ```
 
 ##### HMI Level/Light Setup
@@ -215,8 +215,8 @@ Bit 2: battery undervoltage
 ```
 ID: 03106300
 Numbers Byte: 4
-Levels number Byte 0	: 05
-Set Level Byte 1		: W = 06 / 0 = 00 / 1 = 01 / 2 = 0B / 3 = 0C / 4 = 0D / 5 = 02 / 6 = 15 / 7 = 16 / 8 = 17 / 9 = 03
+Levels number Byte 0	: 03 / 05 / 09
+Set Level Byte 1		: Walk = 06 / 0 = 00 / 1 = 01 / 2 = 0B / 3 = 0C / 4 = 0D / 5 = 02 / 6 = 15 / 7 = 16 / 8 = 17 / 9 = 03
 Button "+" Byte 2      	: Off = 00 / On = 02 / Off with light = 01 / On with light = 03
 Boost mode Byte 3	    : Off = 01 / On = 00 (after two seconds of pressing the power button)
 ```
