@@ -231,9 +231,21 @@ Cadence Byte 2		: 00
 Progressive Byte 3	: 01
 ```
 
-## CAN messages during operation
+## CAN messages during operations
 
-##### Controller
+##### HMI
+
+```
+03106300 every 100ms
+```
+
+##### BESST
+
+```
+05F83501 every 1016ms
+```
+
+##### Controller (Only with the presence of the HMI or BESST)
 
 ```
 02F83200 every 1500ms
@@ -258,28 +270,30 @@ Progressive Byte 3	: 01
 04F83402
 ```
 
-##### HMI
+## CAN messages ondemand
+
+#### Torque Sensor
 
 ```
-03106300 every 100ms
-```
-```
-Torque Sensor ondemand
 03096000 Hardware Version Number
 03096001 Software Version Number
 03096002 Model Number
 03096003 Serial Number
 03096004 Customer Number
 ```
+
+#### Controller
+
 ```
-Controller ondemand
 03116000 Hardware Version Number
 03116001 Software Version Number
 03116002 Model Number
 03116003 Serial Number
 ```
+
+#### Battery
+
 ```
-Battery ondemand
 03216000 Hardware Version Number
 03216001 Software Version Number
 03216002 Model Number
