@@ -1,0 +1,1300 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "create-param"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.treeVisible == true),
+      expression: "treeVisible == true"
+    }],
+    class: [{
+      'show-tree-node': true
+    }, {
+      'test-slide': _vm.categoryList.length <= 0
+    }]
+  }, [(!_vm.loadingTree) ? _c('el-tree', {
+    ref: "tree",
+    staticClass: "show-category-tree",
+    attrs: {
+      "data": _vm.categoryList,
+      "props": _vm.defaultProps,
+      "node-key": "id",
+      "render-content": _vm.renderContent,
+      "filter-node-method": _vm.filterNode,
+      "default-expanded-keys": _vm.selectedCategory,
+      "highlight-current": true
+    },
+    on: {
+      "node-drop": _vm.handleDrop,
+      "node-click": _vm.handleNodeClick
+    }
+  }) : _c('div', {
+    staticClass: "loading"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../assets/images/icon/loading-bars.svg"),
+      "alt": "Loading icon"
+    }
+  })])], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.treeVisible == false),
+      expression: "treeVisible == false"
+    }],
+    staticClass: "test-slide"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('el-input', {
+    staticClass: "search-tree-node",
+    attrs: {
+      "placeholder": "输入关键字进行过滤"
+    },
+    model: {
+      value: (_vm.filterText),
+      callback: function($$v) {
+        _vm.filterText = $$v
+      },
+      expression: "filterText"
+    }
+  }), _vm._v(" "), _c('el-table', {
+    staticClass: "show-head-body-detail",
+    attrs: {
+      "data": _vm.tableData,
+      "size": "small",
+      "highlight-current-row": true,
+      "fit": "",
+      "max-height": _vm.clientHeight
+    },
+    nativeOn: {
+      "dblclick": function($event) {
+        return _vm.showHeadList($event)
+      }
+    }
+  }, [_vm._l((_vm.headData), function(item, index) {
+    return (item.isShow === 1) ? _c('el-table-column', {
+      key: index,
+      attrs: {
+        "width": "160",
+        "prop": item.name,
+        "label": item.name
+      }
+    }) : _vm._e()
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "width": "180",
+      "render-header": _vm.renderHeader
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return _vm.showBody ? [(scope.$index >= _vm.tableData.length - 1) ? _c('span', {
+          on: {
+            "click": function($event) {
+              _vm.showAddParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }, [_c('i', {
+          staticClass: "el-icon-plus"
+        })]) : _c('span', {
+          staticClass: "other-functions"
+        }, [_c('span', {
+          staticClass: "body-detail",
+          on: {
+            "click": function($event) {
+              _vm.showEditParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }), _vm._v(" "), _c('span', {
+          staticClass: "delete-body-detail",
+          on: {
+            "click": function($event) {
+              _vm.showDeleteParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }, [_c('i', {
+          staticClass: "el-icon-delete"
+        })]), _vm._v(" "), _c('span', {
+          staticClass: "copy-body-detail",
+          on: {
+            "click": function($event) {
+              _vm.showCopyParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }), _vm._v(" "), _c('span', [(_vm.isShowUploadFile) ? _c('el-button', {
+          staticClass: "show-upload-file",
+          attrs: {
+            "size": "mini",
+            "type": "text"
+          },
+          on: {
+            "click": function($event) {
+              _vm.uploadSingleParamFile(scope, scope.row)
+            }
+          }
+        }) : _vm._e()], 1), _vm._v(" "), _c('span', [(_vm.isShowUploadFile && scope.$index < _vm.tableData.length - 1 && scope.row.isUpload === true) ? _c('el-button', {
+          staticClass: "has-uploaded",
+          attrs: {
+            "size": "mini"
+          }
+        }) : _vm._e()], 1), _vm._v(" "), _c('span', [(_vm.isShowUploadFile) ? _c('el-button', {
+          staticClass: "upload-param-file",
+          attrs: {
+            "size": "mini",
+            "type": "text"
+          },
+          on: {
+            "click": function($event) {
+              _vm.showUploadedFile(scope.row)
+            }
+          }
+        }) : _vm._e()], 1)])] : undefined
+      }
+    }])
+  })], 2), _vm._v(" "), (_vm.rootId == 3 && !_vm.table1) ? _c('div', {
+    staticClass: "show-param-list"
+  }, _vm._l((_vm.paramData), function(item, index) {
+    return _c('div', {
+      key: index,
+      staticClass: "param-list-item"
+    }, [_c('span', {
+      staticClass: "param-name"
+    }, [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('ul', {
+      staticClass: "param-head-list"
+    }, _vm._l((item.childList), function(childItem, childIndex) {
+      return (childItem.head_name) ? _c('li', {
+        key: childIndex,
+        staticClass: "param-head-item"
+      }, [_vm._v("\n                        " + _vm._s(childItem.head_name) + "\n                    ")]) : _vm._e()
+    }))])
+  })) : _vm._e(), _vm._v(" "), (_vm.loading) ? _c('div', {
+    staticClass: "loading"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../assets/images/icon/loading-bars.svg"),
+      "alt": "Loading icon"
+    }
+  })]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next, jumper",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v(_vm._s(_vm.$t('total')) + ": " + _vm._s(_vm.total))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  })], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('deleteDialog.title'),
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('deleteDialog.content')))]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteProductionOrder
+    }
+  }, [_vm._v(_vm._s(_vm.$t('deleteDialog.yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('deleteDialog.no')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "delete category",
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v(" Are you sure delete the category ")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview",
+      "disabled": _vm.deleteSubCategoryDisabled
+    },
+    on: {
+      "click": _vm.deleteCategory
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "add category",
+      "visible": _vm.dialogAddVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogAddVisible = $event
+      }
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "please input category name"
+    },
+    model: {
+      value: (_vm.categoryName),
+      callback: function($$v) {
+        _vm.categoryName = $$v
+      },
+      expression: "categoryName"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview",
+      "disabled": _vm.addSubCategoryDisabled
+    },
+    on: {
+      "click": _vm.addSubCategory
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogAddVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "edit Category name",
+      "visible": _vm.dialogEditVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogEditVisible = $event
+      }
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "please edit category name"
+    },
+    model: {
+      value: (_vm.categoryName),
+      callback: function($$v) {
+        _vm.categoryName = $$v
+      },
+      expression: "categoryName"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview",
+      "disabled": _vm.editSubCategoryDisabled
+    },
+    on: {
+      "click": _vm.editCategory
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogEditVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "head-detail-list",
+    attrs: {
+      "title": "edit head detail",
+      "visible": _vm.addParamNameVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.addParamNameVisible = $event
+      }
+    }
+  }, [_c('div', [_c('p', {
+    staticClass: "to-edit"
+  }, [_vm._v("编辑")]), _vm._v(" "), _c('el-form', {
+    staticClass: "edit-head-detail"
+  }, _vm._l((_vm.headData), function(item, index) {
+    return _c('el-form-item', {
+      key: index
+    }, [_c('label', {
+      class: [item.isShow === 1 ? 'displayed' : 'hidden']
+    }, [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('div', {
+      staticClass: "more-edit"
+    }, [_c('span', {
+      on: {
+        "click": function($event) {
+          _vm.moveUpHead(item, index)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "el-icon-arrow-up"
+    })]), _vm._v(" "), _c('span', {
+      on: {
+        "click": function($event) {
+          _vm.moveDownHead(item, index)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "el-icon-arrow-down"
+    })])])])
+  })), _vm._v(" "), (_vm.showAddParam) ? _c('el-form', {
+    staticClass: "demo-form-inline",
+    attrs: {
+      "inline": true
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "名称:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "clearable": ""
+    },
+    model: {
+      value: (_vm.newParamName),
+      callback: function($$v) {
+        _vm.newParamName = $$v
+      },
+      expression: "newParamName"
+    }
+  })], 1), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": _vm.createNewParam
+    }
+  }, [_vm._v("新建")]), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": _vm.cancelCreate
+    }
+  }, [_vm._v("取消")])], 1) : _vm._e()], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    staticStyle: {
+      "text-align": "center"
+    },
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.addParamRows
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.addParamNameVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "edit-param-columns",
+    attrs: {
+      "title": "add param columns",
+      "visible": _vm.addParamValueVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.addParamValueVisible = $event
+      }
+    }
+  }, [_vm._l((_vm.headData), function(item, index) {
+    return _c('div', [_c('el-form', {
+      staticClass: "demo-form-inline"
+    }, [_c('el-form-item', {
+      attrs: {
+        "label": item.name + ':'
+      }
+    }, [_c('el-input', {
+      attrs: {
+        "placeholder": _vm.dataBitsList[item.label],
+        "clearable": ""
+      },
+      model: {
+        value: (_vm.paramValueRadios[item.label]),
+        callback: function($$v) {
+          _vm.$set(_vm.paramValueRadios, item.label, $$v)
+        },
+        expression: "paramValueRadios[item.label]"
+      }
+    })], 1)], 1)], 1)
+  }), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.addParamColumns
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.addParamValueVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)], 2), _vm._v(" "), _c('el-dialog', {
+    staticClass: "show-all-head",
+    attrs: {
+      "title": "show all head list",
+      "visible": _vm.showHeadListVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.showHeadListVisible = $event
+      }
+    }
+  }, [_c('el-table', {
+    staticClass: "show-head-body-detail",
+    attrs: {
+      "data": _vm.tableData,
+      "max-height": _vm.clientHeight,
+      "size": "small",
+      "highlight-current-row": true,
+      "fit": ""
+    }
+  }, [_vm._l((_vm.headData), function(item, index) {
+    return (item.isShow === 1) ? _c('el-table-column', {
+      key: index,
+      attrs: {
+        "prop": item.name,
+        "width": item.width,
+        "label": item.name
+      }
+    }) : _vm._e()
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "render-header": _vm.renderHeader
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return _vm.showBody ? [(scope.$index >= _vm.tableData.length - 1) ? _c('span', {
+          on: {
+            "click": function($event) {
+              _vm.showAddParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }, [_c('i', {
+          staticClass: "el-icon-plus"
+        })]) : _c('span', {
+          staticClass: "other-functions"
+        }, [_c('span', {
+          staticClass: "body-detail",
+          on: {
+            "click": function($event) {
+              _vm.showEditParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }), _vm._v(" "), _c('span', {
+          staticClass: "delete-body-detail",
+          on: {
+            "click": function($event) {
+              _vm.showDeleteParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }, [_c('i', {
+          staticClass: "el-icon-delete"
+        })]), _vm._v(" "), _c('span', {
+          staticClass: "copy-body-detail",
+          on: {
+            "click": function($event) {
+              _vm.showCopyParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }), _vm._v(" "), _c('span', [(_vm.isShowUploadFile) ? _c('el-button', {
+          staticClass: "show-upload-file",
+          attrs: {
+            "size": "mini",
+            "type": "text"
+          },
+          on: {
+            "click": function($event) {
+              _vm.uploadSingleParamFile(scope, scope.row)
+            }
+          }
+        }) : _vm._e()], 1), _vm._v(" "), _c('span', [(_vm.isShowUploadFile && scope.$index < _vm.tableData.length - 1 && scope.row.isUpload === true) ? _c('el-button', {
+          staticClass: "has-uploaded",
+          attrs: {
+            "size": "mini"
+          }
+        }) : _vm._e()], 1), _vm._v(" "), _c('span', [(_vm.isShowUploadFile) ? _c('el-button', {
+          staticClass: "upload-param-file",
+          attrs: {
+            "size": "mini",
+            "type": "text"
+          },
+          on: {
+            "click": function($event) {
+              _vm.showUploadedFile(scope.row)
+            }
+          }
+        }) : _vm._e()], 1)])] : undefined
+      }
+    }])
+  }), _vm._v(" "), (_vm.table2 && _vm.rootId == 2) ? _c('div', [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.uploadFile
+    }
+  }, [_vm._v("上传文件")])], 1) : _vm._e(), _vm._v(" "), (_vm.table2 && _vm.rootId == 2) ? _c('el-table', {
+    staticClass: "show-head-body-detail",
+    attrs: {
+      "data": _vm.tableData,
+      "size": "small",
+      "highlight-current-row": true,
+      "fit": "",
+      "max-height": _vm.clientHeight
+    }
+  }, _vm._l((_vm.firmwareHeadData), function(item, index) {
+    return _c('el-table-column', {
+      key: index,
+      attrs: {
+        "width": "160",
+        "prop": item.prop,
+        "label": item.name
+      }
+    })
+  })) : _vm._e()], 2)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "delete param value",
+      "visible": _vm.deleteParamVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.deleteParamVisible = $event
+      }
+    }
+  }, [_c('span', [_vm._v("Are you sure delete the item?")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.deleteParamColumns
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.deleteParamVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "copy param value",
+      "visible": _vm.copyParamVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.copyParamVisible = $event
+      }
+    }
+  }, [_c('el-form', [_c('el-form-item', {
+    attrs: {
+      "label": "from:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "copy head"
+    },
+    model: {
+      value: (_vm.copyHeadItem),
+      callback: function($$v) {
+        _vm.copyHeadItem = $$v
+      },
+      expression: "copyHeadItem"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "to:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "paste head"
+    },
+    nativeOn: {
+      "click": function($event) {
+        _vm.pasteCategoryVisible = true
+      }
+    },
+    model: {
+      value: (_vm.pasteHeadItem),
+      callback: function($$v) {
+        _vm.pasteHeadItem = $$v
+      },
+      expression: "pasteHeadItem"
+    }
+  })], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    staticStyle: {
+      "text-align": "centernpm"
+    },
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.addParamRows
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.addParamNameVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "edit-param-columns",
+    attrs: {
+      "title": "edit param columns",
+      "visible": _vm.editParamValueVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.editParamValueVisible = $event
+      }
+    }
+  }, [_vm._l((_vm.headData), function(item, index) {
+    return _c('div', [_c('el-form', {
+      staticClass: "demo-form-inline",
+      attrs: {
+        "inline": true
+      }
+    }, [_c('el-form-item', {
+      attrs: {
+        "label": item.name + ':'
+      }
+    }, [(item.id == 92) ? _c('span', [_vm._v(_vm._s(_vm.paramValueRadios[item.label]))]) : _vm._e(), _vm._v(" "), _c('el-input', {
+      attrs: {
+        "placeholder": _vm.dataBitsList[item.label],
+        "disabled": item.label == 'SN'
+      },
+      model: {
+        value: (_vm.paramValueRadios[item.label]),
+        callback: function($$v) {
+          _vm.$set(_vm.paramValueRadios, item.label, $$v)
+        },
+        expression: "paramValueRadios[item.label]"
+      }
+    })], 1)], 1)], 1)
+  }), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.editParamColumns
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.editParamValueVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)], 2), _vm._v(" "), _c('el-dialog', {
+    staticClass: "show-all-head",
+    attrs: {
+      "title": "show all head list",
+      "visible": _vm.showHeadListVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.showHeadListVisible = $event
+      }
+    }
+  }, [_c('el-table', {
+    staticClass: "show-head-body-detail",
+    attrs: {
+      "data": _vm.tableData,
+      "max-height": _vm.clientHeight,
+      "size": "small",
+      "highlight-current-row": true,
+      "fit": ""
+    }
+  }, [_vm._l((_vm.headData), function(item, index) {
+    return (item.isShow === 1) ? _c('el-table-column', {
+      key: index,
+      attrs: {
+        "prop": item.name,
+        "width": item.width,
+        "label": item.name
+      }
+    }) : _vm._e()
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "render-header": _vm.renderHeader
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return _vm.showBody ? [(scope.$index >= _vm.tableData.length - 1) ? _c('span', {
+          on: {
+            "click": function($event) {
+              _vm.showAddParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }, [_c('i', {
+          staticClass: "el-icon-plus"
+        })]) : _vm._e(), _vm._v(" "), _c('span', {
+          staticClass: "body-detail",
+          on: {
+            "click": function($event) {
+              _vm.showEditParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }), _vm._v(" "), _c('span', {
+          on: {
+            "click": function($event) {
+              _vm.showDeleteParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        }, [_c('i', {
+          staticClass: "el-icon-delete"
+        })]), _vm._v(" "), _c('span', {
+          staticClass: "copy-body-detail",
+          on: {
+            "click": function($event) {
+              _vm.showCopyParamValueDialog(scope.$index, scope.row)
+            }
+          }
+        })] : undefined
+      }
+    }])
+  }), _vm._v(" "), (_vm.table2 && _vm.rootId == 2) ? _c('div', [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.uploadFile
+    }
+  }, [_vm._v("上传文件")])], 1) : _vm._e(), _vm._v(" "), (_vm.table2 && _vm.rootId == 2) ? _c('el-table', {
+    staticClass: "show-head-body-detail",
+    attrs: {
+      "data": _vm.tableData,
+      "size": "small",
+      "highlight-current-row": true,
+      "fit": "",
+      "max-height": _vm.clientHeight
+    }
+  }, _vm._l((_vm.firmwareHeadData), function(item, index) {
+    return _c('el-table-column', {
+      key: index,
+      attrs: {
+        "width": "160",
+        "prop": item.prop,
+        "label": item.name
+      }
+    })
+  })) : _vm._e()], 2)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "delete param value",
+      "visible": _vm.deleteParamVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.deleteParamVisible = $event
+      }
+    }
+  }, [_c('span', [_vm._v("Are you sure delete the item?")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.deleteParamColumns
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.deleteParamVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "copy param value",
+      "visible": _vm.copyParamVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.copyParamVisible = $event
+      }
+    }
+  }, [_c('el-form', [_c('el-form-item', {
+    attrs: {
+      "label": "from:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "copy head"
+    },
+    model: {
+      value: (_vm.copyHeadItem),
+      callback: function($$v) {
+        _vm.copyHeadItem = $$v
+      },
+      expression: "copyHeadItem"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "to:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "paste head"
+    },
+    nativeOn: {
+      "click": function($event) {
+        _vm.pasteCategoryVisible = true
+      }
+    },
+    model: {
+      value: (_vm.pasteHeadItem),
+      callback: function($$v) {
+        _vm.pasteHeadItem = $$v
+      },
+      expression: "pasteHeadItem"
+    }
+  })], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.copyParamColumns
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.copyParamVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": "paste category item",
+      "visible": _vm.pasteCategoryVisible,
+      "custom-class": _vm.categoryDialog,
+      "size": "large",
+      "top": "10%"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.pasteCategoryVisible = $event
+      }
+    }
+  }, [_c('el-tree', {
+    attrs: {
+      "data": _vm.categoryList,
+      "props": _vm.defaultProps,
+      "node-key": "id",
+      "default-expanded-keys": _vm.defaultChecked,
+      "highlight-current": true
+    },
+    on: {
+      "node-click": _vm.copyCategoryClick
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": function($event) {
+        _vm.pasteCategoryVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.pasteCategoryVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.cancel')))])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog upload-file-dialog",
+    attrs: {
+      "title": "upload file",
+      "visible": _vm.showUploadFileVisible,
+      "size": "large",
+      "top": "10%"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.showUploadFileVisible = $event
+      }
+    }
+  }, [_c('el-table', {
+    attrs: {
+      "highlight-current-row": true,
+      "max-height": 240,
+      "data": _vm.uploadFirmwareList
+    }
+  }, [_vm._l((_vm.uploadFirmwareHeadData), function(item, index) {
+    return _c('el-table-column', {
+      key: index,
+      attrs: {
+        "width": item.width,
+        "prop": item.name,
+        "label": item.label
+      }
+    })
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "width": "240",
+      "label": "operation"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return [_c('el-button', {
+          on: {
+            "click": function($event) {
+              _vm.deleteUploadFile(scope.row)
+            }
+          }
+        }, [_vm._v("删除")]), _vm._v(" "), _c('el-button', {
+          staticClass: "download-file",
+          attrs: {
+            "size": "mini"
+          },
+          on: {
+            "click": function($event) {
+              _vm.downloadFile(scope.row)
+            }
+          }
+        }, [_vm._v("下载")]), _vm._v(" "), _c('el-button', {
+          staticClass: "download-file",
+          attrs: {
+            "size": "mini"
+          },
+          on: {
+            "click": function($event) {
+              _vm.handleShowOrHidden(scope.row)
+            }
+          }
+        }, [_vm._v("显示/隐藏")])]
+      }
+    }])
+  })], 2)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog upload-file-dialog",
+    attrs: {
+      "title": "Upload Firmware",
+      "visible": _vm.uploadFileVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.uploadFileVisible = $event
+      }
+    }
+  }, [_c('el-form', {
+    staticStyle: {
+      "margin-top": "20px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Firmware Version"
+    }
+  }, [_c('el-input', {
+    on: {
+      "blur": _vm.checkFirmwareVersion
+    },
+    model: {
+      value: (_vm.uploadFirmwareVersion),
+      callback: function($$v) {
+        _vm.uploadFirmwareVersion = $$v
+      },
+      expression: "uploadFirmwareVersion"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Remark"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.uploadRemark),
+      callback: function($$v) {
+        _vm.uploadRemark = $$v
+      },
+      expression: "uploadRemark"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Show"
+    }
+  }, [_c('el-radio-group', {
+    model: {
+      value: (_vm.uploadShow),
+      callback: function($$v) {
+        _vm.uploadShow = $$v
+      },
+      expression: "uploadShow"
+    }
+  }, [_c('el-radio', {
+    attrs: {
+      "label": 1
+    }
+  }, [_vm._v("显示")]), _vm._v(" "), _c('el-radio', {
+    attrs: {
+      "label": 0
+    }
+  }, [_vm._v("隐藏")])], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Accepted"
+    }
+  }, [_c('span', [_vm._v(_vm._s(_vm.isAccepted === 1 ? '支持' : '不支持'))])])], 1), _vm._v(" "), _c('p', {
+    staticClass: "download-and-upload"
+  }, [_c('el-upload', {
+    ref: "upload",
+    staticClass: "upload desc upload-file",
+    attrs: {
+      "drag": "",
+      "action": _vm.options.url,
+      "on-change": _vm.handleChangeFile,
+      "on-success": _vm.onSuccess,
+      "file-list": _vm.fileList,
+      "on-remove": _vm.removeFile,
+      "multiple": true,
+      "auto-upload": true,
+      "disabled": _vm.uploadDisabled,
+      "before-upload": _vm.beforeAvatarUpload,
+      "data": _vm.options.params
+    }
+  }, [_c('el-button', {
+    attrs: {
+      "title": "仅支持文件上传",
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.showUploadFile
+    }
+  }, [_vm._v("\n                    上传\n                ")])], 1)], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    on: {
+      "click": _vm.saveUploadInfo
+    }
+  }, [_vm._v("save")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog upload-param-file-dialog",
+    attrs: {
+      "title": "upload image",
+      "visible": _vm.uploadParamFile,
+      "top": "10%"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.uploadParamFile = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "upload-content"
+  }, [_c('el-upload', {
+    ref: "upload",
+    staticClass: "upload desc",
+    attrs: {
+      "action": _vm.paramFiles.url,
+      "on-success": _vm.onParamSuccess,
+      "multiple": _vm.paramSingleUpload,
+      "auto-upload": true,
+      "show-file-list": false,
+      "data": _vm.paramFiles.params
+    }
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    }
+  }, [_vm._v("\n                    Upload Param File\n                ")])], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "uploaded-param-file"
+  }, [_c('div', {
+    staticClass: "uploaded-image"
+  }, [(_vm.uploadedParamURL != '') ? _c('img', {
+    attrs: {
+      "src": _vm.uploadedParamURL
+    }
+  }) : _vm._e()])])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": "Show Or Hidden",
+      "visible": _vm.showOrHiddenVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.showOrHiddenVisible = $event
+      }
+    }
+  }, [_c('el-form', [_c('el-form-item', {
+    attrs: {
+      "label": "Show"
+    }
+  }, [_c('el-radio-group', {
+    on: {
+      "change": _vm.handleShow
+    },
+    model: {
+      value: (_vm.editUploadShow),
+      callback: function($$v) {
+        _vm.editUploadShow = $$v
+      },
+      expression: "editUploadShow"
+    }
+  }, [_c('el-radio', {
+    attrs: {
+      "label": 1
+    }
+  }, [_vm._v("显示")]), _vm._v(" "), _c('el-radio', {
+    attrs: {
+      "label": 0
+    }
+  }, [_vm._v("隐藏")])], 1)], 1)], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog delete-firmware-info",
+    attrs: {
+      "title": "Delete Firmware Info",
+      "visible": _vm.deleteFirmwareInfoVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.deleteFirmwareInfoVisible = $event
+      }
+    }
+  }, [_c('el-form', [_c('el-form-item', {
+    attrs: {
+      "label": "理由:"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.deleteFirmwareReason),
+      callback: function($$v) {
+        _vm.deleteFirmwareReason = $$v
+      },
+      expression: "deleteFirmwareReason"
+    }
+  })], 1)], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    on: {
+      "click": _vm.confirmDeleteFimwareInfo
+    }
+  }, [_vm._v("save")])], 1)], 1)], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-225bec46","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/createParam/index.vue
+// module id = 1200
+// module chunks = 73

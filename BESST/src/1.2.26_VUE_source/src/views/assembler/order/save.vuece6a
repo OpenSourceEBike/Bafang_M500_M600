@@ -1,0 +1,320 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "assembler-order-save"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": _vm.goOrderList
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.title))])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('orderInfo')))]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('poNo'))), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.poNo),
+      callback: function($$v) {
+        _vm.poNo = $$v
+      },
+      expression: "poNo"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('customerName'))), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-select', {
+    staticClass: "input-left",
+    attrs: {
+      "clearable": "",
+      "placeholder": _vm.$t('customerName')
+    },
+    model: {
+      value: (_vm.customerName),
+      callback: function($$v) {
+        _vm.customerName = $$v
+      },
+      expression: "customerName"
+    }
+  }, _vm._l((_vm.orgList), function(item) {
+    return _c('el-option', {
+      key: item.name,
+      attrs: {
+        "label": item.name,
+        "value": item.name
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('note')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-note",
+    model: {
+      value: (_vm.note),
+      callback: function($$v) {
+        _vm.note = $$v
+      },
+      expression: "note"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "parts-list"
+  }, [_c('label', {
+    staticClass: "labelList"
+  }, [_vm._v(_vm._s(_vm.$t('itemList')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "att-btn",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogCreateVisible = true
+      }
+    }
+  }, [_vm._v("+")]), _vm._v(" "), _c('label', {
+    staticClass: "labelAdd"
+  }, [_vm._v(_vm._s(_vm.$t('addItem')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('td', [_c('el-checkbox', {
+    model: {
+      value: (_vm.allSelectedForDelete),
+      callback: function($$v) {
+        _vm.allSelectedForDelete = $$v
+      },
+      expression: "allSelectedForDelete"
+    }
+  })], 1), _vm._v(" "), _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })], 2), _vm._v(" "), _c('tbody', _vm._l((_vm.orderItems), function(item, index) {
+    return _c('tr', [_c('td', [_c('el-checkbox', {
+      staticClass: "table-checkbox",
+      model: {
+        value: (item.selected),
+        callback: function($$v) {
+          _vm.$set(item, "selected", $$v)
+        },
+        expression: "item.selected"
+      }
+    })], 1), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.name || item.item_name))]), _vm._v(" "), _c('td', [_vm._v(" " + _vm._s(item.part_no) + " ")]), _vm._v(" "), _c('td', [_c('el-input-number', {
+      staticClass: "input-number",
+      attrs: {
+        "min": item.produced || 1
+      },
+      model: {
+        value: (item.amount),
+        callback: function($$v) {
+          _vm.$set(item, "amount", $$v)
+        },
+        expression: "item.amount"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.deleteItem(index)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('delete')))])])])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "delete"
+    },
+    on: {
+      "click": _vm.deleteOrderItem
+    }
+  }, [_vm._v(_vm._s(_vm.$t('delete')))])], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": _vm.$t('addItem'),
+      "visible": _vm.dialogCreateVisible,
+      "size": "large",
+      "top": "10%"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogCreateVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [(!_vm.orderId) ? _c('el-select', {
+    staticClass: "brand-select",
+    attrs: {
+      "placeholder": "select company"
+    },
+    on: {
+      "change": _vm.getBrandListById
+    },
+    model: {
+      value: (_vm.search.org_id),
+      callback: function($$v) {
+        _vm.$set(_vm.search, "org_id", $$v)
+      },
+      expression: "search.org_id"
+    }
+  }, _vm._l((_vm.orgList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  })) : _vm._e(), _vm._v(" "), _c('el-select', {
+    staticClass: "brand-select",
+    attrs: {
+      "placeholder": _vm.$t('brandPlaceholder')
+    },
+    on: {
+      "change": _vm.queryOrderItem
+    },
+    model: {
+      value: (_vm.search.brand_id),
+      callback: function($$v) {
+        _vm.$set(_vm.search, "brand_id", $$v)
+      },
+      expression: "search.brand_id"
+    }
+  }, _vm._l((_vm.brandList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  })), _vm._v(" "), _c('el-input', {
+    staticClass: "search-content",
+    attrs: {
+      "placeholder": _vm.$t('modelName')
+    },
+    model: {
+      value: (_vm.search.query),
+      callback: function($$v) {
+        _vm.$set(_vm.search, "query", $$v)
+      },
+      expression: "search.query"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": _vm.$t('search')
+    },
+    on: {
+      "click": _vm.queryOrderItem
+    }
+  })])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('td', [_c('el-checkbox', {
+    model: {
+      value: (_vm.allSelectedForAdd),
+      callback: function($$v) {
+        _vm.allSelectedForAdd = $$v
+      },
+      expression: "allSelectedForAdd"
+    }
+  })], 1), _vm._v(" "), _vm._l((_vm.itemHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })], 2), _vm._v(" "), _c('tbody', _vm._l((_vm.selectItems), function(item, index) {
+    return _c('tr', [_c('td', [_c('el-checkbox', {
+      staticClass: "table-checkbox",
+      model: {
+        value: (item.selected),
+        callback: function($$v) {
+          _vm.$set(item, "selected", $$v)
+        },
+        expression: "item.selected"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('img', {
+      attrs: {
+        "src": _vm._f("getImgUrl")(item.img)
+      }
+    })]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.ext_part_no))])])
+  }))]), _vm._v(" "), _c('el-pagination', {
+    staticClass: "pagination",
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentPageChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.addItems
+    }
+  }, [_vm._v(_vm._s(_vm.$t('addItems')))])], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.createOrder
+    }
+  }, [_vm._v(_vm._s(_vm.$t('saveOrder')))])], 1)], 1)])])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-09ac7890","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/assembler/order/save.vue
+// module id = 1714
+// module chunks = 73

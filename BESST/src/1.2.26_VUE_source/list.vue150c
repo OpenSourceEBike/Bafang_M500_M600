@@ -1,0 +1,215 @@
+<template>
+    <div class="order-list">
+        <div class="header">
+            <el-form :inline="true" class="demo-form-inline">
+                <el-form-item :label="$t('search.email')">
+                    <el-input v-model="email"></el-input>
+                    <el-input style="display: none"></el-input>
+                </el-form-item>
+
+                <div class="btn-group-inline">
+                    <div class="icons">
+                        <div class="icon-item search" @click="getFeedBackList" :title="$t('search.searchBtn')"></div>
+                    </div>
+                </div>
+            </el-form>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item add" @click="addFeedBack" :title="$t('add')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <td v-for="(item, index) in headData"  :class="{'al-right' : (index === 1)}">{{item}}</td>
+                        <!-- <td v-for="(item, index) in headData" :key="index" :class="{'al-right' : (index === 1)}">{{item}}</td> -->
+                    </thead>
+                    <tbody v-if="!loading">
+                    <tr v-for="(item,index) in tableData">
+                    <!-- <tr v-for="(item,index) in tableData" :key="index"> -->
+                        <!--<td class="td" v-for="value in item">{{value}}</td>-->
+                        <td>
+                            {{item.create_time | dateFormat}}
+                        </td>
+                        <td style="text-align: right">
+                            {{item.email}}
+                        </td>
+                        <td>
+                            {{item.file_id}}
+                        </td>
+                        <td>
+                            {{item.desc}}
+                        </td>
+                        <td :class="{
+                        'file-finished':item.status == 2,
+                        'file-wait': item.status == 1,
+                        'file-urgent': item.status == 0
+                        }">
+                            {{item.status | fileStatus}}
+                        </td>
+                        <td>
+                            <a class="btn-underline" @click.stop="goFeedBackDetail(item.id)" v-if="Core.Data.getUser().id == '24'">{{ $t('detail') }}</a>
+                            <a class="btn-underline" @click.stop="showDeleteDialog(item.id)" v-if="Core.Data.getUser().id == '24'">{{ $t('delete') }}</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="no-data-content" v-show="tableData.length <= 0 && !loading">
+                {{ $t('noResult') }}
+            </div>
+            <div class="loading" v-if="loading">
+                <img src="../../../assets/images/icon/loading-bars.svg" alt="Loading icon" />
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next, jumper"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+        <el-dialog
+            :title="$t('deleteDialog.title')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialog.content') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteFeedBack">{{ $t('deleteDialog.yes') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('deleteDialog.no') }}</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+    import ElInput from "../../../../node_modules/element-ui/packages/input/src/input";
+
+    export default {
+        components: {ElInput},
+        name: 'getFilesList',
+        data() {
+            return {
+                Core: Core,
+                headData: ['Date', 'Email.', 'File Name', 'Desc', 'Status', 'Operation'],
+                tableData: [],
+                currentPage: Core.Data.get(Core.Const.DATA.KEY_COMPONENT_ORDER_LIST_PAGE) ? Core.Data.get(Core.Const.DATA.KEY_COMPONENT_ORDER_LIST_PAGE) : 1,
+                total: 0,
+                loading: false,
+                localPage: 0,
+                fileId:'',
+
+                dialogDeleteVisible: false,
+                selectId: '',
+                email: '',
+
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.TestFeedback.List,
+                zh: ZH.Component.TestFeedback.List,
+                de: DE.Component.TestFeedback.List,
+                nl: NL.Component.TestFeedback.List
+            }
+        },
+        mounted: function () {
+            // 国际化
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            // 获取权限
+
+            this.getFeedBackList();
+            if(Core.Data.getUser().id != '24'){
+                this.headData = ['Date', 'Email.', 'File Name', 'Desc', 'Status'];
+            }
+        },
+        methods: {
+            initData() {
+                this.headData = [this.$t('headData.date'), this.$t('headData.email'), this.$t('headData.fileName'), this.$t('headData.desc'), this.$t('headData.status'), this.$t('headData.operation')];
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+	            Core.Data.set(Core.Const.DATA.KEY_COMPONENT_ORDER_LIST_PAGE, this.currentPage);
+	            this.getFeedBackList();
+            },
+
+            addFeedBack() {
+                this.$router.push({name: 'componentTestFeedbackSave'});
+            },
+
+            getFeedBackList() {
+                this.loading = true;
+
+                Core.Api.FileError.getFilesList(this.email, this.currentPage).then(res => {
+                    this.loading = false;
+                    this.tableData = res.file_list;
+                    let data = res.file_list;
+                    this.total = res.total;
+
+                })
+            },
+
+            showDeleteDialog(selectId) {
+                this.selectId = selectId;
+                this.dialogDeleteVisible = true;
+            },
+
+            deleteFeedBack() {
+                Core.Api.FileError.deleteFileError(this.selectId).then(res => {
+                    this.$message({
+                        message: 'Delete successfully',
+                        type: 'success'
+                    });
+                    this.dialogDeleteVisible = false;
+                    this.getFeedBackList();
+                })
+            },
+
+	        goFeedBackDetail(fileId) {
+		        this.$router.push({name: 'componentTestFeedbackDetail', query: {"fileId": fileId}});
+	        },
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .order-list {
+        width: 100%;
+        height: 100%;
+        .loading {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-wrap{
+            .long-td{
+                max-width: 270px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                text-align: left;
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?af692358

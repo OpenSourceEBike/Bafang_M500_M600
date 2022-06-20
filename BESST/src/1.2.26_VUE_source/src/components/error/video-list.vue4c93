@@ -1,0 +1,108 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "video-list"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "head-text"
+  }, [_vm._v(_vm._s(_vm.$t('category')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "select",
+    attrs: {
+      "slot": "append"
+    },
+    on: {
+      "change": _vm.changeCategory
+    },
+    slot: "append",
+    model: {
+      value: (_vm.category),
+      callback: function($$v) {
+        _vm.category = $$v
+      },
+      expression: "category"
+    }
+  }, _vm._l((_vm.categoryOptions), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v("\n                    " + _vm._s(item) + "\n                ")])
+  }))]), _vm._v(" "), _c('tbody', _vm._l((_vm.videoList), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("videoCategoryType")(item.category)))]), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.preview(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('preview')))]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      attrs: {
+        "href": _vm._f("getFileUrl")(item.file, ''),
+        "download": item.name
+      }
+    }, [_vm._v(_vm._s(_vm.$t('download')))])])])
+  }))]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.videoList.length <= 0),
+      expression: "videoList.length <= 0"
+    }],
+    staticClass: "no-data-content"
+  }, [_vm._v("\n            " + _vm._s(_vm.$t('noResult')) + "\n        ")])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.selectVideo.name,
+      "custom-class": "video-dialog",
+      "visible": _vm.dialogPreviewVisible,
+      "before-close": _vm.closeVideoDialog
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogPreviewVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "dialog-container"
+  }, [_c('video', {
+    attrs: {
+      "controls": "controls",
+      "autoplay": "autoplay",
+      "src": _vm._f("getFileUrl")(_vm.selectVideo.file, '')
+    }
+  })])])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-69226204","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/error/video-list.vue
+// module id = 1183
+// module chunks = 73

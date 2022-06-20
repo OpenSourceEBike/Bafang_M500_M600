@@ -1,0 +1,634 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "apply-list-container"
+  }, [_c('div', {
+    staticClass: "container-wrap"
+  }, [_c('div', {
+    staticClass: "apply-btn"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.toCreateOrg
+    }
+  }, [_vm._v("Create")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "apply-list"
+  }, [_c('el-table', {
+    attrs: {
+      "data": _vm.applyList
+    }
+  }, [_vm._l((_vm.applyHeadList), function(item, index) {
+    return _c('el-table-column', {
+      key: index,
+      attrs: {
+        "label": item.label,
+        "prop": item.name
+      }
+    })
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "label": "Operation",
+      "width": "100"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return [(scope.row.audit_type == '未审批') ? _c('a', {
+          staticClass: "btn-underline",
+          on: {
+            "click": function($event) {
+              $event.stopPropagation();
+              _vm.clickEditSpec(scope.row)
+            }
+          }
+        }, [_vm._v("Edit")]) : _vm._e()]
+      }
+    }])
+  })], 2)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "visible": _vm.createOrg,
+      "title": "Create organization account for customer"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.createOrg = $event
+      }
+    }
+  }, [_c('el-form', {
+    ref: "orgForm",
+    attrs: {
+      "model": _vm.orgForm,
+      "rules": _vm.rules,
+      "label-width": "100px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Logo"
+    }
+  }, [_c('el-upload', {
+    attrs: {
+      "action": _vm.options.url,
+      "on-success": _vm.onSuccess,
+      "multiple": true,
+      "auto-upload": true,
+      "show-file-list": false,
+      "data": _vm.options.params
+    }
+  }, [_c('el-button', {
+    attrs: {
+      "size": "small",
+      "type": "primary"
+    }
+  }, [_vm._v("点击上传")]), _vm._v(" "), _c('div', {
+    staticClass: "el-upload__tip",
+    attrs: {
+      "slot": "tip"
+    },
+    slot: "tip"
+  }, [_vm._v("只能上传jpg/png文件，且不超过500kb")])], 1), _vm._v(" "), _c('img', {
+    staticStyle: {
+      "width": "32px",
+      "height": "32px"
+    },
+    attrs: {
+      "src": _vm.showImgURL
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Name",
+      "prop": "name"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.orgForm.name),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "name", $$v)
+      },
+      expression: "orgForm.name"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Type",
+      "prop": "type"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "clearable": "",
+      "placeholder": "请选择"
+    },
+    model: {
+      value: (_vm.orgForm.type),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "type", $$v)
+      },
+      expression: "orgForm.type"
+    }
+  }, _vm._l((_vm.typeList), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Country",
+      "prop": "country"
+    }
+  }, [_c('el-select', {
+    staticClass: "land",
+    attrs: {
+      "filterable": ""
+    },
+    on: {
+      "change": _vm.showAreaCode
+    },
+    model: {
+      value: (_vm.orgForm.country),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "country", $$v)
+      },
+      expression: "orgForm.country"
+    }
+  }, _vm._l((_vm.areaCodeList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.area_en,
+        "value": item.area_en
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Address",
+      "prop": "address"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.orgForm.address),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "address", $$v)
+      },
+      expression: "orgForm.address"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Postcode",
+      "prop": "postcode"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.orgForm.postcode),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "postcode", $$v)
+      },
+      expression: "orgForm.postcode"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Email",
+      "prop": "email"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.orgForm.email),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "email", $$v)
+      },
+      expression: "orgForm.email"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Phone",
+      "prop": "phone"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.orgForm.phone),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "phone", $$v)
+      },
+      expression: "orgForm.phone"
+    }
+  }, [_c('template', {
+    slot: "prepend"
+  }, [_vm._v("+" + _vm._s(_vm.areaCode))])], 2)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Website",
+      "prop": "website"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.orgForm.website),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "website", $$v)
+      },
+      expression: "orgForm.website"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Applicant",
+      "prop": "applicant"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.orgForm.applicant),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "applicant", $$v)
+      },
+      expression: "orgForm.applicant"
+    }
+  })], 1), _vm._v(" "), (_vm.authMemberList.length > 0) ? _c('el-form-item', {
+    attrs: {
+      "label": "Auditor",
+      "prop": "reviewer"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "clearable": "",
+      "placeholder": "请选择审核人"
+    },
+    on: {
+      "change": _vm.showAuditor
+    },
+    model: {
+      value: (_vm.orgForm.reviewer),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "reviewer", $$v)
+      },
+      expression: "orgForm.reviewer"
+    }
+  }, _vm._l((_vm.authMemberList), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.account,
+        "value": item.account
+      }
+    })
+  }))], 1) : _vm._e(), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Describe"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.orgForm.specific_information),
+      callback: function($$v) {
+        _vm.$set(_vm.orgForm, "specific_information", $$v)
+      },
+      expression: "orgForm.specific_information"
+    }
+  })], 1)], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.createOrg = false
+      }
+    }
+  }, [_vm._v("cancel")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "success"
+    },
+    on: {
+      "click": _vm.saveOrgList
+    }
+  }, [_vm._v("save")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "visible": _vm.editOrg,
+      "title": "Edit organization account for customer"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.editOrg = $event
+      }
+    }
+  }, [_c('el-form', {
+    ref: "orgForm",
+    attrs: {
+      "model": _vm.selectApply,
+      "rules": _vm.rules,
+      "label-width": "100px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Logo"
+    }
+  }, [_c('el-upload', {
+    attrs: {
+      "action": _vm.options.url,
+      "on-success": _vm.onSuccess,
+      "multiple": true,
+      "auto-upload": true,
+      "show-file-list": false,
+      "data": _vm.options.params
+    }
+  }, [_c('el-button', {
+    attrs: {
+      "size": "small",
+      "type": "primary"
+    }
+  }, [_vm._v("点击上传")]), _vm._v(" "), _c('div', {
+    staticClass: "el-upload__tip",
+    attrs: {
+      "slot": "tip"
+    },
+    slot: "tip"
+  }, [_vm._v("只能上传jpg/png文件，且不超过500kb")])], 1), _vm._v(" "), _c('img', {
+    staticStyle: {
+      "width": "32px",
+      "height": "32px"
+    },
+    attrs: {
+      "src": _vm.showImgURL
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Name",
+      "prop": "name"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectApply.name),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "name", $$v)
+      },
+      expression: "selectApply.name"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Type",
+      "prop": "type"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "clearable": "",
+      "placeholder": "请选择"
+    },
+    model: {
+      value: (_vm.selectApply.type),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "type", $$v)
+      },
+      expression: "selectApply.type"
+    }
+  }, _vm._l((_vm.typeList), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Country",
+      "prop": "country"
+    }
+  }, [_c('el-select', {
+    staticClass: "land",
+    attrs: {
+      "filterable": ""
+    },
+    model: {
+      value: (_vm.selectApply.country),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "country", $$v)
+      },
+      expression: "selectApply.country"
+    }
+  }, _vm._l((_vm.areaCodeList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.area_en,
+        "value": item.area_en
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Address",
+      "prop": "address"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectApply.address),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "address", $$v)
+      },
+      expression: "selectApply.address"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Postcode",
+      "prop": "postcode"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectApply.postcode),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "postcode", $$v)
+      },
+      expression: "selectApply.postcode"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Email",
+      "prop": "email"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "disabled": _vm.editOrg,
+      "placeholder": "必须准确"
+    },
+    model: {
+      value: (_vm.selectApply.email),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "email", $$v)
+      },
+      expression: "selectApply.email"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Phone",
+      "prop": "phone"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectApply.phone),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "phone", $$v)
+      },
+      expression: "selectApply.phone"
+    }
+  }, [_c('template', {
+    slot: "prepend"
+  }, [_vm._v("+" + _vm._s(_vm.areaCode))])], 2)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Website",
+      "prop": "website"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectApply.website),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "website", $$v)
+      },
+      expression: "selectApply.website"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Applicant",
+      "prop": "applicant"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectApply.applicant),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "applicant", $$v)
+      },
+      expression: "selectApply.applicant"
+    }
+  })], 1), _vm._v(" "), (_vm.authMemberList.length > 0) ? _c('el-form-item', {
+    attrs: {
+      "label": "Auditor",
+      "prop": "reviewer"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "clearable": "",
+      "placeholder": "请选择审核人"
+    },
+    on: {
+      "change": _vm.showAuditor
+    },
+    model: {
+      value: (_vm.selectApply.reviewer),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "reviewer", $$v)
+      },
+      expression: "selectApply.reviewer"
+    }
+  }, _vm._l((_vm.authMemberList), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.account,
+        "value": item.account
+      }
+    })
+  }))], 1) : _vm._e(), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Describe"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectApply.specific_information),
+      callback: function($$v) {
+        _vm.$set(_vm.selectApply, "specific_information", $$v)
+      },
+      expression: "selectApply.specific_information"
+    }
+  })], 1)], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.editOrg = false
+      }
+    }
+  }, [_vm._v("cancel")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "success"
+    },
+    on: {
+      "click": _vm.saveOrgList
+    }
+  }, [_vm._v("save")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "visible": _vm.historyRecord,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.historyRecord = $event
+      }
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.recordType == 1),
+      expression: "recordType == 1"
+    }]
+  }, [_c('p', [_vm._v("This email account was applied by other people.")]), _vm._v(" "), _c('el-table', {
+    attrs: {
+      "data": _vm.recordApply
+    }
+  }, _vm._l((_vm.applyHeadList), function(item, index) {
+    return _c('el-table-column', {
+      key: index,
+      attrs: {
+        "label": item.label,
+        "prop": item.name
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.recordType == 3),
+      expression: "recordType == 3"
+    }]
+  }, [_c('p', [_vm._v("This email account has registered before.")]), _vm._v(" "), _c('el-table', {
+    attrs: {
+      "data": _vm.recordApply
+    }
+  }, _vm._l((_vm.userHeadList), function(item, index) {
+    return _c('el-table-column', {
+      key: index,
+      attrs: {
+        "label": item.label,
+        "prop": item.name
+      }
+    })
+  }))], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.historyRecord = false
+      }
+    }
+  }, [_vm._v("cancel")])], 1)])], 1)])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-00c77576","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/audit-apply/apply.vue
+// module id = 1860
+// module chunks = 73

@@ -1,0 +1,277 @@
+<template>
+    <div class="model-list">
+        <div class="header">
+            <label class="brand-label">{{ $t('brand') }}</label>
+            <el-select v-model="brandIndex" slot="append" class="select" @change="changeBrand">
+                <el-option
+                    v-for="(item, index) in brandList"
+                    :key=index
+                    :label="item.name"
+                    :value="index">
+                </el-option>
+            </el-select>
+            <div class="btn-group-top" v-if="brandList.length">
+                <div class="icons">
+                    <div class="icon-item add" @click="goSaveView" v-if="authList[Core.Const.AUTH_LIST.itemAdd]"></div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <td v-for="(item, index) in tableHead" :class="{'al-right': index === 2}">{{item}}</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="large" v-for="item in modelList">
+                        <td>
+                            {{item.name}}
+                        </td>
+                        <td class="img">
+                            <img :src="item.img | getImgUrl"/>
+                        </td>
+                        <td class="long-td al-right">
+                            {{item.ext_part_no}}
+                        </td>
+                        <td class="long-td">
+                            <div class="desc" :title="item.desc">{{item.desc}}</div>
+                        </td>
+                        <td>
+                            {{item.website}}
+                        </td>
+                        <td class="icon-td">
+                            <div class="icons">
+                                <div class="icon-item eye" v-on:click.stop="goDetailView(item.id)" :title=" $t('op.look')"></div>
+                            </div>
+                            <div class="icons">
+                                <div class="icon-item edit" v-on:click.stop="goEditView(item.id)" v-if="authList[Core.Const.AUTH_LIST.itemEdit]" :title=" $t('op.edit')"></div>
+                            </div>
+                            <div class="icons">
+                                <div class="icon-item delete" v-on:click.stop="showDeleteDialog(item.id)" v-if="authList[Core.Const.AUTH_LIST.itemDelete]" :title=" $t('op.delete')"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <el-switch
+                                :value="item.is_show == 1"
+                                @change="changeIsShow(item)"
+                                on-color="#98B42C"
+                                off-color="#2B2E39">
+                            </el-switch>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-show="!modelList || modelList.length <= 0">
+                    {{ $t('noResult') }}
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change='handleCurrentChange'
+                    :current-page.sync=currentPage
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+
+        <!--删除 Model弹窗-->
+        <el-dialog :title="$t('deleteModel')" :visible.sync="deleteDialogVisible"  size="tiny">
+            <p>{{ $t('deleteTip') }} </p>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteModel">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="deleteDialogVisible = false">{{ $t('no') }}</el-button>
+            </div>
+        </el-dialog>
+
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        name: 'brandModelList',
+        components: {},
+        data(){
+            return {
+                Core: Core,
+                tableHead: ['Name', 'Logo', 'Part No', 'Introduction', 'Link', 'Operation', 'Show'],
+                modelList: [],
+                currentPage: 1,
+                brandList: [],
+                selectBrand: {},
+                brandIndex: 0,
+                selectModelId: '',
+                total: 0,
+                deleteDialogVisible: false,
+
+                authList: []
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Brand.ModelList,
+                zh: ZH.Brand.ModelList,
+                de: DE.Brand.ModelList,
+                nl: NL.Brand.ModelList
+            }
+        },
+
+        mounted: function () {
+            // 国际化
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            let page = this.$route.query.page;
+            let index = this.$route.query.index;
+            this.brandIndex = parseInt(index);
+            this.currentPage = parseInt(page);
+            this.getAllBrandList();
+        },
+
+        methods: {
+            initData() {
+                this.tableHead = [
+                    this.$t('tableHead.name'),
+                    this.$t('tableHead.logo'),
+                    this.$t('tableHead.partNo'),
+                    this.$t('tableHead.introduction'),
+                    this.$t('link'),
+                    this.$t('tableHead.operation'),
+                    this.$t('tableHead.show'),
+                ];
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.showModel();
+            },
+
+            getAllBrandList(){
+                Core.Api.Brand.getAllBrandList().then(res => {
+                    this.brandList = res.brand_list;
+                    if (!this.brandList || this.brandList.length <= 0) {
+                        this.brandIndex = 'No Brand';
+                        return;
+                    }
+                    this.selectBrand = this.brandList[this.brandIndex];
+                    this.showModel();
+                })
+            },
+
+            changeBrand(){
+                if (this.brandList.length <= 0) {
+                    return;
+                }
+                this.selectBrand = this.brandList[this.brandIndex];
+                this.showModel();
+            },
+
+            showModel(){
+                Core.Api.Item.getListOfBrand(this.selectBrand.id, this.currentPage).then(res => {
+                    this.modelList = res.item_list;
+                    this.total = res.count;
+                    this.$router.push({query: {page: this.currentPage, index: this.brandIndex}});
+                })
+            },
+
+            goDetailView(id){
+                this.$router.push({name: 'brandModelDetail', query: {"brandId": this.selectBrand.id,"modelId": id}});
+            },
+
+            goSaveView(){
+                this.$router.push({name: 'brandModelSave', query: {"brandId": this.selectBrand.id}});
+            },
+
+            goEditView(id){
+                this.selectModelId = id;
+                this.$router.push({name: 'brandModelSave', query: {"brandId": this.selectBrand.id, "itemId": id , "type": 'edit'}});
+            },
+
+            showDeleteDialog(id){
+                this.selectModelId = id;
+                this.deleteDialogVisible = true;
+            },
+
+            deleteModel(){
+                console.log(this.selectModelId);
+                Core.Api.Item.deleteItem(this.selectModelId).then(res => {
+                    this.showModel();
+                    this.deleteDialogVisible = false;
+                    this.$message({
+                        message: $t('deleteSuccess'),
+                        type: 'success'
+                    });
+                })
+            },
+
+            changeIsShow(item) {
+                Core.Api.Item.switchShow(item.id).then(res => {
+                    this.modelList.forEach(function (data) {
+                        if (data.id === item.id) {
+                            data.is_show = data.is_show ? 0 : 1;
+                        }
+                    })
+                })
+            }
+        }
+
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss" scoped>
+    .model-list {
+        width: 100%;
+        height: 100%;
+        .brand-label {
+            color: #A1A5B1;
+            margin-right: 15px;
+        }
+        .img{
+            width: 90px
+        }
+        .desc{
+
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .long-td{
+            max-width: 500px;
+        }
+        .icon-td{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            height:80px;
+            .icons{
+                align-self: center;
+                width:30px;
+                height:30px;
+                padding-bottom:36px;
+            }
+        }
+
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?00dc58e1

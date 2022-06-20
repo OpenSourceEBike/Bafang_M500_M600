@@ -1,0 +1,513 @@
+<template>
+    <div class="model-detail-container">
+
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                </div>
+            </div>
+            <span class="name">{{itemDetail.name}}</span>
+            <div class="btn-group-top">
+                <div class="icons" v-if="category_root_id <2">
+                    <div class="icon-item edit" @click="goToSaveView('edit')" v-if="authList[Core.Const.AUTH_LIST.itemEdit]" :title="$t('edit')"></div>
+                    <div class="icon-item copy" @click="goToSaveView('copy')" v-if="authList[Core.Const.AUTH_LIST.itemCopy]" :title="$t('copy')"></div>
+                    <div class="icon-item delete" @click="deleteDialogVisible = true" v-if="authList[Core.Const.AUTH_LIST.itemDelete]" :title="$t('delete')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content-holder">
+            <div class="carousel">
+                <el-carousel height="234px" indicator-position="none" :interval="5000" arrow="always" ref="carousel"
+                             @change="change">
+                    <el-carousel-item v-for="item in productList" :key="item">
+                        <div class="img-box">
+                            <img :src='item'/>
+                        </div>
+                    </el-carousel-item>
+                </el-carousel>
+                <div class="thumb-img-box">
+                    <div class="thumb"
+                         :class="{'selected': index == productSelected}"
+                         v-for="(item, index) in productList"
+                         :key="item"
+                         @click="switchDemonstration(index)">
+                        <img class="thumb-img" :src='item'/>
+                    </div>
+                </div>
+            </div>
+            <div class="content-box">
+                <div class="content-item">
+                    <label class="title">{{ $t('name') }}</label>
+                    <div class="desc">
+                        <span class="strong">{{itemDetail.name}}</span>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('brand') }}</label>
+                    <div class="desc">
+                        <span class="strong">{{brandName}}</span>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('partNo') }}</label>
+                    <div class="desc">
+                        <span class="strong">{{itemDetail.ext_part_no}}</span>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('description') }}</label>
+                    <div class="desc">
+                        {{itemDetail.desc}}
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('link') }}</label>
+                    <div class="desc">
+                        {{itemDetail.website}}
+                    </div>
+                </div>
+                <!--车子的detail 和部件的 detail 一起-->
+                <div class=" extra-div" v-for="item in itemDetail.attrList">
+                    <!--input   text-->
+                    <div class="extra text"
+                         v-if="item.attr_def_type == Core.Const.CATEGORY_ATTR_INPUT_TYPE.TEXT">
+                        <label class="title">{{item.attr_def_name}}</label>
+                        <div class="desc text" v-show="item.value">{{item.attr_def_key === 'price' ? item.value/100 : item.value}}</div>
+                        <div class="desc text" v-show="!item.value">/</div>
+                    </div>
+                    <!--input   select-->
+                    <div class="extra text"
+                         v-if=" item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.SELECT">
+                        <label class="title">{{item.attr_def_name}}</label>
+                        <div class="desc text" v-if="item.attr_def_name == 'Currency'">{{item.value | currencyType}}
+                        </div>
+                        <div class="desc text" v-else-if="item.attr_def_name == 'Pack Unit'">{{item.value | packUnitType}}</div>
+                        <div class="desc text" v-else>{{item.value}}</div>
+                    </div>
+                    <!--input    file-->
+                    <div class="extra file"
+                         v-if="item.attr_def_type == Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILE ||
+                               item.attr_def_type == Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILES">
+                        <label class="title">{{item.attr_def_name}}</label>
+                        <div class="desc">
+                            <div class="fileContent" v-for="item in item.value">
+                                <label> {{item.name}}</label>
+                                <div class="btn-group">
+                                    <a :href="item.hash | getFileUrl(item.ext)" :download="item.name" class="btn-underline mr-15">
+                                        {{ $t('download') }}</a>
+                                    <el-button type="preview" @click="preview(item)">{{ $t('preview') }}</el-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="extra img"
+                         v-if="item.attr_def_type == Core.Const.CATEGORY_ATTR_INPUT_TYPE.PIC ||
+                               item.attr_def_type == Core.Const.CATEGORY_ATTR_INPUT_TYPE.PICS">
+                        <label class="title">{{item.attr_def_name}}</label>
+                        <div class="desc img-group">
+                            <div v-for="value in item.value">
+                                <img :src='value.hash | getFileUrl(value.ext)'/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-item">
+                    <label class="title">{{ $t('bom') }}</label>
+                    <div class="desc h-24">
+                        <div class="icons jc-start">
+                            <div class="icon-item eye" @click="goToBomView" :title="$t('view')"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--删除 Model弹窗-->
+        <el-dialog :title="$t('deleteModel') " :visible.sync="deleteDialogVisible" size="tiny">
+            <p> {{ $t('deleteTip') }} </p>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteProduct">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="deleteDialogVisible = false">{{ $t('no') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--隐藏属性弹窗-->
+        <el-dialog title="Attr list" :visible.sync="dialogAttrVisible">
+
+            <el-checkbox-group
+                v-model="showAttrList">
+                <el-checkbox v-for="attr in totalAttrList" :label="attr.id" :key="attr.id">{{attr.name}}</el-checkbox>
+            </el-checkbox-group>
+
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="editAttrList">{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="dialogAttrVisible = false">{{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--图片预览弹窗-->
+        <el-dialog title="Larger-Image" :visible.sync="previewDialogVisible" size="large" class="preview-dialog">
+            <img :src="selectItem.hash | getFileUrl(selectItem.ext)" class="img"/><br/>
+        </el-dialog>
+
+    </div>
+
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        data() {
+            return {
+                Core: Core,
+                itemId: '',
+                imgUrlPrefix: Core.Const.NET.FILE_URL_PREFIX,
+                editDialogVisible: false,
+                deleteDialogVisible: false,
+                itemDetail: {
+                    name: '',
+                    desc: '',
+                    website: '',
+                    img: '',
+                    attrList: [],
+                    ext_part_no:''
+                },
+                productList: [],
+                valueList: [],
+                productSelected: "",
+                dialogAttrVisible: false,
+                totalAttrList: [
+                    {id: 21, name: this.$t('specification')},
+                    {id: 24, name: this.$t('currency')},
+                    {id: 1, name: this.$t('year')},
+                    {id: 2, name: this.$t('color')},
+                    {id: 3, name: this.$t('size')},
+                    {id: 4, name: this.$t('gender')},
+                    {id: 5, name: this.$t('price')}
+                ],
+
+                showAttrList: [],
+                hiddenIdList: [],
+                selectItem: {},
+                previewDialogVisible: false,
+
+                authList: [],
+                category_root_id:'',
+                brandName:'',
+                brandId:''
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Brand.ModelDetail,
+                zh: ZH.Brand.ModelDetail,
+                de: DE.Brand.ModelDetail,
+                nl: NL.Brand.ModelDetail
+            }
+        },
+
+        mounted: function() {
+            this.itemId = this.$route.query.modelId;
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+            this.brandId = this.$route.query.brandId;
+
+            this.getModelDetail();
+            this.getBrandName();
+        },
+
+        methods: {
+            change(item) {
+                this.productSelected = item;
+            },
+
+            //获取品牌名称
+            getBrandName(){
+                let that = this;
+                Core.Api.Brand.getAllBrandList().then(res => {
+                    if (!res.brand_list || res.brand_list.length <= 0) {
+                        return;
+                    }
+                    let brandList = res.brand_list.filter(item =>item.id == that.brandId);
+                    this.brandName = brandList[0].name;
+                })
+            },
+            switchDemonstration(index) {
+                this.$refs.carousel.setActiveItem(index);
+                this.productSelected = index;
+            },
+
+            getShowPic(){
+                if (!this.itemDetail.attrList) {
+                    return;
+                }
+                let contain = false;
+                let vm = this;
+                this.itemDetail.attrList.forEach(function(item, index) {
+                    if (item.attr_def_key === 'display_img') {
+                        contain = true;
+                        vm.valueList = item.value;
+                        vm.valueList.forEach(function(item) {
+                            vm.productList.push(Core.Const.NET.FILE_URL_PREFIX + item.hash + '.' + item.ext);
+                        });
+                        //为了不让它在下部呈现，把它从数组里面去掉
+                        vm.itemDetail.attrList.splice(index, 1);
+                    }
+                });
+                if (contain && vm.productList.length > 1) {
+                    //当包含展示图时，去掉原来的logo图
+                    vm.productList.splice(0, 1);
+                }
+            },
+
+            //删除方法
+            deleteProduct(){
+                Core.Api.Item.deleteItem(this.itemId).then(res => {
+                    this.deleteDialogVisible = false;
+                    this.$router.back();
+                });
+            },
+
+            goToSaveView(type){
+                this.$router.push({
+                    name: 'brandModelSave',
+                    query: {"itemId": this.itemId, "brandId": this.brandId, "type": type}
+                });
+            },
+
+            getModelDetail(){
+//                this.productList = [];
+                Core.Api.Item.getItemDetail(this.itemId).then(res => {
+                    console.log(res, '   sss ');
+                    let item = res.item;
+//                    this.itemDetail = item;
+                    this.category_root_id = item.category_root_id;
+                    this.itemDetail.name = item.name;
+                    this.itemDetail.desc = item.desc;
+                    this.itemDetail.website = item.website;
+                    this.itemDetail.ext_part_no = item.ext_part_no;
+                    this.itemDetail.img = Core.Const.NET.IMG_URL_PREFIX + item.img;
+
+
+                    if( this.category_root_id >2){
+                        let len= item.attr_list.length;
+                        for(let i=0; i<len; i++){
+                            if(item.attr_list[i].attr_def_key != "currency" && item.attr_list[i].attr_def_key != "price"){
+                                this.itemDetail.attrList.push( item.attr_list[i] );
+                            }
+                        }
+                    }else{
+                        this.itemDetail.attrList = item.attr_list;
+                    }
+
+                    this.productList.push(this.itemDetail.img);
+//                    this.getShowPic();
+                    this.getShowAttrList();
+                });
+            },
+
+            getModelAttrList(){
+//                this.productList = [];
+                Core.Api.Item.getItemDetail(this.itemId).then(res => {
+                    console.log(res, '   sss ');
+                    let item = res.item;
+//                    this.itemDetail = item;
+                    this.itemDetail.name = item.name;
+                    this.itemDetail.desc = item.desc;
+                    this.itemDetail.attrList= item.attr_list;
+//                    this.getShowPic();
+//                    this.getShowAttrList();
+                });
+            },
+
+            //获取需要显示attrIdList--隐藏
+            getShowAttrList(){
+                this.showAttrList = [];
+                if (this.itemDetail.attrList.length <= 0) {
+                    return;
+                }
+                this.itemDetail.attrList.forEach((item, index) => {
+                    this.showAttrList.push(item.attr_def_id);
+                });
+            },
+
+            //获取需要隐藏的attrIdList--隐藏
+            getHiddenIdList(){
+                let $this = this;
+                this.hiddenIdList = [];
+                this.totalAttrList.forEach(function(item) {
+                    if ($this.showAttrList.indexOf(item.id) === -1) {
+                        $this.hiddenIdList.push(item.id);
+                    }
+                });
+            },
+
+            //修改显示属性--隐藏
+            editAttrList(){
+                this.getHiddenIdList();
+                let hiddenIdList = this.hiddenIdList.join();
+                Core.Api.Item.unbindAttrDef(this.itemId, hiddenIdList).then(res => {
+                    this.getModelAttrList();
+                    this.dialogAttrVisible = false;
+                });
+            },
+
+            goToBomView(){
+                this.$router.push({name: 'brandModelBom', query: {"id": this.itemId, "partNo": this.itemDetail.ext_part_no}})
+            },
+
+            preview(item){
+                this.selectItem = item;
+                this.previewDialogVisible = true;
+            }
+        },
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .model-detail-container {
+        height: 100%;
+        overflow: hidden;
+
+        .operation-holder {
+            height: 60px;
+            line-height: 60px;
+            padding: 0 30px;
+            overflow: hidden;
+
+            .name {
+                font-size: 16px;
+                color: #FFFFFF;
+                font-weight: bold;
+                margin-left: 30px;
+            }
+        }
+
+        .content-holder {
+            height: calc(100% - 60px);
+            overflow: auto;
+            .thumb-img-box {
+                width: 100%;
+                height: 72px;
+                font-size: 0;
+                text-align: center;
+                .thumb {
+                    display: inline-block;
+                    width: 72px;
+                    height: 72px;
+                    margin-right: 10px;
+                    /*background: url('../../../assets/images/components/carousel-example@2x.png');*/
+                    background-size: cover;
+                    border: 1px solid rgba(39, 43, 55, 0.20);
+                    cursor: pointer;
+                    .thumb-img {
+                        width: 70px;
+                        height: 70px;
+                    }
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                    &.selected {
+                        border: 2px solid rgba(226, 104, 41, 1);
+                        overflow: hidden;
+                    }
+                }
+            }
+            .content-box {
+                padding: 26px 60px;
+                .content-item {
+                    padding: 16px 0;
+                    border-top: 1px solid rgba(255, 255, 255, 0.10);
+                    font-size: 0;
+                    &.border-none {
+                        border: none;
+                        padding-top: 0;
+                    }
+                    .title {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: 140px;
+                        font-size: 14px;
+                        color: rgba(255, 255, 255, 0.6);
+                        padding: 0 5px;
+                        &.strong {
+                            color: #FFFFFF;
+                            font-weight: bold;
+                        }
+                    }
+                    .desc {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: calc(100% - 140px);
+                        word-break: break-all;
+                        &.h-24 {
+                            height: 24px;
+                        }
+                    }
+                }
+                .extra-div {
+                    padding: 16px 0;
+                    border-top: 1px solid rgba(255, 255, 255, 0.10);
+                    .title {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: 140px;
+                        font-size: 14px;
+                        color: rgba(255, 255, 255, 0.6);
+                        padding: 0 5px;
+                    }
+                    .extra {
+                        .desc {
+                            display: inline-block;
+                            vertical-align: top;
+                            position: relative;
+                            top: -16px;
+                            .fileContent {
+                                margin-top: 16px;
+                                .title {
+                                    display: inline-block;
+                                }
+                                .btn-group {
+                                    display: inline-block;
+                                    margin-left: 6px;
+                                }
+                            }
+                        }
+
+                        .img-group {
+                            margin-top: 10px;
+                            img {
+                                width: 50px;
+                                height: 50px;
+                            }
+
+                        }
+                        .text {
+                            top: 0;
+                        }
+                    }
+                }
+            }
+        }
+        .el-checkbox-group .el-checkbox {
+            margin: 4px 0;
+            display: inline-block;
+            height: 22px;
+            width: 50%;
+            padding-left: 10px;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// detail.vue?6e1a9245

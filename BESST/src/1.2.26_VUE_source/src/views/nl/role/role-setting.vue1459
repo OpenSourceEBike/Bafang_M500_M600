@@ -1,0 +1,142 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "permission-setting"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('el-form', {
+    staticClass: "list-form-inline",
+    attrs: {
+      "inline": true,
+      "model": _vm.formSearch
+    }
+  }, [_c('el-form-item', [_c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Email"
+    },
+    model: {
+      value: (_vm.formSearch.email),
+      callback: function($$v) {
+        _vm.$set(_vm.formSearch, "email", $$v)
+      },
+      expression: "formSearch.email"
+    }
+  }, [_c('el-button', {
+    attrs: {
+      "slot": "append"
+    },
+    on: {
+      "click": _vm.onSearch
+    },
+    slot: "append"
+  }, [_c('i', {
+    staticClass: "el-icon-search"
+  })])], 1)], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(_vm.hasRole) ? _c('div', {
+    staticClass: "icon-item save",
+    attrs: {
+      "title": "save"
+    },
+    on: {
+      "click": _vm.onSave
+    }
+  }) : _vm._e()])])], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "parts-list"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("User ID :")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.userInfo.user && _vm.userInfo.user.id || '-'))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Name :")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.userInfo.user && _vm.userInfo.user.name || '-'))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Email :")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.userInfo.user && _vm.userInfo.user.email || '-'))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Organization ID :")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.userInfo.org && _vm.userInfo.org.id || '-'))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Organization Name :")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.userInfo.org && _vm.userInfo.org.name || '-'))])]), _vm._v(" "), (!_vm.loading && _vm.roleTransferData.length > 0 && _vm.hasRole) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Department :")]), _vm._v(" "), _c('el-select', {
+    staticClass: "land",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.currentDepartment),
+      callback: function($$v) {
+        _vm.currentDepartment = $$v
+      },
+      expression: "currentDepartment"
+    }
+  }, _vm._l((_vm.departmentList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1) : _vm._e()])]), _vm._v(" "), (!_vm.hasRole && !_vm.loading) ? _c('div', {
+    staticClass: "no-data-content"
+  }, [_vm._v("noResult")]) : _vm._e(), _vm._v(" "), (!_vm.loading && _vm.roleTransferData.length > 0 && _vm.hasRole) ? _c('div', {
+    staticClass: "transfer-box"
+  }, [_c('el-transfer', {
+    staticClass: "transfer",
+    attrs: {
+      "filterable": "",
+      "render-content": _vm.renderFunc,
+      "titles": ['All Role', 'Set Role'],
+      "button-texts": ['Del', 'Add'],
+      "format": {
+        noChecked: '${total}',
+        hasChecked: '${checked}/${total}'
+      },
+      "data": _vm.roleTransferData
+    },
+    on: {
+      "change": _vm.handleChange
+    },
+    model: {
+      value: (_vm.setRoleData),
+      callback: function($$v) {
+        _vm.setRoleData = $$v
+      },
+      expression: "setRoleData"
+    }
+  })], 1) : _vm._e()])])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-2622b578","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/role/role-setting.vue
+// module id = 2495
+// module chunks = 57

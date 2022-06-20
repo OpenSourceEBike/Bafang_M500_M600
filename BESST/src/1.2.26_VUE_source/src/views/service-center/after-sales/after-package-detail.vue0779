@@ -1,0 +1,161 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "after-pa-detail"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": _vm.goPackageList
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v("orderDetail")]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(true) ? _c('div', {
+    staticClass: "icon-item edit",
+    attrs: {
+      "title": "edit"
+    },
+    on: {
+      "click": _vm.goPackageEdit
+    }
+  }) : _vm._e(), _vm._v(" "), (true) ? _c('div', {
+    staticClass: "icon-item delete",
+    attrs: {
+      "title": "delete"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = true
+      }
+    }
+  }) : _vm._e()])])]), _vm._v(" "), (_vm.loading) ? _c('div', {
+    staticClass: "loading"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../../assets/images/icon/loading-bars.svg"),
+      "alt": "Loading icon"
+    }
+  })]) : _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "info-list"
+  }, [_c('div', {
+    staticClass: "col-left"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("paCode")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.packageItem.paCode || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("paFrom")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.packageItem.paFrom || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("paUsage")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.packageItem.paUsage || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("receiveDate")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.packageItem.receiveDate || '/'))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-right"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("paCode_2")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.packageItem.paCode_2 || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("paContact")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.packageItem.paContact || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("paTel")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.packageItem.paTel || '/'))])]), _vm._v(" "), _vm._m(0)])]), _vm._v(" "), _c('div', {
+    staticClass: "note"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("address")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.packageItem.address))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("note")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.packageItem.note))])])])])]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', {
+    staticClass: "height2"
+  }, _vm._l((_vm.packageCompItems), function(item, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.a))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.b))])])
+  }))])]), _vm._v(" "), _vm._m(2)])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "title",
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('span', [_vm._v("content")]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteDealerOrder
+    }
+  }, [_vm._v("yes")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "warning"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v("no")])], 1)])], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span'), _vm._v(" "), _c('span')])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "parts-list"
+  }, [_c('label', {
+    staticClass: "label1"
+  }, [_vm._v("itemsList")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "footer"
+  }, [_c('span', [_vm._v("111")])])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-aa67da68","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/service-center/after-sales/after-package-detail.vue
+// module id = 1896
+// module chunks = 73

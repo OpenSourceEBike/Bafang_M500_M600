@@ -1,0 +1,644 @@
+<template>
+    <div class="ticket-detail">
+        <div class="header top-box">
+            <div class="icon-back">
+                <div class="icon-item back" @click="$router.back()"></div>
+            </div>
+            <div class="btn-group">
+                <el-button v-if="showMessage" style="top: 15px;" type="primary"
+                           @click="handleUpTicket">{{ $t('transferToUp') }}
+                </el-button>
+                <el-button v-if="showMessage" style="top: 15px;" type="primary"
+                           @click="showDialogHandleInside">{{ $t('transferToInside') }}
+                </el-button>
+                <el-button v-if="!ticket.handler_id && ticket.handler_org_id == Core.Data.getOrg().id"
+                           style="top: 15px;" type="primary" @click="takeTicket">{{ $t('take') }}
+                </el-button>
+                <el-button type="primary" @click="getActionList">{{ $t('history') }}</el-button>
+            </div>
+        </div>
+
+        <div class="content-wrap">
+            <div class="content-card-item">
+                <label class="content-header">{{ $t('ticketInfo.ticketTitle') }}</label>
+                <div class="content-body">
+                    <div class="item">
+                        <label class="label">{{ $t('ticketInfo.serviceNo') }}</label>
+                        <span>{{ticket.sn}}</span>
+                    </div>
+                    <div class="item">
+                        <label class="label">{{ $t('ticketInfo.createTime') }}</label>
+                        <span>{{ticket.create_time | timeFormat("Y-m-d")}}</span>
+                    </div>
+                    <div class="item">
+                        <label class="label">{{ $t('ticketInfo.status') }}</label>
+                        <span>{{ticket.status | ticketStatus}}</span>
+                    </div>
+                    <div class="item">
+                        <label class="label">{{ $t('ticketInfo.serviceCenter') }}</label>
+                        <span>{{ticket.handler_org ? ticket.handler_org.name : ''}}</span>
+                    </div>
+                    <div class="item">
+                        <label class="label">{{ $t('ticketInfo.title') }}</label>
+                        <div class="lh-20">{{ticket.title}}</div>
+                    </div>
+                    <div class="item">
+                        <label class="label">{{ $t('ticketInfo.description') }}</label>
+                        <div class="lh-20">{{ticket.description}}</div>
+                    </div>
+                    <div class="item" v-if="ticket.processImageList">
+                        <label class="label">{{ $t('ticketInfo.image') }}</label>
+                        <div class="lh-20">
+                            <img v-for="item in ticket.processImageList" :src="Core.Const.NET.FILE_URL_PREFIX + item"/>
+                        </div>
+                    </div>
+                    <div class="item" v-if="ticket.video">
+                        <label class="label">{{ $t('ticketInfo.video') }}</label>
+                        <video :src="Core.Const.NET.FILE_URL_PREFIX + ticket.video" controls="controls">
+                            您的浏览器不支持 video 标签。
+                        </video>
+                    </div>
+                </div>
+            </div>
+            <div class="message-box">
+                <ul class="message" :class="showMessage ? '' : 'message-100'">
+                    <li v-for="item in ticketActionList">
+                        <p class="time">
+                            <span>{{ item.create_time | timeFormat("Y-m-d H:i:s") }}</span>
+                        </p>
+                        <div class="main" :class="{ self: item.org.type != 2 }">
+                            <div class="avatar-box">
+                                <el-tooltip placement="bottom" effect="light">
+                                    <div slot="content">
+                                        <div class="tip-content">
+                                            <div class="tip-avatar">
+                                                <img :src="item.org.avatar | getImgUrl"/>
+                                                <div class="org-name">
+                                                    {{ item.org.name }}
+                                                </div>
+                                            </div>
+                                            <div class="tip-item">
+                                                <span class="title">{{ $t('userInfo.address') }}</span>
+                                                <span class="content">{{ item.org.country }} {{ item.org.address
+                                                    }}</span>
+                                            </div>
+                                            <div class="tip-item">
+                                                <span class="title">{{ $t('userInfo.website') }}</span>
+                                                <span class="content">{{ item.org.website }}</span>
+                                            </div>
+                                            <div class="tip-item">
+                                                <span class="title">{{ $t('userInfo.email') }}</span>
+                                                <span class="content">{{ item.org.email }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <img v-if="item.org.type == 2" class="avatar" width="30" height="30"
+                                         src="../../assets/images/icon/icon-avatar.png"/>
+                                    <img v-else class="avatar" width="30" height="30"
+                                         src="../../assets/images/icon/icon-default-servicer.png"/>
+                                </el-tooltip>
+                            </div>
+                            <div class="text-box">
+                                <p v-if="item.org.type == 2">{{ item.org.type | orgType }}</p>
+                                <div class="text">
+                                    {{ item.message }}
+                                    <div v-if="item.img" class="text-img" v-for="img in item.img">
+                                        <img :src="img | getImgUrl"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="reply-holder" v-if="showMessage">
+                    <el-form label-position="left" :model="ticket" label-width="120px">
+                        <el-form-item :label="$t('content')">
+                            <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 3}" v-model="desc"></el-input>
+                        </el-form-item>
+                        <el-form-item :label="$t('image')">
+                            <el-button class="submit" @click="addTicketAction" type="primary">{{ $t('sendMessage') }}
+                            </el-button>
+                            <vue-clip :options="upload" :on-complete="complete">
+                                <template slot="clip-uploader-action">
+                                    <div class="upload-action">
+                                        <div class="dz-message">
+                                            <img class="upload-icon" src="../../assets/images/icon/icon-upload@2x.png"/>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template slot="clip-uploader-body" slot-scope="props">
+                                    <div class="img-item" v-for="file in imgList" v-if="imgList.length">
+                                        <img v-bind:src="file | getImgUrl"/>
+                                    </div>
+                                </template>
+                            </vue-clip>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+        </div>
+
+        <!--工单的历史记录弹窗-->
+        <el-dialog :title="$t('historyTicket.title')" :visible.sync="historyDialogVisible">
+            <table border="0" cellspacing="0" cellpadding="0" class="history-table">
+                <thead>
+                <tr>
+                    <td class="history-td head">
+                        {{ $t('historyTicket.name') }}
+                    </td>
+                    <td class="history-td head">
+                        {{ $t('historyTicket.operation') }}
+                    </td>
+                    <td class="history-td head">
+                        {{ $t('historyTicket.time') }}
+                    </td>
+                </tr>
+                </thead>
+                <tr>
+                    <td class="history-td">{{ticket.org.name}}</td>
+                    <td class="history-td">create ticket</td>
+                    <td class="history-td">{{ticket.create_time | timeFormat("Y-m-d H:i:s")}}</td>
+                </tr>
+
+                <tr v-for="(item,index) in historyList">
+                    <td class="history-td">{{item.operator_org.name}}</td>
+                    <td class="history-td">{{item.name}}</td>
+                    <td class="history-td">{{item.create_time | timeFormat("Y-m-d H:i:s")}}</td>
+                </tr>
+
+                <tr v-if="ticket.status == 300">
+                    <td class="history-td">{{ticket.org.name}}</td>
+                    <td class="history-td">complete ticket</td>
+                    <td class="history-td">{{ticket.update_time | timeFormat("Y-m-d H:i:s")}}</td>
+                </tr>
+            </table>
+        </el-dialog>
+
+        <!--内部调度弹窗-->
+        <el-dialog :title="$t('handleInside.title')" :visible.sync="dialogHandleInsideVisible">
+            <p>{{ $t('handleInside.tip') }}</p>
+            <div class="clear-15"></div>
+            <el-select v-model="selectId" :placeholder="$t('handleInside.select') ">
+                <el-option
+                    v-for="item in accountList"
+                    :key="item.id"
+                    :label="item.email"
+                    :value="item.id">
+                </el-option>
+            </el-select>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="handleInside">{{ $t('handleInside.confirm') }}</el-button>
+                <el-button type="primary" @click="dialogHandleInsideVisible = false">{{ $t('handleInside.cancel') }}
+                </el-button>
+            </div>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from '../../../core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        name: "serviceCenterTicketDetail",
+        data(){
+            return {
+                ticketId: 0,
+                Core: Core,
+                ticket: {org: {}},
+                ticketActionList: [],
+
+                upload: {
+                    url: Core.Const.NET.IMG_UPLOAD_END_POINT,
+                    paramName: 'file',
+                    params: {'token': Core.Data.getToken()}
+                },
+                desc: '',
+                imgList: [],
+                showMessage: false,
+                historyDialogVisible: false,
+                historyList: [],
+                dialogHandleInsideVisible: false,
+                //选中的内部成员账号id
+                selectId: '',
+                accountList: [],
+                org: Core.Data.getOrg(),
+                ticketActionTask: ''
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.ServiceCenter.ticketDetail,
+                zh: ZH.ServiceCenter.ticketDetail,
+                de: DE.ServiceCenter.ticketDetail,
+                nl: NL.ServiceCenter.ticketDetail
+            }
+        },
+        mounted: function () {
+            let ticketId = this.$route.query.id;
+            this.ticketId = ticketId;
+            // 获取ticket detail
+            this.getTicketDetail(ticketId);
+            // 获取聊天记录
+            this.getTicketActionList(ticketId);
+        },
+        destroyed: function() {
+            if (this.ticketActionTask) {
+                clearInterval(this.ticketActionTask)
+            }
+        },
+        methods: {
+            getTicketDetail(ticketId) {
+                let $this = this;
+                let userId = Core.Data.getUser().id;
+                Core.Api.Ticket.ticketDetail(ticketId).then(res => {
+                    $this.ticket = res.ticket;
+                    $this.showMessage = $this.ticket.handler_id === userId;
+                    if (this.ticket.status === 300) {
+                        $this.showMessage = false;
+                    }
+                    if ($this.showMessage) {
+                        $this.ticketActionTask = setInterval(() => {
+                            $this.getTicketActionList(ticketId);
+                        }, 3000)
+                    }
+                    if (res.ticket.img) {
+                        $this.ticket.processImageList = JSON.parse(res.ticket.img)
+                    }
+                });
+            },
+            getTicketActionList(ticketId) {
+                let $this = this;
+                Core.Api.Ticket.ticketActionList(ticketId).then(res => {
+                    $this.ticketActionList = res.list;
+                });
+            },
+            addTicketAction() {
+                if (!this.desc) {
+                    this.$message({
+                        message: 'Please input description',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                let $this = this;
+                let ticketId = $this.ticketId;
+                let message = this.desc;
+                let img = '';
+                let video = '';
+
+                if (this.imgList.length > 0) {
+                    img = JSON.stringify(this.imgList);
+                }
+
+                Core.Api.Ticket.saveTicketMessage(ticketId, message, img, video).then(res => {
+                    $this.desc = '';
+                    $this.imgList = [];
+                    $this.getTicketActionList(ticketId);
+                });
+            },
+            complete (file, status, xhr) {
+                if (status === 'success') {
+                    let res = JSON.parse(xhr.response);
+                    if (res.code === 0 && res.data.file) {
+                        this.imgList.push(res.data.file.name);
+                    }
+                }
+            },
+            handleUpTicket() {
+                let $this = this;
+                Core.Api.Ticket.handleUpTicketByBrandServiceCenter($this.ticketId).then(res => {
+                    $this.$message({
+                        message: 'Handle up ticket successfully',
+                        type: 'success'
+                    });
+                    $this.$router.back();
+                });
+            },
+            takeTicket(){
+                Core.Api.Ticket.takeTicket(this.ticketId).then(res => {
+                    this.getTicketDetail(this.ticketId);
+                });
+            },
+
+            getActionList(){
+                Core.Api.Ticket.getActionList(this.ticket.id).then(res => {
+                    this.historyList = res.list;
+                    this.historyDialogVisible = true;
+                });
+            },
+
+            handleInside(){
+                Core.Api.Ticket.handleInsideTicket(this.ticket.id, this.selectId).then(res => {
+
+                })
+            },
+
+            showDialogHandleInside(){
+                this.dialogHandleInsideVisible = true;
+                Core.Api.Org.allOrgMemberList(this.org.id).then(res => {
+                    if (res.list.length > 0) {
+                        let $this = this;
+                        $this.accountList = [];
+                        res.list.forEach(function (item, index) {
+                            $this.accountList.push(item.user);
+                        })
+                    }
+                })
+            }
+
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .ticket-detail {
+        height: 100%;
+        .header {
+            .icon-back {
+                .icon-item {
+                    width: 60px;
+                    height: 60px;
+                    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAiCAYAAADYmxC7AAAACXBIWXMAAAsSAAALEgHS3X78AAABSklEQVRYw82XsRGDMAxFGYERPAIjZARGyAiMwAiuUqRylzYjMIJHYARv4Mg5hTOKDC6M7OI3nO546Bvpu/Ped0d6PF896A1aQMNZfQnlAFmQR00tQC0RkKveKQAwNYCSUAQo6CYFxEIxQHdJoD8oAJhrA+2gAkALQBsUAzTXAvpCMUAObSypKfwsuX9whxBeUCtIg1RLULECXM9BjaTQYqtLakQb3wyYpbamDrq56hDjPqWjZ7cxjkbCpcs3QJBlb39W0kLRWcWkEJ1aM1oYbCDvU6lC0f1Hzpg+KqRgl0UXtHGbY2fFYpkqHhc5xSJxOLYwt7WLgIVjNpSUWoXKt08QKv+gCwH1UVpx1YGodWEMtQCkSKZTtYHoQjbhee0OxUArG10EuzMTy/iQx3xF6Ug84S6ld4KVjcMEaBC8TBj24lAByiFMco9+AJRMEdNmGyzsAAAAAElFTkSuQmCC') no-repeat center center / 18px;
+                    &:hover {
+                        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAiCAYAAADYmxC7AAAACXBIWXMAAAsSAAALEgHS3X78AAABRUlEQVRYw82XYQ2EMAyFkTAJSJgEJCABCUiYBCRMAhKQgAQkzEFvTcZdKQxGDro1eX+gyT7Wsr5VAFBdSHmNXpOXTsj/WylAM/yiLwFqIkCuhJ2yOYDOoCgQRiMFFIPiQJ0k0BGUyQ3EoboSgCgUBzK5gFYoDuQC1JPqw8+S9AdXAUIyFq/Bqy4JigbCqSOoliXiWGkeFq6BZRwPwHA9DQmNbuG9RlawP3o2E+PsSHh7+GrYDvt5LSVPlD6ruAsZjqCq8EISTLP16liiFQajPTacJXKwN62LIussV8kU7G1P9T0uUpKl7LC5A4VbOwmUsL0DJaUioW6VT0q3Gl1C2LerW3G5YXal82Fzw6Bq2Hq6OjcQH8gWn+feIQq0QMS6SO2OYSWLmjz+Fc3D6kN5+J1ggYgdptIgd5mwELk4SEO5ABOdox+BXsP+yrIZzQAAAABJRU5ErkJggkSuQmCC') no-repeat center center / 18px;
+                    }
+                }
+            }
+
+        }
+        .content-wrap {
+            overflow: hidden;
+            padding-top: 0;
+        }
+        .content-card-item {
+            width: 400px;
+            height: 100%;
+            float: left;
+            border-right: 1px solid #2B2F3B;
+            overflow: auto;
+            .content-header {
+                display: block;
+                padding: 10px 43px;
+                font-size: 14px;
+                height: 50px;
+                line-height: 30px;
+                font-weight: bold;
+                box-sizing: border-box;
+            }
+
+            .content-body {
+                font-size: 0;
+                background: #353945;
+                overflow: auto;
+                padding: 20px 0;
+                height: calc(100% - 50px);
+                .item {
+                    width: 100%;
+                    padding: 0 43px;
+                    line-height: 50px;
+                    label {
+                        vertical-align: top;
+                        display: inline-block;
+                        width: 100px;
+                        font-size: 14px;
+                        color: #A1A5B1;
+                    }
+                    span {
+                        font-size: 14px;
+                    }
+                    .lh-20 {
+                        width: calc(100% - 104px);
+                        vertical-align: top;
+                        padding: 16px 0;
+                        font-size: 14px;
+                        display: inline-block;
+                        line-height: 20px;
+                        img {
+                            width: 100px;
+                            height: 100px;
+                            &:nth-child(2n+1) {
+                                margin-right: 6px;
+                            }
+                        }
+                    }
+                    video {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .message-box {
+            float: right;
+            width: calc(100% - 400px);
+            height: 100%;
+            .message {
+                height: calc(100% - 160px);
+                background-color: #2B2F3B;
+                padding: 10px 15px;
+                overflow-y: auto;
+
+                li {
+                    margin-bottom: 15px;
+                }
+                .time {
+                    margin: 7px 0;
+                    text-align: center;
+
+                    > span {
+                        display: inline-block;
+                        padding: 0 10px;
+                        font-size: 12px;
+                        color: #fff;
+                        border-radius: 2px;
+                        /*background-color: #dcdcdc;*/
+                    }
+                }
+                .avatar-box {
+                    float: left;
+                    margin: 0 10px 0 0;
+                    text-align: center;
+                    .avatar {
+                        border-radius: 3px;
+                    }
+                    p {
+                        font-size: 10px;
+                        color: #A1A5B1;
+                    }
+                }
+                .text-box {
+                    & > p {
+                        font-size: 10px;
+                        color: #A1A5B1;
+                        margin-bottom: 2px;
+                    }
+                }
+                .text {
+                    display: inline-block;
+                    position: relative;
+                    padding: 0 10px;
+                    max-width: calc(100% - 40px);
+                    min-height: 30px;
+                    line-height: 2.5;
+                    font-size: 12px;
+                    text-align: left;
+                    word-break: break-all;
+                    background-color: #fafafa;
+                    border-radius: 4px;
+                    color: #A1A5B1;
+
+                    .text-img img {
+                        max-width: 500px;
+                    }
+
+                    &:before {
+                        content: " ";
+                        position: absolute;
+                        top: 9px;
+                        right: 100%;
+                        border: 6px solid transparent;
+                        border-right-color: #fafafa;
+                    }
+                }
+
+                .self {
+                    text-align: right;
+
+                    .avatar-box {
+                        float: right;
+                        margin: 0 0 0 10px;
+                    }
+                    .text {
+                        background-color: #b2e281;
+                        color: #ffffff;
+
+                        &:before {
+                            right: inherit;
+                            left: 100%;
+                            border-right-color: transparent;
+                            border-left-color: #b2e281;
+                        }
+                    }
+                }
+            }
+
+            .message-100 {
+                height: 100%;
+            }
+
+            .reply-holder {
+                height: 160px;
+                overflow-y: auto;
+                padding: 20px 40px 16px 40px;
+                .el-form-item {
+                    margin-bottom: 10px;
+                    &:last-child {
+                        height: 60px;
+                        overflow: hidden;
+                        margin-bottom: 0;
+                    }
+                }
+                .upload-action {
+                    height: 60px;
+                }
+                .dz-clickable {
+                    display: inline-block;
+                    width: 60px;
+                    height: 60px;
+                    .dz-message {
+                        width: 100%;
+                        height: 100%;
+                        img {
+                            width: 60px;
+                            height: 60px;
+                        }
+                    }
+                }
+
+                .img-item {
+                    float: left;
+                    img {
+                        width: 60px;
+                        height: 60px;
+                        margin-right: 6px;
+                    }
+                }
+            }
+
+            .el-form-item__label {
+                color: #A1A5B1;
+            }
+
+            .submit {
+                position: absolute;
+                right: 0;
+                top: 30px;
+            }
+        }
+
+        .history-table {
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            tr {
+                line-height: 30px;
+            }
+            .head {
+                color: white;
+            }
+            .history-td {
+                padding: 0 6px;
+                width: 160px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                font-size: 12px;
+                text-align: center;
+            }
+        }
+
+    }
+
+    .tip-content {
+        .tip-avatar {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            position: relative;
+            margin-bottom: 10px;
+            img {
+                width: 100%;
+                height: auto;
+            }
+            .org-name {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 30px;
+                background: #98B42C;
+                line-height: 30px;
+                text-align: center;
+                color: #fff;
+            }
+        }
+        .tip-item {
+            line-height: 30px;
+            span.title {
+                width: 100px;
+                color: #A1A5B1;
+                display: inline-block;
+            }
+            span.content {
+                color: #ccc;
+                display: inline-block;
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// ticket-detail.vue?9fab62e0

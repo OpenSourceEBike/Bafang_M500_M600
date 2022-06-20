@@ -1,0 +1,417 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "warehouse-list"
+  }, [_c('div', {
+    staticClass: "search-header"
+  }, [_c('el-form', {
+    staticClass: "list-form-inline",
+    attrs: {
+      "inline": true,
+      "model": _vm.formSearch
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Region"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "placeholder": "Region"
+    },
+    model: {
+      value: (_vm.formSearch.region_id),
+      callback: function($$v) {
+        _vm.$set(_vm.formSearch, "region_id", $$v)
+      },
+      expression: "formSearch.region_id"
+    }
+  }, _vm._l((_vm.regionList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.warehouse_region_name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline-icon"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": "search"
+    },
+    on: {
+      "click": _vm.onSearch
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item clear",
+    attrs: {
+      "title": "clear"
+    },
+    on: {
+      "click": _vm.onClean
+    }
+  })])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(true) ? _c('div', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('warehouse-list-add'),
+      expression: "'warehouse-list-add'"
+    }],
+    staticClass: "icon-item add-v2",
+    attrs: {
+      "title": "add"
+    },
+    on: {
+      "click": _vm.dialogAdd
+    }
+  }) : _vm._e()])])], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [(_vm.tableList.length <= 0 && !_vm.loading) ? _c('div', {
+    staticClass: "no-data-content"
+  }, [_vm._v("noResult")]) : _c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.headData), function(item, index) {
+    return _c('td', {
+      key: index
+    }, [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), (!_vm.loading && _vm.tableList.length > 0) ? _c('tbody', _vm._l((_vm.tableList), function(item) {
+    return _c('tr', {
+      key: item.id
+    }, [_c('td', [_vm._v(_vm._s(item.code))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.regionName(item)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.country))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.city))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.district))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.address))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.phone))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.email))]), _vm._v(" "), _c('td', [_c('a', {
+      directives: [{
+        name: "ilpermission",
+        rawName: "v-ilpermission",
+        value: ('warehouse-list-add'),
+        expression: "'warehouse-list-add'"
+      }],
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onEdit(item)
+        }
+      }
+    }, [_vm._v("edit")]), _vm._v(" "), _c('a', {
+      directives: [{
+        name: "ilpermission",
+        rawName: "v-ilpermission",
+        value: ('warehouse-list-delete'),
+        expression: "'warehouse-list-delete'"
+      }],
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onDelete(item)
+        }
+      }
+    }, [_vm._v("delete")])])])
+  })) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next, jumper",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v("total: " + _vm._s(_vm.total))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-warehouse",
+    attrs: {
+      "title": _vm.dialogTitle,
+      "visible": _vm.dialogWarehouseVisible,
+      "custom-class": "edit-dialog"
+    },
+    on: {
+      "update:title": function($event) {
+        _vm.dialogTitle = $event
+      },
+      "update:visible": function($event) {
+        _vm.dialogWarehouseVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Code\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.warehouse.code),
+      callback: function($$v) {
+        _vm.$set(_vm.warehouse, "code", $$v)
+      },
+      expression: "warehouse.code"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Name\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.warehouse.name),
+      callback: function($$v) {
+        _vm.$set(_vm.warehouse, "name", $$v)
+      },
+      expression: "warehouse.name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Region\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-select', {
+    staticClass: "land",
+    attrs: {
+      "slot": "append",
+      "filterable": ""
+    },
+    slot: "append",
+    model: {
+      value: (_vm.warehouse.region_id),
+      callback: function($$v) {
+        _vm.$set(_vm.warehouse, "region_id", $$v)
+      },
+      expression: "warehouse.region_id"
+    }
+  }, _vm._l((_vm.regionList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.warehouse_region_name,
+        "value": item.id
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Country\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-select', {
+    staticClass: "land",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.warehouse.country),
+      callback: function($$v) {
+        _vm.$set(_vm.warehouse, "country", $$v)
+      },
+      expression: "warehouse.country"
+    }
+  }, _vm._l((_vm.areaCodeList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.area_en,
+        "value": item.area_en
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        City\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.warehouse.city),
+      callback: function($$v) {
+        _vm.$set(_vm.warehouse, "city", $$v)
+      },
+      expression: "warehouse.city"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        District\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.warehouse.district),
+      callback: function($$v) {
+        _vm.$set(_vm.warehouse, "district", $$v)
+      },
+      expression: "warehouse.district"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Address\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.warehouse.address),
+      callback: function($$v) {
+        _vm.$set(_vm.warehouse, "address", $$v)
+      },
+      expression: "warehouse.address"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Phone\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.warehouse.phone),
+      callback: function($$v) {
+        _vm.$set(_vm.warehouse, "phone", $$v)
+      },
+      expression: "warehouse.phone"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.warehouse.country_code),
+      callback: function($$v) {
+        _vm.$set(_vm.warehouse, "country_code", $$v)
+      },
+      expression: "warehouse.country_code"
+    }
+  }, _vm._l((_vm.areaCodeList), function(item) {
+    return _c('el-option', {
+      key: item.area_code,
+      attrs: {
+        "label": item.area_code,
+        "value": item.area_code
+      }
+    })
+  }))], 1)], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Email\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.warehouse.email),
+      callback: function($$v) {
+        _vm.$set(_vm.warehouse, "email", $$v)
+      },
+      expression: "warehouse.email"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.dialogConfirm
+    }
+  }, [_vm._v("confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.dialogCancel
+    }
+  }, [_vm._v("cancel")])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Delete Warehous",
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v("Are you sure to delete it ?")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteInvitation
+    }
+  }, [_vm._v("yes")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v("no")])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-75f6925c","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/warehouse/warehouse-list.vue
+// module id = 2362
+// module chunks = 50

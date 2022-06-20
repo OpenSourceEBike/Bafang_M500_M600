@@ -1,0 +1,70 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "product-container"
+  }, [_c('div', {
+    staticClass: "category-tree"
+  }, [_c('div', {
+    staticClass: "searchWrap"
+  }, [_c('span', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.currentCategory.name || 'Component'))])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-5"
+  }), _vm._v(" "), _c('el-tree', {
+    attrs: {
+      "data": _vm.categoryList,
+      "props": _vm.defaultProps,
+      "node-key": "id",
+      "default-expanded-keys": _vm.categoryExId
+    },
+    on: {
+      "node-click": _vm.handleNodeClick
+    }
+  }), _vm._v(" "), (_vm.org.id == 25 && _vm.authList[_vm.Core.Const.AUTH_LIST.productTraining]) ? _c('div', {
+    staticClass: "tree-node",
+    on: {
+      "click": _vm.goToVideoView
+    }
+  }, [_c('div', {
+    staticClass: "tree-node__content"
+  }, [_c('span', {
+    staticClass: "el-tree-node__expand-icon is-leaf"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "tree-node__label"
+  }, [_vm._v(_vm._s(_vm.$t('training')))])])]) : _vm._e(), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productEditCategory]) ? _c('div', {
+    staticClass: "tree-btn",
+    on: {
+      "click": _vm.goToEditCategory
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": "javascript:;"
+    }
+  }, [_vm._v(_vm._s(_vm.$t('editCategory')))])]) : _vm._e()], 1), _vm._v(" "), _c('router-view', {
+    attrs: {
+      "currentCategory": _vm.currentCategory,
+      "itemList": _vm.itemList,
+      "hasFooter": _vm.hasFooter,
+      "count": _vm.count,
+      "currentPage": _vm.currentPage,
+      "poNo": _vm.poNo,
+      "loading": _vm.loading,
+      "categoryId": _vm.selectCategoryId,
+      "categoryName": _vm.categoryName,
+      "currentCategoryId": _vm.currentCategoryId
+    },
+    on: {
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      },
+      "handlePageChange": _vm.handlePageChange,
+      "searchItemList": _vm.handleSearch
+    }
+  })], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-42788ee6","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/product/index.vue
+// module id = 1745
+// module chunks = 73

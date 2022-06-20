@@ -1,0 +1,229 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "mechanical-diagnosis"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('el-button', {
+    staticClass: "report",
+    attrs: {
+      "type": "success"
+    },
+    on: {
+      "click": _vm.createReportSave
+    }
+  }, [_vm._v("\n            " + _vm._s(_vm.$t('createReport')) + "\n        ")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-form', {
+    ref: "form",
+    staticClass: "mechanical-handle"
+  }, [_c('el-form-item', [_c('label', [_vm._v(_vm._s(_vm.$t('defectDes')))]), _vm._v(" "), _c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "rows": 3,
+      "resize": "none",
+      "placeholder": _vm.$t('defectLength'),
+      "maxlength": 600
+    },
+    model: {
+      value: (_vm.problemDescription),
+      callback: function($$v) {
+        _vm.problemDescription = $$v
+      },
+      expression: "problemDescription"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('image')
+    }
+  }, [_c('el-upload', {
+    attrs: {
+      "show-file-list": false,
+      "action": _vm.upload.url,
+      "on-success": _vm.handleSuccess,
+      "file-list": _vm.upload.photographList,
+      "data": _vm.upload.data
+    }
+  }, [_c('div', [_c('img', {
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-upload.png")
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "ml-10",
+    staticStyle: {
+      "color": "#FFFFFF"
+    }
+  }, [_vm._v(_vm._s(_vm.$t('defectDes')))])])]), _vm._v(" "), (_vm.fileList.img.length > 0) ? _c('el-row', _vm._l((_vm.fileList.img), function(item, index) {
+    return _c('div', {
+      staticClass: "img-holder"
+    }, [_c('img', {
+      staticClass: "img-content",
+      attrs: {
+        "src": _vm.linkPre + item
+      },
+      on: {
+        "click": function($event) {
+          _vm.handlePreview(_vm.linkPre + item)
+        }
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "close-btn",
+      on: {
+        "click": function($event) {
+          _vm.removeImg(index)
+        }
+      }
+    })])
+  })) : _vm._e()], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('video')
+    }
+  }, [_c('el-upload', {
+    staticClass: "avatar-uploader",
+    attrs: {
+      "action": _vm.upload.url,
+      "show-file-list": false,
+      "on-success": _vm.handleAvatarSuccess,
+      "before-upload": _vm.beforeAvatarUpload,
+      "on-progress": _vm.uploadVideoProcess,
+      "data": _vm.upload.data,
+      "accept": "video/*"
+    }
+  }, [_c('div', [_c('img', {
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-upload.png")
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "ml-10",
+    staticStyle: {
+      "color": "#FFFFFF"
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.upload')))])])]), _vm._v(" "), (_vm.fileList.video.length > 0) ? _c('el-row', _vm._l((_vm.fileList.video), function(item, index) {
+    return _c('div', {
+      staticClass: "video-holder"
+    }, [_c('video', {
+      staticClass: "videoItem",
+      attrs: {
+        "src": _vm.linkPre + item,
+        "controls": "controls"
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "close-btn",
+      on: {
+        "click": function($event) {
+          _vm.removeVideo(index)
+        }
+      }
+    })])
+  })) : _vm._e(), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('videoMaxSize')))])], 1)], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-form', {
+    staticClass: "defect-list"
+  }, _vm._l((_vm.defectOptionList), function(item, index) {
+    return _c('el-form-item', {
+      key: index
+    }, [_c('h3', {
+      staticStyle: {
+        "color": "#E26829",
+        "font-size": "20px",
+        "text-indent": "18px"
+      }
+    }, [_vm._v(_vm._s(item.model))]), _vm._v(" "), _c('h3', {
+      staticClass: "serial-number"
+    }, [_c('span', [_vm._v(_vm._s(_vm.$t('cNam.sn')) + ":")]), _vm._v(" "), _c('el-input', {
+      staticClass: "input input-sn",
+      attrs: {
+        "maxlength": 40
+      },
+      model: {
+        value: (_vm.SNList[item.type]),
+        callback: function($$v) {
+          _vm.$set(_vm.SNList, item.type, $$v)
+        },
+        expression: "SNList[item.type]"
+      }
+    })], 1), _vm._v(" "), _c('el-checkbox-group', {
+      staticClass: "error-details",
+      model: {
+        value: (_vm.selectedList[item.type]),
+        callback: function($$v) {
+          _vm.$set(_vm.selectedList, item.type, $$v)
+        },
+        expression: "selectedList[item.type]"
+      }
+    }, _vm._l((item.data), function(select) {
+      return _c('el-checkbox', {
+        key: select.name,
+        attrs: {
+          "label": select.label
+        },
+        on: {
+          "change": function($event) {
+            _vm.changeRecord()
+          }
+        }
+      })
+    }))], 1)
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-form', {
+    staticClass: "error-list"
+  }, [_c('h3', {
+    staticStyle: {
+      "color": "#E26829",
+      "font-size": "20px",
+      "text-indent": "18px"
+    }
+  }, [_vm._v(_vm._s(_vm.errorCodeOptionList.model))]), _vm._v(" "), _c('el-checkbox-group', {
+    staticClass: "error-details",
+    on: {
+      "change": _vm.changeCheckBox
+    },
+    model: {
+      value: (_vm.errorCodeList),
+      callback: function($$v) {
+        _vm.errorCodeList = $$v
+      },
+      expression: "errorCodeList"
+    }
+  }, _vm._l((_vm.errorCodeOptionList.data), function(error) {
+    return _c('el-checkbox', {
+      key: error.label,
+      attrs: {
+        "label": error.label
+      }
+    })
+  }))], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "custom-class": "pre-dialog",
+      "top": "20vh",
+      "size": "large"
+    },
+    model: {
+      value: (_vm.preDialogVisible),
+      callback: function($$v) {
+        _vm.preDialogVisible = $$v
+      },
+      expression: "preDialogVisible"
+    }
+  }, [_c('div', {
+    staticStyle: {
+      "text-align": "center",
+      "background": "#FFFFFF"
+    }
+  }, [_c('img', {
+    staticClass: "pre-img",
+    attrs: {
+      "src": _vm.dialogImageUrl,
+      "alt": ""
+    }
+  })])])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-55b1cc65","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/3rd-diagnosis/mechanicalDiagnosis.vue
+// module id = 1540
+// module chunks = 73

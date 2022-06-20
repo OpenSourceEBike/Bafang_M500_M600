@@ -1,0 +1,715 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "after-pi-edit"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": " back "
+    },
+    on: {
+      "click": _vm.goPIList
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v("Save " + _vm._s(_vm.title))]), _vm._v("  生成PDF的形式发票的日期和汇率 怎么决定？\n        "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(true) ? _c('div', {
+    staticClass: "icon-item save",
+    attrs: {
+      "title": "save"
+    },
+    on: {
+      "click": _vm.savePI
+    }
+  }) : _vm._e()])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "col-left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_vm._m(0), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.customer),
+      callback: function($$v) {
+        _vm.customer = $$v
+      },
+      expression: "customer"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(1), _vm._v(" "), _c('el-input', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.country),
+      callback: function($$v) {
+        _vm.country = $$v
+      },
+      expression: "country"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '2'),
+      expression: "piType != '2' "
+    }],
+    staticClass: "item"
+  }, [_vm._m(2), _vm._v(" "), _c('el-input', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.address),
+      callback: function($$v) {
+        _vm.address = $$v
+      },
+      expression: "address"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '2'),
+      expression: "piType != '2' "
+    }],
+    staticClass: "item"
+  }, [_vm._m(3), _vm._v(" "), _c('el-input', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.atten),
+      callback: function($$v) {
+        _vm.atten = $$v
+      },
+      expression: "atten"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '2'),
+      expression: "piType != '2' "
+    }],
+    staticClass: "item"
+  }, [_vm._m(4), _vm._v(" "), _c('el-input', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.tel),
+      callback: function($$v) {
+        _vm.tel = $$v
+      },
+      expression: "tel"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(5), _vm._v(" "), _c('el-input', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.vatNo),
+      callback: function($$v) {
+        _vm.vatNo = $$v
+      },
+      expression: "vatNo"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '1'),
+      expression: " piType != '1' "
+    }],
+    staticClass: "item"
+  }, [_vm._m(6), _vm._v(" "), _c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "placeholder": "estimatedDate"
+    },
+    model: {
+      value: (_vm.estimatedDate),
+      callback: function($$v) {
+        _vm.estimatedDate = $$v
+      },
+      expression: "estimatedDate"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(7), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    model: {
+      value: (_vm.tradeTerm),
+      callback: function($$v) {
+        _vm.tradeTerm = $$v
+      },
+      expression: "tradeTerm"
+    }
+  }, _vm._l((_vm.tradeTermType), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "col-right"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '1'),
+      expression: " piType != '1' "
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("PO No.")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.poNo),
+      callback: function($$v) {
+        _vm.poNo = $$v
+      },
+      expression: "poNo"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '2'),
+      expression: " piType != '2' "
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Orderr No.")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.orderNo),
+      callback: function($$v) {
+        _vm.orderNo = $$v
+      },
+      expression: "orderNo"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Sales")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.creator),
+      callback: function($$v) {
+        _vm.creator = $$v
+      },
+      expression: "creator"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("PI No.")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.piNo),
+      callback: function($$v) {
+        _vm.piNo = $$v
+      },
+      expression: "piNo"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '2'),
+      expression: " piType != '2' "
+    }],
+    staticClass: "item"
+  }, [_vm._m(8), _vm._v(" "), _c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "placeholder": "estimatedDate"
+    },
+    model: {
+      value: (_vm.estimatedDate),
+      callback: function($$v) {
+        _vm.estimatedDate = $$v
+      },
+      expression: "estimatedDate"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(9), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    model: {
+      value: (_vm.paymentTerm),
+      callback: function($$v) {
+        _vm.paymentTerm = $$v
+      },
+      expression: "paymentTerm"
+    }
+  }, _vm._l((_vm.paymentTermType), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "order-info border"
+  }, [_c('div', {
+    staticClass: "parts-list"
+  }, [_c('label', {
+    staticClass: "labelList"
+  }, [_vm._v("Item list")]), _vm._v(" "), _c('el-button', {
+    staticClass: "att-btn",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogCreateVisible = true
+      }
+    }
+  }, [_vm._v("+")]), _vm._v(" "), _c('label', {
+    staticClass: "labelAdd"
+  }, [_vm._v("Add Item")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('td', [_c('el-checkbox', {
+    model: {
+      value: (_vm.allSelectedForDelete),
+      callback: function($$v) {
+        _vm.allSelectedForDelete = $$v
+      },
+      expression: "allSelectedForDelete"
+    }
+  })], 1), _vm._v(" "), _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })], 2), _vm._v(" "), _c('tbody', {
+    staticClass: "height2"
+  }, _vm._l((_vm.piCompItems), function(item, index) {
+    return _c('tr', [_c('td', [_c('el-checkbox', {
+      staticClass: "table-checkbox",
+      model: {
+        value: (item.selected),
+        callback: function($$v) {
+          _vm.$set(item, "selected", $$v)
+        },
+        expression: "item.selected"
+      }
+    })], 1), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.a))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.b))]), _vm._v(" "), _c('td', [_c('el-input', {
+      model: {
+        value: (item.c),
+        callback: function($$v) {
+          _vm.$set(item, "c", $$v)
+        },
+        expression: "item.c"
+      }
+    })], 1), _vm._v(" "), _c('td', {
+      staticClass: "long-td"
+    }, [_c('el-input', {
+      model: {
+        value: (item.d),
+        callback: function($$v) {
+          _vm.$set(item, "d", $$v)
+        },
+        expression: "item.d"
+      }
+    })], 1), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.e) + " ")]), _vm._v(" "), _c('td', [_c('el-input', {
+      model: {
+        value: (item.f),
+        callback: function($$v) {
+          _vm.$set(item, "f", $$v)
+        },
+        expression: "item.f"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('el-input', {
+      model: {
+        value: (item.g),
+        callback: function($$v) {
+          _vm.$set(item, "g", $$v)
+        },
+        expression: "item.g"
+      }
+    })], 1), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.h))])])
+  })), _vm._v(" "), _c('tfoot', [_c('td', {
+    attrs: {
+      "colspan": "9"
+    }
+  }, [_c('span', {
+    staticStyle: {
+      "float": "right",
+      "padding": "10px 60px 0 0"
+    }
+  }, [_vm._v(" Total Amount to be paid:" + _vm._s(_vm.totalAmount))])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "footer"
+  }, [_c('div', {
+    staticClass: "btn-left"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "delete"
+    },
+    on: {
+      "click": _vm.deletePIItem
+    }
+  }, [_vm._v("delete")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-right"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.onClickPrint
+    }
+  }, [_vm._v("Click Preview")])], 1)])])])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": "addItem",
+      "visible": _vm.dialogCreateVisible,
+      "size": "large",
+      "top": "10%"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogCreateVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('el-input', {
+    staticClass: "search-content",
+    attrs: {
+      "placeholder": "category",
+      "disabled": true
+    },
+    on: {
+      "click": _vm.selectCategory
+    },
+    model: {
+      value: (_vm.selectCategoryItem.name),
+      callback: function($$v) {
+        _vm.$set(_vm.selectCategoryItem, "name", $$v)
+      },
+      expression: "selectCategoryItem.name"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "search-content",
+    attrs: {
+      "placeholder": "Item Name"
+    },
+    model: {
+      value: (_vm.queryItemCondition),
+      callback: function($$v) {
+        _vm.queryItemCondition = $$v
+      },
+      expression: "queryItemCondition"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": " search "
+    },
+    on: {
+      "click": _vm.queryItem
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item clear",
+    attrs: {
+      "title": " clear "
+    },
+    on: {
+      "click": _vm.clearCondition
+    }
+  })])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('td', [_c('el-checkbox', {
+    model: {
+      value: (_vm.allSelectedForAdd),
+      callback: function($$v) {
+        _vm.allSelectedForAdd = $$v
+      },
+      expression: "allSelectedForAdd"
+    }
+  })], 1), _vm._v(" "), _vm._l((_vm.itemHeadData), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })], 2), _vm._v(" "), _c('tbody', _vm._l((_vm.selectItems), function(item, index) {
+    return _c('tr', [_c('td', [_c('el-checkbox', {
+      staticClass: "table-checkbox",
+      model: {
+        value: (item.selected),
+        callback: function($$v) {
+          _vm.$set(item, "selected", $$v)
+        },
+        expression: "item.selected"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('img', {
+      attrs: {
+        "src": _vm._f("getImgUrl")(item.img)
+      }
+    })]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.ext_part_no))])])
+  }))]), _vm._v(" "), _c('el-pagination', {
+    staticClass: "pagination",
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentPageChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.addItems
+    }
+  }, [_vm._v("addItems")])], 1)])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": "Add Component",
+      "visible": _vm.dialogAddComponentVisible,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogAddComponentVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "content",
+    staticStyle: {
+      "max-height": "500px",
+      "overflow": "auto"
+    }
+  }, [_c('div', {
+    staticClass: "category-tree"
+  }, [_c('el-tree', {
+    attrs: {
+      "data": _vm.categoryList,
+      "props": _vm.defaultProps
+    },
+    on: {
+      "node-click": _vm.handleNodeClick
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "print-pi-wrap"
+  }, [_c('div', {
+    staticClass: "printHead"
+  }, [_c('h2', [_vm._v(_vm._s(_vm.comBF))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.comAdd)), _c('br'), _vm._v(_vm._s(_vm.Tel))]), _vm._v(" "), _c('h3', [_c('b', [_vm._v(_vm._s(_vm.title))])]), _vm._v(" "), _c('div', {
+    staticClass: "dis_left"
+  }, [_vm._m(10), _vm._v(" "), _vm._m(11), _vm._v(" "), _vm._m(12), _vm._v(" "), _c('div', {}, [_c('label', {}, [_vm._v("Tel:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.tel))])]), _vm._v(" "), _c('div', {}, [_c('label', {}, [_vm._v("Trade Terms:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.tradeTerm))])]), _vm._v(" "), _c('div', {}, [_c('label', {}, [_vm._v("Payment Term:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.paymentTerm))])])]), _vm._v(" "), _c('div', {
+    staticClass: "dis_right"
+  }, [_vm._m(13), _vm._v(" "), _vm._m(14), _vm._v(" "), _c('div', {}, [_c('label', {}, [_vm._v("PI Nr.:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.piNo) + "111111")])]), _vm._v(" "), _c('div', {}, [_c('label', {}, [_vm._v("Order Nr.:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.orderNo) + "111111")])]), _vm._v(" "), _vm._m(15)])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  }))]), _vm._v(" "), _c('tbody', {}, _vm._l((_vm.piCompItems), function(item, index) {
+    return _c('tr', [_c('td', {
+      staticStyle: {
+        "width": "10%"
+      }
+    }, [_vm._v(_vm._s(item.a))]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "width": "12%"
+      }
+    }, [_vm._v(_vm._s(item.b))]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "width": "12%"
+      }
+    }, [_vm._v(_vm._s(item.c))]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "width": "30%"
+      }
+    }, [_vm._v(_vm._s(item.d))]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "width": "9%"
+      }
+    }, [_vm._v(_vm._s(_vm.currency) + _vm._s(item.e))]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "width": "9%"
+      }
+    }, [_vm._v(_vm._s(item.f))]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "width": "9%"
+      }
+    }, [_vm._v(_vm._s(item.g))]), _vm._v(" "), _c('td', {
+      staticStyle: {
+        "width": "9%"
+      }
+    }, [_vm._v(_vm._s(item.h))])])
+  }))]), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "float": "right"
+    }
+  }, [_c('span', {
+    staticStyle: {
+      "float": "right",
+      "padding": "10px 60px 0 0"
+    }
+  }, [_vm._v("Total Amount to be paid: " + _vm._s(_vm.currency) + _vm._s(_vm.totalAmount))])])]), _vm._v(" "), _c('div')]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "printFoot"
+  }, [_vm._m(16), _vm._v(" "), _c('div', {
+    staticClass: "dis_left"
+  }, [_c('div', {}, [_c('label', {
+    staticClass: "name"
+  }, [_vm._v("Bank Name:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.comBank[0]))])]), _vm._v(" "), _c('div', {}, [_c('label', {
+    staticClass: "name"
+  }, [_vm._v("Account Name:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.comBank[1]))])]), _vm._v(" "), _c('div', {}, [_c('label', {
+    staticClass: "name"
+  }, [_vm._v("Account Number:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.comBank[2]))])]), _vm._v(" "), _c('div', {}, [_c('label', {
+    staticClass: "name"
+  }, [_vm._v("VAT Number:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.comBank[3]))])]), _vm._v(" "), _c('div', {}, [_c('label', {
+    staticClass: "name"
+  }, [_vm._v("CVC Number:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.comBank[4]))])]), _vm._v(" "), _c('div', {}, [_c('label', {
+    staticClass: "name"
+  }, [_vm._v("BIC/SWIFT:")]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.comBank[5]))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "printFoot"
+  }, [_vm._m(17), _vm._v(" "), _c('div', {
+    staticClass: "dis_right"
+  }, [_c('div', {}, [_c('label', {}, [_vm._v(_vm._s(_vm.comBF))])]), _vm._v(" "), _vm._m(18)])])])], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Customer"), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Country"), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Address"), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Atten"), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Tel"), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("VAT No."), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("ETD"), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Trade Terms"), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("ETD"), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Payment Term"), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {}, [_c('label', {}, [_vm._v("Attn:")]), _vm._v(" "), _c('span', {})])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {}, [_c('label', {}, [_vm._v("Buyer:")]), _vm._v(" "), _c('span', {}, [_vm._v("xx BV")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {}, [_c('label', {}, [_vm._v("Atten:")]), _vm._v(" "), _c('span', {}, [_vm._v("Alfred van der Heiden")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {}, [_c('label', {}, [_c('br')]), _vm._v(" "), _c('span', {})])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {}, [_c('label', {}, [_vm._v("Date:")]), _vm._v(" "), _c('span', {}, [_vm._v("1999-09-11")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {}, [_c('label', {}, [_vm._v("ETD/delivery "), _c('br'), _vm._v(" time:")]), _vm._v(" "), _c('span', {}, [_vm._v("11111111111")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "txt"
+  }, [_c('i', [_vm._v("SAY TOTAL US DOLLAR FIFTY FIVE THOUSAND  FIVE HUNDRED AND FORTY NINE AND  CENT FIVE ONLY.")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "dis_left"
+  }, [_c('div', {}, [_c('label', {}), _vm._v(" "), _c('span', {})]), _vm._v(" "), _c('div', {}, [_c('label', {}, [_vm._v("Buyer Signature:")]), _vm._v(" "), _c('span', {})])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('span', {
+    staticClass: "sign"
+  }, [_vm._v("XX(Salesman name)   "), _c('br'), _vm._v("issued by ")])])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-62fe93fa","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/service-center/after-sales/after-pi-edit.vue
+// module id = 1912
+// module chunks = 73

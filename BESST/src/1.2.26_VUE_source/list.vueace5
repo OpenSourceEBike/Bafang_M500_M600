@@ -1,0 +1,224 @@
+<template>
+    <div class="oem-list">
+        <div class="header">
+            <el-form :inline="true" class="demo-form-inline">
+                <el-form-item :label="$t('tableHead.name')">
+                    <el-input v-model="search.name"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('tableHead.tel')">
+                    <el-input v-model="search.phone"></el-input>
+                </el-form-item>
+                <div class="btn-group-inline">
+                    <div class="icons">
+                        <div class="icon-item search" @click="getPartnerList"></div>
+                    </div>
+                </div>
+            </el-form>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <td v-for="item in tableHead">{{item}}</td>
+                    </thead>
+                    <tbody>
+
+                    <tr class="large" v-for="item in partnerList">
+                        <td>
+                            <img :src="item.avatar | getImgUrl"/>
+                        </td>
+                        <td class="td name">
+                            {{ item.name }}
+                        </td>
+                        <td>
+                            {{ item.email }}
+                        </td>
+                        <td>
+                            {{ item.phone }}
+                        </td>
+                        <td>
+                            {{ item.website }}
+                        </td>
+                        <td class="td address">
+                            {{ item.address }}, {{ item.country }}
+                        </td>
+                        <td>
+                            {{ item.postcode }}
+                        </td>
+                        <td v-if="authList[Core.Const.AUTH_LIST.oemDelete]" class="icon-td">
+                            <div class="icons">
+                                <div class="icon-item delete" @click.stop="showDeleteDialog(item)" :title="$t('op.delete')"></div>
+                            </div>
+                            <!-- <a class="btn-underline" @click.stop="showDeleteDialog(item)">{{ $t('delete') }}</a> -->
+                        </td>
+                        <td v-else>
+                            -
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-show="partnerList.length <= 0">
+                    {{ $t('noResult') }}
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+
+        <!--删除弹框-->
+        <el-dialog
+            :title="$t('deleteDialog.title')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialog.tip') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteOem">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('no') }}</el-button>
+            </span>
+        </el-dialog>
+    </div>
+
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        name: 'brandOEMList',
+        data(){
+            return {
+                Core: Core,
+                tableHead: ['Logo', 'Name', 'E-mail', 'Tel', 'Website', 'Address', 'Post Code','Operation'],
+                partnerList: [],
+                currentPage: 1,
+                total: 0,
+
+                dialogDeleteVisible: false,
+                selectItem: {},
+                authList: [],
+
+                search: {
+                    name: '',
+                    phone: ''
+                }
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Brand.OemList,
+                zh: ZH.Brand.OemList,
+                de: DE.Brand.OemList,
+                nl: NL.Brand.OemList
+            }
+        },
+        mounted() {
+            this.initData();
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+            this.getPartnerList();
+        },
+        methods: {
+            initData() {
+                this.tableHead = [
+                    this.$t('tableHead.logo'),
+                    this.$t('tableHead.name'),
+                    this.$t('tableHead.email'),
+                    this.$t('tableHead.tel'),
+                    this.$t('tableHead.website'),
+                    this.$t('tableHead.address'),
+                    this.$t('tableHead.postCode'),
+                    this.$t('tableHead.operation'),
+                ];
+            },
+            getPartnerList() {
+                Core.Api.Org.getJuniorPartnerList(Core.Const.ORG_TYPE.OEM, this.search.name.trim(), this.search.phone.trim(), this.currentPage).then(
+                    res => {
+                        this.partnerList = res.org_list;
+                        this.total = res.count;
+                    }
+                );
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                getPartnerList();
+            },
+
+            showDeleteDialog(item) {
+                this.dialogDeleteVisible = true;
+                this.selectItem = item;
+            },
+
+            deleteOem() {
+                Core.Api.Org.deletePartnerByBrand(this.selectItem.id).then(res => {
+                    this.$message({
+                        message: 'Delete successfully',
+                        type: 'success'
+                    });
+                    this.dialogDeleteVisible = false;
+                    this.getPartnerList();
+                })
+            }
+        }
+
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .oem-list {
+        width: 100%;
+        height: 100%;
+        .header {
+            height: 60px;
+            border-bottom: 1px solid #2B2F3B;
+            overflow: hidden;
+        }
+        .td{
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .name{
+            max-width: 120px;
+        }
+        .address{
+            max-width: 280px
+        }
+        .icon-td{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            height:80px;
+            .icons{
+                align-self: center;
+                width:30px;
+                height:30px;
+                padding-bottom:36px;
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?1c66890a

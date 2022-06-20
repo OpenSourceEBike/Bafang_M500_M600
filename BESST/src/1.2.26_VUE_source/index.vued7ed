@@ -1,0 +1,174 @@
+<template>
+    <div class="apply-ip-verification">
+        <div class="apply-btn">
+            <el-button type="primary" @click="toCreateIP">Create</el-button>
+        </div>
+        <div>
+            <el-table :data="applyIPpList">
+                <el-table-column v-for="(item,index) in applyHeadList" :label="item.label" :prop="item.name"></el-table-column>
+            </el-table>
+        </div>
+
+        <el-dialog title="Apply to cancel IP verification" :visible.sync="auditVisible">
+            <div>
+                <p>Are you apply to cancel IP verification for few days?</p>
+            </div>
+            <br>
+            <div>
+                <el-radio-group v-model="days" class="select-phrase" @change="changeSelectedParam">
+                    <el-radio :label="1">1天</el-radio>
+                    <el-radio :label="2">2天</el-radio>
+                    <el-radio :label="3">3天</el-radio>
+                    <el-radio :label="4">4天</el-radio>
+                    <el-radio :label="5">5天</el-radio>
+                    <el-radio :label="6">6天</el-radio>
+                    <el-radio :label="7">7天</el-radio>
+                </el-radio-group>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="auditVisible = false">cancel</el-button>
+                <el-button type="success" @click="toCreateCancel">save</el-button>
+            </span>
+       </el-dialog>
+    </div>
+</template>
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+    export default {
+        name: "ComponentIPVerification",
+        data () {
+            return {
+                applyIPpList: [],
+                applyHeadList: [
+                    {
+                        name: 'email',
+                        label: 'Email',
+                    },
+                    {
+                        name: 'ip',
+                        label: 'IP',
+                    },
+                    {
+                        name: 'type', // 1 已经到期 0 没有到期
+                        label: 'Type',
+                    },
+                    {
+                        name: 'estimate',
+                        label: 'Estimate time(day)',
+                    },
+                    {
+                        name: 'time',
+                        label: 'Create time',
+                    },
+                ],
+                auditVisible: false,
+                days: 3,
+                user: Core.Data.getUser() ? Core.Data.getUser() : '',
+
+            }
+        },
+        methods: {
+            getApplyIPList() {
+                Core.Api.request({
+                    url: '/orgAudit/findIpAuditReport',
+                    method: 'GET'
+                }).then( (res)=> {
+                    console.log(res);
+                    if(Array.isArray(res.data.list) && res.data.list.length >0 ){
+                        let list = res.data.list;
+                        list.forEach((item)=>{
+                            item.type = item.type === 0?"没有到期":"已经到期";
+                            item.time = Core.Data.getFormatterDate(item.time*1000);
+                            item.estimate = Math.floor(item.estimate/86400);
+                        })
+
+                        this.applyIPpList = list;
+                    }
+                }).catch( (err) => {
+                    console.log(err);
+                })
+            },
+            toCreateIP() {
+                this.auditVisible = true;
+            },
+            toCreateCancel() {
+
+                let that = this;
+
+                if(this.user && this.user.ip_type === 1){
+
+                    $.ajax({
+                        url: 'http://pv.sohu.com/cityjson?ie=utf-8',
+                        dataType: "script",
+                        method: 'GET',
+                    }).done(function () {
+                        let ip = returnCitySN.cip;
+
+                        let data = {
+                            estimate: that.days * 86400,
+                            ip: ip
+                        }
+                        Core.Api.request({
+                            url: '/orgAudit/ipAuditSave',
+                            method: 'GET',
+                            data: data,
+                            headers: {
+                                'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+                            },
+                        }).then( (res)=> {
+                            if(res.code === 6){
+                                that.$message({
+                                    message: "当前账户未开启ip验证，无需申请",
+                                    type: "warning",
+                                })
+                                return;
+                            }
+                            that.auditVisible = false;
+                            that.getApplyIPList();
+                        }).catch( (err) => {
+                            console.log(err);
+                        })
+                    });
+
+                }else if(this.user && this.user.ip_type === 0){
+                    this.$message({
+                        message: "当前账户未设置ip,无需申请",
+                        type: "info",
+                    })
+                }
+            },
+            changeSelectedParam() {
+                console.log(this.days);
+            }
+        },
+        mounted() {
+            this.getApplyIPList();
+        },
+    }
+</script>
+<style lang="scss" scoped>
+    .apply-ip-verification {
+        .apply-btn{
+            padding: 20px;
+        }
+        .select-phrase{
+            display: flex;
+            flex-wrap: wrap;
+            .el-radio{
+                flex: 0 0 30%;
+                margin-left:6px!important;
+                margin-bottom: 10px;
+                color: white;
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// index.vue?6dabcbc1

@@ -1,0 +1,370 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "component-order-produce"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "content-card-item"
+  }, [_c('label', {
+    staticClass: "content-header"
+  }, [_vm._v(_vm._s(_vm.$t('orderInfo.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "content-body"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('orderInfo.model')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderItemInfo.item_name || '/'))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('orderInfo.customerPartNo')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderItemInfo.part_no || '/'))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("物料号")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderItemInfo.item_part_no || '/'))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('orderInfo.customerName')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderInfo.customer_id || '/'))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Order No.")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderInfo.source_id || '/'))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("已经生产的数据")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderInfo.produced || '/'))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-card-item"
+  }, [_c('label', {
+    staticClass: "content-header"
+  }, [_vm._v("刷程序")]), _vm._v(" "), _c('div', {
+    staticClass: "content-body"
+  }, [_c('div', {
+    staticClass: "hardware-item"
+  }, [_c('div', [_c('el-button', {
+    staticClass: "cloud",
+    style: (_vm.a),
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.getFirmware()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('up.fileCloudToUpdate')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "file"
+  }, [_c('label', {
+    staticClass: "label",
+    style: (_vm.a),
+    attrs: {
+      "for": "uploadFile"
+    }
+  }, [_vm._v(_vm._s(_vm.$t('up.fileToUpdate')) + " ")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.fileName))]), _vm._v(" "), _c('input', {
+    ref: "fileUpdate",
+    staticClass: "file-input",
+    attrs: {
+      "id": "uploadFile",
+      "type": "file"
+    },
+    on: {
+      "change": function($event) {
+        _vm.onChangeUpdateFile()
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "file"
+  }, [_c('el-progress', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.percentage > 0),
+      expression: "percentage > 0"
+    }],
+    attrs: {
+      "percentage": _vm.percentage
+    }
+  }), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.startTip),
+      expression: "startTip"
+    }]
+  }, [_vm._v(" " + _vm._s(_vm.$t('cNam.updateStarting')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "pull-right"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.startUpdate
+    }
+  }, [_vm._v(_vm._s(_vm.$t('up.update')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "hardware-item"
+  }, [(!_vm.usbHID) ? _c('div', {
+    staticClass: "select-holder"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('programingInfo.com')))]), _vm._v(" "), _c('el-select', {
+    attrs: {
+      "placeholder": _vm.$t('up.select')
+    },
+    nativeOn: {
+      "click": function($event) {
+        return _vm.getComList($event)
+      }
+    },
+    model: {
+      value: (_vm.com),
+      callback: function($$v) {
+        _vm.com = $$v
+      },
+      expression: "com"
+    }
+  }, _vm._l((_vm.comList), function(com, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": com,
+        "value": com
+      }
+    })
+  })), _vm._v(" "), _c('label', {
+    staticClass: "tip",
+    class: {
+      connect: _vm.isConnected
+    }
+  }), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.connect
+    }
+  }, [_vm._v(_vm._s(_vm.$t('connect')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.reset
+    }
+  }, [_vm._v(_vm._s(_vm.$t('reset')))])], 1) : _c('div', {
+    staticClass: "select-holder"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("USB HID")]), _vm._v(" "), _c('label', {
+    staticClass: "tip",
+    class: {
+      connect: _vm.isConnected
+    }
+  }), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.connect
+    }
+  }, [_vm._v(_vm._s(_vm.$t('connect')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.reset
+    }
+  }, [_vm._v(_vm._s(_vm.$t('reset')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (true),
+      expression: "true"
+    }],
+    staticClass: "input-holder"
+  }, [_c('div', {
+    staticClass: "note"
+  }, [_c('div', {
+    staticClass: "msg-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.updateMsg')))])]), _vm._v(" "), _c('div', {
+    staticClass: "note"
+  }, [_c('div', {
+    staticClass: "msg"
+  }, [_vm._v(_vm._s(_vm.updateMsg))])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-30"
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "file"
+  }, [_c('el-progress', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.boxPercentage > 0),
+      expression: "boxPercentage > 0"
+    }],
+    attrs: {
+      "percentage": _vm.boxPercentage
+    }
+  })], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-card-item"
+  }, [_c('label', {
+    staticClass: "content-header"
+  }, [_vm._v("操作")]), _vm._v(" "), _c('div', {
+    staticClass: "content-body"
+  }, [_c('div', {
+    staticClass: "hardware-item"
+  }, [_c('div', {
+    staticClass: "input-holder"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('writeSnInfo.sn')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "sn input-sn",
+    model: {
+      value: (_vm.sn),
+      callback: function($$v) {
+        _vm.sn = $$v
+      },
+      expression: "sn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "operation-holder"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.updateCount
+    }
+  }, [_vm._v("保存刷程序记录")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": function($event) {
+        _vm.snUpdateSelect(2)
+      }
+    }
+  }, [_vm._v("搜索SN刷程序次数")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderSnCount))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "hardware-item"
+  }, [_c('div', [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("订单已经刷程序的次数")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderCount))])]), _vm._v(" "), _c('div', {
+    staticClass: "operation-holder"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.orderUpdateRecord
+    }
+  }, [_vm._v("订单刷程序记录")])], 1)])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.queryItemCondition,
+      "visible": _vm.dialogRecordListVisible,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogRecordListVisible = $event
+      }
+    }
+  }, [_c('table', {
+    staticClass: "history-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', [_c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('up.updateTime')) + "\n                        ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('up.version')) + "\n                        ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                            文件名称\n                        ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('up.remark')) + "\n                        ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('up.operation')) + "\n                        ")])])]), _vm._v(" "), _vm._l((_vm.HWRecordList), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(_vm._f("dateFormat")(item.create_time)))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.version))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.firmware_name))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.remark))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_c('el-button', {
+      attrs: {
+        "type": "text"
+      },
+      on: {
+        "click": function($event) {
+          _vm.updateObject(item)
+        }
+      }
+    }, [_vm._v("\n                                " + _vm._s(_vm.$t('up.update')) + "\n                            ")])], 1)])
+  })], 2)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "SN刷程序记录",
+      "visible": _vm.snUpdateRecordDialogVisible,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.snUpdateRecordDialogVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v("同一个SN 刷程序的记录为最后一次保存的记录。重复刷程序，不记录。")]), _vm._v(" "), _c('table', {
+    staticClass: "history-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', [_c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                            sn\n                        ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('up.updateTime')) + "\n                        ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('up.version')) + "\n                        ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                            文件名称\n                        ")])])]), _vm._v(" "), _vm._l((_vm.snUpdateRecord), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.sn))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(_vm._f("dateFormat")(item.create_time)))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.firmware_version))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.firmware_name))])])
+  })], 2)])], 1)])])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-8596dd0c","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/order/produce.vue
+// module id = 1811
+// module chunks = 73

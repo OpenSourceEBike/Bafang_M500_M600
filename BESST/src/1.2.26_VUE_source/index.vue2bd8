@@ -1,0 +1,997 @@
+<template>
+    <div class="component-dic-save">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                </div>
+            </div>
+            <label class="title">{{ $t('Create Dictionary') }}</label>
+        </div>
+        <div class="content-wrap">
+            <div class="content">
+                <div class="dictionary-info">
+                    <label class="title">{{ $t('Dictionary Info') }}</label>
+                    <div class="left">
+                        <div class="item">
+                            <label class="label">{{ $t('Name') }} <span class="required">*</span></label>
+                            <el-input class="input"  v-model="dictionaryName"></el-input>
+                        </div>
+                        <div class="item">
+                            <label class="label">{{ $t('Code') }} <span class="required">*</span></label>
+                            <el-select v-model="dictionaryCode" placeholder="请选择">
+                                <el-option
+                                    v-for="item in options"   
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div class="item" v-show="dictionaryCode == 4">
+                            <label class="label">{{ $t('SubCode') }} <span class="required">*</span></label>
+                            <el-select v-model="subCode" placeholder="请选择">
+                                <el-option
+                                    v-for="(item,index) in categoryTypeData"   
+                                    :key="index"
+                                    :label="item.name"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div class="item">
+                            <el-button @click="saveEntryData" :disabled="isDisable">create</el-button>
+                        </div>
+                    </div>
+                    <div class="parts-list">
+                        <label class="labelList">{{ $t('Type') }} <span class="required">*</span></label>
+                        <el-radio-group v-model="dictionaryType" @change="changeDictionaryType">
+                            <el-radio :label="3">参数</el-radio>
+                            <el-radio :label="9" v-if="dictionaryCode == 4">属性</el-radio>
+                        </el-radio-group>
+                        
+                        <div class="add-icon">
+                            <p class="add-param-phrase-data"><i class="el-icon-plus" @click="addDictionary"></i></p>
+                        </div>
+                    </div>
+                    <div class="parts-list">
+                        <label class="labelList">{{ $t('新增属性') }} </label>
+                        <el-button @click="addNewParam" icon="plus"></el-button>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+                <div class="info-list" v-if="paramListVisible">
+                        <div class="width-25">
+                            <div class="title">硬件</div>
+                            <div class="dic-content">
+                                <div v-for="(item,index) in intermediateHardware"  :key="index" class="info">
+                                    <span>{{item.serial_number}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="width-25">
+                            <div class="title">固件</div>
+                            <div class="dic-content">
+                                <div v-for="(item,index) in intermediateFirmware"  :key="index" class="info">
+                                    <span>{{item.serial_number}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="width-25">
+                            <div class="title">参数</div>
+                            <div class="dic-content">
+                                <div v-for="(item,index) in intermediateParams"  :key="index" class="info">
+                                    <span>{{item.serial_number}}</span>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="width-25">
+                            <div class="title">属性</div>
+                            <div class="dic-content">
+                                <div v-for="(item,index) in attrList"  :key="index" class="info">
+                                    <span class="mr-10">{{item.property_name + ":"}}</span>
+                                    <span>{{item.property_list}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-list" v-if="phraseListVisible">
+                        <div class="width-100">
+                            <div class="title">子元素</div>
+                            <div class="dic-content">
+                                <div v-for="(item,index) in intermediatePhrases"  :key="index" class="info">
+                                    <span >{{item.label}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="save">
+                        <el-button type="primary" @click="savePhraseData">save</el-button>
+                    </div>                 
+            </div>
+        </div>
+        <el-dialog title="Add Dictionary Data" :visible.sync="addDictionaryVisible" v-if="dictionaryType == 3" id="scroll">
+            <el-radio-group class="categorybaseType" v-model="categoryBaseType" @change="changeDictionaryTypeList">
+                <el-radio :label="paramTypeItem.id"  :key="paramTypeIndex.id" v-for="(paramTypeItem,paramTypeIndex) in paramTypeList">{{paramTypeItem.name}}</el-radio>
+            </el-radio-group>
+            <el-transfer 
+                filter-placeholder="please input serial number"
+                @change="changeSerialNumberList"
+                v-model="selectedSerialNumberList"
+                :titles="['all data','selected data']"
+                :data="serialNumberList" class="transfer">
+            </el-transfer>
+            <div style="position:relative;transform:translateY(-472px)">
+                <i class="el-input__icon el-icon-search" style="height:30px;position:absolute;left:182px!important;z-index:2" @click="search(sn)" ></i>
+                <el-input v-model="sn" style="position:absolute;top: 0;left: 0;width: 218px;height:22px"  @keyup.enter.native="search(sn)"></el-input>
+            </div>
+            <el-button @click="addDictionarySerialList">save</el-button>
+        </el-dialog>
+        <el-dialog
+            class="dialog add-param-dialog"
+            :title="'add new param'"
+            :visible.sync="addNewParamVisible"
+            custom-class="select-category"
+            size="large"
+            top="10%">
+            <el-form>
+                <el-form-item label="name:">
+                    <el-input v-model="paramName"></el-input>
+                </el-form-item>
+                <el-form-item label="type:">
+                    <el-select 
+                        v-model="selectedType" 
+                        placeholder="请选择">
+                        <el-option
+                            v-for="(item,index) in categoryTypeData"
+                            :key="index"
+                            :label="item.name"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="value:">
+                    <el-input v-model="paramValue"></el-input>
+                </el-form-item>
+                <el-form-item class="save-param">
+                    <el-button @click="saveParam">save</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+        <!-- <el-dialog title="add entry data" :visible.sync="addEntryVisible" v-if="dictionaryType == 6">
+            <el-transfer
+                filterable
+                filter-placeholder="please input dictionary name"
+                @change="changeDictionaryNameList"
+                v-model="selectedDictionaryNameList"
+                :titles="['all data','selected data']"
+                :data="dictionaryNameList">
+            </el-transfer>
+            <el-button @click="addDictionaryNameList">save</el-button>
+        </el-dialog> -->
+         <el-dialog title="Add Attribute Data" :visible.sync="addAttrVisible" v-if="dictionaryType == 9">
+            <el-radio-group class="categorybaseType" v-model="attributeType" @change="changeAttributeTypeList">
+                <el-radio :label="paramTypeItem"  :key="paramTypeIndex" v-for="(paramTypeItem,paramTypeIndex) in attributeList">{{paramTypeItem.propertyName}}</el-radio>
+            </el-radio-group>
+            <el-transfer  
+                filterable 
+                filter-placeholder="please input serial number"
+                @change="changeAttrDataList"
+                v-model="selectedAttrDataList"
+                :titles="['all data','selected data']"
+                :data="attrDataList">
+            </el-transfer>
+            <el-button @click="addAttrDataList">save</el-button>
+        </el-dialog>
+    </div>
+</template>
+<script>
+    import Core from 'core/core';
+   export default {
+        inject: ['reload'],
+        data() {
+            return{
+                dictionaryName:'',
+                dictionaryCode: '',
+                subCode:null,
+                dictionaryType: 3,
+                attributeList:[],
+                paramTypeList: [],
+                serialNumberList: [],
+                attrDataList:[],
+                selectedAttrDataList:[],
+                addDictionaryVisible: false,
+                selectedSerialNumberList: [],
+                phraseId: '',
+                categoryBaseType:0,
+                attributeType:0,
+                categoryBaseEntryType: 0,
+                addEntryVisible: false,
+                selectedDictionaryNameList: [],
+                dictionaryNameList: [],
+                phraseListData: '',
+                paramListData: '',
+                intermediateDictionaryNameList: [],
+                allPhraseData: [],
+                paramListVisible: false,
+                phraseListVisible: false,
+                addNewParamVisible: false,
+                addAttrVisible: false,
+                intermediateHardware: [],
+                intermediateFirmware: [],
+                intermediateParams: [],
+                intermediatePhrases: [],
+                isDisable: false,
+                currentPage: 1,
+                scrollList: [],
+                attrList: [],
+                paramsList: [],
+                options: [{value:4,label:"属性"},{value:3,label:"参数"}],
+                categoryTypeData:[
+                    {value:1,name: "MOTOR"},
+                    {value:2,name: "CONTROLLER"},
+                    {value:3,name: "HMI"},
+                    {value:4,name: "SENSOR"},
+                    {value:5,name: "BATTERY"},
+                    {value:6,name: "CHARGER"},
+                    {value:7,name: "TOOL"},
+                    {value:8,name: "WIRELESS"},
+                    {value:9,name: "DC/DC模块"}
+                ],
+                sn:'',
+                canScroll:true,
+                selectedType:'',
+                paramName: '',
+                paramValue: ''
+            }
+        },
+        methods:{
+            //全局搜索sn       
+            search(sn){
+                if(this.categoryBaseType == 1){
+                    Core.Api.request({
+                        method: "get",
+                        url: "/param/category/findSnByLikeName",
+                        data:{
+                            sn:this.sn,
+                            name:this.dictionaryCode == 4 ? this.categoryTypeData[this.subCode-1].name : ''
+
+                        },
+                    }).then((res) => {
+                        this.setSerialNumberList(res);
+                    })
+                }else if(this.categoryBaseType == 2){
+                    Core.Api.request({
+                        method: "get",
+                        url: "/param/category/findByfirmwareLike",
+                        data:{
+                            sn:this.sn
+                        },
+                    }).then((res) => {
+                        this.setSerialNumberList(res);
+                    })
+
+                }else if(this.categoryBaseType == 3){
+                    Core.Api.request({
+                        method: "get",
+                        url: "/param/category/findByParamLike",
+                        data:{
+                            sn:this.sn
+                        },
+                    }).then((res) => {
+                        this.setSerialNumberList(res);
+                    })
+                }        
+            },
+            //全局搜索方法
+            setSerialNumberList(val){
+                this.serialNumberList = [];
+                this.canScroll = false;
+                this.serialNumberList = val.data.list;
+                this.serialNumberList.forEach((item,index)=>{
+                    item.key = index;
+                    item.label = item.serial_number;
+                }); 
+            },
+            //创建词条
+            saveEntryData(){
+                this.isDisable = true;
+                 Core.Api.request({
+                    url: '/phrase/filterAll',
+                    method: 'POST'
+                }).then(res=>{
+                    return res;
+                }).catch(err=>{
+                    console.log(err);
+                }).then(res=>{
+                     var sameNameList = res.filter((item)=>{
+                        return item.name == this.dictionaryName;
+                    });
+                    if(sameNameList.length>0){
+                        this.$message({
+                            type: 'warning',
+                            message: 'the entry name is existed!'
+                        });
+                        this.isDisable = false;
+                        return false;
+                    }
+                    var data = {
+                        "name": this.dictionaryName,
+                        "code": this.dictionaryCode,
+                        "subcode":this.dictionaryCode == 3 ? 0 :this.subCode
+                    }
+                    Core.Api.request({
+                        url: '/phrase',
+                        method: 'POST',
+                        data: JSON.stringify(data)
+                    }).then(res=>{
+                        if(res.id){
+                            this.getCategoryList();
+                            this.phraseId = res.id;
+                            this.paramsList = [];
+                            this.attrList = [];
+                            this.intermediateDictionaryNameList =[]
+                             this.$message({
+                                type: 'success',
+                                message: 'create successfully'
+                            })
+
+                            this.isDisable = false;
+                        }
+                        
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                }).catch(err=>{
+                    console.log(err);
+                })
+                
+            },
+            changeDictionaryType(val){
+                this.dictionaryType = val
+            },
+            //获取下一级category数据，若数据为空则获取当前项的body数据
+            getNextCategoryList(val){
+                if(val.id !=1){
+                    Core.Api.request({
+                        method: "get",
+                        url: "/param/body/findSNByRootIdPage",
+                        data:{
+                            rootId:val.id,
+                            currentPage:this.currentPage,
+                            pageSize:10
+
+                        },
+                    }).then((res) => {
+                        if(res){
+                            if(this.currentPage == 1){
+                                this.scrollList = res;
+                                this.serialNumberList = res;
+                                this.serialNumberList.forEach((item,index)=>{
+                                    item.key = index;
+                                    item.label = item.serial_number;
+                                });
+                                this.serialNumberList.filter((item)=>{
+                                    return item.key && item.label;
+                                })
+                              
+                            }else{
+                                this.scrollList = this.scrollList.concat(res);
+                                this.serialNumberList = this.scrollList;
+                                this.serialNumberList.forEach((item,index)=>{
+                                    item.key = index;
+                                    item.label = item.serial_number;
+                                });
+                                this.serialNumberList.filter((item)=>{
+                                    return item.key && item.label;
+                                })                  
+                            }     
+                        }
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                }
+      
+                if(val.id==1){  
+                    Core.Api.request({
+                        method: "get",
+                        url: "/param/category/findSnByTypeName",
+                        data:{
+                            // rootId:val.id,
+                            page:this.currentPage,
+                            size:10,
+                            name:this.dictionaryCode == 4 ? this.categoryTypeData[this.subCode-1].name : ''
+
+                        },
+                    }).then((res) => {
+                        if(res){
+                            // this.serialNumberList = res;
+                            if(this.currentPage == 1){
+                                this.scrollList = res.data.list;
+                                this.serialNumberList = res.data.list;
+                                this.serialNumberList.forEach((item,index)=>{
+                                    item.key = index;
+                                    item.label = item.serial_number;
+                                });
+                                this.serialNumberList.filter((item)=>{
+                                    return item.key && item.label;
+                                })
+                            }else{
+                                this.scrollList = this.scrollList.concat(res.data.list);
+                                this.serialNumberList = this.scrollList;
+                                this.serialNumberList.forEach((item,index)=>{
+                                    item.key = index;
+                                    item.label = item.name;
+                                });
+                                 this.serialNumberList.filter((item)=>{
+                                    return item.key && item.label;
+                                })
+                            }        
+                        }       
+                    })
+                    
+                }
+            },
+            //获取level为1的category数据
+            getCategoryList(){
+                Core.Api.request({
+                    method: "GET",
+                    url: "/param/category/all",
+                }).then((res) => {
+                    this.paramTypeList = res.filter((item)=>{
+                        return item.level == 1&& item.root_id == 0;
+                    })
+                })
+                Core.Api.request({
+                    url: '/besst/project/findAllCategory',
+                    method: 'GET',
+                    data:{
+                        "subcode":this.dictionaryCode == 3 ? 0 : this.subCode
+                    }
+                }).then(res=>{
+                   this.attributeList = res.data;
+
+                })
+            },
+            //展示相对应的category数据
+            addDictionary(){
+                if(this.phraseId){
+                    if(this.dictionaryType == 3){
+                        this.addDictionaryVisible = true;
+                    }else if(this.dictionaryType == 6){
+                        this.addEntryVisible = true;
+                        this.changeEntryTypeList();
+                    }else{
+                        this.addAttrVisible = true;
+                    }
+                }  
+            },
+            //添加滚动事件
+            addScroll(val){
+                let that = this;
+                var  scroll = document.getElementsByClassName('el-transfer-panel__list')[0];
+                scroll.onscroll = function(){
+                    let container_height = scroll.offsetHeight;  //容器的高度
+                    let scroll_top = scroll.scrollTop;   //滚动条的scrolltop
+                    let scroll_height = scroll.scrollHeight; //内容高度
+                    if(scroll_top>= scroll_height - container_height - 1 && that.canScroll){
+                        if(that.scrollList.length % 10 == 0){
+                            that.currentPage++;
+                            that.getNextCategoryList(val);
+                        }
+                    }
+                }
+            },
+            changeSerialNumberList(data1,data2){
+                this.selectedSerialNumberList = data1;
+            },
+            //保存字典paramList数据
+            addDictionarySerialList(){
+                if(this.selectedSerialNumberList ==''){
+                    this.$message({
+                        type: 'warning',
+                        message: 'please select the serial number at first'
+                    });
+                    return false;
+                };
+                var paramList = [];
+                var intermediateParamId = 0;
+                this.serialNumberList.forEach((item,index)=>{
+                    this.selectedSerialNumberList.forEach((selectedItem)=>{
+                        if(index == selectedItem){
+                            var phraseItem = {
+                                "id":intermediateParamId,
+                                "code": this.categoryBaseType,
+                                "serial_number": item.label,
+                                "parent_id": this.phraseId,
+                                "category_id":item.category_id ? item.category_id : null
+                            }
+                            paramList.push(phraseItem);  
+                        }
+                    })
+                });
+                var delId = '';
+                if(this.categoryBaseType == 3){
+                    this.paramsList.forEach((data) =>{
+                        if(data.code == 3 ){
+                            paramList.forEach((item)=> {
+                                if(item.serial_number != data.serial_number){
+                                    return  delId = data.id+','
+                                }else{
+                                    return item.id = data.id
+                                }
+                            })
+                        }
+                    });
+                }else{
+                    this.paramsList.forEach((data) =>{
+                        if(data.code == this.categoryBaseType){
+                            paramList.forEach((item)=> {
+                                return item.id = data.id
+                            })
+                        }
+                    });
+                };
+                if(delId != '' ){
+                    delId.substring(0,delId.length-1);
+                    Core.Api.request({
+                        url: '/intermediate/deleteRedundancyData?id='+delId,
+                        method: 'POST',
+                    })
+                };   
+                Core.Api.request({
+                    url: '/intermediate/bulk',
+                    method: 'POST',
+                    data:paramList
+                }).then(res=>{
+                    if(res && res.length>0){
+                        this.$message({
+                            type: 'success',
+                            message: 'save successfully'
+                        })
+                        res.forEach((item)=>{
+                            this.paramListData +=`${item.id},`
+                            this.paramsList.push(item);
+                        })
+                        if(this.categoryBaseType == 1){
+                            this.intermediateHardware = paramList;
+                        }else if(this.categoryBaseType == 2){
+                            this.intermediateFirmware = paramList;
+                        }else if(this.categoryBaseType == 3){
+                            this.intermediateParams = paramList;
+                        }
+                        this.addDictionaryVisible = false;
+                        this.paramListVisible = true;
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            changeDictionaryTypeList(val){
+                this.currentPage =1;
+                this.sn='';
+                this.scrollList = [];
+                this.serialNumberList = [];
+                this.canScroll = true;
+                this.selectedSerialNumberList = [];
+                var categoryBaseType = {};
+                this.paramTypeList.forEach((item)=>{
+                    if(item.id == this.categoryBaseType){
+                        categoryBaseType = item;
+                    }
+                })
+                this.getNextCategoryList(categoryBaseType);
+                this.addScroll(categoryBaseType);
+                       
+            },
+            changeAttributeTypeList(){
+                this.attrDataList = [];
+                this.selectedAttrDataList = [];
+                this.attributeList.forEach((item)=>{
+                    
+                    if(item.id == this.attributeType.id){
+                        item.propertyValue.forEach((item,index)=>{
+                            var obj = {key:index,label:item};
+                            this.attrDataList.push(obj);
+                        });
+                    }
+                })
+                if(this.attrList.length>0){
+                    this.attributeList.forEach((item)=>{
+                        this.attrList.forEach((value,index)=>{
+                            if(item.propertyName == value.property_name&&item.id == this.attributeType.id){
+                                var arr = value.property_list.split(',');
+                                arr.forEach((data)=>{
+                                    this.attrDataList.forEach((key,Index)=>{
+                                        if(key.label==data){
+                                            this.selectedAttrDataList.push(Index);
+                                        }
+                                    })
+                                })
+                            }
+                        })
+                    })
+                }
+            },
+            changeEntryTypeList(){
+                Core.Api.request({
+                    url: '/phrase/filterAll',
+                    method: 'POST'
+                }).then(res=>{
+                    if(res.length>0){
+                        this.dictionaryNameList = res.filter(item => item.id!= this.phraseId&&item.code==2);
+                        this.dictionaryNameList.forEach((item)=>{
+                            item.key = item.id;
+                            item.label = item.name;
+                        })
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            changeDictionaryNameList(){
+
+            },
+            changeAttrDataList(){
+
+            },
+            //添加新属性
+            addNewParam(){
+                this.addNewParamVisible = true;
+            },
+            //保存新属性
+            saveParam(){
+                let data = {
+                    "code": this.selectedType,
+                    "name": this.paramName,
+                    "value": this.paramValue
+                }
+                Core.Api.request({
+                    url: '/besst/project/besstSaveType',
+                    method: 'POST',
+                    data: data
+                }).then(res=>{
+                    this.addNewParamVisible = false;
+                    if(res.code == 0){
+                        this.$message({
+                            type: 'success',
+                            message: 'add successfully!'
+                        });
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            // //保存词条phraseList数据
+            // addDictionaryNameList(){
+            //     if(this.selectedDictionaryNameList == ''){
+            //         this.$message({
+            //             type: 'warning',
+            //             message: 'please select the dicionary name at first'
+            //         });
+            //         return false;
+            //     }
+            //     var phraseList = [];
+            //     //this.phraseListData = this.selectedDictionaryNameList.join(',');
+            //     this.dictionaryNameList.forEach((item)=>{
+            //         this.selectedDictionaryNameList.forEach((selectedItem)=>{
+            //             if(item.id == selectedItem){
+            //                 var dictionanyNameItem = {
+            //                     "code": 2,
+            //                     "phrase_id": item.key,
+            //                     "parent_id": this.phraseId 
+            //                 }
+            //                 phraseList.push(dictionanyNameItem);
+            //                 this.intermediateDictionaryNameList.push(item);
+            //             }
+            //         })
+            //     })
+            //      Core.Api.request({
+            //         url: '/intermediate/bulk',
+            //         method: 'POST',
+            //         data:phraseList
+            //     }).then(res=>{
+            //         if(res && res.length>0){
+            //             this.$message({
+            //                 type: 'success',
+            //                 message: 'save successfully'
+            //             })
+            //             res.forEach((item)=>{
+            //                 this.phraseListData +=`${item.id},`
+            //             })
+            //             this.intermediatePhrases = this.intermediateDictionaryNameList;
+            //             this.addEntryVisible = false;
+            //             this.phraseListVisible = true;
+            //         }
+            //     })               
+            // },
+            //保存属性组合后的的数据
+            addAttrDataList(){
+                if(this.selectedAttrDataList == ''){
+                    this.$message({
+                        type: 'warning',
+                        message: 'please select the attribute name at first'
+                    });
+                    return false;
+                }
+                var paramList = [];
+                var attrStr = '';
+                var intermediateAttrId = 0;
+                this.attrDataList.forEach((item,index)=>{
+                    this.selectedAttrDataList.forEach((selectedItem)=>{
+                        if(index == selectedItem){
+                            attrStr += item.label+',';
+                        }
+                    })
+                })
+                this.attrList.every((item)=>{
+                    if(item.parent_id == this.phraseId && item.property_name == this.attributeType.propertyName){
+                        intermediateAttrId = item.id;
+                        return false;
+                    }
+                })
+                var phraseItem = {
+                    "id":intermediateAttrId,
+                    "code": 4,
+                    "serial_number": '',
+                    "parent_id": this.phraseId,
+                    "property_id":this.attributeType.id,
+                    "property_name":this.attributeType.propertyName,        
+                    "property_list":attrStr.substring(0,attrStr.length - 1)
+                }
+                paramList.push(phraseItem);
+                Core.Api.request({
+                    url: '/intermediate/bulk',
+                    method: 'POST',
+                    data:paramList
+                }).then(res=>{
+                    this.$message({
+                        type: 'success',
+                        message: 'save successfully'
+                    })
+                    if(res && res.length>0){ 
+                        res.forEach((item)=>{
+                            this.paramListData +=`${item.id},`;
+                            if(this.attrList.length<1){
+                                this.attrList.push(item);
+                            }else{
+                                var haveName = false;
+                                this.attrList.forEach((data)=>{
+                                    if(data.property_name == item.property_name){
+                                        data.property_list  = item.property_list;
+                                        haveName = true;
+                                    }
+                                })
+                                if(!haveName){
+                                    this.attrList.push(item);
+                                }
+                            }
+                            
+                        })
+                        this.addAttrVisible = false;
+                        this.paramListVisible = true;
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                });             
+            },
+            //保存词条组合完成后的数据
+            savePhraseData(){
+                if(this.phraseId){
+                    // Core.Api.request({
+                    //     url: '/phrase/findAllBodyPhraseNameByParentPhraseName',
+                    //     method: 'get',
+                    //     data:"haha"
+                    // }).then(res=>{
+                    //     console.log(res);
+                    // });
+                    var data = {
+                        "id": 0,
+                        "param_list": this.paramListData!=''?this.paramListData.substring(0,this.paramListData.lastIndexOf(',')):this.paramListData,                       
+                        "phrase_id": this.phraseId,
+                        "phrase_list": this.phraseListData!=''?this.phraseListData.substring(0,this.phraseListData.lastIndexOf(',')):this.phraseListData
+                    }
+                    Core.Api.request({
+                        url: '/phraseBinding',
+                        method: 'POST',
+                        data:data
+                    }).then(res=>{
+                        if(res.param_list && res.param_list !=''){
+                            this.$message({
+                                type: 'success',
+                                message: 'save successfully'
+                            })
+                            this.phraseId = '';
+                            this.dictionaryType = 3;
+                            this.dictionaryCode = '';
+                            this.subCode= null;
+                            this.dictionaryNameList = [];this.serialNumberList = []; this.scrollList = []; 
+                            this.categoryBaseEntryType = this.categoryBaseType = 0;
+                            this.intermediateDictionaryNameList =[];this.intermediateFirmware= [];
+                            this.intermediateHardware = [];this.intermediateParams = [];
+                            this.attrList = [];
+                            this.dictionaryName =  this.dictionaryCode =  '';
+                            this.paramListVisible = this.phraseListVisible = false;
+                        }
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                }
+            },
+            getAllPhraseData(){
+                Core.Api.request({
+                    url: '/phrase/filterAll',
+                    method: 'POST'
+                }).then(res=>{
+                    this.allPhraseData = res;
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            
+        },
+
+        mounted(){
+            this.getAllPhraseData();
+        }
+   }
+</script>
+<style lang="scss" rel="stylesheet/scss">
+    .component-dic-save{
+        width: 100%;
+        height: 100%;
+        span.required {
+            color: #E26829;
+            display: inline-block;
+        }
+        .transfer{
+            margin-top:40px;
+            .el-transfer-panel__list{
+                height: 322px;
+                .el-checkbox__label{
+                    span{
+                        font-size:13px;
+                    }
+                }
+            }
+            .el-transfer-panel{
+                width:265px;
+            }
+        }
+        .content {
+            height: 100%;
+            border: 1px solid #2B2F3B;
+            .dictionary-info {
+                width: 100%;
+                height: auto;
+                .title {
+                    height: 50px;
+                    line-height: 50px;
+                    padding-left: 40px;
+                }
+                .left {
+                    float: left;
+                    width: 100%;
+                    height: auto;
+                    padding-bottom:15px;
+                    background: #353945;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .item {
+                        margin: 2px 0 0 40px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        height: 50px;
+                        .label {
+                            display: inline-block;
+                            width: 110px;
+                        }
+                        .input {
+                            width: 232px;
+                            border-radius:15px;
+                            
+                        }
+                        .el-input__inner {
+                            padding-left: 21px;
+                        }
+                    }
+                }
+                .parts-list {
+                    float: left;
+                    padding: 0 40px;
+                    font-size: 12px;
+                    overflow: hidden;
+                    height: 50px;
+                    line-height: 50px;
+                    width: 100%;
+                    box-shadow: 0 -1px #2B2F3B;
+                    background: #353945;
+                    border-bottom:1px solid #2B2F3B;
+                    .labelList {
+                        width: 110px;
+                        display: inline-block;
+                    }
+                    .add-icon{
+                        float: right;
+                        .add-param-phrase-data{
+                            margin-right: 40px;
+                        }
+                    }
+                }
+                
+            }
+            .info-list{
+                display: flex;
+                width: 100%;
+                min-width: 100px;
+                max-width: 280;
+                background: #353945;
+                box-shadow: 0 -1px #2B2F3B;
+                justify-content: space-between;
+                border-bottom:1px solid #2B2F3B;                 
+                .width-25,.width-100{
+                    .title{
+                        background: #383d49;;
+                        border-bottom:1px solid #2B2F3B;
+                        height: 50px;
+                        line-height: 50px;
+                        padding-left: 40px;
+                    }
+                    .dic-content{
+                        padding:18px 0 18px;
+                        .info{                                 
+                            padding-left:40px;
+                            line-height: 20px;
+                        }
+                        .mr-10{
+                            margin-right:10px;
+                        }
+                    }
+                }
+                .width-25{
+                    width: 25%;
+                }
+                .width-100{
+                    width:100%
+                }
+            }
+        }
+        .el-radio__label{
+            color:#fff;
+        }
+        .save{
+            border-bottom:1px solid #2B2F3B;
+            padding:20px  0 20px 50px;
+            box-sizing: border-box;
+        }
+        .el-dialog{
+            .el-radio-group{
+                margin-bottom:8px;
+            }
+            .el-button{
+                margin-top:8px;
+            }
+        }
+        #scroll .el-dialog{
+            width:650px;
+        }
+        .select-category{
+            width: 400px!important;
+        }
+        .select-category .el-tree .el-tree-node__expand-icon:before{
+            content: '';
+        }
+        .add-param-dialog{
+            .el-input{
+                width: 240px!important;
+            }
+            .el-select{
+                margin-left:7px;
+                height:30px;
+            }
+        }
+    }
+</style>
+
+
+// WEBPACK FOOTER //
+// index.vue?29ac4763

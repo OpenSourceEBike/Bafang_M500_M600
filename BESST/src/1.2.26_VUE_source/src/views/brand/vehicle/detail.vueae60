@@ -1,0 +1,206 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "brand-vehicle-detail-container"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-left"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item more",
+    attrs: {
+      "title": _vm.$t('reportList')
+    },
+    on: {
+      "click": _vm.getReportList
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "content-holder"
+  }, [_c('div', {
+    staticClass: "vehicle-item"
+  }, [_c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('sn')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.vehicle.sn))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('key')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isEdit),
+      expression: "!isEdit"
+    }]
+  }, [_vm._v(_vm._s(_vm.vehicle.secret_key ? _vm.vehicle.secret_key : '-'))]), _vm._v(" "), _c('el-input', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isEdit),
+      expression: "isEdit"
+    }],
+    staticClass: "input",
+    attrs: {
+      "maxlength": 30
+    },
+    model: {
+      value: (_vm.vehicle.secret_key),
+      callback: function($$v) {
+        _vm.$set(_vm.vehicle, "secret_key", $$v)
+      },
+      expression: "vehicle.secret_key"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('itemName')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.vehicle.item.name))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('itemPartNo')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.vehicle.item.ext_part_no ? _vm.vehicle.item.ext_part_no : "-"))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('assembler')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [(_vm.vehicle.order.org && _vm.vehicle.order.org.name) ? _c('span', [_vm._v(_vm._s(_vm.vehicle.order.org.name))]) : _c('span', [_vm._v("-")])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('productTime')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.vehicle.produce_time, "Y-m-d")))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('dealer')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [(_vm.vehicle.sale_org && _vm.vehicle.sale_org.name) ? _c('span', [_vm._v(_vm._s(_vm.vehicle.sale_org.name))]) : _c('span', [_vm._v("-")])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('saleTime')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [(_vm.vehicle.sale_time && _vm.vehicle.sale_time != 0) ? _c('span', [_vm._v(_vm._s(_vm._f("dateFormat")(_vm.vehicle.sale_time)))]) : _c('span', [_vm._v("-")])])])]), _vm._v(" "), _c('el-collapse', {
+    attrs: {
+      "accordion": ""
+    }
+  }, [_c('el-collapse-item', [_c('template', {
+    slot: "title"
+  }, [_c('label', [_vm._v(_vm._s(_vm.$t('part')))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-div"
+  }, [_c('a', {
+    staticClass: "btn-underline",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.onClickHistory($event)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('history')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "bom-content-holder"
+  }, _vm._l((_vm.bomAttrList), function(bom) {
+    return (_vm.bomAttrList.length > 0) ? _c('div', {
+      staticClass: "bom-item"
+    }, [_c('div', {
+      staticClass: "bom-header"
+    }, [_c('label', {
+      staticClass: "bom-title"
+    }, [_vm._v("\n                                        " + _vm._s(bom.rootName) + "\n                                    ")])]), _vm._v(" "), _c('div', {
+      staticClass: "bom-content"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+      staticClass: "desc"
+    }, [_c('span', [_vm._v(_vm._s(bom.sn || '-'))])])]), _vm._v(" "), _c('div', {
+      staticClass: "bom-content"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v("Model")]), _vm._v(" "), _c('div', {
+      staticClass: "desc"
+    }, [_c('span', [_vm._v(_vm._s(bom.name || '-'))])])]), _vm._v(" "), _vm._l((bom.attrList), function(item) {
+      return _c('div', {
+        staticClass: "bom-content"
+      }, [_c('label', {
+        staticClass: "title"
+      }, [_vm._v("\n                                        " + _vm._s(item.attr_def_name) + "\n                                    ")]), _vm._v(" "), _c('div', {
+        staticClass: "desc"
+      }, [_c('span', [_vm._v(_vm._s(item.value || '-'))])])])
+    })], 2) : _vm._e()
+  }))], 2)], 1)], 1)])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialogReportList",
+    attrs: {
+      "title": _vm.$t('reportList'),
+      "visible": _vm.dialogReportVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogReportVisible = $event
+      }
+    }
+  }, [_c('table', {
+    staticClass: "report-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', [_c('td', {
+    staticClass: "report-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('date')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "report-td  head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('author')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "report-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('operation')) + "\n                ")])])]), _vm._v(" "), _vm._l((_vm.reportList), function(item, index) {
+    return _c('tr', [_c('td', {
+      staticClass: "report-td"
+    }, [_vm._v(_vm._s(_vm._f("dateFormat")(item.create_time)))]), _vm._v(" "), _c('td', {
+      staticClass: "report-td"
+    }, [_vm._v(_vm._s(item.org_name))]), _vm._v(" "), _c('td', {
+      staticClass: "report-td"
+    }, [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.goToReportDetail(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('detail')))])])])
+  })], 2)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-fbf2e602","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/brand/vehicle/detail.vue
+// module id = 1611
+// module chunks = 73

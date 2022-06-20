@@ -1,0 +1,316 @@
+<template>
+    <div class="assembler-brand-list">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <el-button class="btn-accept" @click="dialogCodeVisible = true">{{ $t('acceptInvitation') }}</el-button>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <td v-for="item in tableHead">{{item}} </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="item in brandList" @click="showBrandDetail(item)">
+                        <td>{{item.name}}</td>
+                        <td>{{item.phone}}</td>
+                        <td>{{item.website}}</td>
+                        <td>{{item.country}}</td>
+                        <td v-show="!partnerBrand">
+                            <el-tooltip class="item" effect="dark" :content="$t('hoverTip')" placement="right">
+                                <img src="../../../assets/images/dealer/flag-free.png" class="img"
+                                     @click.stop="setBrandPartner(item)"/>
+                            </el-tooltip>
+                        </td>
+                        <td v-if="partnerBrand && item.id !== partnerBrand.id">
+                            <el-tooltip class="item" effect="dark" :content="$t('hoverTip')" placement="right">
+                                <img src="../../../assets/images/dealer/flag-free.png" class="img"
+                                     @click.stop="setBrandPartner(item)"/>
+                            </el-tooltip>
+                        </td>
+                        <td v-show="partnerBrand && item.id == partnerBrand.id">
+                            <img src="../../../assets/images/dealer/flag-select.png" class="img"/>
+                            <span class="span">{{ $t('currentBrand') }}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-show="brandList.length <= 0 && !loading">
+                   {{$t('noResult')}}
+                </div>
+                <div class="loading" v-if="loading">
+                    <img src="../../../assets/images/icon/loading-bars.svg" alt="Loading icon"/>
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+        <!--brand详情弹窗-->
+        <el-dialog :title="selectBrand.name" :visible.sync="dialogDetailVisible" class="detail-dialog">
+            <div class="dialog-header">
+                <label class="title">{{$t('brandInfo')}}</label>
+            </div>
+            <div class="dialog-content">
+                <div class="item img">
+                    <label class="label">{{$t('logo')}}</label>
+                    <div class="img-box">
+                        <img :src="selectBrand.avatar | getImgUrl" class="logo"/>
+                    </div>
+                </div>
+                <div class="item">
+                    <label class="label">{{$t('name')}}</label>
+                    <label class="text">{{selectBrand.name}}</label>
+                </div>
+                <div class="item">
+                    <label class="label">{{$t('type')}}</label>
+                    <label class="text">{{$t('brand')}}</label>
+                </div>
+                <div class="item">
+                    <label class="label">{{$t('email')}}</label>
+                    <label class="text">{{selectBrand.email}}</label>
+                    <label class="label">{{$t('website')}}</label>
+                    <label class="text">{{selectBrand.website}}</label>
+                </div>
+                <div class="item">
+                    <label class="label">{{$t('tel')}}</label>
+                    <label class="text">{{selectBrand.phone}}</label>
+                    <label class="label">{{$t('postcode')}}</label>
+                    <label class="text">{{selectBrand.postcode}}</label>
+                </div>
+                <div class="item">
+                    <label class="label">{{$t('address')}}</label>
+                    <label class="text long">{{selectBrand.address}}</label>
+                </div>
+            </div>
+        </el-dialog>
+
+        <el-dialog :title="$t('acceptInvitation')" :visible.sync="dialogCodeVisible" class="code-dialog">
+            <div>
+                <el-input class="input"
+                          v-model="invitationCode"
+                          :placeholder="$t('invitationCode')"
+                >
+                </el-input>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="acceptInvite">{{$t('confirm')}}</el-button>
+                <el-button @click="dialogCodeVisible = false" type="primary">{{$t('cancel')}}</el-button>
+             </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        data(){
+            return {
+                ownOrg: Core.Data.getOrg(),
+                tableHead: ['Name', 'Phone', 'Website', 'Country', 'Operation'],
+                currentPage: 1,
+                total: 0,
+                brandList: [],
+                selectBrand: {},
+                partnerBrand: {},
+                dialogDetailVisible: false,
+                dialogCodeVisible: false,
+                invitationCode: '',
+
+                loading: false,
+            }
+        },
+
+        i18n: {
+            messages: {
+                en: EN.Assembler.AssemblerPartnerList,
+                zh: ZH.Assembler.AssemblerPartnerList,
+                de: DE.Assembler.AssemblerPartnerList,
+                nl: NL.Assembler.AssemblerPartnerList,
+            }
+        },
+
+        mounted: function () {
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+            this.partnerBrand = Core.Data.getBrandPartner(this.ownOrg.id);
+            this.getBrandList();
+        },
+
+        methods: {
+            initData() {
+                this.tableHead  = [
+                    this.$t('tableHead.name'),
+                    this.$t('tableHead.phone'),
+                    this.$t('tableHead.website'),
+                    this.$t('tableHead.country'),
+                    this.$t('tableHead.operation'),
+                ];
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getBrandList();
+            },
+
+            //获取展示的BrandList的内容
+            getBrandList(){
+                this.loading = true;
+
+                Core.Api.Org.getPartnerBranList(this.currentPage).then(res => {
+                    this.total = res.count;
+                    this.brandList = res.org_list;
+                    //console.log(res);
+                    this.loading = false;
+
+                });
+            },
+
+            //选中公司作为合作品牌
+            setBrandPartner(brandOrg){
+                this.selectBrand = brandOrg;
+                Core.Data.setBrandPartner(this.ownOrg.id, this.selectBrand);
+                this.partnerBrand = Core.Data.getBrandPartner(this.ownOrg.id);
+                this.$root.eventHub.$emit(Core.Const.EVENT_HUB.REFRESH_PARTNER_BRAND_ICON, this.selectBrand);
+            },
+
+            showBrandDetail(obj){
+                this.selectBrand = obj;
+                this.dialogDetailVisible = true;
+            },
+
+            acceptInvite(){
+                if (!this.invitationCode) {
+                    this.$message({
+                        message: this.$t('codeEmptyTip'),
+                        type: 'warning'
+                    });
+                    return;
+                }
+                Core.Api.Org.acceptInvite(this.invitationCode).then(res => {
+                    this.$message({
+                        message: this.$t('acceptSuccess'),
+                        type: 'success'
+                    });
+                    this.getBrandList();
+                    this.dialogCodeVisible = false;
+                });
+            }
+        },
+    }
+
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .assembler-brand-list {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        .header {
+            .btn-accept {
+                background-color: #98B42C;
+            }
+        }
+        .table-wrap {
+            flex: 1;
+            .table-content {
+                .img {
+                    height: 18px;
+                    width: 18px;
+                    vertical-align: middle;
+                    background: none;
+                }
+                .span {
+                    color: #E26829;
+                    margin-left: 4px;
+                    display: inline-block;
+                    vertical-align: middle;
+
+                }
+            }
+        }
+        .detail-dialog {
+            .dialog-header {
+                margin: 0 20px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                .title {
+                    font-size: 14px;
+                    color: white;
+                }
+            }
+            .dialog-content {
+                margin: 0 20px;
+                .item {
+                    padding: 10px 0;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                    .label {
+                        margin-left: 10px;
+                        display: inline-block;
+                        width: 70px;
+                        vertical-align: top;
+                    }
+                    .text {
+                        display: inline-block;
+                        width: 130px;
+                        margin-left: 10px;
+                        color: white;
+                    }
+                    .long {
+                        width: 300px;
+                    }
+                }
+                .img {
+                    display: flex;
+                    .label {
+                        vertical-align: top;
+                    }
+                    .img-box {
+                        width: 102px;
+                        height: 102px;
+                        border: 1px solid #fff;
+                        margin-left: 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        img {
+                            max-width: 100px;
+                            max-height: 100px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?7d809ac6

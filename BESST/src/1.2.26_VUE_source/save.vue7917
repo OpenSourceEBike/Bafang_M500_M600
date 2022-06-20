@@ -1,0 +1,525 @@
+<template>
+    <div class="product-save-container">
+
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                </div>
+            </div>
+            <label class="title">{{title}}</label>
+        </div>
+
+        <div class="content-holder">
+            <div class="content-box">
+                <div class="content-item logo">
+                    <label class="title">{{ $t('logo') }}</label>
+                    <div class="title-desc">
+                        <el-upload
+                            class="btn btn-primary"
+                            :action=uploadUrl
+                            :show-file-list="false"
+                            :on-success="imageUploaded"
+                            :data="data">
+                            <img v-if="!photographSrc" class="upload-icon"
+                                 src="../../../assets/images/icon/icon-upload@2x.png"/>
+                            <img v-else class="upload-icon"
+                                 :src="photographSrc | getImgUrl"/>
+                        </el-upload>
+                        <span class="logo-tip">
+                                    <label>{{ $t('tip.title') }}:</label> <br/>
+                                    <label>{{ $t('tip.content01') }}</label> <br/>
+                                    <label>{{ $t('tip.content02') }}</label>
+                                </span>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('name') }}</label>
+                    <div class="desc">
+                        <el-input v-model="name"></el-input>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('set.mechanical') }}</label>
+                    <div class="desc">
+                        <el-input v-model="hardParam"></el-input>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('set.hardVer') }}</label>
+                    <div class="desc">
+                        <el-input v-model="hardVersion"></el-input>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('set.firmVer') }}</label>
+                    <div class="desc">
+                        <el-input v-model="firmVersion"></el-input>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('set.paramVer') }}</label>
+                    <div class="desc">
+                        <el-input v-model="paramVersion"></el-input>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('partNo') }}</label>
+                    <div class="desc">
+                        <el-input v-model="partNo"></el-input>
+                    </div>
+                </div>
+                <div class="content-item description">
+                    <label class="title">{{ $t('desc') }}</label>
+                    <div class="desc">
+                        <el-input
+                            resize="none"
+                            type="textarea"
+                            :rows="5"
+                            placeholder=""
+                            v-model="desc">
+                        </el-input>
+                    </div>
+                </div>
+
+                <!--商品属性列表-->
+                <div class="upper-attr" v-for="(item, index) in attrList">
+                    <item-attr-input-group
+                        :item="item"
+                        @input-value-return="itemAttrInputValueReturn"
+                        @file-upload-return="itemAttrFileUploadReturn"
+                        @file-upload-remove="itemAttrFileUploadRemove"
+                    >
+                    </item-attr-input-group>
+                </div>
+
+                <el-button class="save-btn" @click="saveItem" :disabled="copyDisabled">{{ $t('save') }}</el-button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import VueCoreImageUpload from 'vue-core-image-upload';
+    import ItemAttrInputGroup from '../../../components/item-attr-input-group.vue';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        components: {
+            VueCoreImageUpload,
+            ItemAttrInputGroup
+        },
+        data() {
+            return {
+                categoryName: '',
+                operationType: '',
+                // logo单图片上传
+                uploadUrl: Core.Const.NET.IMG_UPLOAD_END_POINT,
+                photographSrc: "",
+                Core: Core,
+                name: '',
+                partNo: '',
+                desc: '',
+                categoryId: '',
+                inputConfigList: [],
+                logoName: '',
+                attrList: [],
+                fileList: [],
+                valueList: [],
+                isSaving: false,
+                textList: [],
+                selectList: [],
+                itemId: 0,
+                parentId: 0,
+                title: 'Add',
+                brandId: 0,
+                data: {
+                    token: Core.Data.getToken()
+                },
+
+                setMap: {
+                    3: 3,
+                    4: 1,
+                    5: 4,
+                    7: 2
+                },
+                hardParam: '',
+                hardVersion: '',
+                firmVersion: '',
+                paramVersion: '',
+                copyDisabled: false,
+            };
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Product.Save,
+                zh: ZH.Component.Product.Save,
+                de: DE.Component.Product.Save,
+                nl: NL.Component.Product.Save
+            }
+        },
+        mounted: function () {
+            // 国际化
+            this.itemId = (this.$route.query && this.$route.query.itemId) ? this.$route.query.itemId : 0;
+            this.categoryId = this.$route.query.categoryId;
+            this.categoryName = this.$route.query.name;
+//            console.log( this.categoryName ,"categoryName");
+            this.operationType = this.$route.query.type;
+
+            this.initData();
+        },
+        methods: {
+            //单图片
+            imageUploaded(res) {
+//                console.log(res);
+
+                // this.photographSrc = URL.createObjectURL(res.raw);
+                this.photographSrc = res.data.file.name;
+            },
+
+            // 获取属性列表
+            initData() {
+                this.title = this.$t('add');
+                if (this.operationType === "copy") {
+                    this.title = this.$t('copy');
+                } else if (this.operationType === "edit") {
+                    this.title = this.$t('edit');
+                }
+
+                Core.Api.Category.getUpperAttrDefList(this.categoryId).then(res => {
+                    let attrList = res.attr_list;
+//                    console.log( attrList );
+
+                    if(this.categoryName){
+                        let emptyList;
+                        if( this.categoryName.substr(0,2) == 'DP' && this.categoryName.indexOf(".CAN") > -1 ){
+                            emptyList = attrList.filter((item)=>{
+                                return item.key !== "wheel_size" && item.key !== "speed_limit" ;
+                            });
+                            attrList = emptyList;
+
+                        }
+                        if( this.categoryName.substr(0,2) == 'CR' && this.categoryName.indexOf(".FC") > -1){
+                            emptyList = attrList.filter((item)=>{
+                                return item.key !== "pas_signals" ;
+                            });
+                            attrList = emptyList;
+
+                        }
+                        if( this.categoryName.substr(0,2) == 'CR' && this.categoryName.indexOf(".SN") > -1){
+                            emptyList = attrList.filter((item)=>{
+                                return item.key !== "speed_limit" && item.key !== "circuference" ;
+                            });
+                            attrList = emptyList;
+
+                        }
+
+                    }
+                    attrList.forEach(function (item, index) {
+                        attrList[index].options = {
+                            url: Core.Const.NET.FILE_UPLOAD_END_POINT,
+                            params: {
+                                'attr_def_id': item.id,
+                                'token': Core.Data.getToken()
+                            }
+                        };
+                        attrList[index]['v'] = '';
+                        attrList[index]['extra'] = '';
+                    });
+//                    console.log( attrList );
+
+                    this.attrList = attrList;
+
+                    if (this.itemId) {
+//                        this.title = this.$t('edit');
+                        this.getItemDetail();
+                    }
+                });
+            },
+
+            //获取传入接口的JSON
+            getAttrListJson() {
+                let $this = this;
+                this.attrList.forEach(function (attr, index) {
+                    let attrValue = [];
+                    let attrKey = attr['key'];
+                    // 文本信息
+                    if ($this.textList[attrKey]) {
+                    	if (attrKey === 'price') {
+                    		let price = $this.textList[attrKey]['value'];
+                    		price = price ? parseInt(parseFloat(price) * 100) : 0;
+                            $this.textList[attrKey]['value'] = price;
+                        }
+                        $this.valueList.push({'attr_def_id': attr.id, 'value': $this.textList[attrKey]['value']});
+                        return;
+                    }
+                    // 文件信息
+                    $this.fileList.forEach(function (item) {
+                        if (attr.id === item.attr_id) {
+                            attrValue.push(item.file_id);
+                        }
+                    });
+                    $this.valueList.push({'attr_def_id': attr.id, 'value': attrValue.join()});
+                });
+//                console.log('111', JSON.stringify($this.valueList));
+                return JSON.stringify($this.valueList);
+            },
+
+            // edit 进来，获取相应数据
+            getItemDetail() {
+                Core.Api.Item.getItemDetail(this.itemId).then(res => {
+                    let attrValueList = res.item.attr_list;
+                    let item = res.item;
+                    this.photographSrc = item.img;
+                    this.brandId = item.brand_id;
+                    this.name = item.name;
+                    this.desc = item.desc;
+                    this.partNo = item.ext_part_no;
+                    this.hardParam = item.hard_param || "";
+                    this.hardVersion = item.hard_version || "";
+                    this.firmVersion = item.firmware_version || "";
+                    this.paramVersion = item.param_version || "";
+
+                    function getValueOfAttrId(attrId) {
+                        for (let i in attrValueList) {
+                            let attrValue = attrValueList[i];
+                            let mAttrId = attrValue['attr_def_id'];
+                            if (mAttrId === attrId) {
+                                return attrValue['value']
+                            }
+                        }
+
+                        return '';
+                    }
+
+                    if(this.name == '' ){
+                        this.name = this.categoryName;
+                    }
+
+                    let emptyList;
+                    if( this.name.substr(0,2) == 'DP' && this.name.indexOf(".C") > -1 ){
+
+                        emptyList = this.attrList.filter((item)=>{
+                            return item.key !== "wheel_size" && item.key !== "speed_limit" ;
+                        });
+                        this.attrList = emptyList;
+
+                    }
+                    if( this.name.substr(0,2) == 'CR' && this.name.indexOf(".FC") > -1){
+                        emptyList = this.attrList.filter((item)=>{
+                            return item.key !== "pas_signals" ;
+                        })
+                        this.attrList = emptyList;
+
+                    }
+                    if( this.name.substr(0,2) == 'CR' && this.name.indexOf(".SN") > -1){
+                        emptyList = this.attrList.filter((item)=>{
+                            return item.key !== "speed_limit" && item.key !== "circuference" ;
+                        });
+                        this.attrList = emptyList;
+
+                    }
+
+                    this.attrList.forEach((attr, i) => {
+                        let attrId = attr['id'];
+                        let value = getValueOfAttrId(attrId);
+                        attr.v = value;
+                        if (attr.key === 'price') {
+                            value = value ? value/100 : 0;
+                        }
+                        attr.value = value;
+                        attr.extra = {
+                            'inputType': attr['input_type'],
+                            'value': value
+                        };
+                        this.attrList[i] = attr;
+                    });
+
+                    // console.log(this.attrList);
+
+
+                });
+            },
+
+
+            saveItem() {
+                if (this.isSaving) {
+                    this.$message({
+                        message: 'Please wait save success',
+                        type: 'warning'
+                    });
+                    return;
+                }
+
+                let itemId = this.itemId;
+
+                if (this.operationType === "copy") {
+                    this.parentId = itemId;
+                    itemId = 0;
+                }
+
+                let attrJson = this.getAttrListJson();
+
+//                console.log(attrJson,1111111);
+//                return;
+
+                // 执行saveItem
+                if (this.operationType === "copy") {
+                    Core.Api.Item.copyItem(this.categoryId, this.parentId, this.brandId, this.name, this.partNo, this.photographSrc, this.desc, attrJson, this.hardParam, this.hardVersion, this.firmVersion, this.paramVersion)
+                        .then(res => {
+                            this.isSaving = false;
+                            this.$message({
+                                message: 'Save success',
+                                type: 'success'
+                            });
+                            this.$root.eventHub.$emit(Core.Const.EVENT_HUB.REFRESH_ITEM_LIST_BY_CATEGORY_ID, this.categoryId);
+                            this.$router.go(-2);
+                        }).catch(err => {
+                            this.isSaving = false;
+                        }
+                    );
+                } else {
+                    this.copyDisabled = true;
+                    Core.Api.Item.saveItem(itemId, this.categoryId, this.parentId, this.brandId, this.name,
+                        this.partNo, this.photographSrc, this.desc, attrJson, 1, '', this.hardParam, this.hardVersion, this.firmVersion, this.paramVersion)
+                        .then(res => {
+                            this.copyDisabled = false;
+                            this.isSaving = false;
+                            this.$message({
+                                message: 'Save success',
+                                type: 'success'
+                            });
+                            this.$root.eventHub.$emit(Core.Const.EVENT_HUB.REFRESH_ITEM_LIST_BY_CATEGORY_ID, this.categoryId);
+                            this.$router.back();
+                        }).catch(err => {
+                            this.isSaving = false;
+                            this.copyDisabled = false;
+                        }
+                    );
+                }
+                this.valueList = [];
+            },
+
+
+            itemAttrInputValueReturn(data) {
+//                console.log('return data ', data);
+                this.textList[data['key']] = data;
+
+//                console.log("text list", this.textList);
+            },
+            itemAttrFileUploadReturn(data) {
+//                console.log('return file data', data);
+
+                this.fileList.push(data);
+//                console.log("file list", this.fileList);
+            },
+            itemAttrFileUploadRemove(file) {
+                this.fileList.forEach((item, index) => {
+                    if (file.id === item.file_id) {
+                        this.fileList.splice(index, 1);
+                    }
+                });
+//                console.log("file list", this.fileList);
+            }
+
+        },
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss" scoped>
+    .product-save-container {
+        height: 100%;
+        padding-left: 272px;
+        .header {
+            .title {
+                margin-left: 25px;
+            }
+        }
+        .content-holder {
+            height: calc(100% - 60px);
+            background: #353945;
+            overflow: auto;
+            .content-box {
+                width: 800px;
+                height: 100%;
+                margin: 0 auto;
+                padding: 20px 0;
+                .content-item {
+                    height: 50px;
+                    line-height: 50px;
+                    font-size: 0;
+                    overflow: hidden;
+                    .title {
+                        position: relative;
+                        display: inline-block;
+                        padding: 0 20px;
+                        width: 165px;
+                        font-size: 12px;
+                        color: #fff;
+                        font-weight: 500;
+                    }
+                    .title-desc {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: calc(100% - 165px);
+
+                        .g-core-image-upload-btn {
+                            width: 50px;
+                            height: 50px;
+                        }
+                        .upload-icon {
+                            width: 142px;
+                            height: 142px;
+                        }
+                        /*.tip {*/
+                        /*font-size: 12px;*/
+                        /*color: #858890;*/
+                        /*margin-left: 26px;*/
+                        /*}*/
+                    }
+                    .desc {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: calc(100% - 165px);
+                        height: 50px;
+                        .el-input {
+                            width: 310px;
+                        }
+                    }
+                    &.description {
+                        height: 150px;
+                        padding: 15px 0;
+                        .title {
+                            position: relative;
+                            top: -15px;
+                        }
+                    }
+                }
+                .logo {
+                    height: 152px;
+                    line-height: 20px;
+                    .logo-tip {
+                        vertical-align: bottom;
+                    }
+                }
+                .btn {
+                    display: inline-block;
+                }
+                .save-btn {
+                    margin: 22px 40px;
+                    width: 116px;
+                }
+
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// save.vue?322515fa

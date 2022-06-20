@@ -1,0 +1,442 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "warehouse-area"
+  }, [_c('div', {
+    staticClass: "search-header"
+  }, [_c('el-form', {
+    staticClass: "list-form-inline",
+    attrs: {
+      "inline": true,
+      "model": _vm.formSearch
+    }
+  }, [_c('el-cascader', {
+    staticClass: "cascader",
+    attrs: {
+      "options": _vm.options,
+      "filterable": "",
+      "placeholder": "Select warehouse area",
+      "props": _vm.props,
+      "value": _vm.cascaderValue
+    },
+    on: {
+      "change": _vm.handleItemChange
+    }
+  }), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Area Code"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "Area Code"
+    },
+    model: {
+      value: (_vm.formSearch.area_code),
+      callback: function($$v) {
+        _vm.$set(_vm.formSearch, "area_code", $$v)
+      },
+      expression: "formSearch.area_code"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Area Name"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "Area Name"
+    },
+    model: {
+      value: (_vm.formSearch.area_name),
+      callback: function($$v) {
+        _vm.$set(_vm.formSearch, "area_name", $$v)
+      },
+      expression: "formSearch.area_name"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline-icon"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": "search"
+    },
+    on: {
+      "click": _vm.onSearch
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item clear",
+    attrs: {
+      "title": "clear"
+    },
+    on: {
+      "click": _vm.onClean
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item upload",
+    attrs: {
+      "title": "upload"
+    },
+    on: {
+      "click": _vm.onImport
+    }
+  })])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(true) ? _c('div', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('warehouse-area-add'),
+      expression: "'warehouse-area-add'"
+    }],
+    staticClass: "icon-item add-v2",
+    attrs: {
+      "title": "add"
+    },
+    on: {
+      "click": _vm.addArea
+    }
+  }) : _vm._e()])])], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [(_vm.tableList.length <= 0 && !_vm.loading) ? _c('div', {
+    staticClass: "no-data-content"
+  }, [_vm._v("noResult")]) : _c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.headData), function(item, index) {
+    return _c('td', {
+      key: index
+    }, [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), (!_vm.loading && _vm.tableList.length > 0) ? _c('tbody', _vm._l((_vm.tableList), function(item) {
+    return _c('tr', {
+      key: item.id,
+      staticClass: "areaList"
+    }, [_c('td', [_vm._v(_vm._s(item.warehouse_region_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.warehousePipe(item)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.area_code))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.area_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.type_code || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.type_name || '-'))]), _vm._v(" "), _c('td', [_c('a', {
+      directives: [{
+        name: "ilpermission",
+        rawName: "v-ilpermission",
+        value: ('warehouse-area-add'),
+        expression: "'warehouse-area-add'"
+      }],
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onEdit(item)
+        }
+      }
+    }, [_vm._v("edit")]), _vm._v(" "), _c('a', {
+      directives: [{
+        name: "ilpermission",
+        rawName: "v-ilpermission",
+        value: ('warehouse-area-delete'),
+        expression: "'warehouse-area-delete'"
+      }],
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onDetails(item)
+        }
+      }
+    }, [_vm._v("details")]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onDelete(item)
+        }
+      }
+    }, [_vm._v("delete")]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      attrs: {
+        "title": "set min value"
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onInventoryDetails(item)
+        }
+      }
+    }, [_vm._v("setting")])])])
+  })) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next, jumper",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v("total: " + _vm._s(_vm.total))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-area-list",
+    attrs: {
+      "title": _vm.dialogTitle,
+      "visible": _vm.dialogAddVisible
+    },
+    on: {
+      "update:title": function($event) {
+        _vm.dialogTitle = $event
+      },
+      "update:visible": function($event) {
+        _vm.dialogAddVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n                    Type Name\n                    "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    on: {
+      "change": function($event) {
+        _vm.changeType(_vm.areaData.type_code)
+      }
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.areaData.type_code),
+      callback: function($$v) {
+        _vm.$set(_vm.areaData, "type_code", $$v)
+      },
+      expression: "areaData.type_code"
+    }
+  }, _vm._l((_vm.warehouseTypeList), function(item) {
+    return _c('el-option', {
+      key: item.type_code,
+      attrs: {
+        "label": item.type_name,
+        "value": item.type_code
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n                    Type Code\n                    "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.areaData.type_code),
+      callback: function($$v) {
+        _vm.$set(_vm.areaData, "type_code", $$v)
+      },
+      expression: "areaData.type_code"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n                    Area Code\n                    "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.areaData.area_code),
+      callback: function($$v) {
+        _vm.$set(_vm.areaData, "area_code", $$v)
+      },
+      expression: "areaData.area_code"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n                    Area Name\n                    "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.areaData.area_name),
+      callback: function($$v) {
+        _vm.$set(_vm.areaData, "area_name", $$v)
+      },
+      expression: "areaData.area_name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.dialogConfirm
+    }
+  }, [_vm._v("confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.dialogCancel
+    }
+  }, [_vm._v("cancel")])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.dialogTitle,
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:title": function($event) {
+        _vm.dialogTitle = $event
+      },
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v("Are you sure to delete it ?")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteInvitation
+    }
+  }, [_vm._v("yes")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v("no")])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-import",
+    attrs: {
+      "title": "Import File",
+      "visible": _vm.dialogImportVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogImportVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n                Area\n                "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-select', {
+    attrs: {
+      "placeholder": "Area"
+    },
+    model: {
+      value: (_vm.areaId),
+      callback: function($$v) {
+        _vm.areaId = $$v
+      },
+      expression: "areaId"
+    }
+  }, _vm._l((_vm.areaList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.area_name,
+        "value": item.id
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "file"
+  }, [_c('label', {
+    staticClass: "label",
+    attrs: {
+      "for": "fileToImport"
+    }
+  }, [_vm._v("fileToImport")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.fileName))]), _vm._v(" "), _c('input', {
+    ref: "fileUpdate",
+    staticClass: "file-input",
+    attrs: {
+      "id": "uploadFile",
+      "type": "file"
+    },
+    on: {
+      "change": function($event) {
+        _vm.onChangeUpdateFile()
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.importInvitation
+    }
+  }, [_vm._v("yes")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogImportVisible = false
+      }
+    }
+  }, [_vm._v("no")])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-11804741","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/warehouse/warehouse-area.vue
+// module id = 2367
+// module chunks = 36

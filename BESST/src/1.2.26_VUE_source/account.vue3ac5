@@ -1,0 +1,435 @@
+<template>
+    <div class="company-account-list">
+        <div class="header">
+            <div>
+                <el-form  :inline="true" class="demo-form-inline">
+                    <el-form-item :label="$t('tableHead.account')">
+                        <el-input v-model="searchAccount"></el-input>
+                    </el-form-item>
+                    <el-form-item class="to-search">
+                        <el-button @click="searchAccountList" icon="search"></el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item add" @click="checkAdd()"></div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table cellspacing="0" cellpadding="0" class="table-content">
+                    <thead>
+                    <td class="td" v-for="item in tableHead">{{item}}</td>
+                    </thead>
+                    <tbody>
+                    <tr v-for="item in accountList">
+                        <td>{{item.email?item.email:item.user.email}}
+                            <span v-if="item.user.email && (item.user.email.toLowerCase() == userAccountCurrent)">[{{ $t('self') }}]</span>
+                            <span v-if="item.user.email && (item.user.email.toLowerCase() == userAccountCurrent) && isManager">[{{ $t('manager') }}]</span>
+                        </td>
+                        <td>{{item.user.create_time | timeFormat('Y-m-d')}}</td>
+                        <td >
+                            <!--<div v-if="(item.role || item.user.role)>=primaryRole">-->
+                            <div v-if="item.user.role === 1 || (item.user.email && (item.user.email.toLowerCase() == userAccountCurrent) )">
+                             -
+                            </div>
+                            <div v-else class="icons">
+                                <div class="icon-item role" v-on:click.stop="showPermissionDialog(item)" v-if="isManager && (item.user.email && item.user.email.toLowerCase() != userAccountCurrent)"></div>
+                                <div class="icon-item resetPassword" v-on:click.stop="showResetDialog(item)" v-if="authListInDb[Core.Const.AUTH_LIST.accountDelete]"></div>
+                                <div class="icon-item delete" v-on:click.stop="showDeleteDialog(item)" v-if="authListInDb[Core.Const.AUTH_LIST.accountDelete]"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-show="accountList==false">
+                    {{ $t('noResult') }}
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+
+        <!-- 添加账号弹框 -->
+        <el-dialog :title="$t('addAccount')" :visible.sync="addDialogVisible">
+            <div class="form-item">
+                <label class="label">{{ $t('email') }}</label>
+                <el-input v-model="email" class="input"></el-input>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="addAccount">{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="addDialogVisible = false">{{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!-- 删除账号弹框 -->
+        <el-dialog :title="$t('deleteAccount')" :visible.sync="deleteDialogVisible"  size="tiny">
+            <p> {{ $t('deleteTip') }}</p>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="deleteAccount">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="deleteDialogVisible = false">{{ $t('no') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--重置密码弹框-->
+        <el-dialog :title="$t('resetPassword')" :visible.sync="resetDialogVisible">
+            <p>  {{ $t('resetPasswordTip') }} </p>
+            <P v-if="selectItem" >{{selectItem.user.email}}</P>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="resetPassword">{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="resetDialogVisible = false">{{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--权限弹框-->
+        <el-dialog :title="$t('permission')" :visible.sync="authDialogVisible" custom-class="auth-dialog">
+            <el-form ref="form" :model="form" label-width="100px">
+                <div v-for="item in authList">
+                    <p class="auth-title">{{ item.label }}</p>
+                    <!--<p>{{ item.auth }}</p>-->
+                    <!--<div  v-for="i in item.auth">-->
+                        <!--{{ i.name }}-->
+                    <!--</div>-->
+                    <el-checkbox-group v-model="form.checkNameList">
+                        <el-checkbox v-for="i in item.auth" :key="i.name" :label="i.name"></el-checkbox>
+                    </el-checkbox-group>
+                </div>
+                <!--<el-form-item :label="$t('permission')" class="auth-form-item">-->
+                    <!--<div v-for="item in authList">-->
+                        <!--<p>{{ item.label }}</p>-->
+                        <!--<el-checkbox-group v-model="form.checkNameList">-->
+                            <!--<el-checkbox v-for="item in item.auth" :key="item.name" :label="item.name"></el-checkbox>-->
+                        <!--</el-checkbox-group>-->
+                    <!--</div>-->
+                <!--</el-form-item>-->
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="updatePermission">{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="authDialogVisible = false">{{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        data(){
+            return {
+                isManager: false,
+                org: {},
+                Core: Core,
+                user: Core.Data.getUser(),
+                tableHead: ['Account', 'Create Time', 'Operation'],
+                currentPage: 1,
+                total: 0,
+                accountList: [],
+                email: '',
+                selectItem: '',
+                value: 0,
+                addDialogVisible: false,
+                resetDialogVisible: false,
+                deleteDialogVisible: false,
+                authDialogVisible: false,
+                form: {
+                    checkList: [],
+                    checkNameList: []
+                },
+                authList: [],
+                authListInDb: [],
+                searchAccount: '',
+
+                isTemAccount: false,
+                userAccountCurrent: "",
+                currentAccount: Core.Data.get("userName") || ""
+            }
+        },
+        i18n: {
+        	messages:{
+                en: EN.Components.Account,
+                zh: ZH.Components.Account,
+                de: DE.Components.Account,
+                nl: NL.Components.Account
+            }
+        },
+        mounted: function () {
+        	this.initData();
+
+            // 获取权限
+            this.authListInDb = this.$store.state.userAuth;
+
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+            this.org = Core.Data.getOrg();
+            this.isManager = Core.Data.get('isManager');
+            this.getAccountList();
+
+            // this.isTemAccount = Core.Data.getSpecialAccount('tem');
+            this.isTemAccount = Core.Data.get('accountType').length>0 && Core.Data.get('accountType').indexOf(5)>-1;
+            this.userAccountCurrent = this.$store.state.userAccount;
+
+        },
+        methods: {
+            searchAccountList(){
+                Core.Api.Org.searchMemberList(this.org.id, this.currentPage, this.value, this.searchAccount.trim()).then(res => {
+                    this.accountList = res.list;
+                    this.total = res.count;
+                });
+            },
+            initData() {
+                this.tableHead = [
+                    this.$t('tableHead.account'),
+                    this.$t('tableHead.createTime'),
+                    this.$t('tableHead.operation')
+                ];
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getAccountList();
+            },
+            getAccountList() {
+                Core.Api.Org.searchMemberList(this.org.id, this.currentPage, this.value, this.searchAccount.trim()).then(res => {
+                    this.accountList = res.list;
+                    this.total = res.count;
+                });
+            },
+
+
+            checkAdd(){
+                if(this.org.id !== 25 ){
+
+                    switch(this.org.type){
+                        case Core.Const.ORG_TYPE.DEALER: {
+                            if(this.total>10){
+                                this.$message.info(this.$t("invitationLength1"));
+                            }else{
+                                this.addDialogVisible = true;
+                            }
+                        }
+                            break;
+                        case Core.Const.ORG_TYPE.OEM: {
+                            if(this.total>20){
+                                this.$message.info(this.$t("invitationLength2"));
+                            }else{
+                                this.addDialogVisible = true;
+                            }
+                        }
+                            break;
+                        case Core.Const.ORG_TYPE.BRAND: {
+                            if(this.total>20){
+                                this.$message.info(this.$t("invitationLength3"));
+                            }else{
+                                this.addDialogVisible = true;
+                            }
+                        }
+                            break;
+                        case Core.Const.ORG_TYPE.COMPONENT: {
+                            if(this.total>20){
+                                this.$message.info(this.$t("invitationLength3"));
+                            }else{
+                                this.addDialogVisible = true;
+                            }
+                        }
+                            break;
+                    }
+                }else{
+                    this.addDialogVisible = true;
+                }
+            },
+            addAccount(){
+                if (!this.email) {
+                    this.$message({
+                        message: this.$t('emptyEmailTip'),
+                        type: 'warning'
+                    });
+                    return;
+                }
+                if(this.isTemAccount) {
+                    this.$message({
+                        message: this.$t('cNam.tryAccountsTip'),
+                        type: 'warning'
+                    });
+                    return;
+                }
+                Core.Api.Org.createMember(this.email).then(res => {
+                    this.addDialogVisible = false;
+                    this.$message({
+                        message: this.$t('addSuccess'),
+                        type: 'success'
+                    });
+                    this.getAccountList();
+                });
+            },
+
+            showDeleteDialog(item){
+                this.deleteDialogVisible = true;
+                this.selectItem = item;
+            },
+
+            deleteAccount(){
+                Core.Api.Org.orgMemberDelete(this.selectItem.user.id).then(res => {
+                    this.$message({
+                        message: this.$t('deleteSuccess'),
+                        type: 'success'
+                    });
+                    this.getAccountList();
+                });
+                this.deleteDialogVisible = false;
+            },
+
+            showResetDialog(item){
+                this.resetDialogVisible = true;
+                this.selectItem = item;
+            },
+
+            showPermissionDialog(item) {
+                this.authDialogVisible = true;
+                this.selectItem = item;
+                this.form.checkList = [];
+                this.form.checkNameList = [];
+                // 获取用户权限
+                Core.Api.Auth.authList().then(res => {
+                    let authList = res.auth_list;
+                    Core.Api.Auth.authAuth(item.user_id).then(res => {
+                        let list = res.auth;
+                        for (let i in authList) {
+                            for (let j in authList[i].auth) {
+                                authList[i]['auth'][j]['auth'] = list[authList[i]['auth'][j]['authName']]
+                            }
+                        }
+
+                        this.authList = authList;
+                        console.log(this.authList);
+                        for (let i in authList) {
+                            for (let j in authList[i].auth) {
+                                this.form.checkList.push(authList[i]['auth'][j]);
+                                if (authList[i]['auth'][j]['auth']) {
+                                    this.form.checkNameList.push(authList[i]['auth'][j]['name']);
+                                }
+                            }
+                        }
+//                        console.log(this.form.checkList);
+//                        console.log(this.form.checkNameList);
+                    });
+                });
+            },
+
+            resetPassword(){
+                //  1 重置成12345678
+                Core.Api.Org.orgMemberReset(this.selectItem.user.id, 1).then(res => {
+                    this.$message({
+                        message: this.$t('resetSuccess'),
+                        type: 'success'
+                    });
+                    this.getAccountList();
+                });
+                this.resetDialogVisible = false;
+            },
+
+            updatePermission() {
+                let authStrList = [];
+                let vm = this;
+                vm.form.checkList.forEach(function (e) {
+                    if (vm.form.checkNameList.indexOf(e.name) > -1) {
+                        authStrList.push(e.value);
+                    }
+                });
+
+                // 保存权限
+                let userId = vm.selectItem.user_id;
+                let authList = authStrList.join(",");
+
+                Core.Api.Auth.saveAuth(userId, authList).then(res => {
+                    this.$message({
+                        message: this.$t('saveAuthSuccess'),
+                        type: 'success'
+                    });
+                    vm.authDialogVisible = false;
+                });
+            },
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .company-account-list {
+        height: 100%;
+        .header {
+            height: auto;
+            .el-form-item {
+                margin-bottom: 0;
+            }
+        }
+        .el-dialog__body {
+            padding-bottom: 10px;
+            .form-item {
+                .label {
+                    display: inline-block;
+                    width: 100px;
+                }
+                .input {
+                    width: 310px;
+                    margin: 10px;
+                }
+            }
+        }
+        .auth-form-item .el-form-item__content .el-checkbox-group .el-checkbox {
+            margin: 0;
+            width: 50%;
+            padding-left: 10px;
+        }
+
+        .icons{
+                // align-self: center;
+                transform: translateX(-11px);
+                justify-content: flex-start;
+                width:30px;
+                height:30px;
+                // padding-bottom:36px;
+        }
+        .el-form {
+            .auth-title {
+                color: #fff;
+                padding: 10px 0;
+                font-weight: bold;
+            }
+
+            .el-checkbox-group {
+                line-height: 30px;
+                .el-checkbox {
+                    width: 50%;
+                    padding-left: 20px;
+                }
+                .el-checkbox + .el-checkbox {
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+</style>
+
+
+
+// WEBPACK FOOTER //
+// account.vue?37e8b105

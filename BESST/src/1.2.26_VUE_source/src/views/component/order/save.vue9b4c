@@ -1,0 +1,403 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "component-order-save"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.orderId ? _vm.$t('saveOrder') : _vm.$t('createOrder')))])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('orderInfo.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('orderInfo.poNo')) + " "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.poNo),
+      callback: function($$v) {
+        _vm.poNo = $$v
+      },
+      expression: "poNo"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('orderInfo.customerInfo')) + " "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "placeholder": _vm.$t('orderInfo.customerName')
+    },
+    model: {
+      value: (_vm.customerName),
+      callback: function($$v) {
+        _vm.customerName = $$v
+      },
+      expression: "customerName"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "placeholder": _vm.$t('orderInfo.customerPo')
+    },
+    model: {
+      value: (_vm.customerPo),
+      callback: function($$v) {
+        _vm.customerPo = $$v
+      },
+      expression: "customerPo"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('orderInfo.note')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-note",
+    model: {
+      value: (_vm.note),
+      callback: function($$v) {
+        _vm.note = $$v
+      },
+      expression: "note"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("System:")]), _vm._v(" "), _c('el-select', {
+    attrs: {
+      "placeholder": "请选择"
+    },
+    model: {
+      value: (_vm.systemName),
+      callback: function($$v) {
+        _vm.systemName = $$v
+      },
+      expression: "systemName"
+    }
+  }, _vm._l((_vm.systemNameList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.name,
+        "value": item.value
+      }
+    })
+  })), _vm._v(" "), _c('el-button', {
+    staticClass: "att-btn",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.getSystemData
+    }
+  }, [_vm._v("获取数据")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Test Plan:")]), _vm._v(" "), _c('el-select', {
+    attrs: {
+      "placeholder": "请选择"
+    },
+    model: {
+      value: (_vm.testPlan),
+      callback: function($$v) {
+        _vm.testPlan = $$v
+      },
+      expression: "testPlan"
+    }
+  }, _vm._l((_vm.testPlanList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.name,
+        "value": item.value
+      }
+    })
+  })), _vm._v(" "), _c('el-button', {
+    staticClass: "att-btn",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.getTestPlanData
+    }
+  }, [_vm._v("获取数据")])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "parts-list"
+  }, [_c('label', {
+    staticClass: "labelList"
+  }, [_vm._v(_vm._s(_vm.$t('itemList')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "att-btn",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogCreateVisible = true
+      }
+    }
+  }, [_vm._v("+")]), _vm._v(" "), _c('label', {
+    staticClass: "labelAdd"
+  }, [_vm._v(_vm._s(_vm.$t('addItem')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('td', [_c('el-checkbox', {
+    model: {
+      value: (_vm.allSelectedForDelete),
+      callback: function($$v) {
+        _vm.allSelectedForDelete = $$v
+      },
+      expression: "allSelectedForDelete"
+    }
+  })], 1), _vm._v(" "), _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })], 2), _vm._v(" "), _c('tbody', _vm._l((_vm.orderItems), function(item, index) {
+    return _c('tr', [_c('td', [_c('el-checkbox', {
+      staticClass: "table-checkbox",
+      model: {
+        value: (item.selected),
+        callback: function($$v) {
+          _vm.$set(item, "selected", $$v)
+        },
+        expression: "item.selected"
+      }
+    })], 1), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.name || item.item_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.item_part_no))]), _vm._v(" "), _c('td', [_c('el-input', {
+      model: {
+        value: (item.part_no),
+        callback: function($$v) {
+          _vm.$set(item, "part_no", $$v)
+        },
+        expression: "item.part_no"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('el-input-number', {
+      staticClass: "input-number",
+      attrs: {
+        "min": 1
+      },
+      model: {
+        value: (item.amount),
+        callback: function($$v) {
+          _vm.$set(item, "amount", $$v)
+        },
+        expression: "item.amount"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.deleteItem(index)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('delete')))])])])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "delete"
+    },
+    on: {
+      "click": _vm.deleteOrderItem
+    }
+  }, [_vm._v(_vm._s(_vm.$t('delete')))])], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": _vm.$t('addItem'),
+      "visible": _vm.dialogCreateVisible,
+      "size": "large",
+      "top": "10%"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogCreateVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('el-input', {
+    staticClass: "search-content",
+    attrs: {
+      "placeholder": _vm.$t('category'),
+      "disabled": true
+    },
+    nativeOn: {
+      "click": function($event) {
+        return _vm.selectCategory($event)
+      }
+    },
+    model: {
+      value: (_vm.selectCategoryItem.name),
+      callback: function($$v) {
+        _vm.$set(_vm.selectCategoryItem, "name", $$v)
+      },
+      expression: "selectCategoryItem.name"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "search-content",
+    attrs: {
+      "placeholder": _vm.$t('modelNamePN')
+    },
+    model: {
+      value: (_vm.queryItemCondition),
+      callback: function($$v) {
+        _vm.queryItemCondition = $$v
+      },
+      expression: "queryItemCondition"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": _vm.$t('search')
+    },
+    on: {
+      "click": _vm.queryOrderItem
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item clear",
+    attrs: {
+      "title": _vm.$t('clear')
+    },
+    on: {
+      "click": _vm.clearCondition
+    }
+  })])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('td', [_c('el-checkbox', {
+    model: {
+      value: (_vm.allSelectedForAdd),
+      callback: function($$v) {
+        _vm.allSelectedForAdd = $$v
+      },
+      expression: "allSelectedForAdd"
+    }
+  })], 1), _vm._v(" "), _vm._l((_vm.itemHeadData), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })], 2), _vm._v(" "), _c('tbody', _vm._l((_vm.selectItems), function(item, index) {
+    return _c('tr', [_c('td', [_c('el-checkbox', {
+      staticClass: "table-checkbox",
+      model: {
+        value: (item.selected),
+        callback: function($$v) {
+          _vm.$set(item, "selected", $$v)
+        },
+        expression: "item.selected"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('img', {
+      attrs: {
+        "src": _vm._f("getImgUrl")(item.img)
+      }
+    })]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.ext_part_no))])])
+  }))]), _vm._v(" "), _c('el-pagination', {
+    staticClass: "pagination",
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentPageChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.addItems
+    }
+  }, [_vm._v(_vm._s(_vm.$t('addItems')))])], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.createOrder
+    }
+  }, [_vm._v(_vm._s(_vm.$t('saveOrder')))])], 1)], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": _vm.$t('selectCategory'),
+      "visible": _vm.dialogSelectCategoryVisible,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogSelectCategoryVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "content",
+    staticStyle: {
+      "max-height": "500px",
+      "overflow": "auto"
+    }
+  }, [_c('div', {
+    staticClass: "category-tree"
+  }, [_c('el-tree', {
+    attrs: {
+      "data": _vm.categoryList,
+      "props": _vm.defaultProps
+    },
+    on: {
+      "node-click": _vm.handleNodeClick
+    }
+  })], 1)])])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-2e8e0a5a","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/order/save.vue
+// module id = 1799
+// module chunks = 73

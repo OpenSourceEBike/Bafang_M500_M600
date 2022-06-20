@@ -1,0 +1,117 @@
+git remote -v<template>
+    <div class="brand-index">
+        <div class="operation">
+            <div class="row-item">
+                <div class="item" @click="goNextPage('vehicle')">
+                    <label class="label">{{ $t('dailyVehicleOrderStatistics') }}</label>
+                    <img src="../../assets/images/icon/icon-line@2x.png" class="img"/>
+                </div>
+                <div class="item" @click="goNextPage('vehicleAfter')">
+                    <label class="label">{{ $t('dailyVehicleAfterSalesStatistics') }}</label>
+                    <img src="../../assets/images/icon/icon-pie@2x.png" class="img"/>
+                </div>
+            </div>
+            <div class="row-item">
+                <div class="item" @click="goNextPage('dealer')">
+                    <label class="label">{{ $t('dailyDailyVehicleStatistics') }}</label>
+                    <img src="../../assets/images/icon/icon-line@2x.png" class="img"/>
+                </div>
+                <div class="item" @click="goNextPage('assembler')">
+                    <label class="label">{{ $t('dailyAssemblerVehicleStatistics') }}</label>
+                    <img src="../../assets/images/icon/icon-columnar2x.png" class="img"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh'
+    import EN from 'src/assets/lang/en'
+    import DE from 'src/assets/lang/de'
+    import NL from 'src/assets/lang/nl'
+
+    export default{
+        data(){
+            return {
+                Core: Core
+            }
+        },
+
+        i18n: {
+            messages: {
+                en: EN.Brand.Index,
+                zh: ZH.Brand.Index,
+                de: DE.Brand.Index,
+                nl: NL.Brand.Index
+            }
+        },
+
+        mounted: function () {
+
+        },
+
+        methods: {
+            goNextPage(type) {
+                switch (type) {
+                    case 'vehicle':
+                        this.$router.push({name: 'statisticsModelStatistics'});
+                        break;
+                    case 'vehicleAfter':
+                        this.$router.push({name: 'statisticsAfterSaleStatistics'});
+                        break;
+                    case 'dealer':
+                        this.$router.push({name: 'statisticsDealerSale'});
+                        break;
+                    case 'assembler':
+                        this.$router.push({name: 'statisticsAssemblerStatistics'});
+                        break;
+                }
+            }
+        },
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .brand-index {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 530px;
+        min-height: 360px;
+        .operation {
+            width: 530px;
+            .row-item {
+                display: flex;
+            }
+            .item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 230px;
+                height: 150px;
+                margin: 15px;
+                background-color: #98B42C;
+                border-radius: 10px;
+                .label {
+                    margin-bottom: 20px;
+                    text-align:center;
+                }
+                .img {
+                    height: 40px;
+                    width: 40px;
+                    opacity: 0.75;
+                }
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// index.vue?066e8dca

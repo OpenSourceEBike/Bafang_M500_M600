@@ -1,0 +1,227 @@
+<template>
+    <div class="component-list">
+        <div class="header">
+            <!--<el-form :inline="true" class="demo-form-inline">-->
+                <!--<el-form-item :label="$t('tableHead.name')">-->
+                    <!--<el-input v-model="search.name"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item :label="$t('tableHead.tel')">-->
+                    <!--<el-input v-model="search.phone"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<div class="btn-group-inline">-->
+                    <!--<div class="icons">-->
+                        <!--<div class="icon-item search" @click="getPartnerList"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</el-form>-->
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <td v-for="item in tableHead">{{item}}</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="large" v-for="item in componentList">
+                        <td>
+                            <img :src="item.avatar | getImgUrl"/>
+                        </td>
+                        <td class="td name">
+                            {{ item.name }}
+                        </td>
+                        <td>
+                            {{ item.email }}
+                        </td>
+                        <td>
+                            {{ item.phone }}
+                        </td>
+                        <td>
+                            {{ item.website }}
+                        </td>
+                        <td class="td address">
+                            {{ item.address }}, {{ item.country }}
+                        </td>
+                        <td>
+                            {{ item.postcode }}
+                        </td>
+                        <!--<td v-if="authList[Core.Const.AUTH_LIST.dealerDelete]">-->
+                            <!--<a class="btn-underline" @click.stop="showDeleteDialog(item)">{{ $t('delete') }}</a>-->
+                        <!--</td>-->
+                        <!--<td v-else>-->
+                            <!-- - -->
+                        <!--</td>-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="no-data-content" v-show="componentList.length <= 0">
+                {{ $t('noResult') }}
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total="total">
+                </el-pagination>
+                <p class="total"> {{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+
+        <!--删除弹框-->
+        <el-dialog
+            :title="$t('deleteDialog.title')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialog.tip') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteDealer">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('no') }}</el-button>
+            </span>
+        </el-dialog>
+    </div>
+
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        data(){
+            return {
+                Core: Core,
+                tableHead: ['Logo', 'Name', 'E-mail', 'Tel', 'Website', 'Address', 'Post Code'],
+                componentList: [],
+                currentPage: 1,
+                total: 0,
+
+                dialogDeleteVisible: false,
+                selectItem: {},
+                authList: [],
+
+                search: {
+                    name: '',
+                    phone: ''
+                }
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Brand.DealerList,
+                zh: ZH.Brand.DealerList,
+                de: DE.Brand.DealerList,
+                nl: NL.Brand.DealerList
+            }
+        },
+        mounted() {
+            this.initData();
+
+            // 获取权限
+//            this.authList = Core.Data.getAuth();
+
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+            this.getPartnerList();
+        },
+        methods: {
+            initData() {
+                this.tableHead = [
+                    this.$t('tableHead.logo'),
+                    this.$t('tableHead.name'),
+                    this.$t('tableHead.email'),
+                    this.$t('tableHead.tel'),
+                    this.$t('tableHead.website'),
+                    this.$t('tableHead.address'),
+                    this.$t('tableHead.postCode')
+//                    this.$t('tableHead.operation'),
+                ];
+            },
+
+            getPartnerList() {
+//                Core.Api.Org.getJuniorDealerPartnerList(this.search.name.trim(), this.search.phone.trim(), this.currentPage).then(
+//                    res => {
+                        this.componentList = [{
+                            address: "No.9 Heshun Rd, Suzhou Industrial Park",
+                            avatar: "37cf1885c4f320fd759fd98df9e94bf9d7bbe96bc1d0b79e4129ad8174dde3ef.jpg",
+                            country: "China",
+                            create_time: 1540439944,
+                            email: "besst@bafang-e.com",
+                            id:'',
+                            level: 0,
+                            name: "Bafang Electric (Suzhou) Co., Ltd.",
+                            parent_id: 0,
+                            phone: "+86",
+                            postcode: "215122",
+                            root_id: 0,
+                            type: 2,
+                            update_time: 1540439944,
+                            website: "www.bafang-e.com"
+                        }];
+                        console.log(this.componentList);
+                        this.total = 1;
+//                    }
+//                );
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getPartnerList();
+            },
+
+            showDeleteDialog(item) {
+                this.dialogDeleteVisible = true;
+                this.selectItem = item;
+            },
+
+            deleteDealer() {
+                Core.Api.Org.deletePartnerByBrand(this.selectItem.id).then(res => {
+                    this.$message({
+                        message: 'Delete successfully',
+                        type: 'success'
+                    });
+                    this.dialogDeleteVisible = false;
+                    this.getPartnerList();
+                })
+            }
+        }
+
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .component-list {
+        width: 100%;
+        height: 100%;
+        .header {
+            height: 60px;
+            border-bottom: 1px solid #2B2F3B;
+            overflow: hidden;
+        }
+        .td{
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .name{
+            max-width: 120px;
+        }
+        .address{
+            max-width: 280px
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?01200371

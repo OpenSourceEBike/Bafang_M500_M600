@@ -1,0 +1,682 @@
+<template>
+    <div class="component-detail-container">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="goBack()" :title="$t('back')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content-holder">
+            <div class="content-item">
+                <label class="title">{{ $t('sn') }}</label>
+                <div class="desc">
+                    <span>{{component.sn}}</span>
+                </div>
+            </div>
+            <div class="content-item">
+                <label class="title">{{ $t('category') }}</label>
+                <div class="desc">
+                    <span>{{component.category_root_id | categoryRoot}}</span>
+                </div>
+            </div>
+            <div class="content-item">
+                <label class="title">{{ $t('modelName') }}</label>
+                <div class="desc">
+                    <span>{{component.item.name}}</span>
+                </div>
+            </div>
+            <div class="content-item">
+                <label class="title">{{ $t('partNo') }}</label>
+                <div class="desc">
+                    <span>{{component.item ? component.item.ext_part_no : ""}}</span>
+                </div>
+            </div>
+            <div class="content-item">
+                <label class="title">{{ $t('orderNo') }}</label>
+                <div class="desc">
+                    <span>{{component.order ? component.order.source_id : ""}}</span>
+                </div>
+            </div>
+            <div class="content-item">
+                <label class="title">{{ $t('customerName') }}</label>
+                <div class="desc">
+                    <span>{{component.order ? component.order.customer_id : ""}}</span>
+                </div>
+            </div>
+            <div class="content-item">
+                <label class="title">{{ $t('customerPartNo') }}</label>
+                <div class="desc">
+                    <span>{{customerPartNo}}</span>
+                </div>
+            </div>
+            <div class="content-item">
+                <label class="title">{{ $t('customerPoNo') }}</label>
+                <div class="desc">
+                    <span>{{component.order ? component.order.customer_po_no : ""}}</span>
+                </div>
+            </div>
+            <div class="content-item">
+                <label class="title">{{ $t('produceTime') }}</label>
+                <div class="desc">
+                    <span>{{component.produce_time | timeFormat }}</span>
+                </div>
+            </div>
+            <div class="content-item" v-if="component.sale_time == 0">
+                <label class="title">{{ $t('saleTime') }}</label>
+                <div class="desc">
+                    <span>/</span>
+                </div>
+            </div>
+            <div class="content-item" v-else>
+                <label class="title">{{ $t('saleTime') }}</label>
+                <div class="desc">
+                    <span>{{component.sale_time | timeFormat("Y-m-d")}} </span>
+                </div>
+            </div>
+            <div class="content-item">
+                <label class="title">Test Data</label>
+                <div class="desc">
+                    <span>{{component.test_data }} </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-holder">
+            <div style="width:800px;">
+                <div class="item">
+                    <label>Component SN</label>
+                    <el-input v-model="component.sn"></el-input>
+                    <el-button @click="clearData">清除</el-button>
+                    <el-button @click="getVehicleBySn">查找车辆</el-button>
+                </div>
+                <div class="item" >
+                    <label>Ebike SN</label>
+                    <el-input v-model="vehicleSn"></el-input>
+                </div>
+                <div class="item">
+                    <label>Bike of SN you want to replace</label>
+                    <el-input v-model="vehicleSnReplace"></el-input>
+                    <el-button @click="replaceVehicleComponent">替换车辆零部件</el-button>
+                    <span>支持仪表，控制器，电池的替换</span>
+                </div>
+                <!--<div class="item">-->
+                    <!--<el-button @click="batchAdd">批量增加</el-button>-->
+                <!--</div>-->
+            </div>
+        </div>
+
+        <div class="content-holder" v-show = "org.id == 25" >
+            <el-collapse accordion>
+                <el-collapse-item>
+                    <template slot="title">
+                        <label>部件追踪</label>
+                    </template>
+                    <!-- 1 -->
+                    <div class="btn-row">
+                        <el-button type="preview" @click="getVehicleList">获取绑定车辆信息</el-button>
+                        <el-button type="preview" @click="emptyVehicleList">清除车辆信息列表</el-button>
+                    </div>
+                    <div class="table-wrap">
+                        <div class="table-content-holder">
+                            <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                <td v-for="item in tableHeadV">{{item}}</td>
+                                </thead>
+                                <tbody>
+                                <tr v-for="item in vehicleList">
+                                    <td>{{ item.sn }}</td>
+                                    <td><img :src="item.brand && item.brand.img | getImgUrl "/></td>
+                                    <td>{{ item.brand && item.brand.name || '-' }}</td>
+                                    <td>{{ item.item && item.item.name || '-' }}</td>
+                                    <td>{{ item.order && item.order.source_id ? item.order.source_id : '-' }}</td>
+                                    <td>{{ item.produce_time | timeFormat('Y-m-d') }}</td>
+                                    <td>{{ item.status }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-content-holder">
+                            <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                <td v-for="item in tableHeadD">{{item}}</td>
+                                </thead>
+                                <tbody >
+                                <tr v-for="item in vehicleDetail">
+                                    <td>{{ item.hmi || '-' }}</td>
+                                    <td>{{ item.ctr || '-' }}</td>
+                                    <td>{{ item.bat || '-' }}</td>
+                                    <td>{{ item.motor || '-' }}</td>
+                                    <td>{{ item.sensor || '-' }}</td>
+                                    <td>{{ item.key || '-' }}</td>
+                                    <td>{{ item.charger || '-' }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="clear-10"></div>
+
+                    <!-- 2 -->
+                    <div class="btn-row">
+                        <el-button type="preview" @click="getVehicleOrderList()">获取车辆替换信息</el-button>
+                    </div>
+                    <div class="table-wrap">
+                        <div class="table-content-holder">
+                            <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                <td v-for="item in tableHeadRp">{{item}}</td>
+                                </thead>
+                                <tbody>
+                                <tr v-for="item in replaceReportList">
+                                    <td>{{ item.category.name }}</td>
+                                    <td>{{ item.old_component.sn }}</td>
+                                    <td>{{ item.new_component.sn }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="">
+                            <el-pagination
+                                @current-change="handleCurrentChange"
+                                :current-page.sync="currentPage"
+                                :page-size="10"
+                                layout="prev, pager, next"
+                                :total="total">
+                            </el-pagination>
+                            <p class="total">total: {{total}}</p>
+                        </div>
+                    </div>
+                    <div class="clear-10"></div>
+
+                    <!-- 3 -->
+                    <div class="btn-row">
+                        <el-button type="preview" @click="getDealerList()" >获取销售信息</el-button>
+                    </div>
+                    <div class="table-wrap">
+                        <div class="table-content-holder">
+                            <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                <td v-for="item in tableHeadS">{{ item }}</td>
+                                </thead>
+                                <tbody>
+                                <tr v-for="item in saleOrderList" @click="goDetailView(item.id)">
+                                    <td>{{item.sn}}</td>
+                                    <td>{{item.object_sn}}</td>
+                                    <td>{{item.customer_name}}</td>
+                                    <td>{{item.invoice_no || '-'}}</td>
+                                    <td>{{item.warranty || '-'}}</td>
+                                    <td>{{item.sale_time | timeFormat("Y-m-d")}}</td>
+                                    <td>{{item.remark || '-'}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="clear-10"></div>
+
+                    <!-- 4 -->
+                    <div class="btn-row">
+                        <el-button type="preview" @click="getOperationInfo()">获取操作信息</el-button>
+                    </div>
+                    <div class="table-wrap">
+                        <div class="table-content-holder">
+                            <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                <td v-for="item in tableHeadR">{{item}}</td>
+                                </thead>
+                                <tbody>
+                                <tr class="large" v-for="item in recordList">
+                                    <td>{{item.sn}}</td>
+                                    <td>{{item.vehicle_sn}}</td>
+                                    <td>{{item.org_type == 3?"ASSEMBLER": item.org_type ==2?"DEALER":item.org_type ==4?"COMPONENT":"BRAND"}}</td>
+                                    <td>{{item.user_email}}</td>
+                                    <td>{{item.time | timeFormat}}</td>
+                                    <td>{{item.type | operationType}}</td>
+                                    <td>
+                                         <span v-if="item.type === 1">
+                                             Old:{{ item.data.old}} <br>
+                                             New: {{ item.data.new }}
+                                         </span>
+                                        <span v-else>
+                                            {{ item.data}}
+                                         </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </el-collapse-item>
+            </el-collapse>
+        </div>
+
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        data() {
+            return {
+                Core: Core,
+                component: {
+                    brand: {},
+                    item: {}
+                },
+                org: Core.Data.getOrg() || "",
+
+                page: 1,
+                currentPage: 1,
+                total: 0,
+                customerPartNo: '',
+                loading:true,
+
+                replaceReportList:[],
+
+                detailOrder: {},
+                customer: {},
+
+                // 查询到的记录列表
+                tableHeadV: ['Vehicle SN', 'Brand Logo', 'Brand Name', 'Model Name', 'Po No.', 'Produce Date', 'Status'],
+                vehicleList: [],
+                tableHeadD: ['HMI', 'Controller', 'Battery', 'Motor', 'Sensor', 'Key','Charger'],
+                vehicleDetail: [],
+                tableHeadRp: ['Category', 'Old Component SN', 'New Component SN'],
+                vehicleComReplace: [],
+                tableHeadS: ['Order NO.', 'Bike ID', 'Customer Name','Invoice', 'Warranty','Sale Date', 'Remark'],
+                saleOrderList: [],
+                tableHeadR: ['SN','Vehicle','Operator','Account','Time', 'Type', 'Data'],
+                recordList: [],
+
+                vehicleSn:'',
+                vehicleId:'',
+                vehicleSnReplace:'',
+                batteryList: [{"vehicele":"X19F0002","bat":"G2019350905"},{"vehicele":"X19F0005","bat":"G2019351170"},{"vehicele":"X19F0012","bat":"G2019350813"},{"vehicele":"X19F0013","bat":"G2019350532"},{"vehicele":"X19F0014","bat":"G2019330284"},{"vehicele":"X19F0016","bat":"G2019350659"},{"vehicele":"X19F0019","bat":"G2019350702"},{"vehicele":"X19F0023","bat":"G2019330245"},{"vehicele":"X19F0031","bat":"G2019351169"},{"vehicele":"X19F0032","bat":"G2019350726"},{"vehicele":"X19F0033","bat":"G2019330685"},{"vehicele":"X19F0035","bat":"G2019350151"},{"vehicele":"X19F0036","bat":"G2019350696"},{"vehicele":"X19F0047","bat":"G2019330109"},{"vehicele":"X19F0048","bat":"G2019330091"},{"vehicele":"X19F0049","bat":"G2019350862"},{"vehicele":"X19F0050","bat":"G2019330177"},{"vehicele":"X19F0052","bat":"G2019330417"},{"vehicele":"X19F0056","bat":"G2019330107"},{"vehicele":"X19F0059","bat":"G2019330065"},{"vehicele":"X19F0068","bat":"G2019350705"},{"vehicele":"X19F0069","bat":"G2019350527"},{"vehicele":"X19F0070","bat":"G2019350321"},{"vehicele":"X19F0074","bat":"G2019350865"},{"vehicele":"X19F0077","bat":"G2019350530"},{"vehicele":"X19F0080","bat":"G2019350517"},{"vehicele":"X19F0082","bat":"G2019350699"},{"vehicele":"X19F0087","bat":"G2019350909"},{"vehicele":"X19F0088","bat":"G2019351087"},{"vehicele":"X19F0091","bat":"G2019350543"},{"vehicele":"X19F0092","bat":"G2019351144"},{"vehicele":"X19F0093","bat":"G2019330124"},{"vehicele":"X19F0094","bat":"G2019350973"},{"vehicele":"X19F0097","bat":"G2019351156"},{"vehicele":"X19F0098","bat":"G2019351137"},{"vehicele":"X19F0099","bat":"G2019350519"},{"vehicele":"X19F0103","bat":"G2019330204"},{"vehicele":"X19F0104","bat":"G2019350841"},{"vehicele":"X19F0106","bat":"G2019330105"},{"vehicele":"X19F0109","bat":"G2019350535"},{"vehicele":"X19F0110","bat":"G2019350515"},{"vehicele":"X19F0127","bat":"G2019350634"},{"vehicele":"X19F0131","bat":"G2019350805"},{"vehicele":"X19F0132","bat":"G2019351140"},{"vehicele":"X19F0136","bat":"G2019350859"},{"vehicele":"X19F0138","bat":"G2019350653"},{"vehicele":"X19F0143","bat":"G2019351116"},{"vehicele":"X19F0148","bat":"G2019350099"},{"vehicele":"X19F0150","bat":"G2019350216"},{"vehicele":"X19F0154","bat":"G2019351119"},{"vehicele":"X19F0155","bat":"G2019330190"},{"vehicele":"X19F0157","bat":"G2019330716"},{"vehicele":"X19F0164","bat":"G2019350810"},{"vehicele":"X19F0168","bat":"G2019351130"},{"vehicele":"X19F0169","bat":"G2019350994"},{"vehicele":"X19F0170","bat":"G2019350913"},{"vehicele":"X19F0171","bat":"G2019350937"},{"vehicele":"X19F0172","bat":"G2019350817"},{"vehicele":"X19F0173","bat":"G2019350879"},{"vehicele":"X19F0195","bat":"G2019350730"},{"vehicele":"X19F0197","bat":"G2019330133"},{"vehicele":"X19F0201","bat":"G2019350804"},{"vehicele":"X19F0202","bat":"G2019350709"},{"vehicele":"X19F0204","bat":"G2019351081"},{"vehicele":"X19F0213","bat":"G2019350655"},{"vehicele":"X19F0215","bat":"G2019350910"},{"vehicele":"X19F0217","bat":"G2019330194"},{"vehicele":"X19F0219","bat":"G2019350675"},{"vehicele":"X19F0222","bat":"G2019350833"},{"vehicele":"X19F0223","bat":"G2019350826"},{"vehicele":"X19F0227","bat":"G2019330679"},{"vehicele":"X19F0231","bat":"G2019350729"},{"vehicele":"X19F0232","bat":"G2019351124"},{"vehicele":"X19F0236","bat":"G2019350652"},{"vehicele":"X19F0238","bat":"G2019350725"},{"vehicele":"X19F0243","bat":"G2019350830"},{"vehicele":"X19F0244","bat":"G2019350784"},{"vehicele":"X19F0249","bat":"G2019351117"},{"vehicele":"X19F0250","bat":"G2019351168"},{"vehicele":"X19F0257","bat":"G2019351149"},{"vehicele":"X19F0264","bat":"G2019351085"},{"vehicele":"X19F0265","bat":"G2019350669"},{"vehicele":"X19F0266","bat":"G2019350673"},{"vehicele":"X19F0267","bat":"G2019330566"},{"vehicele":"X19F0271","bat":"G2019350095"},{"vehicele":"X19F0272","bat":"G2019350778"},{"vehicele":"X19F0274","bat":"G2019351148"},{"vehicele":"X19F0276","bat":"G2019351127"},{"vehicele":"X19F0280","bat":"G2019351102"},{"vehicele":"X19F0281","bat":"G2019350798"},{"vehicele":"X19F0282","bat":"G2019330491"},{"vehicele":"X19F0284","bat":"G2019330453"},{"vehicele":"X19F0286","bat":"G2019351133"},{"vehicele":"X19F0287","bat":"G2019350797"},{"vehicele":"X19F0288","bat":"G2019330082"},{"vehicele":"X19F0289","bat":"G2019330391"},{"vehicele":"X19F0290","bat":"G2019350902"},{"vehicele":"X19F0291","bat":"G2019350657"},{"vehicele":"X19F0292","bat":"G2019350982"},{"vehicele":"X19F0294","bat":"G2019350853"},{"vehicele":"X19F0296","bat":"G2019330335"},{"vehicele":"X19F0297","bat":"G2019330100"},{"vehicele":"X19F0300","bat":"G2019350676"},{"vehicele":"X19F0304","bat":"G2019330119"},{"vehicele":"X19F0305","bat":"G2019350843"},{"vehicele":"X19F0306","bat":"G2019351123"},{"vehicele":"X19F0312","bat":"G2019350834"},{"vehicele":"X19F0313","bat":"G2019330064"},{"vehicele":"X19F0314","bat":"G2019350520"},{"vehicele":"X19F0315","bat":"G2019350086"},{"vehicele":"X19F0318","bat":"G2019351084"},{"vehicele":"X19F0320","bat":"G2019351138"},{"vehicele":"X19F0323","bat":"G2019350861"},{"vehicele":"X19F0328","bat":"G2019351098"},{"vehicele":"X19F0330","bat":"G2019350789"},{"vehicele":"X19F0333","bat":"G2019350897"},{"vehicele":"X19F0334","bat":"G2019350847"},{"vehicele":"X19F0335","bat":"G2019330370"},{"vehicele":"X19F0336","bat":"G2019350518"},{"vehicele":"X19F0337","bat":"G2019350677"},{"vehicele":"X19F0340","bat":"G2019330117"},{"vehicele":"X19F0341","bat":"G2019350516"},{"vehicele":"X19F0346","bat":"G2019350722"},{"vehicele":"X19F0347","bat":"G2019350871"},{"vehicele":"X19F0348","bat":"G2019351072"},{"vehicele":"X19F0350","bat":"G2019330073"},{"vehicele":"X19F0352","bat":"G2019330137"},{"vehicele":"X19F0358","bat":"G2019330103"},{"vehicele":"X19F0359","bat":"G2019351115"},{"vehicele":"X19F0360","bat":"G2019350838"},{"vehicele":"X19F0362","bat":"G2019350732"},{"vehicele":"X19F0363","bat":"G2019330125"},{"vehicele":"X19F0365","bat":"G2019330131"},{"vehicele":"X19F0367","bat":"G2019330751"},{"vehicele":"X19F0369","bat":"G2019351120"},{"vehicele":"X19F0370","bat":"G2019350672"},{"vehicele":"X19F0374","bat":"G2019350877"},{"vehicele":"X19F0376","bat":"G2019330096"},{"vehicele":"X19F0377","bat":"G2019350538"},{"vehicele":"X19F0378","bat":"G2019350711"},{"vehicele":"X19F0383","bat":"G2019350311"},{"vehicele":"X19F0385","bat":"G2019330070"},{"vehicele":"X19F0386","bat":"G2019350793"},{"vehicele":"X19F0390","bat":"G2019351022"},{"vehicele":"X19F0391","bat":"G2019330790"},{"vehicele":"X19F0393","bat":"G2019330078"},{"vehicele":"X19F0394","bat":"G2019350974"},{"vehicele":"X19F0395","bat":"G2019351158"},{"vehicele":"X19F0397","bat":"G2019350714"},{"vehicele":"X19F0401","bat":"G2019350851"},{"vehicele":"X19F0402","bat":"G2019350703"},{"vehicele":"X19F0410","bat":"G2019351090"},{"vehicele":"X19F0412","bat":"G2019350863"},{"vehicele":"X19F0413","bat":"G2019350806"},{"vehicele":"X19F0414","bat":"G2019330224"},{"vehicele":"X19F0422","bat":"G2019350649"},{"vehicele":"X19F0428","bat":"G2019330122"},{"vehicele":"X19F0430","bat":"G2019350849"},{"vehicele":"X19F0431","bat":"G2019351141"},{"vehicele":"X19F0433","bat":"G2019330088"},{"vehicele":"X19F0434","bat":"G2019350814"},{"vehicele":"X19F0438","bat":"G2019350089"},{"vehicele":"X19F0442","bat":"G2019350682"},{"vehicele":"X19F0444","bat":"G2019350213"},{"vehicele":"X19F0448","bat":"G2019350523"},{"vehicele":"X19F0450","bat":"G2019350514"},{"vehicele":"X19F0451","bat":"G2019350660"},{"vehicele":"X19F0452","bat":"G2019350665"},{"vehicele":"X19F0453","bat":"G2019350708"},{"vehicele":"X19F0454","bat":"G2019330120"},{"vehicele":"X19F0455","bat":"G2019351069"},{"vehicele":"X19F0457","bat":"G2019330222"},{"vehicele":"X19F0458","bat":"G2019350741"},{"vehicele":"X19F0459","bat":"G2019330101"},{"vehicele":"X19F0460","bat":"G2019350822"},{"vehicele":"X19F0461","bat":"G2019330247"},{"vehicele":"X19F0463","bat":"G2019350881"},{"vehicele":"X19F0464","bat":"G2019330140"},{"vehicele":"X19F0467","bat":"G2019330077"},{"vehicele":"X19F0468","bat":"G2019351083"},{"vehicele":"X19F0469","bat":"G2019350925"},{"vehicele":"X19F0470","bat":"G2019330365"},{"vehicele":"X19F0477","bat":"G2019330090"},{"vehicele":"X19F0478","bat":"G2019350889"},{"vehicele":"X19F0480","bat":"G2019330210"},{"vehicele":"X19F0481","bat":"G2019351143"},{"vehicele":"X19F0484","bat":"G2019350691"},{"vehicele":"X19F0485","bat":"G2018350524"},{"vehicele":"X19F0488","bat":"G2019330474"},{"vehicele":"X19F0489","bat":"G2019350521"},{"vehicele":"X19F0490","bat":"G2019330071"},{"vehicele":"X19F0497","bat":"G2019351112"},{"vehicele":"X19F0501","bat":"G2019330769"},{"vehicele":"X19F0503","bat":"G2019330313"},{"vehicele":"X19F0506","bat":"G2019330106"},{"vehicele":"X19F0508","bat":"G2019330067"},{"vehicele":"X19F0510","bat":"G2019330610"},{"vehicele":"X19F0516","bat":"G2019330114"},{"vehicele":"X19F0521","bat":"G2019350893"},{"vehicele":"X19F0522","bat":"G2019330701"},{"vehicele":"X19F0523","bat":"G2019330116"},{"vehicele":"X19F0527","bat":"G2019350689"},{"vehicele":"X19F0529","bat":"G2019350792"},{"vehicele":"X19F0533","bat":"G2019350779"},{"vehicele":"X19F0537","bat":"G2019330558"},{"vehicele":"X19F0539","bat":"G2019351159"},{"vehicele":"X19F0541","bat":"G2019330407"},{"vehicele":"X19F0543","bat":"G2019330115"},{"vehicele":"X19F0545","bat":"G2019351038"},{"vehicele":"X19F0546","bat":"G2019350878"},{"vehicele":"X19F0550","bat":"G2019330486"},{"vehicele":"X19F0552","bat":"G2019330631"},{"vehicele":"X19F0553","bat":"G2019330112"},{"vehicele":"X19F0555","bat":"G2019350762"},{"vehicele":"X19F0563","bat":"G2019330111"},{"vehicele":"X19F0570","bat":"G2019350938"},{"vehicele":"X19F0571","bat":"G2019350771"},{"vehicele":"X19F0576","bat":"G2019350960"},{"vehicele":"X19F0578","bat":"G2019330172"},{"vehicele":"X19F0580","bat":"G2019330108"},{"vehicele":"X19F0584","bat":"G2019350542"},{"vehicele":"X19F0586","bat":"G2019330098"},{"vehicele":"X19F0589","bat":"G2019350721"},{"vehicele":"X19F0593","bat":"G2019350875"},{"vehicele":"X19F0596","bat":"G2019350723"},{"vehicele":"X19F0597","bat":"G2019351136"},{"vehicele":"X19F0600","bat":"G2019330095"},{"vehicele":"X19F0007","bat":"G2019330460"},{"vehicele":"X19F0426","bat":"G2019330099"}]
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Component.Detail,
+                zh: ZH.Component.Component.Detail,
+                de: DE.Component.Component.Detail,
+                nl: NL.Component.Component.Detail
+            }
+        },
+        filters: {
+            operationType: function (type) {
+                switch (type) {
+                    case 1:
+                        return 'Edit';
+                    case 2:
+                        return 'Update';
+                    case 3:
+                        return 'Replace';
+                    default:
+                        return '--';
+                }
+            }
+        },
+        mounted: function () {
+            let componentId = this.$route.query.componentId;
+            this.page = this.$route.query.page || 1;
+            if(componentId){
+                this.getComponentDetail(componentId);
+            }
+        },
+        methods: {
+            getComponentDetail(id) {
+                Core.Api.Component.componentDetail(id).then(res => {
+                    this.component = res.component;
+                    console.log(this.component);
+                })
+            },
+            clearData(){
+                this.component.sn = '';
+                this.vehicleSn = '';
+                this.vehicleSnReplace = '';
+            },
+            getVehicleBySn(){
+                //根据sn查询车辆信息
+                if( this.component.sn ){
+
+                    Core.Api.Vehicle.getVehicleByBomSn( this.component.sn.replace(/\s/g,'') ).then(res => {
+                        // 该部件存在车辆
+                        if (res.vehicle && res.vehicle.sn) {
+                            console.log( res, "=------------vehicle----------=" );
+                            this.vehicleSn = res.vehicle.sn;
+                            this.vehicleId = res.vehicle.id;
+
+                        }else{
+                            this.vehicleSn = 'Bike is empty'
+                        }
+                    });
+                } else {
+                    this.$message('SN 为空。请输入数据SN。');
+                    return
+                }
+            },
+            emptyVehicleList(){
+                this.vehicleList = [];
+                this.vehicleDetail = [];
+            },
+
+            goBack() {
+                this.$router.push({name: 'componentComponentList', query: {"from": 'detail'}});
+            },
+            getCustomerPartNo(){
+                let  list = this.component.order.item_list;
+
+                let itemId = this.component.item_id;
+                if(list === null || !list){
+                    return;
+                }
+                list.forEach((item, index) => {
+                    if(item.item_id === itemId) {
+                        this.customerPartNo = item.part_no;
+                    }
+                });
+            },
+
+            // 替换已经绑定车辆上的部件
+            replaceVehicleComponent(){
+                if( this.component.sn.indexOf('DP')>-1 || this.component.sn.indexOf('CR')>-1 || this.component.sn.indexOf('BT')>-1 ){
+                    if( this.vehicleSn && this.vehicleSnReplace  ){
+                        Core.Api.Object.objectReplace(this.vehicleSnReplace.replace(/\s/g, ""),this.component.sn.replace(/\s/g, "")).then(res => {
+                            let status = res.status;
+                            switch(status){
+                                case 1:
+                                    this.$message('vehicle not exist traced by vehicle SN');
+                                    break;
+                                case 2:
+                                    this.$message('component not exist traced by component SN');
+                                    break;
+                                case 3:
+                                    this.$message('component not bound to any vehicle bom');
+                                    break;
+                                case 4:
+                                    this.$message('vehicle traced by component SN is not exist or deleted');
+                                    break;
+                                case 5:
+                                    this.$message({
+                                        message: 'replace success',
+                                        type: 'success'
+                                    });
+                                    break;
+                                case 6:
+                                    this.$message('bom of vehicle do not have this kind of component');
+                                    break;
+                            }
+                        });
+                    }else{
+                        this.$message('车辆号不能为空');
+                    }
+                } else {
+                    this.$message('SN 不合法 ');
+                    return
+                }
+            },
+
+            //  批量增加零部件SN
+            batchAdd(){
+                let snList = this.batteryList.splice(0,4);
+                let count = 0;
+
+                let batchInterval = setInterval( ()=>{
+                   Core.Api.Vehicle.vehicleDetailBySn(snList[count].vehicele.replace(/\s/g, ""), '').then(res => {
+                       if(res){
+                           let hasBattery = false;
+                           if(res.vehicle.bom_list&&res.vehicle.bom_list.length>0){
+                               res.vehicle.bom_list.forEach((item)=>{
+                                   if(item.category_root_id == 5){
+                                       hasBattery = true;
+                                       console.log('已存在');
+                                        console.log('vehicleId:',res.vehicle.id);
+                                        console.log('batteryId:',item.id);
+                                        count++;
+                                        if(count> snList.length-1){
+                                            clearInterval( batchInterval );
+                                        }
+                                    }else{
+                                        hasBattery = false;
+
+                                    }
+                               })
+                           }
+                           if(!hasBattery){
+                               console.log('没有发现')
+                                Core.Api.Vehicle.bomChange(res.vehicle.id, 0 , ('IES-IP1101'+snList[count].bat).replace(/\s+/g, "")).then(res1 => {
+                                    if(res1){
+                                            console.log("add", count, snList[count].vehicele, snList[count].bat)
+                                            count++;
+                                            if(count> snList.length-1){
+                                                clearInterval( batchInterval );
+                                            }
+                                    }
+                                }).catch((err)=>{
+                                    console.log(err,snList[count].vehicele,'IES-IP1101'+snList[count].bat);
+                                    count++;
+                                    if(count> snList.length-1){
+                                            clearInterval( batchInterval );
+                                        }
+                                })
+                           }
+                       }
+                   }).catch(err=>{
+                       console.log(err);
+                   })
+
+                },4000);
+            },
+
+
+            //获取绑定车辆信息
+            getVehicleList(){
+                if(this.vehicleSn){
+                    Core.Api.Vehicle.vehicleDetailBySn(this.vehicleSn.replace(/\s/g, ""), '').then(res => {
+//                        console.log(res);
+                        let bike = res.vehicle;
+//                        bike.forEach( (item) =>{
+//                            this.vehicleList.push(item);
+//                        })
+                        this.vehicleList.push(bike);
+                        console.log(res.vehicle_list);
+                        this.vehicleList.forEach( (item) =>{
+                            let bom = item.bom_list;
+                            let bomobject = {};
+                            bomobject['key'] = item.secret_key;
+                            bom.forEach( (i)=>{
+                                if(i.category_root_id == '4'){
+                                    bomobject['hmi'] = i.sn;
+                                }
+                                if(i.category_root_id == '3'){
+                                    bomobject['motor'] = i.sn;
+                                }
+                                if(i.category_root_id == '7'){
+                                    bomobject['ctr'] = i.sn;
+                                }
+                                if(i.category_root_id == '6'){
+                                    bomobject['sensor'] = i.sn;
+                                }
+                                if(i.category_root_id == '5'){
+                                    bomobject['bat'] = i.sn;
+                                }
+                                if(i.category_root_id == '9'){
+                                    bomobject['charger'] = i.sn;
+                                }
+                            });
+                            this.vehicleDetail.push(bomobject);
+                        });
+                    });
+                }else{
+                    this.$message('车辆号不能为空');
+                }
+
+            },
+
+            //获取车辆替换信息
+            getVehicleOrderList(){
+                Core.Api.Vehicle.getReplaceReportList( this.vehicleId, this.currentPage).then(res => {
+                    this.replaceReportList = res.list;
+                    this.total = res.count;
+                    console.log(this.replaceReportList, "===========this.replaceReportList===========");
+                });
+            },
+            // 车辆替换信息翻页
+            handleCurrentChange(){
+                this.currentPage = val;
+                this.getReplaceReportList();
+            },
+            //获取销售信息
+            getDealerList(){
+                Core.Api.Order.traceSaleOrderDetail(this.vehicleSn.replace(/\s/g, ""))
+                    .then(res => {
+                        console.log(res);
+                        this.saleOrderList.push(res.order) ;
+                    });
+                console.log( this.saleOrderList, "===========this.saleOrderList===========");
+            },
+
+            //获取操作数据信息 tool 记录
+            getOperationInfo(){
+                Core.Api.ObjectRecord.getListBySn( this.component.sn ).then(res => {
+                    let list = res.record_list;
+                    list.forEach(item => {
+                        if (item.data && item.type == 1) {  // type = 1，是edit
+                            if(item.data.match("{")){
+                                item.data = JSON.parse(item.data);
+                            }else{
+                                item.data = {
+                                    "old": item.data,
+                                    "new": 'wrong type'
+                                }
+                            }
+                        }
+                    });
+                    this.recordList = list;
+//                    console.log( this.recordList , "===========this.recordList ===========");
+                })
+            },
+
+            //查询绑定数据
+            getObjectBinding(){
+                let value = this.component.sn.replace(/\s+/g, ""); // 去空格
+                // 如果序列号中匹配到特定字符，自动显示在对应的输入框中
+                if (value.indexOf('MM') > -1) {
+                    console.log("22222222222222222222222"+vm.isMotorConnected);
+                    Core.Api.Binding.findBySpecialSn("","",val).then(res=>{
+                        let models = res.object_binding;
+                        if (models.controller_sn==undefined&&models.sensor_sn==undefined&&models.motor_sn==undefined){
+
+                        }else{
+
+                        }
+                    })
+                } else if (value.indexOf('CR') > -1) {
+                    console.log("111111111111111111111111");
+                    Core.Api.Binding.findBySpecialSn(val,"","").then(res=>{
+                        let models = res.object_binding;
+                        if (models.controller_sn==undefined&&models.sensor_sn==undefined&&models.motor_sn==undefined){
+
+                        }else{
+
+                        }
+                    })
+                }  else if (value.indexOf('SR') > -1) {
+                    console.log("33333333333333333333333");
+                    Core.Api.Binding.findBySpecialSn("",val,"").then(res=>{
+                        let models = res.object_binding;
+                        if (models.controller_sn==undefined&&models.sensor_sn==undefined&&models.motor_sn==undefined){
+
+                        }else{
+
+                        }
+                    })
+                }
+            }
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss" scoped>
+    .component-detail-container {
+        height: 100%;
+        overflow-y: scroll;
+        .header {
+            height: 60px;
+            line-height: 60px;
+            padding: 0 30px;
+            overflow: hidden;
+            .name {
+                font-size: 16px;
+                color: #FFFFFF;
+                font-weight: bold;
+                margin-left: 30px;
+            }
+        }
+        .content-holder {
+            padding: 26px 60px;
+            overflow: hidden;
+            .content-item {
+                width: 50%;
+                float: left;
+                padding: 16px 0;
+                border-top: 1px solid rgba(255, 255, 255, 0.10);
+                font-size: 0;
+                .title {
+                    display: inline-block;
+                    vertical-align: top;
+                    width: 140px;
+                    font-size: 14px;
+                    color: rgba(255, 255, 255, 0.6);
+                    padding: 0 5px;
+                }
+                .desc {
+                    display: inline-block;
+                    vertical-align: top;
+                    width: calc(100% - 140px);
+                    span {
+                        font-size: 14px;
+                        color: #FFFFFF;
+                        &.strong {
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+            .btn-row{
+                height:40px;
+                line-height: 40px;
+            }
+            .item{
+                width: 800px;
+                height: 40px;
+                line-height: 40px;
+                .label {
+                    width: 110px;
+                    display: inline-block;
+                    line-height: 20px;
+                    vertical-align: middle;
+                    word-wrap: break-word;
+                }
+            }
+            .el-input{
+                width: 210px;
+            }
+        }
+
+        .table-content {
+            border-top: 1px solid #2A2E3A;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// detail.vue?b368a1b4

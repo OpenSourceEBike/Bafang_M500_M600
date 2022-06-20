@@ -1,0 +1,135 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "statistics-dealer"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v("Vehicle Model Sales Statistics")]), _vm._v(" "), _c('el-select', {
+    staticClass: "clear-float pull-right",
+    attrs: {
+      "placeholder": "date"
+    },
+    on: {
+      "change": _vm.getStatistic
+    },
+    model: {
+      value: (_vm.timeType),
+      callback: function($$v) {
+        _vm.timeType = $$v
+      },
+      expression: "timeType"
+    }
+  }, _vm._l((_vm.timeList), function(item) {
+    return _c('el-option', {
+      key: item.type,
+      attrs: {
+        "label": item.label,
+        "value": item.type
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "data-holder"
+  }, [_c('div', {
+    staticClass: "data-header"
+  }, [_c('div', [_c('img', {
+    attrs: {
+      "src": require("../../../assets/images/icon/menu/dealer-white.png")
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "amount"
+  }, [_vm._v("\n                    Brand Amount "), _c('br'), _vm._v(" "), _c('b', [_vm._v(_vm._s(_vm.brandMount))])])]), _vm._v(" "), _c('div', [_c('img', {
+    attrs: {
+      "src": require("../../../assets/images/icon/menu/product-white.png")
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "amount"
+  }, [_vm._v("\n                    Model Amount"), _c('br'), _vm._v(" "), _c('b', [_vm._v(_vm._s(_vm.itemAmount))])])]), _vm._v(" "), _c('div', [_c('img', {
+    attrs: {
+      "src": require("../../../assets/images/icon/icon-line@2x.png")
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "amount"
+  }, [_vm._v("\n                    Sales Amount"), _c('br'), _vm._v(" "), _c('b', [_vm._v(_vm._s(_vm.saleAmount))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "canvas-holder"
+  }, [_c('IEcharts', {
+    attrs: {
+      "option": _vm.dataOptions
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.dataList.length > 0),
+      expression: "dataList.length > 0"
+    }],
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  }))]), _vm._v(" "), _c('tbody', _vm._l((_vm.dataList), function(item) {
+    return _c('tr', {
+      staticClass: "large"
+    }, [_c('td', {
+      staticClass: "td name"
+    }, [(item.brand_logo) ? _c('img', {
+      attrs: {
+        "src": _vm._f("getImgUrl")(item.brand_logo)
+      }
+    }) : _vm._e()]), _vm._v(" "), _c('td', [_vm._v("\n                    " + _vm._s(item.item) + "\n                ")]), _vm._v(" "), _c('td', [_vm._v("\n                    " + _vm._s(item.brand) + "\n                ")]), _vm._v(" "), _c('td', [_vm._v("\n                    " + _vm._s(item.count) + "\n                ")])])
+  }))]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.dataList.length <= 0),
+      expression: "dataList.length <= 0"
+    }],
+    staticClass: "no-data-content"
+  }, [_vm._v("\n            No Result\n        ")]), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 4,
+      "layout": "prev, pager, next",
+      "total": _vm.itemAmount
+    },
+    on: {
+      "current-change": _vm.getModelStatList,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v(" Total: " + _vm._s(_vm.itemAmount))])], 1)])])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-cfb50c54","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/brand/statiatics/model.vue
+// module id = 1639
+// module chunks = 73

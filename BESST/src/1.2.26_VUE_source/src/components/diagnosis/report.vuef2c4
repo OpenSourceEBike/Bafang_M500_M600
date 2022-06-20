@@ -1,0 +1,1005 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "report-container"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": _vm.goBack
+    }
+  })])]), _vm._v(" "), _c('span', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('diagnosisReportTitle')))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item print",
+    attrs: {
+      "title": _vm.$t('print')
+    },
+    on: {
+      "click": _vm.onClickPrint
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('el-collapse', {
+    model: {
+      value: (_vm.activeNames),
+      callback: function($$v) {
+        _vm.activeNames = $$v
+      },
+      expression: "activeNames"
+    }
+  }, [_c('el-collapse-item', {
+    attrs: {
+      "title": _vm.titleText,
+      "name": "1"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.labelText) + _vm._s(_vm.$t('name')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.orgInfo.name || '-'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.labelText) + _vm._s(_vm.$t('address')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.orgInfo.address + _vm.orgInfo.country || '-'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.labelText) + _vm._s(_vm.$t('email')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.orgInfo.email || '-'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.labelText) + _vm._s(_vm.$t('tel')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.orgInfo.phone || '-'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('reportDate')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.reportInfo.create_time)))])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('bike.title'),
+      "name": "2"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("Bike ID")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.reportInfo.vehicle_sn || '-'))])]), _vm._v(" "), _vm._l((_vm.componentList), function(item) {
+    return _c('li', {
+      staticClass: "list-group-item"
+    }, [_c('div', {
+      staticClass: "label-title"
+    }, [_vm._v(_vm._s(_vm._f("categoryRoot")(item.category_root_id)) + " SN")]), _vm._v(" "), _c('div', {
+      staticClass: "content"
+    }, [_vm._v(_vm._s(item.sn || '-'))])])
+  })], 2)]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('diagnosis.data'),
+      "name": "3"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-content"
+  }, [_c('div', {
+    attrs: {
+      "slot": "content"
+    },
+    slot: "content"
+  }, [_c('div', {
+    staticClass: "item-group"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hmi')) + " SN")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.hmi ? _vm.device.hmi.sn : "-") : "-") + "\n                                            ")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [(_vm.device && _vm.device.hmi && _vm.device.hmi.tip) ? _c('span', {
+    staticClass: "color-red"
+  }, [_vm._v("(" + _vm._s(_vm.device.hmi.tip) + ")")]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.hmi ? _vm.device.hmi.model : "-") : "-") + "\n                                            ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.hmi ? _vm.device.hmi.version : "-") : "-") + "\n                                            ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.hmi ? _vm.device.hmi.hardVersion : "-") : "-") + "\n                                            ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.totalMileage')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.hmi ? _vm.device.hmi.totalMileage : "-") : "-") + "\n                                            ")])]), _vm._v(" "), (!_vm.isCan) ? _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.hmi ? _vm.device.hmi.wheelDiameter : "-") : "-") + "\n                                            ")])]) : _vm._e(), _vm._v(" "), (!_vm.isCan) ? _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.hmi ? _vm.device.hmi.speedLimit : "-") : "-") + "\n                                            ")])]) : _vm._e()])])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-content"
+  }, [_c('div', {
+    attrs: {
+      "slot": "content"
+    },
+    slot: "content"
+  }, [_c('div', {
+    staticClass: "item-group"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.controller')) + " SN")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.controller ? _vm.device.controller.sn : "-") : "-") + "\n                                            ")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [(_vm.device && _vm.device.controller && _vm.device.controller.tip) ? _c('span', {
+    staticClass: "color-red"
+  }, [_vm._v("(" + _vm._s(_vm.device.controller.tip) + ")")]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.controller ? _vm.device.controller.model : "-") : "-") + "\n                                            ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.controller ? _vm.device.controller.version : "-") : "-") + "\n                                            ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.controller ? _vm.device.controller.hardVersion : "-") : "-") + "\n                                            ")])]), _vm._v(" "), (!_vm.isCan) ? _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.nmlVolt')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.controller ? _vm.device.controller.nmlVolt : "-") : "-") + "\n                                            ")])]) : _vm._e(), _vm._v(" "), (!_vm.isCan) ? _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.maxCur')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.controller ? _vm.device.controller.maxCurrent : "-") : "-") + "\n                                            ")])]) : _vm._e(), _vm._v(" "), (!_vm.isCan) ? _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.controller ? _vm.device.controller.speedLimit : "-") : "-") + "\n                                            ")])]) : _vm._e(), _vm._v(" "), (!_vm.isCan) ? _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.controller ? _vm.device.controller.wheelDiameter : "-") : "-") + "\n                                            ")])]) : _vm._e(), _vm._v(" "), (!_vm.isCan) ? _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.circumference')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.controller ? _vm.device.controller.circumference : "-") : "-") + "\n                                            ")])]) : _vm._e()])])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-content"
+  }, [_c('div', {
+    attrs: {
+      "slot": "content"
+    },
+    slot: "content"
+  }, [_c('div', {
+    staticClass: "item-group"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.battery')) + " SN")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.sn : "-") : "-") + "\n                                                ")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [(_vm.device && _vm.device.battery && _vm.device.battery.tip) ? _c('span', {
+    staticClass: "color-red"
+  }, [_vm._v("(" + _vm._s(_vm.device.battery.tip) + ")")]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.model : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.version : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.hardVersion : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.ASOC')) + "(%)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.soh : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.RSOC')) + "(%)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.soc : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.packVoltage')) + "(mV)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.packVoltage : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.capacityLeft')) + "(mAh)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.leftCapacity : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.fullChargeCapacity')) + "(mAh)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.fullChargerCapacity : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.temperature')) + "(℃)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.temperature : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.current')) + "(mA)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.current : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cell1_7')) + "(mV)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.cell1to7 : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cell8_14')) + "(mV)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.cell8to14 : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cycleLife')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.loopTime : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.currentChargeInterval')) + "(day)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.lastCharge : "-") : "-") + "\n                                                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.maxChargeInterval')) + "(day)")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                    " + _vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.maxChargeInterval : "-") : "-") + "\n                                                ")])])])])])]), _vm._v(" "), (_vm.isCan) ? _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-content"
+  }, [_c('div', {
+    attrs: {
+      "slot": "content"
+    },
+    slot: "content"
+  }, [_c('div', {
+    staticClass: "item-group"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.sensor')) + " SN")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.pedalSensor ? _vm.device.pedalSensor.sn : "-") : "-") + "\n                                            ")]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [(_vm.device && _vm.device.pedalSensor && _vm.device.pedalSensor.tip) ? _c('span', {
+    staticClass: "color-red"
+  }, [_vm._v("(" + _vm._s(_vm.device.pedalSensor.tip) + ")")]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.pedalSensor ? _vm.device.pedalSensor.name : "-") : "-") + "\n                                            ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.pedalSensor ? _vm.device.pedalSensor.version : "-") : "-") + "\n                                            ")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "w-100 inline-block"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "inline-block"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.device ? (_vm.device.pedalSensor ? _vm.device.pedalSensor.hardVersion : "-") : "-") + "\n                                            ")])])])])])]) : _vm._e()])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('diagnosis.result'),
+      "name": "4"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hmi')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.reportInfo.processData.result.hmi))]), _vm._v(" "), (_vm.device.hmi.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.device.hmi.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.controller')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.reportInfo.processData.result.controller))]), _vm._v(" "), (_vm.device.controller.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.device.controller.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.motor')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.reportInfo.processData.result.motor))]), _vm._v(" "), (_vm.device.motor.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.device.motor.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.sensor')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.reportInfo.processData.result.pedalSensor))]), _vm._v(" "), (_vm.device.pedalSensor.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.device.pedalSensor.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.battery')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.reportInfo.processData.result.battery))]), _vm._v(" "), (_vm.device.battery.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.device.battery.error))])])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('cNam.remark'),
+      "name": "5"
+    }
+  }, [_c('div', {
+    staticClass: "remark-row"
+  }, _vm._l((_vm.error), function(code) {
+    return _c('el-row', {
+      key: code.name,
+      staticClass: "error-row"
+    }, [_c('p', {
+      staticClass: "error-text"
+    }, [_c('span', {
+      staticClass: "label-title"
+    }, [_vm._v(" Error Code: ")]), _vm._v(" " + _vm._s(code.name))]), _vm._v(" "), _c('p', {
+      staticClass: "error-text"
+    }, [_vm._v(" Description: " + _vm._s(code.desc) + " ")]), _vm._v(" "), _c('p', {
+      staticClass: "error-text"
+    }, [_vm._v(" Target: " + _vm._s(code.target ? code.target.join(',') : '') + " ")]), _vm._v(" "), _c('div', {
+      staticClass: "error-solution"
+    }, [_c('p', [_c('span', {
+      staticClass: "label-title"
+    }, [_vm._v(" Solution: ")])]), _vm._v(" "), _vm._l((code.solution), function(item, index) {
+      return _c('p', {
+        staticClass: "error-text pl-30"
+      }, [_vm._v(_vm._s(item))])
+    })], 2)])
+  })), _vm._v(" "), _c('div', {
+    staticClass: "remark-row"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('cNam.defect')))]), _vm._v(" "), _c('div', {
+    staticClass: "defect-list"
+  }, _vm._l((_vm.selectErrorList), function(error) {
+    return _c('span', {
+      staticClass: "error-span"
+    }, [_vm._v(_vm._s(error))])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "remark-row"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('cNam.description')))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.remark))])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), (_vm.fileString) ? _c('div', [_c('div', {
+    staticClass: "remark-row"
+  }, [_c('div', [_c('span', [_vm._v(_vm._s(_vm.$t('cNam.image')))])]), _vm._v(" "), _vm._l((_vm.picList), function(item, index) {
+    return _c('div', {
+      staticClass: "img-holder"
+    }, [_c('img', {
+      staticClass: "img-content",
+      attrs: {
+        "src": _vm.picPre + item
+      },
+      on: {
+        "click": function($event) {
+          _vm.handlePreview(_vm.picPre + item)
+        }
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "close-btn",
+      on: {
+        "click": function($event) {
+          _vm.removeImg(index)
+        }
+      }
+    })])
+  })], 2)]) : _c('div', [_c('div', {
+    staticClass: "remark-row"
+  }, [_c('div', {
+    staticClass: "title-wrap"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('cNam.image')))])]), _vm._v(" "), _vm._l((_vm.fileList.img), function(item, index) {
+    return _c('div', {
+      staticClass: "img-holder"
+    }, [_c('img', {
+      staticClass: "img-content",
+      attrs: {
+        "src": _vm.linkPre + item
+      }
+    })])
+  })], 2), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "remark-row"
+  }, [_c('div', {
+    staticClass: "title-wrap"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('cNam.video')))])]), _vm._v(" "), _vm._l((_vm.fileList.video), function(item, index) {
+    return _c('div', {
+      staticClass: "video-holder"
+    }, [_c('video', {
+      staticClass: "videoItem",
+      attrs: {
+        "src": _vm.linkPre + item,
+        "controls": "controls"
+      }
+    })])
+  })], 2)])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), (_vm.from === 'diagnosis3rdResult') ? _c('div', [_c('el-button', {
+    on: {
+      "click": _vm.goBackDiagnosis
+    }
+  }, [_vm._v("Diagnosis Bike")])], 1) : _vm._e()], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "print-content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('h4', [_vm._v("E-BIKE DIAGNOSIS REPORT " + _vm._s(_vm.reportInfo.vehicle_sn || ' '))]), _vm._v(" "), _c('el-collapse', {
+    model: {
+      value: (_vm.printActiveNames),
+      callback: function($$v) {
+        _vm.printActiveNames = $$v
+      },
+      expression: "printActiveNames"
+    }
+  }, [_c('el-collapse-item', {
+    attrs: {
+      "title": _vm.titleText,
+      "name": "1"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.labelText) + _vm._s(_vm.$t('name')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.orgInfo.name || '-'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.labelText) + _vm._s(_vm.$t('address')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.orgInfo.address + _vm.orgInfo.country || '-'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.labelText) + _vm._s(_vm.$t('email')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.orgInfo.email || '-'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.labelText) + _vm._s(_vm.$t('tel')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.orgInfo.phone || '-'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('reportDate')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.reportInfo.create_time)))])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('bike.title'),
+      "name": "2"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("Bike ID")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.reportInfo.vehicle_sn || '-'))])]), _vm._v(" "), _vm._l((_vm.componentList), function(item) {
+    return _c('li', {
+      staticClass: "list-group-item"
+    }, [_c('div', {
+      staticClass: "label-title"
+    }, [_vm._v(_vm._s(_vm._f("categoryRoot")(item.category_root_id)) + " SN")]), _vm._v(" "), _c('div', {
+      staticClass: "content"
+    }, [_vm._v(_vm._s(item.sn || '-'))])])
+  })], 2)]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('diagnosis.hmi'),
+      "name": "3"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "sn-main"
+  }, [_c('span', [_vm._v(_vm._s(_vm.device ? (_vm.device.hmi ? _vm.device.hmi.sn : "-") : "-") + " ")])]), _vm._v(" "), _c('div', {
+    staticClass: "sn-main"
+  }, [(_vm.device && _vm.device.hmi && _vm.device.hmi.tip) ? _c('span', [_vm._v("(" + _vm._s(_vm.device.hmi.tip) + ")")]) : _vm._e()])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.hmi.model : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.hmi.version : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.hmi.hardVersion : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.totalMileage')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.hmi.totalMileage : "-"))])]), _vm._v(" "), (!_vm.isCan) ? _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.hmi.wheelDiameter : "-"))])]) : _vm._e(), _vm._v(" "), (!_vm.isCan) ? _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.hmi.speedLimit : "-"))])]) : _vm._e()])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('diagnosis.controller'),
+      "name": "3"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item "
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "sn-main"
+  }, [_c('span', [_vm._v(_vm._s(_vm.device ? (_vm.device.controller ? _vm.device.controller.sn : "-") : "-") + " ")])]), _vm._v(" "), _c('div', {
+    staticClass: "sn-main"
+  }, [(_vm.device && _vm.device.controller && _vm.device.controller.tip) ? _c('span', [_vm._v("(" + _vm._s(_vm.device.controller.tip) + ") 1")]) : _vm._e()])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.controller.model : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.controller.version : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.controller.hardVersion : "-"))])]), _vm._v(" "), (!_vm.isCan) ? _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.nmlVolt')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.controller.nmlVolt : "-"))])]) : _vm._e(), _vm._v(" "), (!_vm.isCan) ? _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.maxCur')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.controller.maxCurrent : "-"))])]) : _vm._e(), _vm._v(" "), (_vm.isCan) ? _c('div', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.controller.speedLimit : "-"))])]) : _vm._e(), _vm._v(" "), (_vm.isCan) ? _c('div', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.controller.wheelDiameter : "-"))])]) : _vm._e(), _vm._v(" "), (_vm.isCan) ? _c('div', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.circumference')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.controller.circumference : "-"))])]) : _vm._e()])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('diagnosis.battery'),
+      "name": "3"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "sn-main"
+  }, [_c('span', [_vm._v(_vm._s(_vm.device ? (_vm.device.battery ? _vm.device.battery.sn : "-") : "-"))])]), _vm._v(" "), _c('div', {
+    staticClass: "sn-main"
+  }, [(_vm.device && _vm.device.battery && _vm.device.battery.tip) ? _c('span', [_vm._v("(" + _vm._s(_vm.device.battery.tip) + ")")]) : _vm._e()])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.model : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.version : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.hardVersion : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.ASOC')) + "(%)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.soh : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.RSOC')) + "(%)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.soc : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.packVoltage')) + "(mV)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.packVoltage : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.capacityLeft')) + "(mAh)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.leftCapacity : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.fullChargeCapacity')) + "(mAh)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.fullChargerCapacity : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.temperature')) + "(℃)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.temperature : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.current')) + "(mA)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.current : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cell1_7')) + "(mV)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.cell1to7 : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cell8_14')) + "(mV)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.cell8to14 : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cycleLife')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.loopTime : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.currentChargeInterval')) + "(day)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.lastCharge : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.maxChargeInterval')) + "(day)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.battery.maxChargeInterval : "-"))])])])]), _vm._v(" "), (_vm.isCan) ? _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('diagnosis.sensor'),
+      "name": "3"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "sn-main"
+  }, [_c('span', [_vm._v(_vm._s(_vm.device ? (_vm.device.pedalSensor ? _vm.device.pedalSensor.sn : "-") : "-"))])]), _vm._v(" "), _c('div', {
+    staticClass: "sn-main"
+  }, [(_vm.device && _vm.device.pedalSensor && _vm.device.pedalSensor.tip) ? _c('span', [_vm._v("(" + _vm._s(_vm.device.pedalSensor.tip) + ")")]) : _vm._e()])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.pedalSensor.name : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.pedalSensor.version : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.device ? _vm.device.pedalSensor.hardVersion : "-"))])])])]) : _vm._e(), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('diagnosis.result'),
+      "name": "4"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("HMI")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.reportInfo.processData.result.hmiOK ? 'OK' : 'Fail'))]), _vm._v(" "), (_vm.device.hmi.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.device.hmi.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("Controller")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.reportInfo.processData.result.controllerOK ? 'OK' : 'Fail'))]), _vm._v(" "), (_vm.device.controller.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.device.controller.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("Motor")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.reportInfo.processData.result.motorOK ? 'OK' : 'Fail'))]), _vm._v(" "), (_vm.device.motor.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.device.motor.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("PedalSensor")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.reportInfo.processData.result.pedalSensorOK ? 'OK' : 'Fail'))]), _vm._v(" "), (_vm.device.pedalSensor.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.device.pedalSensor.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("Battery")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.reportInfo.processData.result.batteryOK ? 'OK' : 'Fail'))]), _vm._v(" "), (_vm.device.battery.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.device.battery.error))])])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": _vm.$t('diagnosis.result'),
+      "name": "5"
+    }
+  }, [_vm._l((_vm.error), function(code) {
+    return _c('el-row', {
+      key: code.name,
+      staticClass: "error-row"
+    }, [_c('p', {
+      staticClass: "error-text"
+    }, [_c('span', {
+      staticClass: "label-title"
+    }, [_vm._v(" Error Code: ")]), _vm._v(" " + _vm._s(code.name))]), _vm._v(" "), _c('p', {
+      staticClass: "error-text"
+    }, [_vm._v(" Description: " + _vm._s(code.desc) + " ")]), _vm._v(" "), _c('p', {
+      staticClass: "error-text"
+    }, [_vm._v(" Target: " + _vm._s(code.target ? code.target.join(',') : '') + " ")]), _vm._v(" "), _c('div', {
+      staticClass: "error-solution"
+    }, [_c('p', [_c('span', {
+      staticClass: "label-title"
+    }, [_vm._v(" Solution: ")])]), _vm._v(" "), _vm._l((code.solution), function(item, index) {
+      return _c('p', {
+        staticClass: "error-text pl-30"
+      }, [_vm._v(_vm._s(item))])
+    })], 2)])
+  }), _vm._v(" "), _c('el-row', {
+    staticClass: "error-row"
+  }, [_c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    staticClass: "label-title"
+  }, [_vm._v("Defects: ")])]), _vm._v(" "), _vm._l((_vm.selectErrorList), function(error) {
+    return _c('p', {
+      staticClass: "error-text pl-30"
+    }, [_vm._v(_vm._s(error))])
+  })], 2), _vm._v(" "), _c('el-row', {
+    staticClass: "error-row"
+  }, [_c('p', {
+    staticClass: "error-text"
+  }, [_c('span', {
+    staticClass: "label-title"
+  }, [_vm._v(" Remark: ")])]), _vm._v(" "), _c('p', {
+    staticClass: "error-text pl-30"
+  }, [_vm._v(_vm._s(_vm.remark))])])], 2)], 1)], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.preDialogText,
+      "custom-class": "pre-dialog",
+      "top": "20vh"
+    },
+    model: {
+      value: (_vm.preDialogVisible),
+      callback: function($$v) {
+        _vm.preDialogVisible = $$v
+      },
+      expression: "preDialogVisible"
+    }
+  }, [_c('div', {
+    staticStyle: {
+      "text-align": "center",
+      "background": "#FFFFFF"
+    }
+  }, [_c('img', {
+    staticClass: "pre-img",
+    attrs: {
+      "src": _vm.dialogImageUrl,
+      "alt": ""
+    }
+  })])])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-da01b30e","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/diagnosis/report.vue
+// module id = 1187
+// module chunks = 73

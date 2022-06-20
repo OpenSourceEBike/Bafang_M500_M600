@@ -1,0 +1,461 @@
+<template>
+    <div class="dealer-ticket-list">
+        <div class="header">
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item add" @click="showSaveDialog"></div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <td v-for="item in tableHead">{{ item }}</td>
+                    </thead>
+                    <tbody>
+                    <tr v-for="item in ticketList">
+                        <td>{{item.sn}}</td>
+                        <td>{{item.title}}</td>
+                        <td>{{item.target_sn}}</td>
+                        <td>{{item.handler_org.name}}</td>
+                        <td>{{item.create_time | timeFormat("Y-m-d")}}</td>
+                        <td>{{item.status | ticketStatus( Core.Data.getLang() )}}</td>
+                        <td>
+                            <el-button class="btn-underline" type="text" @click="goToTicketDetailPage(item)">{{ $t('detail') }}
+                            </el-button>
+                            <a class="btn-underline" type="text" @click="showDeleteDialog(item)" v-if="authList[Core.Const.AUTH_LIST.ticketDelete]">{{ $t('delete') }}</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-show="ticketList==false">
+                    {{ $t('noResult') }}
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }} {{total}}</p>
+            </div>
+        </div>
+
+        <!-- 添加ticket -->
+        <el-dialog :title="$t('addTicketDialog.dialogTitle')" custom-class="save-ticket-dialog" :visible.sync="dialogSaveVisible">
+            <el-form label-position="left" :model="ticket" label-width="160px">
+                <el-form-item :label="$t('addTicketDialog.category')" required>
+                    <el-select v-model="ticket.category" placeholder="">
+                        <el-option
+                            v-for="item in categoryOptions"
+                            :key="item.id"
+                            :label="item.value"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item :label="$t('addTicketDialog.title')" required>
+                    <el-input v-model="ticket.title" :maxlength="45"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('addTicketDialog.description')">
+                    <el-input type="textarea" :autosize="{ minRows: 2}" v-model="ticket.description"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('addTicketDialog.bike')" required>
+                    <el-input class="scan-input scan-input-top-8" v-model="ticket.targetSn" :placeholder="$t('addTicketDialog.sn')"
+                              @blur="blurObjectSn"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('addTicketDialog.serviceCenter')" v-if="!hideServiceCenter" required>
+                    <el-select v-model="ticket.serviceCenterOrgId" placeholder="" v-if="showServiceCenterList">
+                        <el-option
+                            v-for="item in serviceCenterList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
+                    <el-input v-else v-model="brandOrg.name" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('addTicketDialog.image')">
+                    <vue-clip :options="upload" :on-complete="complete">
+                        <template slot="clip-uploader-action">
+                            <div>
+                                <div class="dz-message">
+                                    <img class="upload-icon" src="../../../assets/images/icon/icon-upload@2x.png"/>
+                                </div>
+                            </div>
+                        </template>
+                        <template slot="clip-uploader-body" slot-scope="props">
+                            <div class="img-list" v-for="file in props.files">
+                                <img v-bind:src="file.dataUrl"/>
+                            </div>
+                        </template>
+                    </vue-clip>
+                </el-form-item>
+                <el-form-item :label="$t('addTicketDialog.video')">
+                    <el-upload
+                        :action="upload.url"
+                        :on-change="handleChangeVideo"
+                        list-type="picture"
+                        accept="video/*"
+                        :data="upload.params"
+                        :file-list="fileList">
+                        <div class="btn-group-inline">
+                            <div class="icons">
+                                <div class="icon-item upload"  :title="$t('addTicketDialog.clickToUpload')"></div>
+                                <span>support:avi/mov/mp4/mp3/webm/wav</span>
+                            </div>
+                        </div>
+                        <!--<el-button size="small" type="primary">{{ $t('addTicketDialog.clickToUpload') }}</el-button>-->
+                    </el-upload>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="addTicket">{{ $t('confirm') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!-- 删除ticket -->
+        <el-dialog :title="$t('deleteTicket.title')" :visible.sync="dialogDeleteVisible" size="tiny">
+            <p> {{ $t('deleteTicket.content') }} </p>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="deleteTicket">{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        name: "dealerTicketList",
+        data() {
+            return {
+                Core: Core,
+                tableHead: ['Service No.', 'Title', 'Target SN', 'Service Center', 'Create Time', 'Status', 'Operation'],
+                currentPage: 1,
+                ticketList: [],
+                total: 0,
+                // dialog
+                dialogSaveVisible: false,
+                dialogDeleteVisible: false,
+                // ticket
+                ticket: {
+                    category: '',
+                    title: '',
+                    description: '',
+                    targetId: '',
+                    targetSn: '',
+                    serviceCenterOrgId: ''
+                },
+                selectedDeleteTicket: '',
+                categoryOptions: [
+                    {id: 1, value: 'Vehicle'},
+                    {id: 2, value: 'Motor'},
+                    {id: 3, value: 'Hmi'},
+                    {id: 4, value: 'Sensor'},
+                    {id: 5, value: 'Battery'},
+                    {id: 6, value: 'Controller'},
+                    {id: 7, value: 'Light'},
+                    {id: 8, value: 'Other'}
+                ],
+                upload: {
+                    url: Core.Const.NET.FILE_UPLOAD_END_POINT,
+                    paramName: 'file',
+                    params: {'token': Core.Data.getToken()}
+                },
+                fileList: [],
+                imgList: [],
+                serviceCenterList: [],
+                hideServiceCenter: true,
+                showServiceCenterList: false,
+                brandOrg: {},
+
+                authList: []
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Dealer.Ticket.List,
+                zh: ZH.Dealer.Ticket.List,
+                de: DE.Dealer.Ticket.List,
+                nl: NL.Dealer.Ticket.List
+            }
+        },
+        mounted: function () {
+            // 国际化
+            this.initData();
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            this.getTicketList();
+        },
+        methods: {
+            initData() {
+                this.tableHead = [this.$t('tableHead.serviceNo'), this.$t('tableHead.title'), this.$t('tableHead.targetNo'), this.$t('tableHead.ServiceCenter'), this.$t('tableHead.createTime'), this.$t('tableHead.status'), this.$t('tableHead.operation')];
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getTicketList();
+            },
+
+            getTicketList() {
+                Core.Api.Ticket.ticketList(this.currentPage).then(res => {
+                    this.ticketList = res.list;
+                    this.total = res.count;
+                });
+            },
+
+            blurObjectSn() {
+                // 根据sn获取object详情
+                if (!this.ticket.targetSn) {
+                    return
+                }
+//                console.log(this.ticket.targetSn);
+                let $this = this;
+
+                Core.Api.Object.objectDetailBySn(this.ticket.targetSn)
+                    .then(res => {
+                        let object = res.object;
+                        if(!object){
+                        	this.$message({
+                                message: 'Please check vehicle SN',
+                                type: 'warning'
+                            });
+                        	return;
+                        }
+                        let brandOrgId = object.brand_org_id;
+                        $this.brandOrg = object.brand_org;
+                        $this.ticket.targetId = object.id;
+                        return Core.Api.Org.allServiceCenterList(brandOrgId)
+                    }).then(data => {
+                    $this.hideServiceCenter = false;
+                    $this.serviceCenterList = data.org_list;
+                    $this.showServiceCenterList = $this.serviceCenterList.length > 0;
+                }).catch(err =>{
+                    console.log("Got Error",err);
+                });
+            },
+
+            addTicket() {
+                if (!this.checkParams()) {
+                    return
+                }
+
+                let $this = this;
+                let category = this.ticket.category;
+                let title = this.ticket.title;
+                if(title.length > 20){
+
+                }
+                let description = this.ticket.description;
+                let targetId = this.ticket.targetId;
+                let targetSn = this.ticket.targetSn;
+                let orgId = this.ticket.serviceCenterOrgId ? this.ticket.serviceCenterOrgId : this.brandOrg.id;
+                let img = '';
+                let video = '';
+                let testData = '';
+
+                if (this.imgList.length > 0) {
+                    img = this.imgList.join();
+                }
+
+                if (this.fileList.length > 0) {
+                    video = this.fileList[0].response.data.file.hash + '.' + this.fileList[0].response.data.file.ext;
+                }
+
+                if (this.ticket.serviceCenterOrgId) {
+                    Core.Api.Ticket.createTicket(category, title, description, targetId, targetSn, orgId, img, video, testData).then(res => {
+                        this.$message({
+                            message: 'Create successfully',
+                            type: 'success'
+                        });
+                        $this.dialogSaveVisible = false;
+                        $this.ticket = {
+                            category: '',
+                            title: '',
+                            description: '',
+                            targetId: '',
+                            targetSn: '',
+                            serviceCenterOrgId: ''
+                        };
+                        $this.getTicketList();
+                    });
+                } else {
+                    Core.Api.Ticket.createTicketWithOrgId(category, title, description, targetId, targetSn, orgId, img, video, testData).then(res => {
+                        this.$message({
+                            message: 'Create successfully',
+                            type: 'success'
+                        });
+                        $this.dialogSaveVisible = false;
+                        $this.ticket = {
+                            category: '',
+                            title: '',
+                            description: '',
+                            targetId: '',
+                            targetSn: '',
+                            serviceCenterOrgId: ''
+                        };
+                        $this.getTicketList();
+                    });
+                }
+            },
+
+            deleteTicket() {
+                let ticketId = this.selectedDeleteTicket.id;
+                let $this = this;
+
+                Core.Api.Ticket.deleteTicket(ticketId).then(res => {
+                    this.$message({
+                        message: 'Delete successfully',
+                        type: 'success'
+                    });
+                    $this.dialogDeleteVisible = false;
+                    $this.clearForm();
+                    $this.getTicketList();
+                });
+            },
+
+            checkParams() {
+                if (!this.ticket.category) {
+                    this.$message({
+                        message: 'Please select category',
+                        type: 'warning'
+                    });
+                    return false
+                }
+
+                if (!this.ticket.title) {
+                    this.$message({
+                        message: 'Please input title',
+                        type: 'warning'
+                    });
+                    return false
+                }
+
+                if (!this.ticket.targetSn) {
+                    this.$message({
+                        message: 'Please input object sn',
+                        type: 'warning'
+                    });
+                    return false
+                } else {
+                    if (!this.ticket.targetId) {
+                        this.$message({
+                            message: 'Please input correct sn',
+                            type: 'warning'
+                        });
+                        return false
+                    }
+                }
+
+                if (!this.ticket.serviceCenterOrgId && !this.brandOrg.id) {
+                    this.$message({
+                        message: 'Please select service center',
+                        type: 'warning'
+                    });
+                    return false
+                }
+
+                return true
+            },
+
+            clearForm() {
+                this.ticket = {
+                    category: '',
+                    title: '',
+                    description: '',
+                    targetId: '',
+                    targetSn: ''
+                };
+                this.fileList = [];
+                this.imgList = [];
+            },
+
+            showSaveDialog() {
+                this.dialogDeleteVisible = false;
+                this.dialogSaveVisible = true;
+            },
+
+            showDeleteDialog(ticket) {
+                this.dialogSaveVisible = false;
+                this.dialogDeleteVisible = true;
+                this.selectedDeleteTicket = ticket;
+            },
+
+            handleChangeVideo(file) {
+                this.fileList = [file]
+            },
+
+            complete(file, status, xhr) {
+                if (status === 'success') {
+                    let res = JSON.parse(xhr.response);
+                    if (res.code === 0 && res.data.file) {
+                        this.imgList.push(res.data.file.hash + '.' + res.data.file.ext);
+                    }
+                }
+            },
+
+            goToTicketDetailPage(ticket) {
+                this.$router.push({path: "detail", query: {id: ticket.id}})
+            }
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .dealer-ticket-list {
+        height: 100%;
+        .dz-started {
+            display: inline-block;
+            width: 120px;
+            height: 120px;
+            .dz-message {
+                width: 100%;
+                height: 100%;
+                img {
+                    width: 120px;
+                    height: 120px;
+                }
+            }
+        }
+
+        .img-list {
+            float: left;
+            img {
+                width: 120px;
+                height: 120px;
+                margin-right: 10px;
+            }
+        }
+        .el-upload-list__item img {
+            display: none;
+        }
+
+        .el-form-item__label {
+            color: #A1A5B1;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?d625e82e

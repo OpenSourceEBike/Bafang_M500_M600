@@ -1,0 +1,347 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "brand-service-center-list"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('serviceCenter')))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(_vm.authList[_vm.Core.Const.AUTH_LIST.ticketSCAdd]) ? _c('div', {
+    staticClass: "icon-item add",
+    on: {
+      "click": _vm.showAddDialog
+    }
+  }) : _vm._e()])])]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.orgList), function(item) {
+    return _c('tr', {
+      on: {
+        "click": function($event) {
+          _vm.showDetailDialog(item)
+        }
+      }
+    }, [_c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.phone))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.email))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.country))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.address))]), _vm._v(" "), _c('td', {
+      staticClass: "icon-td"
+    }, [_c('div', {
+      staticClass: "icons"
+    }, [(_vm.authList[_vm.Core.Const.AUTH_LIST.ticketSCEdit]) ? _c('div', {
+      staticClass: "icon-item edit",
+      attrs: {
+        "title": _vm.$t('op.edit')
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.showEditDialog(item)
+        }
+      }
+    }) : _vm._e()]), _vm._v(" "), _c('div', {
+      staticClass: "icons"
+    }, [_c('div', {
+      staticClass: "icon-item account",
+      attrs: {
+        "title": _vm.$t('op.account')
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.goToAccountList(item)
+        }
+      }
+    })]), _vm._v(" "), _c('div', {
+      staticClass: "icons"
+    }, [_c('div', {
+      staticClass: "icon-item delete",
+      attrs: {
+        "title": _vm.$t('op.delete')
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.showDeleteDialog(item)
+        }
+      }
+    })])])])
+  }))]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.orgList.length <= 0),
+      expression: "orgList.length <= 0"
+    }],
+    staticClass: "no-data-content"
+  }, [_vm._v("\n                " + _vm._s(_vm.$t('noResult')) + "\n            ")])]), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v(_vm._s(_vm.$t('total')) + ": " + _vm._s(_vm.total))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('deleteDialog.title'),
+      "visible": _vm.dialogDeleteCenterVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteCenterVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v(" " + _vm._s(_vm.$t('deleteDialog.content')) + " ")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteServiceCenter
+    }
+  }, [_vm._v(_vm._s(_vm.$t('yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteCenterVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('no')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-company",
+    attrs: {
+      "title": _vm.dialogText,
+      "visible": _vm.dialogEditServiceCenterVisible,
+      "custom-class": "edit-dialog"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogEditServiceCenterVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('editDialog.name')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectOrg.name),
+      callback: function($$v) {
+        _vm.$set(_vm.selectOrg, "name", $$v)
+      },
+      expression: "selectOrg.name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('editDialog.email')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectOrg.email),
+      callback: function($$v) {
+        _vm.$set(_vm.selectOrg, "email", $$v)
+      },
+      expression: "selectOrg.email"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('editDialog.address')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectOrg.address),
+      callback: function($$v) {
+        _vm.$set(_vm.selectOrg, "address", $$v)
+      },
+      expression: "selectOrg.address"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('editDialog.postcode')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.selectOrg.postcode),
+      callback: function($$v) {
+        _vm.$set(_vm.selectOrg, "postcode", $$v)
+      },
+      expression: "selectOrg.postcode"
+    }
+  }, [_c('template', {
+    slot: "append"
+  })], 2)], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('editDialog.phone')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.phoneNumber),
+      callback: function($$v) {
+        _vm.phoneNumber = $$v
+      },
+      expression: "phoneNumber"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "slot": "prepend",
+      "filterable": "",
+      "popper-class": "phone"
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.areaCode),
+      callback: function($$v) {
+        _vm.areaCode = $$v
+      },
+      expression: "areaCode"
+    }
+  }, _vm._l((_vm.areaCodeList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.area_code,
+        "value": item.area_code
+      }
+    })
+  }))], 1)], 1)]), _vm._v(" "), _c('p', {
+    staticClass: "declare"
+  }, [_vm._v("\n            NOTE: 请如实填写以上信息，以便及时沟通，准确投送物流包裹等。\n        ")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.editServiceCenter
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogEditServiceCenterVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-company",
+    attrs: {
+      "title": _vm.$t('detailDialog.title'),
+      "visible": _vm.dialogDetailServiceCenterVisible,
+      "custom-class": "edit-dialog"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDetailServiceCenterVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "detail-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('detailDialog.name')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.selectOrg.name))])])]), _vm._v(" "), _c('div', {
+    staticClass: "detail-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('detailDialog.email')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.selectOrg.email))])])]), _vm._v(" "), _c('div', {
+    staticClass: "detail-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('detailDialog.phone')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.selectOrg.phone))])])]), _vm._v(" "), _c('div', {
+    staticClass: "detail-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('detailDialog.address')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.selectOrg.address))])])]), _vm._v(" "), _c('div', {
+    staticClass: "detail-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('detailDialog.postcode')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.selectOrg.postcode) + " ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "detail-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('detailDialog.ticketCount')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.ticketCount))])])]), _vm._v(" "), _c('div', {
+    staticClass: "detail-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('detailDialog.aveHandleTime')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.averageTime))])])])])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-2f9ba303","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/service-center/service-center-list.vue
+// module id = 1167
+// module chunks = 73

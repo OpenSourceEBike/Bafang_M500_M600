@@ -1,0 +1,619 @@
+<template>
+  <div class="products-index">
+    <div class="search-header">
+      <div class="searchWrap">
+        <el-form :inline="true">
+          <el-form-item>
+            <el-input
+              v-model.trim="formSearch.product_code"
+              @keyup.enter.native="goSearch"
+              placeholder="Material Code"
+            ></el-input>
+            <div class="btn-group-inline">
+              <div class="icons">
+                <span class="icon-item search" @click="goSearch" title="search"></span>
+                <div class="icon-item clear" @click="onClean" title="clear"></div>
+              </div>
+            </div>
+          </el-form-item>
+        </el-form>
+        <div class="btn-group-top">
+          <div class="icons">
+            <button type="button" @click="onAdd" class="el-button el-button--preview">
+              Add
+              <i class="el-icon-plus btn-icon"></i>
+            </button>
+            <button type="button" @click="onDownload" class="el-button el-button--preview">Template</button>
+            <button type="button" class="el-button el-button--preview upload-btn">
+              Import
+              <input
+                type="file"
+                id="fileUpload"
+                class="upload-file"
+                ref="referenceUpload"
+                accept=".xls, .xlsx"
+                @change="changeFiles"
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container" v-loading.body="loading" element-loading-text="loading...">
+      <div class="category-tree">
+        <ul>
+          <li
+            :class="{'is-active':category.isActive}"
+            v-for="category in categoryList"
+            :key="category.id"
+            @click="onClickCategory(category)"
+          >
+            <img src="../../../assets/images/warehouse/category.png" class="icon">
+            <span class="title">{{category.name}}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="list-container">
+        <div class="content-wrap-view">
+          <div class="content-holder">
+            <div class="list">
+              <ul>
+                <li v-for="product in productList" :key="product.id">
+                  <div class="left">
+                    <!-- <img src="../../../assets/images/diagnosis/tool_2.png" alt /> -->
+                  </div>
+                  <div class="right">
+                    <h1>{{product.name}}</h1>
+                    <p>{{product.product_code}}</p>
+                    <span>{{product.specification }}</span>
+                  </div>
+                  <div class="opt">
+                    <button
+                      type="button"
+                      @click="onEdit(product)"
+                      class="el-button el-button--preview"
+                    >Edit</button>
+                    <button
+                      type="button"
+                      @click="onDelete(product)"
+                      class="el-button el-button--primary"
+                    >Delete</button>
+                  </div>
+                  <hr>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="content-footer">
+            <el-pagination
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPage"
+              :page-size="10"
+              layout="prev, pager, next, jumper"
+              :total="total"
+            ></el-pagination>
+            <p class="total">total: {{total}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 保存弹窗 -->
+    <el-dialog :title.sync="dialogTitle" :visible.sync="dialogVisible" class="dialog">
+      <div class="item">
+        <label class="title">
+          Material Code
+          <span class="required">*</span>
+        </label>
+        <div class="content">
+          <el-input v-model="formData.product_code"></el-input>
+        </div>
+      </div>
+      <div class="item">
+        <label class="title">
+          Specification
+          <span class="required">*</span>
+        </label>
+        <div class="content">
+          <el-input v-model="formData.specification"></el-input>
+        </div>
+      </div>
+      <div class="item">
+        <label class="title">
+          Category
+          <span class="required">*</span>
+        </label>
+        <div class="content">
+          <el-select class="land" v-model="formData.category_id" filterable slot="prepend">
+            <el-option
+              v-for="item in categoryList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </div>
+      </div>
+      <div class="item">
+        <label class="title">
+          Material Name
+          <span class="required">*</span>
+        </label>
+        <div class="content">
+          <el-input v-model="formData.name"></el-input>
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="preview" @click="dialogConfirm">confirm</el-button>
+        <el-button type="primary" @click="dialogCancel">cancel</el-button>
+      </div>
+    </el-dialog>
+    <dialog-delete
+      dialogDeleteTitle="Delete Material"
+      :dialogDeleteVisible="dialogDeleteVisible"
+      @dialogConfirm="onDeleteConfirm"
+      @dialogCancel="onDeleteCancel"
+    ></dialog-delete>
+  </div>
+</template>
+
+<script>
+import CommonService from "src/services/nl/commonService";
+import ProductService from "src/services/nl/productService";
+import dialogDelete from "src/components/nl/dialog-delete";
+import saveAs from "file-saver";
+import moment from "moment";
+export default {
+  components: {
+    dialogDelete
+  },
+  data() {
+    return {
+      formData: {},
+      formSearch: {},
+      currentPage: 1,
+      total: 0,
+      loading: false,
+      // 当前分类
+      currCategory: null,
+      // 产品分类列表
+      categoryList: [],
+      // 产品列表
+      productList: [],
+      // 弹框
+      dialogTitle: "",
+      dialogVisible: false,
+      // 删除确认弹窗
+      dialogDeleteVisible: false,
+      // 当前删除产品ID
+      currentID: null
+    };
+  },
+  async created() {
+    this.loading = true;
+    await CommonService.getAllCategory().then(res => {
+      this.categoryList = res.category_list.map((category, index) => {
+        return {
+          id: category.id,
+          name: category.name,
+          isActive: index == 0 ? true : false
+        };
+      });
+      this.loading = false;
+    });
+
+    this.getData();
+  },
+  methods: {
+    goSearch() {
+      this.getData();
+    },
+    onClean() {
+      this.formSearch.product_code = "";
+      this.getData();
+    },
+    // 分页
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getData();
+    },
+    // 产品分类点击事件
+    onClickCategory(item) {
+      this.categoryList.forEach(el => {
+        if (el.id == item.id) {
+          item.isActive = true;
+        } else {
+          el.isActive = false;
+        }
+      });
+      this.getData();
+    },
+    // 产品
+    getData() {
+      this.loading = true;
+      if (this.categoryList) {
+        const currentCategory = this.categoryList.filter(res => {
+          return res.isActive === true;
+        })[0];
+        this.currCategory = (currentCategory && currentCategory.id) || null;
+        ProductService.filter(
+          {
+            category_id: currentCategory.id,
+            product_code: this.formSearch.product_code
+          },
+          this.currentPage
+        ).then(res => {
+          this.productList = res.data.content;
+          this.total = res.data.totalElements;
+          this.loading = false;
+        });
+      }
+    },
+    onAdd() {
+      this.dialogTitle = "Add ";
+      this.formData = {
+        category_id: this.currCategory,
+        material_no: "",
+        name: "",
+        product_code: ""
+      };
+      this.dialogVisible = true;
+    },
+    onDownload() {
+      ProductService.exportTemplate().then(res => {
+        const filename = "temp-" + moment().format('YYYY-MM-DD');
+        saveAs(res.data, filename + ".xlsx");
+      });
+    },
+    changeFiles(e) {
+      this.loading = true;
+      const file = e.target.files[0];
+      this.$refs.referenceUpload.value = null;
+      if (!file) {
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", file);
+      ProductService.importfile(formData)
+        .then(res => {
+          if (res.data.code === 410) {
+            this.$confirm("The  data already exists, overwrite?", "Review", {
+              confirmButtonText: "Yes",
+              cancelButtonText: "No",
+              type: "warning"
+            }).then(() => {
+              ProductService.importfile(formData, true)
+                .then(res => {
+                  this.$message({
+                    message: "import successful !",
+                    type: "success"
+                  });
+                  this.getData();
+                  this.loading = false;
+                })
+                .catch(err => {
+                  this.$message({
+                    message: err,
+                    type: "error"
+                  });
+                  this.loading = false;
+                });
+            });
+            throw res.data.message;
+          }
+          this.$message({
+            message: "import successful !",
+            type: "success"
+          });
+          this.getData();
+          this.loading = false;
+        })
+        .catch(err => {
+          this.$message({
+            message: err,
+            type: "error"
+          });
+          this.loading = false;
+        });
+    },
+    onEdit(item) {
+      this.formData = item;
+      this.dialogVisible = true;
+    },
+    onDelete(item) {
+      this.currentID = item.id;
+      this.dialogDeleteVisible = true;
+    },
+    dialogConfirm() {
+      if (this.required()) {
+        this.loading = true;
+        ProductService.save(this.formData).then(res => {
+          this.getData();
+          this.loading = false;
+          this.dialogVisible = false;
+        });
+      }
+    },
+    dialogCancel() {
+      this.dialogVisible = false;
+    },
+    // 删除
+    onDeleteConfirm() {
+      this.loading = true;
+      ProductService.remove(this.currentID).then(res => {
+        this.getData();
+        this.loading = false;
+        this.dialogDeleteVisible = false;
+      });
+    },
+    onDeleteCancel() {
+      this.dialogDeleteVisible = false;
+    },
+    required() {
+      if (this.formData.product_code === "") {
+        this.$message({
+          message: "Please input product code !",
+          type: "warning"
+        });
+        return false;
+      }
+
+      if (this.formData.category_id === "") {
+        this.$message({
+          message: "Please input product category !",
+          type: "warning"
+        });
+        return false;
+      }
+
+      if (this.formData.name === "") {
+        this.$message({
+          message: "Please input product name !",
+          type: "warning"
+        });
+        return false;
+      }
+      return true;
+    }
+  }
+};
+</script>
+
+<style lang="scss" >
+.products-index {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: #2d3341;
+  //头部搜索框
+  .search-header {
+    z-index: 1;
+    padding: 0;
+    height: 60px;
+    .searchWrap {
+      .btn-group-top {
+        top: 17px;
+      }
+      .btn-icon {
+        font-size: 12px;
+        margin-left: 8px;
+      }
+      background: #383d49;
+      height: 100%;
+      .el-input {
+        float: left;
+        width: 200px;
+        padding-left: 15px;
+        line-height: 60px;
+      }
+      .el-form-item {
+        padding: 0;
+        margin: 0;
+        line-height: 60px;
+      }
+      .form-item {
+        width: 100%;
+        .el-form--inline .el-form-item__content {
+          width: 100%;
+        }
+      }
+
+      .el-form-item__content {
+        width: 100% !important;
+      }
+      .btn-group-inline {
+        padding-top: 9px;
+        widows: 100%;
+      }
+    }
+
+    button:hover,
+    .upload-btn :hover,
+    .upload-file :hover {
+      cursor: pointer;
+    }
+    .upload-btn {
+      position: relative;
+    }
+    .upload-file {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+  }
+  //树桩左侧筛选栏
+  .category-tree {
+    position: absolute;
+    left: 0;
+    top: 60px;
+    overflow: auto;
+    width: 272px;
+    height: 100%;
+    background: #383d49;
+
+    ul {
+      height: 100%;
+      width: 100%;
+    }
+
+    li {
+      border-left: 7px solid transparent;
+    }
+    li,
+    .icon,
+    .title {
+      height: 50px;
+    }
+
+    li:hover {
+      cursor: pointer;
+      background-color: #2d3341;
+    }
+
+    li.is-active {
+      color: #fff;
+      font-weight: 700;
+      border-left: 7px solid #e4662a;
+      background-color: #2d3341;
+    }
+
+    .icon {
+      vertical-align: middle;
+      padding: 7px;
+      margin: auto 15px;
+    }
+  }
+  .list-container {
+    width: 100%;
+    height: 100%;
+    padding-left: 272px;
+
+    .content-wrap-view {
+      width: 100%;
+      height: calc(100% - 60px);
+      overflow: auto;
+
+      .content-holder {
+        overflow: auto;
+        width: 100%;
+        height: 100%;
+        .list {
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          hr {
+            margin: 15px 0;
+            clear: both;
+            border: 1px solid #383d49;
+          }
+          ul {
+            height: 100%;
+          }
+
+          li {
+            height: 125px;
+            width: 100%;
+            padding: 15px 25px;
+            .left {
+              float: left;
+              height: 100%;
+              img {
+                height: 100%;
+              }
+            }
+
+            .right {
+              float: left;
+              width: calc(100% - 250px);
+              height: 100%;
+              padding: 5px 15px;
+              h1 {
+                font-size: 18px;
+                font-weight: initial;
+                margin: 5px 0;
+              }
+              p {
+                font-size: 15px;
+                margin: 5px 0;
+                color: #e4662a;
+              }
+            }
+
+            .opt {
+              display: inline-block;
+              text-align: center;
+              height: 100%;
+              button {
+                width: 100%;
+                margin: 10px auto;
+              }
+            }
+          }
+        }
+      }
+      .content-footer {
+        z-index: 100;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        padding: 15px 40px;
+        background-color: #2d3341;
+        box-shadow: 1px 0 0 1px #383d49;
+
+        .el-pagination {
+          white-space: nowrap;
+          padding: 2px 5px;
+          color: #fff;
+          display: inline-block;
+        }
+        .total {
+          position: relative;
+          top: 5px;
+          display: inline-block;
+          padding-left: 5px;
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.5);
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .dialog {
+    overflow: hidden;
+    .el-dialog__body {
+      font-size: 0;
+      padding: 30px 20px 30px 66px;
+    }
+    .item {
+      span.required {
+        color: #e26829;
+        display: inline-block;
+      }
+      line-height: 30px;
+      display: inline-block;
+      .title,
+      .land {
+        display: inline-block;
+        width: 105px;
+      }
+      .land {
+        width: 250px;
+      }
+      .content {
+        margin: 10px;
+        display: inline-block;
+        width: 250px;
+      }
+    }
+  }
+}
+</style>
+
+
+// WEBPACK FOOTER //
+// index.vue?5dcfe0ea

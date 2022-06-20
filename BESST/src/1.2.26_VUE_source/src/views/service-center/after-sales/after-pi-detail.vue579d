@@ -1,0 +1,395 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "after-pi-edit"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": " back "
+    },
+    on: {
+      "click": _vm.goPIList
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.title) + " Detail")]), _vm._v("  拆分要不要单独一个表？   拆分的PI 要有记录，但是并没有实际的效果。 "), _c('br'), _vm._v("\n        总金额也是PI的一个关建的置，List的请求，虽然不会请求这个值， 但是 保存确认PI的时候，会把总金额更新到PI列表，而不是停留在详情里面，这样的话， 字子PI也要出现在PI列表，是否显现？？\n        "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(true) ? _c('div', {
+    staticClass: "icon-item edit",
+    attrs: {
+      "title": "save"
+    },
+    on: {
+      "click": _vm.goPIEdit
+    }
+  }) : _vm._e(), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.splitPI
+    }
+  }, [_vm._v("拆分")])], 1)])]), _vm._v(" "), (_vm.loading) ? _c('div', {
+    staticClass: "loading"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../../assets/images/icon/loading-bars.svg"),
+      "alt": "Loading icon"
+    }
+  })]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "info-list"
+  }, [_c('div', {
+    staticClass: "col-left"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Customer")]), _vm._v(" "), _c('span', {
+    staticClass: "input",
+    model: {
+      value: (_vm.customer),
+      callback: function($$v) {
+        _vm.customer = $$v
+      },
+      expression: "customer"
+    }
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Country")]), _vm._v(" "), _c('span', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.country),
+      callback: function($$v) {
+        _vm.country = $$v
+      },
+      expression: "country"
+    }
+  })]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '2'),
+      expression: "piType != '2' "
+    }],
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Address")]), _vm._v(" "), _c('span', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.address),
+      callback: function($$v) {
+        _vm.address = $$v
+      },
+      expression: "address"
+    }
+  })]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '2'),
+      expression: "piType != '2' "
+    }],
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Atten")]), _vm._v(" "), _c('span', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.atten),
+      callback: function($$v) {
+        _vm.atten = $$v
+      },
+      expression: "atten"
+    }
+  })]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '2'),
+      expression: "piType != '2' "
+    }],
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Tel")]), _vm._v(" "), _c('span', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.tel),
+      callback: function($$v) {
+        _vm.tel = $$v
+      },
+      expression: "tel"
+    }
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("VAT No.")]), _vm._v(" "), _c('span', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.vatNo),
+      callback: function($$v) {
+        _vm.vatNo = $$v
+      },
+      expression: "vatNo"
+    }
+  })]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '1'),
+      expression: " piType != '1' "
+    }],
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("ETD")]), _vm._v(" "), _c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "placeholder": "estimatedDate"
+    },
+    model: {
+      value: (_vm.estimatedDate),
+      callback: function($$v) {
+        _vm.estimatedDate = $$v
+      },
+      expression: "estimatedDate"
+    }
+  })], 1), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Trade Terms")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    model: {
+      value: (_vm.tradeTerm),
+      callback: function($$v) {
+        _vm.tradeTerm = $$v
+      },
+      expression: "tradeTerm"
+    }
+  }, _vm._l((_vm.tradeTermType), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "col-right"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '1'),
+      expression: " piType != '1' "
+    }],
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("PO No.")]), _vm._v(" "), _c('span', {
+    staticClass: "input",
+    model: {
+      value: (_vm.poNo),
+      callback: function($$v) {
+        _vm.poNo = $$v
+      },
+      expression: "poNo"
+    }
+  })]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '2'),
+      expression: " piType != '2' "
+    }],
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Orderr No.")]), _vm._v(" "), _c('span', {
+    staticClass: "input",
+    model: {
+      value: (_vm.orderNo),
+      callback: function($$v) {
+        _vm.orderNo = $$v
+      },
+      expression: "orderNo"
+    }
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Sales")]), _vm._v(" "), _c('span', {
+    staticClass: "input",
+    model: {
+      value: (_vm.creator),
+      callback: function($$v) {
+        _vm.creator = $$v
+      },
+      expression: "creator"
+    }
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("PI No.")]), _vm._v(" "), _c('span', {
+    staticClass: "input",
+    model: {
+      value: (_vm.piNo),
+      callback: function($$v) {
+        _vm.piNo = $$v
+      },
+      expression: "piNo"
+    }
+  })]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.piType != '2'),
+      expression: " piType != '2' "
+    }],
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("ETD")]), _vm._v(" "), _c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "placeholder": "estimatedDate"
+    },
+    model: {
+      value: (_vm.estimatedDate),
+      callback: function($$v) {
+        _vm.estimatedDate = $$v
+      },
+      expression: "estimatedDate"
+    }
+  })], 1), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', {
+    staticClass: "label"
+  }, [_vm._v("Payment Term")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    model: {
+      value: (_vm.paymentTerm),
+      callback: function($$v) {
+        _vm.paymentTerm = $$v
+      },
+      expression: "paymentTerm"
+    }
+  }, _vm._l((_vm.paymentTermType), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1)])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "order-info border"
+  }, [_vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', {
+    staticClass: "height2"
+  }, _vm._l((_vm.piCompItems), function(item, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.a))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.b))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.c))]), _vm._v(" "), _c('td', {
+      staticClass: "long-td"
+    }, [_vm._v(_vm._s(item.d))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.e) + " ")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.f))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.g))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.h))])])
+  }))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('div', {
+    staticClass: "parts-list"
+  }, [_c('label', {
+    staticClass: "label1"
+  }, [_vm._v(_vm._s(_vm.title) + " Split List")]), _vm._v(" "), _c('el-button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.tableHeadSplit.length > 0),
+      expression: "tableHeadSplit.length > 0"
+    }],
+    staticClass: "att-btn",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.splitPI
+    }
+  }, [_vm._v("+")]), _vm._v(" "), _c('label', {
+    staticClass: "labelAdd"
+  }, [_vm._v("Split Proforma Invoice")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHeadSplit), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', {
+    staticClass: "height2",
+    attrs: {
+      "id": "split"
+    }
+  }, _vm._l((_vm.piCompItemsSplit), function(item, index) {
+    return _c('tr')
+  }))])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span'), _vm._v(" "), _c('span')])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span'), _vm._v(" "), _c('span')])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "parts-list"
+  }, [_c('span', {
+    staticClass: "labelList"
+  }, [_vm._v("Item list")])])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-2b3c0cc1","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/service-center/after-sales/after-pi-detail.vue
+// module id = 1916
+// module chunks = 73

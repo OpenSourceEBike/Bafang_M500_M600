@@ -1,0 +1,812 @@
+<template>
+    <div class="material-list" id="fullscreen">
+        <div class="header">
+            <el-form :inline="true" class="demo-form-inline">
+                <el-form-item :label="$t('orderNo')">
+                    <el-input v-model="search.source_id"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('proLine')">
+                    <el-select v-model="actual_line" @change="changeLine" class="input">
+                        <el-option
+                            v-for="item in line"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item :label="$t('status')">
+                    <el-select v-model="statusSelect" @change="changeStatus" class="input">
+                        <el-option
+                            v-for="item in statusGroup"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item :label="$t('startDate')">
+                    <el-date-picker
+                        v-model="startDate"
+                        type="date"
+                        placeholder="">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item :label="$t('endDate')">
+                    <el-date-picker
+                        v-model="endDate"
+                        type="date"
+                        placeholder="">
+                    </el-date-picker>
+                </el-form-item>
+                <div class="btn-group-inline">
+                    <div class="icons">
+                        <span v-show="errorMark">
+                            <img src="../../../assets/images/diagnosis/icon-error.png" class="error-img" width="28" height="28" >{{$t('connError')}}
+                        </span>
+                        <div class="icon-item search" @click="getMaterialOrderList" :title="$t('search')"></div>
+                        <div class="icon-item delete" @click="ShowBatchDialog" :title="$t('batchDelete')" v-if="authList[Core.Const.AUTH_LIST.productionDelete]"></div>
+                        <el-button type="primary" @click="dialogOrderVisible = true">{{$t('upload')}}</el-button>
+                        <el-button type="button" @click="toggle" class="full_btn">Fullscreen</el-button>
+                    </div>
+                </div>
+            </el-form>
+
+            <div class="btn-group-top">
+                <div class="icons">
+                    <!--<el-button type="primary" @click="dialogOrderVisible = true">上传订单</el-button>-->
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder-m">
+                <!--</el-table>-->
+                <div class="no-data-content" v-if="materialList.length <= 0 && !loading">
+                    {{ $t('noResult') }}
+                </div>
+                <table class="table-content-m" border="0" cellspacing="0" cellpadding="0" v-else>
+                    <thead>
+                    <tr>
+                        <td v-if="total"><el-checkbox v-model="allSelect" @change="selectAll"></el-checkbox></td>
+                        <td v-for="(item, index) in headData" :class="{'al-right': index=== 0 || index=== 1 }">{{item}}</td>
+                    </tr>
+                    </thead>
+                    <tbody v-if="!loading" >
+                    <tr v-for="item in materialList" v-bind:class="{bg: item.material_type == '4' ||item.material_type == '5'  }" @dblclick="goMaterialDetail(item.sn)">
+                        <td><el-checkbox v-model="item.select" @change="checkSelect"></el-checkbox></td>
+                        <td class="al-right">{{ item.order_id  || '/' }}</td>
+                        <td class="al-right">{{ item.user_code  || '/' }}</td>
+                        <td class="long-td">{{ item.model_type  }}</td>
+                        <td>{{ item.num}}/ {{ item.amount}}</td>
+                        <td>{{ item.material_type | materialStatus( Core.Data.getLang() ) }}</td>
+                        <td>{{ item.reserved_line || '/' }}</td>
+                        <td>{{ item.pre_delivery_date | dateFormat }}</td>
+                        <td>{{ item.remark || '/' }}</td>
+                        <td>
+                            <a class="btn-underline" @click.stop="goMaterialDetail(item.sn)">{{ $t('detail') }}</a>
+                            <a class="btn-underline" @click.stop="showEditDialog(item)" v-if="authList[Core.Const.AUTH_LIST.productionEdit]">{{ $t('edit') }}</a>
+                            <a class="btn-underline" @click.stop="showMaterialDeleteDialog(item.id)" v-if="authList[Core.Const.AUTH_LIST.productionDelete]">{{ $t('delete') }}</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!--authList[Core.Const.AUTH_LIST.objectDelete]-->
+
+                <div class="loading" v-if="loading">
+                    <img src="../../../assets/images/icon/loading-bars.svg" alt="Loading icon" />
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next, jumper"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+
+        <!--单独删除-->
+        <el-dialog
+            :title="$t('deleteDialogTitle')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialogContent') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteMaterial">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('no') }}</el-button>
+            </span>
+        </el-dialog>
+
+        <!-- 上传失败弹窗 -->
+        <el-dialog :title="$t('dialogUploadText')" :visible.sync="dialogUploadFailVisible" size="tiny">
+            <table border="1">
+                <tr>
+                    <td>SN</td>
+                </tr>
+                <tr v-for="item in failList">
+                    <td>{{item.sn}}</td>
+                </tr>
+            </table>
+        </el-dialog>
+
+        <!--批量删除-->
+        <el-dialog
+            :title="$t('deleteDialogTitle')"
+            :visible.sync="batchDeleteDialogVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialogContent') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="batchDelete">{{ $t('yes') }}</el-button>
+                 <el-button type="primary" @click="batchDeleteDialogVisible = false">{{ $t('no') }}</el-button>
+            </span>
+        </el-dialog>
+
+        <!--编辑状态-->
+        <el-dialog
+            :title="$t('editDialogTile')"
+            :visible.sync="editDialogVisible"
+            size="tiny">
+            <div class="item">
+                <label class="label">{{$t('orderNo')}}</label>
+                <el-input v-model="selectedItem.order_id" class="input" disabled="disabled"></el-input>
+            </div>
+            <div class="item">
+                <label class="label">{{$t('status')}}</label>
+                <el-select v-model="material_type_edit" class="input">
+                    <el-option
+                        v-for="item in typeEdit"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="item">
+                <label class="label">{{$t('date')}}</label>
+                <el-date-picker
+                    v-model="dateEdit"
+                    type="date"
+                    placeholder="">
+                </el-date-picker>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="editMaterialStatus()">Update</el-button>
+                 <el-button type="primary" @click="editDialogVisible = false">Cancel</el-button>
+            </span>
+        </el-dialog>
+
+        <!--订单上传-->
+        <el-dialog :visible.sync="dialogOrderVisible" :title="$t('dialogUploadText')" class="dialog" @close='closeDialog'>
+            <el-upload
+                class="upload desc"
+                ref="upload"
+                :action="options.url"
+                :on-success="onSuccess"
+                :multiple="singleUpload"
+                :auto-upload="autoUpload"
+                :data="options">
+                <el-button type="primary">{{$t('upload')}}</el-button>
+            </el-upload>
+            <vue-loading class="loading" type="spin" color="#E26829" v-if="loading"></vue-loading>
+        </el-dialog>
+
+
+
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+
+    import vueLoading from 'vue-loading-template'
+    import ElOption from "../../../../node_modules/element-ui/packages/select/src/option";
+    import ElInput from "../../../../node_modules/element-ui/packages/input/src/input";
+
+    export default {
+//        inject:['reload'],
+//        components: {ElInput},
+        components: {ElOption},
+        name: 'getFilesList',
+        data() {
+            return {
+                Core: Core,
+                headData: [ 'Order No.','Client Code','Model Des','Num/Qty', 'Status','Actual Line','Date','Remark','Operation'],
+                materialList: [],
+                currentPage: 1,
+                total: 0,
+                loading: false,
+                localPage: 0,
+                fileId:'',
+
+                dialogDeleteVisible: false,
+                editDialogVisible: false,
+                selectId: '',
+
+                authList: [],
+
+                isScanner: false,
+                lastInputTime: 0,
+                scannerTimeout: '',
+
+                material_id:'',
+                material_sn:'',
+                material_desc:'',
+                user_id:'',
+                material_type:'',
+                sc_type :'',
+
+                // 编辑项目
+                material_type_edit: '',
+                typeEdit: [
+                    { value: '-1', label: 'In plan' },
+                    { value: '0', label: 'In preparation' },
+                    { value: '1', label: 'In assembly' },
+                    { value: '2', label: 'In storage' },
+                    { value: '3', label: 'In test' },
+                    { value: '4', label: 'Abnormal assembly' },
+                    { value: '5', label: 'Abnormal test' }
+                ],
+                dateEdit:'',
+
+                // 搜索项目
+                line: [{ value: '0', label: 'All' },
+                    { value: '1', label: 'line1' },
+                    { value: '2', label: 'line2' },
+                    { value: '3', label: 'line3' },
+                    { value: '4', label: 'line4' },
+                    { value: '5', label: 'line5' },
+                    { value: '6', label: 'line6' },
+                    { value: '7', label: 'line7' }],
+                actual_line: Core.Data.get(Core.Const.DATA.KEY_MATERIAL_LINE) ? Core.Data.get(Core.Const.DATA.KEY_MATERIAL_LINE) :'0',
+                statusSelect: Core.Data.get(Core.Const.DATA.KEY_MATERIAL_STATUS) ? Core.Data.get(Core.Const.DATA.KEY_MATERIAL_STATUS) :'',
+                statusGroup: [
+                    { value: '', label: 'All' },
+                    { value: '0', label: 'In preparation' },
+                    { value: '1', label: 'In assembly' },
+                    { value: '2', label: 'In storage' },
+                    { value: '3', label: 'In test' },
+                    { value: '4', label: 'Abnormal assembly' },
+                    { value: '5', label: 'Abnormal test' }
+                ],
+                startDate: Core.Util.transDay(),
+                endDate: Core.Util.transDay(1),
+
+                failList: [],
+                dialogUploadText: '',
+                dialogUploadFailVisible: false,
+                batchDeleteDialogVisible:false,
+
+                singleUpload: false,
+                autoUpload: true,
+                options: {
+                    url: Core.Const.NET.UPLOAD_MATERIAL_URL,
+                    paramName: 'file',
+                    token: Core.Data.getToken(),
+                },
+                search: {
+                    source_id: '',
+                    part_no: '',
+                    item_name: '',
+                    sn: '',
+                    customer_id: '',
+                },
+                allSelect: false,
+                selectIdList: [],
+                selectedItem: '',
+
+                dialogOrderVisible: false,
+
+                ws: '',
+                readyState: '',
+                lockReconnect: false,  //避免ws重复连接
+                wsUrl: '',
+                timeout: 8000,        //8s发一次心跳
+                timeoutObj: null,
+                serverTimeoutObj: null,
+                reconnectTimeoutObj: null,
+                reconnectCount:0,
+                closePage: false,
+                errorMark:false,
+
+                fullscreen: false,
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Material.List,
+                zh: ZH.Component.Material.List,
+                de: EN.Component.Material.List,
+                nl: EN.Component.Material.List,
+            }
+        },
+        mounted: function () {
+            // 国际化
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                let _this = this;
+                setTimeout(() => {
+                    _this.initData();
+                }, 100);
+            });
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+            this.getMaterialList();
+
+            this.wsUrl = "ws://test.api.besst.bafang-service.com/besst-api/" + Core.Data.getUser().id;
+//            this.wsUrl = "ws://58.211.213.54:9898/besst-api/" + Core.Data.getUser().id;
+            this.createWebSocket(this.wsUrl);
+
+
+        },
+        methods: {
+            initData() {
+                this.headData = [ this.$t('orderNo'),
+                    this.$t('clientCode'),
+                    this.$t('modelDes'),
+                    this.$t('numQty'),
+                    this.$t('status'),
+                    this.$t('proLine'),
+                    this.$t('date'),
+                    this.$t('remark'),
+                    this.$t('operation')];
+                this.line = [{ value: '0', label: this.$t('all')  },
+                    { value: '1', label: this.$t('line1') },
+                    { value: '2', label: this.$t('line2') },
+                    { value: '3', label: this.$t('line3') },
+                    { value: '4', label: this.$t('line4') },
+                    { value: '5', label: this.$t('line5') },
+                    { value: '6', label: this.$t('line6') },
+                    { value: '7', label: this.$t('line7') }];
+                this.statusGroup = [
+                    { value: '', label: this.$t('all') },
+                    { value: '0', label: this.$t('s2') },
+                    { value: '1', label: this.$t('s3') },
+                    { value: '2', label: this.$t('s4') },
+                    { value: '3', label: this.$t('s5') },
+                    { value: '4', label: this.$t('s6') },
+                    { value: '5', label: this.$t('s7') }];
+                this.typeEdit = [
+                    { value: '-1', label: this.$t('s1') },
+                    { value: '0', label: this.$t('s2') },
+                    { value: '1', label: this.$t('s3') },
+                    { value: '2', label: this.$t('s4') },
+                    { value: '3', label: this.$t('s5') },
+                    { value: '4', label: this.$t('s6') },
+                    { value: '5', label: this.$t('s7') }];
+
+            },
+
+            start(){
+                let self = this;
+                this.timeoutObj = setTimeout(function(){
+                    //这里发送一个心跳，后端收到后，返回一个心跳消息，
+                    //onmessage拿到返回的心跳就说明连接正常
+                    self.ws.send("ping");
+                    console.log("ping!");
+                    self.serverTimeoutObj = setTimeout(function(){//如果超过一定时间还没重置，说明后端主动断开了
+                        self.ws.close();     //如果onclose会执行reconnect，我们执行ws.close()就行了.如果直接执行reconnect 会触发onclose导致重连两次
+                    }, self.timeout)
+                }, this.timeout)
+            },
+            reset(){
+                clearTimeout(this.timeoutObj);
+                clearTimeout(this.serverTimeoutObj);
+                return this;
+            },
+            reconnect(url) {
+                let self = this;
+                if(this.lockReconnect) return;
+                this.lockReconnect = true;
+                this.reconnectTimeoutObj = setTimeout(function () {
+                    self.reconnectCount++;
+                    if( self.reconnectCount <5){
+                        //没连接上会一直重连，设置延迟避免请求过多
+                        self.createWebSocket(url);
+                        self.lockReconnect = false;
+                        console.log("reconnect");
+                    }else{
+                        self.errorMark = true ;
+                        clearTimeout(self.reconnectTimeoutObj);
+                    }
+                }, 10000);
+            },
+
+            createWebSocket(url) {
+                try{
+                    if ('WebSocket' in window) {
+                        let _this = this;
+                        this.ws = new WebSocket( url );//连接服务器
+                        console.log(this.ws);
+
+                        this.ws.onopen = function (event) {
+                            _this.reset();
+                            _this.start();      //心跳检测重置
+                            console.log("已经与服务器建立了连接rn当前连接状态:" + this.readyState);
+                        };
+                        this.ws.onmessage = function (event) {
+                            console.log(event.data);
+                            _this.reset();
+                            _this.start();      //心跳检测重置
+
+                            if( event.data.indexOf('{') > -1 ){
+                                _this.ws.send( 'ping');
+                                let arr = _this.materialList;
+                                let res = JSON.parse(event.data);
+//                                console.log(res);
+                                for(let i=0;i<arr.length;i++){
+                                    if( arr[i].sn == res.sn){
+                                        arr[i].material_type = res.material_type;
+                                        arr[i].num = res.num;
+                                        arr[i].pre_delivery_date = res.pre_delivery_date;
+                                    }
+                                }
+//                                console.log(arr);
+                                _this.materialList = arr;
+                            }
+                        };
+                        this.ws.onclose = function(event){
+                            if (!_this.closePage){
+                                _this.reconnect(url);
+                            }
+                            console.log("已经与服务器断开连接rn当前连接状态:" + this.readyState, event);
+                        };
+                        this.ws.onerror = function(event){
+                            _this.reconnect(url);
+                            console.log("WebSocket异常!");
+                        };
+
+                    } else {
+                        alert('当前浏览器 Not support websocket');
+                    }
+                }catch(e){
+                    this.reconnect(url);
+                    console.log(e);
+                }
+            },
+            changeLine(){
+                Core.Data.set(Core.Const.DATA.KEY_MATERIAL_LINE, this.actual_line);
+            },
+            changeStatus(){
+                Core.Data.set(Core.Const.DATA.KEY_MATERIAL_STATUS, this.statusSelect);
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+//                Core.Data.set(Core.Const.DATA.KEY_COMPONENT_ORDER_LIST_PAGE, this.currentPage);
+                if( this.actual_line == '0' && this.statusSelect == '' ){
+                    this.getMaterialList();
+                }else{
+                    this.getMaterialOrderList();
+                }
+            },
+
+            getMaterialList() {
+                this.loading = true;
+                if( this.actual_line == '0' && this.statusSelect == '' ){
+                    Core.Api.Material.findByUserId( this.currentPage ).then(res=>{
+                        this.loading = false;
+
+                        let materialList = res.material_user_list;
+    //                    console.log(materialList);
+
+                        this.total = res.count;
+                        materialList.forEach(i=>{
+                            i.select = false;
+                        });
+                        this.materialList = materialList;
+                    });
+                }else{
+                    this.getMaterialOrderList();
+                }
+            },
+            getMaterialOrderList(){
+                let startDate = Core.Util.parseDate(this.startDate) || 0;
+                let endDate = Core.Util.parseDate(this.endDate) || 0;
+                Core.Api.Material.findByParam( this.statusSelect ,this.search.source_id.trim(), this.actual_line, startDate, endDate, this.currentPage ).then(res=>{
+                    this.materialList = res.material_list ;
+                    this.total = res.count ;
+                    this.loading = false;
+                });
+            },
+            showEditDialog(item){
+                this.selectedItem = item;
+                this.material_type_edit = item.material_type;
+                this.dateEdit = item.pre_delivery_date * 1000 ;
+                this.editDialogVisible = true;
+            },
+            editMaterialStatus(){
+                console.log(this.dateEdit);
+                let dateTem = Core.Util.changeDateForm( this.dateEdit );
+                console.log(dateTem);
+                console.log(this.material_type_edit);
+                Core.Api.Material.updateMaterial(this.selectedItem.id, this.selectedItem.order_id, this.selectedItem.sn, this.material_type_edit, this.selectedItem.num, dateTem ).then(res => {
+                    this.$message({
+                        message: "Save Successfully",
+                        type: 'success'
+                    });
+                    console.log("刷新",this.selectedItem.sn);
+//                    this.getMaterialList();
+
+                    this.ws.send( Core.Data.getUser().id+'|update|'+this.selectedItem.sn);
+//                    this.ws.send( 'ping');
+                });
+
+                this.editDialogVisible = false;
+            },
+
+            showMaterialDeleteDialog(selectId) {
+                this.selectId = selectId;
+                this.dialogDeleteVisible = true;
+            },
+
+            deleteMaterial() {
+                Core.Api.Material.deleteById(this.selectId).then(res => {
+                    this.$message({
+                        message: 'Delete successfully',
+                        type: 'success'
+                    });
+                    this.dialogDeleteVisible = false;
+                    this.getMaterialList();
+                })
+            },
+            selectAll() {
+                let flag =  this.allSelect;
+                console.log(flag);
+                this.materialList.forEach(i => {
+                    i.select = flag
+                })
+            },
+            checkSelect(){
+                let count = 0;
+                this.materialList.forEach(i => {
+                    if( i.select == true){
+                        count++;
+                    }
+                });
+                if(count== this.materialList.length){
+                    this.allSelect =  true;
+                }else{
+                    this.allSelect =  false;
+                }
+            },
+            goMaterialDetail(snPro) {
+                this.$router.push({name: 'componentMaterialDetail', query: {"materialSn": snPro, "from": "list"}});
+            },
+
+            submitUpload() {
+                //  this.autoUpload = true;
+                this.loading = true;
+                this.$refs.upload.submit();
+            },
+
+            onSuccess(response, file, fileList) {
+                this.loading = false;
+
+                if (response.code !== 0) {
+                    this.$message({
+                        message: response.message,
+                        type: "error"
+                    });
+                } else {
+                    let failList = response.data && response.data.fail_list;
+                    let successList = response.data && response.data.success_list;
+                    if (failList && failList.length > 0) {
+                        this.dialogUploadFailVisible = true;
+                        this.dialogUploadText = 'Upload Fail List';
+                        this.failList = failList;
+                    } else if (successList && successList.length > 0) {
+                        this.dialogUploadFailVisible = true;
+                        this.dialogUploadText = 'Upload Success List';
+                        this.failList = successList;
+                    } else {
+                        this.$message({
+                            message: "File upload successfully! It's processing in the background",
+                            type: 'success'
+                        });
+                        //this.getProductionOrderDetail(this.orderId);
+                        // this.$router.push({name:'ComponentMaterialList'});
+//                        location.reload();
+                    }
+                }
+            },
+
+            ShowBatchDialog () {
+                let selectList = [];
+                for (let i = 0; i < this.materialList.length; i++) {
+                    let item = this.materialList[i];
+                    if (item.select) {
+                        selectList.push(item);
+                    }
+                }
+                if (!selectList.length) {
+                    this.$message.warning(" ");
+                }else{
+                    this.batchDeleteDialogVisible = true;
+                }
+
+            },
+
+            batchDelete() {
+                let selectOrderList = [];
+                this.materialList.filter(item => {
+                    if(item.select) {
+                        selectOrderList.push(item.id)
+                    }
+                });
+
+                if (selectOrderList.length > 0) {
+                    let idList = selectOrderList.join(',');
+                    Core.Api.Material.deleteBatch(idList).then(res => {
+                        this.getMaterialList();
+                        this.batchDeleteDialogVisible = false;
+                        this.allSelect = false;
+                    })
+                } else {
+                    this.$message.warning('no checked anyone')
+                }
+            },
+
+            closeDialog(){
+//                console.log(this.options);
+//                this.$message(1);
+//                this.options.file = '';
+            },
+            toggle () {
+//                this.$refs['fullscreen'].toggle();
+
+                var full = document.getElementById("fullscreen");
+                if (!document.fullscreenElement && // alternative standard method
+                    !document.mozFullScreenElement && !document.webkitFullscreenElement) {// current working methods
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen();
+                    } else if (full.webkitRequestFullscreen) {
+//                        full.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                        full.webkitRequestFullscreen();
+                        console.log("退出");
+                    }
+                }
+            },
+            fullscreenChange (fullscreen) {
+                this.fullscreen = fullscreen;
+            },
+        },
+
+        beforeDestroy () {
+            this.closePage = true;
+            this.ws.close();
+            clearTimeout(this.timeoutObj);
+            clearTimeout(this.serverTimeoutObj);
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .material-list {
+        /*display:flex;*/
+        /*flex-direction:column;*/
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        .el-form-item{
+            height: 100%;
+            line-height: 50px;
+            display: inline-block;
+            margin-bottom:0px;
+            .el-form-item__label{
+                font-size:18px;
+            }
+            .el-input{
+                width:200px;
+            }
+        }
+        .loading {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /*.table-wrap{*/
+            /*!*flex:1;*!*/
+            /*.table-content-holder{*/
+                /*background:#383d49;*/
+            /*}*/
+            /*.table-content tr td{*/
+                /*font-size:18px;*/
+            /*}*/
+
+        /*}*/
+        .table-wrap{
+            /*flex:1;*/
+            width: 100%;
+            height: calc(100% - 60px);
+            overflow: auto;
+
+            .table-content-holder-m{
+                overflow: auto;
+                width:100%;
+                height: calc(100% - 60px);
+                background:#383d49;
+            }
+            // 专门针对 material 写的样式
+            .table-content-m{
+                width:100%;
+                tr{
+                    height: 50px;
+                    cursor: pointer;
+                    td{
+                        padding: 0px 10px;
+                        text-align: left;
+                        white-space: nowrap;
+                        font-size: 18px;
+                        border-bottom: 1px solid #2B2F3B;
+                        a{
+                            font-size: 18px;
+                        }
+                    }
+                    .long-td{
+                        max-width: 270px;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        text-align: left;
+                    }
+                    .al-right{
+                        text-align: right;
+                    }
+                }
+            }
+        }
+
+        html:-webkit-full-screen {
+            background: #383d49;
+        }
+        html:fullscreen {
+            background: #383d49;
+        }
+    }
+    .input-holder {
+        overflow: hidden;
+        & > label {
+            float: left;
+            display: inline-block;
+            width: 25px;
+        }
+        .el-input {
+            float: left;
+            width: calc(100% - 30px);
+        }
+    }
+
+    .bg{
+        background-color: red;
+    }
+    .demo-form-inline{
+        .input{
+        }
+    }
+    .el-dialog--tiny{
+        .item{
+            height:60px;
+            .label{
+                display:inline-block;
+                width:100px;
+            }
+            .el-input{
+                width:220px;
+            }
+        }
+    }
+
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?ed397b12

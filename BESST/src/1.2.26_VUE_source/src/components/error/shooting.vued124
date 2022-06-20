@@ -1,0 +1,211 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "error-shooting"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('span', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('errorCode')))]), _vm._v(" "), _c('el-select', {
+    on: {
+      "change": function($event) {
+        _vm.changeErrorCode()
+      }
+    },
+    model: {
+      value: (_vm.errorId),
+      callback: function($$v) {
+        _vm.errorId = $$v
+      },
+      expression: "errorId"
+    }
+  }, _vm._l((_vm.errorCodeList), function(code) {
+    return _c('el-option', {
+      key: code.id,
+      attrs: {
+        "label": code.name,
+        "value": code.id
+      }
+    })
+  })), _vm._v(" "), (_vm.user === 24 || _vm.user === 627) ? _c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.showErrDialog('Edit Error Message', 'edit')
+      }
+    }
+  }, [_vm._v("Edit")]) : _vm._e(), _vm._v(" "), (_vm.user === 24 || _vm.user === 627) ? _c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.showErrDialog('Create Error Message', 'create')
+      }
+    }
+  }, [_vm._v("Create")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [(_vm.selectErrorCode.id > 0) ? _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('name')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.selectErrorCode.name))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('remark')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.selectErrorCode.remark))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('description')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.selectErrorCode.desc))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('target')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.selectErrorCode.target))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('solution')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, _vm._l((_vm.selectErrorCode.solution), function(item, index) {
+    return (item) ? _c('p', [_vm._v(_vm._s(index + 1) + ". " + _vm._s(item))]) : _vm._e()
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "tip"
+  }, [_c('label', {
+    staticClass: "tip-label"
+  }, [_vm._v(_vm._s(_vm.$t('tip')) + ": ")]), _vm._v(" "), _c('div', {
+    staticClass: "tip-content"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('tipContent')) + "\n                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "help"
+  }, [_c('label', {
+    staticClass: "help-label"
+  }, [_vm._v(_vm._s(_vm.$t('help')) + ":")]), _vm._v(" "), _c('div', {
+    staticClass: "help-content"
+  }, [_c('p', [_vm._v(_vm._s(_vm.$t('helpContent')) + " "), _c('a', {
+    staticClass: "btn-underline",
+    on: {
+      "click": _vm.linkVideo
+    }
+  }, [_vm._v(_vm._s(_vm.$t('link')))])])])])]) : _vm._e()]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "edit-error-dialog",
+    attrs: {
+      "visible": _vm.errDialog
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.errDialog = $event
+      }
+    }
+  }, [_c('p', {
+    staticClass: "dialog-title"
+  }, [_vm._v(_vm._s(_vm.errTitle))]), _vm._v(" "), _c('el-form', [_c('el-form-item', {
+    attrs: {
+      "label": "Code"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.errCode),
+      callback: function($$v) {
+        _vm.errCode = $$v
+      },
+      expression: "errCode"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Name"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.errName),
+      callback: function($$v) {
+        _vm.errName = $$v
+      },
+      expression: "errName"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Remark"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.errRemark),
+      callback: function($$v) {
+        _vm.errRemark = $$v
+      },
+      expression: "errRemark"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Description"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.errDescription),
+      callback: function($$v) {
+        _vm.errDescription = $$v
+      },
+      expression: "errDescription"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Target"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.errTarget),
+      callback: function($$v) {
+        _vm.errTarget = $$v
+      },
+      expression: "errTarget"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Solution"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "textarea"
+    },
+    model: {
+      value: (_vm.errSolution),
+      callback: function($$v) {
+        _vm.errSolution = $$v
+      },
+      expression: "errSolution"
+    }
+  })], 1)], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.errDialog = false
+      }
+    }
+  }, [_vm._v("cancel")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "success"
+    },
+    on: {
+      "click": _vm.saveErrorMessage
+    }
+  }, [_vm._v("confirm")])], 1)], 1)], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-31c48bb1","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/error/shooting.vue
+// module id = 1179
+// module chunks = 73

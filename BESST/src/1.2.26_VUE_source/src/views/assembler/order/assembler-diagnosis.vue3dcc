@@ -1,0 +1,808 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "assembler-diagnosis-test"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "Back"
+    },
+    on: {
+      "click": _vm.goBack
+    }
+  })])]), _vm._v(" "), _c('label', [_vm._v("Drive System Test")])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "content-left"
+  }, [_c('div', {
+    staticClass: "content-select connect"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (false),
+      expression: "false"
+    }],
+    staticClass: "select-item"
+  }, [_vm._v("Select")]), _vm._v(" "), _c('span', {
+    staticClass: "connection"
+  }, [_vm._v("Connection")]), _vm._v(" "), (_vm.isConnected) ? _c('span', {
+    staticClass: "uart"
+  }, [_vm._v("UART")]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "connection-item"
+  }, [_vm._l((_vm.connectionSelectDisplay), function(item) {
+    return [_c('div', {
+      staticClass: "info-item",
+      class: {
+        select: item.No === _vm.testSelect.No
+      },
+      on: {
+        "click": function($event) {
+          _vm.showDetail(item)
+        }
+      }
+    }, [_c('div', {
+      staticClass: "item-info"
+    }, [_c('div', {
+      staticClass: "item-icon"
+    }, [_c('img', {
+      attrs: {
+        "src": item.img
+      }
+    })]), _vm._v(" "), _c('span', {
+      staticClass: "item-name"
+    }, [_vm._v(_vm._s(item.name))])]), _vm._v(" "), _c('div', {
+      staticClass: "result-wrap"
+    }), _vm._v(" "), _vm._m(0, true)])]
+  })], 2), _vm._v(" "), _c('div', {
+    staticClass: "content-select",
+    class: {
+      connect: _vm.startTest
+    }
+  }, [_c('div', {
+    staticClass: "select-item",
+    on: {
+      "click": function($event) {
+        _vm.showItemSelectDialog()
+      }
+    }
+  }, [_vm._v("Select")]), _vm._v(" "), _c('span', {
+    staticClass: "connection",
+    staticStyle: {
+      "cursor": "pointer"
+    },
+    on: {
+      "click": function($event) {
+        _vm.testSelect = ''
+      }
+    }
+  }, [_vm._v("Test System")]), _vm._v(" "), _c('el-switch', {
+    attrs: {
+      "on-color": "#98b42c",
+      "off-color": "#606161",
+      "on-text": "A",
+      "off-text": "M"
+    },
+    model: {
+      value: (_vm.switchTest),
+      callback: function($$v) {
+        _vm.switchTest = $$v
+      },
+      expression: "switchTest"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "connection-item"
+  }, [_vm._l((_vm.testSelectDisplay), function(item, index) {
+    return [_c('div', {
+      staticClass: "info-item",
+      class: {
+        select: item.No == _vm.testSelect.No
+      },
+      on: {
+        "click": function($event) {
+          _vm.showTestDiv(item, index)
+        }
+      }
+    }, [_c('div', {
+      staticClass: "item-info"
+    }, [_c('div', {
+      staticClass: "item-icon"
+    }, [_c('img', {
+      attrs: {
+        "src": item.img
+      }
+    })]), _vm._v(" "), _c('span', {
+      staticClass: "item-name"
+    }, [_vm._v(_vm._s(item.name))])]), _vm._v(" "), _c('div', {
+      staticClass: "result-wrap"
+    }, [(_vm.startTest) ? [_c('span', {
+      staticClass: "option",
+      class: {
+        check: item.okOrFail == 1
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.changeOption(item, 1)
+        }
+      }
+    }, [_vm._v("OK")]), _vm._v(" "), _c('span', {
+      staticClass: "option",
+      class: {
+        fail: item.okOrFail == 2
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.changeOption(item, 2)
+        }
+      }
+    }, [_vm._v("Fail")])] : _vm._e()], 2), _vm._v(" "), (item.detail) ? _c('div', {
+      staticClass: "detail",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.showDetail(item)
+        }
+      }
+    }, [_c('span', {
+      staticClass: "txt"
+    }, [_vm._v("Detail")]), _vm._v(" "), _c('span', {
+      staticClass: "arrow"
+    })]) : _vm._e(), _vm._v(" "), (!item.detail) ? _c('div', {
+      staticClass: "replace-detail"
+    }) : _vm._e()])]
+  })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "content-right"
+  }, [
+    [(_vm.slideDisplay) ? _c('div', {
+      staticClass: "slide-content"
+    }, [_c('div', {
+      staticClass: "slide-content-top"
+    }, [_c('span', {
+      staticClass: "slide-to-right",
+      on: {
+        "click": function($event) {
+          _vm.showSlide(1)
+        }
+      }
+    }), _vm._v(" "), _c('span', {
+      staticClass: "slide-to-right",
+      on: {
+        "click": function($event) {
+          _vm.showSlide(1)
+        }
+      }
+    })]), _vm._v(" "), _c('div', {
+      staticClass: "slide-content-bottom"
+    }, [_vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('div', {
+      staticClass: "system-txt"
+    }, [_c('span', {
+      staticClass: "title "
+    }, [_vm._v("Test System")]), _vm._v(" "), _vm._m(3), _vm._v(" "), _vm._m(4), _vm._v(" "), _vm._m(5), _vm._v(" "), _c('span', {
+      staticClass: "test-button",
+      on: {
+        "click": function($event) {
+          _vm.beginTestSystem()
+        }
+      }
+    }, [_vm._v("\n                                    Test\n                                ")])])])]) : _vm._e(), _vm._v(" "), (!_vm.slideDisplay) ? _c('div', {
+      staticClass: "slide-content slide-hidden"
+    }, [_c('div', {
+      staticClass: "slide-content-top slide-hidden"
+    }, [_c('span', {
+      staticClass: "slide-to-right slide-hidden",
+      on: {
+        "click": function($event) {
+          _vm.showSlide(2)
+        }
+      }
+    }), _vm._v(" "), _c('span', {
+      staticClass: "slide-to-right slide-hidden",
+      on: {
+        "click": function($event) {
+          _vm.showSlide(2)
+        }
+      }
+    })])]) : _vm._e()], _vm._v(" "), (!_vm.slideDisplay && !_vm.detailVisible) ? _c('div', {
+      staticClass: "slide-bottom"
+    }, [(_vm.error.target) ? _c('img', {
+      staticClass: "error-img",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-error.png")
+      },
+      on: {
+        "click": function($event) {
+          _vm.dialogSolutionVisible = true
+        }
+      }
+    }) : _vm._e(), _vm._v(" "), _c('img', {
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-new-bike.png")
+      }
+    }), _vm._v(" "), (_vm.allFinish) ? _c('span', {
+      staticClass: "test-button",
+      on: {
+        "click": _vm.goToReport
+      }
+    }, [_vm._v("\n                        Create Report\n                    ")]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.testSelect.No >= 7 && _vm.testSelect.No <= 11 && _vm.detailVisible) ? [_c('item-detail', {
+      staticClass: "item-detail",
+      attrs: {
+        "vehicle-id": _vm.vehicleId,
+        "test-select": _vm.testSelect,
+        "hmi-info": _vm.hmiInfo,
+        "controller-info": _vm.controllerInfo,
+        "battery-info": _vm.batteryInfo,
+        "pedal-info": _vm.pedalSensorInfo,
+        "motor-info": _vm.motorInfo,
+        "com": _vm.com
+      },
+      on: {
+        "close": _vm.closeDetail,
+        "reconnect": _vm.reconnect
+      }
+    })] : _vm._e(), _vm._v(" "), (_vm.testSelect.No < 7 && _vm.testSelect.No >= 0 && _vm.startTest && _vm.testInfoVisible) ? [_c('div', {
+      ref: "test-item",
+      staticClass: "test-system-item"
+    }, [(_vm.testSelect.No == 0) ? _c('div', {
+      staticClass: "brake"
+    }, [_c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/brake.png")
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                            Please brake and release the Brake Lever at least two times, then you should "), _c('br'), _vm._v(" see\n                            green light.\n                            "), _c('span', {
+      staticClass: "mark-span"
+    }), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                            If no green light, please click\n                            "), _c('el-button', {
+      staticClass: "fail",
+      attrs: {
+        "icon": "close"
+      },
+      on: {
+        "click": function($event) {
+          _vm.changeOption(_vm.testSelect, 2)
+        }
+      }
+    }, [_vm._v("Failed\n                            ")]), _vm._v("\n                            and then replace it."), _c('br'), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    })], 1) : _vm._e(), _vm._v(" "), (_vm.testSelect.No == 1) ? _c('div', {
+      staticClass: "throttle"
+    }, [_c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/throttle.png")
+      }
+    }), _vm._v(" "), (_vm.lightFlag.throttle) ? _c('img', {
+      staticClass: "display-ok",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-light.png")
+      }
+    }) : _c('img', {
+      staticClass: "display-ok",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-unlight.png")
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                            Please rotate the throttle,then motor should work,and also you should\n                            "), _c('br'), _vm._v("see green light.\n                            "), _c('div', {
+      staticClass: "clear-40"
+    }), _vm._v("\n                            If no green light ,please click\n                            "), _c('el-button', {
+      staticClass: "fail",
+      attrs: {
+        "icon": "close"
+      },
+      on: {
+        "click": function($event) {
+          _vm.changeOption(_vm.testSelect, 2)
+        }
+      }
+    }, [_vm._v("Failed\n                            ")]), _vm._v("\n                            and then replace it.\n                            "), _c('div', {
+      staticClass: "clear-20"
+    })], 1) : _vm._e(), _vm._v(" "), (_vm.testSelect.No == 2) ? _c('div', {
+      staticClass: "light"
+    }, [_c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/light.png")
+      }
+    }), _vm._v(" "), (_vm.lightFlag.light) ? _c('img', {
+      staticClass: "display-ok",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-light.png")
+      }
+    }) : _c('img', {
+      staticClass: "display-ok",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-unlight.png")
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                            Please press amd hold the button \"\n                            "), _c('img', {
+      staticClass: "light-img",
+      attrs: {
+        "src": require("../../../assets/images/icon/head-light-inactive.png")
+      }
+    }), _vm._v("\" on\n                            the\n                            control unit, then you\n                            "), _c('br'), _vm._v("should see the light on or off,and also you should see green light.\n                            "), _c('div', {
+      staticClass: "clear-40"
+    }), _vm._v("\n                            If light doesn't work, but you still see the green light,then replace the light."), _c('br'), _vm._v("\n                            If neither light works nor you see green light,please click\n                            "), _c('el-button', {
+      staticClass: "fail",
+      attrs: {
+        "icon": "close"
+      },
+      on: {
+        "click": function($event) {
+          _vm.changeOption(_vm.testSelect, 2)
+        }
+      }
+    }, [_vm._v("Failed\n                            ")]), _vm._v("\n                            and"), _c('br'), _vm._v(" then replace control unit or controller.\n                            "), _c('div', {
+      staticClass: "clear-20"
+    })], 1) : _vm._e(), _vm._v(" "), (_vm.testSelect.No === 3) ? _c('div', {
+      staticClass: "support "
+    }, [_c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/hmi.png")
+      }
+    }), _vm._v(" "), (_vm.lightFlag.support) ? _c('img', {
+      staticClass: "display-ok",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-light.png")
+      }
+    }) : _c('img', {
+      staticClass: "display-ok",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-unlight.png")
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                            Please press \"+\" \"-\" alternately, then you should see green light.\n                            "), _c('br'), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                            If no green light, please click\n                            "), _c('el-button', {
+      staticClass: "fail",
+      attrs: {
+        "icon": "close"
+      },
+      on: {
+        "click": function($event) {
+          _vm.changeOption(_vm.testSelect, 2)
+        }
+      }
+    }, [_vm._v("Failed\n                            ")]), _vm._v("\n                            and then replace it."), _c('br'), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    })], 1) : _vm._e(), _vm._v(" "), (_vm.testSelect.No === 4) ? _c('div', {
+      staticClass: "walk-assistance "
+    }, [_c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/walk.png")
+      }
+    }), _vm._v(" "), (_vm.lightFlag.walk) ? _c('img', {
+      staticClass: "display-ok",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-light.png")
+      }
+    }) : _c('img', {
+      staticClass: "display-ok",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-unlight.png")
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                            Please press and hold the button \"\n                            "), _c('img', {
+      staticClass: "light-img",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-new-walk-assistance.png")
+      }
+    }), _vm._v("\n                            \"or\"--\",then the motor should"), _c('br'), _vm._v("\n                            work at slow speed ,and also you should see green light.\n                            "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                            If no green light, please click\n                            "), _c('el-button', {
+      staticClass: "fail",
+      attrs: {
+        "icon": "close"
+      },
+      on: {
+        "click": function($event) {
+          _vm.changeOption(_vm.testSelect, 2)
+        }
+      }
+    }, [_vm._v("Failed\n                            ")]), _vm._v("\n                            and then replace it."), _c('br'), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    })], 1) : _vm._e(), _vm._v(" "), (_vm.testSelect.No == 5) ? _c('div', {
+      staticClass: "speed "
+    }, [_c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/speed-middle.png")
+      }
+    }), _vm._v(" "), _c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/speed-hub.png")
+      }
+    }), _vm._v(" "), (_vm.lightFlag.speed) ? _c('img', {
+      staticClass: "display-ok",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-light.png")
+      }
+    }) : _c('img', {
+      staticClass: "display-ok",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-unlight.png")
+      }
+    }), _vm._v(" "), _c('div', {
+      staticStyle: {
+        "width": "160px"
+      }
+    }, [_c('el-input', {
+      model: {
+        value: (_vm.testData.wheelSpeed),
+        callback: function($$v) {
+          _vm.$set(_vm.testData, "wheelSpeed", $$v)
+        },
+        expression: "testData.wheelSpeed"
+      }
+    }, [_c('template', {
+      slot: "append"
+    }, [_vm._v("km/h")])], 2)], 1), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                            Way 1: Please turn the wheel forward by hand, then you will see the speed "), _c('br'), _vm._v("above\n                            and get green light.\n                            "), _c('div', {
+      staticClass: "clear-10"
+    }), _vm._v("\n                            Way 2: Please click\n                            "), _c('span', {
+      staticClass: "start"
+    }, [_vm._v("Start")]), _vm._v(",then you will see the speed above and get green "), _c('br'), _vm._v("light.\n                            "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                            If no green light, please keep the magnet in the right induction position, "), _c('br'), _vm._v(" if\n                            still does not word, please click\n                            "), _c('el-button', {
+      staticClass: "fail",
+      attrs: {
+        "icon": "close"
+      },
+      on: {
+        "click": function($event) {
+          _vm.changeOption(_vm.testSelect, 2)
+        }
+      }
+    }, [_vm._v("Failed\n                            ")]), _vm._v("\n                            and then replace it.\n                            "), _c('div', {
+      staticClass: "clear-10"
+    })], 1) : _vm._e(), _vm._v(" "), (_vm.testSelect.No == 6) ? _c('div', {
+      staticClass: "pedal"
+    }, [_c('el-switch', {
+      staticClass: "fr",
+      attrs: {
+        "on-text": "S",
+        "off-text": "T"
+      },
+      on: {
+        "change": _vm.pedalChange
+      },
+      model: {
+        value: (_vm.cadenceOrTorque),
+        callback: function($$v) {
+          _vm.cadenceOrTorque = $$v
+        },
+        expression: "cadenceOrTorque"
+      }
+    }), _vm._v(" "), (_vm.cadenceOrTorque) ? _c('div', [_c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/speed.png")
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "img inline"
+    }, [_c('div', {
+      staticClass: "cadence-shade"
+    }), _vm._v(" "), _c('IEcharts', {
+      attrs: {
+        "option": _vm.cadenceOption
+      }
+    })], 1), _vm._v(" "), _c('div', {
+      staticClass: "clear-10"
+    }), _vm._v(" "), (_vm.lightFlag.cadence) ? _c('img', {
+      staticClass: "display-ok fr",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-light.png")
+      }
+    }) : _c('img', {
+      staticClass: "display-ok fr",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-unlight.png")
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "clear-0"
+    }), _vm._v(" "), _vm._m(6), _vm._v(" "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                                Please turn the pedal forward by hand, then you should see green light.\n                                "), _vm._v("\n                                If no green light,please click\n                                "), _c('el-button', {
+      staticClass: "fail",
+      attrs: {
+        "icon": "close"
+      },
+      on: {
+        "click": function($event) {
+          _vm.changeOption(_vm.testSelect, 2)
+        }
+      }
+    }, [_vm._v("Failed\n                                ")]), _vm._v("\n                                and then replace it."), _c('br')], 1) : _c('div', [_c('img', {
+      staticClass: "old-icon",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/torque.png")
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "img inline"
+    }, [_c('ve-line', {
+      attrs: {
+        "data": _vm.sensorData,
+        "width": '220px',
+        "height": '220px',
+        "yAxis": _vm.sensorData.yAxis,
+        "colors": _vm.sensorData.colors
+      }
+    }), _vm._v(" "), _c('el-button', {
+      staticClass: "start-btn",
+      attrs: {
+        "type": "primary"
+      },
+      on: {
+        "click": function($event) {
+          _vm.sensorStart()
+        }
+      }
+    }, [_vm._v("\n                                        Start Torque\n                                    ")])], 1), _vm._v(" "), _c('div', {
+      staticClass: "clear-10"
+    }), _vm._v(" "), (_vm.lightFlag.torque) ? _c('img', {
+      staticClass: "display-ok fr",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-light.png")
+      }
+    }) : _c('img', {
+      staticClass: "display-ok fr",
+      attrs: {
+        "src": require("../../../assets/images/diagnosis/icon-test-unlight.png")
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "clear-0"
+    }), _vm._v("\n                                Please squeeze the brake level and place a foot on the pedal with around\n                                "), _c('div', {
+      staticClass: "clear-10"
+    }), _vm._v("\n                                10kg force, then you should see green light.\n                                "), _c('div', {
+      staticClass: "clear-20"
+    }), _vm._v("\n                                If no green light, please click\n                                "), _c('el-button', {
+      staticClass: "fail",
+      attrs: {
+        "icon": "close"
+      },
+      on: {
+        "click": function($event) {
+          _vm.changeOption(_vm.testSelect, 2)
+        }
+      }
+    }, [_vm._v("Failed\n                                ")]), _vm._v("\n                                and then replace it."), _c('br')], 1), _vm._v(" "), _c('div', {
+      staticClass: "clear-0"
+    })], 1) : _vm._e(), _vm._v(" "), (!_vm.switchTest && _vm.testSelectDisplay.length > 0) ? _c('div', {
+      staticClass: "btn-row"
+    }, [_c('span', [(_vm.testSelect.No !== _vm.testSelectDisplay[0].No) ? _c('el-button', {
+      staticClass: "gray-button",
+      on: {
+        "click": function($event) {
+          _vm.showTestDiv(_vm.testSelectDisplay[_vm.currentIndex - 1], _vm.currentIndex - 1)
+        }
+      }
+    }, [_vm._v("< Back")]) : _vm._e(), _vm._v(" "), _c('input', {
+      ref: "empty-input",
+      staticStyle: {
+        "opacity": "0",
+        "width": "1px",
+        "height": "1px"
+      }
+    })], 1), _vm._v(" "), _c('span', [(_vm.testSelect.No !== _vm.lastShowTestNo) ? [_c('el-button', {
+      staticClass: "gray-button",
+      on: {
+        "click": function($event) {
+          _vm.showTestDiv(_vm.testSelectDisplay[_vm.currentIndex + 1], _vm.currentIndex + 1)
+        }
+      }
+    }, [_vm._v("Next >")]), _vm._v(" "), _c('el-button', {
+      staticClass: "gray-button",
+      on: {
+        "click": function($event) {
+          _vm.showTestDiv('', -1)
+        }
+      }
+    }, [_vm._v("Cancel")])] : [_c('el-button', {
+      staticClass: "gray-button",
+      on: {
+        "click": function($event) {
+          _vm.showTestDiv('', -1)
+        }
+      }
+    }, [_vm._v("Finish")])]], 2)]) : _vm._e()])] : _vm._e()
+  ], 2)])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Select",
+      "visible": _vm.testSelectDialogVisible,
+      "custom-class": "auth-dialog",
+      "show-close": false,
+      "close-on-click-modal": false
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.testSelectDialogVisible = $event
+      }
+    }
+  }, [_c('p', {
+    staticClass: "auth-title"
+  }, [_vm._v("Test System ")]), _vm._v(" "), _c('el-checkbox-group', {
+    model: {
+      value: (_vm.testSelectDisplay),
+      callback: function($$v) {
+        _vm.testSelectDisplay = $$v
+      },
+      expression: "testSelectDisplay"
+    }
+  }, _vm._l((_vm.systemList), function(item) {
+    return _c('el-checkbox', {
+      key: item.name,
+      attrs: {
+        "label": item
+      },
+      on: {
+        "change": _vm.changeCheckBox
+      }
+    }, [_vm._v("\n                " + _vm._s(item.name) + "\n            ")])
+  })), _vm._v(" "), _c('div', {
+    staticClass: "clear-20 "
+  }), _vm._v(" "), _c('div', {
+    staticClass: "fr"
+  }, [_c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.testSelectDialogClose()
+      }
+    }
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.testSelectDialogVisible = false
+      }
+    }
+  }, [_vm._v("Confirm")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-20 "
+  })], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Error Solution",
+      "custom-class": "error-dialog",
+      "visible": _vm.dialogSolutionVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogSolutionVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "error-shooting"
+  }, [_c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Name")]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.error.name))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Remark")]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.error.remark))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Description")]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.error.desc))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Target")]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.error.target ? _vm.error.target.join(',') : ''))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Solution")]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, _vm._l((_vm.error.solution), function(item, index) {
+    return _c('p', [_vm._v(_vm._s(index + 1) + ". " + _vm._s(item))])
+  }))])]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogSolutionVisible = false
+      }
+    }
+  }, [_vm._v("Cancel")])], 1)])], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "detail"
+  }, [_c('span', {
+    staticClass: "txt"
+  }, [_vm._v("Detail")]), _vm._v(" "), _c('span', {
+    staticClass: "arrow"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "slide-content-warn"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../../assets/images/diagnosis/icon-warn.png")
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "warn-list"
+  }, [_c('span', {
+    staticClass: "dot"
+  }, [_vm._v("Suspend the bicycle to prevent injury or damage.")]), _vm._v(" "), _c('span', {
+    staticClass: "dot"
+  }, [_vm._v("Make sure the wheel is free to rotate before pressing the button!")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "show-video"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../../assets/images/diagnosis/icon-under-pic.png")
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "play-video",
+    attrs: {
+      "src": require("../../../assets/images/diagnosis/icon-start-mp4.png")
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "title step"
+  }, [_vm._v("Step 1 :\n                                    "), _c('span', [_vm._v("Select the functions")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "title step"
+  }, [_vm._v("Step 2 :\n                                    "), _c('span', [_vm._v("Select \"A\" or \"M\" , A for Auto test, M for manual test;")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "title step"
+  }, [_vm._v("Step 3 :\n                                    "), _c('span', [_vm._v("Start your test process")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "warning-row"
+  }, [_c('img', {
+    staticClass: "warning-img",
+    attrs: {
+      "src": require("../../../assets/images/diagnosis/icon-waring.png")
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "inline ml-26"
+  }, [_c('span', {
+    staticClass: "dot"
+  }), _vm._v(" Suspend the bicycle to prevent injury or\n                                                                  damage."), _c('br'), _vm._v(" "), _c('span', {
+    staticClass: "dot"
+  }), _vm._v(" Make sure the wheel is free to rotate!\n                                    ")])])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-aadebafe","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/assembler/order/assembler-diagnosis.vue
+// module id = 1739
+// module chunks = 73

@@ -1,0 +1,554 @@
+<template>
+    <div class="assembler-order-detail">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="goOrderList" :title="$t('back')"></div>
+                </div>
+            </div>
+            <label class="title">{{$t('orderDetail')}}</label>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item export" @click="exportOrder()"></div>
+                    <div class="icon-item edit" @click="goToEditOrder" v-if="authList[Core.Const.AUTH_LIST.productionEdit]" :title="$t('edit')"></div>
+                    <div class="icon-item delete" @click="dialogDeleteVisible = true" v-if="authList[Core.Const.AUTH_LIST.productionDelete]" :title="$t('delete')"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrap">
+            <div class="content">
+                <div class="order-info">
+                    <label class="title">{{ $t('orderInfo') }}</label>
+                    <div class="left">
+                        <div class="info-list">
+                            <div class="col-left">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span>{{ $t('poNo') }}</span>
+                                        <span>{{orderData.source_id || '-'}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>{{ $t('note') }}</span>
+                                        <span>{{orderData.remark || '-'}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-right">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span>{{ $t('customerName') }}</span>
+                                        <span>{{orderData.customer_id || '-'}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span></span>
+                                        <span></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="parts-list">
+                        <label class="label1">{{ $t('itemsList') }}</label>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                        <td v-for="item in tableHead">{{item}}</td>
+                        </thead>
+                        <tbody>
+                        <tr v-for="item in tableData">
+                            <!--<td class="td" v-for="value in item">{{value}}</td>-->
+                            <td>{{item.item_name}}</td>
+                            <td>{{item.item_part_no ? item.item_part_no : '-'}}</td>
+                            <td>{{item.produced + '/' + item.amount}}</td>
+                            <td>
+                                <a class="btn-underline" @click="goToProduce(item)">{{ $t('produce') }}</a>
+                                <a class="btn-underline" @click="showReplaceDialog(item)">{{ $t('replace') }}</a>
+                                <a class="btn-underline" @click="goToVehicleList(item)">{{ $t('vehicleList') }}</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <el-dialog
+            :title="$t('deleteOrder')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteTip') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteProductionOrder">{{$t('yes')}}</el-button>
+                <el-button @click="dialogDeleteVisible = false" type="primary">{{ $t('no') }}</el-button>
+            </span>
+        </el-dialog>
+
+        <el-dialog
+            class="dialog"
+            :title="$t('replace')"
+            :visible.sync="dialogReplaceVisible"
+            size="large"
+            top="10%">
+            <div class="content">
+                <div class="header">
+                    <el-select v-model="search.brand_id" :placeholder="$t('brandPlaceholder')" @change="queryOrderItem" class="brand-select">
+                        <el-option
+                            v-for="item in brandList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
+                    <el-input
+                        :placeholder="$t('modelName')"
+                        class='search-content'
+                        v-model="search.query">
+                    </el-input>
+                    <div class="btn-group-inline">
+                        <div class="icons">
+                            <div class="icon-item search" @click="queryOrderItem" :title="$t('search')"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-wrap">
+
+                    <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                        <td v-for="item in itemHead">{{item}}</td>
+                        <td>{{ $t('operation') }}</td>
+                        </thead>
+
+                        <tbody>
+                        <tr v-for="(item, index) in queryItemList">
+                            <td><img :src="item.img | getImgUrl"></td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.ext_part_no}}</td>
+                            <td><a class="btn-underline" @click="showConfirmDialog(item)">{{ $t('replace') }}</a></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                    <el-pagination
+                        class="pagination"
+                        @current-change="handleCurrentPageChange"
+                        :current-page.sync="currentPage"
+                        :page-size="10"
+                        layout="prev, pager, next"
+                        :total="total">
+                    </el-pagination>
+                </div>
+            </div>
+        </el-dialog>
+
+        <el-dialog
+            class="dialog"
+            :title="$t('replace')"
+            :visible.sync="dialogConfirmVisible"
+            size="tiny">
+            <span>{{selectNewItem.name}}({{selectNewItem.ext_part_no}})<br />
+                {{ $t('confirmDialog.replace') }}<br />
+            {{selectOldItem.item_name}}({{selectOldItem.item_part_no}})</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="replaceItem">{{ $t('confirmDialog.yes') }}</el-button>
+                <el-button type="primary" @click="dialogConfirmVisible = false">{{ $t('confirmDialog.no') }}</el-button>
+            </span>
+        </el-dialog>
+
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        components: {},
+        data(){
+            return {
+                Core: Core,
+                tableHead: ['Model Name', 'Article No.', 'Quantity', 'Operation'],
+                tableData: [],
+                orderData: {},
+                quantity: 1,
+                currentPage: 1,
+                dialogDeleteVisible: false,
+                orderId: '',
+
+                authList: [],
+
+                selectOldItem: {},
+                selectNewItem: {},
+                dialogConfirmVisible:false,
+                dialogReplaceVisible: false,
+                brandOrg: {},
+                brandList: [],
+                total: 0,
+                search: {
+                    org_id: '',
+                    brand_id: '',
+                    query: '',
+                },
+                itemHead: ['Image', 'Name', 'Part No.'],
+                queryItemList: [],
+            }
+        },
+
+        i18n: {
+            messages: {
+                en: EN.Assembler.AssemblerOrderDetail,
+                zh: ZH.Assembler.AssemblerOrderDetail,
+                de: DE.Assembler.AssemblerOrderDetail,
+                nl: NL.Assembler.AssemblerOrderDetail
+            }
+        },
+
+        mounted: function () {
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.orderId = this.$route.query.orderId;
+
+            this.getOrderDetail();
+
+        },
+        methods: {
+        	initData(){
+                this.tableHead = [
+                    this.$t('tableHead.modelName'),
+                    this.$t('tableHead.partNo'),
+                    this.$t('tableHead.quantity'),
+                    this.$t('tableHead.operation'),
+                ];
+                this.itemHead = [
+                    this.$t('itemHead.image'),
+                    this.$t('itemHead.name'),
+                    this.$t('itemHead.partNo'),
+                ];
+            },
+
+            goOrderList(){
+                this.$router.push({path: 'list'});
+            },
+
+            deleteProductionOrder(){
+                Core.Api.Order.deleteProductionOrder(this.orderId).then(res => {
+                    this.$router.push({path: 'list'});
+                })
+            },
+
+            goToProduce(item) {
+                if (item.produced && item.amount && item.produced === item.amount) {
+                    this.$message({
+                        message: 'This order is completed',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                console.log("[item]",item);
+                this.$router.push({name: 'assemblerOrderProduce', query: {"orderId": this.orderId, "itemId": item.item_id}})
+            },
+
+            goToVehicleList(item) {
+                this.$router.push({name: 'assemblerVehicleList', query: {poNo: this.orderData.source_id, itemName: item.item_name, from: 'order'}})
+            },
+
+            goToEditOrder() {
+                this.$router.push({name: 'assemblerOrderSave', query: {"orderId": this.orderId}})
+            },
+
+            showReplaceDialog(item){
+            	this.selectOldItem = item;
+                this.dialogReplaceVisible = true;
+            },
+
+            showConfirmDialog(item){
+            	this.selectNewItem = item;
+            	this.dialogConfirmVisible = true
+            },
+
+            replaceItem(){
+                Core.Api.Order.editProductionOrder(this.orderId, this.selectOldItem.item_id, this.selectNewItem.id).then(res => {
+                    this.$message({
+                        message: 'Replace successfully',
+                        type: 'success'
+                    });
+                    this.getOrderDetail();
+                    this.clearData();
+                })
+            },
+
+            // 获取所有的品牌列表
+            getBrandListById() {
+                Core.Api.Brand.getBrandListById(this.brandOrg.id).then(res => {
+                    this.brandList = res.brand_list;
+                })
+            },
+
+            queryOrderItem() {
+                let partnerBrand = this.brandOrg;
+
+                    Core.Api.Item.queryOrderItem(partnerBrand.id, 0, this.search.brand_id, this.search.query, this.currentPage).then(res => {
+                        this.queryItemList = res.query;
+                        this.total = res.count;
+                        if(!this.queryItemList.length > 0){
+                            this.$message({
+                                message: "There are no matching data",
+                                type: 'warning'
+                            });
+                        }
+                    })
+
+            },
+
+            handleCurrentPageChange(page) {
+                this.currentPage = page;
+                this.queryOrderItem();
+            },
+            //窗口关闭清理数据
+            clearData(){
+            	this.selectOldItem = {};
+            	this.selectNewItem = {};
+                this.dialogConfirmVisible = false;
+                this.dialogReplaceVisible = false;
+                this.currentPage = 0;
+                this.queryItemList = 0;
+            },
+
+            getOrderDetail(){
+                Core.Api.Order.getProductionOrderDetail(this.orderId).then(res => {
+                    console.log("[res]",res);
+                    this.orderData = res.order;
+                    this.tableData = res.order.item_list;
+                    this.brandOrg = res.order.user_org;
+                    this.getBrandListById();
+                });
+            },
+
+            exportOrder() {
+                let data = {
+                    order_id: this.orderId
+                };
+                window.location.href = Core.Api.getUrl('vehicle/export', data);
+            }
+        }
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .assembler-order-detail {
+        width: 100%;
+        height: 100%;
+
+        .content {
+            height: 100%;
+            overflow: auto;
+            border: 1px solid #2B2F3B;
+
+            .order-info {
+                height: 272px;
+                .title {
+                    height: 50px;
+                    line-height: 50px;
+                    padding-left: 40px;
+                    /*font-size: 12px;*/
+                }
+                .left {
+                    float: left;
+                    width: 100%;
+                    background: #353945;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .item {
+                        margin-left: 40px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        height: 50px;
+                        .label {
+                            display: inline-block;
+                            width: 90px;
+                        }
+                    }
+                    .info-list {
+                        font-size: 0;
+                        .col-left {
+                            display: inline-block;
+                            width: 50%;
+                        }
+                        .col-right {
+                            display: inline-block;
+                            width: 50%;
+                        }
+
+                        .list-group {
+                            padding: 0 40px;
+                            .list-group-item {
+                                height: 50px;
+                                line-height: 50px;
+                                font-size: 0;
+
+                                span {
+                                    display: inline-block;
+                                }
+                                span:first-child {
+                                    /*font-size: 12px;*/
+                                    color: #FFFFFF;
+                                    width: 40%;
+                                }
+                                span:last-child {
+                                    /*font-size: 12px;*/
+                                    color: #A1A5B1;
+                                    width: 60%;
+                                }
+                            }
+                        }
+                    }
+                }
+                .parts-list {
+                    float: left;
+                    padding: 27px 40px;
+                    /*font-size: 12px;*/
+                    overflow: hidden;
+                    height: 50px;
+                    width: 100%;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .label1 {
+                        display: inline-block;
+                        /*font-size: 12px;*/
+                    }
+                }
+            }
+            .table-wrap {
+                box-shadow: 0 -1px #2B2F3B;
+                height: calc(100% - 294px);
+                overflow: auto;
+            }
+
+            .footer {
+                width: 100%;
+                height: 50px;
+                padding: 10px 38px;
+                .footer-pagination {
+                    float: right;
+                }
+                .footer-delete {
+                    margin-top: 3px;
+                    background-color: #858890;
+                }
+            }
+        }
+        .content {
+            height: 100%;
+            border: 1px solid #2B2F3B;
+            .order-info {
+                width: 100%;
+                height: 222px;
+                .title {
+                    height: 50px;
+                    line-height: 50px;
+                    padding-left: 40px;
+                    font-size: 14px;
+                }
+                .left {
+                    float: left;
+                    width: 100%;
+                    height: 120px;
+                    background: #353945;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .item {
+                        margin: 2px 0 0 40px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        height: 50px;
+                        .label {
+                            display: inline-block;
+                            width: 120px;
+                        }
+                        .input {
+                            margin-left: 10px;
+                            width: 256px;
+                            border-radius: 0 0 10px 10px;
+                        }
+                        .input-left {
+                            margin-left: 10px;
+                            width: 200px;
+                        }
+                        .input-right {
+                            width: 200px;
+                        }
+                        .input-note {
+                            margin-left: 10px;
+                            width: 603px;
+                        }
+                    }
+                }
+                .parts-list {
+                    float: left;
+                    padding: 0 40px;
+                    font-size: 12px;
+                    overflow: hidden;
+                    height: 50px;
+                    line-height: 50px;
+                    width: 100%;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .labelList {
+                        font-size: 12px;
+                    }
+                    .att-btn {
+                        margin-left: 46px;
+                        padding: 6px 9px;
+                        min-width: 0;
+                    }
+                    .labelAdd {
+                        margin-left: 14px;
+                        font-size: 12px;
+                    }
+                }
+            }
+            .footer {
+                width: 100%;
+                line-height: 60px;
+                padding-left: 40px;
+                box-shadow: 0 -1px #2B2F3B;
+                .footer-pagination {
+                    float: right;
+                }
+            }
+        }
+        .dialog {
+            .el-dialog--large {
+                width: 1100px;
+            }
+            .header {
+                .search-content {
+                    width: 200px;
+                }
+                .search-btn {
+                    position: absolute;
+                    top: 15px;
+                    left: 250px;
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// detail.vue?76033eca

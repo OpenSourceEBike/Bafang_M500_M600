@@ -1,0 +1,1317 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "result-container"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('span', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('resultTitle')))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item print",
+    attrs: {
+      "title": _vm.$t('print')
+    },
+    on: {
+      "click": _vm.onClickPrint
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "bicycle-type mb-10"
+  }, [_c('label', {
+    staticClass: "mr-15"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('resultBike')) + "\n                    ")]), _vm._v(" "), _c('el-input', {
+    staticClass: "b-type-input inline-block w-200",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.vehicleModel),
+      callback: function($$v) {
+        _vm.vehicleModel = $$v
+      },
+      expression: "vehicleModel"
+    }
+  })], 1), _vm._v(" "), _c('table', {
+    staticClass: "component-list",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', {
+    staticClass: "t-head"
+  }, [_c('tr', _vm._l((_vm.listHead), function(item) {
+    return _c('td', [_vm._v(" " + _vm._s(item))])
+  }))]), _vm._v(" "), _c('tbody', {
+    staticClass: "t-body"
+  }, _vm._l((_vm.tableData), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.model))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.version))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.parameterVersion))]), _vm._v(" "), (item.show) ? _c('td', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.showDetail(item.key)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('detail')))]) : _c('td', [_vm._v("-")])])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "table-bottom mb-10"
+  }, [_c('div', [_c('label', {
+    staticClass: "mr-15"
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('cNam.motor')) + "\n                        ")]), _vm._v(" "), _c('el-input', {
+    staticClass: "scan-input inline-block",
+    attrs: {
+      "placeholder": "SN"
+    },
+    model: {
+      value: (_vm.motorSn),
+      callback: function($$v) {
+        _vm.motorSn = $$v
+      },
+      expression: "motorSn"
+    }
+  })], 1), _vm._v(" "), _c('div', [_c('label', {
+    staticClass: "mr-15"
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('bikeId')) + "\n                        ")]), _vm._v(" "), _c('el-input', {
+    staticClass: "scan-input inline-block",
+    attrs: {
+      "placeholder": "SN"
+    },
+    model: {
+      value: (_vm.vehicleSn),
+      callback: function($$v) {
+        _vm.vehicleSn = $$v
+      },
+      expression: "vehicleSn"
+    }
+  })], 1), _vm._v(" "), _c('div', [_c('label', {
+    staticClass: "mr-15"
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('key')) + "\n                        ")]), _vm._v(" "), _c('el-input', {
+    staticClass: "scan-input inline-block",
+    attrs: {
+      "placeholder": "SN"
+    },
+    model: {
+      value: (_vm.vehicleKey),
+      callback: function($$v) {
+        _vm.vehicleKey = $$v
+      },
+      expression: "vehicleKey"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "result-holder"
+  }, [_c('div', {
+    staticClass: "result-top"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('result')) + "\n                    ")]), _vm._v(" "), _c('div', {
+    staticClass: "result-content"
+  }, [_vm._l((_vm.listStatus), function(item) {
+    return [_c('div', [_c('span', [_vm._v(_vm._s(item.name))]), _vm._v(" "), (item.okOrFail == 1) ? _c('span', {
+      staticClass: "result-span ok"
+    }, [_vm._v(_vm._s(_vm.$t('ok')))]) : _vm._e(), _vm._v(" "), (item.okOrFail == 2) ? _c('span', {
+      staticClass: "result-span fail"
+    }, [_vm._v(_vm._s(_vm.$t('fail')))]) : _vm._e(), _vm._v(" "), (item.okOrFail == 0) ? _c('span', {
+      staticClass: "result-span none"
+    }, [_vm._v("--")]) : _vm._e()])]
+  })], 2), _vm._v(" "), _c('div', {
+    staticClass: "result-desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('defects')))]), _vm._v(" "), _vm._l((_vm.defect), function(d) {
+    return _c('div', [_c('span', {
+      staticClass: "defect-span"
+    }, [_vm._v(_vm._s(d))])])
+  })], 2), _vm._v(" "), _c('div', {
+    staticClass: "result-desc"
+  }, [_c('div', {
+    staticClass: "title-wrap"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('defectDes')))])]), _vm._v(" "), _c('div', {
+    staticClass: "title-wrap"
+  }, [_c('p', [_vm._v(_vm._s(_vm.desc))])])]), _vm._v(" "), _c('div', {
+    staticClass: "result-desc"
+  }, [_c('div', {
+    staticClass: "title-wrap"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('image')))])]), _vm._v(" "), _vm._l((_vm.fileList.img), function(item, index) {
+    return _c('div', {
+      staticClass: "img-holder"
+    }, [_c('img', {
+      staticClass: "img-content",
+      attrs: {
+        "src": _vm.linkPre + item
+      }
+    })])
+  })], 2), _vm._v(" "), _c('div', {
+    staticClass: "result-desc"
+  }, [_c('div', {
+    staticClass: "title-wrap"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('video')))])]), _vm._v(" "), _vm._l((_vm.fileList.video), function(item, index) {
+    return _c('div', {
+      staticClass: "video-holder"
+    }, [_c('video', {
+      staticClass: "videoItem",
+      attrs: {
+        "src": _vm.linkPre + item,
+        "controls": "controls"
+      }
+    })])
+  })], 2)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), (!_vm.offLineFlag) ? _c('span', {
+    staticClass: "save-report fr",
+    on: {
+      "click": _vm.saveReport
+    }
+  }, [_vm._v(_vm._s(_vm.$t('saveReport')))]) : _vm._e(), _vm._v(" "), (_vm.offLineFlag) ? _c('span', {
+    staticClass: "fr"
+  }, [_vm._v(_vm._s(_vm.$t('offLineTip')))]) : _vm._e()])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "diagnosis-detail-warp",
+    attrs: {
+      "title": "Detail",
+      "visible": _vm.dialogVisible,
+      "custom-class": "diagnosis-detail"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogVisible = $event
+      }
+    }
+  }, [_c('div', {
+    attrs: {
+      "calss": "detail-content"
+    }
+  }, [_c('div', {
+    staticClass: "info"
+  }, [(_vm.selectItem === 'ctrl') ? [_c('div', {
+    staticClass: "info-left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.controllerInfo.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.controllerInfo, "sn", $$v)
+      },
+      expression: "controllerInfo.sn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.controllerInfo.model),
+      callback: function($$v) {
+        _vm.$set(_vm.controllerInfo, "model", $$v)
+      },
+      expression: "controllerInfo.model"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.controllerInfo.version),
+      callback: function($$v) {
+        _vm.$set(_vm.controllerInfo, "version", $$v)
+      },
+      expression: "controllerInfo.version"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.controllerInfo.hardVersion),
+      callback: function($$v) {
+        _vm.$set(_vm.controllerInfo, "hardVersion", $$v)
+      },
+      expression: "controllerInfo.hardVersion"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "info-right"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.nmlVolt')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.controllerInfo.nmlVolt),
+      callback: function($$v) {
+        _vm.$set(_vm.controllerInfo, "nmlVolt", $$v)
+      },
+      expression: "controllerInfo.nmlVolt"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("V")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.maxCur')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.controllerInfo.maxCurrent),
+      callback: function($$v) {
+        _vm.$set(_vm.controllerInfo, "maxCurrent", $$v)
+      },
+      expression: "controllerInfo.maxCurrent"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("A")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.controllerInfo.speedLimit),
+      callback: function($$v) {
+        _vm.$set(_vm.controllerInfo, "speedLimit", $$v)
+      },
+      expression: "controllerInfo.speedLimit"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("km/h")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.controllerInfo.wheelDiameter),
+      callback: function($$v) {
+        _vm.$set(_vm.controllerInfo, "wheelDiameter", $$v)
+      },
+      expression: "controllerInfo.wheelDiameter"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.circumference')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.controllerInfo.circumference),
+      callback: function($$v) {
+        _vm.$set(_vm.controllerInfo, "circumference", $$v)
+      },
+      expression: "controllerInfo.circumference"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("mm")])], 2)], 1)])] : _vm._e(), _vm._v(" "), (_vm.selectItem === 'hmi') ? [_c('div', {
+    staticClass: "info-left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.hmiInfo.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.hmiInfo, "sn", $$v)
+      },
+      expression: "hmiInfo.sn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.hmiInfo.model),
+      callback: function($$v) {
+        _vm.$set(_vm.hmiInfo, "model", $$v)
+      },
+      expression: "hmiInfo.model"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.hmiInfo.version),
+      callback: function($$v) {
+        _vm.$set(_vm.hmiInfo, "version", $$v)
+      },
+      expression: "hmiInfo.version"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.hmiInfo.hardVersion),
+      callback: function($$v) {
+        _vm.$set(_vm.hmiInfo, "hardVersion", $$v)
+      },
+      expression: "hmiInfo.hardVersion"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "info-right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.totalMileage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.hmiInfo.totalMileage),
+      callback: function($$v) {
+        _vm.$set(_vm.hmiInfo, "totalMileage", $$v)
+      },
+      expression: "hmiInfo.totalMileage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("km")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.hmiInfo.wheelDiameter),
+      callback: function($$v) {
+        _vm.$set(_vm.hmiInfo, "wheelDiameter", $$v)
+      },
+      expression: "hmiInfo.wheelDiameter"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.hmiInfo.speedLimit),
+      callback: function($$v) {
+        _vm.$set(_vm.hmiInfo, "speedLimit", $$v)
+      },
+      expression: "hmiInfo.speedLimit"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("km/h")])], 2)], 1)])] : _vm._e(), _vm._v(" "), (_vm.selectItem === 'pedal') ? [_c('div', {
+    staticClass: "info-left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.pedalSensorInfo.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.pedalSensorInfo, "sn", $$v)
+      },
+      expression: "pedalSensorInfo.sn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.pedalSensorInfo.name),
+      callback: function($$v) {
+        _vm.$set(_vm.pedalSensorInfo, "name", $$v)
+      },
+      expression: "pedalSensorInfo.name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "info-right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.pedalSensorInfo.version),
+      callback: function($$v) {
+        _vm.$set(_vm.pedalSensorInfo, "version", $$v)
+      },
+      expression: "pedalSensorInfo.version"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.pedalSensorInfo.hardVersion),
+      callback: function($$v) {
+        _vm.$set(_vm.pedalSensorInfo, "hardVersion", $$v)
+      },
+      expression: "pedalSensorInfo.hardVersion"
+    }
+  })], 1)])] : _vm._e(), _vm._v(" "), (_vm.selectItem === 'motor') ? [_c('div', {
+    staticClass: "info-left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.motorInfo.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.motorInfo, "sn", $$v)
+      },
+      expression: "motorInfo.sn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.power')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.motorInfo.power),
+      callback: function($$v) {
+        _vm.$set(_vm.motorInfo, "power", $$v)
+      },
+      expression: "motorInfo.power"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("W")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.voltage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.motorInfo.voltage),
+      callback: function($$v) {
+        _vm.$set(_vm.motorInfo, "voltage", $$v)
+      },
+      expression: "motorInfo.voltage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("V")])], 2)], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "info-right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.motorInfo.model),
+      callback: function($$v) {
+        _vm.$set(_vm.motorInfo, "model", $$v)
+      },
+      expression: "motorInfo.model"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelSize')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.motorInfo.wheelSize),
+      callback: function($$v) {
+        _vm.$set(_vm.motorInfo, "wheelSize", $$v)
+      },
+      expression: "motorInfo.wheelSize"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.rpm')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.motorInfo.rpm),
+      callback: function($$v) {
+        _vm.$set(_vm.motorInfo, "rpm", $$v)
+      },
+      expression: "motorInfo.rpm"
+    }
+  })], 1)])] : _vm._e(), _vm._v(" "), (_vm.selectItem === 'bat') ? [_c('div', {
+    staticClass: "info-left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "sn", $$v)
+      },
+      expression: "batteryInfo.sn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.version),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "version", $$v)
+      },
+      expression: "batteryInfo.version"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.ASOC')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.soh),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "soh", $$v)
+      },
+      expression: "batteryInfo.soh"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("%")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.packVoltage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.packVoltage),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "packVoltage", $$v)
+      },
+      expression: "batteryInfo.packVoltage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("mV")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.fullChargeCapacity')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.fullChargerCapacity),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "fullChargerCapacity", $$v)
+      },
+      expression: "batteryInfo.fullChargerCapacity"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("mAh")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.current')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.current),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "current", $$v)
+      },
+      expression: "batteryInfo.current"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("mA")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cell8_14')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.cell8to14),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "cell8to14", $$v)
+      },
+      expression: "batteryInfo.cell8to14"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("mV")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.currentChargeInterval')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.lastCharge),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "lastCharge", $$v)
+      },
+      expression: "batteryInfo.lastCharge"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("day")])], 2)], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "info-right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.model),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "model", $$v)
+      },
+      expression: "batteryInfo.model"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.hardVersion),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "hardVersion", $$v)
+      },
+      expression: "batteryInfo.hardVersion"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.RSOC')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.soc),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "soc", $$v)
+      },
+      expression: "batteryInfo.soc"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("%")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.capacityLeft')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.leftCapacity),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "leftCapacity", $$v)
+      },
+      expression: "batteryInfo.leftCapacity"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("mAh")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.temperature')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.temperature),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "temperature", $$v)
+      },
+      expression: "batteryInfo.temperature"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v(" ℃")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cell1_7')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.cell1to7),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "cell1to7", $$v)
+      },
+      expression: "batteryInfo.cell1to7"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("mV")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cycleLife')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.loopTime),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "loopTime", $$v)
+      },
+      expression: "batteryInfo.loopTime"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.maxChargeInterval')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.batteryInfo.maxChargeInterval),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "maxChargeInterval", $$v)
+      },
+      expression: "batteryInfo.maxChargeInterval"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("day")])], 2)], 1)])] : _vm._e()], 2)])]), _vm._v(" "), _c('div', {
+    staticClass: "print-content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('h4', [_vm._v("E-BIKE DIAGNOSIS REPORT")]), _vm._v(" "), _c('el-collapse', {
+    model: {
+      value: (_vm.printActiveNames),
+      callback: function($$v) {
+        _vm.printActiveNames = $$v
+      },
+      expression: "printActiveNames"
+    }
+  }, [_c('el-collapse-item', {
+    attrs: {
+      "title": "Store Info",
+      "name": "1"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group-customer"
+  }, [_c('li', {
+    staticClass: "list-group-item-50"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("Store Name")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.org.name || '-'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item-50"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("Store Email")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.org.email || '-'))])])]), _vm._v(" "), _c('ul', {
+    staticClass: "list-group-customer"
+  }, [_c('li', {
+    staticClass: "list-group-item-50"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("Store Tel.")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.org.phone || '-'))])])]), _vm._v(" "), _c('ul', {
+    staticClass: "list-group-customer"
+  }, [_c('li', {
+    staticClass: "list-group-item-100"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("Store Address")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.org.address + _vm.org.country || '-'))])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": "Bike Info",
+      "name": "2"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("Bike ID")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.vehicleSn || '-'))])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": "Diagnosis HMI",
+      "name": "3"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.hmiInfo ? _vm.hmiInfo.sn + _vm.hmiInfo.tip : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.hmiInfo ? _vm.hmiInfo.model : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.hmiInfo ? _vm.hmiInfo.version : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.hmiInfo ? _vm.hmiInfo.hardVersion : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.totalMileage')) + "(km)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.hmiInfo ? _vm.hmiInfo.totalMileage : "-"))])]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.hmiInfo ? _vm.hmiInfo.wheelDiameter : "-"))])]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')) + "(km/h)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.hmiInfo ? _vm.hmiInfo.speedLimit : "-"))])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": "Diagnosis Controller",
+      "name": "3"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.controllerInfo ? _vm.controllerInfo.sn + _vm.controllerInfo.tip : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.controllerInfo ? _vm.controllerInfo.model : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.controllerInfo ? _vm.controllerInfo.version : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.controllerInfo ? _vm.controllerInfo.hardVersion : "-"))])]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.nmlVolt')) + "(V)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.controllerInfo ? _vm.controllerInfo.nmlVolt : "-"))])]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.maxCur')) + "(A)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.controllerInfo ? _vm.controllerInfo.maxCurrent : "-"))])]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')) + "(km/h)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.controllerInfo ? _vm.controllerInfo.speedLimit : "-"))])]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.controllerInfo ? _vm.controllerInfo.wheelDiameter : "-"))])]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.circumference')) + "(mm)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.controllerInfo ? _vm.controllerInfo.circumference : "-"))])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": "Diagnosis Battery",
+      "name": "3"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.sn + _vm.batteryInfo.tip : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.model : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.version : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.hardVersion : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.ASOC')) + "(%)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.soh : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.RSOC')) + "(%)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.soc : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.packVoltage')) + "(mV)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.packVoltage : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.capacityLeft')) + "(mAh)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.leftCapacity : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.fullChargeCapacity')) + "(mAh)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.fullChargerCapacity : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.temperature')) + "(℃)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.temperature : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.current')) + "(mA)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.current : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cell1_7')) + "(mV)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.cell1to7 : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cell8_14')) + "(mV)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.cell8to14 : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cycleLife')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.loopTime : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.currentChargeInterval')) + "(day)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.lastCharge : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.maxChargeInterval')) + "(day)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.batteryInfo ? _vm.batteryInfo.maxChargeInterval : "-"))])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": "Diagnosis Motor",
+      "name": "3"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.motorInfo ? _vm.motorInfo.sn : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.motorInfo ? _vm.motorInfo.name : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.power')) + "(W)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.motorInfo ? _vm.motorInfo.power : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelSize')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.motorInfo ? _vm.motorInfo.wheelSize : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.voltage')) + "(V)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.motorInfo ? _vm.motorInfo.voltage : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.rpm')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.motorInfo ? _vm.motorInfo.rpm : "-"))])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": "Diagnosis Pedal Sensor",
+      "name": "3"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.pedalSensorInfo ? _vm.pedalSensorInfo.sn : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.pedalSensorInfo ? _vm.pedalSensorInfo.name : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.pedalSensorInfo ? _vm.pedalSensorInfo.version : "-"))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.pedalSensorInfo ? _vm.pedalSensorInfo.hardVersion : "-"))])])])]), _vm._v(" "), _c('el-collapse-item', {
+    attrs: {
+      "title": "Diagnosis Result",
+      "name": "4"
+    }
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hmi')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.result.hmi))]), _vm._v(" "), (_vm.hmiInfo.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.hmiInfo.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.controller')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.result.controller))]), _vm._v(" "), (_vm.controllerInfo.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.controllerInfo.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.battery')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.result.battery))]), _vm._v(" "), (_vm.batteryInfo.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.batteryInfo.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.motor')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.result.motor))]), _vm._v(" "), (_vm.motorInfo.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.motorInfo.error))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.sensor')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('span', [_vm._v(_vm._s(_vm.result.pedalSensor))]), _vm._v(" "), (_vm.pedalSensorInfo.error) ? _c('span', {
+    staticClass: "split"
+  }, [_vm._v("|")]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "error"
+  }, [_vm._v(_vm._s(_vm.pedalSensorInfo.error))])])])]), _vm._v(" "), _c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('defects')))])]), _vm._v(" "), _vm._l((_vm.defect), function(d) {
+    return _c('li', {
+      staticClass: "list-group-item"
+    }, [_c('span', {
+      staticClass: "defect-span"
+    }, [_vm._v(_vm._s(d))])])
+  })], 2), _vm._v(" "), _c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "label-title"
+  }, [_vm._v(_vm._s(_vm.$t('defectDes')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_vm._v(_vm._s(_vm.desc))])])])])], 1)], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-7544c08a","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/3rd-diagnosis/result.vue
+// module id = 1548
+// module chunks = 73

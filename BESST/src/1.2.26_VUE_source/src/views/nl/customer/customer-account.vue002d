@@ -1,0 +1,518 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "customer-account"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": _vm.goAfterIndex
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s('Customer Account'))])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Customer Account Info")]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_vm._m(0), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Company name"
+    },
+    model: {
+      value: (_vm.formData.name),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "name", $$v)
+      },
+      expression: "formData.name"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Customer No.")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Nick name"
+    },
+    model: {
+      value: (_vm.formData.company_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "company_no", $$v)
+      },
+      expression: "formData.company_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(1), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Service email"
+    },
+    model: {
+      value: (_vm.formData.email),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "email", $$v)
+      },
+      expression: "formData.email"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(2), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.formData.mobile),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "mobile", $$v)
+      },
+      expression: "formData.mobile"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    on: {
+      "change": _vm.PhoneRelatedCountry
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.country_code),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "country_code", $$v)
+      },
+      expression: "formData.country_code"
+    }
+  }, _vm._l((_vm.areaCodeList), function(item) {
+    return _c('el-option', {
+      key: item.area_code,
+      attrs: {
+        "label": item.area_code,
+        "value": item.area_code
+      }
+    })
+  }))], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(3), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Street"
+    },
+    model: {
+      value: (_vm.formData.street),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "street", $$v)
+      },
+      expression: "formData.street"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(4), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": " No."
+    },
+    model: {
+      value: (_vm.formData.address_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "address_no", $$v)
+      },
+      expression: "formData.address_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Currency")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "prepend"
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.currency),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "currency", $$v)
+      },
+      expression: "formData.currency"
+    }
+  }, _vm._l((_vm.currencies), function(item) {
+    return _c('el-option', {
+      key: item.currency,
+      attrs: {
+        "label": item.label,
+        "value": item.currency,
+        "value-key": item.currency
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Country")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    on: {
+      "change": _vm.CountryToPhone
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.country),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "country", $$v)
+      },
+      expression: "formData.country"
+    }
+  }, _vm._l((_vm.areaCodeList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.area_en,
+        "value": item.area_en
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Province")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.formData.province),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "province", $$v)
+      },
+      expression: "formData.province"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("City")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.formData.city),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "city", $$v)
+      },
+      expression: "formData.city"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("District")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.formData.district),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "district", $$v)
+      },
+      expression: "formData.district"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Zip Code")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Postal address"
+    },
+    model: {
+      value: (_vm.formData.postcode),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "postcode", $$v)
+      },
+      expression: "formData.postcode"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Account No.")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Account number"
+    },
+    model: {
+      value: (_vm.formData.account_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "account_no", $$v)
+      },
+      expression: "formData.account_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("VAT No.")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Customer company VAT.NO"
+    },
+    model: {
+      value: (_vm.formData.vat_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "vat_no", $$v)
+      },
+      expression: "formData.vat_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Payment Method")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "prepend",
+      "placeholder": "Select Payment Method",
+      "filterable": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.payment_method),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "payment_method", $$v)
+      },
+      expression: "formData.payment_method"
+    }
+  }, _vm._l((_vm.paymentMethodData), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.label,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Trade Terms")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "append",
+      "placeholder": "Select Trade Terms",
+      "filterable": ""
+    },
+    slot: "append",
+    model: {
+      value: (_vm.formData.trade_term),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "trade_term", $$v)
+      },
+      expression: "formData.trade_term"
+    }
+  }, _vm._l((_vm.tradeTerms), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.label,
+        "value": item.label
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Payment Term")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "append",
+      "placeholder": "Select Payment Term",
+      "filterable": ""
+    },
+    slot: "append",
+    model: {
+      value: (_vm.formData.payment_term),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "payment_term", $$v)
+      },
+      expression: "formData.payment_term"
+    }
+  }, _vm._l((_vm.paymentTerms), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.label,
+        "value": item.label
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Receiver Name")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Company contact"
+    },
+    model: {
+      value: (_vm.formData.receiver_name),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "receiver_name", $$v)
+      },
+      expression: "formData.receiver_name"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('el-tooltip', {
+    attrs: {
+      "effect": "dark",
+      "content": "The bigger the number, the better the quota",
+      "placement": "top"
+    }
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Credit Line")])]), _vm._v(" "), _c('el-input-number', {
+    staticClass: "input",
+    attrs: {
+      "min": 1
+    },
+    model: {
+      value: (_vm.formData.credit_line),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "credit_line", $$v)
+      },
+      expression: "formData.credit_line"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('el-tooltip', {
+    attrs: {
+      "effect": "dark",
+      "content": "The bigger the number, the better the credit",
+      "placement": "top-start"
+    }
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Credit Grade")])]), _vm._v(" "), _c('el-input-number', {
+    staticClass: "input",
+    attrs: {
+      "min": 1
+    },
+    model: {
+      value: (_vm.formData.credit_grade),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "credit_grade", $$v)
+      },
+      expression: "formData.credit_grade"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Service level")]), _vm._v(" "), _c('el-input-number', {
+    staticClass: "input",
+    attrs: {
+      "min": 1
+    },
+    model: {
+      value: (_vm.formData.star),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "star", $$v)
+      },
+      expression: "formData.star"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Remark")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.formData.remark),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "remark", $$v)
+      },
+      expression: "formData.remark"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Order Memo")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.formData.order_memo),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "order_memo", $$v)
+      },
+      expression: "formData.order_memo"
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "parts-list"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.createOrder
+    }
+  }, [_vm._v("SAVE")])], 1)])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Name\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Email\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Phone\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Street\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              No.\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-278b0121","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/customer/customer-account.vue
+// module id = 2434
+// module chunks = 72

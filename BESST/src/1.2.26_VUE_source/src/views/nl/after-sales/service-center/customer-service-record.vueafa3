@@ -1,0 +1,336 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "customer-service-record"
+  }, [_c('div', {
+    staticClass: "search-header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('span', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": _vm.goAfterIndex
+    }
+  })])]), _vm._v(" "), _c('el-form', {
+    staticClass: "list-form-inline",
+    attrs: {
+      "inline": true,
+      "model": _vm.formSearch
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Customer"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "filterable": ""
+    },
+    model: {
+      value: (_vm.formSearch.customer_id),
+      callback: function($$v) {
+        _vm.$set(_vm.formSearch, "customer_id", $$v)
+      },
+      expression: "formSearch.customer_id"
+    }
+  }, _vm._l((_vm.customerList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Service No."
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "Service No."
+    },
+    model: {
+      value: (_vm.formSearch.service_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formSearch, "service_no", $$v)
+      },
+      expression: "formSearch.service_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline-icon"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": "search"
+    },
+    on: {
+      "click": _vm.onSearch
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item clear",
+    attrs: {
+      "title": "clear"
+    },
+    on: {
+      "click": _vm.onClean
+    }
+  })])])], 1)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [(_vm.tableList.length <= 0 && !_vm.loading) ? _c('div', {
+    staticClass: "no-data-content"
+  }, [_vm._v("noResult")]) : _c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.headData), function(item, index) {
+    return _c('td', {
+      key: index
+    }, [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), (!_vm.loading && _vm.tableList.length > 0) ? _c('tbody', _vm._l((_vm.tableList), function(item) {
+    return _c('tr', {
+      key: item.id
+    }, [_c('td', [_vm._v(_vm._s(_vm.customerPipe(item.customer_id)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.service_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sales_order_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.typePipe(item.service_type)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.statusPipe(item.status)))]), _vm._v(" "), _c('td', [_c('a', {
+      directives: [{
+        name: "ilpermission",
+        rawName: "v-ilpermission",
+        value: ('customer-service-record-add'),
+        expression: "'customer-service-record-add'"
+      }],
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onEdit(item)
+        }
+      }
+    }, [_vm._v("edit")]), _vm._v(" "), _c('a', {
+      directives: [{
+        name: "ilpermission",
+        rawName: "v-ilpermission",
+        value: ('customer-service-record-delete'),
+        expression: "'customer-service-record-delete'"
+      }],
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onDelete(item)
+        }
+      }
+    }, [_vm._v("delete")]), _vm._v(" "), (item.status === 2) ? _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onAllot(item)
+        }
+      }
+    }, [_vm._v("allot")]) : _vm._e(), _vm._v(" "), _c('el-dropdown', {
+      directives: [{
+        name: "ilpermission",
+        rawName: "v-ilpermission",
+        value: ('customer-service-record-review'),
+        expression: "'customer-service-record-review'"
+      }],
+      staticClass: "statusDrop",
+      attrs: {
+        "trigger": "click"
+      },
+      on: {
+        "command": function($event) {
+          _vm.handleCommand($event, item)
+        }
+      }
+    }, [_c('span', {
+      staticClass: "el-dropdown-link"
+    }, [_vm._v("\n                  action\n                  "), _c('i', {
+      staticClass: "el-icon-caret-bottom el-icon--right"
+    })]), _vm._v(" "), _c('el-dropdown-menu', {
+      attrs: {
+        "slot": "dropdown"
+      },
+      slot: "dropdown"
+    }, [_c('el-dropdown-item', {
+      attrs: {
+        "command": "Finished",
+        "disabled": item.status === 1 || item.status === 2 || item.status === 3
+      }
+    }, [_vm._v("Processed")]), _vm._v(" "), _c('el-dropdown-item', {
+      attrs: {
+        "command": "Technical_Support",
+        "disabled": item.status === 2 || item.status === 3
+      }
+    }, [_vm._v("Technical Support")])], 1)], 1)], 1)])
+  })) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next, jumper",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v("total: " + _vm._s(_vm.total))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Delete Customer Service Record",
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v("Are you sure to delete it ?")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteInvitation
+    }
+  }, [_vm._v("yes")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v("no")])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Review Customer Service Record",
+      "visible": _vm.dialogReviewVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogReviewVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v("Are you sure to do it ?")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.reviewInvitation
+    }
+  }, [_vm._v("yes")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogReviewVisible = false
+      }
+    }
+  }, [_vm._v("no")])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-md",
+    attrs: {
+      "title": "Allot Technical User",
+      "visible": _vm.dialogAllotVisible,
+      "custom-class": "edit-dialog",
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogAllotVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Technical User\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-select', {
+    attrs: {
+      "filterable": ""
+    },
+    model: {
+      value: (_vm.formData.technical_id),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "technical_id", $$v)
+      },
+      expression: "formData.technical_id"
+    }
+  }, _vm._l((_vm.technicalUserList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.kf_fullName,
+        "value": item.id
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.reviewAllot
+    }
+  }, [_vm._v("yes")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogAllotVisible = false
+      }
+    }
+  }, [_vm._v("no")])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-0f6b9930","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/after-sales/service-center/customer-service-record.vue
+// module id = 2568
+// module chunks = 21

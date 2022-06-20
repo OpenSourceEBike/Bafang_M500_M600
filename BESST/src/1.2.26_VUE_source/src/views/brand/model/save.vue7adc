@@ -1,0 +1,230 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "brand-model-save"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.title))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item edit",
+    attrs: {
+      "title": _vm.$t('editAttr')
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogAttrVisible = true
+      }
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item save",
+    attrs: {
+      "title": _vm.$t('save')
+    },
+    on: {
+      "click": _vm.onClickSave
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "content-box"
+  }, [_c('div', {
+    staticClass: "base-attr"
+  }, [_c('div', {
+    staticClass: "attr-item logo"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('picture')))]), _vm._v(" "), _c('div', {
+    staticClass: "title-desc"
+  }, [_c('el-upload', {
+    staticClass: "btn btn-primary block",
+    staticStyle: {
+      "position": "relative"
+    },
+    attrs: {
+      "action": _vm.uploadUrl,
+      "show-file-list": false,
+      "on-success": _vm.imageUploaded,
+      "data": _vm.data
+    }
+  }, [(!_vm.photographSrc) ? _c('img', {
+    staticClass: "upload-icon",
+    attrs: {
+      "src": require("../../../assets/images/icon/icon-upload@2x.png")
+    }
+  }) : _c('img', {
+    staticClass: "upload-icon",
+    staticStyle: {
+      "background": "#fff"
+    },
+    attrs: {
+      "src": _vm._f("getImgUrl")(_vm.photographSrc)
+    }
+  }), _vm._v(" "), (!_vm.photographSrc) ? _c('label', {
+    staticClass: "tipOne"
+  }, [_vm._v("PNG,JPG")]) : _vm._e(), _vm._v(" "), (!_vm.photographSrc) ? _c('label', {
+    staticClass: "tipTwo"
+  }, [_vm._v("<3M")]) : _vm._e(), _vm._v(" "), (!_vm.photographSrc) ? _c('label', {
+    staticClass: "tipThree"
+  }, [_vm._v("300*300/400*400")]) : _vm._e()])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "attr-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('name')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.name),
+      callback: function($$v) {
+        _vm.name = $$v
+      },
+      expression: "name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "attr-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('brand')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.brandName))])])]), _vm._v(" "), _c('div', {
+    staticClass: "attr-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('partNo')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.partNo),
+      callback: function($$v) {
+        _vm.partNo = $$v
+      },
+      expression: "partNo"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "attr-item description"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('description')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    attrs: {
+      "resize": "none",
+      "type": "textarea",
+      "rows": 5,
+      "placeholder": ""
+    },
+    model: {
+      value: (_vm.desc),
+      callback: function($$v) {
+        _vm.desc = $$v
+      },
+      expression: "desc"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "attr-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('link')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    attrs: {
+      "resize": "none",
+      "type": "textarea",
+      "rows": 1,
+      "placeholder": ""
+    },
+    model: {
+      value: (_vm.website),
+      callback: function($$v) {
+        _vm.website = $$v
+      },
+      expression: "website"
+    }
+  })], 1)])]), _vm._v(" "), _vm._l((_vm.attrList), function(item, index) {
+    return _c('div', {
+      staticClass: "upper-attr"
+    }, [_c('item-attr-input-group', {
+      attrs: {
+        "item": item
+      },
+      on: {
+        "input-value-return": _vm.itemAttrInputValueReturn,
+        "file-upload-return": _vm.itemAttrFileUploadReturn,
+        "file-upload-remove": _vm.itemAttrFileUploadRemove
+      }
+    }, [_vm._v("\n                        " + _vm._s(item.name) + "\n                    ")])], 1)
+  })], 2)])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('attrList'),
+      "visible": _vm.dialogAttrVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogAttrVisible = $event
+      }
+    }
+  }, [_c('el-checkbox-group', {
+    model: {
+      value: (_vm.showAttrList),
+      callback: function($$v) {
+        _vm.showAttrList = $$v
+      },
+      expression: "showAttrList"
+    }
+  }, _vm._l((_vm.totalAttrList), function(attr) {
+    return _c('el-checkbox', {
+      key: attr.id,
+      attrs: {
+        "label": attr.id
+      }
+    }, [_vm._v(_vm._s(attr.name))])
+  })), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.getUpperAttrDefList
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogAttrVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)], 1)], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-c11b91e4","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/brand/model/save.vue
+// module id = 1603
+// module chunks = 73

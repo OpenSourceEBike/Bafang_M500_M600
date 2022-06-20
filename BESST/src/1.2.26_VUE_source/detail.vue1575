@@ -1,0 +1,726 @@
+<template>
+    <div class="assembler-vehicle-detail-container">
+        <div class="header">
+            <!--<div class="fl">-->
+            <!---->
+            <!--</div>-->
+            <div class="btn-group-left">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('vd.back')"></div>
+                </div>
+            </div>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item print" @click="clickToPrint"></div>
+                    <div class="icon-item more" @click="getReportList" :title="$t('vd.reportList')"></div>
+                    <div class="icon-item add" @click="showUpdateDialog('', 0)" :title="label" v-if="authList[Core.Const.AUTH_LIST.objectReplace] && !isSale"></div>
+                    <div class="icon-item save" @click="enterEdit" :title="label" v-if="authList[Core.Const.AUTH_LIST.objectReplace] && isEdit && !isSale"></div>
+                    <div class="icon-item edit" @click="enterEdit" :title="label" v-else-if="authList[Core.Const.AUTH_LIST.objectReplace] && !isSale"></div>
+                </div>
+            </div>
+
+        </div>
+        <div class="content-wrap">
+            <div class="content">
+                <div class="content-holder">
+                    <div class="vehicle-item">
+                        <div class="content-item">
+                            <label class="title">{{ $t('vd.sn') }}</label>
+                            <div class="desc">
+                                <span v-show="!isEdit">{{vehicle.sn}}</span>
+                                <el-input v-show="isEdit" class="input" v-model="vehicle.sn" :maxlength="30"></el-input>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('vd.key') }}</label>
+                            <div class="desc">
+                                <span v-show="!isEdit">{{vehicle.secret_key ? vehicle.secret_key : '-'}}</span>
+                                <el-input v-show="isEdit" class="input" v-model="vehicle.secret_key" :maxlength="30"></el-input>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('vd.orderSourceId') }}</label>
+                            <div class="desc">
+                                <span v-if="vehicle.order && vehicle.order.source_id">{{vehicle.order.source_id
+                                    }}</span>
+                                <span v-else>-</span>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('vd.itemName') }}</label>
+                            <div class="desc">
+                                <span>{{vehicle.item.name}}</span>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{$t('vd.customerId')}}</label>
+                            <div class="desc">
+                                <span
+                                    v-if="vehicle.order && vehicle.order.customer_id">{{vehicle.order.customer_id}}</span>
+                                <span v-else>-</span>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('vd.productTime') }}</label>
+                            <div class="desc">
+                                <span>{{vehicle.produce_time | timeFormat("Y-m-d")}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <el-collapse accordion>
+                        <el-collapse-item>
+                            <template slot="title">
+                                <label>{{ $t('vd.part')}}</label>
+                                <div class="btn-div">
+                                    <a class="btn-underline" @click.stop="onClickHistory">{{ $t('vd.history')}}</a>
+                                </div>
+                            </template>
+
+                            <div class="bom-content-holder">
+                                <div class="bom-item" v-for="bom in bomAttrList" v-if="bomAttrList.length > 0">
+                                    <div class="bom-header">
+                                        <label class="bom-title">
+                                            {{bom.rootName}}
+                                        </label>
+                                        <el-button type="text" class="btn-replace"
+                                                   @click="showUpdateDialog(bom.sn, bom.id)"
+                                                   v-if="authList[Core.Const.AUTH_LIST.objectReplace]">
+                                            {{ $t('vd.replace') }}
+                                        </el-button>
+                                    </div>
+                                    <div class="bom-content">
+                                        <label class="title">SN</label>
+                                        <div class="desc">
+                                            <span>{{bom.sn || '-'}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="bom-content">
+                                        <label class="title">Model</label>
+                                        <div class="desc">
+                                            <span>{{bom.name || '-'}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="bom-content" v-for="item in bom.attrList">
+                                        <label class="title">
+                                            {{item.attr_def_name}}
+                                        </label>
+                                        <div class="desc">
+                                            <span>{{item.value || '-'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </el-collapse-item>
+                    </el-collapse>
+                </div>
+            </div>
+        </div>
+
+        <el-dialog :title="dialogTitle" :visible.sync="dialogReplaceVisible" class="dialog-password">
+            <div class="dialog-item" v-if="selectSn">
+                <label class="label">{{ $t('vd.oldSn') }}</label>
+                <label class="input old-sn">{{selectSn}}</label>
+            </div>
+            <div class="dialog-item" v-else>
+                <label class="label">Category</label>
+                <el-select v-model="componentValue" class="select-category">
+                    <el-option
+                        v-for="item in categoryOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="dialog-item new-password">
+                <label class="label">{{ $t('vd.newSn') }}</label>
+                <el-input v-model="newSn" class="input scan-input"></el-input>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="updateSn">{{ $t('vd.confirm') }}</el-button>
+                <el-button type="primary" @click="dialogReplaceVisible = false">{{ $t('vd.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--车辆诊断报告-->
+        <el-dialog :title="$t('vd.reportList')" :visible.sync="dialogReportVisible" class="dialogReportList">
+            <table border="0" cellspacing="0" cellpadding="0" class="report-table">
+                <thead>
+                <tr>
+                    <td class="report-td head">
+                        {{ $t('vd.date') }}
+                    </td>
+                    <td class="report-td  head">
+                        {{ $t('vd.author') }}
+                    </td>
+                    <td class="report-td head">
+                        {{ $t('vd.operation') }}
+                    </td>
+                </tr>
+                </thead>
+                <tr v-for="(item, index) in reportList">
+                    <td class="report-td">{{item.create_time | dateFormat}}</td>
+                    <td class="report-td">{{item.org_name}}</td>
+                    <td class="report-td"><a class="btn-underline" @click="goToReportDetail(item)">{{ $t('vd.detail')
+                        }}</a></td>
+                </tr>
+            </table>
+        </el-dialog>
+
+        <div class="print-content-wrap">
+            <div class="content">
+                <h4>VEHICLE REPORT</h4>
+                <el-collapse v-model="printActiveNames">
+                    <el-collapse-item title="Base Info" name="1">
+                        <ul class="list-group-customer">
+                            <li class="list-group-item-50">
+                                <div class="label-title">SN</div>
+                                <div class="content">{{ vehicle.sn }}</div>
+                            </li>
+                            <li class="list-group-item-50">
+                                <div class="label-title">Bike Key</div>
+                                <div class="content">{{ vehicle.secret_key || '-' }}</div>
+                            </li>
+                        </ul>
+                        <ul class="list-group-customer">
+                            <li class="list-group-item-50">
+                                <div class="label-title">Po No.</div>
+                                <div class="content">{{ vehicle.order ? vehicle.order.source_id : '-' }}</div>
+                            </li>
+                            <li class="list-group-item-50">
+                                <div class="label-title">Model Name</div>
+                                <div class="content">{{ vehicle.item ? vehicle.item.name : '' }}</div>
+                            </li>
+                        </ul>
+                        <ul class="list-group-customer">
+                            <li class="list-group-item-50">
+                                <div class="label-title">Customer Name</div>
+                                <div class="content">{{ vehicle.order ? vehicle.order.customer_id : '-' }}</div>
+                            </li>
+                            <li class="list-group-item-50">
+                                <div class="label-title">Produce Time</div>
+                                <div class="content">{{ vehicle.produce_time | timeFormat("Y-m-d") }}</div>
+                            </li>
+                        </ul>
+                    </el-collapse-item>
+                    <el-collapse-item title="Components" name="2">
+                        <div v-for="bom in bomAttrList">
+                            <h5 style="margin-left: 60px;">{{ bom.rootName }}</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="label-title">SN</div>
+                                    <div class="content">{{ bom.sn || "-" }}</div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="label-title">Model</div>
+                                    <div class="content">{{ bom.name || "-" }}</div>
+                                </li>
+                                <li class="list-group-item" v-for="attrItem in bom.attrList">
+                                    <div class="label-title">{{ attrItem.attr_def_name }}</div>
+                                    <div class="content">{{ attrItem.value || '-' }}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </el-collapse-item>
+                </el-collapse>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        data() {
+            return {
+                dialogReplaceVisible: false,
+                selectSn: '',
+                newSn: '',
+                Core: Core,
+                vehicleId: '',
+                bomList: '',
+                vehicle: {
+                    sn: '',
+                    brand: {},
+                    item: {},
+                    order: {sn: ''},
+                    secret_key: ''
+                },
+                isEdit: false,
+                isSale: false,
+                label: 'Edit',
+                selectId: '',
+                dialogTitle: '',
+                //bom存在哪些
+
+                //bom的展示数据
+
+                bomAttrList: [],
+
+                dialogReportVisible: false,
+                reportList: [],
+
+                authList: [],
+                printActiveNames: ['1', '2'],
+
+                hasBattery: false,
+                categoryOptions: [
+                    {value: 3, label: 'Motor'},
+                    {value: 4, label: 'HMI'},
+                    {value: 5, label: 'Battery'},
+                    {value: 6, label: 'Sensor'},
+                    {value: 7, label: 'Controller'}
+                ],
+                componentValue: 5,
+                componentList: [],
+                noComponentList: [],
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Assembler.AssemblerVehicleDetail,
+                zh: ZH.Assembler.AssemblerVehicleDetail,
+                de: DE.Assembler.AssemblerVehicleDetail,
+                nl: NL.Assembler.AssemblerVehicleDetail
+            }
+        },
+        mounted: function () {
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.vehicleId = this.$route.query.vehicleId;
+            this.getVehicleDetail(this.vehicleId);
+
+        },
+
+        watch: {
+            newSn: function (newValue, oldValue) {
+                let vm = this;
+                if (newValue === oldValue || newValue === '') {
+                    return;
+                }
+                if (typeof oldValue !== 'undefined') {
+                    let time = new Date().getTime();
+                    vm.isScanner = time - vm.lastInputTime <= 100; // 间隔小于100ms的就认为是扫描枪输入
+                    vm.lastInputTime = time;
+                } else {
+                    vm.lastInputTime = new Date().getTime();
+                }
+                if (!vm.scannerTimeout) {
+                    if (!vm.scannerTimeout) {
+                        vm.scannerTimeout = setTimeout(function () {
+                            if (vm.isScanner) {
+                                let value = vm.newSn.replace(/\s+/g, "");
+                                // 如果序列号中匹配到特定字符，自动显示在对应的输入框中
+                                if (value.indexOf('DP') > -1) {
+                                    let array = value.split('DP');
+                                    if (array.length > 1) {
+                                        value = 'DP' + array[array.length - 1];
+                                    }
+                                    vm.newSn = value;
+                                }else if(value.indexOf('SR') > -1){
+                                    let array = value.split('SR');
+                                    if (array.length > 1) {
+                                        value = 'SR' + array[array.length - 1];
+                                    }
+                                    vm.newSn = value;
+                                }
+                            }
+                            clearTimeout(vm.scannerTimeout);
+                            vm.scannerTimeout = undefined;
+                        }, 1000)
+                    }
+                }
+            }
+        },
+
+        methods: {
+            getVehicleDetail(id) {
+                Core.Api.Vehicle.vehicleDetail(id).then(res => {
+                    this.vehicle = res.vehicle;
+                    if(res.vehicle.status === 2){
+                        this.isSale = true;
+                    }
+                    let bom = res.vehicle.bom_list
+                    this.getBomInfo(bom);
+                    let $this = this;
+                    bom.forEach((item, index) => {
+                        this.componentList.push(item.category_root_id);
+                        if (item.category_root_id === 5) {
+                            $this.hasBattery = true;
+                        }
+                    });
+                    this.checkComponent();
+
+                })
+            },
+
+            //sn 选中的sn
+            showUpdateDialog(sn, id) {
+                this.newSn = '';
+                if (!sn) {
+                    this.dialogTitle = this.$t('vd.add');
+
+                } else {
+                    this.dialogTitle = this.$t('vd.replace');
+                }
+                this.selectSn = sn;
+                this.selectId = id;
+                this.dialogReplaceVisible = true;
+            },
+
+            getBomInfo(bomList) {
+                this.bomAttrList = [];
+                let $this = this;
+                bomList.forEach(function (bom, index) {
+                    let item = {
+                        attrList: [],
+                    };
+
+                    item.sn = bom.sn;
+                    item.id = bom.id;
+                    item.name = bom.item ? bom.item.name : '';
+                    let attrList = bom.item ? bom.item.attr_list : [];
+
+                    if (bom.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.MOTOR) {
+                        item.rootName = 'Motor';
+                        if (attrList !== null && attrList.length > 0) {
+                            for (let index in attrList) {
+                                if (['power', 'voltage', 'wheel_size', 'rpm'].includes(attrList[index].attr_def_key)) {
+                                    item.attrList.push(attrList[index]);
+                                }
+                            }
+                        }
+                        $this.bomAttrList.push(item);
+                        return;
+                    }
+
+                    if (bom.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.SENSOR) {
+                        item.rootName = 'Sensor';
+                        if (attrList !== null && attrList.length > 0) {
+                            for (let index in attrList) {
+                                if (['soft_ver', 'hard_ver'].includes(attrList[index].attr_def_key)) {
+                                    item.attrList.push(attrList[index]);
+                                }
+                            }
+                        }
+                        $this.bomAttrList.push(item);
+                        return;
+                    }
+
+                    if (bom.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.BATTERY) {
+                        item.rootName = 'Battery';
+                        if (attrList !== null && attrList.length > 0) {
+                            for (let index in attrList) {
+                                if (['soft_ver', 'hard_ver','voltage', 'capacity'].includes(attrList[index].attr_def_key)) {
+                                    item.attrList.push(attrList[index]);
+                                }
+                            }
+                        }
+                        $this.bomAttrList.push(item);
+                        return;
+                    }
+
+                    if (bom.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.HMI) {
+                        item.rootName = 'HMI';
+
+                        if (attrList !== null && attrList.length > 0) {
+                            if (bom.item.name.indexOf(".CAN") > -1){
+                                for (let index in attrList) {
+                                    if (['soft_ver', 'hard_ver'].includes(attrList[index].attr_def_key)) {
+                                        item.attrList.push(attrList[index]);
+                                    }
+                                }
+                            }else{
+                                for (let index in attrList) {
+                                    if (['soft_ver', 'hard_ver','speed_limit', 'wheel_size'].includes(attrList[index].attr_def_key)) {
+                                        item.attrList.push(attrList[index]);
+                                    }
+                                }
+                            }
+                        }
+                        $this.bomAttrList.push(item);
+                        return;
+                    }
+
+                    if (bom.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.CONTROLLER) {
+                        item.rootName = 'Controller';
+                        if (attrList !== null && attrList.length > 0) {
+                            if (bom.item.name.indexOf(".FC") > -1){
+                                for (let index in attrList) {
+                                    if (['soft_ver', 'hard_ver', 'speed_limit', 'circuference', 'wheel_size'].includes(attrList[index].attr_def_key)) {
+                                        item.attrList.push(attrList[index]);
+                                    }
+                                }
+                            }else{
+                                for (let index in attrList) {
+                                    if (['soft_ver', 'hard_ver', 'power', 'current_limit', 'pas_signals', 'voltage', 'low_voltage', 'over_voltage'].includes(attrList[index].attr_def_key)) {
+                                        item.attrList.push(attrList[index]);
+                                    }
+                                }
+                            }
+                        }
+                        $this.bomAttrList.push(item);
+                    }
+                });
+            },
+
+            updateSn() {
+                Core.Api.Vehicle.bomChange(this.vehicleId, this.selectId, this.newSn.replace(/\s+/g, "")).then(res => {
+                    this.dialogReplaceVisible = false;
+                    this.selectSn = '';
+                    this.newSn = '';
+                    this.getVehicleDetail(this.vehicleId);
+                })
+            },
+
+            checkComponent(){
+                let allComponentList = [3, 4, 5, 6, 7, 8];
+                //  没有的部件列表
+                this.noComponentList = [];
+                this.noComponentList = this.categoryOptions.filter((item, index) => {
+                    return this.componentList.indexOf(item.value) <= -1;
+                });
+                if (this.noComponentList.length > 0) {
+                    this.categoryOptions  = this.noComponentList;
+                    this.componentValue = this.noComponentList[0].value;
+                }
+            },
+
+            enterEdit() {
+                this.isEdit = !this.isEdit;
+                if (this.isEdit) {
+                    this.label = this.$t('vd.save');
+                } else {
+                    Core.Api.Vehicle.editVehicle(this.vehicleId, this.vehicle.sn, this.vehicle.secret_key).then();
+                    this.label = this.$t('vd.edit');
+                }
+            },
+
+
+            goToReportDetail(item) {
+                this.$router.push({name: "assemblerDiagnosisReport", query: {id: item.id}})
+            },
+
+            getReportList() {
+                Core.Api.Vehicle.getVehicleReportList(this.vehicleId).then(res => {
+                    this.reportList = res.report_list;
+                    if (this.reportList.length <= 0) {
+                        this.$message({
+                            message: this.$t("vd.emptyListTip"),
+                            type: "warning"
+                        });
+                        return;
+                    }
+                    this.dialogReportVisible = true;
+                });
+            },
+
+            onClickHistory() {
+                this.$router.push({name: 'assemblerReplaceReportList', query: {"vehicleId": this.vehicleId}});
+            },
+
+            clickToPrint() {
+                let print = "div.print-content-wrap";
+
+                let extraCss = "";
+                let mode = "iframe";
+                let close = false;
+                let retainAttr = ['class', 'id', 'style', 'on'];
+                let headElements = '<meta charset="utf-8" />,<meta http-equiv="X-UA-Compatible" content="IE=edge"/>';
+
+                let options = { mode : mode, popClose : close, extraCss : extraCss, retainAttr : retainAttr, extraHead : headElements };
+                $(print).printArea(options);
+            },
+
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss" scoped>
+    .assembler-vehicle-detail-container {
+        height: 100%;
+        overflow: hidden;
+        .operation-holder {
+            height: 60px;
+            line-height: 60px;
+            padding: 0 30px;
+            overflow: hidden;
+
+            .name {
+                font-size: 16px;
+                color: #FFFFFF;
+                font-weight: bold;
+                margin-left: 30px;
+            }
+            .btn-edit {
+                position: absolute;
+                right: 30px;
+                top: 18px;
+            }
+            .btn-report {
+                position: absolute;
+                right: 100px;
+                top: 18px;
+            }
+
+        }
+        .content {
+            height: 100%;
+            .content-holder {
+                padding: 26px 60px;
+                overflow: hidden;
+                .btn-div {
+                    display: inline-block;
+                    position: absolute;
+                    right: 80px;
+                }
+                .vehicle-item {
+                    overflow: hidden;
+                    padding-bottom: 20px;
+                }
+                .content-item {
+                    width: 50%;
+                    float: left;
+                    font-size: 0;
+                    line-height: 50px;
+                    overflow: hidden;
+                    .title {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: 140px;
+                        font-size: 14px;
+                        color: rgba(255, 255, 255, 0.6);
+                        padding-left: 10px;
+                    }
+                    .desc {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: calc(100% - 140px);
+                        span {
+                            font-size: 14px;
+                            color: #FFFFFF;
+                            &.strong {
+                                font-weight: bold;
+                            }
+                        }
+                        .input {
+                            width: 200px;
+                        }
+                    }
+                }
+                .width {
+                    overflow: hidden;
+                    width: 100%;
+                }
+
+                .bom-content-holder {
+                    padding: 10px 20px;
+                }
+
+                .bom-item {
+                    width: 100%;
+                    overflow: hidden;
+                    .bom-header {
+                        overflow: hidden;
+                        line-height: 40px;
+                        .bom-title {
+                            font-size: 14px;
+                            color: white;
+                            padding-left: 5px;
+                        }
+                        .btn-replace {
+                            float: right;
+                            margin-right: 40px;
+                        }
+                    }
+                    .bom-content {
+                        float: left;
+                        display: inline-block;
+                        width: 50%;
+                        font-size: 0;
+                        line-height: 30px;
+                        overflow: hidden;
+                        .title {
+                            display: inline-block;
+                            vertical-align: top;
+                            width: 140px;
+                            font-size: 12px;
+                            color: rgba(255, 255, 255, 0.6);
+                            padding-left: 10px;
+                        }
+                        .desc {
+                            display: inline-block;
+                            vertical-align: top;
+                            width: calc(100% - 140px);
+                            span {
+                                word-break: break-all;
+                                font-size: 12px;
+                                color: #FFFFFF;
+                                &.strong {
+                                    font-weight: bold;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+        .report-table {
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            tr {
+                line-height: 30px;
+            }
+            .head {
+                color: white;
+            }
+            .report-td {
+                padding: 0 6px;
+                width: 160px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                font-size: 14px;
+                text-align: center;
+            }
+        }
+
+        .print-content-wrap {
+            display: none;
+        }
+
+        .dialog-password {
+            .input {
+                .el-input__inner {
+                    padding-right: 40px;
+                }
+            }
+        }
+        .dialog-item {
+            .label {
+                display: inline-block;
+                vertical-align: top;
+                width: 140px;
+            }
+            .select-category {
+                width: 250px;
+            }
+            .scan-input {
+                width: 250px;
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// detail.vue?6dbbc60b
