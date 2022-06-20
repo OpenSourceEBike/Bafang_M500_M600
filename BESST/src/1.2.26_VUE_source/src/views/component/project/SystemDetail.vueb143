@@ -1,0 +1,217 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "system-detail"
+  }, [_c('div', {
+    staticClass: "icons",
+    on: {
+      "click": _vm.back
+    }
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "Back"
+    }
+  })]), _vm._v(" "), _c('el-form', {
+    staticClass: "demo-form-inline",
+    attrs: {
+      "inline": true
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "项目代号:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "Project No.",
+      "clearable": ""
+    },
+    model: {
+      value: (_vm.projectNumberInput),
+      callback: function($$v) {
+        _vm.projectNumberInput = $$v
+      },
+      expression: "projectNumberInput"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "项目类型:"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "placeholder": "请选择"
+    },
+    on: {
+      "change": _vm.getProjectType
+    },
+    model: {
+      value: (_vm.projectType),
+      callback: function($$v) {
+        _vm.projectType = $$v
+      },
+      expression: "projectType"
+    }
+  }, _vm._l((_vm.options), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.name,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "审核状态:"
+    }
+  }, [_vm._v("未审核")]), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "车辆系统:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "vehicle system",
+      "clearable": ""
+    },
+    model: {
+      value: (_vm.vehicleSystem),
+      callback: function($$v) {
+        _vm.vehicleSystem = $$v
+      },
+      expression: "vehicleSystem"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "车辆系统状态:"
+    }
+  }, [_vm._v("\n            未审核\n            ")]), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "车辆系统代号:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "vehicle system code.",
+      "clearable": ""
+    },
+    model: {
+      value: (_vm.vehicleSystemCode),
+      callback: function($$v) {
+        _vm.vehicleSystemCode = $$v
+      },
+      expression: "vehicleSystemCode"
+    }
+  })], 1)], 1), _vm._v(" "), _c('el-collapse', {
+    staticClass: "param-detail",
+    attrs: {
+      "accordion": ""
+    },
+    on: {
+      "change": _vm.handleChange
+    },
+    model: {
+      value: (_vm.activeNames),
+      callback: function($$v) {
+        _vm.activeNames = $$v
+      },
+      expression: "activeNames"
+    }
+  }, _vm._l((_vm.systemList), function(item, index) {
+    return _c('el-collapse-item', {
+      key: index,
+      attrs: {
+        "title": (item.name + '  ' + item.SN),
+        "name": index
+      }
+    }, [_c('template', {
+      slot: "title"
+    }, [_c('img', {
+      staticClass: "icon",
+      staticStyle: {
+        "width": "20px",
+        "height": "20px"
+      },
+      attrs: {
+        "src": item.img
+      }
+    }), _vm._v(" "), _c('span', [_vm._v(_vm._s((item.name + '  ' + item.SN)))])]), _vm._v(" "), (item.code >= 1) ? _c('div', [(item.hardwareData) ? _c('h3', {
+      staticClass: "type-name"
+    }, [_vm._v("硬件")]) : _vm._e(), _vm._v(" "), (item.hardwareData) ? _c('el-table', {
+      attrs: {
+        "data": item.hardwareData
+      }
+    }, _vm._l((item.hardwareHeadData), function(item, index) {
+      return _c('el-table-column', {
+        key: index,
+        attrs: {
+          "prop": item.name,
+          "label": item.label,
+          "align": "center"
+        }
+      })
+    })) : _vm._e(), _vm._v(" "), (item.firmwareData) ? _c('h3', {
+      staticClass: "type-name"
+    }, [_vm._v("固件")]) : _vm._e(), _vm._v(" "), (item.firmwareData) ? _c('el-table', {
+      attrs: {
+        "data": item.firmwareData
+      }
+    }, [_vm._l((item.firmwareHeadData), function(item, index) {
+      return _c('el-table-column', {
+        key: index,
+        attrs: {
+          "prop": item.name,
+          "label": item.label,
+          "align": "center"
+        }
+      })
+    }), _vm._v(" "), (item.name == '控制器') ? _c('el-table-column', {
+      attrs: {
+        "render-header": _vm.renderHeader
+      },
+      scopedSlots: _vm._u([{
+        key: "default",
+        fn: function(scope) {
+          return [_c('span', {
+            staticClass: "upload-firmware-file",
+            on: {
+              "click": function($event) {
+                _vm.getUrl(_vm.firmwareBin[item.name])
+              }
+            }
+          }, [_vm._v(_vm._s(_vm.firmwareBin.firmwareName))])]
+        }
+      }])
+    }) : _vm._e()], 2) : _vm._e(), _vm._v(" "), (item.propertyData) ? _c('h3', {
+      staticClass: "type-name"
+    }, [_vm._v("属性")]) : _vm._e(), _vm._v(" "), (item.propertyData) ? _c('el-table', {
+      attrs: {
+        "data": item.propertyData
+      }
+    }, _vm._l((item.propertyHeadData), function(item, index) {
+      return _c('el-table-column', {
+        key: index,
+        attrs: {
+          "prop": item.name,
+          "label": item.label,
+          "align": "center"
+        }
+      })
+    })) : _vm._e()], 1) : _c('ul', {
+      staticClass: "param-list"
+    }, _vm._l((item.paramList), function(childItem, childItemIndex) {
+      return _c('li', {
+        key: childItemIndex,
+        staticClass: "param-list-item",
+        attrs: {
+          "title": childItem.name
+        }
+      }, [_c('span', {
+        staticClass: "param-name"
+      }, [_vm._v(_vm._s(childItem.name.substring(0, 6)))]), _vm._v(" "), _c('span', [_vm._v(":" + _vm._s(childItem.value))])])
+    }))], 2)
+  }))], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-124945ab","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/project/SystemDetail.vue
+// module id = 1986
+// module chunks = 73

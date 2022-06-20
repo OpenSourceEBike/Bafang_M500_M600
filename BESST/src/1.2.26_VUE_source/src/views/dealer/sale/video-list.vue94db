@@ -1,0 +1,76 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "video-list"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v("\n                    " + _vm._s(item) + "\n                ")])
+  }))]), _vm._v(" "), _c('tbody', _vm._l((_vm.videoList), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("videoCategoryType")(item.category)))]), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.preview(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('preview')))])])])
+  }))]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.videoList.length <= 0),
+      expression: "videoList.length <= 0"
+    }],
+    staticClass: "no-data-content"
+  }, [_vm._v("\n            " + _vm._s(_vm.$t('noResult')) + "\n        ")])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.selectVideo.name,
+      "custom-class": "video-dialog",
+      "visible": _vm.dialogPreviewVisible,
+      "before-close": _vm.closeVideoDialog
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogPreviewVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "dialog-container"
+  }, [(_vm.dialogPreviewVisible) ? _c('iframe', {
+    staticClass: "video-iframe",
+    attrs: {
+      "src": _vm.selectVideo.file,
+      "frameborder": "0"
+    }
+  }) : _vm._e()])])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-705a96b6","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/dealer/sale/video-list.vue
+// module id = 1702
+// module chunks = 73

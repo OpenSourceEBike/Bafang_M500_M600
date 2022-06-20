@@ -1,0 +1,321 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "component-detail-container"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.goBack()
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-holder"
+  }, [_c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('sn')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.component.sn))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('category')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm._f("categoryRoot")(_vm.component.category_root_id)))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('modelName')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.component.item.name))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('partNo')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.component.item ? _vm.component.item.ext_part_no : ""))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('orderNo')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.component.order ? _vm.component.order.source_id : ""))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('customerName')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.component.order ? _vm.component.order.customer_id : ""))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('customerPartNo')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.customerPartNo))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('customerPoNo')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.component.order ? _vm.component.order.customer_po_no : ""))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('produceTime')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.component.produce_time)))])])]), _vm._v(" "), (_vm.component.sale_time == 0) ? _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('saleTime')))]), _vm._v(" "), _vm._m(0)]) : _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('saleTime')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.component.sale_time, "Y-m-d")) + " ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Test Data")]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.component.test_data) + " ")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-holder"
+  }, [_c('div', {
+    staticStyle: {
+      "width": "800px"
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', [_vm._v("Component SN")]), _vm._v(" "), _c('el-input', {
+    model: {
+      value: (_vm.component.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.component, "sn", $$v)
+      },
+      expression: "component.sn"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": _vm.clearData
+    }
+  }, [_vm._v("清除")]), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": _vm.getVehicleBySn
+    }
+  }, [_vm._v("查找车辆")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', [_vm._v("Ebike SN")]), _vm._v(" "), _c('el-input', {
+    model: {
+      value: (_vm.vehicleSn),
+      callback: function($$v) {
+        _vm.vehicleSn = $$v
+      },
+      expression: "vehicleSn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', [_vm._v("Bike of SN you want to replace")]), _vm._v(" "), _c('el-input', {
+    model: {
+      value: (_vm.vehicleSnReplace),
+      callback: function($$v) {
+        _vm.vehicleSnReplace = $$v
+      },
+      expression: "vehicleSnReplace"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": _vm.replaceVehicleComponent
+    }
+  }, [_vm._v("替换车辆零部件")]), _vm._v(" "), _c('span', [_vm._v("支持仪表，控制器，电池的替换")])], 1)])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id == 25),
+      expression: "org.id == 25"
+    }],
+    staticClass: "content-holder"
+  }, [_c('el-collapse', {
+    attrs: {
+      "accordion": ""
+    }
+  }, [_c('el-collapse-item', [_c('template', {
+    slot: "title"
+  }, [_c('label', [_vm._v("部件追踪")])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.getVehicleList
+    }
+  }, [_vm._v("获取绑定车辆信息")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.emptyVehicleList
+    }
+  }, [_vm._v("清除车辆信息列表")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHeadV), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.vehicleList), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.sn))]), _vm._v(" "), _c('td', [_c('img', {
+      attrs: {
+        "src": _vm._f("getImgUrl")(item.brand && item.brand.img)
+      }
+    })]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.brand && item.brand.name || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.item && item.item.name || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.order && item.order.source_id ? item.order.source_id : '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("timeFormat")(item.produce_time, 'Y-m-d')))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.status))])])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "table-content-holder"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHeadD), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.vehicleDetail), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.hmi || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.ctr || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.bat || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.motor || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sensor || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.key || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.charger || '-'))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": function($event) {
+        _vm.getVehicleOrderList()
+      }
+    }
+  }, [_vm._v("获取车辆替换信息")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHeadRp), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.replaceReportList), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.category.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.old_component.sn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.new_component.sn))])])
+  }))])]), _vm._v(" "), _c('div', {}, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v("total: " + _vm._s(_vm.total))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": function($event) {
+        _vm.getDealerList()
+      }
+    }
+  }, [_vm._v("获取销售信息")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHeadS), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.saleOrderList), function(item) {
+    return _c('tr', {
+      on: {
+        "click": function($event) {
+          _vm.goDetailView(item.id)
+        }
+      }
+    }, [_c('td', [_vm._v(_vm._s(item.sn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.object_sn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.customer_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.invoice_no || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.warranty || '-'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("timeFormat")(item.sale_time, "Y-m-d")))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.remark || '-'))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": function($event) {
+        _vm.getOperationInfo()
+      }
+    }
+  }, [_vm._v("获取操作信息")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHeadR), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.recordList), function(item) {
+    return _c('tr', {
+      staticClass: "large"
+    }, [_c('td', [_vm._v(_vm._s(item.sn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.vehicle_sn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.org_type == 3 ? "ASSEMBLER" : item.org_type == 2 ? "DEALER" : item.org_type == 4 ? "COMPONENT" : "BRAND"))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.user_email))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("timeFormat")(item.time)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("operationType")(item.type)))]), _vm._v(" "), _c('td', [(item.type === 1) ? _c('span', [_vm._v("\n                                         Old:" + _vm._s(item.data.old) + " "), _c('br'), _vm._v("\n                                         New: " + _vm._s(item.data.new) + "\n                                     ")]) : _c('span', [_vm._v("\n                                        " + _vm._s(item.data) + "\n                                     ")])])])
+  }))])])])], 2)], 1)], 1)])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v("/")])])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-0be55ed0","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/component/detail.vue
+// module id = 1795
+// module chunks = 73

@@ -1,0 +1,472 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "CI-header-save"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": _vm.goCIList
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.orderId ? 'Edit Commerial Invoice' : 'Add Commerial Invoice'))])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "content content-width"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Commerial Invoice")]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_vm._m(0), _vm._v(" "), _c('el-autocomplete', {
+    ref: "saveTagInput",
+    staticClass: "input",
+    attrs: {
+      "size": "small",
+      "fetch-suggestions": _vm.querySearchAsync,
+      "placeholder": "Delivery Order No."
+    },
+    on: {
+      "select": _vm.handleInputConfirm
+    },
+    model: {
+      value: (_vm.formData.delivery_order_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "delivery_order_no", $$v)
+      },
+      expression: "formData.delivery_order_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(1), _vm._v(" "), _c('el-date-picker', {
+    staticClass: "input",
+    attrs: {
+      "type": "date",
+      "placeholder": "Date"
+    },
+    model: {
+      value: (_vm.date),
+      callback: function($$v) {
+        _vm.date = $$v
+      },
+      expression: "date"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Customer")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Customer",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.customer_name),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "customer_name", $$v)
+      },
+      expression: "formData.customer_name"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(2), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Address",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.address),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "address", $$v)
+      },
+      expression: "formData.address"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("CI No.")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "CI No.",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.ci_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "ci_no", $$v)
+      },
+      expression: "formData.ci_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Tel")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": true,
+      "placeholder": "Tel"
+    },
+    model: {
+      value: (_vm.formData.tel),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "tel", $$v)
+      },
+      expression: "formData.tel"
+    }
+  }, [_c('el-select', {
+    staticClass: "country-code",
+    attrs: {
+      "slot": "prepend",
+      "filterable": "",
+      "disabled": true
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.country_code),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "country_code", $$v)
+      },
+      expression: "formData.country_code"
+    }
+  }, _vm._l((_vm.areaCodeList), function(item) {
+    return _c('el-option', {
+      key: item.area_code,
+      attrs: {
+        "label": item.area_code,
+        "value": item.area_code
+      }
+    })
+  }))], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(3), _vm._v(" "), _c('el-date-picker', {
+    staticClass: "input",
+    attrs: {
+      "type": "date",
+      "placeholder": "ETD"
+    },
+    model: {
+      value: (_vm.etd),
+      callback: function($$v) {
+        _vm.etd = $$v
+      },
+      expression: "etd"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("VAT No.")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "VAT No.",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.vat),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "vat", $$v)
+      },
+      expression: "formData.vat"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Shipment")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Shipment",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.shipment),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "shipment", $$v)
+      },
+      expression: "formData.shipment"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Trade Terms")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Trade Terms",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.trade_terms),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "trade_terms", $$v)
+      },
+      expression: "formData.trade_terms"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Origin")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Origin",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.origin),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "origin", $$v)
+      },
+      expression: "formData.origin"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Destination")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Destination",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.destination),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "destination", $$v)
+      },
+      expression: "formData.destination"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(4), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Receiver",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.atten),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "atten", $$v)
+      },
+      expression: "formData.atten"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(5), _vm._v(" "), _c('div', {
+    staticClass: "input",
+    staticStyle: {
+      "display": "inline-block",
+      "height": "60px"
+    }
+  }, [_c('el-input', {
+    staticClass: "input",
+    staticStyle: {
+      "width": "137px",
+      "margin-left": "0"
+    },
+    attrs: {
+      "placeholder": "Total Amount"
+    },
+    model: {
+      value: (_vm.formData.total_amount),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "total_amount", $$v)
+      },
+      expression: "formData.total_amount"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    staticStyle: {
+      "width": "105px"
+    },
+    attrs: {
+      "disabled": true
+    },
+    model: {
+      value: (_vm.formData.unit),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "unit", $$v)
+      },
+      expression: "formData.unit"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Payment Term")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Payment Terms",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.payment_term),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "payment_term", $$v)
+      },
+      expression: "formData.payment_term"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(6), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Total Volume"
+    },
+    model: {
+      value: (_vm.formData.total_volume),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "total_volume", $$v)
+      },
+      expression: "formData.total_volume"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("CBM")])], 2)], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "order-info-two"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Pakeage List")]), _vm._v(" "), _c('div', {
+    staticClass: "pi-left"
+  }, _vm._l((_vm.plTags), function(tag) {
+    return _c('el-tag', {
+      key: tag.id,
+      attrs: {
+        "size": "small"
+      }
+    }, [_vm._v(_vm._s(tag.pi_no))])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.headData), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.orderItems), function(item, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.model_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.bf_art_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.customer_art_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.description))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("currencyType")(item.currency)) + _vm._s(item.unit_price))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.vat_rate) + "%")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.quantity))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.amount))]), _vm._v(" "), _c('td', [_c('el-input', {
+      staticClass: "input",
+      attrs: {
+        "placeholder": "G.W.(KGS)"
+      },
+      model: {
+        value: (item.gw),
+        callback: function($$v) {
+          _vm.$set(item, "gw", $$v)
+        },
+        expression: "item.gw"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('el-input', {
+      staticClass: "input",
+      attrs: {
+        "placeholder": "N.W.(KGS)"
+      },
+      model: {
+        value: (item.nw),
+        callback: function($$v) {
+          _vm.$set(item, "nw", $$v)
+        },
+        expression: "item.nw"
+      }
+    })], 1)])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "parts-list"
+  }, [_c('span', {
+    staticClass: "att-total first-total"
+  }, [_vm._v("Total Amount to be paid: " + _vm._s(_vm._f("currencyType")(_vm.currency)) + _vm._s(_vm.totalAmountCount))]), _vm._v(" "), _c('span', {
+    staticClass: "att-total"
+  }, [_vm._v("Total Weight: " + _vm._s(_vm.totalWeightCount) + "kg")])]), _vm._v(" "), _c('div', {
+    staticClass: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.onPreview
+    }
+  }, [_vm._v("CI Preview")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.onCreate
+    }
+  }, [_vm._v("Save")])], 1)])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Delivery Order No.\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Date\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Address\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              ETD\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Receiver\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Total Amount\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Total Volume\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-27e804c9","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/clean-management/commerial-invoice-save.vue
+// module id = 2605
+// module chunks = 16

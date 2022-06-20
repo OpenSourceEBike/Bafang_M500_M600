@@ -1,0 +1,185 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "product-save-container"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.title))])]), _vm._v(" "), _c('div', {
+    staticClass: "content-holder"
+  }, [_c('div', {
+    staticClass: "content-box"
+  }, [_c('div', {
+    staticClass: "content-item logo"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('logo')))]), _vm._v(" "), _c('div', {
+    staticClass: "title-desc"
+  }, [_c('el-upload', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "action": _vm.uploadUrl,
+      "show-file-list": false,
+      "on-success": _vm.imageUploaded,
+      "data": _vm.data
+    }
+  }, [(!_vm.photographSrc) ? _c('img', {
+    staticClass: "upload-icon",
+    attrs: {
+      "src": require("../../../assets/images/icon/icon-upload@2x.png")
+    }
+  }) : _c('img', {
+    staticClass: "upload-icon",
+    attrs: {
+      "src": _vm._f("getImgUrl")(_vm.photographSrc)
+    }
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "logo-tip"
+  }, [_c('label', [_vm._v(_vm._s(_vm.$t('tip.title')) + ":")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('label', [_vm._v(_vm._s(_vm.$t('tip.content01')))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('label', [_vm._v(_vm._s(_vm.$t('tip.content02')))])])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('name')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.name),
+      callback: function($$v) {
+        _vm.name = $$v
+      },
+      expression: "name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('set.mechanical')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.hardParam),
+      callback: function($$v) {
+        _vm.hardParam = $$v
+      },
+      expression: "hardParam"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('set.hardVer')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.hardVersion),
+      callback: function($$v) {
+        _vm.hardVersion = $$v
+      },
+      expression: "hardVersion"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('set.firmVer')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.firmVersion),
+      callback: function($$v) {
+        _vm.firmVersion = $$v
+      },
+      expression: "firmVersion"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('set.paramVer')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.paramVersion),
+      callback: function($$v) {
+        _vm.paramVersion = $$v
+      },
+      expression: "paramVersion"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('partNo')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.partNo),
+      callback: function($$v) {
+        _vm.partNo = $$v
+      },
+      expression: "partNo"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "content-item description"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('desc')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    attrs: {
+      "resize": "none",
+      "type": "textarea",
+      "rows": 5,
+      "placeholder": ""
+    },
+    model: {
+      value: (_vm.desc),
+      callback: function($$v) {
+        _vm.desc = $$v
+      },
+      expression: "desc"
+    }
+  })], 1)]), _vm._v(" "), _vm._l((_vm.attrList), function(item, index) {
+    return _c('div', {
+      staticClass: "upper-attr"
+    }, [_c('item-attr-input-group', {
+      attrs: {
+        "item": item
+      },
+      on: {
+        "input-value-return": _vm.itemAttrInputValueReturn,
+        "file-upload-return": _vm.itemAttrFileUploadReturn,
+        "file-upload-remove": _vm.itemAttrFileUploadRemove
+      }
+    })], 1)
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "save-btn",
+    attrs: {
+      "disabled": _vm.copyDisabled
+    },
+    on: {
+      "click": _vm.saveItem
+    }
+  }, [_vm._v(_vm._s(_vm.$t('save')))])], 2)])])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-09020712","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/product/save.vue
+// module id = 1749
+// module chunks = 73

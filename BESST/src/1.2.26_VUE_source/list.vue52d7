@@ -1,0 +1,650 @@
+<template>
+    <div class="component-list">
+        <div class="header">
+            <el-form :inline="true" class="demo-form-inline">
+                <div class="btn-group-inline"  v-if="from === 'order'">
+                    <div class="icons">
+                        <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                    </div>
+                </div>
+                <el-form-item :label="$t('search.orderNo')">
+                    <el-input v-model="search.source_id"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('search.poNo')">
+                    <el-input v-model="search.part_no"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('search.modelName')">
+                    <el-input v-model="search.item_name"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('search.customerName')">
+                    <el-input v-model="search.customer_id"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('search.sn')">
+                    <el-input v-model="search.sn"></el-input>
+                </el-form-item>
+                <div class="btn-group-inline">
+                    <div class="icons">
+                        <div class="icon-item search" @click="searchList" :title="$t('search.search')"></div>
+                        <div class="icon-item export" @click="exportComponentList" :title="$t('search.export')"></div>
+                        <div class="icon-item delete" @click="ShowBatchDeleteDialog" :title="$t('batchDelete')" v-if="authList[Core.Const.AUTH_LIST.objectDelete]"></div>
+                        <div class="icon-item update" @click="ShowBatchUpdateDialog" title="Update" v-if="authList[Core.Const.AUTH_LIST.objectDelete]"></div>
+                        <div style="padding-bottom: 30px;">
+                            <el-switch v-model="showTest" on-color="#98b42c" off-color="#606161" on-text="Tes"
+                                       off-text="Bas"></el-switch>
+                        </div>
+                        <div style="padding-left: 20px;padding-bottom: 30px;">
+                            <el-button @click.stop="goToComponentDetailView('')">{{ $t('detail') }} </el-button>
+                        </div>
+                    </div>
+                </div>
+            </el-form>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder" v-if = '!showTest'>
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <td v-if="total"><el-checkbox v-model="allSelect" @change="selectAll"></el-checkbox></td>
+                        <td v-for="(item, index) in headData" :class="{'al-right': index=== 0 || index=== 1 }">{{item}}</td>
+                    </thead>
+                    <tbody v-if="!loading">
+                        <tr v-for="item in componentList">
+                            <td><el-checkbox v-model="item.select"></el-checkbox></td>
+                            <td class="al-right">{{ item.source_id || '/' }}</td>
+                            <td class="al-right">{{ item.ext_part_no || '/' }}</td>
+                            <td>{{ item.sn || '/' }}</td>
+                            <td>{{ item.category_root_id | categoryRoot }}</td>
+                            <td>{{ item.name || '/' }}</td>
+                            <td>{{ item.customer_id || '/' }}</td>
+                            <td>
+                                <a class="btn-underline" @click.stop="goToComponentDetailView(item.id)">{{ $t('detail') }}</a>
+                                <a class="btn-underline" @click.stop="showDeleteDialog(item)" v-if="authList[Core.Const.AUTH_LIST.objectDelete]">{{ $t('delete') }}</a>
+                                <el-switch v-model="item.isUpdate" on-color="#98b42c" off-color="#606161" on-text="Up"
+                                           off-text="NoU" @change="updateTypeChange(item)" v-if="authList[Core.Const.AUTH_LIST.objectDelete]"></el-switch>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-if="componentList.length <= 0 && !loading">
+                    {{ $t('noResult') }}
+                </div>
+                <div class="loading" v-if="loading">
+                    <img src="../../../assets/images/icon/loading-bars.svg" alt="Loading icon" />
+                </div>
+            </div>
+            <div class="table-content-holder" v-else>
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <td v-if="total"><el-checkbox v-model="allSelect" @change="selectAll"></el-checkbox></td>
+                    <td v-for="(item, index) in headDataTest" :class="{'al-right': index=== 0 }">{{item}}</td>
+                    </thead>
+                    <tbody v-if="!loading">
+                    <tr v-for="item in componentList">
+                        <td><el-checkbox v-model="item.select"></el-checkbox></td>
+                        <td class="al-right">{{ item && item.source_id || '/' }}</td>
+                        <td>{{ item.sn || '/' }}</td>
+                        <td>{{ item.test_data || '/' }}</td>
+                        <td>{{ item.produce_time | timeFormat }}</td>
+                        <td>
+                            <a class="btn-underline" @click.stop="goToComponentDetailView(item.id)">{{ $t('detail') }}</a>
+                            <a class="btn-underline" @click.stop="showDeleteDialog(item)" v-if="authList[Core.Const.AUTH_LIST.objectDelete]">{{ $t('delete') }}</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-if="componentList.length <= 0 && !loading">
+                    {{ $t('noResult') }}
+                </div>
+                <div class="loading" v-if="loading">
+                    <img src="../../../assets/images/icon/loading-bars.svg" alt="Loading icon" />
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next, jumper"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+
+        <!--删除弹框-->
+        <el-dialog
+            :title="$t('deleteDialog.title')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialog.content') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteComponent">{{ $t('yes') }}</el-button>
+                 <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('no') }}</el-button>
+            </span>
+        </el-dialog>
+
+        <el-dialog
+            :title="$t('deleteDialog.title')"
+            :visible.sync="batchDeleteDialogVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialog.content') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="batchDelete">{{ $t('yes') }}</el-button>
+                 <el-button type="primary" @click="batchDeleteDialogVisible = false">{{ $t('no') }}</el-button>
+            </span>
+        </el-dialog>
+
+        <el-dialog
+            title="Update"
+            :visible.sync="batchDeleteUpdateVisible"
+            size="tiny">
+            <div>
+                <el-input type = "number" max="1" min = "0" v-model="selectUpdateType"></el-input>
+                <span> 1- Update, 0 Not Update</span>
+            </div>
+
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="batchUpdate">{{ $t('yes') }}</el-button>
+                 <el-button type="primary" @click="batchDeleteUpdateVisible = false">{{ $t('no') }}</el-button>
+            </span>
+        </el-dialog>
+
+        <!--导出弹框-->
+        <el-dialog
+            :title="$t('exportDialog.title')"
+            :visible.sync="dialogExportVisible"
+            size="tiny">
+            <el-form :inline="true" class="export-form-inline">
+                <el-form-item :label="$t('exportDialog.startNum')">
+                    <el-input v-model="search.export_start"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('exportDialog.endNum')">
+                    <el-input v-model="search.export_end"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="exportComponentList">{{ $t('exportDialog.export') }}</el-button>
+                 <el-button type="primary" @click="dialogExportVisible = false">{{ $t('exportDialog.cancel') }}</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+    import ElButton from "../../../../node_modules/element-ui/packages/button/src/button";
+    import XLSX from 'xlsx';
+
+    export default{
+        components: {ElButton},
+        name: 'componentList',
+        data(){
+            return {
+                Core: Core,
+                headData: ['Order No.', 'Po No.', 'SN', 'Category', 'Model Name', 'Customer Name', 'Operation'],
+                headDataTest: ['Order No.', 'SN', 'Test Data', 'Date', 'Operation'],
+                componentList: [],
+                currentPage: 1,
+                total: 0,
+                loading: false,
+
+                dialogDeleteVisible: false,
+                dialogExportVisible: false,
+                selectItem: {},
+                search: {
+                    source_id: '',
+                    part_no: '',
+                    item_name: '',
+                    sn: '',
+                    customer_id: '',
+                    export_start: 0,
+                    export_end: 500,
+                },
+                authList: [],
+                from: '',
+
+                allSelect: false,
+
+                batchDeleteDialogVisible: false,
+                batchDeleteUpdateVisible: false,
+                showTest: false,
+                selectUpdateId: '',
+                selectUpdateType: 0,
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Component.List,
+                zh: ZH.Component.Component.List,
+                de: DE.Component.Component.List,
+                nl: NL.Component.Component.List
+            }
+        },
+        watch: {
+            "search.sn": function (newValue, oldValue) {
+                let vm = this;
+                if (newValue === oldValue || newValue === '') {
+                    return;
+                }
+                if (typeof oldValue !== 'undefined') {
+                    let time = new Date().getTime();
+                    vm.isScanner = time - vm.lastInputTime <= 100; // 间隔小于100ms的就认为是扫描枪输入
+                    vm.lastInputTime = time;
+                } else {
+                    vm.lastInputTime = new Date().getTime();
+                }
+                if (!vm.scannerTimeout) {
+                    vm.scannerTimeout = setTimeout(function () {
+                        if (vm.isScanner) {
+                            vm.search.sn = vm.search.sn.replace(/\s+/g, "");
+                            if(vm.search.sn.indexOf('DP') > -1){
+                                let array = vm.search.sn.split('DP');
+                                if (array.length > 1) {
+                                    vm.search.sn = ('DP' + array[array.length - 1]).replace(/\s+/g, "");
+                                }
+                            }else if(vm.search.sn.indexOf('SR') > -1){
+                                let array = vm.search.sn.split('SR');
+                                if (array.length > 1) {
+                                    vm.search.sn = ('SR' + array[array.length - 1]).replace(/\s+/g, "");
+                                }
+                            }
+                        }
+                        clearTimeout(vm.scannerTimeout);
+                        vm.scannerTimeout = undefined;
+                    }, 1000)
+                }
+            }
+        },
+        beforeMount: function () {
+            this.from = this.$route.query.from;
+            let condition = Core.Data.get(Core.Const.DATA.KEY_COMPONENT_COMPONENT_LIST_CONDITION);
+            if (condition && this.from === 'detail') {
+                this.search.part_no = condition.part_no || '';
+                this.search.source_id = condition.source_id || '';
+                this.search.item_name = condition.item_name || '';
+                this.search.customer_id = condition.customer_id || '';
+                this.search.sn = condition.sn || '';
+                this.currentPage = condition.page || 1;
+            }
+
+            if (this.from === 'order') {
+                console.log('order');
+                this.search.part_no = this.$route.query.poNo ? this.$route.query.poNo : '';
+                this.search.source_id = this.$route.query.orderNo ? this.$route.query.orderNo : '';
+                this.search.item_name = this.$route.query.itemName ? this.$route.query.itemName : '';
+                this.search.sn = '';
+                this.search.customer_id = '';
+                this.currentPage = 1;
+            }
+        },
+
+        mounted: function () {
+            // 国际化
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            if (this.search.source_id || this.search.item_name.trim() || this.search.sn.trim() || this.search.customer_id) {
+                this.getComponentList();
+            };
+
+            let result = Core.Data.get(Core.Const.DATA.KEY_COMPONENT_COMPONENT_LIST_CONDITION);
+
+            if(result){
+                this.search.part_no = result.part_no;
+                this.search.source_id = result.source_id;
+                this.search.item_name = result.item_name;
+                this.search.sn = result.sn;
+                this.search.customer_id = result.customer_id;
+                this.currentPage = result.page;
+            }
+        },
+
+        methods: {
+            initData() {
+                this.headData = [ this.$t('headData.orderNo'),  this.$t('headData.poNo'), this.$t('headData.sn'),
+                    this.$t('headData.category'), this.$t('headData.modelName'), this.$t('headData.customerName'), this.$t('headData.operation')];
+                this.headDataTest = [ this.$t('headData.orderNo'), this.$t('headData.sn'), 'Test Data', 'Date', this.$t('headData.operation')];
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                // this.$router.push({name: 'componentComponentList', query: {orderNo: this.search.source_id, poNo: this.search.part_no, modelName: this.search.item_name, sn: this.search.sn, name: this.search.customer_id, page: this.currentPage}});
+                this.getComponentList();
+            },
+
+            searchList() {
+                if(this.loading){
+                    return false
+                }
+                this.search.source_id = this.search.source_id.trim();
+                this.search.part_no = this.search.part_no.trim();
+                this.search.item_name = this.search.item_name.trim();
+                this.search.sn = this.search.sn.replace(/\s+/g,"");
+                this.search.customer_id = this.search.customer_id.trim();
+                this.currentPage = 1;
+                // this.$router.push({name: 'componentComponentList', query: {orderNo: this.search.source_id, poNo: this.search.part_no, modelName: this.search.item_name, sn: this.search.sn, name: this.search.customer_id, page: this.currentPage}});
+                this.getComponentList();
+
+            },
+
+            getComponentList() {
+            	if (!this.search.part_no && !this.search.source_id && !this.search.item_name && !this.search.sn && !this.search.customer_id) {
+		            this.$message({
+			            message: 'please type search condition',
+			            type: 'warning'
+		            });
+            		return;
+                }
+                this.loading = true;
+            	this.allSelect = false;
+                console.log(this.currentPage, 'get page');
+            	// 记录搜索条件
+                Core.Data.set(Core.Const.DATA.KEY_COMPONENT_COMPONENT_LIST_CONDITION,
+                    {
+                        part_no: this.search.part_no,
+	                    source_id: this.search.source_id,
+	                    item_name: this.search.item_name,
+	                    sn: this.search.sn,
+	                    customer_id: this.search.customer_id,
+	                    page: this.currentPage,
+                    });
+                Core.Api.Component.getComponentList(
+                	this.search.source_id,
+                    this.search.item_name,
+                    this.search.part_no,
+                    this.search.sn,
+                    this.search.customer_id,
+                    this.currentPage
+                ).then(res => {
+                    this.loading = false;
+                    let componentList =  res.component_list;
+                    componentList.forEach(i => {
+                        i.select = false;
+                        i.isUpdate = i.type == 1? true: false;
+                    });
+                    this.componentList = componentList;
+                    this.total = res.count;
+                })
+            },
+            openDownloadDialog(url, saveName){
+                if(typeof url == 'object' && url instanceof Blob){
+                    url = URL.createObjectURL(url); // 创建blob地址
+                }
+                var aLink = document.createElement('a');
+                aLink.href = url;
+                aLink.download = saveName || ''; // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，file:///模式下不会生效
+                var event;
+                if(window.MouseEvent){
+                    event = new MouseEvent('click');
+                }else{
+                    event = document.createEvent('MouseEvents');
+                    event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                }
+                aLink.dispatchEvent(event);
+            },
+            csv2sheet(csv) {
+                var sheet = {}; // 将要生成的sheet
+                csv = csv.split('\n');
+                csv.forEach(function(row, i) {
+                    if(row.search(/Bafang/i) === -1){
+                        row = row.split(',');
+                        // console.log(row);
+                    }
+                    if(i === 0){
+                        sheet['!ref'] = 'A1:'+String.fromCharCode(65+9)+(csv.length-1);
+                    }
+                    if(typeof(row) !== 'string'){
+                        row.forEach(function(col, j) {
+                            if(col !== ''){
+                                sheet[String.fromCharCode(65+j)+(i+1)] = {v: col};
+                            }
+                        });
+                    }
+//                        else{
+//                            sheet[String.fromCharCode(65)+(1)] = {v: row};
+//                        }
+                });
+                return sheet;
+            },
+            sheet2blob(sheet, sheetName){
+                sheetName = sheetName || 'sheet1';
+                var workbook = {
+                    SheetNames: [sheetName],
+                    Sheets: {}
+                };
+                workbook.Sheets[sheetName] = sheet;
+                // 生成excel的配置项
+                var wopts = {
+                    bookType: 'xlsx', // 要生成的文件类型
+                    bookSST: false, // 是否生成Shared String Table，官方解释是，如果开启生成速度会下降，但在低版本IOS设备上有更好的兼容性
+                    type: 'binary'
+                };
+                var wbout = XLSX.write(workbook, wopts);
+                var blob = new Blob([s2ab(wbout)], {type:"application/octet-stream"});
+                // 字符串转ArrayBuffer
+                function s2ab(s) {
+                    var buf = new ArrayBuffer(s.length);
+                    var view = new Uint8Array(buf);
+                    for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+                    return buf;
+                }
+                return blob;
+            },
+            exportComponentList() {
+                if(this.loading){
+                    return false
+                }
+                let data = {
+                    source_id: this.search.source_id,
+                    item_name: this.search.item_name,
+                    item_part_no: this.search.part_no,
+                    sn: this.search.sn,
+                    customer_id: this.search.customer_id
+                };
+//                window.location.href = Core.Api.getUrl('component/export-list', data);
+                this.loading = true;
+
+                Core.Api.request({
+                    url: '/component/override_export-list',
+                    method: 'GET',
+                    data: data
+                }).then((res)=>{
+                    this.loading = false;
+
+                    let listRes = [];
+                    res.data.list.forEach((item)=>{
+                        let obj = {
+                            po_no: item.po_no,
+                            customer_name: item.customer_name,
+                            item_name: item.item_name,
+                            ext_part_no: item.ext_part_no,
+                            sn: item.sn,
+                            create_time: Core.Util.date('Y-m-d H:i:s',item.create_time),
+                            update_time: Core.Util.date('Y-m-d H:i:s',item.update_time)
+                        };
+                        listRes.push(obj)
+                    })
+                    let exSheet = XLSX.utils.json_to_sheet(listRes)
+//                    let csvSheet = XLSX.utils.sheet_to_csv(exSheet)
+//                    let arr = csvSheet.split('\n');
+//                    arr[0] = 'PO No.,Customer Name,Model,Part No.,SN,Crate Time,Update Time';
+//                    let sheet = this.csv2sheet(arr.join('\n'))
+                    let blob = this.sheet2blob(exSheet,'sheet1');
+                    let name = `${this.search.source_id} ${this.search.item_name} ${this.search.part_no} ${this.search.customer_id}.xlsx`
+                    this.openDownloadDialog(blob, name);
+                }).catch((err)=>{
+                    console.log(err);
+                })
+            },
+
+            showDeleteDialog(item) {
+                this.selectItem = item;
+                if (this.selectItem.status === 2 ) {
+                    this.$message.warning('This component has been used');
+                    return;
+                }
+                this.dialogDeleteVisible = true;
+            },
+
+            showExportDialog() {
+                this.dialogExportVisible = true;
+            },
+
+            deleteComponent(){
+                Core.Api.Component.deleteComponent(this.selectItem.id).then(res => {
+                    this.$message({
+                        message: 'Delete successfully',
+                        type: 'success'
+                    });
+                    this.dialogDeleteVisible = false;
+                    this.getComponentList();
+                })
+            },
+
+            goToComponentDetailView(id) {
+                this.$router.push({name: 'componentComponentDetail', query: {"componentId": id, "page": this.currentPage}});
+            },
+
+            selectAll() {
+                let flag =  this.allSelect;
+                console.log(flag)
+                this.componentList.forEach(i => {
+                    i.select = flag
+                })
+            },
+
+            ShowBatchDeleteDialog () {
+                let sn = '';
+                let selectList = [];
+                for (let i = 0; i < this.componentList.length; i++) {
+                    let item = this.componentList[i];
+                    if (item.select) {
+                        selectList.push(item);
+                        if (item.status === 2) {
+                            sn = item.sn;
+                            break;
+                        }
+                    }
+                }
+                if (!selectList.length) {
+                    this.$message.warning("Please select component.");
+                }
+                else if (sn) {
+                    this.$message.warning(sn + " has been used");
+                } else {
+                    this.batchDeleteDialogVisible = true
+                }
+            },
+
+
+            batchDelete() {
+                if(this.loading){
+                    return false
+                }
+                this.loading = true
+                let selectIdList = [];
+                this.componentList.filter(item => {
+                    if(item.select) {
+                        selectIdList.push(item.id)
+                    }
+                });
+                if (selectIdList.length > 0) {
+                    let idList = selectIdList.join(',');
+                    Core.Api.Component.batchDeleteComponent(idList).then(res => {
+                        this.loading = false
+                        this.getComponentList();
+                        this.batchDeleteDialogVisible = false;
+                 })
+                } else {
+                    this.$message.warning('no checked anyone')
+                }
+            },
+
+            ShowBatchUpdateDialog () {
+                this.batchDeleteUpdateVisible = true;
+            },
+
+            batchUpdate() {
+                let selectSNList = [];
+                let selectIdList = [];
+                this.selectUpdateId = "";
+                this.componentList.filter(item => {
+                    if(item.select) {
+                        selectSNList.push(item.sn);
+                        selectIdList.push(item.item.ext_part_no);
+                    }
+                });
+
+                if( Math.max.apply(null,selectIdList) != Math.min.apply(null,selectIdList)){
+                    this.$message.warning('please select same article number component');
+                    return;
+                }
+                if (selectSNList.length > 0) {
+                    let snList = selectSNList.join(',');
+                    Core.Api.Item.changeItemVersion(selectIdList[0],snList,this.selectUpdateType).then(res => {
+                        this.getComponentList();
+                        this.batchDeleteUpdateVisible = false;
+                    })
+                } else {
+                    this.$message.warning('no checked anyone')
+                }
+            },
+
+            updateTypeChange(item){
+                console.log(item);
+                let type = 0;
+                if(item.isUpdate){
+                    type = 1; // 升级
+                }else{
+                    type = 0; // 不升级
+                }
+                Core.Api.Object.updateType(item.id, type).then(res =>{
+                    console.log('success');
+                })
+            },
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss" scoped>
+    .component-list {
+        width: 100%;
+        height: 100%;
+        display:flex;
+        flex-direction:column;
+        .table-wrap{
+            flex:1;
+        }
+        .header {
+            height: auto;
+            .el-form-item {
+                margin-bottom: 0;
+            }
+        }
+        /*.loading {*/
+            /*width: 100%;*/
+            /*display: flex;*/
+            /*align-items: center;*/
+            /*justify-content: center;*/
+        /*}*/
+        .no-data-content {
+            position: relative;
+            height: 100%;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?3cac5e55

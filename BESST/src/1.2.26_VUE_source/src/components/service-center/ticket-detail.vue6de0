@@ -1,0 +1,358 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "ticket-detail"
+  }, [_c('div', {
+    staticClass: "header top-box"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group"
+  }, [(_vm.showHandlerUp) ? _c('el-button', {
+    staticStyle: {
+      "top": "15px"
+    },
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.handleUpTicket
+    }
+  }, [_vm._v("\n                " + _vm._s(_vm.$t('handleUp')) + "\n            ")]) : _vm._e(), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.getActionList
+    }
+  }, [_vm._v(_vm._s(_vm.$t('history')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content-card-item"
+  }, [_c('label', {
+    staticClass: "content-header"
+  }, [_vm._v(_vm._s(_vm.$t('ticketInfo.infoTitle')))]), _vm._v(" "), _c('div', {
+    staticClass: "content-body"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('ticketInfo.ticketNo')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.ticket.sn))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('ticketInfo.createTime')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.ticket.create_time, "Y-m-d")))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('ticketInfo.status')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm._f("ticketStatus")(_vm.ticket.status, _vm.Core.Data.getLang())))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('ticketInfo.serviceCenter')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.ticket.handler_org ? _vm.ticket.handler_org.name : ''))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('ticketInfo.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "lh-20"
+  }, [_vm._v(_vm._s(_vm.ticket.title))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('ticketInfo.desc')))]), _vm._v(" "), _c('div', {
+    staticClass: "lh-20"
+  }, [_vm._v(_vm._s(_vm.ticket.description))])]), _vm._v(" "), (_vm.ticket.processImageList) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('ticketInfo.image')))]), _vm._v(" "), _c('div', {
+    staticClass: "lh-20"
+  }, _vm._l((_vm.ticket.processImageList), function(item) {
+    return _c('img', {
+      attrs: {
+        "src": _vm.Core.Const.NET.FILE_URL_PREFIX + item
+      }
+    })
+  }))]) : _vm._e(), _vm._v(" "), (_vm.ticket.video) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('ticketInfo.video')))]), _vm._v(" "), _c('video', {
+    attrs: {
+      "src": _vm.Core.Const.NET.FILE_URL_PREFIX + _vm.ticket.video,
+      "controls": "controls"
+    }
+  }, [_vm._v("\n                        您的浏览器不支持 video 标签。\n                    ")])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "message-box"
+  }, [_c('ul', {
+    staticClass: "message",
+    class: _vm.showMessage ? '' : 'message-100'
+  }, _vm._l((_vm.ticketActionList), function(item) {
+    return _c('li', [_c('p', {
+      staticClass: "time"
+    }, [_c('span', [_vm._v(_vm._s(_vm._f("timeFormat")(item.create_time, "Y-m-d H:i:s")))])]), _vm._v(" "), _c('div', {
+      staticClass: "main",
+      class: {
+        self: item.org.type != 2
+      }
+    }, [_c('div', {
+      staticClass: "avatar-box"
+    }, [_c('el-tooltip', {
+      attrs: {
+        "placement": "bottom",
+        "effect": "light"
+      }
+    }, [_c('div', {
+      attrs: {
+        "slot": "content"
+      },
+      slot: "content"
+    }, [_c('div', {
+      staticClass: "tip-content"
+    }, [_c('div', {
+      staticClass: "tip-avatar"
+    }, [_c('div', [_c('img', {
+      attrs: {
+        "src": _vm._f("getImgUrl")(item.org.avatar)
+      }
+    })]), _vm._v(" "), _c('div', {
+      staticClass: "org-name"
+    }, [_vm._v("\n                                                " + _vm._s(item.org.name) + "\n                                            ")])]), _vm._v(" "), _c('div', {
+      staticClass: "tip-item"
+    }, [_c('span', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(_vm.$t('user.address')))]), _vm._v(" "), _c('span', {
+      staticClass: "content"
+    }, [_vm._v(_vm._s(item.org.country) + " " + _vm._s(item.org.address))])]), _vm._v(" "), _c('div', {
+      staticClass: "tip-item"
+    }, [_c('span', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(_vm.$t('user.website')))]), _vm._v(" "), _c('span', {
+      staticClass: "content"
+    }, [_vm._v(_vm._s(item.org.website))])]), _vm._v(" "), _c('div', {
+      staticClass: "tip-item"
+    }, [_c('span', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(_vm.$t('user.email')))]), _vm._v(" "), _c('span', {
+      staticClass: "content"
+    }, [_vm._v(_vm._s(item.org.email))])])])]), _vm._v(" "), (item.org.type == 2) ? _c('img', {
+      staticClass: "avatar",
+      attrs: {
+        "width": "30",
+        "height": "30",
+        "src": require("../../assets/images/icon/icon-avatar.png")
+      }
+    }) : _c('img', {
+      staticClass: "avatar",
+      attrs: {
+        "width": "30",
+        "height": "30",
+        "src": require("../../assets/images/icon/icon-default-servicer.png")
+      }
+    })])], 1), _vm._v(" "), _c('div', {
+      staticClass: "text-box"
+    }, [(item.org.type == 2) ? _c('p', [_vm._v(_vm._s(_vm._f("orgType")(item.org.type)))]) : _vm._e(), _vm._v(" "), _c('div', {
+      staticClass: "text"
+    }, [_vm._v("\n                                " + _vm._s(item.message) + "\n                                "), _vm._l((item.img), function(img) {
+      return (item.img) ? _c('div', {
+        staticClass: "text-img"
+      }, [_c('img', {
+        attrs: {
+          "src": _vm._f("getImgUrl")(img)
+        }
+      })]) : _vm._e()
+    })], 2)])])])
+  })), _vm._v(" "), (_vm.showMessage) ? _c('div', {
+    staticClass: "reply-holder"
+  }, [_c('el-form', {
+    attrs: {
+      "label-position": "left",
+      "model": _vm.ticket,
+      "label-width": "120px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('replay.content')
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "autosize": {
+        minRows: 2,
+        maxRows: 3
+      }
+    },
+    model: {
+      value: (_vm.desc),
+      callback: function($$v) {
+        _vm.desc = $$v
+      },
+      expression: "desc"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('replay.image')
+    }
+  }, [_c('el-button', {
+    staticClass: "submit",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.addTicketAction
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('replay.sendMessage')) + "\n                        ")]), _vm._v(" "), _c('vue-clip', {
+    attrs: {
+      "options": _vm.upload,
+      "on-complete": _vm.complete
+    },
+    scopedSlots: _vm._u([{
+      key: "clip-uploader-body",
+      fn: function(props) {
+        return _vm._l((_vm.imgList), function(file) {
+          return (_vm.imgList.length) ? _c('div', {
+            staticClass: "img-item"
+          }, [_c('img', {
+            attrs: {
+              "src": _vm._f("getImgUrl")(file)
+            }
+          })]) : _vm._e()
+        })
+      }
+    }])
+  }, [_c('template', {
+    slot: "clip-uploader-action"
+  }, [_c('div', {
+    staticClass: "upload-action"
+  }, [_c('div', {
+    staticClass: "dz-message"
+  }, [_c('img', {
+    staticClass: "upload-icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-upload@2x.png")
+    }
+  })])])])], 2)], 1)], 1)], 1) : _vm._e()])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('handleUpTicketDialog.title'),
+      "visible": _vm.dialogHandleUpVisible,
+      "custom-class": "dialog-w-400",
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogHandleUpVisible = $event
+      }
+    }
+  }, [_c('el-form', {
+    staticClass: "demo-form-inline",
+    attrs: {
+      "inline": true
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('handleUpTicketDialog.serviceCenter')
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "placeholder": ""
+    },
+    model: {
+      value: (_vm.selectedServiceCenter),
+      callback: function($$v) {
+        _vm.selectedServiceCenter = $$v
+      },
+      expression: "selectedServiceCenter"
+    }
+  }, _vm._l((_vm.serviceCenterList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item
+      }
+    })
+  }))], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.handleUpToBaFang
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogHandleUpVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('historyDialog.title'),
+      "visible": _vm.historyDialogVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.historyDialogVisible = $event
+      }
+    }
+  }, [_c('table', {
+    staticClass: "history-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', [_c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('historyDialog.name')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('historyDialog.operation')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('historyDialog.time')) + "\n                ")])])]), _vm._v(" "), _c('tr', [_c('td', {
+    staticClass: "history-td"
+  }, [_vm._v(_vm._s(_vm.ticket.org.name))]), _vm._v(" "), _c('td', {
+    staticClass: "history-td"
+  }, [_vm._v("create ticket")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td"
+  }, [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.ticket.create_time, "Y-m-d H:i:s")))])]), _vm._v(" "), _vm._l((_vm.historyList), function(item, index) {
+    return _c('tr', [_c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.operator_org.name))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(_vm._f("timeFormat")(item.create_time, "Y-m-d H:i:s")))])])
+  }), _vm._v(" "), (_vm.ticket.status == 300) ? _c('tr', [_c('td', {
+    staticClass: "history-td"
+  }, [_vm._v(_vm._s(_vm.ticket.org.name))]), _vm._v(" "), _c('td', {
+    staticClass: "history-td"
+  }, [_vm._v("complete ticket")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td"
+  }, [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.ticket.update_time, "Y-m-d H:i:s")))])]) : _vm._e()], 2)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-5645acf7","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/service-center/ticket-detail.vue
+// module id = 1163
+// module chunks = 73

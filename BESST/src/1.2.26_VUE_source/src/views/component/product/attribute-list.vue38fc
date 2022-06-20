@@ -1,0 +1,256 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "attribute-list"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": _vm.toEditCategory
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item add",
+    attrs: {
+      "title": "Add New Attribute"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogAddVisible = true
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "table-content"
+  }, [_c('table', {
+    staticClass: "c-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.headData), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.attributeList), function(item) {
+    return _c('tr', {
+      on: {
+        "click": function($event) {
+          _vm.test(item)
+        }
+      }
+    }, [_c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("inputType")(item.input_type)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.value || 'N/A'))]), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.showEditDialog(item.id)
+        }
+      }
+    }, [_vm._v("Edit")]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.showDeleteDialog(item.id)
+        }
+      }
+    }, [_vm._v("Delete")])])])
+  }))])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": "Add New Attribute",
+      "visible": _vm.dialogAddVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogAddVisible = $event
+      }
+    }
+  }, [_c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "New Attribute Name"
+    },
+    model: {
+      value: (_vm.attributeName),
+      callback: function($$v) {
+        _vm.attributeName = $$v
+      },
+      expression: "attributeName"
+    }
+  }), _vm._v(" "), _c('el-select', {
+    staticClass: "select",
+    model: {
+      value: (_vm.attributeInputType),
+      callback: function($$v) {
+        _vm.attributeInputType = $$v
+      },
+      expression: "attributeInputType"
+    }
+  }, _vm._l((_vm.inputTypes), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  })), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Attribute Value"
+    },
+    model: {
+      value: (_vm.attributeValue),
+      callback: function($$v) {
+        _vm.attributeValue = $$v
+      },
+      expression: "attributeValue"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.addAttribute
+    }
+  }, [_vm._v("Confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v("Cancel")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": "Edit Attribute",
+      "visible": _vm.dialogEditVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogEditVisible = $event
+      }
+    }
+  }, [_c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Attribute New Name"
+    },
+    model: {
+      value: (_vm.attributeName),
+      callback: function($$v) {
+        _vm.attributeName = $$v
+      },
+      expression: "attributeName"
+    }
+  }), _vm._v(" "), _c('el-select', {
+    staticClass: "select",
+    model: {
+      value: (_vm.attributeInputType),
+      callback: function($$v) {
+        _vm.attributeInputType = $$v
+      },
+      expression: "attributeInputType"
+    }
+  }, _vm._l((_vm.inputTypes), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  })), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Attribute New Value"
+    },
+    model: {
+      value: (_vm.attributeValue),
+      callback: function($$v) {
+        _vm.attributeValue = $$v
+      },
+      expression: "attributeValue"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.editAttribute
+    }
+  }, [_vm._v("Confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogEditVisible = false
+      }
+    }
+  }, [_vm._v("Cancel")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Delete Attribute",
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v(" Are you sure to delete it? ")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteAttribute
+    }
+  }, [_vm._v("Yes")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v("No")])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-757ee4f8","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/product/attribute-list.vue
+// module id = 1787
+// module chunks = 73

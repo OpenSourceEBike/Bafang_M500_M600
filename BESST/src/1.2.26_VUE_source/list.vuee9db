@@ -1,0 +1,159 @@
+<template>
+    <div class="auth-list">
+        <div class="head">&nbsp;</div>
+        <div class="table-wrap">
+            <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                <thead>
+                <td v-for="item in tableHead">{{item}}</td>
+                </thead>
+                <tbody>
+
+                <tr class="large" v-for="item in authList">
+                    <td>
+                        {{ item.org.name }}
+                    </td>
+                    <td v-if="item.auth_hmi && !item.auth_controller">
+                      {{$t('hmi')}}
+                    </td>
+                    <td v-if="!item.auth_hmi && item.auth_controller">
+                        {{ $t('controller') }}
+                    </td>
+                    <td v-if="item.auth_hmi && item.auth_controller">
+                       All
+                    </td>
+                    <td>
+                       {{ item.create_time | timeFormat}}
+                    </td>
+                    <td v-if="item.status === 0">
+                        {{  $t('noAuthorization') }}
+                    </td>
+                    <td v-if="item.status === 1">
+                        {{  $t('authorized') }}
+                    </td>
+                    <td>
+                        <a class="btn-underline" @click = "activeAuth(item.id)">{{ $t('authorization') }}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="no-data-content" v-show="authList.length <= 0">
+                {{ $t('noResult') }}
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total="total">
+                </el-pagination>
+                <!--<p class="total">{{ $t('total') }}: {{total}}</p>-->
+            </div>
+        </div>
+    </div>
+
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        name: 'brandAuthList',
+        data(){
+            return {
+                tableHead: ['Name', 'Type', 'Time', 'Status', 'Operation'],
+                authList: [],
+                currentPage: 1,
+                total: 0
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Brand.AuthList,
+                zh: ZH.Brand.AuthList,
+                de: DE.Brand.AuthList,
+                nl: NL.Brand.AuthList
+            }
+        },
+        mounted() {
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+            // 获取列表
+            this.getAuthList();
+            // test
+        },
+        methods: {
+            initData() {
+                this.tableHead = [
+                    this.$t('tableHead.name'),
+                    this.$t('tableHead.type'),
+                    this.$t('tableHead.time'),
+                    this.$t('tableHead.status'),
+                    this.$t('tableHead.operation'),
+                ];
+            },
+//             getAuthList() {
+//                 Core.Api.Tool.authApplyList().then(res => {
+//                     this.authList = res.auth_list;
+//                     this.total = res.count;
+//                 })
+//             },
+
+            getAuthList() {
+                Core.Api.ObjectRecord.getListForBrand(1).then(res => {
+                    // this.authList = res.auth_list;
+                   this.total = res.count;
+                })
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                getAuthList();
+            },
+            activeAuth(id){
+                Core.Api.Tool.authActive(id).then(res => {
+                    this.$message({
+                        message: this.$t('authorizationSuccess'),
+                        type: 'success'
+                    });
+                    this.getAuthList();
+                })
+            }
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .auth-list {
+        width: 100%;
+        height: 100%;
+        .head {
+            height: 60px;;
+            border-bottom: 1px solid #2B2F3B;
+            overflow: hidden;
+        }
+        .td{
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .name{
+            max-width: 120px;
+        }
+        .address{
+            max-width: 280px;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?083b41e6

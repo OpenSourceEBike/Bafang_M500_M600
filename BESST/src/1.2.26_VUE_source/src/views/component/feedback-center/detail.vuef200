@@ -1,0 +1,152 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "component-order-detail"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": _vm.goFeedBackList
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('back')))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item edit",
+    attrs: {
+      "title": _vm.$t('edit')
+    },
+    on: {
+      "click": function($event) {
+        _vm.goToEditFeedback()
+      }
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item delete",
+    attrs: {
+      "title": _vm.$t('delete')
+    },
+    on: {
+      "click": function($event) {
+        _vm.showDeleteDialog(_vm.fileId)
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('detail.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "info-list"
+  }, [_c('div', {
+    staticClass: "col-left"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('detail.email')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.feedBackData.email || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('detail.fileName')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.feedBackData.file_id || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('detail.status')))]), _vm._v(" "), _c('span', {
+    class: {
+      'file-finished': _vm.feedBackData.status == 2,
+        'file-wait': _vm.feedBackData.status == 1,
+        'file-urgent': _vm.feedBackData.status == 0
+    }
+  }, [_vm._v(_vm._s(_vm._f("fileStatus")(_vm.feedBackData.status)))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-right"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('detail.desc')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.feedBackData.desc || '/'))])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1)])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', [_c('tr', [_c('td', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.show),
+      expression: "show"
+    }]
+  }, [_vm._v(_vm._s(_vm.name))]), _vm._v(" "), _c('td', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.show),
+      expression: "show"
+    }]
+  }, [_vm._v("\n                            " + _vm._s(_vm.size) + "KB\n                        ")])])])])])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('deleteDialog.title'),
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('deleteDialog.content')))]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteFeedBack
+    }
+  }, [_vm._v(_vm._s(_vm.$t('deleteDialog.yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('deleteDialog.no')))])], 1)])], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span'), _vm._v(" "), _c('span')])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span'), _vm._v(" "), _c('span')])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-41ca3438","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/feedback-center/detail.vue
+// module id = 1831
+// module chunks = 73

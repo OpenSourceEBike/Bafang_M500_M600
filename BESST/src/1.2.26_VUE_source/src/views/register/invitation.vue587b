@@ -1,0 +1,93 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "invitation"
+  }, [_c('nav-bar', {
+    attrs: {
+      "title": _vm.title
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "nav-btn"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary",
+      "icon": "arrow-left"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('login')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "main-warp"
+  }, [_c('div', {
+    staticClass: "head"
+  }, [_c('el-steps', {
+    attrs: {
+      "space": 145,
+      "active": _vm.active
+    }
+  }, [_c('el-step', {
+    attrs: {
+      "title": _vm.$t('verifyCode')
+    }
+  }), _vm._v(" "), _c('el-step', {
+    attrs: {
+      "title": _vm.$t('createAccount')
+    }
+  }), _vm._v(" "), _c('el-step', {
+    attrs: {
+      "title": _vm.$t('createCompany')
+    }
+  })], 1)], 1), _vm._v(" "), _c('p', {
+    staticClass: "invitation-label"
+  }, [_vm._v(_vm._s(_vm.$t('invitationCode')))]), _vm._v(" "), _c('div', {
+    staticClass: "input-box",
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && $event.keyCode !== 13) { return null; }
+        return _vm.goAccount($event)
+      }
+    }
+  }, [_c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.code),
+      callback: function($$v) {
+        _vm.code = $$v
+      },
+      expression: "code"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "invitation-text"
+  }, [(!_vm.haveUser) ? _c('div', [_c('p', [_vm._v(_vm._s(_vm.$t('typeTheCodeTip')))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.$t('tryAgainTip')))])]) : _c('div', [_c('p', {
+    staticClass: "tip"
+  }, [_vm._v(_vm._s(_vm.$t('noCompanyTip')))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.$t('reCodeTip')))])])]), _vm._v(" "), _c('el-button', {
+    staticClass: "invitation-btn",
+    on: {
+      "click": _vm.goAccount
+    }
+  }, [_vm._v(_vm._s(_vm.$t('verify')))])], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "visible": _vm.accessVisible,
+      "size": "middle"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.accessVisible = $event
+      }
+    }
+  }, [_c('div', [_c('canvas', {
+    attrs: {
+      "id": "mc",
+      "width": "960",
+      "height": "480"
+    }
+  }, [_vm._v("\n                您的浏览器版太低，请升级!\n            ")])])])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-1452ae1c","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/register/invitation.vue
+// module id = 736
+// module chunks = 73

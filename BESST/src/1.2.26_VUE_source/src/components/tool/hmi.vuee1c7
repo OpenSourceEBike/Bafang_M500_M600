@@ -1,0 +1,1267 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "hmi"
+  }, [_c('div', {
+    staticClass: "hmi-content"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('hmi')) + "\n            "), _c('div', {
+    staticClass: "connect-tip"
+  }, [_c('a', {
+    staticClass: "btn-tip btn-underline",
+    attrs: {
+      "href": "javascript:;"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogTipVisible = true
+      }
+    }
+  }, [_c('img', {
+    staticClass: "tip-img",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-help.png")
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "info option"
+  }, [_c('div', {
+    staticClass: "note-title"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.mainData')))]), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showUpdateTag),
+      expression: "showUpdateTag"
+    }],
+    staticStyle: {
+      "color": "#E26829"
+    },
+    on: {
+      "click": _vm.jumpToUpdate
+    }
+  }, [_vm._v("New version ready for Update")])]), _vm._v(" "), _c('div', {
+    staticClass: "info-left"
+  }, [(_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input input-sn",
+    model: {
+      value: (_vm.sn),
+      callback: function($$v) {
+        _vm.sn = $$v
+      },
+      expression: "sn"
+    }
+  })], 1) : _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.sn),
+      callback: function($$v) {
+        _vm.sn = $$v
+      },
+      expression: "sn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [(_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('el-button', {
+    attrs: {
+      "type": "primary",
+      "disabled": _vm.isDealerOrAssembler && _vm.offLineFlag
+    },
+    on: {
+      "click": _vm.writeSn
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')) + "\n                        ")]) : _vm._e()], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.model),
+      callback: function($$v) {
+        _vm.model = $$v
+      },
+      expression: "model"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.hardVersion),
+      callback: function($$v) {
+        _vm.hardVersion = $$v
+      },
+      expression: "hardVersion"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "info-right"
+  }, [(!_vm.usbHID) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.com')))]), _vm._v(" "), _c('el-select', {
+    attrs: {
+      "placeholder": _vm.$t('cNam.select')
+    },
+    on: {
+      "change": _vm.changeCom
+    },
+    nativeOn: {
+      "click": function($event) {
+        return _vm.getComList($event)
+      }
+    },
+    model: {
+      value: (_vm.com),
+      callback: function($$v) {
+        _vm.com = $$v
+      },
+      expression: "com"
+    }
+  }, _vm._l((_vm.comList), function(com, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": com,
+        "value": com
+      }
+    })
+  })), _vm._v(" "), _c('label', {
+    staticClass: "tip",
+    class: {
+      connect: _vm.isConnected
+    }
+  }), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.connect
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))])], 1) : _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("USB HID")]), _vm._v(" "), _c('label', {
+    staticClass: "tip",
+    class: {
+      connect: _vm.isConnected
+    }
+  }), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary",
+      "disabled": _vm.loading || _vm.isReset
+    },
+    on: {
+      "click": _vm.connect
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [(_vm.loading) ? _c('vue-loading', {
+    staticClass: "loading",
+    attrs: {
+      "type": "spin",
+      "color": "#E26829"
+    }
+  }) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "btns"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview",
+      "disabled": _vm.loading || _vm.isReset || !_vm.isConnected
+    },
+    on: {
+      "click": _vm.readBase
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))]), _vm._v(" "), _c('el-button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    attrs: {
+      "type": "primary",
+      "disabled": _vm.loading || _vm.isReset || !_vm.isConnected
+    },
+    on: {
+      "click": _vm.reset
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.reset')))])], 1)], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.version),
+      callback: function($$v) {
+        _vm.version = $$v
+      },
+      expression: "version"
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "info"
+  }, [_c('div', {
+    staticClass: "note-title"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.parameter')))])]), _vm._v(" "), _c('div', {
+    staticClass: "info-left"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.wheelDiameterRead),
+      callback: function($$v) {
+        _vm.wheelDiameterRead = $$v
+      },
+      expression: "wheelDiameterRead"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.speedLimitRead),
+      callback: function($$v) {
+        _vm.speedLimitRead = $$v
+      },
+      expression: "speedLimitRead"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km/h")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.totalMileage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.totalMileage),
+      callback: function($$v) {
+        _vm.totalMileage = $$v
+      },
+      expression: "totalMileage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.singleMileage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.singleMileage),
+      callback: function($$v) {
+        _vm.singleMileage = $$v
+      },
+      expression: "singleMileage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hmiSingleMileageClear')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.hmiSingleTrip),
+      callback: function($$v) {
+        _vm.hmiSingleTrip = $$v
+      },
+      expression: "hmiSingleTrip"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedMax')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.speedMax),
+      callback: function($$v) {
+        _vm.speedMax = $$v
+      },
+      expression: "speedMax"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km/h")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedAvg')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.speedAverage),
+      callback: function($$v) {
+        _vm.speedAverage = $$v
+      },
+      expression: "speedAverage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km/h")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hmiTurnOffTime')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.timeClose),
+      callback: function($$v) {
+        _vm.timeClose = $$v
+      },
+      expression: "timeClose"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "info-right"
+  }, [(_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.clientCode')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.clientCodeRead),
+      callback: function($$v) {
+        _vm.clientCodeRead = $$v
+      },
+      expression: "clientCodeRead"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.totalGear')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.totalGear),
+      callback: function($$v) {
+        _vm.totalGear = $$v
+      },
+      expression: "totalGear"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hmiLevel')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.hmiLevel),
+      callback: function($$v) {
+        _vm.hmiLevel = $$v
+      },
+      expression: "hmiLevel"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hmiMode')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.hmiMode),
+      callback: function($$v) {
+        _vm.hmiMode = $$v
+      },
+      expression: "hmiMode"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hmiBoost')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.boost),
+      callback: function($$v) {
+        _vm.boost = $$v
+      },
+      expression: "boost"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hmiLight')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.hmiLight),
+      callback: function($$v) {
+        _vm.hmiLight = $$v
+      },
+      expression: "hmiLight"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hmiButton')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.hmiButton),
+      callback: function($$v) {
+        _vm.hmiButton = $$v
+      },
+      expression: "hmiButton"
+    }
+  })], 1)])]), _vm._v(" "), (!_vm.isCan) ? _c('div', {
+    staticClass: "info"
+  }, [_c('div', {
+    staticClass: "note-title"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.setting')))])]), _vm._v(" "), _c('div', {
+    staticClass: "info-left"
+  }, [(_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.clientCode')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.clientCode),
+      callback: function($$v) {
+        _vm.clientCode = $$v
+      },
+      expression: "clientCode"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('el-select', {
+    model: {
+      value: (_vm.wheelDiameter),
+      callback: function($$v) {
+        _vm.wheelDiameter = $$v
+      },
+      expression: "wheelDiameter"
+    }
+  }, _vm._l((_vm.wheelDiameters), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item,
+        "value": item
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')))]), _vm._v(" "), _c('el-select', {
+    model: {
+      value: (_vm.speedLimit),
+      callback: function($$v) {
+        _vm.speedLimit = $$v
+      },
+      expression: "speedLimit"
+    }
+  }, _vm._l((_vm.speedLimits), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item,
+        "value": item
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.clickWriteParam
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.serviceMileage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.serviceMileage),
+      callback: function($$v) {
+        _vm.serviceMileage = $$v
+      },
+      expression: "serviceMileage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.clearServiceMileage
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.clear')) + "\n                        ")])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', [(_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.setTimeZone')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": _vm.$t('cNam.select')
+    },
+    model: {
+      value: (_vm.utcTime),
+      callback: function($$v) {
+        _vm.utcTime = $$v
+      },
+      expression: "utcTime"
+    }
+  }, _vm._l((_vm.timezone), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {}
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "info-right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.setTotalMileage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.setTotalMileage),
+      callback: function($$v) {
+        _vm.setTotalMileage = $$v
+      },
+      expression: "setTotalMileage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.clearMileageUartOperation('total')
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.set')) + "\n                        ")])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.setSingleMileage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.setSingleMileage),
+      callback: function($$v) {
+        _vm.setSingleMileage = $$v
+      },
+      expression: "setSingleMileage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.clearMileageUartOperation('single')
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.set')) + "\n                        ")])], 1)])])]) : _c('div', {
+    staticClass: "info"
+  }, [_c('div', {
+    staticClass: "note-title"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.setting')))])]), _vm._v(" "), _c('div', {
+    staticClass: "info-left"
+  }, [(_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.clientCode')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "6004"
+    },
+    model: {
+      value: (_vm.clientCode),
+      callback: function($$v) {
+        _vm.clientCode = $$v
+      },
+      expression: "clientCode"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.clickWriteParam
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')))])], 1)]) : _vm._e(), _vm._v(" "), (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.manName')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "6005"
+    },
+    model: {
+      value: (_vm.manufacturer),
+      callback: function($$v) {
+        _vm.manufacturer = $$v
+      },
+      expression: "manufacturer"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.readManufacturer
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.writeManufacturer
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')))])], 1)]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.errorCode')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "6007"
+    },
+    model: {
+      value: (_vm.errorCode),
+      callback: function($$v) {
+        _vm.errorCode = $$v
+      },
+      expression: "errorCode"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.readErrorCode
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.bootLoad')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "6008"
+    },
+    model: {
+      value: (_vm.bootLoad),
+      callback: function($$v) {
+        _vm.bootLoad = $$v
+      },
+      expression: "bootLoad"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.readBootLoad
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "btn-row"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.keyCard')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.keyCardStart
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.start')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.time')))]), _vm._v(" "), _c('el-time-picker', {
+    attrs: {
+      "value-format": "HH:mm:ss"
+    },
+    on: {
+      "change": function($event) {
+        _vm.handleChange()
+      }
+    },
+    model: {
+      value: (_vm.setTime),
+      callback: function($$v) {
+        _vm.setTime = $$v
+      },
+      expression: "setTime"
+    }
+  })], 1), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.setTimeCAN
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.set')))])], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "info-right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.serviceMileage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.serviceMileage),
+      callback: function($$v) {
+        _vm.serviceMileage = $$v
+      },
+      expression: "serviceMileage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.clearServiceMileageCan
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.clear')) + "\n                        ")])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.setTotalMileage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.setTotalMileage),
+      callback: function($$v) {
+        _vm.setTotalMileage = $$v
+      },
+      expression: "setTotalMileage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.setTotalMileageCan
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.set')) + "\n                        ")])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.setSingleMileage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.setSingleMileage),
+      callback: function($$v) {
+        _vm.setSingleMileage = $$v
+      },
+      expression: "setSingleMileage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km")])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.setSingleMileageCan
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.set')) + "\n                        ")])], 1)])])]), _vm._v(" "), (_vm.isTechnician) ? _c('div', {
+    staticClass: "info"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "info-left"
+  }, [(_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "item"
+  }, [_vm._v("\n                    CAN仪表功能测试\n                    "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.goToDiagnosis()
+      }
+    }
+  }, [_vm._v("进入正常状态")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.goOutDiagnosis()
+      }
+    }
+  }, [_vm._v("退出正常状态")])], 1) : _vm._e(), _vm._v(" "), (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.test('0101')
+      }
+    }
+  }, [_vm._v("开仪表开控制器")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.test('0100')
+      }
+    }
+  }, [_vm._v("开仪表不开控制器")])], 1)]) : _vm._e(), _vm._v(" "), (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.test('0001')
+      }
+    }
+  }, [_vm._v("不开仪表开控制器")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.test('0000')
+      }
+    }
+  }, [_vm._v("不开仪表不开控制器")])], 1)]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "info-right"
+  })]) : _vm._e()]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('cNam.operationTip'),
+      "custom-class": "tip-dialog",
+      "visible": _vm.dialogTipVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogTipVisible = $event
+      }
+    }
+  }, [_c('div', [_c('h1', [_vm._v(" " + _vm._s(_vm.$t('cNam.txtTitle1')) + " ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v("COM")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleCom')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v("USB HID")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleHid')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleCon')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleRead')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleWrt')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.reset')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleReset')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.test')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleTest')))])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('h1', [_vm._v(" " + _vm._s(_vm.$t('cNam.txtTitle2')) + " ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.txtNote1')))]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.txtNote2')))])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {}, [_c('h1', [_vm._v("\n                " + _vm._s(_vm.$t('cNam.pcMode')) + " - UART\n            ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v("\n                " + _vm._s(_vm.$t('cNam.pcModeTxt')) + "\n            ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v("\n                " + _vm._s(_vm.$t('cNam.pcModeTxtLCD')) + "\n            ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v("\n                " + _vm._s(_vm.$t('cNam.pcModeTxtLED')) + "\n            ")])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('auth'),
+      "visible": _vm.dialogWriteAuthVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogWriteAuthVisible = $event
+      }
+    }
+  }, [_c('div', [_c('label', [_vm._v("\n                " + _vm._s(_vm.$t('noHmiAuthTip')) + "\n            ")]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "append"
+    },
+    slot: "append",
+    model: {
+      value: (_vm.brandId),
+      callback: function($$v) {
+        _vm.brandId = $$v
+      },
+      expression: "brandId"
+    }
+  }, _vm._l((_vm.brandList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.applyAuth(0)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('applyHmiAuth')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.applyAuth(1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('applyAllAuth')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogWriteAuthVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "tip-dialog",
+    attrs: {
+      "title": "Confirm PC mode",
+      "visible": _vm.pcDialogVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.pcDialogVisible = $event
+      }
+    }
+  }, [_c('div', [_c('h1', [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.note')) + ":")]), _vm._v(_vm._s(_vm.$t('cNam.hmiUART')))]), _vm._v(" "), _c('p'), _vm._v(" "), _c('div', {}, [_c('div', {
+    staticClass: "txt"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('cNam.hmiUARTText1')) + "\n                ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('cNam.hmiUARTText2')) + "\n                ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('cNam.hmiUARTText3')) + "\n                ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('cNam.hmiUARTText4')) + "\n                ")])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.pcDialogVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "success"
+    },
+    on: {
+      "click": function($event) {
+        _vm.continueRead()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))])], 1)])])], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "note-title"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Technician")])])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-7117b4f4","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/tool/hmi.vue
+// module id = 1115
+// module chunks = 73

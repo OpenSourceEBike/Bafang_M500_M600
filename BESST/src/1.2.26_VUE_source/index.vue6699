@@ -1,0 +1,119 @@
+<template>
+    <div class="assembler-index">
+        <div class="operation">
+            <div class="item" @click="goOrder" v-if="authList['production.menu']">
+                <div class="order-list" v-if=""></div>
+                <label class="label">{{ $t('order') }}</label>
+            </div>
+            <div class="item" @click="goVehicle" v-if="authList['object.menu']">
+                <div class="diagnosis"></div>
+                <label class="label">{{ $t('vehicle') }}</label>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        data() {
+            return {
+                authList: [],
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Assembler.Index,
+                zh: ZH.Assembler.Index,
+                de: DE.Assembler.Index,
+                nl: NL.Assembler.Index
+            }
+        },
+        mounted(){
+            this.getAuth();
+        },
+        methods: {
+            goOrder() {
+                this.$router.push({name: 'assemblerOrderList'});
+            },
+
+            goVehicle() {
+                this.$router.push({name: 'assemblerVehicleList'});
+            },
+
+            getAuth(){
+                let $this = this;
+                Core.Api.Auth.authDetail()
+                    .then(res => {
+                        $this.authList = res.auth;
+//                        Core.Data.setAuth(res.auth);
+                        $this.$store.commit("currentAuth", $this.authList);
+                        let authFlag = false;
+
+                        for (let i in $this.authList) {
+                            if ($this.authList[i]) {
+                                authFlag = true;
+                                break;
+                            }
+                        }
+                        if (!authFlag) {
+                            $this.$root.eventHub.$emit(Core.Const.EVENT_HUB.NO_AUTH);
+                        }
+                    });
+            },
+        },
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .assembler-index {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 530px;
+        min-height: 360px;
+        .operation {
+            width: 530px;
+            .item {
+                text-align: center;
+                display: inline-block;
+                width: 230px;
+                margin: 15px;
+                border-radius: 10px;
+                background-color: #98B42C;
+                padding-bottom: 20px;
+                cursor: pointer;
+
+                .order-list {
+                    height: 180px;
+                    background: url('../../assets/images/icon/icon-order.png') no-repeat center;
+                    background-size: 60px;
+                }
+
+                .diagnosis {
+                    height: 180px;
+                    background: url('../../assets/images/icon/menu/vehicle.png') no-repeat center;
+                    background-size: 88px;
+                }
+
+                .label {
+                    margin: auto;
+                    font-size: 26px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// index.vue?761aeed1

@@ -1,0 +1,466 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "sale-add"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isVehicle && _vm.noComponentList.length > 0),
+      expression: "isVehicle && noComponentList.length > 0"
+    }],
+    staticClass: "icon-item add",
+    attrs: {
+      "title": _vm.$t('addComponent')
+    },
+    on: {
+      "click": function($event) {
+        _vm.showUpdateDialog('', 0)
+      }
+    }
+  }), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isVehicle),
+      expression: "isVehicle"
+    }],
+    staticClass: "icon-item save",
+    attrs: {
+      "title": _vm.$t('save')
+    },
+    on: {
+      "click": _vm.saveOrderList
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('customerInfo.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "info customer"
+  }, [_c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('customerInfo.name')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.name),
+      callback: function($$v) {
+        _vm.name = $$v
+      },
+      expression: "name"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "slot": "prepend"
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.gender),
+      callback: function($$v) {
+        _vm.gender = $$v
+      },
+      expression: "gender"
+    }
+  }, _vm._l((_vm.genderList), function(item) {
+    return _c('el-option', {
+      key: item.gender,
+      attrs: {
+        "label": item.label,
+        "value": item.gender
+      }
+    })
+  }))], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('customerInfo.phone')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.phone),
+      callback: function($$v) {
+        _vm.phone = $$v
+      },
+      expression: "phone"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.areaCode),
+      callback: function($$v) {
+        _vm.areaCode = $$v
+      },
+      expression: "areaCode"
+    }
+  }, _vm._l((_vm.areaCodeList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.area_code,
+        "value": item.area_code
+      }
+    })
+  }))], 1)], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('customerInfo.email'))), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    on: {
+      "blur": _vm.getCustomerInfo
+    },
+    model: {
+      value: (_vm.email),
+      callback: function($$v) {
+        _vm.email = $$v
+      },
+      expression: "email"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "tip"
+  }, [_c('label', {
+    staticClass: "tip-text"
+  }, [_vm._v(_vm._s(_vm.$t('customerInfo.tip')) + ": ")]), _vm._v(" "), _c('div', {
+    staticClass: "tip-content"
+  }, [_c('p', [_vm._v(_vm._s(_vm.$t('customerInfo.tip01')))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.$t('customerInfo.tip02')))])])])])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "info bike"
+  }, [_c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.bikeId'))), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input scan",
+    on: {
+      "blur": _vm.getBike
+    },
+    model: {
+      value: (_vm.bikeId),
+      callback: function($$v) {
+        _vm.bikeId = $$v
+      },
+      expression: "bikeId"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_c('img', {
+    staticStyle: {
+      "vertical-align": "middle"
+    },
+    attrs: {
+      "src": require("../../../assets/images/icon/scan.png"),
+      "width": "20",
+      "height": "20"
+    }
+  })])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.brand')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "append"
+    },
+    slot: "append",
+    model: {
+      value: (_vm.brandId),
+      callback: function($$v) {
+        _vm.brandId = $$v
+      },
+      expression: "brandId"
+    }
+  }, _vm._l((_vm.brandList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.warrantyPeriod')))]), _vm._v(" "), _c('div', {
+    staticClass: "month-div"
+  }, [_c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "append"
+    },
+    slot: "append",
+    model: {
+      value: (_vm.value),
+      callback: function($$v) {
+        _vm.value = $$v
+      },
+      expression: "value"
+    }
+  }, _vm._l((_vm.numbers), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.date')))]), _vm._v(" "), _c('div', {
+    staticClass: "date-div"
+  }, [_c('label', {
+    staticClass: "date-label"
+  }, [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.timestamp, 'Y-m-d')))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.price')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.price),
+      callback: function($$v) {
+        _vm.price = $$v
+      },
+      expression: "price"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "slot": "prepend"
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.currency),
+      callback: function($$v) {
+        _vm.currency = $$v
+      },
+      expression: "currency"
+    }
+  }, _vm._l((_vm.currencies), function(item) {
+    return _c('el-option', {
+      key: item.currency,
+      attrs: {
+        "label": item.label,
+        "value": item.currency
+      }
+    })
+  }))], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "height-item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.remake')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "resize": "none",
+      "type": "textarea",
+      "rows": 3
+    },
+    model: {
+      value: (_vm.remake),
+      callback: function($$v) {
+        _vm.remake = $$v
+      },
+      expression: "remake"
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.bomList.length > 0),
+      expression: "bomList.length > 0"
+    }]
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('componentInfo.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "info component"
+  }, _vm._l((_vm.bomList), function(bom) {
+    return _c('div', {
+      staticClass: "component-item"
+    }, [_c('div', {
+      staticClass: "component-header"
+    }, [_c('label', {
+      staticClass: "component-title"
+    }, [_vm._v(_vm._s(_vm._f("categoryRoot")(bom.category_root_id)))]), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.orderReplace]) ? _c('el-button', {
+      staticClass: "btn-replace",
+      attrs: {
+        "type": "text"
+      },
+      on: {
+        "click": function($event) {
+          _vm.showUpdateDialog(bom.sn, bom.id)
+        }
+      }
+    }, [_vm._v("\n                                " + _vm._s(_vm.$t('componentInfo.replace')) + "\n                            ")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
+      staticClass: "component-content"
+    }, [_c('label', {
+      staticClass: "component-title"
+    }, [_vm._v(_vm._s(_vm.$t('componentInfo.sn')))]), _vm._v(" "), _c('div', {
+      staticClass: "component-div"
+    }, [_c('label', {
+      staticClass: "component-label"
+    }, [_vm._v(_vm._s(bom.sn))])])]), _vm._v(" "), _c('div', {
+      staticClass: "component-content"
+    }, [_c('label', {
+      staticClass: "component-title"
+    }, [_vm._v(_vm._s(_vm.$t('componentInfo.name')))]), _vm._v(" "), _c('div', {
+      staticClass: "component-div"
+    }, [(bom.item && bom.item.name) ? _c('label', {
+      staticClass: "component-label"
+    }, [_vm._v(_vm._s(bom.item.name))]) : _c('label', {
+      staticClass: "component-label"
+    }, [_vm._v("-")])])])])
+  }))])])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-password",
+    attrs: {
+      "title": _vm.dialogTitle,
+      "visible": _vm.dialogReplaceVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogReplaceVisible = $event
+      }
+    }
+  }, [(_vm.selectSn) ? _c('div', {
+    staticClass: "dialog-item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('replaceDialog.oldSn')))]), _vm._v(" "), _c('label', {
+    staticClass: "input old-sn"
+  }, [_vm._v(_vm._s(_vm.selectSn))])]) : _c('div', {
+    staticClass: "dialog-item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('replaceDialog.category')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "select-category",
+    model: {
+      value: (_vm.componentValue),
+      callback: function($$v) {
+        _vm.componentValue = $$v
+      },
+      expression: "componentValue"
+    }
+  }, _vm._l((_vm.categoryOptions), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-item new-password"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('replaceDialog.newSn')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "scan-input",
+    model: {
+      value: (_vm.newSn),
+      callback: function($$v) {
+        _vm.newSn = $$v
+      },
+      expression: "newSn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.updateSn
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogReplaceVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('tipDialog.title'),
+      "visible": _vm.dialogTipVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogTipVisible = $event
+      }
+    }
+  }, [_c('P', [_vm._v(_vm._s(_vm.$t('tipDialog.content')))]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.saveOrder
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogTipVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)], 1)], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-1538feb2","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/dealer/sale/save.vue
+// module id = 1658
+// module chunks = 73

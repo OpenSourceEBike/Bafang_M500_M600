@@ -1,0 +1,753 @@
+<template>
+    <div class="sale-add">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                </div>
+            </div>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item add" v-show="isVehicle && noComponentList.length > 0"
+                         @click="showUpdateDialog('', 0)"
+                         :title="$t('addComponent')"></div>
+                    <div class="icon-item save" v-show="isVehicle" @click="saveOrderList" :title="$t('save')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content-wrap">
+            <div class="content">
+                <label class="title">{{ $t('customerInfo.title') }}</label>
+                <div class="info customer">
+                    <div class="left">
+                        <div class="item">
+                            <label class="label">{{ $t('customerInfo.name') }}</label>
+                            <el-input class="input" v-model="name">
+                                <el-select v-model="gender" slot="prepend">
+                                    <el-option
+                                        v-for="item in genderList"
+                                        :key="item.gender"
+                                        :label="item.label"
+                                        :value="item.gender">
+                                    </el-option>
+                                </el-select>
+                            </el-input>
+                        </div>
+                        <div class="item">
+                            <label class="label">{{ $t('customerInfo.phone') }}</label>
+                            <el-input class="input" v-model="phone">
+                                <el-select v-model="areaCode" filterable slot="prepend">
+                                    <el-option
+                                        v-for="(item, index) in areaCodeList"
+                                        :key="index"
+                                        :label="item.area_code"
+                                        :value="item.area_code">
+                                    </el-option>
+                                </el-select>
+                            </el-input>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="item">
+                            <label class="label">{{ $t('customerInfo.email') }}<span class="required">*</span></label>
+                            <el-input class="input" v-model="email" @blur="getCustomerInfo"></el-input>
+                        </div>
+                        <div class="tip">
+                            <label class="tip-text">{{ $t('customerInfo.tip') }}: </label>
+                            <div class="tip-content">
+                                <p>{{ $t('customerInfo.tip01') }}</p>
+                                <p>{{ $t('customerInfo.tip02') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <label class="title">{{ $t('bikeInfo.title') }}</label>
+                <div class="info bike">
+                    <div class="left">
+                        <div class="item">
+                            <label class="label">{{ $t('bikeInfo.bikeId') }}<span class="required">*</span></label>
+                            <el-input class="input scan" v-model="bikeId" @blur="getBike">
+                                <template slot="append">
+                                    <img style="vertical-align: middle;" src="../../../assets/images/icon/scan.png"
+                                         width="20" height="20"/>
+                                </template>
+                                <!--<template slot="append">-->
+                                <!--<el-button @click="getBike">Verify</el-button>-->
+                                <!--</template>-->
+                            </el-input>
+                        </div>
+                        <div class="item">
+                            <label class="label">{{ $t('bikeInfo.brand') }}</label>
+                            <el-select v-model="brandId" slot="append" class="input">
+                                <el-option
+                                    v-for="item in brandList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div class="item">
+                            <label class="label">{{ $t('bikeInfo.warrantyPeriod') }}</label>
+                            <div class="month-div">
+                                <el-select v-model="value" slot="append" class="input">
+                                    <el-option
+                                        v-for="item in numbers"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <label class="label">{{ $t('bikeInfo.date') }}</label>
+                            <div class="date-div">
+                                <label class="date-label">{{timestamp | timeFormat('Y-m-d')}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="item">
+                            <label class="label">{{ $t('bikeInfo.price') }}</label>
+                            <el-input class="input" v-model="price">
+                                <el-select v-model="currency" slot="prepend">
+                                    <el-option
+                                        v-for="item in currencies"
+                                        :key="item.currency"
+                                        :label="item.label"
+                                        :value="item.currency">
+                                    </el-option>
+                                </el-select>
+                            </el-input>
+                        </div>
+                        <div class="height-item">
+                            <label class="label">{{ $t('bikeInfo.remake') }}</label>
+                            <el-input
+                                resize="none"
+                                class="input"
+                                type="textarea"
+                                :rows="3"
+                                v-model="remake">
+                            </el-input>
+                        </div>
+                    </div>
+                </div>
+                <div v-show="bomList.length > 0">
+                    <label class='title'>{{ $t('componentInfo.title') }}</label>
+                    <div class="info component">
+                        <div class="component-item" v-for="bom in bomList">
+                            <div class="component-header">
+                                <label class="component-title">{{bom.category_root_id | categoryRoot}}</label>
+                                <el-button type="text" class="btn-replace" @click="showUpdateDialog(bom.sn, bom.id)"
+                                           v-if="authList[Core.Const.AUTH_LIST.orderReplace]">
+                                    {{ $t('componentInfo.replace') }}
+                                </el-button>
+                            </div>
+                            <div class="component-content">
+                                <label class="component-title">{{ $t('componentInfo.sn') }}</label>
+                                <div class="component-div">
+                                    <label class="component-label">{{bom.sn}}</label>
+                                </div>
+                            </div>
+                            <div class="component-content">
+                                <label class="component-title">{{ $t('componentInfo.name') }}</label>
+                                <div class="component-div">
+                                    <label class="component-label" v-if="bom.item && bom.item.name">{{bom.item.name}}</label>
+                                    <label class="component-label" v-else>-</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <el-dialog :title="dialogTitle" :visible.sync="dialogReplaceVisible" class="dialog-password">
+            <div class="dialog-item" v-if="selectSn">
+                <label class="label">{{ $t('replaceDialog.oldSn') }}</label>
+                <label class="input old-sn">{{selectSn}}</label>
+            </div>
+            <div class="dialog-item" v-else>
+                <label class="label">{{ $t('replaceDialog.category') }}</label>
+                <el-select v-model="componentValue" class="select-category">
+                    <el-option
+                        v-for="item in categoryOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="dialog-item new-password">
+                <label class="label">{{ $t('replaceDialog.newSn') }}</label>
+                <el-input v-model="newSn" class="scan-input"></el-input>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="updateSn">{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="dialogReplaceVisible = false">{{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog :title="$t('tipDialog.title')" :visible.sync="dialogTipVisible" size="tiny">
+            <P>{{ $t('tipDialog.content') }}</P>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="saveOrder">{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="dialogTipVisible = false">{{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import router from "../../../router/index";
+    import Core from "core/core";
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+    import areaCodeInDB from '../../../../core/areaCode'
+
+    export default {
+        name: 'dealerSaleOrderSave',
+        data() {
+            return {
+                Core: Core,
+                brandId: '',
+                name: '',
+                gender: 0,
+                phone: '',
+                email: '',
+                price: '',
+                timestamp: new Date(),
+                month: '',
+                remake: '',
+                bikeId: '',
+                currencies: [{
+                    currency: 1,
+                    label: '€'
+                }, {
+                    currency: 2,
+                    label: '$'
+                }, {
+                    currency: 3,
+                    label: 'DM.'
+                }, {
+                    currency: 4,
+                    label: '￥'
+                }, {
+                    currency: 5,
+                    label: '￡'
+                }],
+                currency: 1,
+                numbers: [{
+                    value: 6,
+                    label: '6 mon.'
+                }, {
+                    value: 12,
+                    label: '12 mon. '
+                }, {
+                    value: 24,
+                    label: '24 mon. '
+                }, {
+                    value: 36,
+                    label: '36 mon.'
+                }],
+                value: 6,
+                warranty: '',
+                warrantyText: '',
+
+                selectSn: '',
+                selectId: '',
+                bomList: [],
+                dialogReplaceVisible: false,
+                newSn: '',
+                vehicleId: '',
+
+                isVehicle: false,
+                dialogTitle: 'Replace',
+
+                genderList: [{
+                    gender: 0,
+                    label: 'Mr.'
+                }, {
+                    gender: 1,
+                    label: 'Ms.'
+                }],
+
+                brandList: [],
+                selectBrand: {},
+                brandName: '',
+
+                areaCodeList: [],
+                areaCode: '+39',
+                hasBattery: false,
+
+                dialogTipVisible: false,
+
+                authList: [],
+
+                categoryOptions: [
+                    {value: 3, label: 'Motor'},
+                    {value: 4, label: 'HMI'},
+                    {value: 5, label: 'Battery'},
+                    {value: 6, label: 'Sensor'},
+                    {value: 7, label: 'Controller'}
+                ],
+                componentValue: 5,
+                componentList: [],
+                noComponentList: [],
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Dealer.Sale.Save,
+                zh: ZH.Dealer.Sale.Save,
+                de: DE.Dealer.Sale.Save,
+                nl: NL.Dealer.Sale.Save
+            }
+        },
+        mounted() {
+            this.areaCodeList = areaCodeInDB.init();
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.brandId = this.brandId ? '' : Core.Data.getBrandPartner(Core.Data.getOrg().id).id;
+
+            Core.Api.Org.getAllPartnerBranList().then(res => {
+                this.brandList = res.org_list;
+                if (!this.brandId) {
+                    this.brandId = this.brandList[0].id;
+                }
+            });
+        },
+        methods: {
+            //输入完E-mail后，获取customer 信息。
+            getCustomerInfo() {
+                if (!this.email.trim()) {
+                    return;
+                }
+
+                if (!Core.Util.isEmail(this.email.trim())) {
+                    this.$message({
+                        message: 'Please check email format',
+                        type: 'warning'
+                    });
+                    return;
+                }
+
+                Core.Api.Order.getCustomerInfo(this.email).then(res => {
+                    let customer = res.customer;
+                    if (customer) {
+                        if (!this.name) {
+                            this.name = customer.name;
+                        }
+                        this.gender = customer.gender;
+                        if (!this.phone) {
+                            let phoneArr = customer.phone.split(" ");
+                            this.areaCode = phoneArr[0];
+                            this.phone = phoneArr[1];
+                        }
+                    }
+                });
+            },
+
+            //输入bikeID后 获取bike的信息，获得保质期月和零件信息
+            getBike() {
+                if (!this.bikeId.trim()) {
+                    return;
+                }
+                this.bikeId = this.bikeId.trim();
+
+                // 先判断车是否已经卖过
+                Core.Api.Vehicle.vehicleIsSale(this.bikeId)
+                    .then(res => {
+                        if (res.result) {
+                            // 车辆已卖
+                            this.$message({
+                                message: `Vehicle: ${this.bikeId} has been sold`,
+                                type: 'warning'
+                            });
+                        } else {
+                            return Core.Api.Vehicle.vehicleDetailBySn(this.bikeId);
+                        }
+                    })
+                    .then(res => {
+                        if (!res) {
+                            return;
+                        }
+
+                        this.warranty = res.vehicle.warranty_period;
+                        this.warrantyText = this.warranty + ' mon.';
+                        this.vehicleId = res.vehicle.id;
+                        this.isVehicle = true;
+
+//                        this.brandId = res.vehicle.brand.org_id;
+
+                        this.brandName = res.vehicle.brand.name;
+
+                        this.getBom(this.bikeId);
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    });
+            },
+
+            //获取零件列表
+            getBom(sn) {
+//                sn = 'CO1706000725';
+                this.componentList = [];
+                Core.Api.Vehicle.getVehicleBomBySn(sn).then(res => {
+//                    console.log(res);
+                    this.bomList = res.bom;
+                    let $this = this;
+                    this.bomList.forEach((item, index) => {
+                        this.componentList.push(item.category_root_id);
+                        if (item.category_root_id === 5) {
+                            $this.hasBattery = true;
+                        }
+                    });
+                    this.checkComponent();
+
+                });
+            },
+
+            //出现替换零件弹窗
+            showUpdateDialog(sn, id) {
+                this.newSn = '';
+                if (!sn) {
+                    this.dialogTitle = this.$t('componentInfo.add');
+
+                } else {
+                    this.dialogTitle = this.$t('componentInfo.replace');
+                }
+                this.selectSn = sn;
+                this.selectId = id;
+                this.dialogReplaceVisible = true;
+            },
+            //更换零件
+            updateSn() {
+                Core.Api.Vehicle.bomChange(this.vehicleId, this.selectId, this.newSn.replace(/\s+/g, "")).then(res => {
+                    this.dialogReplaceVisible = false;
+                    this.selectSn = '';
+                    this.newSn = '';
+                    this.getBom(this.bikeId);
+                })
+            },
+
+            //创建订单
+            saveOrderList() {
+                if (!this.checkParams()) {
+                    return;
+                }
+                if (!this.hasBattery) {
+                    this.dialogTipVisible = true;
+                    return
+                }
+                this.saveOrder();
+            },
+
+            saveOrder() {
+                //添加 订单
+                // order-id 客户名 客户性别 客户邮箱 客户电话
+                // bike-id 价格 货币 warranty?(担保？） remake
+                let phone = `${this.areaCode} ${this.phone}`;
+                let warranty = this.warranty + this.value;
+                Core.Api.Order.saleOrderSave("0", this.brandId, this.name, this.gender, this.email,
+                    phone, this.bikeId, this.price * 100, this.currency, warranty, this.remake, this.brandName
+                ).then(res => {
+                    this.$router.back();
+                });
+                this.dialogTipVisible = false;
+            },
+
+            checkParams() {
+//                if (!this.name) {
+//                    this.$message({
+//                        message: 'Please input customer name',
+//                        type: 'warning'
+//                    });
+//                    return false;
+//                }
+                if (!this.email) {
+                    this.$message({
+                        message: 'Please input customer E-mail',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+
+                if (this.email) {
+                    if (!Core.Util.isEmail(this.email)) {
+                        this.$message({
+                            message: 'Please check email format',
+                            type: 'warning'
+                        });
+                        return false;
+                    }
+                }
+//                if (!this.phone) {
+//                    this.$message({
+//                        message: 'Please input customer phone',
+//                        type: 'warning'
+//                    });
+//                    return false;
+//                }
+                if (!this.bikeId) {
+                    this.$message({
+                        message: 'Please input bike SN',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+//                if (!this.price) {
+//                    this.$message({
+//                        message: 'Please input bike price',
+//                        type: 'warning'
+//                    });
+//                    return false;
+//                }
+
+                return true;
+
+            },
+
+            checkComponent(){
+                let allComponentList = [3, 4, 5, 6, 7, 8];
+                //  没有的部件列表
+                this.noComponentList = [];
+                this.noComponentList = this.categoryOptions.filter((item, index) => {
+                    return this.componentList.indexOf(item.value) <= -1;
+                });
+                if (this.noComponentList.length > 0) {
+                    this.categoryOptions  = this.noComponentList;
+                    this.componentValue = this.noComponentList[0].value;
+                }
+            },
+
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .sale-add {
+        width: 100%;
+        height: 100%;
+        .content {
+            .title {
+                display: block;
+                margin-top: 15px;
+                padding: 9px 33px;
+                font-size: 18px;
+            }
+            .info {
+                margin-top: 15px;
+                background-color: #353945;
+                width: 100%;
+                /*margin: 22px 0 0 100px;*/
+                border-bottom: 1px dotted #2B2F3B;
+                .left .item .required, .right .item .required {
+                    display: inline-block;
+                    padding-left: 6px;
+                    color: #E26829;
+                }
+                .left {
+                    float: left;
+                    width: 475px;
+                    .item {
+                        margin-left: 33px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        height: 60px;
+                        font-size: 0;
+                        .label {
+                            display: inline-block;
+                            width: 110px;
+                        }
+                        .input {
+                            margin-left: 8px;
+                            width: 300px;
+                            .el-input-group__prepend .el-select .el-input .el-input__inner {
+                                width: 90px;
+                                text-align: center;
+                            }
+                        }
+                        .radio {
+                            margin-left: 10px;
+                            color: #FFFFFF;
+                        }
+                    }
+                }
+                .right {
+                    float: left;
+                    width: 475px;
+                    .item {
+                        margin-left: 33px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        height: 60px;
+                        font-size: 0;
+                        .label {
+                            display: inline-block;
+                            width: 100px;
+                        }
+                        .input {
+                            margin-left: 8px;
+                            width: 310px;
+                        }
+                    }
+                    .tip {
+                        display: flex;
+                        padding-left: 130px;
+                        color: #E26829;
+                        .tip-text {
+                            font-size: 12px;
+                        }
+                        .tip-content {
+                            margin-left: 6px;
+                            p {
+                                font-size: 12px;
+                            }
+                        }
+                    }
+                }
+            }
+            .customer {
+                height: 135px;
+            }
+            .bike {
+                height: 255px;
+                .left {
+                    .date-div {
+                        display: inline-block;
+                        position: relative;
+                        top: 15px;
+                        height: 30px;
+                        left: 10px;
+                        width: 120px;
+                        background: #2B2F3B;
+                        border-radius: 15px;
+                        .date-label {
+                            position: relative;
+                            top: -15px;
+                            padding-left: 20px;
+                        }
+                    }
+                    .month-div {
+                        /*margin-left: 10px;*/
+                        height: 60px;
+                        width: 310px;
+                        display: inline-block;
+                        .month-input {
+                            width: 120px;
+                        }
+                        .desc {
+                            position: relative;
+                            top: -5px;
+                            display: inline-block;
+                            vertical-align: top;
+                            width: 60px;
+                            height: 60px;
+                            font-size: 36px;
+                            text-align: center;
+                        }
+                    }
+                }
+                .right {
+                    .height-item {
+                        margin-left: 33px;
+                        height: 120px;
+                        overflow: hidden;
+                        .label {
+                            display: inline-block;
+                            width: 90px;
+                            position: relative;
+                            top: -55px;
+                        }
+                        .input {
+                            margin-left: 10px;
+                            margin-top: 15px;
+                            width: 310px;
+                        }
+                    }
+                }
+            }
+            .component {
+                margin-bottom: 20px;
+                overflow: hidden;
+                .component-item {
+                    overflow: hidden;
+                    .component-header {
+                        margin-top: 10px;
+                        overflow: hidden;
+                        .component-title {
+                            color: #858890;
+                            margin-top: 15px;
+                            padding: 9px 33px;
+                        }
+                        .btn-replace {
+                            float: right;
+                            margin-right: 40px;
+                        }
+
+                    }
+                    .component-content {
+                        padding-left: 33px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        height: 60px;
+                        float: left;
+                        display: inline-block;
+                        width: 50%;
+                        font-size: 0;
+                        .component-title {
+                            display: inline-block;
+                            width: 90px;
+                        }
+
+                        .component-div {
+                            display: inline-block;
+                            position: relative;
+                            top: 15px;
+                            height: 30px;
+                            left: 10px;
+                            width: 310px;
+                            background: #2B2F3B;
+                            border-radius: 15px;
+                            .component-label {
+                                position: relative;
+                                top: -14px;
+                                padding-left: 26px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .dialog-password {
+        .input {
+            .el-input__inner {
+                padding-right: 40px;
+            }
+        }
+    }
+    .dialog-item {
+        .label {
+            display: inline-block;
+            vertical-align: top;
+            width: 140px;
+        }
+        .select-category {
+            width: 250px;
+        }
+        .scan-input {
+            width: 250px;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// save.vue?2cfe9851

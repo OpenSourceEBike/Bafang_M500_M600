@@ -1,0 +1,483 @@
+<template>
+    <div class="video-list">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                </div>
+            </div>
+            <label class="head-text">{{ $t('category') }}</label>
+            <el-select v-model="category" slot="append" class="select" @change="changeCategory">
+                <el-option
+                    v-for="item in categoryOptions[0].options"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+                <el-option-group
+                    :key="categoryOptions[1].label"
+                    :label="categoryOptions[1].label">
+                    <el-option
+                        v-for="item in categoryOptions[1].options"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                    </el-option>
+                </el-option-group>
+                <el-option
+                    v-for="item in categoryOptions[2].options"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item add" @click="uploadDialogVisible = true" :title="$t('add')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                <thead>
+                <tr>
+                    <td v-for="item in tableHead">
+                        {{item}}
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="item in videoList">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.category | videoCategoryType }}</td>
+                    <td>
+                        <a class="btn-underline" @click="preview(item)">{{ $t('preview') }}</a>
+                        <a class="btn-underline" @click="showEditDialog(item)">{{ $t('edit') }}</a>
+                        <!--<a class="btn-underline" :href="item.file | getFileUrl('')"-->
+                        <!--:download="item.name">{{ $t('download') }}</a>-->
+                        <a class="btn-underline" @click="showDeleteDialog(item)">{{ $t('delete') }}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="no-data-content" v-show="videoList.length <= 0">
+                {{ $t('noResult') }}
+            </div>
+            <div class="loading" v-if="loading">
+                <img src="../../../assets/images/icon/loading-bars.svg" alt="Loading icon" />
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change='handleCurrentChange'
+                    :current-page.sync=currentPage
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total="total"
+                    v-if="footerShow">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+        <!--上传-->
+        <el-dialog :title="$t('uploadVideo')" :visible.sync="uploadDialogVisible" :before-close="closeUploadDialog">
+            <div>
+                <div>
+                    <label class="label">{{ $t('category') }}</label>
+                    <el-select v-model="uploadCategory" slot="append" class="select">
+                        <el-option-group
+                            :key="categoryOptions[1].label"
+                            :label="categoryOptions[1].label">
+                            <el-option
+                                v-for="item in categoryOptions[1].options"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                            </el-option>
+                        </el-option-group>
+                        <el-option
+                            v-for="item in categoryOptions[2].options"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div class="clear-20"></div>
+                <div v-if="uploadCategory == 1 || uploadCategory == 2">
+                    <label class="label">{{ $t('errorCode') }}</label>
+                    <el-select v-model="errorCodeId" slot="append" class="select">
+                        <el-option
+                            v-for="item in errorCodeList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
+                </div>
+                <div v-if="uploadCategory == 1 || uploadCategory == 2" class="clear-20"></div>
+                <!--<el-upload-->
+                <!--:action="upload.url"-->
+                <!--:on-success="complete"-->
+                <!--:on-remove="handleRemove"-->
+                <!--accept="video/*"-->
+                <!--:data="upload.params"-->
+                <!--:file-list="fileList">-->
+                <!--<el-button size="small" type="primary" class="btn-upload">{{ $t('upload') }}</el-button>-->
+                <!--</el-upload>-->
+                <label class="label">{{ $t('name') }}</label>
+                <el-input class="input" v-model="videoForm.name"/>
+                <div class="clear-20"></div>
+                <label class="label">{{ $t('link') }}</label>
+                <el-input class="input" v-model="videoForm.link"/>
+
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="saveVideo"> {{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="uploadDialogVisible = false"> {{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--编辑-->
+        <el-dialog :title="$t('edit')" :visible.sync="editDialogVisible" :before-close="closeUploadDialog">
+            <div>
+                <label class="label">{{ $t('name') }}</label>
+                <el-input class="input" v-model="videoForm.name"/>
+                <div class="clear-20"></div>
+                <label class="label">{{ $t('link') }}</label>
+                <el-input class="input" v-model="videoForm.link"/>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="editVideo"> {{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="editDialogVisible = false"> {{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--删除弹窗-->
+        <el-dialog :title="$t('deleteVideo')" :visible.sync="videoListDeleteDialogVisible" size="tiny">
+            <p>{{ $t('deleteTip') }}</p>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="deleteVideo">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="videoListDeleteDialogVisible = false">{{ $t('no') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--预览弹窗-->
+        <el-dialog :title="selectVideo.name" custom-class="video-dialog"
+                   :visible.sync="dialogPreviewVisible"
+                   :before-close="closeVideoDialog" >
+            <!--ondragstart="window.event.returnValue=false" oncontextmenu="window.event.returnValue=false" onselectstart="event.returnValue=false" -->
+            <div class="dialog-container" >
+                <!--&lt;!&ndash;<video controls="controls" autoplay="autoplay" :src="selectVideo.file | getFileUrl('')">&ndash;&gt;-->
+                <!--&lt;!&ndash;<video controls="controls" autoplay="autoplay" src="http://v2v.cc/~j/theora_testsuite/320x240.ogg">&ndash;&gt;-->
+                <!--&lt;!&ndash;</video>&ndash;&gt;-->
+                <!--&lt;!&ndash;<video controls="controls" autoplay="autoplay" >&ndash;&gt;-->
+                <!--&lt;!&ndash;</video>&ndash;&gt;-->
+                <div style = "position:fixed;bottom:-40px;width:100%;height:40px;z-index:100;background-color: rgba(42,46,58,0.3);"></div>
+                <iframe :src="selectVideo.file"
+                        frameborder="0"
+                        class="video-iframe"
+                        :visible.sync="dialogPreviewVisible"
+                        v-if="dialogPreviewVisible" :click="youTube()" id="show-iframe" width="900" scrolling="no" height="600" allowtransparency>
+                </iframe>
+                <div style = "position:fixed;bottom:-360px;width:100%;height:40px;z-index:100;background-color: rgba(42,46,58,0.3);"></div>
+
+            </div>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        name: "VideoList",
+        data() {
+            return {
+                categoryOptions: [
+                    {
+                        options: [
+                            {id: 0, name: 'All'},
+                        ]
+                    },
+                    {
+                        label: 'System Error',
+                        options: [
+                            {id: 1, name: 'LCD'},
+                            {id: 2, name: 'LED'},
+                        ]
+                    },
+                    {
+                        options: [
+                            {id: 3, name: "HMI"},
+                            {id: 4, name: "Motor"},
+                            {id: 5, name: "Controller"},
+                            {id: 6, name: "Sensor"},
+                            {id: 7, name: "Battery"},
+                            {id: 8, name: "Charger"},
+                        ]
+                    }
+                ],
+                category: 0,
+                tableHead: ['Name', 'Category', 'Operation'],
+                currentPage: 1,
+                total: 0,
+                uploadDialogVisible: false,
+                upload: {
+                    url: Core.Const.NET.FILE_UPLOAD_END_POINT,
+                    paramName: 'file',
+                    params: {'token': Core.Data.getToken()}
+                },
+                fileList: [],
+                uploadCategory: '',
+                videoList: [],
+                footerShow: true,
+                selectVideo: '',
+                videoListDeleteDialogVisible: false,
+                dialogPreviewVisible: false,
+
+                errorCodeList: [],
+                errorCodeId: 1,
+
+                //之前是上传文件，现改成直接视屏地址
+                videoForm: {
+                    id: '',
+                    link: '',
+                    name: '',
+                },
+                editDialogVisible: false,
+                loading: false,
+            }
+        },
+
+        i18n: {
+            messages: {
+                en: EN.Component.Product.VideoList,
+                zh: ZH.Component.Product.VideoList,
+                de: DE.Component.Product.VideoList,
+                nl: NL.Component.Product.VideoList
+            }
+        },
+
+        mounted: function () {
+            this.getVideoList();
+            // 国际化
+            this.tableHead = [this.$t('name'), this.$t('category'), this.$t('operation')];
+            let vm = this;
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    vm.tableHead = [vm.$t('name'), vm.$t('Category'), vm.$t('Operation')];
+                }, 100);
+            });
+
+            this.getComponentErrorList();
+
+            this.youTube();
+        },
+
+        methods: {
+            changeCategory() {
+                if (this.category === 0) {
+                    this.getVideoList();
+                    this.uploadCategory = '';
+                    return;
+                }
+                Core.Api.Component.getVideoListByCategory(this.category).then(res => {
+                    this.videoList = res.list;
+                    this.total = res.list.length;
+                    this.footerShow = false;
+                    this.uploadCategory = this.category;
+                });
+
+            },
+
+            handleCurrentChange(val) {
+                this.getVideoList();
+            },
+
+            getVideoList() {
+                this.loading = true;
+                Core.Api.Component.getVideoList(this.currentPage).then(res => {
+                    this.total = res.count;
+                    this.videoList = res.list;
+                    this.footerShow = true;
+                    this.loading = false;
+                });
+            },
+
+            handleRemove() {
+                this.fileList = [];
+            },
+            complete(response, file, fileList) {
+                this.fileList = [file];
+            },
+
+            saveVideo() {
+                // if (this.fileList.length <= 0) {
+                //     this.$message({
+                //         message: "Please upload video",
+                //         type: 'warning'
+                //     });
+                //     return;
+                // }
+                // let name = this.fileList[0].name;
+                // let file = this.fileList[0].response.data.file.hash + '.' + this.fileList[0].response.data.file.ext;
+
+                //修改为上传文件
+                let id =  0;
+                let name = this.videoForm.name;
+                let file = this.videoForm.link;
+                if (!name) {
+                    this.$message.warning("Please input video name");
+                    return;
+                }
+                if (!file) {
+                    this.$message.warning("Please input video link");
+                    return;
+                }
+
+                let errorCodeId = (this.uploadCategory === 1 || this.uploadCategory === 2) ? this.errorCodeId : 0;
+
+                Core.Api.Component.saveVideo(id, this.uploadCategory, errorCodeId, name, file).then(res => {
+                    this.$message({
+                        message: "Save successfully",
+                        type: "success"
+                    });
+                    this.fileList = [];
+                    this.uploadDialogVisible = false;
+                    this.category = 0;
+                    this.currentPage = 1;
+                    this.uploadCategory = 1;
+                    this.getVideoList();
+                });
+            },
+
+            editVideo() {
+                let id = this.videoForm.id || 0;
+                if (!id) {this.$message.warning("not choose the video"); return}
+                let name = this.videoForm.name;
+                let file = this.videoForm.link;
+                if (!name) {
+                    this.$message.warning("Please input video name");
+                    return;
+                }
+                if (!file) {
+                    this.$message.warning("Please input video link");
+                    return;
+                }
+                let errorCodeId = (this.uploadCategory === 1 || this.uploadCategory === 2) ? this.errorCodeId : 0;
+                Core.Api.Component.saveVideo(id, this.selectVideo.category, errorCodeId, name, file).then(res => {
+                    this.$message({
+                        message: "Edit successfully",
+                        type: "success"
+                    });
+                    this.closeUploadDialog();
+                    this.currentPage = 1;
+                    this.getVideoList();
+                });
+            },
+
+            closeUploadDialog() {
+                this.selectVideo = {};
+                this.fileList = [];
+                this.videoForm.name = "";
+                this.videoForm.link = "";
+                this.uploadCategory = this.category || '';
+                this.uploadDialogVisible = false;
+                this.editDialogVisible = false;
+            },
+
+            showDeleteDialog(item) {
+                this.selectVideo = item;
+                this.videoListDeleteDialogVisible = true;
+            },
+
+            showEditDialog(item) {
+                this.selectVideo = item;
+                this.videoForm = {
+                    id: item.id,
+                    link: item.file,
+                    name: item.name
+                };
+                this.editDialogVisible = true
+            },
+
+            deleteVideo() {
+                Core.Api.Component.deleteVideo(this.selectVideo.id).then(res => {
+                    this.$message({
+                        message: "Delete successfully",
+                        type: "success"
+                    });
+                    this.selectVideo = {};
+                    this.getVideoList();
+                    this.videoListDeleteDialogVisible = false;
+                });
+            },
+
+            preview(item) {
+                this.selectVideo = item;
+                this.dialogPreviewVisible = true;
+                this.youTube();
+            },
+
+            closeVideoDialog() {
+                this.selectVideo = {};
+                this.dialogPreviewVisible = false;
+            },
+
+            getComponentErrorList() {
+                Core.Api.Error.componentErrorList().then(res => {
+                    this.errorCodeList = res.error_list;
+                });
+            },
+            youTube(){
+                let frameList = window.frames;
+                console.log(frameList.length);
+                let a = document.getElementById('show-iframe');
+                console.log(a);
+            }
+
+        },
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .video-list {
+        width: 100%;
+        height: 100%;
+        .head-text {
+            color: #A1A5B1;
+            margin: 0 15px;
+        }
+        .label {
+            color: white;
+            width: 100px;
+            display: inline-block;
+            margin-right: 15px;
+        }
+        .input {
+            width: 270px;
+        }
+        .video-dialog {
+            width: 650px;
+            z-index:10000;
+            .dialog-container {
+                position:relative;
+                font-size: 0;
+                .video-iframe {
+                    position: absolute;
+                    width: 650px;
+                    height: 360px
+                }
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// video-list.vue?7d7f0d61

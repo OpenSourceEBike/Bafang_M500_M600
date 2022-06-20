@@ -1,0 +1,275 @@
+<template>
+    <div class="assembler-order-list">
+        <div class="header">
+            <el-form :inline="true" class="list-form-inline">
+                <el-form-item :label="$t('poNo')">
+                    <el-input v-model="sourceId"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('model')">
+                    <el-input v-model="model"></el-input>
+                </el-form-item>
+                <el-date-picker
+                    v-model="startDate"
+                    type="date"
+                    :placeholder="$t('startDate')"
+                >
+                </el-date-picker>
+                <el-date-picker
+                    v-model="endDate"
+                    type="date"
+                    :placeholder="$t('endDate')"
+                >
+                </el-date-picker>
+                <div class="btn-group-inline">
+                    <div class="icons">
+                        <div class="icon-item search" @click="getOrderList(currentPage)" :title="$t('search')"></div>
+                    </div>
+                </div>
+            </el-form>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item add" @click="addProductionOrder"
+                         v-if="authList[Core.Const.AUTH_LIST.productionAdd]" :title="$t('add')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <td v-for="(item,index) in tableHead" :class="{'al-right': index === 1 || index === 4}">{{item}}</td>
+                    </thead>
+                    <tbody v-if="!loading">
+                    <tr v-for="item in tableData">
+                        <td>{{item.create_time | dateFormat}}</td>
+                        <td class="al-right">{{item.source_id}}</td>
+                        <td>{{item.user_org ? item.user_org.name : '/'}}</td>
+                        <td v-if="item.ex_model_text" class="long-td">
+                            <el-tooltip  effect="dark" :content="item.ex_model_text" placement="right">
+                              <div> {{item.model_text}}</div>
+                            </el-tooltip>
+                        </td>
+                        <td  class="long-td" v-else> {{item.model_text}}</td>
+                        <td class="al-right">{{item.produced + '/' + item.amount}}</td>
+                        <td :class="{
+                            'order-finish': item.status == 1,
+                            'order-doing': item.status == 0
+                        }">{{item.status | orderStatus( Core.Data.getLang() )}}
+                        </td>
+                        <td>
+                            <a class="btn-underline" @click.stop="goProductionOrderDetail(item.id)">{{ $t('detail') }}</a>
+                            <a class="btn-underline" @click.stop="goToVehicleTab(item.source_id)">{{ $t('vehicleList') }}</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-show="tableData.length <= 0 && !loading">
+                    {{ $t('noResult') }}
+                </div>
+                <div class="loading" v-if="loading">
+                    <img src="../../../assets/images/icon/loading-bars.svg" alt="Loading icon"/>
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next, jumper"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        name: 'orderList',
+        data() {
+            return {
+                Core: Core,
+                tableHead: ['Date', 'Po No.', 'Customer Name ', 'Model', 'Produced/Qty', 'Status', 'Operation'],
+                tableData: [],
+                currentPage: Core.Data.get(Core.Const.DATA.KEY_ASSEMBLER_ORDER_LIST_PAGE) ? Core.Data.get(Core.Const.DATA.KEY_ASSEMBLER_ORDER_LIST_PAGE) : 1,
+                total: 0,
+
+                sourceId: '',
+                startDate: '',
+                endDate: '',
+
+                authList: [],
+                loading: false,
+
+                model: '',
+            }
+        },
+
+        i18n: {
+            messages: {
+                en: EN.Assembler.AssemblerOrderList,
+                zh: ZH.Assembler.AssemblerOrderList,
+                de: DE.Assembler.AssemblerOrderList,
+                nl: NL.Assembler.AssemblerOrderList
+            }
+        },
+
+        mounted: function () {
+            this.initData();
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            this.currentPage = Core.Data.get(Core.Const.DATA.KEY_ASSEMBLER_ORDER_LIST_PAGE) || 1;
+            this.getOrderList(this.currentPage);
+        },
+        methods: {
+            initData() {
+                this.tableHead = [
+                    this.$t('tableHead.date'),
+                    this.$t('tableHead.poNo'),
+                    this.$t('tableHead.customerName'),
+                    this.$t('tableHead.model'),
+                    this.$t('tableHead.produced_qty'),
+                    this.$t('tableHead.status'),
+                    this.$t('tableHead.operation'),
+                ];
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+	            Core.Data.set(Core.Const.DATA.KEY_ASSEMBLER_ORDER_LIST_PAGE, this.currentPage);
+                this.getOrderList(val);
+            },
+
+            addProductionOrder() {
+                this.$router.push({name: 'assemblerOrderSave'});
+            },
+
+            goProductionOrderDetail(orderId) {
+                this.$router.push({name: 'assemblerOrderDetail', query: {"orderId": orderId}});
+            },
+
+            goToVehicleTab(poNo) {
+                Core.Data.set(Core.Const.KEY_ASSEMBLER_ORDER_LIST_PAGE, this.currentPage);
+                this.$router.push({name: 'assemblerVehicleList', query: {"poNo": poNo, "from" : 'order'}});
+            },
+
+            getOrderList(page) {
+                this.loading = true;
+
+                let startDate = Core.Util.parseDate(this.startDate) || 0;
+                let endDate = Core.Util.parseDate(this.endDate) || 0;
+
+                if (startDate && endDate) {
+                    if (startDate > endDate) {
+                        this.$message({
+                            message: "Start time must be smaller than the end time",
+                            type: 'warning'
+                        });
+                        return;
+                    }
+                }
+
+                if (endDate) {
+                    endDate = endDate + 86400;
+                }
+
+                Core.Api.Order.getProductionOrderList(this.sourceId.trim(), startDate, endDate, page, this.model.trim()).then(res => {
+                    this.loading = false;
+                    this.tableData = this.getModelText(res.order_list);
+                    this.total = res.count;
+                })
+            },
+
+            getModelText(arr) {
+            	let itemList = [];
+            	let exModelText = "";
+                let modelText = "";
+            	arr.forEach((item, index) => {
+                    exModelText = "";
+                    itemList = item.item_list;
+                    if (itemList !== null) {
+                        itemList.forEach((model, idx) => {
+                            let part_no = model.item_part_no ? model.item_part_no : '-';
+
+                            if (idx === 0) {
+                                modelText = model.item_name + ' (' + part_no + ')';
+                            }
+                            if (idx === 1) {
+                                exModelText = model.item_name + ' (' + part_no + ')';
+                            }
+                            if (idx > 1) {
+                                exModelText = exModelText + ', ' + model.item_name + ' (' + part_no + ')';
+                            }
+                        });
+                        item['model_text'] = modelText;
+                        item['ex_model_text'] = exModelText;
+                    }
+                });
+            	return arr;
+            }
+        }
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .assembler-order-list {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        .table-wrap {
+            flex: 1;
+        }
+        .list-form-inline {
+            .el-form-item {
+                margin-right: 2px !important;
+                margin-bottom: 0;
+            }
+            .el-form-item__content {
+                width: 180px !important;
+            }
+        }
+        .header{
+            height: auto;
+        }
+        .loading {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .long-td {
+            max-width: 300px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .long-td div {
+            max-width: 300px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?0ddde330

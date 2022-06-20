@@ -1,0 +1,1813 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "controller"
+  }, [_c('div', {
+    staticClass: "controller-content"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('controller')) + "\n            "), _c('div', {
+    staticClass: "connect-tip"
+  }, [_c('a', {
+    staticClass: "btn-tip btn-underline",
+    attrs: {
+      "href": "javascript:;"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogTipVisible = true
+      }
+    }
+  }, [_c('img', {
+    staticClass: "tip-img",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-help.png")
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "info"
+  }, [_c('div', {
+    staticClass: "note-title"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.mainData')))]), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showUpdateTag),
+      expression: "showUpdateTag"
+    }],
+    on: {
+      "click": _vm.jumpToUpdate
+    }
+  }, [_vm._v("New version ready for Update")])]), _vm._v(" "), _c('div', {
+    staticClass: "part"
+  }, [(_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input input-sn ",
+    model: {
+      value: (_vm.sn),
+      callback: function($$v) {
+        _vm.sn = $$v
+      },
+      expression: "sn"
+    }
+  })], 1) : _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input ",
+    model: {
+      value: (_vm.sn),
+      callback: function($$v) {
+        _vm.sn = $$v
+      },
+      expression: "sn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [(_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('el-button', {
+    staticClass: "btn-write",
+    attrs: {
+      "type": "primary",
+      "disabled": _vm.loading
+    },
+    on: {
+      "click": _vm.writeSn
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')) + "\n                        ")]) : _vm._e()], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.model')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.model),
+      callback: function($$v) {
+        _vm.model = $$v
+      },
+      expression: "model"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.hardwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.hardVersion),
+      callback: function($$v) {
+        _vm.hardVersion = $$v
+      },
+      expression: "hardVersion"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "part right"
+  }, [(!_vm.usbHID) ? _c('div', {
+    staticClass: "com"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.com')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "com-select",
+    attrs: {
+      "placeholder": _vm.$t('cNam.select')
+    },
+    on: {
+      "change": _vm.changeCom
+    },
+    nativeOn: {
+      "click": function($event) {
+        return _vm.getComList($event)
+      }
+    },
+    model: {
+      value: (_vm.com),
+      callback: function($$v) {
+        _vm.com = $$v
+      },
+      expression: "com"
+    }
+  }, _vm._l((_vm.comList), function(com, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": com,
+        "value": com
+      }
+    })
+  })), _vm._v(" "), _c('label', {
+    staticClass: "tip",
+    class: {
+      connect: _vm.isConnected
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.connect
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))])], 1) : _c('div', {
+    staticClass: "com"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("USB HID")]), _vm._v(" "), _c('label', {
+    staticClass: "tip",
+    class: {
+      connect: _vm.isConnected
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "disabled": _vm.loading || _vm.isReset
+    },
+    on: {
+      "click": _vm.connect
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [(_vm.loading) ? _c('vue-loading', {
+    staticClass: "loading",
+    attrs: {
+      "type": "spin",
+      "color": "#E26829"
+    }
+  }) : _vm._e(), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-write",
+    attrs: {
+      "type": "preview",
+      "disabled": _vm.loading || _vm.isReset || !_vm.isConnected
+    },
+    on: {
+      "click": _vm.readBase
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')) + "\n                        ")])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.version),
+      callback: function($$v) {
+        _vm.version = $$v
+      },
+      expression: "version"
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "info"
+  }, [_c('div', {
+    staticClass: "note-title"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.parameter')))])]), _vm._v(" "), _c('div', {
+    staticClass: "part"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.spdMeterType')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdMeterType),
+      callback: function($$v) {
+        _vm.spdMeterType = $$v
+      },
+      expression: "spdMeterType"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.nmlVolt')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.nmlVolt),
+      callback: function($$v) {
+        _vm.nmlVolt = $$v
+      },
+      expression: "nmlVolt"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("V")])], 2)], 1), _vm._v(" "), (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT && _vm.isCan) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.clientCode')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.clientCodeRead),
+      callback: function($$v) {
+        _vm.clientCodeRead = $$v
+      },
+      expression: "clientCodeRead"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT && !_vm.isCan) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.manName')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.manNameRead),
+      callback: function($$v) {
+        _vm.manNameRead = $$v
+      },
+      expression: "manNameRead"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.speedLimitRead),
+      callback: function($$v) {
+        _vm.speedLimitRead = $$v
+      },
+      expression: "speedLimitRead"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km/h")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.wheelDiameterRead),
+      callback: function($$v) {
+        _vm.wheelDiameterRead = $$v
+      },
+      expression: "wheelDiameterRead"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.circumference')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.circumferenceRead),
+      callback: function($$v) {
+        _vm.circumferenceRead = $$v
+      },
+      expression: "circumferenceRead"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("mm")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.conSpeed')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.conSpeed),
+      callback: function($$v) {
+        _vm.conSpeed = $$v
+      },
+      expression: "conSpeed"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km/h")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.conCurrent')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.conCurrent),
+      callback: function($$v) {
+        _vm.conCurrent = $$v
+      },
+      expression: "conCurrent"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("A")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.conVoltage')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.conVoltage),
+      callback: function($$v) {
+        _vm.conVoltage = $$v
+      },
+      expression: "conVoltage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("V")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.motorTemperature')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.motorTemperature),
+      callback: function($$v) {
+        _vm.motorTemperature = $$v
+      },
+      expression: "motorTemperature"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("℃")])], 2)], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "part right"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.spdMeterSignalNum')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdMeterSignalNum),
+      callback: function($$v) {
+        _vm.spdMeterSignalNum = $$v
+      },
+      expression: "spdMeterSignalNum"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.maxCur')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.maxCur),
+      callback: function($$v) {
+        _vm.maxCur = $$v
+      },
+      expression: "maxCur"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("A")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.capacityLeft')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.conCapacityLeft),
+      callback: function($$v) {
+        _vm.conCapacityLeft = $$v
+      },
+      expression: "conCapacityLeft"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("%")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.conSingleTrip')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.conSingleTrip),
+      callback: function($$v) {
+        _vm.conSingleTrip = $$v
+      },
+      expression: "conSingleTrip"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.conSingleTripLeft')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.conSingleTripLeft),
+      callback: function($$v) {
+        _vm.conSingleTripLeft = $$v
+      },
+      expression: "conSingleTripLeft"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Km")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.conCadence')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.conCadence),
+      callback: function($$v) {
+        _vm.conCadence = $$v
+      },
+      expression: "conCadence"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("RPM")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.conTorque')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.conTorque),
+      callback: function($$v) {
+        _vm.conTorque = $$v
+      },
+      expression: "conTorque"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("mV")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.calorie')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.calorie),
+      callback: function($$v) {
+        _vm.calorie = $$v
+      },
+      expression: "calorie"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("Kcal")])], 2)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assistStatus')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.assistance),
+      callback: function($$v) {
+        _vm.assistance = $$v
+      },
+      expression: "assistance"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan),
+      expression: "isCan"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.conTemperature')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.conTemperature),
+      callback: function($$v) {
+        _vm.conTemperature = $$v
+      },
+      expression: "conTemperature"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("℃")])], 2)], 1)])]), _vm._v(" "), (!_vm.isCan) ? _c('div', {
+    staticClass: "data"
+  }, [_c('div', {
+    staticClass: "part"
+  }, [_c('div', {
+    staticClass: "head"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.limitVolt')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.limitVolt),
+      callback: function($$v) {
+        _vm.limitVolt = $$v
+      },
+      expression: "limitVolt"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "text"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.limitCurrent')) + "(%)")]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.limitSpd')) + "(%)")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assit')) + "0")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.curList[0]),
+      callback: function($$v) {
+        _vm.$set(_vm.curList, 0, $$v)
+      },
+      expression: "curList[0]"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdList[0]),
+      callback: function($$v) {
+        _vm.$set(_vm.spdList, 0, $$v)
+      },
+      expression: "spdList[0]"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assit')) + "1")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.curList[1]),
+      callback: function($$v) {
+        _vm.$set(_vm.curList, 1, $$v)
+      },
+      expression: "curList[1]"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdList[1]),
+      callback: function($$v) {
+        _vm.$set(_vm.spdList, 1, $$v)
+      },
+      expression: "spdList[1]"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assit')) + "2")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.curList[2]),
+      callback: function($$v) {
+        _vm.$set(_vm.curList, 2, $$v)
+      },
+      expression: "curList[2]"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdList[2]),
+      callback: function($$v) {
+        _vm.$set(_vm.spdList, 2, $$v)
+      },
+      expression: "spdList[2]"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assit')) + "3")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.curList[3]),
+      callback: function($$v) {
+        _vm.$set(_vm.curList, 3, $$v)
+      },
+      expression: "curList[3]"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdList[3]),
+      callback: function($$v) {
+        _vm.$set(_vm.spdList, 3, $$v)
+      },
+      expression: "spdList[3]"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assit')) + "4")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.curList[4]),
+      callback: function($$v) {
+        _vm.$set(_vm.curList, 4, $$v)
+      },
+      expression: "curList[4]"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdList[4]),
+      callback: function($$v) {
+        _vm.$set(_vm.spdList, 4, $$v)
+      },
+      expression: "spdList[4]"
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "part right"
+  }, [_c('div', {
+    staticClass: "head"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.limitCurrent')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input space",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.limitCur),
+      callback: function($$v) {
+        _vm.limitCur = $$v
+      },
+      expression: "limitCur"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "text"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.limitCurrent')) + "(%)")]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.limitSpd')) + "(%)")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assit')) + "5")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.curList[5]),
+      callback: function($$v) {
+        _vm.$set(_vm.curList, 5, $$v)
+      },
+      expression: "curList[5]"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdList[5]),
+      callback: function($$v) {
+        _vm.$set(_vm.spdList, 5, $$v)
+      },
+      expression: "spdList[5]"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assit')) + "6")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.curList[6]),
+      callback: function($$v) {
+        _vm.$set(_vm.curList, 6, $$v)
+      },
+      expression: "curList[6]"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdList[6]),
+      callback: function($$v) {
+        _vm.$set(_vm.spdList, 6, $$v)
+      },
+      expression: "spdList[6]"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assit')) + "7")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.curList[7]),
+      callback: function($$v) {
+        _vm.$set(_vm.curList, 7, $$v)
+      },
+      expression: "curList[7]"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdList[7]),
+      callback: function($$v) {
+        _vm.$set(_vm.spdList, 7, $$v)
+      },
+      expression: "spdList[7]"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assit')) + "8")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.curList[8]),
+      callback: function($$v) {
+        _vm.$set(_vm.curList, 8, $$v)
+      },
+      expression: "curList[8]"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdList[8]),
+      callback: function($$v) {
+        _vm.$set(_vm.spdList, 8, $$v)
+      },
+      expression: "spdList[8]"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.assit')) + "9")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-left",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.curList[9]),
+      callback: function($$v) {
+        _vm.$set(_vm.curList, 9, $$v)
+      },
+      expression: "curList[9]"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "input-right",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.spdList[9]),
+      callback: function($$v) {
+        _vm.$set(_vm.spdList, 9, $$v)
+      },
+      expression: "spdList[9]"
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group"
+  }, [(_vm.userName.indexOf('fqc') > -1) ? _c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.writeParam
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')))]) : _vm._e()], 1)]) : _vm._e(), _vm._v(" "), (_vm.isCan) ? _c('div', {
+    staticClass: "info"
+  }, [_c('div', {
+    staticClass: "note-title"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.setting')))])]), _vm._v(" "), _c('div', {
+    staticClass: "part"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.speedLimit')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "com-select",
+    attrs: {
+      "filterable": "",
+      "placeholder": _vm.$t('cNam.select')
+    },
+    on: {
+      "change": function($event) {}
+    },
+    nativeOn: {
+      "click": function($event) {}
+    },
+    model: {
+      value: (_vm.speedLimit),
+      callback: function($$v) {
+        _vm.speedLimit = $$v
+      },
+      expression: "speedLimit"
+    }
+  }, _vm._l((_vm.speedLimits), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item,
+        "value": item
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.wheelDiameter')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "com-select",
+    attrs: {
+      "filterable": "",
+      "placeholder": _vm.$t('cNam.select')
+    },
+    on: {
+      "change": _vm.updateWheelCircumference
+    },
+    nativeOn: {
+      "click": function($event) {}
+    },
+    model: {
+      value: (_vm.wheelDiameter),
+      callback: function($$v) {
+        _vm.wheelDiameter = $$v
+      },
+      expression: "wheelDiameter"
+    }
+  }, _vm._l((_vm.wheelDiameters), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.circumference')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "com-select",
+    attrs: {
+      "filterable": "",
+      "allow-create": "",
+      "placeholder": _vm.$t('cNam.select')
+    },
+    on: {
+      "change": function($event) {}
+    },
+    nativeOn: {
+      "click": function($event) {}
+    },
+    model: {
+      value: (_vm.circumference),
+      callback: function($$v) {
+        _vm.circumference = $$v
+      },
+      expression: "circumference"
+    }
+  }, _vm._l((_vm.circumferences), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item,
+        "value": item
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    staticClass: "btn-write",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.clickWriteParam()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')))])], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "part right"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT),
+      expression: "org.type === Core.Const.ORG_TYPE.COMPONENT"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.clientCode')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "6004"
+    },
+    model: {
+      value: (_vm.clientCode),
+      callback: function($$v) {
+        _vm.clientCode = $$v
+      },
+      expression: "clientCode"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT),
+      expression: "org.type === Core.Const.ORG_TYPE.COMPONENT"
+    }],
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    staticClass: "btn-write",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.writeClientCode()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')))])], 1)]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT),
+      expression: "org.type === Core.Const.ORG_TYPE.COMPONENT"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.manName')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "6005"
+    },
+    model: {
+      value: (_vm.manName),
+      callback: function($$v) {
+        _vm.manName = $$v
+      },
+      expression: "manName"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT),
+      expression: "org.type === Core.Const.ORG_TYPE.COMPONENT"
+    }],
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.readManufacturer
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.writeManufacturer
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.errorCode')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "6007"
+    },
+    model: {
+      value: (_vm.errorCode),
+      callback: function($$v) {
+        _vm.errorCode = $$v
+      },
+      expression: "errorCode"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.readErrorCode
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.bootLoad')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "6008"
+    },
+    model: {
+      value: (_vm.bootLoad),
+      callback: function($$v) {
+        _vm.bootLoad = $$v
+      },
+      expression: "bootLoad"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-row"
+  }, [_c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.readBootLoad
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.positionSensor')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    on: {
+      "click": _vm.sensorSetStart
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.start')))]), _vm._v(" "), (_vm.sensorStart) ? _c('span', {
+    staticStyle: {
+      "padding": "0 20px 0 20px"
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.positionSensor')) + "+" + _vm._s(_vm.$t('cNam.start')))]) : _vm._e()], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.torqueSenCali')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    on: {
+      "click": _vm.sensorZeroSetStart
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.start')))]), _vm._v(" "), (_vm.sensorZeroStart) ? _c('span', {
+    staticStyle: {
+      "padding": "0 20px 0 20px"
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.torqueSenCali')) + "+" + _vm._s(_vm.$t('cNam.start')))]) : _vm._e()], 1)])]) : _vm._e(), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCan && (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT || _vm.org.id === 1340 || _vm.org.id === 1341 || _vm.org.id === 1212)),
+      expression: "isCan && (org.type === Core.Const.ORG_TYPE.COMPONENT || org.id === 1340 || org.id === 1341 || org.id === 1212 )"
+    }],
+    staticClass: "info "
+  }, [_c('div', {
+    staticClass: "con-Params"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.paramsName')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.ctrlParamsVersion),
+      callback: function($$v) {
+        _vm.ctrlParamsVersion = $$v
+      },
+      expression: "ctrlParamsVersion"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    on: {
+      "click": _vm.conParamsGetOnline
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.paramsCloud')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "con-Params"
+  }, [_c('el-button', {
+    staticClass: "btn-connect",
+    on: {
+      "click": _vm.conParamsReadAll
+    }
+  }, [_vm._v("Read All")]), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    on: {
+      "click": _vm.conParamsWriteAll
+    }
+  }, [_vm._v("Write All")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('div', [_c('div', {
+    staticClass: "con-Params"
+  }, [_vm._v("\n                        Params  Read:\n                        "), _c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "rows": 2,
+      "resize": "none",
+      "placeholder": "6011"
+    },
+    model: {
+      value: (_vm.conParamsRead_11),
+      callback: function($$v) {
+        _vm.conParamsRead_11 = $$v
+      },
+      expression: "conParamsRead_11"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.conParamsRead_6011
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')) + "6011")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "con-Params"
+  }, [_vm._v("\n                        Params Write:\n                        "), _c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "rows": 2,
+      "resize": "none",
+      "placeholder": "6011"
+    },
+    model: {
+      value: (_vm.conParamsWrite_11),
+      callback: function($$v) {
+        _vm.conParamsWrite_11 = $$v
+      },
+      expression: "conParamsWrite_11"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    on: {
+      "click": _vm.conParamsCombine_6011
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.paramsCombine')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.conParamsUpdate_6011
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')) + "6011")])], 1)]), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "con-Params"
+  }, [_vm._v("\n                        Params  Read:\n                        "), _c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "rows": 2,
+      "resize": "none",
+      "placeholder": "6012"
+    },
+    model: {
+      value: (_vm.conParamsRead_12),
+      callback: function($$v) {
+        _vm.conParamsRead_12 = $$v
+      },
+      expression: "conParamsRead_12"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.conParamsRead_6012
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')) + "6012")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "con-Params"
+  }, [_vm._v("\n                        Params Write:\n                        "), _c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "rows": 2,
+      "resize": "none",
+      "placeholder": "6012"
+    },
+    model: {
+      value: (_vm.conParamsWrite_12),
+      callback: function($$v) {
+        _vm.conParamsWrite_12 = $$v
+      },
+      expression: "conParamsWrite_12"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    on: {
+      "click": _vm.conParamsCombine_6012
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.paramsCombine')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.conParamsUpdate_6012
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')) + "6012")])], 1)]), _vm._v(" "), [_c('el-collapse', {
+    model: {
+      value: (_vm.openCollapse),
+      callback: function($$v) {
+        _vm.openCollapse = $$v
+      },
+      expression: "openCollapse"
+    }
+  }, _vm._l((_vm.dataObject), function(data, index) {
+    return _c('el-collapse-item', {
+      attrs: {
+        "name": index,
+        "title": Object.keys(data)[0]
+      }
+    }, [_c('div', [_c('div', {
+      staticClass: "table-wrap"
+    }, [_c('table', {
+      staticClass: "table-content",
+      attrs: {
+        "border": "0",
+        "cellspacing": "0",
+        "cellpadding": "0"
+      }
+    }, [_c('thead', _vm._l((_vm.tableHead), function(item) {
+      return _c('td', [_vm._v(_vm._s(item))])
+    })), _vm._v(" "), _c('tbody', {
+      staticClass: "height2"
+    }, _vm._l((data[Object.keys(data)[0]]), function(item, index) {
+      return _c('tr', [_c('td', {
+        staticClass: "long-td"
+      }, [_c('span', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('el-tooltip', {
+        staticClass: "item",
+        attrs: {
+          "effect": "dark",
+          "content": item.title_en,
+          "placement": "right-start"
+        }
+      }, [_c('i', [_vm._v(_vm._s(item.unit))])])], 1), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.category))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.data))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.length))]), _vm._v(" "), _c('td', {
+        staticClass: "short-td"
+      }, [_c('el-input', {
+        model: {
+          value: (item.standard_value),
+          callback: function($$v) {
+            _vm.$set(item, "standard_value", $$v)
+          },
+          expression: "item.standard_value"
+        }
+      })], 1), _vm._v(" "), _c('td', {
+        staticClass: "short-td"
+      }, [_c('el-input', {
+        model: {
+          value: (item.read_value),
+          callback: function($$v) {
+            _vm.$set(item, "read_value", $$v)
+          },
+          expression: "item.read_value"
+        }
+      })], 1), _vm._v(" "), (Array.isArray(item.range) && typeof(item.range[0]) == 'number') ? _c('td', {
+        staticClass: "long-td"
+      }, [_c('el-select', {
+        staticClass: "input",
+        attrs: {
+          "placeholder": _vm.$t('cNam.select')
+        },
+        model: {
+          value: (item.set_value),
+          callback: function($$v) {
+            _vm.$set(item, "set_value", $$v)
+          },
+          expression: "item.set_value"
+        }
+      }, _vm._l((item.range), function(i, index) {
+        return _c('el-option', {
+          key: index,
+          attrs: {
+            "label": i,
+            "value": i
+          }
+        })
+      }))], 1) : (Array.isArray(item.range)) ? _c('td', {
+        staticClass: "long-td"
+      }, [_c('el-select', {
+        staticClass: "input",
+        attrs: {
+          "placeholder": _vm.$t('cNam.select')
+        },
+        model: {
+          value: (item.set_value),
+          callback: function($$v) {
+            _vm.$set(item, "set_value", $$v)
+          },
+          expression: "item.set_value"
+        }
+      }, _vm._l((item.range), function(ii) {
+        return _c('el-option', {
+          key: ii.id,
+          attrs: {
+            "label": ii.value,
+            "value": ii.id
+          }
+        })
+      }))], 1) : _c('td', [_c('el-input', {
+        model: {
+          value: (item.set_value),
+          callback: function($$v) {
+            _vm.$set(item, "set_value", $$v)
+          },
+          expression: "item.set_value"
+        }
+      })], 1)])
+    }))])])])])
+  }))], _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "con-Params"
+  }, [_vm._v("\n                        Params  Read:\n                        "), _c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "rows": 2,
+      "resize": "none",
+      "placeholder": "6017"
+    },
+    model: {
+      value: (_vm.conParamsRead_17),
+      callback: function($$v) {
+        _vm.conParamsRead_17 = $$v
+      },
+      expression: "conParamsRead_17"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.conParamsRead_6017
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')) + "6017")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "con-Params"
+  }, [_vm._v("\n                        Params Write:\n                        "), _c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "rows": 2,
+      "resize": "none",
+      "placeholder": "6017"
+    },
+    model: {
+      value: (_vm.conParamsWrite_17),
+      callback: function($$v) {
+        _vm.conParamsWrite_17 = $$v
+      },
+      expression: "conParamsWrite_17"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    on: {
+      "click": _vm.conParamsCombine_6017
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.paramsCombine')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.conParamsUpdate_6017
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')) + "6017")])], 1)]), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "con-Params"
+  }, [_vm._v("\n                        Params  Read:\n                        "), _c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "rows": 2,
+      "resize": "none",
+      "placeholder": "6018"
+    },
+    model: {
+      value: (_vm.conParamsRead_18),
+      callback: function($$v) {
+        _vm.conParamsRead_18 = $$v
+      },
+      expression: "conParamsRead_18"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.conParamsRead_6018
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')) + "6018")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "con-Params"
+  }, [_vm._v("\n                        Params Write:\n                        "), _c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "rows": 2,
+      "resize": "none",
+      "placeholder": "6018"
+    },
+    model: {
+      value: (_vm.conParamsWrite_18),
+      callback: function($$v) {
+        _vm.conParamsWrite_18 = $$v
+      },
+      expression: "conParamsWrite_18"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    on: {
+      "click": _vm.conParamsCombine_6018
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.paramsCombine')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.conParamsUpdate_6018
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')) + "6018")])], 1)])], 2)])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('cNam.operationTip'),
+      "custom-class": "tip-dialog",
+      "visible": _vm.dialogTipVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogTipVisible = $event
+      }
+    }
+  }, [_c('div', [_c('h1', [_vm._v(" " + _vm._s(_vm.$t('cNam.txtTitle1')) + " ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v("COM")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleCom')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v("USB HID")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleHid')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleCon')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleRead')))])]), _vm._v(" "), (_vm.org.type === _vm.Core.Const.ORG_TYPE.COMPONENT) ? _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.write')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleWrt')))])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.reset')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleReset')))])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('h1', [_vm._v(" " + _vm._s(_vm.$t('cNam.txtTitle2')) + " ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.txtNote1')))])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('auth'),
+      "visible": _vm.dialogWriteAuthVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogWriteAuthVisible = $event
+      }
+    }
+  }, [_c('div', [_c('label', [_vm._v("\n                " + _vm._s(_vm.$t('noControllerAuthTip')) + "\n            ")]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "append"
+    },
+    slot: "append",
+    model: {
+      value: (_vm.brandId),
+      callback: function($$v) {
+        _vm.brandId = $$v
+      },
+      expression: "brandId"
+    }
+  }, _vm._l((_vm.brandList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.applyAuth(0)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('applyControllerAuth')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.applyAuth(1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('applyAllAuth')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogWriteAuthVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-a3b37648","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/tool/controller.vue
+// module id = 1111
+// module chunks = 73

@@ -1,0 +1,150 @@
+<template>
+    <div class="replace-report-holder">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table cellspacing="0" cellpadding="0" class="table-content">
+                    <thead>
+                    <td class="td" v-for="item in tableHead">{{item}}</td>
+                    </thead>
+                    <tbody>
+                    <tr v-for="item in replaceReportList">
+                        <td>{{ item.category.name }}</td>
+                        <td>{{ item.old_component.sn }}</td>
+                        <td>{{ item.new_component.sn }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-show="replaceReportList==false">
+                    {{ $t('noResult') }}
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        data(){
+            return {
+                Core: Core,
+                tableHead: ['Category', 'Old Component SN', 'New Component SN'],
+                currentPage: 1,
+                total: 0,
+
+                vehicleId: '',
+                replaceReportList: [],
+            }
+        },
+        i18n: {
+        	messages:{
+        	    en: EN.Components.ReplaceReport,
+                zh: ZH.Components.ReplaceReport,
+                de: DE.Components.ReplaceReport,
+                nl: NL.Components.ReplaceReport
+            }
+        },
+        mounted: function () {
+        	this.initData();
+
+        	this.vehicleId = this.$route.query.vehicleId;
+
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            this.getReplaceReportList();
+        },
+        methods: {
+            initData() {
+                this.tableHead = [
+                    this.$t('tableHead.category'),
+                    this.$t('tableHead.oldComponent'),
+                    this.$t('tableHead.newComponent')
+                ];
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getReplaceReportList();
+            },
+            getReplaceReportList() {
+                Core.Api.Vehicle.getReplaceReportList(this.vehicleId, this.currentPage).then(res => {
+                    this.replaceReportList = res.list;
+                    this.total = res.count;
+                });
+            },
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .replace-report-holder {
+        height: 100%;
+        .el-dialog__body {
+            padding-bottom: 10px;
+            .form-item {
+                .label {
+                    display: inline-block;
+                    width: 100px;
+                }
+                .input {
+                    width: 310px;
+                    margin: 10px;
+                }
+            }
+        }
+        .auth-form-item .el-form-item__content .el-checkbox-group .el-checkbox {
+            margin: 0;
+            width: 50%;
+            padding-left: 10px;
+        }
+
+        .el-form {
+            .auth-title {
+                color: #fff;
+                padding: 10px 0;
+                font-weight: bold;
+            }
+
+            .el-checkbox-group {
+                line-height: 30px;
+                .el-checkbox {
+                    width: 50%;
+                    padding-left: 20px;
+                }
+                .el-checkbox + .el-checkbox {
+                    margin: 0;
+                }
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// index.vue?1cae0276

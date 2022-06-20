@@ -1,0 +1,155 @@
+<template>
+    <div class="sale-order-list">
+        <div class="header">
+            <el-form :inline="true" class="demo-form-inline">
+                <el-form-item :label="$t('search.bikeId')">
+                    <el-input v-model="objectSn"></el-input>
+                </el-form-item>
+                <div class="btn-group-inline">
+                    <div class="icons">
+                        <div class="icon-item search" @click="getSaleOrderList" :title="$t('search.searchBtn')"></div>
+                    </div>
+                </div>
+            </el-form>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item add" @click="goSaveView" v-if="authList[Core.Const.AUTH_LIST.orderAdd]"></div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <td v-for="item in tableHead">{{ item }}</td>
+                    </thead>
+                    <tbody>
+
+                    <tr v-for="item in saleOrderList">
+                        <!--<td>{{item.sn}}</td>-->
+                        <td>{{item.object_sn}}</td>
+                        <td>{{item.item_name}}</td>
+                        <td>{{item.customer_name}}</td>
+                        <td>{{item.create_time | timeFormat("Y-m-d")}}</td>
+                        <td :class="{
+                                'order-finish': item.status == 1,
+                                'order-doing': item.status == 0
+                            }">{{item.status | orderStatus( Core.Data.getLang() )}}
+                        </td>
+                        <td>
+                            <a class="btn-underline" @click.stop="goDetailView(item.id)">{{$t('detail')}}</a>
+                            <!--<a class="btn-underline" @click.stop="showDeleteDialog(item)" v-if="authList[Core.Const.AUTH_LIST.objectDelete]">{{$t('delete')}}</a>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-show="saleOrderList.length <= 0">
+                    {{ $t('noResult') }}
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next, jumper"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/ecmascript-6">
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        data() {
+            return {
+                Core: Core,
+                tableHead: ['Bike ID', 'Model', 'Customer Name', 'Date', 'Status', 'Operation'],
+                currentPage: 1,
+                saleOrderList: [],
+                brandId: '',
+                objectSn: '',
+                total: 0,
+
+                authList: {}
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Dealer.Sale.List,
+                zh: ZH.Dealer.Sale.List,
+                de: DE.Dealer.Sale.List,
+                nl: NL.Dealer.Sale.List
+            }
+        },
+        mounted() {
+            // 国际化
+            this.initData();
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+            this.brandId = (Core.Data.getBrandPartner(Core.Data.getOrg().id)) ? Core.Data.getBrandPartner(Core.Data.getOrg().id).id : '';
+            this.getSaleOrderList();
+        },
+
+        methods: {
+            initData() {
+                this.tableHead = [this.$t('tableHead.bikeId'), this.$t('tableHead.model'), this.$t('tableHead.customerName'), this.$t('tableHead.date'), this.$t('tableHead.status'), this.$t('tableHead.operation')];
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getSaleOrderList();
+            },
+
+            goSaveView() {
+                this.$router.push({name: "dealerSaleOrderSave"});
+            },
+
+            goDetailView(id) {
+                this.$router.push({name: "dealerSaleOrderDetail", query: {id: id}});
+            },
+
+            getSaleOrderList() {
+                Core.Api.Order.getSaleOrderList(this.brandId, this.objectSn.trim(), this.currentPage).then(res => {
+                    this.saleOrderList = res.list;
+                    this.total = res.count;
+                    //console.log(res);
+                });
+            },
+        }
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .sale-order-list {
+        width: 100%;
+        height: 100%;
+        .header {
+            height: 60px;
+            border-bottom: 1px solid #2B2F3B;
+            overflow: hidden;
+        }
+    }
+
+
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?a66be57a

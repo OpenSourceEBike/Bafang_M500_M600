@@ -1,0 +1,367 @@
+<template>
+    <div class="product-container">
+        <div class="category-tree">
+            <div class="searchWrap">
+                <!--<el-form :inline="true" class="demo-form-inline">-->
+                <!--<el-form-item>-->
+                <!--<el-input v-model="part_no" placeholder="物料号"></el-input>-->
+                <!--<div class="btn-group-inline">-->
+                <!--<div class="icons">-->
+                <!--<span class="icon-item search" @click="getItemModel" title="search"></span>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</el-form-item>-->
+                <!--</el-form>-->
+                <span class="title">{{ currentCategory.name || 'Component' }}</span>
+            </div>
+            <div class="clear-5"></div>
+            <el-tree :data="categoryList" :props="defaultProps" @node-click="handleNodeClick" node-key="id" :default-expanded-keys="categoryExId"></el-tree>
+            <div class="tree-node" @click="goToVideoView" v-if="org.id == 25 && authList[Core.Const.AUTH_LIST.productTraining]">
+                <div class="tree-node__content">
+                    <span class="el-tree-node__expand-icon is-leaf"></span>
+                    <span class="tree-node__label">{{ $t('training')}}</span>
+                </div>
+            </div>
+            <div class="tree-btn" @click="goToEditCategory" v-if="authList[Core.Const.AUTH_LIST.productEditCategory]">
+                <a href="javascript:;">{{ $t('editCategory') }}</a>
+            </div>
+
+            <!--<p class="edit-category"> Edit Category</p>-->
+        </div>
+        <router-view :currentCategory="currentCategory" :itemList="itemList" :hasFooter="hasFooter"
+                     :count="count" :currentPage.sync="currentPage" :poNo="poNo" :loading="loading"
+                     :categoryId = "selectCategoryId" :categoryName = "categoryName"
+                     @handlePageChange="handlePageChange" @searchItemList="handleSearch" :currentCategoryId="currentCategoryId"></router-view>
+    </div>
+</template>
+
+
+<script>
+    import Core from "core/core";
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        name: 'product',
+        data() {
+            return {
+                Core: Core,
+                org: Core.Data.getOrg(),
+                count: 0,
+                hasFooter: false,
+                categoryList: [],
+                categoryId: 0,
+                itemList: [],
+                defaultProps: {
+                    id: 'id',
+                    children: 'child',
+                    label: 'name',
+                },
+                currentCategory: {
+                    name: ''
+                },
+                currentPage: 1,
+
+                authList: [],
+
+                poNo: '',
+                part_no:'',
+                categoryExId:[],
+                loading: false,
+                selectCategoryId: '',
+                categoryName: '',
+                currentCategoryId: '',
+                partNumber: ''
+            };
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Product.Index,
+                zh: ZH.Component.Product.Index,
+                de: DE.Component.Product.Index,
+                nl: NL.Component.Product.Index
+            }
+        },
+        mounted: function() {
+            this.getAuth();
+
+            this.$root.eventHub.$on(Core.Const.EVENT_HUB.REFRESH_ITEM_LIST_BY_CATEGORY_ID, (data)=>{
+                this.getItemList();
+            });
+            Core.Api.Category.getAllCategoryList(Core.Const.COMPONENT_ROOT_CATEGORY).then(
+                res => {
+                    let list = [];
+                    if(this.org.id === 25){
+                        list = res.category_list;
+                    }else{
+                        list = res.category_list.filter((item)=>{ return item.id!==10 && item.id!==11});
+                    }
+                    this.categoryList = Core.Util.sortListTree(list);
+                }
+            );
+
+        },
+
+        methods: {
+
+            handleNodeClick(data) {
+//                console.log(data);
+                if(data.level === 4){
+                    this.currentCategoryId = data.id;
+                }
+                if(data.level === 3){
+//                    console.log(data.id);
+                    this.selectCategoryId = data.id;
+                    this.categoryName = data.name;
+                }else{
+                    this.selectCategoryId = '';
+                    this.categoryName = '';
+                }
+//                console.log(data,"category");
+//                child: Array(0)
+//                id: 245
+//                level: 4
+//                name: "DP C171.UART"
+//                org_id: 25
+//                $treeNodeId: 106
+                if (data.hasOwnProperty('id')) {
+                    this.currentCategory = data;
+                    this.hasFooter = false;
+                    this.poNo = '';
+                    this.categoryId = data.id;
+                    this.getItemList();
+                    this.$router.push({name: 'componentProductList'})
+                }
+            },
+
+            getItemList() {
+                let idDefault = 1;
+//                Core.Api.Item.getListByPage(this.categoryId, this.currentPage, idDefault, this.poNo).then(
+//                res => {
+//                    let list = res.item_list;
+//                    if(this.categoryId === 11) {
+//                        list.forEach(item => {
+//                            item.attr_list =  item.attr_list ? item.attr_list : [];
+//                            let attrObj = this.getAttrValue(item.attr_list, ['currency', 'price']);
+//                            item.currency = attrObj['currency'] || 0;
+//                            item.price = attrObj["price"] || 0;
+//                        });
+//                    }
+//                    console.log("[Index] 1",list);
+//                    this.itemList = list;
+//                    this.count = res.count;
+//                    if (this.count > 0) {
+//                        this.hasFooter = true;
+//                    }
+//                });
+                this.loading = true;
+                if( this.categoryId !==11){
+                    this.poNo = '';
+                }
+//                console.log(this.partNumber)
+                Core.Api.Item.getListForUpdate(this.categoryId, this.currentPage, idDefault, this.partNumber).then(res=>{
+                    let list = res.item_list;
+                    if(this.categoryId === 11) {
+                        list.forEach(item => {
+                            item.attr_list =  item.attr_list ? item.attr_list : [];
+                            let attrObj = this.getAttrValue(item.attr_list, ['currency', 'price']);
+                            item.currency = attrObj['currency'] || 0;
+                            item.price = attrObj["price"] || 0;
+                        });
+                    }
+                    this.loading = false;
+
+                    this.itemList = list;
+                    this.count = res.count;
+                    if (this.count > 0) {
+                        this.hasFooter = true;
+                    }
+                    this.partNumber = '';
+                });
+            },
+
+            getItemModel( val ){
+                if(!val) return;
+                this.partNumber = val;
+                Core.Api.Category.selectCategoryPartNo( val ).then(
+                    res =>{
+                        let node = res.attr_list;
+//                        console.log(res);
+//                        2102023300006
+//                        id: 245
+//                        level: 4
+//                        name: "DP C171.UART"
+//                        org_id: 25
+//                        parent_id: 98
+//                        root_id: 4
+//                        user_id: 316
+                        // Category 树中找到 对应模型名
+                        this.categoryExId.push(node.id);
+                        this.currentCategory = node;
+                        this.hasFooter = false;
+                        this.categoryId = node.id;
+                        this.getItemList();
+                        this.$router.push({name: 'componentProductList'})
+                    }
+                ).catch((err)=>{
+                    console.log(err);
+                });
+            },
+
+            getAttrValue(attrList, keys) {
+                let targetAttr = attrList.filter(item => {
+                    return keys.indexOf(item.attr_def_key) > -1;
+                });
+                let targetObj = {};
+                targetAttr.forEach(item => {
+                    let key = item.attr_def_key;
+                    targetObj[key] = item.value || '';
+                });
+                return targetObj;
+            },
+
+            goToEditCategory() {
+                this.$router.push({name: 'componentProductEditCategory'})
+            },
+
+            goToVideoView() {
+                this.$router.push({name: 'componentProductVideo'})
+            },
+
+            handlePageChange(val) {
+                this.currentPage = val;
+                this.getItemList();
+            },
+
+            handleSearch(val) {
+                this.currentPage = 1;
+                this.poNo = val ? val.trim() : '';
+                this.getItemModel( this.poNo );
+            },
+
+            getAuth(){
+                let $this = this;
+                Core.Api.Auth.authDetail()
+                    .then(res => {
+                        $this.authList = res.auth;
+//                        console.log($this.authList);
+                        //  特殊的账户，没有权限
+                        if(!$this.authList['product.menu']){
+                            $this.$router.push({name: 'componentErrorShooting'});
+                        }
+//                        Core.Data.setAuth(res.auth);
+                        $this.$store.commit("currentAuth", $this.authList);
+                        let authFlag = false;
+
+                        for (let i in $this.authList) {
+                            if ($this.authList[i]) {
+                                authFlag = true;
+                                break;
+                            }
+                        }
+                        if (!authFlag) {
+                            $this.$root.eventHub.$emit(Core.Const.EVENT_HUB.NO_AUTH);
+                        }
+                    });
+            },
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss" scoped>
+    .product-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        .category-tree {
+            position: absolute;
+            left: 0;
+            top: 0;
+            overflow: auto;
+            width: 272px;
+            height: 100%;
+            background: rgba(39, 43, 55, 0.75);
+            border-right: 1px solid #383d49;
+            .searchWrap{
+                position: fixed;
+                left: 210px;
+                top: 50px;
+                width: 270px;
+                height: 60px;
+                line-height:60px;
+                background: #383d49;
+                z-index: 1000;
+                .demo-form-inline{
+                    padding-top: 10px;
+                }
+                .el-input{
+                    float:left;
+                    width:200px;
+                    padding-left:10px;
+                }
+                .btn-group-inline{
+                    float:left;
+                    display:inline-block;
+                }
+                .el-form-item{
+                    margin-bottom: 16px;
+                }
+                .title{
+                    padding-left: 20px;
+                    color: #E26829;
+                }
+            }
+            .el-tree {
+                margin-top: 60px;
+                width: 270px;
+            }
+            .tree-node {
+                white-space: nowrap;
+                .tree-node__content {
+                    height: 50px;
+                    line-height: 50px;
+                    padding-left: 0;
+                    cursor: pointer;
+                    .tree-node__label {
+                        padding-left: 6px;
+                    }
+                }
+            }
+
+            .tree-btn {
+                height: 50px;
+                line-height: 50px;
+                a {
+                    font-size: 14px;
+                    color: #E26829;
+                    font-weight: 500;
+                    text-decoration: underline;
+                    margin-left: 26px;
+                }
+                a:hover {
+                    cursor: pointer;
+                }
+            }
+            .training-btn{
+                a{
+                    color: white;
+                    text-decoration: none;
+                }
+            }
+        }
+
+        .content {
+            margin-left: 210px;
+            height: 100%;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// index.vue?9b01b1be

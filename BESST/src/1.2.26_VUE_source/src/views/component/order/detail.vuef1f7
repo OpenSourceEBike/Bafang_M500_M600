@@ -1,0 +1,748 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "component-order-detail"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": _vm.goOrderList
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('orderDetail')))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item export",
+    on: {
+      "click": function($event) {
+        _vm.exportOrder()
+      }
+    }
+  }), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productionEdit] && _vm.isEdit) ? _c('div', {
+    staticClass: "icon-item edit",
+    attrs: {
+      "title": _vm.$t('edit')
+    },
+    on: {
+      "click": function($event) {
+        _vm.goToEditOrder()
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productionDelete] && _vm.isEdit) ? _c('div', {
+    staticClass: "icon-item delete",
+    attrs: {
+      "title": _vm.$t('delete')
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = true
+      }
+    }
+  }) : _vm._e()])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('orderInfo.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "info-list"
+  }, [_c('div', {
+    staticClass: "col-left"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('orderInfo.customerPo')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderData.customer_po_no || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('orderInfo.customerName')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderData.customer_id || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('orderInfo.orderNo')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderData.source_id || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('orderInfo.note')))]), _vm._v(" "), _c('span', {
+    staticClass: "remark"
+  }, [_c('i', [_vm._v(_vm._s(_vm.orderData.remark || '/'))])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-right"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("Create Time")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm._f("dateFormat")(_vm.orderData.create_time)))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("Update Time")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm._f("dateFormat")(_vm.orderData.update_time)))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("System Name")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderData.customer_part_no))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v("TestPlan Name")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.orderData.test_plan_name))])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "parts-list"
+  }, [_c('label', {
+    staticClass: "label1"
+  }, [_vm._v(_vm._s(_vm.$t('itemsList')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap order-detail"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', _vm._l((_vm.headData), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  }))]), _vm._v(" "), _c('tbody', _vm._l((_vm.tableData), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "long-td"
+    }, [_vm._v(_vm._s(item.item_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.item_part_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.part_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.produced + '/' + item.amount))]), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productionProduce] && _vm.authList[_vm.Core.Const.AUTH_LIST.productionReport] && _vm.isEdit) ? _c('td', [(!_vm.orderData.status) ? _c('span', [(item.category_root_id != 3 && item.category_root_id != 6) ? _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.goProduce(item.item_id, item.amount)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('produce')))]) : _vm._e(), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.goTestReport(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('testReport')))])]) : _vm._e(), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.showReplaceDialog(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('replace')))]), _vm._v(" "), (item.item_name.substring(1, 2) == 'M') ? _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.dataConnect(item.item_id, item.amount)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('dataConnect')))]) : _vm._e(), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.goToComponentList(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('componentList')))]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.addNewTestData(item)
+        }
+      }
+    }, [_vm._v("Add Test")]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.removeTestData(item)
+        }
+      }
+    }, [_vm._v("Remove Test")]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.modifyTestData(item)
+        }
+      }
+    }, [_vm._v("Modify Test")]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.moveTestData(item)
+        }
+      }
+    }, [_vm._v("Move Test")]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.editSNType(item)
+        }
+      }
+    }, [_vm._v("Edit SN Type")])]) : _c('td', [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.goToComponentList(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('componentList')))])])])
+  }))])])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('deleteDialog.title'),
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('deleteDialog.content')))]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteProductionOrder
+    }
+  }, [_vm._v(_vm._s(_vm.$t('deleteDialog.yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('deleteDialog.no')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": _vm.$t('replace'),
+      "visible": _vm.dialogReplaceVisible,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogReplaceVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('el-input', {
+    staticClass: "search-content",
+    attrs: {
+      "placeholder": _vm.$t('category'),
+      "disabled": true
+    },
+    nativeOn: {
+      "click": function($event) {
+        return _vm.selectCategory($event)
+      }
+    },
+    model: {
+      value: (_vm.selectCategoryItem.name),
+      callback: function($$v) {
+        _vm.$set(_vm.selectCategoryItem, "name", $$v)
+      },
+      expression: "selectCategoryItem.name"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "search-content",
+    attrs: {
+      "placeholder": _vm.$t('modelNamePN')
+    },
+    model: {
+      value: (_vm.queryItemCondition),
+      callback: function($$v) {
+        _vm.queryItemCondition = $$v
+      },
+      expression: "queryItemCondition"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": _vm.$t('search')
+    },
+    on: {
+      "click": _vm.queryOrderItem
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item clear",
+    attrs: {
+      "title": _vm.$t('clear')
+    },
+    on: {
+      "click": _vm.clearCondition
+    }
+  })])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', _vm._l((_vm.itemHeadData), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  }))]), _vm._v(" "), _c('tbody', _vm._l((_vm.queryItemList), function(item, index) {
+    return _c('tr', [_c('td', [_c('img', {
+      attrs: {
+        "src": _vm._f("getImgUrl")(item.img)
+      }
+    })]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.ext_part_no))]), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.showConfirmDialog(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('replace')))])])])
+  }))]), _vm._v(" "), _c('el-pagination', {
+    staticClass: "pagination",
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentPageChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  })], 1)])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": _vm.$t('selectCategory'),
+      "visible": _vm.dialogSelectCategoryVisible,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogSelectCategoryVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "content",
+    staticStyle: {
+      "max-height": "500px",
+      "overflow": "auto"
+    }
+  }, [_c('div', {
+    staticClass: "category-tree"
+  }, [_c('el-tree', {
+    attrs: {
+      "data": _vm.categoryList,
+      "props": _vm.defaultProps
+    },
+    on: {
+      "node-click": _vm.handleNodeClick
+    }
+  })], 1)])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": _vm.$t('replace'),
+      "visible": _vm.dialogConfirmVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogConfirmVisible = $event
+      }
+    }
+  }, [_c('span', [_vm._v(_vm._s(_vm.selectNewItem.name) + "(" + _vm._s(_vm.selectNewItem.ext_part_no) + ")\n            " + _vm._s(_vm.$t('confirmDialog.replace')) + "\n        " + _vm._s(_vm.selectOldItem.item_name) + "(" + _vm._s(_vm.selectOldItem.item_part_no) + ")")]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.replaceItem
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirmDialog.yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogConfirmVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirmDialog.no')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "handle-test-data",
+    attrs: {
+      "title": "Add Test Data",
+      "visible": _vm.addTestVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.addTestVisible = $event
+      }
+    }
+  }, [_c('el-form', [_c('el-form-item', {
+    attrs: {
+      "label": "SN"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.addTestSN),
+      callback: function($$v) {
+        _vm.addTestSN = $$v
+      },
+      expression: "addTestSN"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Quantity"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.addTestNumber),
+      callback: function($$v) {
+        _vm.addTestNumber = $$v
+      },
+      expression: "addTestNumber"
+    }
+  })], 1)], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.confirmAdd
+    }
+  }, [_vm._v("Confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "info"
+    },
+    on: {
+      "click": function($event) {
+        _vm.addTestVisible = false
+      }
+    }
+  }, [_vm._v("Cancel")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "handle-test-data",
+    attrs: {
+      "title": "Remove Test Data",
+      "visible": _vm.removeTestVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.removeTestVisible = $event
+      }
+    }
+  }, [_c('el-form', [_c('el-form-item', {
+    attrs: {
+      "label": "SN"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.removeTestSN),
+      callback: function($$v) {
+        _vm.removeTestSN = $$v
+      },
+      expression: "removeTestSN"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Quantity"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.removeTestNumber),
+      callback: function($$v) {
+        _vm.removeTestNumber = $$v
+      },
+      expression: "removeTestNumber"
+    }
+  })], 1)], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.confirmRemove
+    }
+  }, [_vm._v("Confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "info"
+    },
+    on: {
+      "click": function($event) {
+        _vm.removeTestVisible = false
+      }
+    }
+  }, [_vm._v("Cancel")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "handle-test-data",
+    attrs: {
+      "title": "Modify Test Data",
+      "visible": _vm.modifyTestVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.modifyTestVisible = $event
+      }
+    }
+  }, [_c('el-form', [_c('el-form-item', {
+    attrs: {
+      "label": "SN"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.modifyTestSN),
+      callback: function($$v) {
+        _vm.modifyTestSN = $$v
+      },
+      expression: "modifyTestSN"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Quantity"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.modifyTestNumber),
+      callback: function($$v) {
+        _vm.modifyTestNumber = $$v
+      },
+      expression: "modifyTestNumber"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Modified Data"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.modifiedTestData),
+      callback: function($$v) {
+        _vm.modifiedTestData = $$v
+      },
+      expression: "modifiedTestData"
+    }
+  })], 1)], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.confirmModify
+    }
+  }, [_vm._v("Confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "info"
+    },
+    on: {
+      "click": function($event) {
+        _vm.modifyTestVisible = false
+      }
+    }
+  }, [_vm._v("Cancel")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "handle-test-data",
+    attrs: {
+      "title": "Move Test Data",
+      "visible": _vm.moveTestVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.moveTestVisible = $event
+      }
+    }
+  }, [_c('el-form', [_c('el-form-item', {
+    attrs: {
+      "label": "Order NO. Moved To"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "filterable": "",
+      "poper-class": "select-job"
+    },
+    nativeOn: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) { return null; }
+        _vm.inputOrderNumber($event)
+      }
+    },
+    model: {
+      value: (_vm.moveTestOrderNumber),
+      callback: function($$v) {
+        _vm.moveTestOrderNumber = $$v
+      },
+      expression: "moveTestOrderNumber"
+    }
+  }, [_vm._l((_vm.orderNumberList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.sn,
+        "value": item.id
+      }
+    })
+  }), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.selectPage > 1),
+      expression: "selectPage>1"
+    }],
+    staticClass: "text",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.prevePage($event)
+      }
+    }
+  }, [_vm._v("Previous Page")]), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.selectPage !== _vm.pageCount),
+      expression: "selectPage !== pageCount"
+    }],
+    staticClass: "text",
+    staticStyle: {
+      "padding-left": "30px"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.nextPage($event)
+      }
+    }
+  }, [_vm._v("Next Page")])])], 2)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Moved SN"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.moveTestSN),
+      callback: function($$v) {
+        _vm.moveTestSN = $$v
+      },
+      expression: "moveTestSN"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Quantity"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.moveTestNumber),
+      callback: function($$v) {
+        _vm.moveTestNumber = $$v
+      },
+      expression: "moveTestNumber"
+    }
+  })], 1)], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.confirmMove
+    }
+  }, [_vm._v("Confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "info"
+    },
+    on: {
+      "click": function($event) {
+        _vm.moveTestVisible = false
+      }
+    }
+  }, [_vm._v("Cancel")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "handle-test-data",
+    attrs: {
+      "title": "Edit SN Type",
+      "visible": _vm.editSNTypeVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.editSNTypeVisible = $event
+      }
+    }
+  }, [_c('el-form', [_c('el-form-item', {
+    attrs: {
+      "label": "Update Type"
+    }
+  }, [_c('el-switch', {
+    attrs: {
+      "on-color": "#98b42c",
+      "off-color": "#606161",
+      "on-text": "Update",
+      "off-text": "Not"
+    },
+    model: {
+      value: (_vm.editSNTypeValue),
+      callback: function($$v) {
+        _vm.editSNTypeValue = $$v
+      },
+      expression: "editSNTypeValue"
+    }
+  })], 1)], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.confirmEditSNType
+    }
+  }, [_vm._v("Confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "info"
+    },
+    on: {
+      "click": function($event) {
+        _vm.editSNTypeVisible = false
+      }
+    }
+  }, [_vm._v("Cancel")])], 1)], 1)], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-5fcf7027","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/order/detail.vue
+// module id = 1803
+// module chunks = 73

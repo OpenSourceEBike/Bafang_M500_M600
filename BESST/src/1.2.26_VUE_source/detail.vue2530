@@ -1,0 +1,613 @@
+<template>
+    <div class="brand-vehicle-detail-container">
+        <div class="header">
+            <div class="btn-group-left">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                </div>
+            </div>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item more" @click="getReportList" :title="$t('reportList')"></div>
+                    <!--<div class="icon-item save" @click="enterEdit" :title="label" v-if="isEdit"></div>-->
+                    <!--<div class="icon-item edit" @click="enterEdit" :title="label" v-else></div>-->
+                </div>
+            </div>
+        </div>
+        <div class="content-wrap">
+            <div class="content">
+                <div class="content-holder">
+                    <div class="vehicle-item">
+                        <div class="content-item">
+                            <label class="title">{{ $t('sn') }}</label>
+                            <div class="desc">
+                                <span >{{vehicle.sn}}</span>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('key') }}</label>
+                            <div class="desc">
+                                <span v-show="!isEdit">{{vehicle.secret_key ? vehicle.secret_key : '-'}}</span>
+                                <el-input v-show="isEdit" class="input" v-model="vehicle.secret_key" :maxlength="30"></el-input>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('itemName') }}</label>
+                            <div class="desc">
+                                <span>{{vehicle.item.name}}</span>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('itemPartNo') }}</label>
+                            <div class="desc">
+                                <span>{{vehicle.item.ext_part_no ? vehicle.item.ext_part_no : "-"}}</span>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('assembler') }}</label>
+                            <div class="desc">
+                                <span v-if="vehicle.order.org && vehicle.order.org.name">{{vehicle.order.org.name}}</span>
+                                <span v-else>-</span>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('productTime') }}</label>
+                            <div class="desc">
+                                <span>{{vehicle.produce_time | timeFormat("Y-m-d")}}</span>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('dealer') }}</label>
+                            <div class="desc">
+                                <span v-if="vehicle.sale_org && vehicle.sale_org.name">{{vehicle.sale_org.name }}</span>
+                                <span v-else>-</span>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <label class="title">{{ $t('saleTime') }}</label>
+                            <div class="desc">
+                                <span v-if="vehicle.sale_time && vehicle.sale_time != 0">{{vehicle.sale_time | dateFormat}}</span>
+                                <span v-else>-</span>
+                            </div>
+                        </div>
+                        <!--<div class="content-item">-->
+                            <!--<label class="title">{{ $t('customerName') }}</label>-->
+                            <!--<div class="desc">-->
+                                <!--<span v-if="vehicle.customer && vehicle.customer.name">{{vehicle.customer.name}}</span>-->
+                                <!--<span v-else>-</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="content-item">-->
+                            <!--<label class="title">{{ $t('customerEmail') }}</label>-->
+                            <!--<div class="desc">-->
+                                <!--<span v-if="vehicle.customer && vehicle.customer.email">{{vehicle.customer.email}}</span>-->
+                                <!--<span v-else>-</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
+
+                    <el-collapse accordion>
+                        <el-collapse-item>
+                            <template slot="title">
+                                <label>{{ $t('part')}}</label>
+                                <div class="btn-div">
+                                <a class="btn-underline" @click.stop="onClickHistory">{{ $t('history')}}</a>
+                                </div>
+                            </template>
+
+                            <div class="bom-content-holder">
+                                <div class="bom-item" v-for="bom in bomAttrList" v-if="bomAttrList.length > 0">
+                                    <div class="bom-header">
+                                        <label class="bom-title">
+                                            {{bom.rootName}}
+                                        </label>
+                                    </div>
+                                    <div class="bom-content">
+                                        <label class="title">SN</label>
+                                        <div class="desc">
+                                            <span>{{bom.sn || '-'}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="bom-content">
+                                        <label class="title">Model</label>
+                                        <div class="desc">
+                                            <span>{{bom.name || '-'}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="bom-content" v-for="item in bom.attrList">
+                                        <label class="title">
+                                            {{item.attr_def_name}}
+                                        </label>
+                                        <div class="desc">
+                                            <span>{{item.value || '-'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </el-collapse-item>
+                    </el-collapse>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--车辆诊断报告-->
+        <el-dialog  :title="$t('reportList')" :visible.sync="dialogReportVisible" class="dialogReportList">
+            <table border="0" cellspacing="0" cellpadding="0" class="report-table">
+                <thead>
+                <tr>
+                    <td class="report-td head">
+                        {{ $t('date') }}
+                    </td>
+                    <td class="report-td  head">
+                        {{ $t('author') }}
+                    </td>
+                    <td class="report-td head">
+                        {{ $t('operation') }}
+                    </td>
+                </tr>
+                </thead>
+                <tr v-for="(item, index) in reportList">
+                    <td class="report-td">{{item.create_time | dateFormat}}</td>
+                    <td class="report-td">{{item.org_name}}</td>
+                    <td class="report-td"><a class="btn-underline" @click="goToReportDetail(item)">{{ $t('detail') }}</a></td>
+                </tr>
+            </table>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        data() {
+            return {
+                dialogReplaceVisible: false,
+                selectSn: '',
+                newSn: '',
+                Core: Core,
+                vehicleId: '',
+                bomList: '',
+                vehicle: {
+                    sn: '',
+                    brand: {},
+                    item: {},
+                    order: {sn: ''},
+                    secret_key: ''
+                },
+                isEdit: false,
+                label: 'Edit',
+                selectId: '',
+                //bom存在哪些
+
+                //bom的展示数据
+
+                bomAttrList:[],
+
+
+                dialogReportVisible: false,
+                reportList: [],
+
+                authList: [],
+
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Brand.VehicleDetail,
+                zh: ZH.Brand.VehicleDetail,
+                de: DE.Brand.VehicleDetail,
+                nl: NL.Brand.VehicleDetail
+            }
+        },
+        mounted: function () {
+            this.initData();
+            this.vehicleId = this.$route.query.vehicleId;
+            this.getVehicleDetail(this.vehicleId);
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+        },
+        methods: {
+            initData() {
+                this.label = this.$t('edit');
+            },
+
+            getVehicleDetail(id) {
+                Core.Api.Vehicle.vehicleDetail(id).then(res => {
+                    this.vehicle = res.vehicle;
+//                    this.getBom(this.vehicle.sn);
+                    this.getBomInfo(res.vehicle.bom_list);
+
+                })
+            },
+
+
+            getBom(sn){
+//                sn = 'CO1706000725';
+                Core.Api.Vehicle.getVehicleBomBySn(sn).then(res => {
+//                    console.log(res);
+                    this.bomList = res.bom;
+                    this.getBomInfo(res.bom);
+                });
+            },
+
+            getBomInfo(bomList){
+                this.bomAttrList = [];
+                let $this = this;
+                bomList.forEach(function (bom,index) {
+                    console.log(bom,index);
+                    let item = {
+                        attrList:[],
+                    };
+
+                    if(bom.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.MOTOR){
+                        item.rootName = 'Motor';
+                        item.sn = bom.sn;
+                        item.id = bom.id;
+                        let attrList = [];
+                        item.name = '';
+                        if (bom.item) {
+                            item.name = bom.item.name;
+                            attrList = bom.item.attr_list;
+                        }
+                        if(attrList !== null && attrList.length > 0 ){
+                            for(let index in attrList){
+
+                                if(attrList[index].attr_def_key === 'power'){
+                                    item.attrList.push(attrList[index]);
+                                    continue;
+                                }
+                                if(attrList[index].attr_def_key === 'voltage'){
+                                    item.attrList.push(attrList[index]);
+                                    continue;
+                                }
+                                if(attrList[index].attr_def_key === 'wheel_size'){
+                                    item.attrList.push(attrList[index]);
+                                    continue;
+                                }
+                                if(attrList[index].attr_def_key === 'rpm'){
+                                    item.attrList.push(attrList[index]);
+                                }
+                            }
+                        }
+                        $this.bomAttrList.push(item);
+                        return;
+
+                    }
+
+                    if(bom.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.SENSOR){
+                        item.rootName = 'Sensor';
+                        item.sn = bom.sn;
+                        let attrList = [];
+                        item.name = '';
+                        if (bom.item) {
+                            item.name = bom.item.name;
+                            attrList = bom.item.attr_list;
+                        }
+                        item.id = bom.id;
+
+                        if(attrList !== null && attrList.length > 0 ){
+                            for(let index in attrList){
+                                if(attrList[index].attr_def_key === 'soft_ver'){
+                                    item.attrList.push(attrList[index]);
+                                    continue;
+                                }
+                                if(attrList[index].attr_def_key === 'hard_ver'){
+                                    item.attrList.push(attrList[index]);
+                                }
+                            }
+                        }
+                        $this.bomAttrList.push(item);
+                        return;
+
+                    }
+
+                    if(bom.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.BATTERY){
+                        console.log(item,'.....battery....');
+                        item.rootName = 'Battery';
+                        item.sn = bom.sn;
+                        item.name = '';
+                        if (bom.item) {
+                            item.name = bom.item.name;
+                        }
+                        item.id = bom.id;
+                        $this.bomAttrList.push(item);
+                        return;
+                    }
+
+                    if(bom.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.HMI){
+                        item.rootName = 'HMI';
+                        item.sn = bom.sn;
+                        let attrList = [];
+                        item.name = '';
+                        if (bom.item) {
+                            item.name = bom.item.name;
+                            attrList = bom.item.attr_list;
+                        }
+                        item.id = bom.id;
+
+                        if(attrList !== null && attrList.length > 0 ){
+                            for(let index in attrList){
+                                if(attrList[index].attr_def_key === 'soft_ver'){
+                                    item.attrList.push(attrList[index]);
+                                    continue;
+                                }
+                                if(attrList[index].attr_def_key === 'hard_ver'){
+                                    item.attrList.push(attrList[index]);
+                                    continue;
+                                }
+                                if(item.name.indexOf('.U') > -1){
+                                    if(attrList[index].attr_def_key === 'speed_limit'){
+                                        item.attrList.push(attrList[index]);
+                                        continue;
+                                    }
+                                    if(attrList[index].attr_def_key === 'wheel_size'){
+                                        item.attrList.push(attrList[index]);
+                                    }
+                                }
+                            }
+                        }
+                        $this.bomAttrList.push(item);
+                        return;
+                    }
+
+                    if(bom.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.CONTROLLER){
+                        item.rootName = 'Controller';
+                        item.sn = bom.sn;
+                        let attrList = [];
+                        item.name = '';
+                        if (bom.item) {
+                            item.name = bom.item.name;
+                            attrList = bom.item.attr_list;
+                        }
+                        item.id = bom.id;
+
+                        if(attrList !== null && attrList.length > 0 ){
+                            for(let index in attrList){
+                                if(attrList[index].attr_def_key === 'soft_ver'){
+                                    item.attrList.push(attrList[index]);
+                                    continue;
+                                }
+                                if(attrList[index].attr_def_key === 'hard_ver'){
+                                    item.attrList.push(attrList[index]);
+                                    continue;
+                                }
+                                if(item.name.indexOf('SN.U') > -1){
+                                    if(attrList[index].attr_def_key === 'power'){
+                                        item.attrList.push(attrList[index]);
+                                        continue;
+                                    }
+                                    if(attrList[index].attr_def_key === 'current_limit'){
+                                        item.attrList.push(attrList[index]);
+                                        continue;
+                                    }
+                                    if(attrList[index].attr_def_key === 'pas_signals'){
+                                        item.attrList.push(attrList[index]);
+                                        continue;
+                                    }
+                                    if(attrList[index].attr_def_key === 'voltage'){
+                                        item.attrList.push(attrList[index]);
+                                        continue;
+                                    }
+                                    if(attrList[index].attr_def_key === 'low_voltage'){
+                                        item.attrList.push(attrList[index]);
+                                        continue;
+                                    }
+                                    if(attrList[index].attr_def_key === 'over_voltage'){
+                                        item.attrList.push(attrList[index]);
+                                    }
+                                }
+                                if(item.name.indexOf('.FC') > -1){
+                                    if(attrList[index].attr_def_key === 'speed_limit'){
+                                        item.attrList.push(attrList[index]);
+                                        continue;
+                                    }
+                                    if(attrList[index].attr_def_key === 'circuference'){
+                                        item.attrList.push(attrList[index]);
+                                        continue;
+                                    }
+                                    if(attrList[index].attr_def_key === 'wheel_size'){
+                                        item.attrList.push(attrList[index]);
+                                    }
+                                }
+                            }
+                        }
+                        $this.bomAttrList.push(item);
+                    }
+                });
+                console.log(this.bomAttrList);
+            },
+            enterEdit() {
+                this.isEdit = !this.isEdit;
+                if (this.isEdit) {
+                    this.label = this.$t('save');
+                } else {
+                    Core.Api.Vehicle.editVehicle(this.vehicleId, this.vehicle.sn, this.vehicle.secret_key).then();
+                    this.label = this.$t('edit');
+                }
+            },
+
+            goToReportDetail(item){
+                this.$router.push({name: "assemblerDiagnosisReport", query:{id: item.id}})
+            },
+
+            getReportList(){
+                Core.Api.Vehicle.getVehicleReportList(this.vehicleId).then(res => {
+                    this.reportList = res.report_list;
+                    if(this.reportList.length <= 0){
+                        this.$message({
+                            message: this.$t("emptyListTip"),
+                            type: "warning"
+                        });
+                        return;
+                    }
+                    this.dialogReportVisible = true;
+                });
+            },
+
+            onClickHistory(){
+                this.$router.push({name: 'brandReplaceReportList', query: {"vehicleId": this.vehicleId}});
+            }
+
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss" scoped>
+    .brand-vehicle-detail-container {
+        height: 100%;
+        overflow: hidden;
+        .operation-holder {
+            height: 60px;
+            line-height: 60px;
+            padding: 0 30px;
+            overflow: hidden;
+
+            .name {
+                font-size: 16px;
+                color: #FFFFFF;
+                font-weight: bold;
+                margin-left: 30px;
+            }
+            .btn-report {
+                position: absolute;
+                right: 30px;
+                top: 18px;
+            }
+
+        }
+        .content {
+            height: 100%;
+            .content-holder {
+                padding: 26px 60px;
+                overflow: hidden;
+                .btn-div{
+                    display: inline-block;
+                    position: absolute;
+                    right: 80px;
+                }
+                .vehicle-item {
+                    overflow: hidden;
+                    padding-bottom: 20px;
+                }
+                .content-item {
+                    width: 50%;
+                    float: left;
+                    font-size: 0;
+                    line-height: 50px;
+                    overflow: hidden;
+                    .title {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: 140px;
+                        font-size: 14px;
+                        color: rgba(255, 255, 255, 0.6);
+                        padding-left: 10px;
+                    }
+                    .desc {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: calc(100% - 140px);
+                        span {
+                            font-size: 14px;
+                            color: #FFFFFF;
+                            &.strong {
+                                font-weight: bold;
+                            }
+                        }
+                        .input {
+                            width: 200px;
+                        }
+                    }
+                }
+                .width {
+                    overflow: hidden;
+                    width: 100%;
+                }
+
+                .bom-content-holder {
+                    padding: 10px 20px;
+                }
+
+                .bom-item {
+                    width: 100%;
+                    overflow: hidden;
+                    .bom-header {
+                        overflow: hidden;
+                        line-height: 40px;
+                        .bom-title {
+                            font-size: 14px;
+                            color: white;
+                            padding-left: 5px;
+                        }
+                        .btn-replace {
+                            float: right;
+                            margin-right: 40px;
+                        }
+                    }
+                    .bom-content {
+                        float: left;
+                        display: inline-block;
+                        width: 50%;
+                        font-size: 0;
+                        line-height: 30px;
+                        overflow: hidden;
+                        .title {
+                            display: inline-block;
+                            vertical-align: top;
+                            width: 140px;
+                            font-size: 12px;
+                            color: rgba(255, 255, 255, 0.6);
+                            padding-left: 10px;
+                        }
+                        .desc {
+                            display: inline-block;
+                            vertical-align: top;
+                            width: calc(100% - 140px);
+                            span {
+                                word-break: break-all;
+                                font-size: 12px;
+                                color: #FFFFFF;
+                                &.strong {
+                                    font-weight: bold;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+        .report-table {
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            tr {
+                line-height: 30px;
+            }
+            .head {
+                color: white;
+            }
+            .report-td {
+                padding: 0 6px;
+                width: 160px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                font-size: 14px;
+                text-align: center;
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// detail.vue?10ccea11

@@ -1,0 +1,1662 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "my-diagnosis-container"
+  }, [_c('div', {
+    staticClass: "switch"
+  }, [_c('div', {
+    staticClass: "select"
+  }, [_c('div', {
+    staticClass: "select-area",
+    class: {
+      active: _vm.isActive
+    },
+    on: {
+      "click": function($event) {
+        _vm.selectItemDefect()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('diagnosisElectronic')))]), _vm._v(" "), _c('div', {
+    staticClass: "select-area",
+    class: {
+      active: !_vm.isActive
+    },
+    on: {
+      "click": function($event) {
+        _vm.cancelSelectDefect()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('diagnosisMechanic')))])])]), _vm._v(" "), (!_vm.dialogDefectVisible) ? _c('div', {
+    staticClass: "switch-body"
+  }, [_c('div', {
+    staticClass: "switch-container"
+  }, [_c('div', {
+    staticClass: "header top-box"
+  }, [(!_vm.usbHID) ? _c('div', {
+    staticClass: "select-label"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("COM")]), _vm._v(" "), _c('el-select', {
+    attrs: {
+      "placeholder": "Select"
+    },
+    on: {
+      "change": _vm.change
+    },
+    nativeOn: {
+      "click": function($event) {
+        return _vm.getComList($event)
+      }
+    },
+    model: {
+      value: (_vm.com),
+      callback: function($$v) {
+        _vm.com = $$v
+      },
+      expression: "com"
+    }
+  }, _vm._l((_vm.comList), function(com, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": com,
+        "value": com
+      }
+    })
+  })), _vm._v(" "), _c('label', {
+    staticClass: "tip",
+    class: {
+      connect: _vm.isConnected
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.connect()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))])], 1) : _c('div', {
+    staticClass: "select-label"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("USB HID")]), _vm._v(" "), _c('label', {
+    staticClass: "tip",
+    class: {
+      connect: _vm.isConnected
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-connect",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.connect()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))])], 1), _vm._v(" "), _c('el-button', {
+    staticClass: "btn-reset",
+    attrs: {
+      "type": "primary",
+      "id": "reset"
+    },
+    on: {
+      "click": _vm.reset
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.restart')))]), _vm._v(" "), _c('div', {
+    staticClass: "search-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('eBikeID')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-se input-sn",
+    attrs: {
+      "placeholder": "SN"
+    },
+    model: {
+      value: (_vm.vehicleSn),
+      callback: function($$v) {
+        _vm.vehicleSn = $$v
+      },
+      expression: "vehicleSn"
+    }
+  })], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "content-container"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "content-left"
+  }, [_c('div', {
+    staticClass: "content-select",
+    class: {
+      connect: _vm.isConnected
+    }
+  }, [_c('div', {
+    staticClass: "select-item connect",
+    on: {
+      "click": function($event) {
+        _vm.showItemSelectDialog(1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.select')))]), _vm._v(" "), _c('span', {
+    staticClass: "connection",
+    staticStyle: {
+      "cursor": "pointer"
+    }
+  }, [_c('el-button', {
+    staticClass: "report",
+    attrs: {
+      "type": "success",
+      "disabled": !_vm.isConnected
+    },
+    on: {
+      "click": _vm.beginConnection
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "connection-item"
+  }, [_vm._l((_vm.connectionSelectDisplay), function(item, index) {
+    return [_c('div', {
+      staticClass: "info-item",
+      class: {
+        select: item.No === _vm.testSelect.No
+      },
+      on: {
+        "click": function($event) {
+          _vm.showDetail(item)
+        }
+      }
+    }, [_c('div', {
+      staticClass: "item-info"
+    }, [_c('div', {
+      staticClass: "item-icon"
+    }, [_c('img', {
+      attrs: {
+        "src": item.img
+      }
+    })]), _vm._v(" "), _c('span', {
+      staticClass: "item-name"
+    }, [_vm._v(_vm._s(item.name))])]), _vm._v(" "), _c('div', {
+      staticClass: "result-wrap"
+    }, [(!item.loaded) ? [(item.percentage > 0 && item.percentage < 100) ? _c('el-progress', {
+      staticClass: "progress",
+      attrs: {
+        "text-inside": true,
+        "stroke-width": 30,
+        "percentage": item.percentage,
+        "status": "success"
+      }
+    }) : _vm._e()] : _vm._e(), _vm._v(" "), (item.loaded) ? [(item.status === 1) ? [(item.update) ? _c('span', {
+      staticClass: "result new-version"
+    }, [_vm._v(_vm._s(_vm.$t('newVer')))]) : _vm._e(), _vm._v(" "), (!item.update) ? _c('span', {
+      staticClass: "result"
+    }, [_vm._v(_vm._s(_vm.$t('con')))]) : _vm._e()] : _vm._e(), _vm._v(" "), (item.status === -1) ? _c('span', {
+      staticClass: "result fail"
+    }, [_vm._v(_vm._s(_vm.$t('disCon')))]) : _vm._e(), _vm._v(" "), (item.status === 2) ? _c('span', {
+      staticClass: "result new-version"
+    }, [_vm._v(_vm._s(_vm.$t('cNam.note')))]) : _vm._e()] : _vm._e()], 2), _vm._v(" "), (item.name != 'Pedal Sensor') ? _c('div', {
+      staticClass: "detail"
+    }, [(item.status === 1) ? _c('span', [_vm._v(_vm._s(_vm.$t('readOk')))]) : _vm._e(), _vm._v(" "), (item.status === -1) ? _c('span', [_vm._v(_vm._s(_vm.$t('readFail')))]) : _vm._e()]) : _c('div', {
+      staticClass: "detail"
+    }, [(item.status === 1) ? _c('span', {
+      staticClass: "txt"
+    }, [_vm._v(_vm._s(_vm.$t('readOk')))]) : _vm._e(), _vm._v(" "), (_vm.isSenCan && item.status === -1) ? _c('span', {
+      staticClass: "txt"
+    }, [_vm._v(_vm._s(_vm.$t('readFail')))]) : _vm._e(), _vm._v(" "), (!_vm.isSenCan && item.status === 2) ? _c('span', {
+      staticClass: "txt"
+    }, [_vm._v(_vm._s(_vm.$t('cNam.notice')))]) : _vm._e()])])]
+  })], 2), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "content-select",
+    class: {
+      connect: _vm.canTest
+    }
+  }, [_c('div', {
+    staticClass: "select-item connect",
+    on: {
+      "click": function($event) {
+        _vm.showItemSelectDialog(2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.select')))]), _vm._v(" "), _c('span', {
+    staticClass: "connection",
+    staticStyle: {
+      "cursor": "pointer"
+    }
+  }, [_c('el-button', {
+    staticClass: "report",
+    attrs: {
+      "type": "success",
+      "disabled": !_vm.canTest
+    },
+    on: {
+      "click": _vm.beginTestSystem
+    }
+  }, [_vm._v(_vm._s(_vm.$t('testSys')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "connection-item"
+  }, [_vm._l((_vm.testSelectDisplay), function(item, index) {
+    return [_c('div', {
+      staticClass: "info-item",
+      class: {
+        select: item.No == _vm.testSelect.No
+      },
+      on: {
+        "click": function($event) {
+          _vm.showTestDiv(item, index)
+        }
+      }
+    }, [_c('div', {
+      staticClass: "item-info"
+    }, [_c('div', {
+      staticClass: "item-icon"
+    }, [_c('img', {
+      attrs: {
+        "src": item.img
+      }
+    })]), _vm._v(" "), _c('span', {
+      staticClass: "item-name"
+    }, [_vm._v(_vm._s(item.name))])]), _vm._v(" "), _c('div', {
+      staticClass: "result-wrap"
+    }, [(_vm.startTest) ? [_c('span', {
+      staticClass: "option",
+      class: {
+        check: item.okOrFail == 1
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.changeOption(item, 1)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('ok')))]), _vm._v(" "), _c('span', {
+      staticClass: "option",
+      class: {
+        fail: item.okOrFail == 2
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.changeOption(item, 2)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('fail')))])] : _vm._e()], 2), _vm._v(" "), (item.detail) ? _c('div', {
+      staticClass: "detail",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.showDetail(item)
+        }
+      }
+    }, [_c('span', {
+      staticClass: "txt"
+    }, [_vm._v(_vm._s(_vm.$t('detail')))]), _vm._v(" "), _c('span', {
+      staticClass: "arrow"
+    })]) : _vm._e(), _vm._v(" "), (!item.detail) ? _c('div', {
+      staticClass: "replace-detail"
+    }) : _vm._e()])]
+  })], 2), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_c('el-button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (true),
+      expression: "true"
+    }],
+    staticClass: "report",
+    attrs: {
+      "type": "success"
+    },
+    on: {
+      "click": _vm.goReport
+    }
+  }, [_vm._v("\n                                " + _vm._s(_vm.$t('createReport')) + "\n                            ")])], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (false),
+      expression: "false"
+    }],
+    staticClass: "connection-item"
+  }, [_c('div', {
+    staticClass: "info-item"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.readInfo_50()
+      }
+    }
+  }, [_vm._v("循环测试")]), _vm._v(_vm._s(_vm.countReadInfo) + "\n                                "), _c('el-input', {
+    attrs: {
+      "placeholder": "7000"
+    },
+    model: {
+      value: (_vm.timeOut),
+      callback: function($$v) {
+        _vm.timeOut = $$v
+      },
+      expression: "timeOut"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "info-item"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.read_50()
+      }
+    }
+  }, [_vm._v("重复50测试")]), _vm._v(_vm._s(_vm.countRead_50Info) + "\n                                "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.read_50_record()
+      }
+    }
+  }, [_vm._v("记录")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.clear_50_record()
+      }
+    }
+  }, [_vm._v("清除")]), _vm._v(" "), _c('el-input', {
+    attrs: {
+      "placeholder": "7000"
+    },
+    model: {
+      value: (_vm.timeOutRead),
+      callback: function($$v) {
+        _vm.timeOutRead = $$v
+      },
+      expression: "timeOutRead"
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "content-right"
+  }, [(!_vm.canTest) ? [(_vm.slideDisplay && !_vm.detailVisible) ? _c('div', {
+    staticClass: "slide-content"
+  }, [_c('div', {
+    staticClass: "slide-content-top width",
+    on: {
+      "click": function($event) {
+        _vm.showSlide(1)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "slide-to-right"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "slide-to-right"
+  }), _vm._v(" "), _c('span', {
+    staticStyle: {
+      "margin-left": "40%"
+    }
+  }, [_vm._v("  " + _vm._s(_vm.$t('instruction')))])]), _vm._v(" "), (!_vm.isConnected) ? _c('div', {
+    staticClass: "slide-content-bottom before-connect"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-before-connect.png")
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "system-txt"
+  }, [_c('span', {
+    staticClass: "title step"
+  }, [_vm._v(_vm._s(_vm.$t('step')) + " 1 :\n                                            "), _c('span', [_vm._v(_vm._s(_vm.$t('step11')) + " ")]), _c('br'), _vm._v(" "), (!_vm.isCan) ? _c('span', {
+    staticClass: "next-line"
+  }, [_vm._v(_vm._s(_vm.$t('step12'))), _c('br')]) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "next-line"
+  }, [_vm._v(_vm._s(_vm.$t('click')) + "\n                                                "), _c('span', {
+    staticClass: "highlight"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))]), _vm._v("\". " + _vm._s(_vm.$t('step13')) + " ")]), _vm._v(" "), _c('div', {
+    staticClass: "green"
+  })])])]) : _vm._e(), _vm._v(" "), (_vm.isConnected && !_vm.isHelp) ? _c('div', {
+    staticClass: "slide-content-bottom after-connect"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-after-connect.png")
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "system-txt"
+  }, [_c('span', {
+    staticClass: "title step"
+  }, [_vm._v(_vm._s(_vm.$t('step')) + " 1 :\n                                            "), _c('span', [_vm._v(" " + _vm._s(_vm.$t('step21')))])]), _vm._v(" "), _c('span', {
+    staticClass: "title step"
+  }, [_vm._v(_vm._s(_vm.$t('step')) + " 2 :\n                                            "), _c('span', [_vm._v(" " + _vm._s(_vm.$t('step22')) + " ")])]), _vm._v(" "), (_vm.isCan) ? _c('span', {
+    staticClass: "title step"
+  }, [_vm._v(_vm._s(_vm.$t('step')) + " 3 :\n                                            "), _c('span', [_vm._v(" " + _vm._s(_vm.$t('step232')))]), _c('br')]) : _c('span', {
+    staticClass: "title step"
+  }, [_vm._v(_vm._s(_vm.$t('step')) + " 3 :\n                                            "), _c('span', [_vm._v(" " + _vm._s(_vm.$t('step23')))]), _c('br')])]), _vm._v(" "), _c('div', {
+    staticClass: "operate-button"
+  }, [_c('span', {
+    staticClass: "help",
+    on: {
+      "click": function($event) {
+        _vm.isHelp = true;
+        _vm.connect()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('help')))]), _vm._v(" "), _c('span', {
+    staticClass: "continue",
+    on: {
+      "click": _vm.beginConnection
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))])])]) : _vm._e(), _vm._v(" "), (_vm.isHelp) ? _c('div', {
+    staticClass: "slide-content-bottom help"
+  }, [_c('div', {
+    staticClass: "slide-content-warn"
+  }, [(_vm.isCan) ? _c('div', {
+    staticClass: "warn-list"
+  }, [_c('span', {
+    staticClass: "dot"
+  }, [_vm._v(_vm._s(_vm.$t('case')) + " 1: " + _vm._s(_vm.$t('case111')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('case121')))]), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.$t('case17'))), _c('img', {
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-meun.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('case181')))])]) : _c('div', {
+    staticClass: "warn-list"
+  }, [_c('span', {
+    staticClass: "dot"
+  }, [_vm._v(_vm._s(_vm.$t('case')) + " 1: " + _vm._s(_vm.$t('case11')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('case12')))])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isCan),
+      expression: "!isCan"
+    }],
+    staticClass: "warn-list"
+  }, [_c('span', {
+    staticClass: "dot"
+  }, [_vm._v(_vm._s(_vm.$t('case')) + " 2: " + _vm._s(_vm.$t('case13'))), _c('sup', {
+    on: {
+      "click": function($event) {
+        _vm.pcMode = true
+      }
+    }
+  }, [_c('i', {
+    staticClass: "el-icon-view"
+  })]), _vm._v(" :")]), _vm._v(" "), _c('span'), _vm._v(" "), _c('span', {}, [_vm._v(_vm._s(_vm.$t('case17'))), _c('img', {
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-meun.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('case18')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('case20')))])]), _vm._v(" "), _c('div', {
+    staticClass: "warn-list"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('case21')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "operate-button"
+  }, [_c('span', {
+    staticClass: "cancel",
+    on: {
+      "click": function($event) {
+        _vm.isHelp = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))]), _vm._v(" "), _c('span', {
+    staticClass: "cancel",
+    on: {
+      "click": _vm.beginConnection
+    }
+  }, [_vm._v(_vm._s(_vm.$t('connection')))])])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (!_vm.slideDisplay) ? _c('div', {
+    staticClass: "slide-content slide-hidden"
+  }, [_c('div', {
+    staticClass: "slide-content-top slide-hidden height",
+    on: {
+      "click": function($event) {
+        _vm.showSlide(2)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "slide-to-right slide-hidden"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "slide-to-right slide-hidden"
+  })])]) : _vm._e()] : _vm._e(), _vm._v(" "), (_vm.canTest) ? [(_vm.slideDisplay) ? _c('div', {
+    staticClass: "slide-content"
+  }, [_c('div', {
+    staticClass: "slide-content-top width",
+    on: {
+      "click": function($event) {
+        _vm.showSlide(1)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "slide-to-right"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "slide-to-right"
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "slide-content-bottom"
+  }, [_c('div', {
+    staticClass: "slide-content-warn"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-warn.png")
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "warn-list"
+  }, [_c('span', {
+    staticClass: "dot"
+  }, [_vm._v(_vm._s(_vm.$t('test11')))]), _vm._v(" "), _c('span', {
+    staticClass: "dot"
+  }, [_vm._v(_vm._s(_vm.$t('test12')))])])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "system-txt"
+  }, [_c('span', {
+    staticClass: "title "
+  }, [_vm._v(_vm._s(_vm.$t('testSys')))]), _vm._v(" "), _c('span', {
+    staticClass: "title step"
+  }, [_vm._v(_vm._s(_vm.$t('step')) + " 1:\n                                            "), _c('span', [_vm._v(_vm._s(_vm.$t('test13')))])]), _vm._v(" "), _c('span', {
+    staticClass: "title step"
+  }, [_vm._v(_vm._s(_vm.$t('step')) + " 2:\n                                            "), _c('span', [_vm._v(_vm._s(_vm.$t('test15')))])]), _vm._v(" "), _c('span', {
+    staticClass: "test-button",
+    on: {
+      "click": function($event) {
+        _vm.beginTestSystem()
+      }
+    }
+  }, [_vm._v("\n                                            " + _vm._s(_vm.$t('test')) + "\n                                        ")])])])]) : _vm._e(), _vm._v(" "), (!_vm.slideDisplay) ? _c('div', {
+    staticClass: "slide-content slide-hidden"
+  }, [_c('div', {
+    staticClass: "slide-content-top slide-hidden height",
+    on: {
+      "click": function($event) {
+        _vm.showSlide(2)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "slide-to-right slide-hidden"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "slide-to-right slide-hidden"
+  })])]) : _vm._e()] : _vm._e(), _vm._v(" "), (!_vm.slideDisplay) ? _c('div', {
+    staticClass: "slide-bottom"
+  }, [_c('img', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.error.target),
+      expression: "error.target"
+    }],
+    staticClass: "error-img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-error.png")
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogSolutionVisible = true
+      }
+    }
+  }), _vm._v(" "), _c('img', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.error.target),
+      expression: "error.target"
+    }],
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-new-bike.png")
+    }
+  })]) : _vm._e(), _vm._v(" "), (_vm.testSelect.No >= 7 && _vm.testSelect.No <= 11 && _vm.detailVisible) ? [_c('item-detail', {
+    staticClass: "item-detail",
+    attrs: {
+      "vehicle-Sn": _vm.vehicleSn,
+      "test-select": _vm.testSelect,
+      "hmi-info": _vm.hmiInfo,
+      "controller-info": _vm.controllerInfo,
+      "battery-info": _vm.batteryInfo,
+      "pedal-sensor-info": _vm.pedalSensorInfo,
+      "motor-info": _vm.motorInfo,
+      "com": _vm.com,
+      "isCan": _vm.isCan
+    },
+    on: {
+      "close": _vm.closeDetail,
+      "reconnect": _vm.reconnect
+    }
+  })] : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), (_vm.testSelect.No < 8 && _vm.testSelect.No >= 0 && !_vm.detailVisible) ? [_c('div', {
+    staticClass: "test-system-item"
+  }, [(_vm.testSelect.No == 0) ? _c('div', {
+    staticClass: "throttle"
+  }, [_c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/throttle.png")
+    }
+  }), _vm._v(" "), (_vm.lightFlag.throttle) ? _c('img', {
+    staticClass: "display-ok",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-test-light.png")
+    }
+  }) : _c('img', {
+    staticClass: "display-ok",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-test-unlight.png")
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v("\n                                    " + _vm._s(_vm.$t('start11')) + "\n                                    "), _c('div', {
+    staticClass: "clear-40"
+  }), _vm._v("\n                                    " + _vm._s(_vm.$t('start13')) + "\n                                    "), _c('el-button', {
+    staticClass: "fail",
+    attrs: {
+      "icon": "close"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('fail')) + "\n                                    ")]), _vm._v("\n                                    " + _vm._s(_vm.$t('start14')) + "\n                                    "), _c('div', {
+    staticClass: "clear-20"
+  })], 1) : _vm._e(), _vm._v(" "), (_vm.testSelect.No == 1) ? _c('div', {
+    staticClass: "brake"
+  }, [_c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('p', [_vm._v(_vm._s(_vm.$t('analogLight')))]), _vm._v(" "), _c('p', [(_vm.lightFlag.brake) ? _c('img', {
+    staticClass: "display-ok",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-test-light.png")
+    }
+  }) : _c('img', {
+    staticClass: "display-ok",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-test-unlight.png")
+    }
+  })])]), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "gray-button",
+    on: {
+      "click": function($event) {
+        _vm.showTestDiv(_vm.testSelectDisplay[_vm.currentIndex + 1], _vm.currentIndex + 1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('start37')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('p', [_vm._v("\n                                                " + _vm._s(_vm.$t('brake01')) + "\n                                            ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "info",
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('brake07')))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-button', {
+    class: {
+      active: _vm.breakReleaseFail
+    },
+    attrs: {
+      "type": "info"
+    },
+    on: {
+      "click": function($event) {
+        _vm.breakReleaseFail = !_vm.breakReleaseFail;
+        _vm.breakHoldOk = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('brake08')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('p', [_c('span', [_vm._v(_vm._s(_vm.$t('brake02')))]), _vm._v(" "), _c('br')])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "fail",
+    attrs: {
+      "icon": "close"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('fail')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('p', [_c('span', [_vm._v(_vm._s(_vm.$t('brake06')))]), _c('br')])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  })]) : _vm._e(), _vm._v(" "), (_vm.testSelect.No == 2) ? _c('div', {
+    staticClass: "light"
+  }, [_c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('p', [_vm._v(_vm._s(_vm.$t('analogLight')))]), _vm._v(" "), _c('p', [(_vm.lightFlag.light) ? _c('img', {
+    staticClass: "display-ok",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-test-light.png")
+    }
+  }) : _c('img', {
+    staticClass: "display-ok",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-test-unlight.png")
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/light.png")
+    }
+  }), _vm._v(" "), _c('span', [_vm._v("\n                                                " + _vm._s(_vm.$t('light01')) + " "), _c('img', {
+    staticClass: "light-img",
+    attrs: {
+      "src": require("../../assets/images/icon/head-light-inactive.png")
+    }
+  }), _vm._v(" / \"+\"\n                                            ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    class: {
+      active: _vm.lightOnOk
+    },
+    attrs: {
+      "type": "info"
+    },
+    on: {
+      "click": function($event) {
+        _vm.lightOnOk = !_vm.lightOnOk;
+        _vm.lightOnFail = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('light07')))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-button', {
+    class: {
+      active: _vm.lightOnFail
+    },
+    attrs: {
+      "type": "info"
+    },
+    on: {
+      "click": function($event) {
+        _vm.lightOnFail = !_vm.lightOnFail;
+        _vm.lightOnOk = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('light08')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('p', {
+    staticClass: "bold"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.$t('light04')) + "\n                                            ")]), _vm._v(" "), _c('p', [_c('span', [_vm._v(_vm._s(_vm.$t('light02')))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "gray-button",
+    on: {
+      "click": function($event) {
+        _vm.showTestDiv(_vm.testSelectDisplay[_vm.currentIndex + 1], _vm.currentIndex + 1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('start37')))]), _vm._v(" "), _c('br')], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('p', [_c('span', [_vm._v(_vm._s(_vm.$t('light03')))]), _vm._v(" "), _c('br')])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    class: {
+      active: _vm.lightOFFOk
+    },
+    attrs: {
+      "type": "info"
+    },
+    on: {
+      "click": function($event) {
+        _vm.lightOFFOk = !_vm.lightOFFOk;
+        _vm.lightOFFFail = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('light09')))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-button', {
+    class: {
+      active: _vm.lightOFFFail
+    },
+    attrs: {
+      "type": "info"
+    },
+    on: {
+      "click": function($event) {
+        _vm.lightOFFFail = !_vm.lightOFFFail;
+        _vm.lightOFFOk = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('light10')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('p', {
+    staticClass: "bold"
+  }, [_vm._v("\n                                                " + _vm._s(_vm.$t('light05')) + "\n                                            ")]), _vm._v(" "), _c('p', [_c('span', [_vm._v(_vm._s(_vm.$t('light022')))]), _vm._v(" "), _c('br')])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "fail",
+    attrs: {
+      "icon": "close"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('fail')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('light08')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  })]) : _vm._e(), _vm._v(" "), (_vm.testSelect.No === 3) ? _c('div', {
+    staticClass: "support"
+  }, [_c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [(_vm.levelIsChecked) ? _c('p', [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.hmiLevel')) + ":")]), _vm._v(" "), _c('el-input', {
+    staticStyle: {
+      "width": "110px"
+    },
+    model: {
+      value: (_vm.testLevel),
+      callback: function($$v) {
+        _vm.testLevel = $$v
+      },
+      expression: "testLevel"
+    }
+  })], 1) : _c('p', [_vm._v("\n                                                 \n                                            ")])]), _vm._v(" "), _vm._m(2)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "success",
+    attrs: {
+      "icon": "close"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('support03')))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-button', {
+    staticClass: "fail",
+    attrs: {
+      "icon": "close"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('support04')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_vm._v("\n                                            " + _vm._s(_vm.$t('support02')) + "\n                                        ")])])]) : _vm._e(), _vm._v(" "), (_vm.testSelect.No == 4) ? _c('div', {
+    staticClass: "speed"
+  }, [_c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.conSpeed')) + ":")]), _vm._v(" "), _c('el-input', {
+    staticStyle: {
+      "width": "110px"
+    },
+    model: {
+      value: (_vm.testData.wheelSpeed),
+      callback: function($$v) {
+        _vm.$set(_vm.testData, "wheelSpeed", $$v)
+      },
+      expression: "testData.wheelSpeed"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("km/h")])], 2)], 1), _vm._v(" "), _vm._m(3)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "success",
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('speed04')))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-button', {
+    staticClass: "fail",
+    attrs: {
+      "icon": "close"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('speed05')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('speed01')))]), _c('br')])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  })]) : _vm._e(), _vm._v(" "), (_vm.testSelect.No == 5) ? _c('div', {
+    staticClass: "pedal"
+  }, [_c('el-switch', {
+    staticClass: "fixSwitch",
+    attrs: {
+      "on-text": "S",
+      "off-text": "T"
+    },
+    on: {
+      "change": _vm.pedalChange
+    },
+    model: {
+      value: (_vm.cadenceOrTorque),
+      callback: function($$v) {
+        _vm.cadenceOrTorque = $$v
+      },
+      expression: "cadenceOrTorque"
+    }
+  }), _vm._v(" "), (_vm.cadenceOrTorque) ? _c('div', [_c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.conCadence')) + ":")]), _vm._v(" "), _c('el-input', {
+    staticStyle: {
+      "width": "110px"
+    },
+    model: {
+      value: (_vm.testData.cadence),
+      callback: function($$v) {
+        _vm.$set(_vm.testData, "cadence", $$v)
+      },
+      expression: "testData.cadence"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("RPM")])], 2)], 1), _vm._v(" "), _vm._m(4)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "fail",
+    attrs: {
+      "icon": "close"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cadence03')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('cadence01')))]), _vm._v(" "), _c('br')])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-40"
+  }), _vm._v("\n                                        " + _vm._s(_vm.$t('torque02')) + "\n                                        "), _c('div', [(_vm.isSupport) ? _c('span', [_vm._v("This signal interval is long than normal. It would take more time or fail to make judgement ")]) : _vm._e()])]) : _c('div', [_c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.conTorque')) + ":")]), _vm._v(" "), _c('el-input', {
+    staticStyle: {
+      "width": "110px"
+    },
+    model: {
+      value: (_vm.testData.sensorVoltage),
+      callback: function($$v) {
+        _vm.$set(_vm.testData, "sensorVoltage", $$v)
+      },
+      expression: "testData.sensorVoltage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("V")])], 2)], 1), _vm._v(" "), _vm._m(5)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "fail",
+    attrs: {
+      "icon": "close"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('fail')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('torque01')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  })])], 1) : _vm._e(), _vm._v(" "), (_vm.testSelect.No === 6) ? _c('div', {
+    staticClass: "walk-assistance "
+  }, [_c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [(_vm.levelIsChecked) ? _c('p', [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.hmiLevel')) + ":")]), _vm._v(" "), _c('el-input', {
+    model: {
+      value: (_vm.testLevel),
+      callback: function($$v) {
+        _vm.testLevel = $$v
+      },
+      expression: "testLevel"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _c('p', [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.conSpeed')) + ":")]), _vm._v(" "), _c('el-input', {
+    staticStyle: {
+      "width": "110px"
+    },
+    model: {
+      value: (_vm.testData.wheelSpeed),
+      callback: function($$v) {
+        _vm.$set(_vm.testData, "wheelSpeed", $$v)
+      },
+      expression: "testData.wheelSpeed"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("km/h")])], 2)], 1)]), _vm._v(" "), _vm._m(6)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "gray-button"
+  }, [_vm._v("Note")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('p', [_vm._v("\n                                                " + _vm._s(_vm.$t('walk06')) + "\n                                            ")])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "fail",
+    attrs: {
+      "icon": "close"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('walk05')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('p', [_vm._v(_vm._s(_vm.$t('walk03'))), _c('img', {
+    staticClass: "light-img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-new-walk-assistance.png")
+    }
+  }), _vm._v("\n                                                " + _vm._s(_vm.$t('walk04')))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.$t('walk01'))), _c('img', {
+    staticClass: "light-img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-new-walk-assistance.png")
+    }
+  }), _vm._v("\n                                                " + _vm._s(_vm.$t('walk02')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  })]) : _vm._e(), _vm._v(" "), (_vm.testSelect.No == 7) ? _c('div', {
+    staticClass: "motor "
+  }, [_c('el-switch', {
+    staticClass: "fixSwitch",
+    attrs: {
+      "on-text": "S",
+      "off-text": "T"
+    },
+    on: {
+      "change": _vm.pedalChange
+    },
+    model: {
+      value: (_vm.cadenceOrTorque),
+      callback: function($$v) {
+        _vm.cadenceOrTorque = $$v
+      },
+      expression: "cadenceOrTorque"
+    }
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('p', [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.conSpeed')) + ":")]), _vm._v(" "), _c('el-input', {
+    staticStyle: {
+      "width": "110px"
+    },
+    model: {
+      value: (_vm.testData.wheelSpeed),
+      callback: function($$v) {
+        _vm.$set(_vm.testData, "wheelSpeed", $$v)
+      },
+      expression: "testData.wheelSpeed"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("km/h")])], 2)], 1), _vm._v(" "), _c('p', [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.conCurrent')) + ":")]), _vm._v(" "), _c('el-input', {
+    staticStyle: {
+      "width": "110px"
+    },
+    model: {
+      value: (_vm.testData.current),
+      callback: function($$v) {
+        _vm.$set(_vm.testData, "current", $$v)
+      },
+      expression: "testData.current"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("A")])], 2)], 1), _vm._v(" "), (_vm.cadenceOrTorque) ? _c('p', [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.conCadence')) + ":")]), _vm._v(" "), _c('el-input', {
+    staticStyle: {
+      "width": "110px"
+    },
+    model: {
+      value: (_vm.testData.cadence),
+      callback: function($$v) {
+        _vm.$set(_vm.testData, "cadence", $$v)
+      },
+      expression: "testData.cadence"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("RPM")])], 2)], 1) : _c('p', [_c('label', [_vm._v(_vm._s(_vm.$t('cNam.conTorque')) + ":")]), _vm._v(" "), _c('el-input', {
+    staticStyle: {
+      "width": "110px"
+    },
+    model: {
+      value: (_vm.testData.sensorVoltage),
+      callback: function($$v) {
+        _vm.$set(_vm.testData, "sensorVoltage", $$v)
+      },
+      expression: "testData.sensorVoltage"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("V")])], 2)], 1)]), _vm._v(" "), _vm._m(7)]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "data mark"
+  }, [_c('el-button', {
+    staticClass: "fail",
+    attrs: {
+      "icon": "close"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeOption(_vm.testSelect, 2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('fail')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('p', [_vm._v(_vm._s(_vm.$t('motor01')))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.$t('motor02')))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.$t('motor03')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  })], 1) : _vm._e(), _vm._v(" "), (!_vm.switchTest && _vm.testSelectDisplay.length > 0) ? _c('div', {
+    staticClass: "btn-row"
+  }, [_c('span', [(_vm.testSelect.No != _vm.testSelectDisplay[0].No) ? _c('el-button', {
+    staticClass: "gray-button",
+    on: {
+      "click": function($event) {
+        _vm.showTestDiv(_vm.testSelectDisplay[_vm.currentIndex - 1], _vm.currentIndex - 1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('start36')))]) : _vm._e(), _vm._v(" "), _c('input', {
+    ref: "empty-input",
+    staticStyle: {
+      "opacity": "0",
+      "width": "1px",
+      "height": "1px"
+    }
+  })], 1), _vm._v(" "), _c('span', [(_vm.testSelect.No !== 7) ? [_c('el-button', {
+    staticClass: "gray-button",
+    on: {
+      "click": function($event) {
+        _vm.showTestDiv(_vm.testSelectDisplay[_vm.currentIndex + 1], _vm.currentIndex + 1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('start37')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "gray-button",
+    on: {
+      "click": function($event) {
+        _vm.showTestDiv('', -1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))])] : [_c('el-button', {
+    staticClass: "gray-button",
+    on: {
+      "click": function($event) {
+        _vm.showTestDiv(_vm.testSelectDisplay[_vm.currentIndex + 1], -1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('finish')))])]], 2)]) : _vm._e()])] : _vm._e()], 2)])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('cNam.select'),
+      "visible": _vm.testSelectDialogVisible,
+      "custom-class": "auth-dialog",
+      "show-close": false,
+      "close-on-click-modal": false
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.testSelectDialogVisible = $event
+      }
+    }
+  }, [_c('p', {
+    staticClass: "auth-title"
+  }, [_vm._v(_vm._s(_vm.$t('testSys')))]), _vm._v(" "), _c('el-checkbox-group', {
+    model: {
+      value: (_vm.testSelectDisplay),
+      callback: function($$v) {
+        _vm.testSelectDisplay = $$v
+      },
+      expression: "testSelectDisplay"
+    }
+  }, _vm._l((_vm.systemList), function(item) {
+    return _c('el-checkbox', {
+      key: item.name,
+      attrs: {
+        "label": item
+      },
+      on: {
+        "change": _vm.changeCheckBox
+      }
+    }, [_vm._v("\n                        " + _vm._s(item.name) + "\n                    ")])
+  })), _vm._v(" "), _c('div', {
+    staticClass: "clear-20 "
+  }), _vm._v(" "), _c('div', {
+    staticClass: "fr"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.testSelectDialogClose(1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": function($event) {
+        _vm.testSelectDialogClose(2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.confirm')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-20 "
+  })], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('cNam.select'),
+      "visible": _vm.connectionSelectDialogVisible,
+      "custom-class": "auth-dialog",
+      "show-close": false,
+      "close-on-click-modal": false
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.connectionSelectDialogVisible = $event
+      }
+    }
+  }, [_c('p', {
+    staticClass: "auth-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.component')) + " ")]), _vm._v(" "), _c('el-checkbox-group', {
+    model: {
+      value: (_vm.connectionSelectDisplay),
+      callback: function($$v) {
+        _vm.connectionSelectDisplay = $$v
+      },
+      expression: "connectionSelectDisplay"
+    }
+  }, _vm._l((_vm.itemList), function(item) {
+    return _c('el-checkbox', {
+      key: item.name,
+      attrs: {
+        "label": item,
+        "disabled": item.required
+      },
+      on: {
+        "change": _vm.changeConnectionBox
+      }
+    }, [_vm._v("\n                        " + _vm._s(item.name) + "\n                    ")])
+  })), _vm._v(" "), _c('div', {
+    staticClass: "clear-20 "
+  }), _vm._v(" "), _c('div', {
+    staticClass: "fr"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.testSelectDialogClose(3)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": function($event) {
+        _vm.testSelectDialogClose(2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.confirm')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-20 "
+  })], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('errTitle'),
+      "custom-class": "error-dialog",
+      "visible": _vm.dialogSolutionVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogSolutionVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "error-shooting"
+  }, [_c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('name')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.error.name))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('remark')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.error.remark))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('desc')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.error.desc))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('target')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.error.target ? _vm.error.target.join(',') : ''))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('solution')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, _vm._l((_vm.error.solution), function(item, index) {
+    return _c('p', [_vm._v(_vm._s(index + 1) + ". " + _vm._s(item))])
+  }))])]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogSolutionVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('toolTitle1'),
+      "custom-class": "tip-dialog",
+      "visible": _vm.besstTool
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.besstTool = $event
+      }
+    }
+  }, [_c('div', {}, [_c('div', {}, [_c('img', {
+    attrs: {
+      "src": require("../../assets/images/diagnosis/tool_2.png"),
+      "height": "300",
+      "width": "300"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }), _vm._v(" "), _c('h1', [_vm._v("\n                        " + _vm._s(_vm.$t('tool11')) + "\n                    ")])]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.besstTool = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('toolTitle2'),
+      "custom-class": "tip-dialog",
+      "visible": _vm.pcMode
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.pcMode = $event
+      }
+    }
+  }, [_c('div', {}, [_c('h1', [_vm._v("\n                        " + _vm._s(_vm.$t('tool12')) + "\n                    ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }), _vm._v(" "), _c('h1', [_vm._v(_vm._s(_vm.$t('tool13')))]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('tool14')) + "\n                    ")]), _vm._v(" "), _c('h1', [_vm._v(_vm._s(_vm.$t('tool15')))]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('tool16')) + "\n                    ")])]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.pcMode = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('toolTitle2'),
+      "custom-class": "tip-dialog",
+      "visible": _vm.usbCanControllerOpen
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.usbCanControllerOpen = $event
+      }
+    }
+  }, [_c('div', {}, [_c('h1', [_vm._v("\n                        " + _vm._s(_vm.usbCanControllerOpenMsg) + "\n                    ")])]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.usbCanControllerOpen = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Diagnosis Update Note",
+      "custom-class": "tip-dialog",
+      "visible": _vm.diagnosisUpdateNoteOpen
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.diagnosisUpdateNoteOpen = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "notice19"
+  }, [_c('h1', [_vm._v("\n                        " + _vm._s(_vm.$t('notice19_01')) + "\n                    ")]), _vm._v(" "), _c('p', [_vm._v("\n                        " + _vm._s(_vm.$t('notice19_02')) + "\n                    ")]), _vm._v(" "), _c('p', [_vm._v("\n                        " + _vm._s(_vm.$t('notice19_03')) + "\n                        "), _c('br'), _vm._v("\n                        " + _vm._s(_vm.$t('notice19_04')) + "\n                    ")]), _vm._v(" "), _c('p', [_vm._v("\n                        " + _vm._s(_vm.$t('notice19_05')) + "\n                    ")])]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-checkbox', {
+    staticStyle: {
+      "padding-right": "20px"
+    },
+    model: {
+      value: (_vm.remindCheck),
+      callback: function($$v) {
+        _vm.remindCheck = $$v
+      },
+      expression: "remindCheck"
+    }
+  }, [_vm._v(_vm._s(_vm.$t('notice19_00')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.remindSevenDays
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.confirm')))])], 1)])], 1)]) : _c('div', {
+    staticClass: "switch-body"
+  }, [_c('mechanical-diagnosis', {
+    ref: "mechanical",
+    attrs: {
+      "defectList": _vm.defectList,
+      "errorList": _vm.errorList,
+      "fileAll": _vm.fileAll,
+      "reportInfo": _vm.reportInfo,
+      "problemText": _vm.problemText
+    },
+    on: {
+      "skipShow": _vm.BeforeReport
+    }
+  })], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "visible": _vm.showBeforeReport
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.showBeforeReport = $event
+      }
+    }
+  }, [_c('div', [_vm._v(" " + _vm._s(_vm.$t('goElectronic')) + " ")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.selectItemDefect
+    }
+  }, [_vm._v(_vm._s(_vm.$t('diagnosisElectronic')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.goBeforeReport
+    }
+  }, [_vm._v(_vm._s(_vm.$t('createReport')))])], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "visible": _vm.showAfterReport
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.showAfterReport = $event
+      }
+    }
+  }, [_c('div', [_vm._v(" " + _vm._s(_vm.$t('goMechanic')) + " ")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.cancelSelectDefect
+    }
+  }, [_vm._v(_vm._s(_vm.$t('diagnosisMechanic')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.goAfterReport
+    }
+  }, [_vm._v(_vm._s(_vm.$t('createReport')))])], 1)], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "show-video"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-under-pic.png")
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "play-video",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/icon-start-mp4.png")
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/brake.png")
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/hmi.png")
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/speed-middle.png")
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/speed-hub.png")
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/speed.png")
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/speed.png")
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/walk.png")
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "data img-wrap"
+  }, [_c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": require("../../assets/images/diagnosis/speed.png")
+    }
+  })])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-38140494","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/3rd-diagnosis/diagnosis.vue
+// module id = 1541
+// module chunks = 73

@@ -1,0 +1,88 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "test-plan"
+  }, [_c('div', {
+    staticClass: "test-plan-header"
+  }, [_c('el-form', {
+    staticClass: "demo-form-inline",
+    attrs: {
+      "inline": true
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "测试计划:"
+    }
+  }, [_c('el-input')], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "类别:"
+    }
+  }, [_c('el-input')], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
+    attrs: {
+      "icon": "search"
+    },
+    on: {
+      "click": _vm.searchTestPlan
+    }
+  }, [_vm._v("search")])], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
+    on: {
+      "click": _vm.showInspectorRecord
+    }
+  }, [_vm._v("返工记录")])], 1)], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "test-plan-content"
+  }, [_c('el-table', {
+    staticStyle: {
+      "width": "100%"
+    },
+    attrs: {
+      "data": _vm.testPlanList
+    }
+  }, [_vm._l((_vm.headerData), function(item, index) {
+    return _c('el-table-column', {
+      key: index,
+      attrs: {
+        "prop": item.name,
+        "label": item.label
+      }
+    })
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "fixed": "right",
+      "label": "操作"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return [_c('el-button', {
+          attrs: {
+            "type": "text",
+            "size": "small"
+          },
+          nativeOn: {
+            "click": function($event) {
+              $event.preventDefault();
+              _vm.showTestReport(scope.$index, _vm.testPlanList)
+            }
+          }
+        }, [_vm._v("\n                    测试报告\n                    ")]), _vm._v(" "), _c('el-button', {
+          attrs: {
+            "type": "text",
+            "size": "small"
+          },
+          nativeOn: {
+            "click": function($event) {
+              $event.preventDefault();
+              _vm.showDetail(scope.$index, _vm.testPlanList)
+            }
+          }
+        }, [_vm._v("\n                    详情\n                    ")])]
+      }
+    }])
+  })], 2)], 1)])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-4f76d1b8","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/testPlan/testPlan.vue
+// module id = 1994
+// module chunks = 73

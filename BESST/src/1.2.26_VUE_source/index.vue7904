@@ -1,0 +1,4309 @@
+﻿<template>
+    <div class="create-param">
+        <div :class="[{'show-tree-node':true},{'test-slide':categoryList.length<=0}]" v-show="treeVisible == true">
+            <el-tree
+                v-if="!loadingTree"
+                :data="categoryList"
+                :props="defaultProps"
+                node-key="id"
+                :render-content="renderContent"
+                @node-drop="handleDrop"
+                :filter-node-method="filterNode"
+                @node-click="handleNodeClick"
+                :default-expanded-keys="selectedCategory"
+                :highlight-current = "true"
+                ref="tree"
+                class="show-category-tree"
+            >
+            </el-tree>
+            <div class="loading" v-else>
+                <img src="../../assets/images/icon/loading-bars.svg" alt="Loading icon" />
+            </div>
+            <!--<span class="slide-to-right slide-hidden" @click="showSlide(1)"></span>
+            <span class="slide-to-right slide-hidden" @click="showSlide(1)"></span>-->
+        </div>
+        <div class="test-slide" v-show="treeVisible == false">
+            <!--<span class="slide-to-left slide-hidden" @click="showSlide(2)"></span>
+            <span class="slide-to-left slide-hidden" @click="showSlide(2)"></span>-->
+        </div>
+        <div class="table-wrap">
+            <el-input
+            class="search-tree-node"
+            placeholder="输入关键字进行过滤"
+            v-model="filterText">
+            </el-input>
+            <el-table class="show-head-body-detail"  @dblclick.native="showHeadList" :data="tableData"  size="small" :highlight-current-row="true" fit :max-height="clientHeight">
+                <el-table-column width="160"  v-for="(item, index) in headData" :key="index" :prop="item.name"  :label="item.name"  v-if="item.isShow===1">
+                </el-table-column>
+                <el-table-column width="180"  :render-header="renderHeader">
+                    <template slot-scope="scope" v-if="showBody">
+                        <!--<span @click="showAddParamValueDialog(scope.$index, scope.row)" v-if="scope.$index == tableData.length-1"></span>
+                        <span @click="showEditParamValueDialog(scope.$index, scope.row)" v-if="scope.$index <tableData.length-1"  class="body-detail">
+                            <i class="el-icon-edit"></i>
+                        </span>-->
+                        <span  @click="showAddParamValueDialog(scope.$index, scope.row)" v-if="scope.$index>=tableData.length-1">
+                            <i class="el-icon-plus"></i>
+                        </span>
+                        <span class="other-functions" v-else>
+                            <span  @click="showEditParamValueDialog(scope.$index, scope.row)" class="body-detail">
+                            </span>
+                            <span  @click="showDeleteParamValueDialog(scope.$index, scope.row)" class="delete-body-detail">
+                                <i class="el-icon-delete"></i>
+                            </span>
+                            <span  @click="showCopyParamValueDialog(scope.$index, scope.row)" class="copy-body-detail">
+                            </span>
+                            <span>
+                                <el-button v-if="isShowUploadFile" class="show-upload-file" size = "mini" type = 'text' @click="uploadSingleParamFile(scope, scope.row)"></el-button>
+                            </span>
+                            <span>
+                                <el-button v-if="isShowUploadFile&&scope.$index<tableData.length-1&&scope.row.isUpload===true" class="has-uploaded" size = "mini"></el-button>
+                            </span>
+                            <span>
+                                <el-button v-if="isShowUploadFile" class="upload-param-file" size = "mini" type = 'text' @click="showUploadedFile(scope.row)"></el-button>
+                            </span>
+                        </span>
+
+                    </template>
+                </el-table-column>
+                <!--<el-table-column :render-header="renderHandleHeader" width="180">
+                    <template slot-scope="scope" v-if="rootId == 2">
+                        <span v-if="scope.$index<=tableData.length-2" @click="uploadFile(scope.$index, scope.row)">上传文件</span>
+                    </template>
+                </el-table-column>-->
+            </el-table>
+            <!--<div v-if="table2 && rootId == 2">
+                <el-button type="primary"  @click="uploadFile">上传文件</el-button>
+                <el-table  class="show-head-body-detail" :data="tableData"  size="small" :highlight-current-row="true" fit :max-height="clientHeight">
+                    <el-table-column width="160"  v-for="(item, index) in firmwareHeadData" :key="index" :prop="item.prop"  :label="item.name"></el-table-column>
+                    <el-table-column :render-header="renderHandleHeader" width="160">
+                        <template slot-scope="scope">
+                            <el-button type="primary" @click="exportOrder(scope.$index,scope.row)">下载</el-button>
+                            <el-button type="primary" @click="deleteFile(scope.$index,scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>-->
+            <div class="show-param-list" v-if="rootId == 3 && !table1" >
+                <div class="param-list-item" v-for="(item,index) in paramData" :key="index">
+                    <span class="param-name">{{item.name}}</span>
+                    <ul class="param-head-list">
+                        <li v-if="childItem.head_name" class="param-head-item" v-for="(childItem,childIndex) in item.childList" :key="childIndex">
+                            {{childItem.head_name}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="loading" v-if="loading">
+                <img src="../../assets/images/icon/loading-bars.svg" alt="Loading icon" />
+            </div>
+            <div class="table-footer">
+                <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage" :page-size="10" layout="prev, pager, next, jumper" :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+            <div class="btn-group-top">
+                <!-- <div class="icons">
+                    <label>添加参数:</label>
+                    <div class="icon-item add" @click="goAddItem" :title="$t('add')"></div>
+                </div>-->
+            </div>
+        </div>
+        <!-- 删除分类 -->
+        <el-dialog
+            :title="$t('deleteDialog.title')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialog.content') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteProductionOrder">{{ $t('deleteDialog.yes') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('deleteDialog.no') }}</el-button>
+            </span>
+        </el-dialog>
+        <!-- 删除分类 -->
+        <el-dialog title="delete category" :visible.sync="dialogDeleteVisible"  size="tiny">
+            <p> Are you sure delete the category </p>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="deleteCategory" :disabled="deleteSubCategoryDisabled">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!-- 增加分类 -->
+        <el-dialog title="add category" :visible.sync="dialogAddVisible">
+            <el-input v-model="categoryName" placeholder="please input category name"></el-input>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="addSubCategory" :disabled="addSubCategoryDisabled">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="dialogAddVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!-- 编辑分类 -->
+        <el-dialog title="edit Category name" :visible.sync="dialogEditVisible">
+            <el-input v-model="categoryName" placeholder="please edit category name"></el-input>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="editCategory" :disabled="editSubCategoryDisabled">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="dialogEditVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!-- 编辑表头 -->
+        <el-dialog title="edit head detail" :visible.sync="addParamNameVisible" class="head-detail-list">
+            <div>
+                <p class="to-edit">编辑</p>
+                <el-form  class="edit-head-detail">
+                    <el-form-item v-for="(item,index) in headData" :key="index">
+                        <label :class="[item.isShow===1?'displayed':'hidden']">{{item.name}}</label>
+                        <!--<span>{{paramValueRadios[index][item.label+'-'+item.id]}}</span>-->
+                        <div class="more-edit">
+                            <!--<span @click="addHead(item,index)" v-if="index==headData.length-1">
+                                <i class="el-icon-plus"></i>
+                            </span>
+                            <span @click="deleteHead(item,index)" v-if="currentLevel === 2">
+                                <i class="el-icon-delete"></i>
+                            </span>
+                            <span class="show-head-name show-png"  @click="showHeadName(item,index)"></span>
+                            <span class="show-head-name hide-png"  @click="hideHeadName(item,index)"></span>
+                            -->
+                            <span  @click="moveUpHead(item,index)">
+                                <i class="el-icon-arrow-up"></i>
+                            </span>
+                            <span @click="moveDownHead(item,index)">
+                                <i class="el-icon-arrow-down"></i>
+                            </span>
+                            <!--<span class="copy-head-name" @click="copyHead(item,index)"></span>-->
+                        </div>
+                        <!--<el-input v-model="paramValueRadios[index][item.label+'-'+item.id]" clearable></el-input>-->
+                    </el-form-item>
+                </el-form>
+                <!--<div class="create-head-name" v-if="currentLevel == 2">
+                    <label>名称:</label>
+                    <el-input v-model="headNameInput"></el-input>
+                    <el-button @click="toCreateHead">新建</el-button>
+                </div>-->
+                <el-form :inline="true" class="demo-form-inline" v-if="showAddParam">
+                    <el-form-item label="名称:">
+                        <el-input v-model="newParamName" clearable></el-input>
+                    </el-form-item>
+                    <el-button @click="createNewParam">新建</el-button>
+                    <el-button @click="cancelCreate">取消</el-button>
+                </el-form>
+                <!--<div class="copy-head-list">
+                    <el-form>
+                        <el-form-item label="from:">
+                            <el-input v-model="copyItem"></el-input>
+                        </el-form-item>
+                        <el-form-item class="paste-item" label="to:">
+                            <el-select v-model="pasteItem" placeholder="请选择">
+                                <el-option
+                                    v-for="item in pasteCategoryList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-form>
+                    <el-button @click="copyHead" style="float:right">复制</el-button>
+                </div>-->
+            </div>
+            <div slot="footer" class="dialog-footer" style="text-align:center">
+                <el-button type="preview" @click="addParamRows">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="addParamNameVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!-- 增加参数数据 -->
+        <el-dialog title="add param columns" :visible.sync="addParamValueVisible"  class="edit-param-columns">
+            <div v-for="(item,index) in headData">
+                <el-form class="demo-form-inline">
+                    <el-form-item :label="item.name+':'">
+                        <el-input  v-model="paramValueRadios[item.label]" :placeholder="dataBitsList[item.label]" clearable></el-input>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="addParamColumns">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="addParamValueVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!--  -->
+        <el-dialog class="show-all-head" title="show all head list" :visible.sync="showHeadListVisible">
+            <el-table  class="show-head-body-detail" :data="tableData" :max-height="clientHeight" size="small" :highlight-current-row="true" fit>
+                <el-table-column v-for="(item, index) in headData" :key="index" :prop="item.name " :width="item.width" :label="item.name" v-if="item.isShow===1" >
+                </el-table-column>
+                <el-table-column :render-header="renderHeader">
+                    <template slot-scope="scope" v-if="showBody">
+                    <!--<span @click="showAddParamValueDialog(scope.$index, scope.row)" v-if="scope.$index == tableData.length-1"></span>
+                    <span @click="showEditParamValueDialog(scope.$index, scope.row)" v-if="scope.$index <tableData.length-1"  class="body-detail">
+                        <i class="el-icon-edit"></i>
+                    </span>-->
+                        <span  @click="showAddParamValueDialog(scope.$index, scope.row)" v-if="scope.$index>=tableData.length-1">
+                            <i class="el-icon-plus"></i>
+                        </span>
+                        <span class="other-functions" v-else>
+                            <span  @click="showEditParamValueDialog(scope.$index, scope.row)" class="body-detail"></span>
+                            <span  @click="showDeleteParamValueDialog(scope.$index, scope.row)" class="delete-body-detail">
+                                <i class="el-icon-delete"></i>
+                            </span>
+                            <span  @click="showCopyParamValueDialog(scope.$index, scope.row)" class="copy-body-detail">
+                            </span>
+                            <span>
+                                <el-button v-if="isShowUploadFile" class="show-upload-file" size = "mini" type = 'text' @click="uploadSingleParamFile(scope, scope.row)"></el-button>
+                            </span>
+                            <span>
+                                <el-button v-if="isShowUploadFile&&scope.$index<tableData.length-1&&scope.row.isUpload===true" class="has-uploaded" size = "mini"></el-button>
+                            </span>
+                            <span>
+                                <el-button v-if="isShowUploadFile" class="upload-param-file" size = "mini" type = 'text' @click="showUploadedFile(scope.row)"></el-button>
+                            </span>
+                        </span>
+                    </template>
+                </el-table-column>
+                <!--<el-table-column :render-header="renderHandleHeader" width="180">
+                    <template slot-scope="scope" v-if="rootId == 2">
+                        <span v-if="scope.$index<=tableData.length-2" @click="uploadFile(scope.$index, scope.row)">上传文件</span>
+                    </template>
+                </el-table-column>-->
+                <div v-if="table2 && rootId == 2">
+                <el-button type="primary"  @click="uploadFile">上传文件</el-button>
+            </div>
+            <el-table v-if="table2 && rootId == 2" class="show-head-body-detail" :data="tableData"  size="small" :highlight-current-row="true" fit :max-height="clientHeight">
+                <el-table-column width="160"  v-for="(item, index) in firmwareHeadData" :key="index" :prop="item.prop"  :label="item.name"></el-table-column>
+            </el-table>
+            </el-table>
+        </el-dialog>
+        <!--  -->
+        <el-dialog title="delete param value" :visible.sync="deleteParamVisible">
+            <span>Are you sure delete the item?</span>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="deleteParamColumns">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="deleteParamVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!--  -->
+        <el-dialog title="copy param value" :visible.sync="copyParamVisible">
+            <el-form>
+                <el-form-item label="from:">
+                    <el-input v-model="copyHeadItem" placeholder="copy head"></el-input>
+                </el-form-item>
+                <el-form-item label="to:">
+                    <el-input v-model="pasteHeadItem" @click.native="pasteCategoryVisible = true" placeholder="paste head"></el-input>
+                </el-form-item>
+            </el-form>
+                <!--<div class="copy-head-list">
+                    <el-form>
+                        <el-form-item label="from:">
+                            <el-input v-model="copyItem"></el-input>
+                        </el-form-item>
+                        <el-form-item class="paste-item" label="to:">
+                            <el-select v-model="pasteItem" placeholder="请选择">
+                                <el-option
+                                    v-for="item in pasteCategoryList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-form>
+                    <el-button @click="copyHead" style="float:right">复制</el-button>
+                </div>
+            </div>-->
+            <div slot="footer" class="dialog-footer" style="text-align:centernpm">
+                <el-button type="preview" @click="addParamRows">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="addParamNameVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!-- 编辑表格数据 -->
+        <el-dialog title="edit param columns" :visible.sync="editParamValueVisible" class="edit-param-columns">
+            <div v-for="(item,index) in headData">
+                <el-form :inline="true" class="demo-form-inline">
+                    <el-form-item :label="item.name+':'">
+                        <!-- 92很特殊 -->
+                        <span v-if="item.id==92">{{paramValueRadios[item.label]}}</span>
+                        <el-input v-model="paramValueRadios[item.label]" :placeholder="dataBitsList[item.label]" :disabled=" item.label=='SN' "></el-input>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="editParamColumns">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="editParamValueVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!--  -->
+        <el-dialog class="show-all-head" title="show all head list" :visible.sync="showHeadListVisible">
+            <el-table  class="show-head-body-detail" :data="tableData" :max-height="clientHeight" size="small" :highlight-current-row="true" fit>
+                <el-table-column v-for="(item, index) in headData" :key="index" :prop="item.name " :width="item.width" :label="item.name" v-if="item.isShow===1" >
+                </el-table-column>
+                <el-table-column :render-header="renderHeader">
+                    <template slot-scope="scope" v-if="showBody">
+                    <!--<span @click="showAddParamValueDialog(scope.$index, scope.row)" v-if="scope.$index == tableData.length-1"></span>
+                    <span @click="showEditParamValueDialog(scope.$index, scope.row)" v-if="scope.$index <tableData.length-1"  class="body-detail">
+                        <i class="el-icon-edit"></i>
+                    </span>-->
+                    <span  @click="showAddParamValueDialog(scope.$index, scope.row)" v-if="scope.$index>=tableData.length-1">
+                        <i class="el-icon-plus"></i>
+                    </span>
+                    <span  @click="showEditParamValueDialog(scope.$index, scope.row)" class="body-detail">
+                        <!--<i class="el-icon-edit"></i>-->
+                    </span>
+                    <span  @click="showDeleteParamValueDialog(scope.$index, scope.row)">
+                        <i class="el-icon-delete"></i>
+                    </span>
+                    <span  @click="showCopyParamValueDialog(scope.$index, scope.row)" class="copy-body-detail">
+                    </span>
+                    </template>
+                </el-table-column>
+                <!--<el-table-column :render-header="renderHandleHeader" width="180">
+                    <template slot-scope="scope" v-if="rootId == 2">
+                        <span v-if="scope.$index<=tableData.length-2" @click="uploadFile(scope.$index, scope.row)">上传文件</span>
+                    </template>
+                </el-table-column>-->
+                <div v-if="table2 && rootId == 2">
+                    <el-button type="primary"  @click="uploadFile">上传文件</el-button>
+                </div>
+                <el-table v-if="table2 && rootId == 2" class="show-head-body-detail" :data="tableData"  size="small" :highlight-current-row="true" fit :max-height="clientHeight">
+                    <el-table-column width="160"  v-for="(item, index) in firmwareHeadData" :key="index" :prop="item.prop"  :label="item.name"></el-table-column>
+                </el-table>
+            </el-table>
+        </el-dialog>
+        <!--  -->
+        <el-dialog title="delete param value" :visible.sync="deleteParamVisible">
+            <span>Are you sure delete the item?</span>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="deleteParamColumns">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="deleteParamVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!--  -->
+        <el-dialog title="copy param value" :visible.sync="copyParamVisible">
+            <el-form>
+                <el-form-item label="from:">
+                    <el-input v-model="copyHeadItem" placeholder="copy head"></el-input>
+                </el-form-item>
+                <el-form-item label="to:">
+                    <el-input v-model="pasteHeadItem" @click.native="pasteCategoryVisible = true" placeholder="paste head"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="copyParamColumns">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="copyParamVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!--  -->
+        <el-dialog
+            class="dialog"
+            title="paste category item"
+            :visible.sync="pasteCategoryVisible"
+            :custom-class="categoryDialog"
+            size="large"
+            top="10%">
+             <el-tree
+                :data="categoryList"
+                :props="defaultProps"
+                node-key="id"
+                @node-click="copyCategoryClick"
+                :default-expanded-keys="defaultChecked"
+                :highlight-current = "true"
+            >
+            </el-tree>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="pasteCategoryVisible = false">{{ $t('op.confirm') }}</el-button>
+                <el-button type="primary" @click="pasteCategoryVisible = false">{{ $t('op.cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!-- 编辑固件文件 -->
+        <el-dialog
+            class="dialog upload-file-dialog"
+            title="upload file"
+            :visible.sync="showUploadFileVisible"
+            size="large"
+            top="10%">
+             <el-table  :highlight-current-row="true" :max-height="240" :data="uploadFirmwareList">
+                <el-table-column :width="item.width"  v-for="(item, index) in uploadFirmwareHeadData" :key="index" :prop="item.name"  :label="item.label"></el-table-column>
+                <el-table-column width="240" label="operation">
+                    <template slot-scope="scope">
+                        <el-button @click="deleteUploadFile(scope.row)">删除</el-button>
+                        <el-button class="download-file" size="mini" @click="downloadFile(scope.row)">下载</el-button>
+                        <el-button class="download-file" size="mini" @click="handleShowOrHidden(scope.row)">显示/隐藏</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-dialog>
+        <!--  -->
+        <el-dialog
+            class="dialog upload-file-dialog"
+            title="Upload Firmware"
+            :visible.sync="uploadFileVisible">
+            <el-form style="margin-top: 20px;">
+                <el-form-item label="Firmware Version">
+                    <el-input v-model="uploadFirmwareVersion" @blur="checkFirmwareVersion"></el-input>
+                </el-form-item>
+                <el-form-item label="Remark">
+                    <el-input v-model="uploadRemark"></el-input>
+                </el-form-item>
+                <el-form-item label="Show">
+                    <el-radio-group v-model="uploadShow">
+                        <el-radio :label="1">显示</el-radio>
+                        <el-radio :label="0">隐藏</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="Accepted">
+                    <span>{{isAccepted === 1 ? '支持' : '不支持'}}</span>
+                </el-form-item>
+            </el-form>
+            <p class="download-and-upload">
+                <el-upload
+                    drag
+                    class="upload desc upload-file"
+                    ref="upload"
+                    :action="options.url"
+                    :on-change="handleChangeFile"
+                    :on-success="onSuccess"
+                    :file-list="fileList"
+                    :on-remove="removeFile"
+                    :multiple="true"
+                    :auto-upload= true
+                    :disabled="uploadDisabled"
+                    :before-upload="beforeAvatarUpload"
+                    :data="options.params">
+                    <el-button title="仅支持文件上传" type="primary" @click="showUploadFile">
+                        上传
+                    </el-button>
+                </el-upload>
+                <!--<el-button class="download-file" size="mini" @click="downloadFile">下载</el-button>
+                <el-button
+                    size="mini"
+                    type="danger"
+                    class="delete-file"
+                    @click="deleteUploadFile">删除</el-button>-->
+            </p>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="saveUploadInfo">save</el-button>
+            </span>
+        </el-dialog>
+        <!--  -->
+        <el-dialog
+            class="dialog upload-param-file-dialog"
+            title="upload image"
+            :visible.sync="uploadParamFile"
+            top="10%">
+            <div class="upload-content">
+                <el-upload
+                    class="upload desc"
+                    ref="upload"
+                    :action="paramFiles.url"
+                    :on-success="onParamSuccess"
+                    :multiple="paramSingleUpload"
+                    :auto-upload= true
+                    :show-file-list = false
+                    :data="paramFiles.params"
+                >
+                    <el-button type="primary">
+                        Upload Param File
+                    </el-button>
+                </el-upload>
+            </div>
+            <div class="uploaded-param-file">
+                <div class="uploaded-image">
+                    <img v-if="uploadedParamURL!=''" :src="uploadedParamURL">
+                </div>
+            </div>
+        </el-dialog>
+        <!--  -->
+        <el-dialog
+            class="dialog"
+            title="Show Or Hidden"
+            :visible.sync="showOrHiddenVisible"
+            >
+            <el-form>
+                <el-form-item label="Show">
+                    <el-radio-group v-model="editUploadShow" @change="handleShow">
+                        <el-radio :label="1">显示</el-radio>
+                        <el-radio :label="0">隐藏</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+        <!--  -->
+        <el-dialog
+            class="dialog delete-firmware-info"
+            title="Delete Firmware Info"
+            :visible.sync="deleteFirmwareInfoVisible"
+        >
+            <el-form>
+                <el-form-item label="理由:">
+                    <el-input v-model="deleteFirmwareReason"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="confirmDeleteFimwareInfo">save</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+    import ElInput from "../../../node_modules/element-ui/packages/input/src/input";
+    import headDetailPng from '../../assets/images/icon/head-detail.png'
+    import bodyDetailPng from '../../assets/images/icon/body-detail.png'
+    import Update from '../../../device/update'
+
+    //import StreamDownloadNew from './streamDownload'
+
+    export default {
+        inject: ['reload'],
+        components: {
+            ElInput,
+        },
+        name: 'createParam',
+        data() {
+            return {
+                deleteFirmwareReason: '',
+                deleteFirmwareId: '',
+                addRemarkTitle: '添加备注和固件版本号',
+                Core: Core,
+                //headData: ['ID', 'Category', 'Unit', 'Limit', 'Desc', 'SubIndex', 'Operation'],
+                headData: [],
+                headList: [],
+                tableData: [],
+                currentPage: Core.Data.get(Core.Const.DATA.KEY_COMPONENT_ORDER_LIST_PAGE) ? Core.Data.get(Core.Const.DATA.KEY_COMPONENT_ORDER_LIST_PAGE) : 1,
+                total: 0,
+                loadingTree: false,
+                localPage: 0,
+
+                selectId: '',
+                categoryCode: '',
+
+                authList: [],
+
+                customerName: '',
+                status: 0,
+                statusList: [{
+                    id: -1,
+                    value: 'All'
+                }, {
+                    id: 1,
+                    value: 'Finish'
+                }, {
+                    id: 0,
+                    value: 'In Process'
+                }, ],
+                categoryList: [],
+                defaultProps: {
+                    id: 'id',
+                    children: 'child',
+                    label: 'name',
+                },
+                selectedTableId: '',
+                categoryId: '',
+                dialogDeleteVisible: false,
+                dialogAddVisible: false,
+                dialogEditVisible: false,
+                currentID: '',
+                categoryName: '',
+                currentLevel: '',
+                parentID: '',
+                rootID: '',
+                selectCategoryID: '',
+                editData: null,
+                tree_key: 0,
+                dropData: null,
+                treeVisible: true,
+                showTreeNode: 'show-tree-node',
+                testSlide: 'test-slide',
+                treeNodeData: [],
+                originalTableData: [],
+                addParamNameVisible: false,
+                newParamName: '',
+                newParamValue: '',
+                addParamValueVisible: false,
+                paramValueRadios: {},
+                dataBitsList: {},
+                editParamValueVisible: false,
+                currentNode: {},
+                canClick: false,
+                selectedCategory:[],
+                selectedCode: '',
+                headDetailPng: headDetailPng,
+                bodyDetailPng: bodyDetailPng,
+                showAddParam: false,
+                headNameInput: '',
+                parentId: '',
+                rootId: '',
+                level: '',
+                addParamParentId: '',
+                copyItem: '',
+                pasteItem: '',
+                pasteCategoryList:[],
+                copyId: '',
+                isHide: true,
+                isShow: true,
+                allHeadList: [],
+                parentType: '',
+                currentOption: '',
+                showHeadListVisible: false,
+                headListId: '',
+                deleteParamVisible: false,
+                deleteSerialNumber: '',
+                copyParamVisible: false,
+                categoryData: [],
+                pasteCategoryVisible: false,
+                defaultChecked: [],
+                categoryDialog: 'select-category',
+                pasteHeadItem: '',
+                pasteHeadCategoryId: '',
+                copyHeadItem: '',
+                copyHeadCategoryId: '',
+                pasteHeadId: '',
+                pasteHeadRootId :'',
+                pasteHeadParentId :'',
+                pasteHeadComponentType :'',
+                copySerialNumber: '',
+                editSerialNumber: '',
+                isClick: true,
+                editBodyIds: [],
+                options: {
+                    url: Core.Const.NET.FILE_UPLOAD_END_POINT,
+                    //url:'http://static.besst.bafang-service.com/besst/file',
+                    paramName: 'file',
+                    params: {
+                        token: Core.Data.getToken(),
+                        // order_id: '',
+                        // item_id: '',
+                    }
+                },
+                singleUpload: false,
+                loading: false,
+                failList: [],
+                fileInfo: {},
+                table1: true,
+                table2: false,
+                downloadFileUrl: '',
+                uploadFileVisible: false,
+                supplier: '',
+                mcu: '',
+                operationalAmplifier: '',
+                positionSensor: '',
+                headlamps: '',
+                description: '',
+                firmwareHeadData:[
+                    {
+                        prop: 'firmwareFile',
+                        name: '固件文件名'
+                    },
+                    {
+                        prop: 'firmwareName',
+                        name: '固件名'
+                    },
+                    {
+                        prop: 'firmwareNumber',
+                        name: '固件号'
+                    },
+                    {
+                        prop: 'firmwareVersion',
+                        name: '固件版本号'
+                    },
+                    {
+                        prop: 'supplier',
+                        name: '供应商'
+                    },
+                    {
+                        prop: 'headlamps',
+                        name: '大灯'
+                    },
+                    {
+                        prop: 'desc',
+                        name: '描述'
+                    },
+                    {
+                        prop: 'positionSensor',
+                        name: '位置传感器'
+                    },
+                    {
+                        prop: 'opreationalAmplifier',
+                        name: '运算放大器'
+                    },
+                    {
+                        prop: 'mcu',
+                        name: 'MCU'
+                    },
+
+                ],
+                clientHeight: 0,
+                paramData: [],
+                uploadParamFile: false,
+                paramFiles: {
+                    url: Core.Const.NET.IMG_UPLOAD_END_POINT,
+                    //url:'http://static.besst.bafang-service.com/besst/file',
+                    // paramName: 'file',
+                    params: {
+                        token: Core.Data.getToken(),
+                        // order_id: '',
+                        // item_id: '',
+                    }
+                },
+                paramSingleUpload: false,
+                paramFileId: '0',
+                uploadedFile: '',
+                paramFileList: [],
+                editParamIndex: '',
+                uploadedParamURL: '',
+                addSubCategoryDisabled: false,
+                editSubCategoryDisabled: false,
+                showBody: true,
+                deleteSubCategoryDisabled: false,
+                uploadFileList:[],
+                uploadFileHeadData: [
+                    {
+                        name: 'categoryId',
+                        label: '类别ID'
+                    },
+                    {
+                        name: 'firmwareId',
+                        label: '固件ID'
+                    },
+                    {
+                        name: 'sn',
+                        label: '序列号'
+                    },
+                    {
+                        name: 'firmwareName',
+                        label: '固件版本号'
+                    },
+                    {
+                        name: 'fileName',
+                        label: '文件名'
+                    },
+                    {
+                        name: 'remarks',
+                        label: '备注'
+                    },
+                ],
+                SN: '',
+                uploadedFileList: [],
+                addRemarksAndVersion: false,
+                firmwareRemarks: '',
+                firmwareVersion: '',
+                firmwareId: '',
+                fileName: '',
+                firmwareName: '',
+                firmwareNumber: '',
+                isShowUploadFile: false,
+                hasUpload: '已上传',
+                noUpload: '未上传',
+                uploadFirmwareVersion: '',
+                uploadRemark: '',
+                uploadDisabled: false,
+                uploadFirmwareList: [],
+                uploadFirmwareHeadData: [
+                    {
+                        name: 'sn',
+                        label: 'SN',
+                        width: 160
+                    },
+                    {
+                        name: 'name',
+                        label: 'Name',
+                        width: 160
+                    },
+                    // {
+                    //     name: 'fileName',
+                    //     label: 'File Name'
+                    // },
+                    {
+                        name: 'checkSum',
+                        label: 'Check Sum',
+                        width: 160
+                    },
+                    // {
+                    //     name: 'firmwareName',
+                    //     label: 'Firmware Name'
+                    // },
+                    {
+                        name: 'firmware_version',
+                        label: 'Firmware Version',
+                        width: 160
+                    },
+                    {
+                        name: 'accepted',
+                        label: 'Accepted',
+                        width: 160
+                    },
+                    {
+                        name: 'show',
+                        label: 'Show',
+                        width: 80
+                    },
+                    {
+                        name: 'remark',
+                        label: 'Remark',
+                        width: 160
+                    },
+                    {
+                        name: 'createTime',
+                        label: 'Create Time',
+                        width: 160
+                    }
+                ],
+                uploadCheckSum: '',
+                uploadShow: 1,
+                showId: '',
+                showOrHiddenVisible: false,
+                editUploadShow: 1,
+                editUploadItem: null,
+                filterText: '',
+                fileList: [],
+                showUploadFileVisible: false,
+                isAccepted: 1,
+                acceptedInfo: {
+                    1: '支持',
+                    0: '不支持'
+                },
+                userId: Core.Data.getUser().id,
+                deleteFirmwareInfoVisible: false,
+                oldSerialNumber: '',
+                deleteFirmwareVersion: '',
+            }
+        },
+        watch: {
+            filterText(val) {
+                this.$refs.tree.filter(val);
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Order.List,
+                zh: ZH.Component.Order.List,
+                de: DE.Component.Order.List,
+                nl: NL.Component.Order.List
+            }
+        },
+        created(){
+            this.clientHeight = document.body.clientHeight - 200;
+        },
+        mounted() {
+            // 国际化
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.getTreeList();
+            this.showAddParam = false;
+
+        },
+        methods: {
+            checkFirmwareVersion(){
+                if(this.uploadFirmwareVersion){
+                    this.uploadDisabled = false;
+                }
+            },
+            filterNode(value, data) {
+                console.log(value,data)
+                if (!value) return true;
+                return data.name.indexOf(value) !== -1;
+            },
+            handleShowOrHidden(data){
+                this.editUploadItem = data;
+                this.editUploadShow = data.show;
+                this.showOrHiddenVisible = true;
+            },
+            handleUploadFile(time){
+                return Core.Data.getFormatterDate(time);
+            },
+            handleChangeFile(file) {
+                let reader = new FileReader();
+                reader.readAsArrayBuffer(file.raw);
+                let vm = this;
+                reader.onload  = function(e){
+                    let fileOriginBuffer = Buffer.from(e.target.result);
+
+                    let arr = fileOriginBuffer.slice(0,16);
+                    let count = 0;
+                    for(let f=3; f<16 ; f++){
+                        if( arr[f] === 0){
+                            count++;
+                        }
+                    }
+                    let isSupportBESST = true;
+                    if(arr[2]>128 && arr[2]<136){
+                        if(count>=12){
+                            isSupportBESST = false;
+                        }else{
+                            let fileBuffer_32 = fileOriginBuffer.slice(16,32);
+                            let count_32 = 0;
+                            for(let ff=2; ff<16 ; ff++){
+                                if( fileBuffer_32[ff] === 0){
+                                    count_32++;
+                                }
+                            }
+                            if(count_32 === 14){
+                                isSupportBESST = false;
+                            }
+                        }
+                    }else if(arr[2]>0 && arr[2]<8 && count>=12){
+                        isSupportBESST = false;
+                    }else if(arr[2]===0xFC && count>=12){
+                        isSupportBESST = false;
+                    }
+
+                    if(isSupportBESST){
+                        vm.isAccepted = 0;
+                        vm.$message({
+                            type: 'warning',
+                            message: '当前bin文件不适用于BESST',
+                            duration: 3000
+                        })
+                    }
+                    vm.uploadCheckSum = Update.checkCrc(fileOriginBuffer);
+
+                };
+            },
+            beforeAvatarUpload(file) {
+                this.showUploadFile();
+                if(this.uploadDisabled){
+                    return false;
+                }
+                const errorName = file.name.indexOf(',')>-1;
+                const isBin = file.name.indexOf('.bin')>-1;
+                if(!isBin){
+                     this.$message({
+                        type: 'warning',
+                        message: '上传的文件格式有误，请上传bin文件'
+                    });
+                }
+                if(errorName){
+                    this.$message({
+                        type: 'warning',
+                        message: '上传的文件名有误，请删除其中的,再操作'
+                    });
+                }
+
+                return !errorName&&isBin;
+                // let reader = new FileReader();
+                // reader.readAsArrayBuffer(file);
+                // let vm = this;
+                // let arr;
+                // reader.onload  = function(e){
+                //     arr = Buffer.from(e.target.result);
+                //     let fileContentBuffer_32 = arr.slice(32);
+                //     let fileCrc_32 = Update.checkCrc(fileContentBuffer_32);
+                //     let bufferCrc = Buffer.from(arr.slice(16, 18)).toString('hex');
+                //     console.log(fileCrc_32,bufferCrc)
+                //     if( fileCrc_32 !== bufferCrc){
+                //         vm.$message({
+                //             message: 'This file is suspected of a checksum error. If the update fails, please check the file.',
+                //             type: "warning",
+                //             duration: 5000,
+                //             showClose: true,
+                //         });
+                //     }
+                // };
+            },
+            downloadFile(data){
+                console.log(data);
+                window.location = data.fileName.indexOf('static')>-1?data.fileName:'http://static.besst.bafang-service.com/besst/file/'+data.fileName;
+                // console.log(Core.Const.NET.FILE_URL_PREFIX+this.firmwareName)
+            },
+            addRemarksOrVersion(index,data){
+                this.SN = data.sn;
+                this.addRemarksAndVersion = true;
+
+            },
+            saveRemarksAndVersion(){
+                this.addRemarksAndVersion = false;
+                    if(this.uploadedFileList.length>0){
+                        let haveSameSN = false;
+                        this.uploadedFileList.forEach((item)=>{
+                            if(item.sn == this.SN){
+                                item.remark = this.firmwareRemarks;
+                                item['firmware_version'] = this.firmwareVersion;
+                                item.id= this.firmwareId;
+                                haveSameSN = true;
+                            }
+                        })
+                        if(!haveSameSN){
+                            let data = {
+                                "firmware_version": this.firmwareVersion,
+                                "remark": this.firmwareRemarks,
+                                "sn": this.SN,
+                                "id": this.firmwareId
+                            }
+                            this.uploadedFileList.push(data);
+                        }
+                    }else{
+                        let data = {
+                            "firmware_version": this.firmwareVersion,
+                            "remark": this.firmwareRemarks,
+                            "sn": this.SN,
+                            "id": this.firmwareId
+                        }
+                        this.uploadedFileList.push(data);
+                    }
+            },
+            showUploadFile(){
+                if(!this.uploadFirmwareVersion){
+                    this.$message({
+                        type: 'warning',
+                        message: '固件版本号不能为空!'
+                    })
+                    this.uploadDisabled = true;
+                    return false;
+                }else{
+                    this.uploadDisabled = false;
+                }
+            },
+            editUploadFile(index,data){
+
+            },
+            confirmDeleteFimwareInfo(){
+                 Core.Api.request({
+                    url: '/firmware/firmwareDelete?id='+this.deleteFirmwareId+'&remark='+this.deleteFirmwareReason,
+                    method: 'DELETE'
+                }).then(res=>{
+//                    console.log(res);
+                    if(res.code == 0){
+                        this.$message({
+                            message: 'delete successfully!',
+                            type: 'success'
+                        })
+                        const versionList = {
+                            old: {}
+                        }
+                        versionList.old['Software Version'] = this.deleteFirmwareVersion;
+                        this.uploadDeleteFirmwareInfo(versionList);
+                        this.fileName = '';
+                        this.firmwareName = '';
+                        this.deleteFirmwareInfoVisible = false;
+                        this.deleteFirmwareId = '';
+                        // this.SN = '';
+                        this.getHasUploaded();
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            uploadDeleteFirmwareInfo(versionList){
+                const info ={
+                    'sn':this.sn,
+                    'object_id':0,
+                    'data':JSON.stringify(versionList),
+                    'type':0,
+                    'remark':this.deleteFirmwareReason,
+                }
+                Core.Api.request({
+                    url: '/report/save',
+                    data:info,
+                    headers: {
+                        'content-type': 'application/json,chart=utf-8'
+                    },
+                    method: 'POST'
+                }).then(res=>{
+                    console.log(res);
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            deleteUploadFile(data){
+//                console.log(data.firmwareId)
+//                console.log(data);
+                this.deleteFirmwareInfoVisible = true;
+                this.deleteFirmwareId = data.firmwareId;
+                this.deleteFirmwareVersion = data.firmware_version;
+                // Core.Api.request({
+                //     url: '/firmware/'+data.firmwareId,
+                //     method: 'DELETE'
+                // }).then(res=>{
+                //     console.log(res);
+                //     if(res.code == 202){
+                //         this.$message({
+                //             message: 'delete successfully!',
+                //             type: 'success'
+                //         })
+                //         this.fileName = '';
+                //         this.firmwareName = '';
+                //         // this.SN = '';
+                //         this.getHasUploaded();
+                //     }
+                // }).catch(err=>{
+                //     console.log(err);
+                // })
+            },
+            getHasUploaded(){
+                Core.Api.request({
+                    url: '/param/body/findSnFileById?id='+this.categoryId+'&sn='+this.SN,
+                    method: 'GET'
+                }).then(res=>{
+                    if(res.data.length>0){
+                        this.uploadFirmwareList = res.data;
+                        this.uploadFirmwareList.forEach((item)=>{
+                            item.createTime = this.handleUploadFile(item.createTime*1000);
+                            item.accepted = this.acceptedInfo[item.accepted];
+                        })
+                        res.data.forEach((item)=>{
+                            if(item.sn){
+                                this.firmwareId = item.firmwareId;
+                                this.fileName = item.name;
+                                this.firmwareName = item.fileName;
+                            }
+                        })
+                        this.tableData.forEach((tableItem)=>{
+                            tableItem.isUpload = tableItem.isUpload?tableItem.isUpload:false;
+                            if(tableItem['SN']&&tableItem['SN']!=''){
+                                if(tableItem['SN'] === this.SN){
+                                    tableItem.isUpload = true;
+                                }
+                            }
+                         })
+                    }else{
+                        this.uploadFirmwareList = [];
+                        this.firmwareId = '';
+                        this.firmwareName = '';
+                        this.fileName = '';
+                         this.tableData.forEach((tableItem)=>{
+                             tableItem.isUpload = tableItem.isUpload?tableItem.isUpload:false;
+                            if(tableItem['SN']&&tableItem['SN']!=''){
+                                if(tableItem['SN'] === this.SN){
+                                    tableItem.isUpload = false;
+                                }
+                            }
+                         });
+                    }
+                })
+            },
+            uploadFile(){
+                this.uploadFileVisible = true;
+                //this.firmwareNumber = data.serialNumber?data.serialNumber:''
+            },
+            submitUpload() {
+                // var data = this.uploadedFileList;
+                // Core.Api.request({
+                //     url: '/firmware/bulk',
+                //     method: 'POST',
+                //     data: JSON.stringify(data)
+                // }).then(res=>{
+                //     if(res.length>0){
+                //         this.$message({
+                //             message: 'save successfully!',
+                //             type: 'success'
+                //         })
+                //         this.uploadFileVisible = false;
+                //     }
+                // }).catch(err=>{
+                //     console.log(err);
+                // })
+            },
+            handleShow(){
+                 let data = {
+                    "firmware_file": this.editUploadItem.file_name,
+                    "name":this.editUploadItem.name,
+                    "id": this.editUploadItem.firmwareId,
+                    "sn": this.editUploadItem.sn,
+                    "category_id": this.editUploadItem.categoryId,
+                    "firmware_version": this.editUploadItem.firmware_version,
+                    "remark": this.editUploadItem.remark,
+                    "check_sum": this.editUploadItem.checkSum,
+                    "display": this.editUploadShow
+                }
+                this.uploadedFileList.push(data);
+                Core.Api.request({
+                    url: '/firmware/bulk',
+                    method: 'POST',
+                    data: JSON.stringify(this.uploadedFileList)
+                }).then(res=>{
+                    if(res.length>0){
+                        this.$message({
+                            message: 'save successfully!',
+                            type: 'success'
+                        })
+                        this.showId = '';
+                        // this.editUploadShow = 1;
+                        // this.uploadShow = 1;
+                        this.uploadFirmwareVersion = '';
+                        this.uploadRemark = '';
+                        res.forEach((item)=>{
+                            this.firmwareId = item.id;
+                        })
+                        this.uploadedFileList = [];
+                        this.uploadCheckSum = '';
+                        this.getHasUploaded();
+
+                        // this.uploadFileVisible = false;
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            saveUploadInfo(){
+                if(!this.uploadCheckSum){
+                    this.$message({
+                        type: 'warning',
+                        message: '请上传文件',
+                    })
+                    return false;
+                }
+                if(this.uploadFirmwareVersion.indexOf('.')<0){
+                    this.$message({
+                        type:'warning',
+                        message: '固件版本号不符合规则，请重新输入'
+                    })
+                    return false;
+                }
+                let uploadFirmwareVersion = this.uploadFirmwareVersion.substring(0,this.uploadFirmwareVersion.indexOf('.'));
+                if(this.fileName.indexOf(uploadFirmwareVersion)<0){
+                    this.$message({
+                        type:'warning',
+                        message: '当前文件名与固件版本号不一致，请检查'
+                    })
+                    return false;
+                }
+//                console.log('没了',this.uploadedFileList)
+                const versionList = {
+                    new: {},
+                }
+                versionList.new['Software Version'] = this.uploadFirmwareVersion;
+                const info ={
+                    'sn':this.SN,
+                    'object_id':0,
+                    'data':JSON.stringify(versionList),
+                    'type':2,
+                    'remark':this.uploadRemark,
+                }
+                Core.Api.request({
+                    url: '/report/save',
+                    data:info,
+                    headers: {
+                        'content-type': 'application/json,chart=utf-8'
+                    },
+                    method: 'POST'
+                }).then(res=>{
+                    console.log(res);
+                }).catch(err=>{
+                    console.log(err);
+                })
+                if(this.uploadedFileList.length<=0){
+
+                        let data = {
+                            "firmware_file": this.firmwareName,
+                            "name":this.fileName,
+                            "id": 0,
+                            "sn": this.SN,
+                            "category_id": this.categoryId,
+                            "firmware_version": this.uploadFirmwareVersion,
+                            "remark": this.uploadRemark,
+                            "check_sum": this.uploadCheckSum,
+                            "display": this.showId?this.editUploadShow:this.uploadShow,
+                            "accepted": this.isAccepted
+                        }
+                        this.uploadedFileList.push(data);
+                        Core.Api.request({
+                            url: '/firmware/bulk',
+                            method: 'POST',
+                            data: JSON.stringify(this.uploadedFileList)
+                        }).then(res=>{
+                            this.showId = '';
+                            // this.editUploadShow = '';
+                            // this.uploadShow = 1;
+                            if(res.length>0){
+                                this.$message({
+                                    message: 'save successfully!',
+                                    type: 'success'
+                                })
+                                this.uploadFirmwareVersion = '';
+                                this.uploadRemark = '';
+                                res.forEach((item)=>{
+                                    this.firmwareId = item.id;
+                                })
+                                this.uploadedFileList = [];
+                                this.uploadCheckSum = '';
+                                this.fileList = [];
+                                this.getHasUploaded();
+
+                                // this.uploadFileVisible = false;
+
+                            }
+                        }).catch(err=>{
+                            console.log(err);
+                        })
+                    }else{
+                        let haveSameSN = false;
+                        this.uploadedFileList.forEach((item)=>{
+                            if(item.sn == this.SN){
+                                item.firmware_file= firmwareName;
+                                item.name=response.data.file.name;
+                                item.id= 0;
+                                item.category_id= this.categoryId;
+                                haveSameSN = true;
+                            }
+                        })
+                        if(!haveSameSN){
+                            let data = {
+                                "firmware_file": this.firmwareName,
+                                "name":this.fileName,
+                                "id": this.firmwareId,
+                                "sn": this.SN,
+                                "category_id": this.categoryId,
+                                "firmware_version": '',
+                                "remark": '',
+                                "check_sum": this.uploadCheckSum,
+                                "display": this.showId?this.editUploadShow:this.uploadShow
+                            }
+                            this.uploadedFileList.push(data);
+                             Core.Api.request({
+                                url: '/firmware/bulk',
+                                method: 'POST',
+                                data: JSON.stringify(this.uploadedFileList)
+                            }).then(res=>{
+                                this.showId = '';
+                                // this.editUploadShow = '';
+                                // this.uploadShow = 1;
+                                if(res.length>0){
+                                    this.$message({
+                                        message: 'save successfully!',
+                                        type: 'success'
+                                    })
+                                    this.uploadFirmwareVersion = '';
+                                    this.uploadRemark = '';
+                                    res.forEach((item)=>{
+                                        this.firmwareId = item.id;
+                                    })
+                                    this.uploadedFileList = [];
+                                    this.uploadCheckSum = '';
+                                    this.fileList = [];
+                                    this.getHasUploaded();
+                                    // this.uploadFileVisible = false;
+                                }
+                            }).catch(err=>{
+                                console.log(err);
+                            })
+                        }
+                    }
+            },
+            removeFile(){
+                this.firmwareName = '';
+                this.fileName = '';
+                this.uploadCheckSum = '';
+            },
+            onSuccess(response, file, fileList) {
+                if (response.code !== 0) {
+                    this.$message({
+                        message: response.message,
+                        type: "error"
+                    });
+                } else {
+                    let firmwareName = response.data.file.hash +'.'+ response.data.file.ext;
+                    this.firmwareName = firmwareName;
+                    this.fileName = response.data.file.name;
+                }
+            },
+            getProductionOrderDetail(orderId) {
+                Core.Api.Order.getProductionOrderDetail(orderId).then(res => {
+                    this.orderInfo = res.order;
+                    this.getItemOrderInfo(res.order.item_list);
+                })
+            },
+            getItemOrderInfo(list) {
+                let $this = this;
+                let newList = list.filter(function (item) {
+                    return item.item_id == $this.itemPass.item_id;
+                });
+                this.itemOrderInfo = newList[0];
+                if (this.itemOrderInfo.produced >= this.itemOrderInfo.amount) {
+                    this.$message({
+                        message: "The item is finished",
+                        type: "warning"
+                    });
+                    this.$router.back();
+                }
+            },
+            showHeadList(){
+                // this.$message({
+                //     type: 'success',
+                //     message: '哈哈,成功了'
+                // });
+                this.showHeadListVisible = true;
+            },
+            getAllHeadList(){
+                Core.Api.request({
+                    url: '/param/head/list/all',
+                    method: 'GET'
+                }).then(res=>{
+                    this.allHeadList = res;
+                }).catch(err=>{
+                })
+            },
+            getDefaultKey(list,id){
+                var that = this;
+                list.forEach(m=>{
+                    if(m.id == id){
+                        that.selectedCategory.push(m.id);
+                        //that.headData = headData;
+                        //that.tableData = tableData;
+                    }else{
+                        if(m.child&&m.child.length>0){
+                            that.getDefaultKey(m.child,id);
+                        }
+                    }
+                })
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                Core.Data.set(Core.Const.DATA.KEY_COMPONENT_ORDER_LIST_PAGE, this.currentPage);
+            },
+
+            addProductionOrder() {
+                this.$router.push({
+                    name: 'componentOrderSave'
+                });
+            },
+
+            showDeleteDialog(store, data) {
+                this.selectCategoryID = data.id;
+                this.dialogDeleteVisible = true;
+            },
+
+            deleteProductionOrder() {
+                var that = this;
+                Core.Api.request({
+                        url: '/component/param/' + this.selectId,
+                        method: 'DELETE'
+                    }).then((res) => {
+                        Core.Api.request({
+                            method: "POST",
+                            url: "/component/param/filter",
+                            data: JSON.stringify({
+                                "param_category_id": that.selectedTableId
+                            }),
+                        }).then((res) => {
+                            this.dialogDeleteVisible = false;
+                            // that.tableData = res.content;
+                        })
+                    })
+                    // Core.Api.Order.deleteProductionOrder(this.selectId).then(res => {
+                    //     this.$message({
+                    //         message: 'Delete successfully',
+                    //         type: 'success'
+                    //     });
+                    //     this.dialogDeleteVisible = false;
+                    //     this.getOrderList();
+                    // })
+            },
+
+            goParamDetail(orderId) {
+                this.$router.push({
+                    name: 'paramDetail',
+                    query: {
+                        "orderId": orderId
+                    }
+                });
+            },
+            addParamVaulue(val){
+                //this.paramValueRadios[val] = '';
+               //var inputParamValue = this.paramValueRadios[val];
+                // if(val){
+                //     var testParamValue = /[\u4e00-\u9fa5]/g;
+                //     if(testParamValue.test(val)){
+                //         this.$message({
+                //             type: 'warning',
+                //             message: '不允许输入中文，请输入英文'
+                //         })
+                //         var deleteItem;
+                //         for(var i in this.paramValueRadios){
+                //             if(this.paramValueRadios[i] == val){
+                //                 deleteItem = i;
+                //             }
+                //         }
+                //         this.paramValueRadios[deleteItem] = this.paramValueRadios[deleteItem].replace(testParamValue,'');
+                //         val = '';
+                //     }
+                // }
+            },
+            addParamColumns(){
+                this.editBodyIds = [];
+                var data = [];
+                var headData = Array.from(this.headData);
+                var that = this;
+                var serialNumber = '';
+                this.currentOption = this.currentOption.indexOf('(')>-1?this.currentOption.substring(0,this.currentOption.indexOf('(')):this.currentOption
+                this.headData.forEach((item,index)=>{
+                     if(item.name == 'SN'){
+                    // if(item.name == 'SN'){
+                        if(this.paramValueRadios[item.label].indexOf(this.currentOption)<=-1){
+                            serialNumber = this.currentOption +'-'+this.paramValueRadios[item.label];
+                        }else{
+                            serialNumber = this.paramValueRadios[item.label];
+                        }
+                        this.paramValueRadios[item.label] = serialNumber;
+                    }
+                })
+                // if(serialNumber.indexOf('-')<=-1){
+                //     this.currentOption = this.currentOption.indexOf('(')>-1?this.currentOption.substring(0,this.currentOption.indexOf('(')):this.currentOption
+                //     serialNumber = this.currentOption+'-'+serialNumber;
+                // }
+                // console.log(serialNumber);
+                headData.forEach((item,index)=>{
+                    var valueItem = {
+                        'category_id': that.selectedTableId,
+                        'head_id': item.id,
+                        'value': that.paramValueRadios[item.label].toUpperCase(),
+                        "serial_number": serialNumber
+                    };
+                    data.push(valueItem);
+                });
+                //var that = this;
+                // var currentNode = this.currentNode;
+                Core.Api.request({
+                    method: "POST",
+                    url: "/param/body/bulk",
+                    data:data
+                }).then((res) => {
+                    this.addParamValueVisible = false;
+                    // that.tableData.splice(that.tableData.length-1,1);
+                    // var headData = that.headData;
+                    // var item ={};
+                    // var tableData = [];
+                    // var tableList = res;
+                    // for (let y=0;y<headData.length;y++) {
+                    //     let headName = headData[y].name;
+                    //     let headId = headData[y].id;
+                    //     for(let i=0;i<tableList.length;i++){
+                    //         let bodyId = tableList[i].id;
+                    //         if (tableList[i]['head_id'] == headId) {
+                    //             item.id=tableList[i].head_id;
+                    //             item[headData[y].label] = tableList[i].value==null?'-' :tableList[i].value;
+                    //             item.bodyIds = item.bodyIds&&item.bodyIds.length>0?item.bodyIds:[];
+                    //             var bodyItem = {
+                    //                 bodyId: bodyId,
+                    //                 headId: headId
+                    //             }
+                    //             item.bodyIds.push(bodyItem);
+                    //             tableData.push(item);
+                    //         }
+                    //     }
+                    // }
+                    // that.tableData =that.tableData.concat(Array.from(new Set(tableData)));
+                    // var lastItem = {};
+                    // for(var j in that.tableData[0]){
+                    //     lastItem[j]= ' '
+                    // }
+                    // that.tableData.push(lastItem);
+                    this.requestNextLevel(this.categoryId, this.rootId, this.level-1, this.resolve);
+                    // Array.from(that.headData).forEach((item,index)=>{
+                    //     that.paramValueRadios[item.label] = '';
+                    // });
+                    //that.reload();
+                    // this.handleNodeClick(currentNode);
+                });
+            },
+            //处理table head 数据
+            disposeHeadData(root,data,type,showHeadList){
+                var that = root;
+                var list = data.content?data.content:data;
+                // var headList = list.sort((a,b)=>{
+                //     return a-b;
+                // });
+
+                // if(isSortNumber<=0){
+                //     var item = {
+                //         head_name: 'SN',
+                //         id: '999',
+                //     }
+                //     list.splice(0,0,item);
+                // }
+                var headData = [];
+
+                for(var item of list){
+                    var headItem={
+                        label: item.head_name,
+                        name: item.head_name,
+                        id: item.id,
+                        sortNumber: item.sortNumber?item.sortNumber:0,
+                        isShow: item.is_show?item.is_show:1,
+                        parentId: this.parentId,
+                        categoryId: this.categoryId,
+                        level: that.level,
+                        parentType: item.parent_type
+                    }
+                    this.paramValueRadios[item.head_name] = '';
+                    //this.dataBitsList[item.head_name] = 'no data';
+                    // var paramItem ={
+                    //     [item.head_name+'-'+item.id]:''
+                    // };
+                    // if(that.paramValueRadios.length<list.length){
+                    //     that.paramValueRadios.push(paramItem);
+                    // }
+                    headData.push(headItem);
+                }
+                var headList = Array.from(new Set(headData));
+                if(type == 'showHead'){
+                    // headList.forEach((item,index)=>{
+                    //     showHeadList.forEach((showItem,showIndex)=>{
+                    //         if(item.id == showItem){
+                    //             item.sortNumber = showIndex;
+                    //         }
+                    //     })
+                    // })
+                    // headList.forEach((item,index)=>{
+                    //     if(item.name == 'SN' || item.name == 'Serials No' || item.name == 'Serials'){
+                    //         if(item.sortNumber !=0){
+                    //              item.sortNumber = 0;
+                    //             var sortNumberItem = item,
+                    //                 originalNumberItem = headList[0];
+                    //             headList.splice(index,1);
+                    //             headList.splice(0,0,sortNumberItem);
+                    //             headList.splice(index,0,originalNumberItem);
+                    //         }
+                    //     }
+                    // });
+                    headList.sort((a,b)=>{
+                        return a.sortNumber-b.sortNumber;
+                    })
+                    that.headData = headList;
+                }else if(type == 'allHead'){
+                    that.headList = headList;
+                }else{
+                    that.headList = headList;
+                    that.headData = headList;
+                }
+            },
+
+            goToComponentList(orderNo) {
+                this.$router.push({
+                    name: 'componentComponentList',
+                    query: {
+                        orderNo: orderNo,
+                        from: 'order'
+                    }
+                });
+            },
+            toHump(name) {
+                return name.replace(/\_(\w)/g, function(all, letter){
+                    return letter.toUpperCase();
+                });
+            },
+            settleChildListAndShowList(data){
+                var childList = '',
+                    showList = '',
+                    that = this;
+                data.content.forEach((item,index)=>{
+                    if(item.child_list){
+                        childList+=(','+item.child_list);
+                    }
+                    if(item.show_list){
+                        showList+=(','+item.show_list);
+                    }
+                })
+                childList = childList.indexOf(',') == 0?childList.substring(childList.indexOf(',')+1):childList;
+                showList = showList.indexOf(',') == 0?showList.substring(showList.indexOf(',')+1):showList;
+                var childHeadList = Array.from(new Set(childList.split(','))),
+                    showHeadList = Array.from(new Set(showList.split(','))),
+                    finalChildList = [],
+                    finalShowList = [];
+                    childHeadList = Array.from(new Set(childHeadList));
+                    showHeadList = Array.from(new Set(showHeadList));
+                this.allHeadList.forEach((i,v)=>{
+                    childHeadList.forEach((item,index)=>{
+                        if(item){
+                            if(i.id == item){
+                                finalChildList.push(i);
+                            }
+                        }
+                    })
+
+                })
+                that.allHeadList.forEach((i,v)=>{
+                    showHeadList.forEach((item,index)=>{
+                            if(item){
+                                if(i.id == item){
+                                    if(i['head_name'] == 'serial number'){
+                                        i.type = 'serial number';
+                                        i['head_name'] = 'SN';
+                                        i.label = 'SN';
+                                    }
+                                    i.sortNumber = index;
+                                    finalShowList.push(i);
+                                }
+                            }
+                        })
+                });
+                that.disposeHeadData(that,finalChildList,'allHead');
+                that.disposeHeadData(that,finalShowList,'showHead',showHeadList);
+            },
+            requestNextLevel(parentId, rootId, level, resolve) {
+                if (!parentId) {
+                    return
+                }
+                var that = this;
+                that.headData = [];
+                that.headList = [];
+                that.tableData = [];
+                //that.paramValueRadios = [];
+                function getCategory(data,id){
+                    data.forEach((i)=>{
+                        if(i.id == id){
+                            that.pasteCategoryList = i.child;
+                        }else{
+                           getCategory(i.child,id);
+                        }
+                    })
+                }
+                getCategory(this.categoryList,parentId);
+                var filterData = {
+                    'parent_id': parentId,
+                    'root_id': rootId,
+                    'level': level + 1
+                };
+                that.loading = true;
+                // 请求下一级数据
+                Core.Api.request({
+                    method: "POST",
+                    url: "/param/category/filter",
+                    data: JSON.stringify(filterData),
+                }).then((res1) => {
+                    that.loading = false;
+                    if(res1.content && res1.content.length>0){
+                        this.showBody = false;
+                        // return false;
+                    }else{
+                        this.showBody = true;
+                    }
+                    //  that.tableData = [];
+
+                    if(level === 2){
+                        that.headData = [];
+                        that.headList = [];
+                        // 请求下一级数据
+                        Core.Api.request({
+                            method: "POST",
+                            url: "/param/head/binding/filter",
+                            data: {
+                                "category_id":parentId,
+                            }
+                        }).then((res) => {
+                            if(res.content == null || res.content.length<=0){
+                                that.isClick = true;
+                                return false;
+                            }else{
+                                that.isClick = true;
+                                for(var item of res.content){
+                                    that.headListId = item.id;
+                                }
+                                that.settleChildListAndShowList(res);
+                                if(!that.showBody){
+                                    return false;
+                                }
+                                that.tableList = [];
+                                return Core.Api.request({
+                                    method: "POST",
+                                    url: "/param/body/filterAll",
+                                    data:{
+                                        "category_id":parentId,
+                                    },
+                                }).then((res)=>{
+                                    if(that.headData.length<=0){
+                                        return false;
+                                    }
+                                    if(res.length<=0){
+                                        var tabItem = {}
+                                        var headData = that.headData;
+                                        for(var item of headData){
+                                            if(item.label){
+                                                tabItem[item.label] = '-';
+                                                that.tableData.push(tabItem);
+                                            }
+                                        }
+                                        that.tableData.length=1;
+                                    }else{
+                                        var tableList = res.sort((a,b)=>{
+                                            return a.head_id-b.head_id;
+                                        })
+                                        var headData = that.headData;
+                                        var tableData = [];
+                                        for (let y=0;y<headData.length;y++) {
+                                            let headName = headData[y].name;
+                                            let headId = headData[y].id;
+                                            for(let i=0;i<tableList.length;i++){
+                                                if (tableList[i]['head_id'] == headId) {
+                                                    var item ={};
+                                                    item.headId=tableList[i].head_id;
+                                                    item[headData[y].label] = tableList[i].value==null?'-' :tableList[i].value;
+                                                    item.serialNumber = tableList[i].serial_number;
+                                                    item.bodyId = tableList[i].id;
+                                                    tableData.push(item);
+                                                }
+                                            }
+                                        }
+                                        if(tableData.length <=0){
+                                            var headData = that.headData;
+                                            var tabItem = {};
+                                            for(var item of headData){
+                                                tabItem[item.label] = '-';
+                                                tableData.push(tabItem);
+                                            }
+                                            // tableData = that.tableData.slice(0,1);
+                                        }
+                                        var tableDataList = tableData.filter((item)=>{
+                                            return item.serialNumber !=null;
+                                        });
+                                        let lastItem = {};
+                                        for(let item of that.headData){
+                                            lastItem[item.name] = '';
+                                        }
+                                        let allList = that.sortArr(tableDataList,'serialNumber');
+                                        allList = allList.filter((item)=>{
+                                            return item.length>0
+                                        })
+                                        for(let item of allList){
+                                            var headItem = {};
+                                            headItem.bodyIds = [];
+                                            for(var headDataItem of that.headData){
+                                                headItem[headDataItem.name] = '';
+                                            }
+                                            for(var i in headItem){
+                                                if(item.length>0){
+                                                    for(var j of item){
+                                                        for(var k in j){
+                                                            if(k == i){
+                                                                var bodyList = headItem.bodyIds.filter((item)=>{
+                                                                    return item.headId == j.headId
+                                                                });
+                                                                if(bodyList.length<=0){
+                                                                    var bodyItem = {
+                                                                        bodyId: j.bodyId,
+                                                                        headId: j.headId
+                                                                    }
+                                                                    headItem.bodyIds.push(bodyItem);
+                                                                }
+                                                                if(i == 'SN'){
+                                                                    this.currentOption = this.currentOption.indexOf('(')>-1?this.currentOption.substring(0,this.currentOption.indexOf('(')):this.currentOption
+                                                                    headItem[i] = j[k].indexOf(this.currentOption)>-1?j[k]:this.currentOption+'-'+j[k];
+                                                                    headItem.serialNumber = j.serialNumber;
+                                                                    headItem.sortNumber = Number(j.serialNumber.substring(j.serialNumber.lastIndexOf('-')+1));
+                                                                }else{
+                                                                    if(headItem[i] == undefined || headItem[i] == '' || headItem[i] == '-'){
+                                                                        headItem[i] = j[k];
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                            that.tableData.push(headItem);
+                                        }
+                                        that.tableData.sort((a,b)=>{
+                                            return a.sortNumber - b.sortNumber;
+                                        });
+                                        that.tableData.push(lastItem);
+                                    }
+
+                                }).catch((err)=>{
+                                    console.log(err);
+                                })
+                            }
+                        })
+                    }else if(level === 3){
+                        that.table1 = true;
+                        that.table2 = false;
+                        that.headData = [];
+                        that.headList = [];
+                        Core.Api.request({
+                            method: "POST",
+                            url: "/param/head/binding/filter",
+                            data: {
+                                "category_id":parentId,
+                            }
+                        }).then((res) => {
+                            if(res.content === null || res.content.length<=0){
+                                that.isClick = true;
+                                return false;
+                            }else{
+                                that.isClick = true;
+                                for(var item of res.content){
+                                    that.headListId = item.id;
+                                }
+                                that.settleChildListAndShowList(res);
+                                if(!that.showBody){
+                                    return false;
+                                }
+                                that.tableData = [];
+                                return Core.Api.request({
+                                    method: "POST",
+                                    url: "/param/body/filterAll",
+                                    data:{
+                                        "category_id":parentId,
+                                    },
+                                }).then((res)=>{
+                                    if(that.headData.length<=0){
+                                        return false;
+                                    }
+                                    if(res.length<=0){
+                                    let tabItem = {}
+                                    let headData = that.headData;
+                                    for(let item of headData){
+                                        if(item.label){
+                                            tabItem[item.label] = '-';
+                                            that.tableData.push(tabItem);
+                                        }
+                                    }
+                                    that.tableData.length=1;
+                                }else{
+                                    let tableList = res.sort((a,b)=>{
+                                        return a.head_id-b.head_id;
+                                    })
+                                    let headData = that.headData;
+                                    let tableData = [];
+                                    for (let y=0;y<headData.length;y++) {
+                                        let headName = headData[y].name;
+                                        let headId = headData[y].id;
+                                        for(let i=0;i<tableList.length;i++){
+                                            if (tableList[i]['head_id'] == headId) {
+                                                var item ={};
+                                                item.headId=tableList[i].head_id;
+                                                item[headData[y].label] = tableList[i].value==null?'-' :tableList[i].value;
+                                                item.serialNumber = tableList[i].serial_number;
+                                                item.bodyId=tableList[i].id;
+                                                tableData.push(item);
+                                            }
+                                        }
+                                    }
+                                    if(tableData.length <=0){
+                                            let headData = that.headData;
+                                            var tabItem = {};
+                                        for(var item of headData){
+                                            tabItem[item.label] = '-';
+                                            tableData.push(tabItem);
+                                        }
+                                       // tableData = that.tableData.slice(0,1);
+                                    }
+                                    var tableDataList = tableData.filter((item)=>{
+                                        return item.serialNumber !=null;
+                                    });
+                                    var lastItem = {};
+                                    for(let item of that.headData){
+                                         lastItem[item.name] = '';
+                                    }
+                                    var allList = that.sortArr(tableDataList,'serialNumber');
+                                    allList = allList.filter((item)=>{
+                                         return item.length>0
+                                    })
+                                    for(let item of allList){
+                                        var headItem = {};
+                                        headItem.bodyIds = []
+                                        for(var headDataItem of that.headData){
+                                            headItem[headDataItem.name] = '';
+                                        }
+                                        for(var i in headItem){
+                                            if(item.length>0){
+                                                for(var j of item){
+                                                    for(var k in j){
+                                                        if(k == i){
+                                                            var bodyItem = {
+                                                                bodyId: j.bodyId,
+                                                                headId: j.headId
+                                                            }
+                                                            headItem.bodyIds.push(bodyItem);
+                                                            headItem[k] = j[k];
+                                                            if(i == 'SN'){
+                                                                this.currentOption = this.currentOption.indexOf('(')>-1?this.currentOption.substring(0,this.currentOption.indexOf('(')):this.currentOption
+                                                                //headItem[i] = this.currentOption+'-'+j[k];
+                                                                headItem[i] = j[k].indexOf(this.currentOption)>-1?j[k]:this.currentOption+'-'+j[k];
+                                                                headItem.serialNumber = j.serialNumber;
+                                                                //  if(headItem[i].indexOf('-')!=headItem[i].lastIndexOf('-')){
+                                                                //     var res = headItem[i];
+                                                                //     headItem[i] = res.substring(res.indexOf('-')+1);
+                                                                // }
+                                                                headItem.sortNumber = Number(j.serialNumber.substring(j.serialNumber.lastIndexOf('-')+1));
+                                                            }else{
+                                                                headItem[i] = j[k];
+                                                            }
+                                                         }
+                                                     }
+                                                 }
+                                             }
+                                         }
+                                         that.tableData.push(headItem);
+                                     }
+                                     that.tableData.sort((a,b)=>{
+                                         return a.sortNumber - b.sortNumber;
+                                     });
+                                     that.tableData.push(lastItem);
+                                }
+                                }).catch((err)=>{
+                                    console.log(err);
+                                })
+                            }
+                        })
+                    }else if(level === 4){
+                        that.table1 = true;
+                        that.table2 = false;
+                        that.headData = [];
+                        that.headList = [];
+                        Core.Api.request({
+                            method: "POST",
+                            url: "/param/head/binding/filter",
+                            data: {
+                                "category_id":parentId,
+                            }
+                        }).then((res) => {
+                            if(res.content == null || res.content.length<=0){
+                                that.isClick = true;
+                                return false;
+                            }
+                            // var showListLength = Array.from(new Set(res.content[0].show_list.split(','))).length;
+                            // if(showListLength>0){
+                            //     var that = this;
+
+                            // }
+                            that.isClick = true;
+                            for(var item of res.content){
+                                that.headListId = item.id;
+                            }
+                            that.settleChildListAndShowList(res);
+                            if(!that.showBody){
+                                return false;
+                            }
+                            that.tableData = [];
+                            return Core.Api.request({
+                                method: "POST",
+                                url: "/param/body/filterAll",
+                                data:{
+                                    "category_id":parentId,
+                                },
+                            }).then((res)=>{
+                                if(that.headData.length<=0){
+                                    return false;
+                                }
+                                if(res.length<=0){
+                                    let tabItem = {};
+                                    let headData = that.headData;
+                                    for(let item of headData){
+                                        if(item.label){
+                                            tabItem[item.label] = '-';
+                                            that.tableData.push(tabItem);
+                                        }
+                                    }
+                                    that.tableData.length=1;
+                                }else{
+                                    var tableList = res.sort((a,b)=>{
+                                        return a.head_id-b.head_id;
+                                    })
+                                    let headData = that.headData;
+                                    var tableData = [];
+                                    let tableInfoList = [];
+                                    for (let y=0;y<headData.length;y++) {
+                                        let headName = headData[y].name;
+                                        let headId = headData[y].id;
+                                        for(let i=0;i<tableList.length;i++){
+                                            if (tableList[i]['head_id'] == headId) {
+                                                var item ={};
+                                                item.headId=tableList[i].head_id;
+                                                item[headData[y].label] = tableList[i].value==null?'-' :tableList[i].value;
+                                                item.serialNumber = tableList[i].serial_number;
+                                                item.bodyId = tableList[i].id;
+                                                item.isUpload = tableList[i].isFile===0?false: true;
+                                                tableData.push(item);
+                                            }
+                                        }
+                                    }
+                                    if(tableData.length <=0){
+                                        let headData = that.headData;
+                                        let tabItem = {};
+                                        for(var item of headData){
+                                            tabItem[item.label] = '-';
+                                            tableData.push(tabItem);
+                                        }
+                                       // tableData = that.tableData.slice(0,1);
+                                    }
+                                    var tableDataList = tableData.filter((item)=>{
+                                        return item.serialNumber !=null;
+                                    });
+                                    var lastItem = {};
+                                    for(let item of that.headData){
+                                         lastItem[item.name] = '';
+                                    }
+                                    var allList = that.sortArr(tableDataList,'serialNumber');
+                                    allList = allList.filter((item)=>{
+                                         return item.length>0
+                                    })
+                                    for(let item of allList){
+                                        var headItem = {};
+                                        headItem.bodyIds = [];
+                                        for(var headDataItem of that.headData){
+                                             headItem[headDataItem.name] = '';
+                                        }
+                                        for(var i in headItem){
+                                            if(item.length>0){
+                                                for(var j of item){
+                                                    for(var k in j){
+                                                        if(k == i){
+                                                            var bodyList = headItem.bodyIds.filter((item)=>{
+                                                                return item.headId == j.headId
+                                                            });
+                                                            if(bodyList.length<=0){
+                                                                var bodyItem = {
+                                                                    bodyId: j.bodyId,
+                                                                    headId: j.headId
+                                                                }
+                                                                headItem.bodyIds.push(bodyItem);
+                                                            }
+                                                            //headItem[k] = j[k];
+                                                            if(i == 'SN'){
+                                                                headItem.serialNumber = j.serialNumber;
+                                                                this.currentOption = this.currentOption.indexOf('(')>-1?this.currentOption.substring(0,this.currentOption.indexOf('(')):this.currentOption
+                                                                //headItem[i] = this.currentOption+'-'+j[k];
+                                                                headItem[i] = j[k].indexOf(this.currentOption)>-1?j[k]:this.currentOption+'-'+j[k];
+                                                                headItem.serialNumber = j.serialNumber;
+                                                                // if(headItem[i].indexOf('-')!=headItem[i].lastIndexOf('-')){
+                                                                //     var res = headItem[i];
+                                                                //     headItem[i] = res.substring(res.indexOf('-')+1);
+                                                                // }
+                                                                headItem.sortNumber = Number(j.serialNumber.substring(j.serialNumber.lastIndexOf('-')+1));
+                                                            }else{
+                                                                if(headItem[i] == undefined || headItem[i] == '' || headItem[i] == '-'){
+                                                                headItem[i] = j[k];
+                                                                }
+
+                                                            }
+                                                        }else if(k === 'isUpload'){
+                                                            headItem['isUpload'] = j[k];
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                         }
+                                         tableInfoList.push(headItem);
+                                     }
+                                    tableInfoList.sort((a,b)=>{
+                                         return a.sortNumber - b.sortNumber;
+                                    });
+                                    function getHeadName(data){
+                                        data.forEach((item)=>{
+                                            if(item.id == that.categoryId){
+                                                if(item.name.indexOf('(')<=-1){
+                                                    item.name += `(${tableInfoList.length})`
+                                                }
+                                            }else{
+                                                if(item.child&&item.child.length>0){
+                                                    getHeadName(item.child);
+                                                }
+                                            }
+                                        })
+                                    }
+                                    getHeadName(that.categoryList)
+                                    tableInfoList.push(lastItem);
+//                                    console.log(tableInfoList)
+                                    // tableInfoList.forEach((tableItem)=>{
+                                    //     if(tableItem['serialNumber']&&tableItem['serialNumber']!=''){
+                                    //         tableItem.isUpload = false;
+                                    //         Core.Api.request({
+                                    //             url: '/param/body/findSnFileById?id='+this.categoryId+'&sn='+tableItem['serialNumber'],
+                                    //             method: 'GET'
+                                    //         }).then(res=>{
+                                    //             if(Array.isArray(res.data) && res.data.length>0){
+                                    //                 res.data.forEach((item)=>{
+                                    //                     if(item.sn){
+                                    //                         this.firmwareId = item.firmwareId;
+                                    //                         this.fileName = item.name;
+                                    //                         this.firmwareName = item.fileName;
+                                    //                         tableItem.isUpload = true;
+                                    //                     }
+                                    //                 })
+                                    //             }else{
+                                    //                 tableItem.isUpload = false;
+                                    //                 this.firmwareId = '';
+                                    //                 this.firmwareName = '';
+                                    //                 this.fileName = '';
+                                    //             }
+                                    //         })
+                                    //     }
+                                    // })
+                                    this.tableData = tableInfoList;
+                                }
+
+                            }).catch((err)=>{
+                                console.log(err);
+                            })
+                        })
+                    }
+
+                }).catch((err)=>{
+                    console.log(err);
+                })
+            },
+            sortArr (arr, str) {
+                var _arr = [], _t = [];
+                var _temp;
+                // 对数组的元素进行排序，并返回数组。
+                arr = arr.sort(function (a, b) {
+                    var s = a[str],
+                    t = b[str]
+                    return s < t ? -1 : 1;
+                })
+                if (arr.length) {
+                    _temp = arr[0][str]
+                }
+                // 将相同类别的对象添加到统一个数组
+                for (var i in arr) {
+                    if (arr[i][str] === _temp) {
+                        _t.push(arr[i]);
+                    } else {
+                        _temp = arr[i][str];
+                        _arr.push(_t);
+                        _t = [arr[i]];
+                    }
+                }
+                // 将最后的内容推出
+                _arr.push(_t)
+                return _arr
+            },
+            getDataByObjectType(obj,paramName){
+                if(obj instanceof Array){
+                    this[paramName] = obj;
+                }else if(obj instanceof Object){
+                    this[paramName] .push(obj);
+                }
+
+            },
+//            expandTreeNode(data){
+//                var parentId = data.id,
+//                rootId = data.level<=1?data.id:data.root_id,
+//                level = data.level;
+//                this.selectedTableId = parentId;
+//                this.categoryId = parentId;
+//                this.currentLevel = data.level;
+//                this.parentId = data.parent_id;
+//            this.requestNextLevel(parentId, rootId, level, this.resolve);
+//            //    this.loadNode(data, this.reslove);
+//            },
+            getParentType(typeName,parentId,rootId){
+                if(typeName == '' && rootId){
+                    this.categoryData.forEach(item=>{
+                        if(item.root_id == rootId && item.level == 2 && parentId == item.id){
+                            typeName = item.name;
+                        }
+                    })
+                }
+                switch(typeName){
+                    case '电机':
+                    this.parentType = 3;
+                    break;
+                    case '仪表':
+                    this.parentType = 4;
+                    break;
+                    case '电池':
+                    this.parentType = 5;
+                    break;
+                    case '传感器':
+                    this.parentType = 6;
+                    break;
+                    case '控制器':
+                    this.parentType = 7;
+                    break;
+                    case '连接器':
+                    this.parentType = 8;
+                    break;
+                    case '附件':
+                    this.parentType = 11;
+                    break;
+                    case '充电器':
+                    this.parentType = 12;
+                    break;
+                    default:
+                    break;
+                }
+                switch(parentId){
+                    case 5:
+                    this.parentType = 3;
+                    break;
+                    case 13:
+                    this.parentType = 4;
+                    break;
+                    case 15:
+                    this.parentType = 5;
+                    break;
+                    case 17:
+                    this.parentType = 6;
+                    break;
+                    case 14:
+                    this.parentType = 7;
+                    break;
+                    case '连接器':
+                    this.parentType = 8;
+                    break;
+                    case '附件':
+                    this.parentType = 11;
+                    break;
+                    case 16:
+                    this.parentType = 12;
+                    break;
+                    default:
+                    break;
+                }
+            },
+
+            handleNodeClick(data) {
+                // if(this.isClick){
+                this.isClick = false;
+                //console.log(data);
+                this.pasteCategoryList = [];
+                this.pasteItem = '';
+                window.localStorage.setItem('selectedCode',data.id);
+                //this.selectedCode = data.id;
+                this.currentNode = data;
+                var parentId = data.id,
+                rootId = data.level<=1?data.id:data.root_id,
+                level = data.level;
+                this.selectedTableId = parentId;
+                this.categoryId = parentId;
+                this.currentLevel = data.level;
+                this.addParamParentId = data.parent_id;
+                this.copyItem = data.name;
+                this.copyId = data.id;
+                this.parentId = data.parent_id;
+                this.rootId = data.root_id;
+                this.level = data.level;
+                if(this.rootId == 2 && this.level == 4){
+                    this.isShowUploadFile = true;
+                }else{
+                    this.isShowUploadFile = false;
+                }
+                // if(data.level == 2){
+                //     var componentType = data.component_type;
+                //     if(componentType>0){
+                //         this.parentType = componentType;
+                //     }else{
+                //     //this.getParentType(data.name,'','');
+                //         switch(data.name){
+                //             case '电机':
+                //             componentType = 3;
+                //             break;
+                //             case '仪表':
+                //             componentType = 4;
+                //             break;
+                //             case '电池':
+                //             componentType = 5;
+                //             break;
+                //             case '传感器':
+                //             componentType = 6;
+                //             break;
+                //             case '控制器':
+                //             componentType = 7;
+                //             break;
+                //             case '连接器':
+                //             componentType = 8;
+                //             break;
+                //             case '附件':
+                //             componentType = 11;
+                //             break;
+                //             case '充电器':
+                //             componentType = 12;
+                //             break;
+                //             case 'Battery':
+                //                 componentType = 5;
+                //             break;
+                //             default:
+                //             break;
+                //         }
+                //         var name = data.name.indexOf('(')>-1?data.name.substring(0,data.name.indexOf('(')):data.name;
+                //         var data = {
+                //             "component_type":componentType,
+                //             "code": data.code,
+                //             "create_time": data.create_time,
+                //             "create_user_id": data.create_user_id,
+                //             "id": data.id,
+                //             "level": data.level,
+                //             "name": name,
+                //             "org_id": data.org_id,
+                //             "parent_id": data.parent_id,
+                //             "root_id": data.root_id,
+                //             "sort_no": data.sort_no,
+                //             "update_time": data.update_time,
+                //             "update_user_id": data.update_user_id,
+                //             "user_id": data.user_id,
+                //             "weight": data.weight
+                //         };
+                //         Core.Api.request({
+                //             url:'/param/category',
+                //             method: 'POST',
+                //             data: JSON.stringify(data)
+                //         }).then(res=>{
+                //             console.log(res);
+                //             this.parentType = res.component_type;
+                //         }).catch(err=>{
+                //             console.log(err);
+                //         })
+                //     }
+                // }else if(data.level>2){
+                //     this.categoryData.forEach((item)=>{
+                //         if(item.id == data.parent_id){
+                //             this.parentType = data.component_type;
+                //         }
+                //     })
+                // }
+                this.requestNextLevel(parentId, rootId, level, this.resolve);
+                this.currentOption = data.name.indexOf('(')>-1?data.name.substring(0,data.name.indexOf('(')):data.name;
+                // }
+            },
+            goAddItem() {
+                var sortNumbers = [];
+                for(var item of this.headData){
+                    sortNumbers.push(item.sortNumber);
+                }
+                var maxSortNumber;
+                if(sortNumbers.length<=0){
+                    maxSortNumber = 0;
+                }else{
+                    maxSortNumber = Math.max(...sortNumbers);
+                }
+                this.$router.push({
+                    path: '/component/createParam/paramSave',
+                    query: {
+                        categoryId: this.categoryId,
+                        rootId: this.rootId,
+                        parentId: this.addParamParentId,
+                        level: this.level,
+                        sortNumber: maxSortNumber
+                    }
+                })
+            },
+
+            editParamColumns(){
+                this.currentOption = this.currentOption.indexOf('(')>-1?this.currentOption.substring(0,this.currentOption.indexOf('(')):this.currentOption;
+                 //var serialNumber = this.paramValueRadios['SN'].indexOf('-')>-1?this.paramValueRadios['SN']:this.currentOption+'-'+this.paramValueRadios['SN'];
+                let serialNumber;
+                if(this.paramValueRadios['SN'].indexOf(this.currentOption)<=-1){
+                    return;
+                }else{
+                    serialNumber = this.paramValueRadios['SN'];
+//                    serialNumber = this.currentOption+'-'+this.paramValueRadios['SN'];
+                }
+                this.editSerialNumber = serialNumber;
+                let data = [];
+                let paramValueRadios = Core.Data.deepClone(this.paramValueRadios);
+                this.headData.forEach((item,index)=>{
+                    this.editBodyIds.forEach(editItem=>{
+                        if(item.id == editItem.headId){
+                            var editItem = {
+                                "head_id": item.id,
+                                "category_id": this.selectedTableId,
+                                "value": paramValueRadios[item.label].toUpperCase(),
+                                "serial_number": this.editSerialNumber,
+                                "id": editItem.bodyId
+                            };
+                            data.push(editItem);
+                        }
+                    })
+                })
+                // this.headData.forEach((item,index)=>{
+                //     this.editBodyIds.forEach((editItem)=>{
+                //         if(item.id == editItem.headId){
+                //             this.headData.splice(index,1);
+                //         }
+                //     })
+                // })
+                this.headData.forEach((item,index)=>{
+                    for(var j in item){
+                        for(var k in paramValueRadios){
+                            if(item[j] == k){
+                                var editListItem = {
+                                    "head_id": item.id,
+                                    "category_id": this.selectedTableId,
+                                    "value": paramValueRadios[item.label].toUpperCase(),
+                                    "serial_number": this.editSerialNumber,
+                                    "id": ''
+                                };
+                                data.push(editListItem);
+                            }
+                        }
+                    }
+                })
+                var obj = {};
+                data = data.reduce((item,next)=>{
+                    obj[next.head_id]?'':obj[next.head_id] = true && item.push(next);
+                    return item;
+                },[])
+                Core.Api.request({
+                    url:'/param/body/edit?oldSn='+this.oldSerialNumber,
+                    method: 'POST',
+                    data: JSON.stringify(data)
+                }).then((res)=>{
+                    if(res.length>0){
+                        this.$message({
+                            type: 'success',
+                            message: 'edit successfully!'
+                        })
+                        // this.headData.forEach((item)=>{
+                        //     res.forEach((bodyItem)=>{
+                        //         if(item.id == bodyItem.head_id){
+                        //             this.tableData[this.editParamIndex][item.label] = bodyItem.value;
+                        //         }
+                        //     })
+                        // })
+                        this.editParamValueVisible = false;
+                        this.editSerialNumber = '';
+                        this.oldSerialNumber = '';
+                        this.requestNextLevel(this.categoryId, this.rootId, this.level, this.resolve);
+                    }
+
+                })
+
+            },
+            showEditParamValueDialog(index,data){
+                console.log('这是sn',data)
+                this.editParamIndex = index;
+                this.oldSerialNumber = data.serialNumber;
+                this.editParamValueVisible = true;
+                var that = this;
+                for(var paramItem in that.paramValueRadios){
+                    for(var headItem in data){
+                        if(paramItem==headItem){
+                            that.paramValueRadios[paramItem] = data[headItem];
+                        }
+                    }
+                }
+
+                this.editSerialNumber = data.serialNumber?data.serialNumber:'';
+                this.editBodyIds = data.bodyIds;
+            },
+
+            renderContent(h, {node,data,store}){
+                return (
+                    <span>
+                        <span>
+                            <span>{node.label}</span>
+                        </span>
+                        <span style="float: right; margin-right: 20px">
+                            {
+                                node.level>=1&&node.level<4?
+                                <i class="el-icon-plus" on-click={ (e) => {e.stopPropagation(); this.showAddDialog(store, data)}}></i>
+                                :null
+                            }
+
+                            <i class="el-icon-edit" on-click={ (e) => {e.stopPropagation(); this.showEditDialog(store, data)}}></i>
+                            {
+                                // node.level == 4 ?
+                                // <i class="el-icon-delete" on-click={ (e) => {e.stopPropagation(); this.showDeleteDialog(store, data)}}></i>
+                                // :null
+                            }
+                            {
+                                // node.level>1?
+                                // <el-button class="param-copy" size = "mini" type = 'text' on-click={(e) => {e.stopPropagation();this.goCopy(store, data)}}></el-button>
+                                // :null
+                            }
+                            {
+                                node.level==3 || node.level == 4 && data.root_id == 3?
+                                <el-button class="head-detail" size = "mini" type = 'text' on-click={(e) => {e.stopPropagation();this.showHeadDetail(store, data)}}></el-button>
+                                :null
+                            }
+                            {
+                                // (data.root_id == 1 || data.root_id == 2) &&node.level>=4?
+                                // <el-button class="upload-param-file" size = "mini" type = 'text' on-click={(e) => {e.stopPropagation();this.uploadParamImage(store, data)}}></el-button>
+                                // :null
+                            }
+                        </span>
+                    </span>);
+            },
+            renderHeaderWidth(h,{column,$index}){
+                column.minWidth=111
+                let _this = this;
+                return h('span', column.label)
+            },
+            renderHeader(h, data){
+                return (
+                    <span>
+                        <span on-click={ (e) => {e.stopPropagation(); this.showAddParamRowsDialog(data)}}>
+                            <img src={require('../../assets/images/icon/head-detail.png')}/>
+                        </span>
+                    </span>
+                )
+
+            },
+            renderHandleHeader(h,data){
+                return (
+                    <span>
+                        {
+                            this.rootId==2?
+                            <span>操作</span>
+                            :null
+                        }
+
+                    </span>
+                )
+            },
+            showAddParamRowsDialog(){
+                this.addParamNameVisible = true;
+                //console.log(this.headList);
+            },
+            addParamRows(){
+                this.addParamNameVisible = false;
+                // var data = {
+                //     "category_id": this.selectedTableId,
+                //     "head_name": this.newParamName,
+                //     "id": 0,
+                // }
+                // Core.Api.request({
+                //     url: '/param/head',
+                //     method: 'POST',
+                //     data: data
+                // }).then((res)=>{
+                //     console.log(res);
+                //     this.addParamNameVisible = false;
+                // }).catch((err)=>{
+                //     console.log(err);
+                // })
+            },
+            filterSubCategory(){
+                let check = false;
+                this.categoryData.forEach((item)=>{
+                    if(item.level > 2 && (item.name.toUpperCase().replace(/\s/g, "") ==this.categoryName.toUpperCase().replace(/\s/g, "")) ) {
+                        check = true;
+                    }
+                })
+                return check;
+            },
+            addSubCategory() {
+                if(this.filterSubCategory()){
+                    this.$message({
+                        message: '名称重复，请检查',
+                        type: 'warning',
+                    });
+                    return;
+                }
+                this.addSubCategoryDisabled = true;
+                var data = {
+                    "level": this.currentLevel,
+                    "name": this.categoryName.toUpperCase(),
+                    "parent_id": this.parentID,
+                    "root_id": this.rootID
+                }
+                Core.Api.request({
+                    url: '/param/category/save',
+                    data: JSON.stringify(data),
+                    method: 'POST'
+                }).then((res) => {
+                    this.dialogAddVisible = false;
+                    //this.getList();
+                    this.$message({
+                        message: 'Add successfully',
+                        type: 'success',
+                    });
+                    this.addSubCategoryDisabled = false;
+                    this.reload();
+                }).catch(err=>{
+                    this.$message({
+                        message: 'add failed',
+                        type: 'warning'
+                    })
+                    this.addSubCategoryDisabled = false;
+                })
+            },
+            showAddDialog(store, data) {
+                this.categoryName = '';
+                this.currentID = data.id;
+                this.currentLevel = data.level + 1;
+                this.parentID = data.id;
+                this.rootID = data.root_id <= 0 ? data.id : data.root_id;
+                this.dialogAddVisible = true;
+            },
+            showAddParamValueDialog(index,data){
+                this.headData.forEach((item)=>{
+                 this.paramValueRadios[item.label] = '';
+                });
+                this.addParamValueVisible = true;
+            },
+            showEditDialog(store, data) {
+                // if (data.org_id !== this.org.id) {
+                //     this.$message({
+                //         message: 'You have no permission',
+                //         type: 'warning',
+                //     });
+                //     return;
+                // }
+                var name = data.name.substring(0,data.name.lastIndexOf('('));
+                this.categoryName = data.name.lastIndexOf('(')>-1?name: data.name;
+                var that = this;
+                Core.Api.request({
+                    url: '/param/category/' + data.id,
+                    method: 'GET'
+                }).then((res) => {
+                    that.editData = res;
+                    that.dialogEditVisible = true;
+                });
+
+            },
+            //删除当前分组
+            deleteCategory() {
+                this.deleteSubCategoryDisabled = true;
+                Core.Api.request({
+                    url: '/param/category/' + this.selectCategoryID,
+                    method: 'DELETE'
+                }).then((res) => {
+                    if(res.code == 202){
+                        this.dialogDeleteVisible = false;
+                        this.deleteSubCategoryDisabled = false;
+                        this.$message({
+                            message: 'Delete successfully',
+                            type: 'success',
+                        });
+                        this.reload();
+                    }
+                })
+
+            },
+            //修改当前分租
+            editCategory() {
+                if (!this.categoryName) {
+                    this.$message({
+                        message: 'please input categoryName',
+                        type: 'waring',
+                    });
+                    return;
+                }
+                if(this.filterSubCategory()){
+                    this.$message({
+                        message: '名称重复，请检查',
+                        type: 'warning',
+                    });
+                    return;
+                }
+                this.editSubCategoryDisabled = true;
+                this.editData.name = this.categoryName.toUpperCase();
+                Core.Api.request({
+                    url: '/param/category',
+                    data: JSON.stringify(this.editData),
+                    method: 'POST'
+                }).then((res) => {
+                    this.dialogEditVisible = false;
+                    this.$message({
+                        message: 'edit successfully',
+                        type: 'success',
+                    });
+                    this.editSubCategoryDisabled = false;
+                    this.reload();
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            goCopy(store, data) {
+                this.$router.push({
+                    name: 'editParam',
+                    query: {
+                        id: data.id,
+                        name: data.name
+                    }
+                })
+            },
+            showHeadDetail(store, data) {
+                var parentType,status;
+                Core.Api.request({
+                    url: '/param/head/binding/find_list_by_id?id='+data.id,
+                    method: 'GET'
+                }).then(res=>{
+                    if(res.data.length>0){
+                        res.data.forEach((item)=>{
+                            if(item.root_name){
+                                status = item.root_name;
+                            }
+                            if(item.parentName){
+                                parentType = item.parentName;
+                            }
+                        })
+                        var that = this;
+                        Core.Api.request({
+                            method: 'POST',
+                            url: '/param/head/binding/filter',
+                            data: {
+                                "category_id":data.id,
+                            }
+                        }).then(res=>{
+                            if(res.content && res.content.length>=0){
+                                var showList = '',
+                                    headListId = 0,
+                                    list = '';
+                                    res.content.forEach((item)=>{
+                                        if(item){
+                                            headListId = item.id;
+                                            showList += (','+item.show_list);
+                                            list +=(','+item.child_list);
+                                        }
+                                    })
+                                    this.$router.push({
+                                        name: 'headList',
+                                        query: {
+                                            categoryId: data.id,
+                                            rootId:data.root_id,
+                                            parentId: data.parent_id,
+                                            parentType: parentType,
+                                            status: status,
+                                            showList: showList,
+                                            headListId: headListId,
+                                            childList: list.substring(list.indexOf(',')+1)
+                                        }
+                                    })
+                                }
+                        }).catch(err=>{
+                            console.log(err);
+                        })
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            showSlide(index) {
+                if (index == 1) {
+                    this.treeVisible = false;
+                } else {
+                    this.treeVisible = true;
+                }
+            },
+
+            handleDrop(draggingNode, dropNode, dropType, ev) {
+                var dragData = [];
+                var beforeSortId = draggingNode.data.sort_no,
+                    afterSortId = dropNode.data.sort_no;
+                draggingNode.data.sort_no = afterSortId;
+                dropNode.data.sort_no = beforeSortId;
+                dragData.push(draggingNode.data);
+                dragData.push(dropNode.data);
+                // console.log(dragData);
+                for (var j of this.treeNodeData) {
+                    for (var i of dragData) {
+                        if (i.name == j.name) {
+                            j.sort_no = i.sort_no;
+                        }
+                    }
+                }
+                Core.Api.request({
+                    url: '/param/category/bulk',
+                    data: JSON.stringify(this.treeNodeData),
+                    method: 'POST'
+                }).then((res) => {
+                    // console.log(res);
+
+                })
+
+                //     var name = draggingNode.data.name,
+                //         rootID = dropNode.data.root_id<=0?dropNode.data.id:dropNode.data.root_id,
+                //         level,
+                //         parentID;
+                //    if(dropType == 'after' || dropType =='before'){
+                //        level = dropNode.data.level;
+                //        parentID = dropNode.data.parent_id;
+                //    }else{
+                //        this.$message({
+                //            message:'不允许内外拖拽',
+                //            type: 'warning'
+                //        })
+                //        return;
+                //    }
+                //     this.dropData = {
+                //         "level": level,
+                //         "name": name,
+                //         "parent_id": parentID,
+                //         "root_id": rootID
+                //     }
+                //     Core.Api.request({
+                //         url: '/param/category',
+                //         data:JSON.stringify(this.dropData),
+                //         method: 'POST'
+                //     }).then((res)=>{
+                //         this.$message({
+                //             message: 'drop successfully',
+                //             type: 'success',
+                //         });
+                //     })
+            },
+            addThead(){
+                console.log(1);
+            },
+            addTbody(){
+                console.log(2);
+            },
+            getTreeList() {
+                // Core.Api.request({
+                //     method: 'GET',
+                //     url: '/param/category/findOneMenu'
+                // }).then(res=>{
+                //      if(res.code ===0){
+                //         if(res.data&&res.data.list&&res.data.list.length>0){
+                //             let treeList = res.data.list.map((item,index)=>{
+                //                 let treeItem = item;
+                //                 item.child = [];
+                //                 return treeItem;
+                //             })
+                //             console.log(treeList);
+                //             this.categoryList = treeList;
+                //         }
+                //     }
+                // }).catch(err=>{
+                //     console.log(err);
+                // })
+                console.log("Tree 1", new Date().getTime());
+                var that = this;
+                this.loadingTree = true;
+                Core.Api.request({
+                    method: "POST",
+                    url: "/param/category/filterAll",
+                }).then((res) => {
+                    //  that.tableData = [];
+                    that.loadingTree = false;
+                    console.log("Tree 2", new Date().getTime());
+
+                    if (res.length > 0) {
+                        that.categoryData = Core.Data.deepClone(res);
+//                        let parent = res.filter(function(item){
+//                            return item.level<=1;
+//                        });
+//                        let children = res.filter(function(item){
+//                            return item.level>1;
+//                        });
+//                        console.log("getFinalCategory 0", new Date().getTime());
+//                        that.getFinalCategory(parent,children); //将数据整合成树结构
+//                        console.log("getFinalCategory 1", new Date().getTime());
+
+//                        sortData(parent); //对树结构进行排序，方式目前是根据name中出现的第一组数字
+
+//                        function sortData(data){
+//                            console.log("Tree sortData 1", new Date().getTime());
+//
+//                            data.sort(function(a,b){
+//                                if(a.sortNumber == undefined || b.sortNumber == undefined){ //若sortNumber为空直接退出排序
+//                                    return false;
+//                                }
+//                                if(a.sortNumber == 0 || b.sortNumber == 0 ){
+//                                    return a.sortNumber - b.sortNumber
+//                                }else{
+//                                    if(a.sortNumber != b.sortNumber){ //若sortNumber不相等则按大小排序
+//                                         return a.sortNumber - b.sortNumber
+//                                    }else{
+//                                        var positionA = a.name.indexOf(a.sortNumber)+(a.sortNumber).toString().length-a.name.length,
+//                                            positionB = b.name.indexOf(b.sortNumber)+(b.sortNumber).toString().length-a.name.length;
+//                                        if(positionA < positionB){ //若sortNumber相等则比较数字在名字中所占的位置，位置越靠前则越小
+//                                            return b.name.length - a.name.length
+//                                        }else{
+//                                            return a.name.length - b.name.length
+//                                        }
+//                                    }
+//                                }
+//                            });
+//                            data.forEach((item)=>{
+//                                if(item.child&&item.child.length>0){
+//                                    sortData(item.child);
+//                                }
+//                            })
+//                            console.log("Tree sortData 2", new Date().getTime());
+//
+//                        }
+
+//                        console.log(parent);
+//                        that.getFinalCategoryList(res);
+                        that.categoryList = that.getFinalCategoryList(res);
+//                        console.log(that.categoryList);
+                        that.getChildrenNumber(that.categoryList);
+                        //自动展开选中的树结构
+                        let selectedCode = window.localStorage.getItem('selectedCode');
+                        if(selectedCode !=''){
+                            that.getDefaultKey(that.categoryList,selectedCode);
+                        }
+                        that.getAllHeadList();
+                    }
+                    //  resolve(res.content);
+                }).catch((err)=>{
+                    console.log(err);
+                })
+            },
+
+            exportParamData(){
+                //??
+                var tableHtml='<html><head><meta charset="UTF-8"></head><body>';
+                var lHtml = "<table border='1' style='width: 750px;height: 242px; border:1px solid ;border-collapse: collapse;border-color:#000;background-color:white;' align='center'><thead><tr><th>name</th></tr><thead><tr>";
+                this.categoryData.forEach((item,index)=>{
+                        if(index<this.categoryData.length-1){
+                            lHtml += `<td>${item.name}</td></tr><tr>`;
+                        }else{
+                            lHtml += `<td>${item.name}</td></tr>参数数据</table>`;
+                        }
+                })
+                console.log(lHtml);
+                tableHtml += lHtml;
+                tableHtml += '</body></html>';
+                var excelBlob = new Blob([tableHtml], {type: 'application/vnd.ms-excel'});
+                var fileName = "参数数据"+".xls";
+                var oa = document.createElement('a');
+                oa.href = URL.createObjectURL(excelBlob);
+                oa.download = fileName;
+                document.body.appendChild(oa);
+                oa.click();
+            },
+
+            addHead(item,index){
+                // console.log(item,index);
+                // console.log(this.paramValueRadios[index]);
+                // console.log(item.label+'-'+item.id);
+                // console.log(this.paramValueRadios[index][item.label+'-'+item.id]);
+                if(index === this.headData.length-1){
+                    this.showAddParam = true;
+                }
+            },
+
+            getFinalCategoryList(res){
+//                if(typeof res != "Array"){
+//                    return;
+//                }
+                let tree = [];
+                let level = new Set();
+                let data = {
+                    level_1:[],
+                    level_2:[],
+                    level_3:[],
+                    level_4:[],
+                    level_5:[],
+                    level_6:[],
+                };
+
+                res.forEach((item)=>{
+                    switch (item.level){
+                        case 1:{
+                            level.add(1);
+                            item["child"] = []
+                            data.level_1.push(item);
+                        }
+                            break;
+                        case 2:{
+                            level.add(2);
+                            item["child"] = []
+                            data.level_2.push(item)
+                        }
+                            break;
+                        case 3:{
+                            level.add(3);
+                            item["child"] = []
+                            data.level_3.push(item)
+                        }
+                            break;
+                        case 4:{
+                            level.add(4);
+                            item["child"] = []
+                            data.level_4.push(item)
+                        }
+                            break;
+                        case 5:{
+                            level.add(5);
+                            item["child"] = []
+                            data.level_5.push(item)
+                        }
+                            break;
+                        case 6:{
+                            level.add(6);
+                            item["child"] = []
+                            data.level_6.push(item)
+                        }
+                            break;
+                    }
+
+                });
+                function compare(child) {
+                    for (let ll=0; ll<=child.length-2; ll++){
+                        for(let lll=ll+1; lll<=child.length-1; lll++){
+                            if(child[lll].name < child[ll].name){
+                                let tem = child[lll];
+                                child[lll] = child[ll];
+                                child[ll] = tem;
+                            }
+                        }
+                    }
+                }
+                compare(data.level_4);
+                compare(data.level_5);
+                compare(data.level_6);
+
+                let newArr = Array.from(level);
+
+                if(data.level_5.length > 0 && data.level_6.length > 0 ){
+                    data.level_6.forEach((level_6)=>{
+                        data.level_5.forEach((level_5, index)=>{
+                            if(level_6.parent_id == level_5.id){
+                                data.level_5[index]['child'].push(level_6);
+                            }
+                        })
+                    })
+                }
+
+                if(data.level_4.length > 0 && data.level_5.length > 0 ){
+                    data.level_5.forEach((level_5)=>{
+                        data.level_4.forEach((level_4, index)=>{
+                            if(level_5.parent_id == level_4.id){
+                                data.level_4[index]['child'].push(level_5);
+                            }
+                        })
+                    })
+                }
+//
+                if(data.level_3.length > 0 && data.level_4.length > 0 ){
+                    data.level_4.forEach((level_4)=>{
+                        data.level_3.forEach((level_3, index)=>{
+                            if(level_4.parent_id == level_3.id){
+                                data.level_3[index]['child'].push(level_4);
+                            }
+                        })
+                    })
+                }
+
+                if(data.level_2.length > 0 && data.level_3.length > 0 ){
+                    data.level_3.forEach((level_3)=>{
+                        data.level_2.forEach((level_2, index)=>{
+                            if(level_3.parent_id == level_2.id){
+                                data.level_2[index]['child'].push(level_3);
+                            }
+                        })
+                    })
+                }
+
+                if(data.level_1.length > 0 && data.level_2.length > 0 ){
+                    data.level_2.forEach((level_2)=>{
+                        data.level_1.forEach((level_1, index)=>{
+                            if(level_2.parent_id == level_1.id){
+                                data.level_1[index]['child'].push(level_2);
+                            }
+                        })
+                    })
+                }
+
+                return data.level_1;
+            },
+
+            getFinalCategory(parent,children){
+                parent.forEach((parentItem,parentIndex)=>{
+                    children.forEach((childrenItem,childrenIndex)=>{
+                        if(childrenItem.parent_id === parentItem.id){
+                            let temp = JSON.parse(JSON.stringify(children))
+                            if(parentItem.child === undefined){
+                                parentItem.child = [];
+                            }
+                            childrenItem.sortNumber = 0;
+                            let sortNumber = childrenItem.name.replace(/\d+/g, function () {
+                                //查找数字后，可以对数字进行其他操作
+                                if(childrenItem.sortNumber!==0 && !isNaN(childrenItem.sortNumber)){
+                                    return false;
+                                }
+                                childrenItem.sortNumber = arguments[0]?Number(arguments[0]):0;
+                            })
+                            parentItem.child.push(childrenItem);
+                            temp.splice(childrenIndex,1);
+//                            return [childrenItem,temp]
+                            this.getFinalCategory([childrenItem],temp);
+                        }
+                    })
+                })
+            },
+            getChildrenNumber(data){
+                data.forEach((item)=>{
+                    if(item.child&&item.child.length>0){
+                        if(item.name.indexOf('工具')>-1 &&item.name.indexOf('()')<=-1){
+                            item.name += `(${item.child.length})`;
+                        }else{
+                            item.name += `(${item.child.length})`;
+                        }
+                        this.getChildrenNumber(item.child);
+                    }
+                })
+            },
+
+            createNewParam(){
+                var data = {
+                    "category_id": this.selectedTableId,
+                    "head_name": this.newParamName,
+                    "id": 0,
+                }
+                Core.Api.request({
+                    url: '/param/head/list',
+                    method: 'POST',
+                    data: data
+                }).then((res)=>{
+                    console.log(res);
+                    this.addParamNameVisible = false;
+                }).catch((err)=>{
+                    console.log(err);
+                })
+            },
+            cancelCreate(){
+                this.showAddParam = false;
+            },
+            //删除表头 注:此功能只能在一级表头页面进行操作
+            deleteHead(item,index){
+                var id = item.id;
+                Core.Api.request({
+                    url: '/param/head/list/'+id,
+                    method:'DELETE'
+                }).then(res=>{
+                    this.paramValueRadios.forEach((v,i)=>{
+                        for(var j in v){
+                            if(j.indexOf(item.name)>-1){
+                                this.paramValueRadios.splice(i,1);
+                            }
+                        }
+                    })
+                    this.headList.splice(index,1);
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            //上移表头
+            moveUpHead(item,index){
+                if(index<=0){
+                    this.$message({
+                        type: 'warning',
+                        message:'当前已是第一项'
+                    })
+                    return;
+                }else{
+                    let downDate = this.headData[index - 1];
+                    this.headData.splice(index - 1, 1);
+                    this.headData.splice(index,0, downDate);
+
+                    var showList = '',
+                        childList = '';
+                    this.headData.forEach((item,index)=>{
+                        showList+=(item.id+',');
+                    });
+                    this.headList.forEach((headItem,headIndex)=>{
+                        if(headItem){
+                            if(headItem.id == item.id){
+                                let downDate = this.headList[headIndex - 1];
+                                this.headList.splice(headIndex - 1, 1);
+                                this.headList.splice(headIndex,0, downDate);
+                            }
+                        childList+=(headItem.id+',');
+                        }
+
+                    });
+                    this.handleMoveHead(item.parentType,showList,childList);
+                }
+            },
+            //下移表头
+            moveDownHead(item,index){
+                var that = this;
+                if(index+1 == this.headData.length){
+                    this.$message({
+                        type: 'warning',
+                        message:'当前已是最后一项'
+                    })
+                    return;
+                }else{
+                    let downDate = that.headData[index + 1];
+                    that.headData.splice(index + 1, 1);
+                    that.headData.splice(index,0, downDate);
+                    var showList = '',
+                        childList = '';
+                    that.headData.forEach((headListItem)=>{
+                        showList+=(headListItem.id+',');
+                    });
+                    that.headList.forEach((headItem,headIndex)=>{
+                        if(headItem){
+                            if(headItem.id == item.id){
+                                if(headIndex + 1 >= that.headList.length){
+                                    return;
+                                }
+                                let downDate = that.headList[headIndex + 1];
+                                that.headList.splice(headIndex + 1, 1);
+                                that.headList.splice(headIndex,0, downDate);
+                            }
+                            childList+=(headItem.id+',');
+                        }
+                    });
+                   that.handleMoveHead(item.parentType,showList,childList);
+                }
+            },
+            //上移或下移表头数据
+            handleMoveHead(parentType,showList,childList){
+                 var checkedHeadItem = {
+                    "category_id":  this.categoryId,
+                    "child_list": childList.substring(0,childList.lastIndexOf(',')),
+                    "show_list": showList.substring(0,showList.lastIndexOf(',')),
+                    "parent_type": parentType,
+                    "parent_id":  this.parentId,
+                    "root_id":  this.rootId,
+                    "id": this.headListId
+                };
+                // var headList = this.headList.map((i,v)=>{
+                //     var item = {
+                //         "category_id": this.selectedTableId,
+                //         "head_name": i.label,
+                //         "id": i.id,
+                //         "is_show": 1,
+                //         "sort_no": v,
+                //     }
+                //     return item;
+                // });
+                // Core.Api.request({
+                //     url: '/param/head/list/bulk',
+                //     method: 'POST',
+                //     data:JSON.stringify(headList)
+                // }).then(res=>{
+                //     console.log(res);
+                // }).catch(err=>{
+                //     console.log(err);
+                // })
+                Core.Api.request({
+                    url: '/param/head/binding',
+                    method:'POST',
+                    data: JSON.stringify(checkedHeadItem)
+                }).then(res=>{
+                //console.log(res);
+                    if(res.id){
+                        this.$message({
+                            type: 'success',
+                            message: 'move successfully!'
+                        });
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            //创建表头，注：此功能和删除功能一样，仅在一级表头页面才能操作
+            toCreateHead(){
+                var that = this;
+                if(this.headNameInput == ''){
+                    this.$message({
+                        type: 'warning',
+                        message: 'please input head name!'
+                    });
+                    return;
+                }
+                var sortNumbers = this.headList.map((i)=>{
+                    return i.sortNumber;
+                })
+                var maxSortNumber = Math.max(...sortNumbers);
+                var data = {
+                    "category_id": this.selectedTableId,
+                    "head_name": this.headNameInput,
+                    "id": 0,
+                    "is_show": 1,
+                    "sort_no": maxSortNumber+1,
+                    "level": this.level,
+                    "parent_id": this.addParamParentId,
+                    "root_id": this.rootId,
+                };
+                Core.Api.request({
+                    url: '/param/head/list',
+                    data: JSON.stringify(data),
+                    method: 'POST'
+                }).then(res=>{
+                    console.log(res);
+                    if(res.id){
+                        this.$message({
+                            type: 'success',
+                            message: 'create success'
+                        });
+                        var item = {
+                            name: res.head_name,
+                            id: res.id,
+                            sortNumber: res.sort_no,
+                            isShow: 1,
+                            label: res.head_name
+                        };
+                        that.headList.push(item);
+                        console.log(that.headList);
+                        var paramItem ={
+                            [res.head_name+'-'+res.id]:''
+                        };
+                        if(that.paramValueRadios.length<that.headList.length){
+                            that.paramValueRadios.push(paramItem);
+                        }
+                        this.headNameInput = '';
+                        console.log(that.paramValueRadios);
+                        //this.reload();
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            //显示表头
+            showHeadName(item,index){
+                console.log(item,index);
+                var id = item.id,
+                    categoryId = this.selectedTableId,
+                    headName = item.name,
+                    isShow = 1,
+                    sortNumber = item.sortNumber,
+                    code = item.id;
+                this.showOrHideHeadName(categoryId,headName,id,isShow,sortNumber,code);
+                // Core.Api.request({
+                //     url: '/param/head',
+                //     method: 'POST',
+                //     data: JSON.stringify(data)
+                // }).then(res=>{
+                //     console.log(res);
+                // }).catch(err=>{
+                //     console.log(err);
+                // })
+            },
+            //隐藏表头
+            hideHeadName(item,index){
+                var id = item.id,
+                    categoryId = this.selectedTableId,
+                    headName = item.name,
+                    isShow = 0,
+                    sortNumber = item.sortNumber,
+                    code = item.id;
+                this.showOrHideHeadName(categoryId,headName,id,isShow,sortNumber,code);
+            },
+            showOrHideHeadName(categoryId,headName,id,isShow,sortNumber,code){
+                var that = this;
+                var data = {
+                    "category_id": categoryId,
+                    "code": code,
+                    "head_name": headName,
+                    "id": id,
+                    "is_show": isShow,
+                    "level": this.level,
+                    "parent_id": this.addParamParentId,
+                    "root_id": this.rootId,
+                    "sort_no": sortNumber
+                };
+                console.log(JSON.stringify(data));
+                Core.Api.request({
+                    url: '/param/head/list',
+                    method: 'POST',
+                    data: JSON.stringify(data)
+                }).then(res=>{
+                    if(res.id!=undefined && res.id !=null){//显示或者隐藏请求成功后将页面进行相应的调整
+                        // for(var item of that.headData){ //首先更新表头数据
+                        //     if(item.id == res.id){
+                        //         item.isShow = res.is_show
+                        //     }
+                        // }
+                        for(var item of that.headList){ //再更新表头编辑功能的数据
+                            if(item.id == res.id){
+                                item.isShow = res.is_show
+                            }
+                        }
+                        console.log(that.headList)
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            copyHead(){
+                var categoryId = this.pasteItem,
+                    headList = '',
+                    level = this.level+1;
+                    // if(level>3){
+                    //     return;
+                    // }
+                this.headData.forEach(i=>{
+                    headList += (i.id+',');
+                })
+                headList = headList.substring(0,headList.lastIndexOf(','));
+                console.log(headList);
+                var data = {
+                    "category_id": categoryId,
+                    "head_list": headList,
+                    "level": level
+                }
+                Core.Api.request({
+                    url: '/param/head/list/copy',
+                    method: 'POST',
+                    params: data,
+                }).then(res=>{
+                    console.log(res);
+                    this.$message({
+                        type: 'success',
+                        message: 'copy success!'
+                    })
+                    this.pasteItem = '';
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            showDeleteParamValueDialog(index,data){
+                this.deleteParamVisible = true;
+                this.deleteSerialNumber = data.serialNumber?data.serialNumber:data['SN'];
+                // if(data['SN']){
+                //     this.deleteSerialNumber = data['SN'].substring(data['SN'].indexOf('-')+1);
+                //     this.deleteSerialNumber = data['SN'];
+                // }
+            },
+            deleteParamColumns(){
+                let token = Core.Data.getToken() || "",
+                deleteBodyUrl = Core.Const.NET.END_POINT+'/param/body/deleteBody';
+                //deleteBodyUrl = 'http://192.168.60.205:9898/client/1/param/body/deleteBody';
+                console.log(this.deleteSerialNumber)
+                this.$http.delete(
+                    deleteBodyUrl+'?token='+token+'&category_id='+this.categoryId+'&serial_number='+this.deleteSerialNumber,
+
+                ).then(res=>{
+                    if(res.body.code == 0){
+                        this.$message({
+                            type: 'success',
+                            message: 'Delete successfully!'
+                        })
+                        this.categoryId = '';
+                        this.deleteSerialNumber = '';
+                        this.deleteParamVisible = false;
+                        //this.reload();
+                    }
+
+                    //this.reload();
+                }).catch(err=>{
+                    console.log(err);
+                })
+                // var data = {
+                //     "category_id": this.categoryId,
+                //     "serial_number": this.deleteSerialNumber
+                // }
+                // Core.Api.request({
+                //     url: '/param/body/deleteBody',
+                //     method: 'DELETE',
+                //     body:JSON.stringify(data),
+                // }).then(res=>{
+                //     console.log(res);
+                //     if(res.code == 0){
+                //         this.$message({
+                //             type: 'success',
+                //             message: 'delete successfully!'
+                //         });
+                //         this.deleteParamVisible = false;
+                //     }
+                // }).catch(err=>{console.log(err)});
+            },
+            showCopyParamValueDialog(index,data){
+                this.copyParamVisible = true;
+                this.currentOption = this.currentOption.indexOf('(')>-1?this.currentOption.substring(0,this.currentOption.indexOf('(')):this.currentOption
+                this.copyHeadItem = this.currentOption;
+                this.copyHeadCategoryId = this.categoryId;
+                for(var item in data){
+                    if(item == 'SN'){
+                        this.copyserialNumber = data[item].substring(data[item].indexOf('-')+1);
+                    }
+                }
+            },
+            copyParamColumns(){
+                this.copyParamVisible = false;
+            },
+            saveSelectedCategory(){
+
+            },
+            copyCategoryClick(data){
+                this.pasteHeadItem = data.name;
+                this.pasteHeadCategoryId = data.id;
+                this.pasteHeadId = data.id;
+                this.pasteHeadRootId = data.root_id;
+                this.pasteHeadParentId = data.parent_id;
+                //this.pasteHeadComponentType = data.parent_type;
+                this.pasteHeadComponentType = data.component_type;
+            },
+            copyParamColumns(){
+                Core.Api.request({
+                    url: '/param/head/binding/filter',
+                    method: 'POST',
+                    data: {
+                        "category_id":this.copyHeadCategoryId,
+                    }
+                }).then(res=>{
+                    if(res.content && res.content.length>0){
+                        var data = res.content[0];
+                        data.category_id = this.pasteHeadCategoryId;
+                        data.id = 0;
+                        data.root_id = this.pasteHeadRootId ;
+                        data.parent_id = this.pasteHeadParentId;
+                        data.parent_type = this.pasteHeadComponentType;
+                        data.component_type = this.pasteHeadComponentType;
+                        //data.serial_number = this.copyserialNumber;
+                        Core.Api.request({
+                            url: '/param/head/binding',
+                            method:'POST',
+                            data: JSON.stringify(data)
+                        }).then(res=>{
+                            console.log(res);
+                            if(res.id){
+                                this.$message({
+                                    type: 'success',
+                                    message: 'copy head successfully!'
+                                });
+                                Core.Api.request({
+                                        method: "POST",
+                                        url: "/param/body/filterAll",
+                                        data:{
+                                            "category_id":this.copyHeadCategoryId,
+                                        },
+                                    }).then((res)=>{
+                                        console.log(res);
+                                        if(res.length>0){
+                                            var data = JSON.parse(JSON.stringify(res));
+                                            data.forEach((item)=>{
+                                                item.category_id = this.pasteHeadCategoryId;
+                                                item.id = 0;
+                                                //item.serial_number = this.copyserialNumber;
+                                            });
+                                            Core.Api.request({
+                                                url: '/param/body/bulk',
+                                                method: 'POST',
+                                                data: data
+                                            }).then(res=>{
+                                                console.log(res);
+                                                if(res.length<=0){
+                                                    return false;
+                                                }
+                                                this.$message({
+                                                    type: 'success',
+                                                    message: 'copy body successfully!'
+                                                });
+                                                this.pasteHeadItem = '';
+                                                this.pasteHeadCategoryId = '';
+                                                this.pasteHeadId = '';
+                                                this.pasteHeadRootId = '';
+                                                this.pasteHeadParentId = '';
+                                                this.pasteHeadComponentType = '';
+                                                this.copyParamVisible = false;
+                                            }).catch(err=>{
+                                                console.log(err);
+                                            })
+                                        }
+                                    }).catch(err=>{
+                                        console.log(err);
+                                    })
+
+                            }
+                        })
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            exportOrder(index,data){
+                let url =  data.firmwareFile + "." + data.firmwareName.substring(data.firmwareName.indexOf('.')+1);
+                 window.location.href = 'http://static.besst.bafang-service.com/besst/file/'+url
+            },
+            deleteFile(index,data){
+                Core.Api.request({
+                    method: 'DELETE',
+                    url: '/firmware/'+data.id
+                }).then(res=>{
+                    console.log(res);
+                    this.$message({
+                        type: 'success',
+                        message: 'delete successfully'
+                    });
+                    this.reload();
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            showUploadHahaha(index,data){
+                console.log(this.tableData[index]);
+            },
+            showUploadedFile(data){
+                this.SN = data['serialNumber'];
+                this.uploadFileVisible = true;
+            },
+            uploadSingleParamFile(store,data){
+                console.log(data);
+                this.SN = data['serialNumber'];
+                Core.Api.request({
+                    url: '/param/body/findSnFileById?id='+this.categoryId+'&sn='+this.SN,
+                    method: 'GET'
+                }).then(res=>{
+                    if(res.data.length>0){
+                        this.uploadFirmwareList = res.data;
+                        this.uploadFirmwareList.forEach((item)=>{
+                            item.createTime = this.handleUploadFile(item.createTime*1000);
+                            item.accepted = this.acceptedInfo[item.accepted];
+                        })
+                        res.data.forEach((item)=>{
+                            if(item.sn){
+                                this.firmwareId = item.firmwareId;
+                                this.fileName = item.name;
+                                this.firmwareName = item.fileName;
+                            }
+                        })
+                    }else{
+                        this.uploadFirmwareList = [];
+                        this.firmwareId = '';
+                        this.firmwareName = '';
+                        this.fileName = '';
+                    }
+                    this.showUploadFileVisible = true;
+                })
+
+            },
+            // uploadParamImage(store,data){
+            //     if(data.root_id !== 2){
+            //         this.categoryId = data.id;
+            //         Core.Api.request({
+            //             url: '/firmware/filter',
+            //             data: {
+            //                 "category_id": this.categoryId
+            //             },
+            //             method: 'POST'
+            //         }).then(res=>{
+            //             if(res.content&&res.content.length>0){
+            //                 this.uploadedFile = res.content[0].firmware_name;
+            //                 this.paramFileId = res.content[0].id;
+            //                 this.uploadedParamURL = "http://static.besst.bafang-service.com/besst/img/"+res.content[0].firmware_name
+            //             }else{
+            //                 this.uploadedFile = '';
+            //                 this.paramFileId = '';
+            //                 this.uploadedParamURL = '';
+            //             }
+            //             this.uploadParamFile = true;
+            //         }).catch(err=>{
+            //             console.log(err);
+            //         })
+            //     }else{
+            //         this.categoryId = data.id;
+            //         Core.Api.request({
+            //             url: '/param/body/findSnFileById?id='+this.categoryId,
+            //             method: 'GET'
+            //         }).then(res=>{
+            //             if(res.data.length>0){
+            //                 let data = res.data.forEach((item)=>{
+
+            //                 })
+            //                 this.uploadFileList = res.data;
+            //                 this.uploadFileList.sort((a,b)=>{
+            //                     return a.firmwareId - b.firmwareId;
+            //                 })
+            //                 this.uploadFileVisible = true;
+            //             }
+            //         }).catch(err=>{
+            //             console.log(err);
+            //         })
+            //     }
+
+            // },
+            onParamSuccess(response, file, fileList) {
+                if (response.code !== 0) {
+                    this.$message({
+                        message: response.message,
+                        type: "error"
+                    });
+                } else {
+                    let data = {
+                        "firmware_file": response.data.name + '.' + response.data.ext,
+                        "name":response.data.file.name,
+                        "id": this.firmwareId,
+                        "sn": this.SN,
+                        "category_id": this.categoryId,
+                        "firmware_version": '',
+                        "remark": ''
+                    }
+                    Core.Api.request({
+                        url: '/firmware',
+                        method: 'POST',
+                        data: JSON.stringify(data)
+                    }).then(res=>{
+                        console.log(res);
+                        if(res.id && res.firmware_name){
+                            this.uploadedFile = res.firmware_name;
+                            //this.uploadedParamURL = response.data.file.hash + "." + response.data.file.ext
+                            this.uploadedParamURL = "http://static.besst.bafang-service.com/besst/img/"+ response.data.file.name
+                            this.$message({
+                                type: 'success',
+                                message: 'upload successfully'
+                            });
+                        }
+                        //this.uploadParamFile = false;
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                    // let failList = response.data && response.data.fail_list;
+                    // let successList = response.data && response.data.success_list;
+                    // if (failList && failList.length > 0) {
+                    //     this.dialogUploadFailVisible = true;
+                    //     this.dialogUploadText = 'Upload Fail List';
+                    //     this.failList = failList;
+                    // } else if (successList && successList.length > 0) {
+                    //     this.dialogUploadFailVisible = true;
+                    //     this.dialogUploadText = 'Upload Success List';
+                    //     this.failList = successList;
+                    // } else {
+                    //     this.$message({
+                    //         message: "File upload successfully! It's processing in the background",
+                    //         type: 'success'
+                    //     });
+                    //     //this.getProductionOrderDetail(this.orderId);
+                    // }
+                }
+            },
+            deleteParamFile(){
+                Core.Api.request({
+                    url: '/firmware/'+this.paramFileId,
+                    method: 'DELETE'
+                }).then(res=>{
+                    if(res.message == 'updated'){
+                        this.$message({
+                            type: 'success',
+                            message: 'delete successfully'
+                        });
+                        this.fileName = '';
+                        this.firmwareName = '';
+                        this.SN = '';
+                        this.uploadParamFile = false;
+                    }
+                }).catch(err=>{
+                    console.log(res);
+                })
+            },
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .create-param {
+        width: 100%;
+        height: 100%;
+        /* display: flex; */
+        // flex-direction: column;
+        .show-category-tree{
+            // margin-top: 50px;
+            .el-input__inner{
+                text-transform: uppercase;
+            }
+        }
+        .delete-firmware-info{
+            .el-form{
+                .el-form-item{
+                    display: flex;
+                    .el-form-item__label{
+                        width: 120px;
+                        // text-align: center;
+                    }
+                    .el-form-item__content{
+                        .el-input{
+                            width: 240px;
+                        }
+                        .el-select{
+                            width: 240px;
+                        }
+                    }
+                }
+            }
+        }
+        .table-wrap {
+            flex: 1;
+        }
+        .header {
+            height: auto;
+            .el-form-item {
+                margin-bottom: 0;
+            }
+        }
+        .loading {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tree-wrap{
+            /*position: absolute;*/
+            /*left: 0;*/
+            /*top: 0;*/
+            /*overflow: auto;*/
+            /*width: 272px;*/
+            /*height: 100%;*/
+            /*background: rgba(39, 43, 55, 0.75);*/
+            /*border-right: 1px solid #383d49;*/
+        }
+        .show-tree-node{
+            width: 30%;
+            height: 100%;
+            float: left;
+            border: 1px solid #e26829;
+            .el-tree {
+                height: 100%;
+                overflow: auto;
+            }
+        }
+        .edit-param-columns{
+            .el-form{
+                .el-form-item{
+                    display: flex;
+                    .el-form-item__label{
+                        width: 120px;
+                        text-align: center;
+                    }
+                    .el-form-item__content{
+                        // width: 300px;
+                        .el-input{
+                            width: 300px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .table-wrap {
+            width: 70%;
+            float: right;
+            .long-td {
+                max-width: 270px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                text-align: left;
+            }
+        }
+    }
+
+    .custom-tree-node {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        padding-right: 8px;
+    }
+
+    .el-icon-caret-right:before {
+        content: ""!important;
+    }
+
+    span.slide-to-right {
+        cursor: pointer;
+        border-right: 2px solid #e26829;
+        border-bottom: 2px solid #e26829;
+        width: 12px;
+        height: 12px;
+        margin-right: -2px;
+        transform: rotate(-45deg);
+        &.slide-hidden {
+            transform: rotate(135deg);
+            position: absolute;
+            top: 50%;
+            // left: -14px;
+            left: 8px;
+            &:last-child {
+                // left: -24px;
+                left: 18px;
+            }
+        }
+    }
+
+    span.slide-to-left {
+        cursor: pointer;
+        border-right: 2px solid #e26829;
+        border-bottom: 2px solid #e26829;
+        width: 12px;
+        height: 12px;
+        margin-right: -2px;
+        transform: rotate(-45deg);
+        &.slide-hidden {
+            top: 50%;
+            position: absolute;
+            // left: -14px;
+            left: 8px;
+            &:last-child {
+                // left: -24px;
+                left: 18px;
+            }
+        }
+    }
+
+    .test-slide {
+        width: 50px;
+        height: 100%;
+        border: 1px solid #e26829;
+    }
+    .el-icon-plus,
+    .el-icon-edit,
+    .el-icon-delete {
+        margin-right: 6px;
+    }
+    .other-functions{
+         .body-detail{
+            width: 24px;
+            height: 24px;
+            background: url('../../assets/images/icon/body-detail.png') no-repeat center center!important;
+            display: inline-block;
+        }
+        .copy-body-detail{
+            width: 24px;
+            height: 24px;
+            background: url('../../assets/images/icon/copy.png') no-repeat center center!important;
+            display: inline-block;
+        }
+        .upload-param-file{
+            background: url('../../assets/images/icon/upload-file.png') no-repeat 0 0!important;
+            width: 24px;
+            height: 24px;
+        }
+        .show-upload-file{
+            background: url('../../assets/images/icon/show-upload.png') no-repeat 0 0!important;
+            width: 24px;
+            height: 24px;
+        }
+        .has-uploaded{
+            background: url('../../assets/images/icon/succeed.png') no-repeat 0 0!important;
+            width: 24px;
+            height: 24px;
+        }
+        .delete-body-detail{
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .param-copy {
+        background: url('../../assets/images/icon-copy.png') no-repeat 0 0!important;
+        width: 18px;
+        height: 18px;
+    }
+    .head-detail{
+        background: url('../../assets/images/icon/detail.png') no-repeat 0 0!important;
+        width: 18px;
+        height: 18px;
+    }
+
+    .more-edit span{
+        margin-right: 10px;
+        font-size: 24px;
+    }
+    .edit-head-detail{
+        // border: 1px solid #E26829;
+        border-bottom: 0;
+        border-left: 1px solid #E26829;
+        border-right: 1px solid #E26829;
+        border-bottom: 1px solid #E26829;
+    }
+    .edit-head-detail .el-form-item{
+        width: 100%;
+        // border-bottom: 1px solid #E26829;
+        border-top: 1px solid #E26829;
+        margin-bottom: 0;
+        // padding: 10px 0;
+    }
+    .edit-head-detail .el-form-item__content{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .edit-head-detail .el-form-item__content label{
+        flex: 1;
+        text-align: center;
+        border-right: 1px solid #E26829;
+    }
+    .edit-head-detail .el-form-item__content .more-edit{
+        flex: 1;
+        text-align: center;
+    }
+    .head-detail .to-create{
+        padding: 10px 0;
+        text-indent: 20px;
+        margin-top: 20px;
+    }
+    .head-detail .to-edit{
+        padding: 10px 0;
+        text-indent: 20px;
+        margin-bottom: 10px;
+    }
+    .create-head-name{
+        margin-top: 20px;
+    }
+    .create-head-name label{
+        margin-right: 20px;
+    }
+    .create-head-name .el-input{
+        width: 240px;
+    }
+    .create-head-name .el-button{
+        margin-left: 20px;
+    }
+    .show-head-name{
+        width: 16px;
+        height: 16px;
+        //background: url('../../assets/images/icon/show.png') no-repeat center center;
+        display: inline-block;
+    }
+    .show-png{
+        background: url('../../assets/images/icon/show.png') no-repeat center center;
+    }
+    .showing-png{
+        background: url('../../assets/images/icon/showing.png') no-repeat center center;
+    }
+    .hide-head-name{
+        width: 16px;
+        height: 16px;
+        //background: url('../../assets/images/icon/hide.png') no-repeat center center;
+        display: inline-block;
+    }
+    .hide-png{
+        background: url('../../assets/images/icon/hide.png') no-repeat center center;
+    }
+    .hiding-png{
+        background: url('../../assets/images/icon/hiding.png') no-repeat center center;
+    }
+    .copy-head-name{
+        width: 16px;
+        height: 16px;
+        background: url('../../assets/images/icon/copy.png') no-repeat center center;
+        display: inline-block;
+    }
+    .copy-head-list{
+        margin-top: 10px;
+    }
+    .copy-head-list .el-form{
+        margin-top: 10px;
+        display: flex;
+    }
+    .copy-head-list .el-form .el-form-item{
+        display: flex;
+    }
+    .copy-head-list .paste-item{
+        margin-left: 20px;
+    }
+    .head-detail .el-dialog .el-dialog__footer{
+        text-align: center;
+    }
+    .displayed{
+        color: #fff;
+    }
+    .hidden{
+        color: red;
+    }
+    .to-edit{
+        margin-bottom: 10px;
+    }
+    .show-all-head .el-dialog--small{
+        width: 100%!important;
+        height: 700px!important;
+        top: 6%!important;
+    }
+    .show-head-body-detail .cell{
+        //display: flex;
+    }
+    .select-category{
+        width: 400px;
+    }
+    .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content{
+        background-color: #333!important;
+    }
+    .el-table__header{
+        width: 100%!important;
+    }
+    .el-table__body{
+        width: 100%!important;
+    }
+    .el-table__header, .el-table__body, .el-table__footer{
+        // table-layout: inherit!important;
+    }
+    .el-table__header-wrapper{
+        //width: 90%!important;
+    }
+    .firmware-info .el-form-item{
+        display: flex;
+    }
+    .submit-upload{
+        float: right;
+        margin-bottom: 20px;
+    }
+    .upload-content{
+        display: flex;
+        .submit-upload{
+            margin-left: 100px;
+        }
+    }
+    .show-param-list{
+        display: flex;
+        border: 1px solid #ccc;
+        border-bottom: 0;
+        .param-list-item{
+            flex: 0 0 15%;
+            text-align: center;
+            .param-name{
+                padding: 10px 0;
+                border-right: 1px solid #ccc;
+                display: inline-block;
+                width: 100%;
+            }
+            .param-head-list{
+                border: 1px solid #ccc;
+                border-left: 0;
+                border-bottom: 0;
+                .param-head-item{
+                    margin: 10px 0;
+                    border-bottom: 1px solid #ccc;
+                }
+            }
+        }
+    }
+    .uploaded-param-file{
+        margin-top: 20px;
+        // display: flex;
+        // justify-content:space-between;
+    }
+    .upload-param-file-dialog .el-dialog--small{
+        width: 1000px;
+        height: 1000px;
+    }
+    .uploaded-param-file{
+        img{
+            width: 100%;
+            height: 800px;
+        }
+    }
+    .uploaded-info{
+        margin-top: 20px;
+    }
+    .upload-file-dialog{
+        padding: 40px 0;
+        .el-dialog--small{
+            width: 45%;
+            .download-and-upload{
+                display: flex;
+                .upload-file{
+                    margin-top: 20px;
+                    margin-left: 60px;
+                }
+                .download-file{
+                    height: 30px;
+                    width: 60px;
+                    font-size: 20px;
+                    margin-top: 18px;
+                    margin-left: 18px;
+                }
+                .delete-file{
+                    height: 30px;
+                    width: 60px;
+                    font-size: 20px;
+                    margin-top: 18px;
+                }
+            }
+            .el-form{
+                .el-form-item{
+                    display: flex;
+                    .el-form-item__label{
+                        width: 120px;
+                        text-align: center;
+                    }
+                    .el-form-item__content{
+                        .el-input{
+                            width: 240px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .cell{
+        display: flex;
+    }
+    .el-radio{
+        .el-radio__label{
+            color: #fff;
+        }
+    }
+    .search-tree-node{
+        width: 400px;
+        margin: 20px;
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// index.vue?3f799605

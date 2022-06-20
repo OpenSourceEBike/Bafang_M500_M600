@@ -1,0 +1,1457 @@
+<template>
+    <div class="container">
+        <nav-bar :title="title[type]" :type="type"></nav-bar>
+        <div class="main">
+            <side-bar v-on:settingDialog="settingDialog"></side-bar>
+            <AppContent></AppContent>
+        </div>
+
+        <el-dialog :title="$t('setting')" :visible.sync="dialogSettingVisible" class="dialog-setting">
+            <div class="item">
+                <label class="label">{{ $t('language') }}</label>
+                <el-select v-model="language" class="select" @change="setLang">
+                    <el-option
+                        v-for="item in languages"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+            <div class="version">
+                <label class="label">{{ $t('version') }}</label>
+                <label class="version-label">{{version}}</label>
+                <!--<el-button class="update-btn">{{ $t('searchForUpdate') }}</el-button>-->
+            </div>
+            <div class="item">
+                <label class="label">{{ $t('versionDate') }}</label>
+                <span>{{ Core.Const.SYSTEM.VERSION_DATE }}</span>
+            </div>
+            <div class="item">
+                <label class="label">{{ $t('userInfo') }}</label>
+                <span>{{ user.email }}</span>
+            </div>
+            <div class="item" v-show="!isTryAccount">
+                <label class="label">{{ $t('password') }}</label>
+                <a class="item-a" @click="showResetDialog">{{ $t('changePassword') }}</a>
+            </div>
+            <div class="item" v-show="!isTryAccount">
+                <label class="label">{{ $t('company') }}</label>
+                <a class="item-a" @click="showEditCompanyDialog">{{ $t('editCompanyInfo') }}</a>
+            </div>
+        </el-dialog>
+        <el-dialog :title="$t('changePassword')" :visible.sync="dialogPasswordVisible" class="dialog-password">
+            <div class="item">
+                <div class="item-box">
+                    <label class="label">{{ $t('oldPassword') }}</label>
+                    <el-input v-model="oldPassword" class="input"></el-input>
+                </div>
+            </div>
+            <div class="item new-password">
+                <div class="item-box">
+                    <label class="label">{{ $t('newPassword') }}</label>
+                    <el-input v-model="newPassword" class="input" type="password"></el-input>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-box">
+                    <label class="label">{{ $t('confirmPassword') }}</label>
+                    <el-input v-model="rePassword" class="input" type="password"></el-input>
+                </div>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="changePassword">{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="dialogPasswordVisible = false">{{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!--判断有没有权限-->
+        <el-dialog :title="$t('warning')" :visible.sync="dialogAuthVisible" class="dialog-auth">
+            {{ $t('authTipOne') }}<br/>
+            {{ $t('authTipTwo') }}
+        </el-dialog>
+        <!--修改公司信息的弹窗-->
+        <el-dialog :title="$t('editCompany')" :visible.sync="dialogEditCompanyVisible"
+                   custom-class="edit-dialog"
+                   class="dialog-company">
+            <div class="company-item">
+                <label class="title logo">{{ $t('logo') }}</label>
+                <div class="content edit-img-box">
+                    <el-upload
+                        class="btn btn-primary upload-btn"
+                        :action=upload.url
+                        :show-file-list="false"
+                        :before-upload="beforeUploadFile"
+                        :on-success="imageUploaded"
+                        :data="upload.data">
+                        <img class="upload-icon"
+                             :src="upload.photographSrc | getImgUrl"/>
+                    </el-upload>
+                </div>
+            </div>
+            <div class="company-item">
+                <span class="logo-tip">
+                    <label>Tip:</label> <br/>
+                    <label>{{ $t('uploadTipOne') }}</label> <br/>
+                    <label>{{ $t('uploadTipTwo') }}</label>
+                </span>
+            </div>
+            <div class="clear-10"></div>
+            <div class="company-item">
+                <label class="title">{{ $t('company') }} {{ $t('name') }}</label>
+                <div class="content">
+                    <el-input v-model="org.name"></el-input>
+                </div>
+            </div>
+            <div class="company-item">
+                <label class="title">{{ $t('email') }}</label>
+                <div class="content">
+                    <el-input v-model="org.email"></el-input>
+                </div>
+            </div>
+            <div class="company-item">
+                <label class="title">{{ $t('phone') }}</label>
+                <div class="content">
+                    <el-input v-model="phoneNumber">
+                        <template slot="prepend">+{{areaCode}}</template>
+                    </el-input>
+                </div>
+            </div>
+            <div class="company-item">
+                <label class="title">{{ $t('website') }}</label>
+                <div class="content">
+                    <el-input v-model="org.website"></el-input>
+                </div>
+            </div>
+            <div class="company-item">
+                <label class="title">{{ $t('country') }}</label>
+                <div class="content">
+                    <el-input v-model="org.country" disabled>
+                    </el-input>
+                </div>
+            </div>
+            <div class="company-item">
+                <label class="title">{{ $t('address') }}</label>
+                <div class="content">
+                    <el-input v-model="org.address"></el-input>
+                </div>
+            </div>
+            <div class="company-item">
+                <label class="title">{{ $t('postcode') }}</label>
+                <div class="content">
+                    <el-input v-model="org.postcode">
+                        <template slot="append">No.</template>
+                    </el-input>
+                </div>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="updateCompany">{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="dialogEditCompanyVisible = false">{{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+        <!--升级BESST工具步骤-->
+        <el-dialog title="BESST Service Tool Update" :visible.sync="dialogUpdateBesstToolVisible"
+                   custom-class="edit-dialog dialog-update">
+            <div class="update-step-title">
+                <b>
+                    Please do below steps to continue the process to update BESST service tool.
+                </b>
+            </div>
+            <br>
+            <div class="update-step">
+                <p><b>Step 1</b></p>
+                <p>Disconnect the service tool from computer. And wait until all the LED turn off.</p>
+                <div>
+                    <img src="../assets/images/tool/service_tool_1.png" width="300"/>
+                    <img src="../assets/images/tool/service_tool_2.png" width="300"/>
+                </div>
+            </div>
+            <div class="update-step">
+                <p><b>Step 2</b></p>
+                <p>Connect the service tool to computer again. Wait until the computer recognize service tool.</p>
+                <div>
+                    <img src="../assets/images/tool/service_tool_3.png" width="300"/>
+                    <img src="../assets/images/tool/service_tool_4.png" width="300"/>
+                </div>
+            </div>
+            <div class="update-step">
+                <p><b>Step 3</b></p>
+                <p>Please click below button to check connection.  <p>
+                <p>If connection is ready,
+                    click "update" to finish updating service tool on the right border window. If connection is not ready, please do Step 1 and Step 2 again.</p>
+                <el-button type="primary" @click="checkToolConnection">Check Connection</el-button>
+                <p></p>
+            </div>
+            <div class="update-step">
+                <p><b>Finally</b></p>
+                <p>If update successfully, the "Test" LED would turn off and the "Run" LED would turn on. Then do Step 1 and Step 2 again.</p>
+            </div>
+        </el-dialog>
+        <!--升级BESST工具帮助-->
+        <el-dialog title="BESST Service Tool Update Help" :visible.sync="dialogUpdateBesstToolHelpVisible"
+                   custom-class="edit-dialog dialog-recover">
+            <div class="update-step-title">
+                <b>
+                    Please do below steps to recover BESST service tool.
+                </b>
+            </div>
+            <br>
+            <div class="update-step">
+                <p><b>Step 1</b></p>
+                <p>Go to Tool - Update Section. Select Component as Service Tool</p>
+                <div>
+                    <img src="../assets/images/tool/tool_update.png"/>
+                </div>
+            </div>
+            <div class="update-step">
+                <p><b>Step 2</b></p>
+                <p>Please input the SN of service tool<p>
+                <div>
+                    <img src="../assets/images/tool/tool_sn.png"/>
+                </div>
+                <p></p>
+            </div>
+            <div class="update-step">
+                <p><b>Step 3</b></p>
+                <p>Click the button "Get a file from cloud". And then select the history software to update.
+                    If there is notice about "components not exist", please contact besst@bafang-e.com with above SN.</p>
+            </div>
+            <div class="update-step">
+                <p><b>Finally</b></p>
+                <p>If update successfully, the "Test" LED would turn off and the "Run" LED would turn on. Then do Step 1 and Step 2 again.</p>
+            </div>
+        </el-dialog>
+        <!--升级BESST工具-->
+        <div class="update-slide" v-show="updateBesstTool" ref="update_box">
+            <!-- 滑动内容隐藏 -->
+            <div class="slide-content" @click="showSlide()">
+                <div class="slide-content-top slide-hidden height" v-if="slideDisplay">
+                    <span class="slide-to-right"></span>
+                    <span class="slide-to-right"></span>
+                </div>
+                <div class="slide-content-top slide-hidden height" v-else>
+                    <span class="slide-to-left"></span>
+                    <span class="slide-to-left"></span>
+                </div>
+            </div>
+            <div class="update-note-wrap" v-show="showContent">
+                <div class="update-title">
+                    {{ $t('updToolNote1') }}
+                </div>
+                <div class="update-note"><b style="color:#E26829;font-size:16px;">{{ $t('updToolNote') }}*</b>{{ $t('updToolNote2') }}</div>
+                <div class="20"></div>
+                <div class="update-tip">
+                    <span class="icon"><i class="el-icon-circle-check" style="color: #E26829"></i></span>
+                    {{ $t('updToolNote3') }}
+                </div>
+                <div class="10"></div>
+                <div class="update-tip">
+                    <span class="icon"><i class="el-icon-circle-close"></i></span>
+                    {{ $t('updToolNote4') }}
+                </div>
+                <div class="clear-20"></div>
+                <table border="0" cellspacing="0" cellpadding="0" class="history-table">
+                    <thead>
+                    <tr>
+                        <td class="history-td head">
+                            {{ $t('upd.version') }}
+                        </td>
+                        <td class="history-td head">
+                            {{ $t('upd.updateTime') }}
+                        </td>
+                        <td class="history-td head">
+                            {{ $t('upd.remark') }}
+                        </td>
+                        <td class="history-td head">
+                            {{ $t('upd.operation') }}
+                        </td>
+                    </tr>
+                    </thead>
+                    <tr v-for="item in HWRecordList">
+                        <td class="history-td">{{item.version}}</td>
+                        <td class="history-td">{{item.create_time | dateFormat}}</td>
+                        <td class="history-td">{{item.remark}}</td>
+                        <td class="history-td">
+                            <el-button type="text" @click="updateObject(item)">
+                                {{ $t('upd.update') }}
+                            </el-button>
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <span v-show="startTip">{{ $t('updStarting') }}</span>
+                </div>
+                <div>
+                    <el-progress v-show="percentage>0" :percentage="percentage"></el-progress>
+                </div>
+                <div class="update-btn" v-show="startUpdate">
+                    <span>{{ $t('updSuccess') }}</span>
+                    <el-switch v-model="switchTest" on-color="#98b42c" off-color="#606161" :on-text="$t('op.yes')"
+                    :off-text="$t('op.no')"></el-switch>
+                    <el-button class="report" type="primary" @click="updateBesstTool = false; dialogUpdateBesstToolVisible = false" :disabled="!switchTest" style="float: right">{{ $t('op.close') }}</el-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/ecmascript-6">
+    import NavBar from './layout/navbar.vue'
+    import SideBar from './layout/sidebar.vue'
+    import AppContent from './layout/content.vue'
+    import Core from 'core/core'
+    import ZH from '../../src/assets/lang/zh';
+    import EN from '../../src/assets/lang/en';
+    import DE from '../../src/assets/lang/de';
+    import NL from '../../src/assets/lang/nl';
+    import areaCodeInDB from 'core/areaCode'
+    import Update from "../../device/update"
+    import ElButton from "../../node_modules/element-ui/packages/button/src/button";
+
+    export default {
+        components: {
+            ElButton,
+            NavBar,
+            SideBar,
+            AppContent
+        },
+        data() {
+            return {
+                version: Core.Const.SYSTEM.VERSION,
+                dialogSettingVisible: false,
+                dialogPasswordVisible: false,
+                dialogAuthVisible: false,
+                dialogEditCompanyVisible: false,
+                oldPassword: '',
+                newPassword: '',
+                rePassword: '',
+                languages: [
+                    {
+                        value: 1,
+                        label: '中文'
+                    }, {
+                        value: 2,
+                        label: 'Deutsch'
+                    }, {
+                        value: 3,
+                        label: 'English'
+                    }, {
+                        value: 4,
+                        label: 'Dutch'
+                    }
+                ],
+                language: 1,
+
+                fileName: '',
+                file: null,
+                fileBufferLength: 0,
+
+                Core: Core,
+                user: Core.Data.getUser() ? Core.Data.getUser() : '',
+                org: Core.Data.getOrg() ? Core.Data.getOrg() : '',
+
+                type: Core.Data.getOrg() ? Core.Data.getOrg().type : '',
+                offLineFlag: Core.Data.getOffline(),
+
+                title: {1: 'BRAND', 2: 'DEALER', 3: 'ASSEMBLER', 4: 'COMPONENT', 5: 'SERVICE CENTER', 6: 'DEALER'},
+
+                upload: {
+                    url: Core.Const.NET.IMG_UPLOAD_END_POINT,
+                    data: {
+                        token: Core.Data.getToken()
+                    },
+                    photographSrc: Core.Data.getOrg() ? Core.Data.getOrg().avatar : '',
+                },
+                areaCodeList: [],
+                areaCode: '',
+                phoneNumber: '',
+                countryOptions: [],
+                countryCode: 0,
+
+                isTryAccount: false,
+
+                updateToolDialog: false,
+                percentage: 0,
+                recordType: Core.Const.OBJECT_RECORD_TYPE.UPDATE,
+                isConnected: false,
+                reconnectInterval: null,
+                connectionIntervalIndex: null,
+                usbHID: false,
+
+                sn:'',
+                hardware_version:'',
+                soft_version:'',
+                count: 0,
+                HWRecordList: [],
+                fileBufferCrc: '',
+                startTip: false,
+                startUpdate: false,
+                switchTest: false,
+
+                updateBesstTool: false,
+                slideDisplay: false,
+                showContent: false,
+                dialogUpdateBesstToolVisible: false,
+                dialogUpdateBesstToolHelpVisible: false,
+            }
+        },
+
+        i18n: {
+            messages: {
+                en: EN.Index,
+                zh: ZH.Index,
+                de: DE.Index,
+                nl: NL.Index,
+            }
+        },
+
+        mounted: function () {
+            this.areaCodeList = areaCodeInDB.init();
+            this.initData();
+            let vm = this
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    vm.initData();
+                }, 100);
+            });
+
+            let language = Core.Data.getLang() || 'en';
+
+            switch (language) {
+                case 'zh':
+                    this.language = 1;
+                    break;
+                case 'de':
+                    this.language = 2;
+                    break;
+                case 'en':
+                    this.language = 3;
+                    break;
+                case 'nl':
+                    this.language = 4;
+                    break;
+                default:
+                    break;
+            }
+
+            if (this.org && (this.org.type !== 5 && this.org.type !== 6)) {
+                this.$root.eventHub.$on(Core.Const.EVENT_HUB.NO_AUTH, (data) => {
+                    this.dialogAuthVisible = true;
+                });
+            }
+            this.areaCodeList.forEach((item)=>{
+                if(item.area_en === this.org.country){
+                    this.areaCode = item.area_code;
+                    this.countryCode = item.country_code;
+                    this.phoneNumber = this.org.phone;
+                }
+            })
+            if(this.areaCode === ''){
+                this.getAreaCode()
+            }
+            this.saveOffLine();
+            this.checkManager();
+            this.checkConnection();
+
+            this.isTryAccount = Core.Data.get('accountType') && Core.Data.get('accountType').indexOf(4)>-1;
+//            console.log(Core.Data.getSpecialAccount('try'));
+
+            if(Update.port.usbSDK.client.dfuEnabled() && !this.updateBesstTool){
+                this.dialogUpdateBesstToolHelpVisible = true;
+            }
+        },
+        watch:{
+            isConnected: function(newValue, oldValue) {
+                let vm = this;
+                if(newValue != oldValue && oldValue == true){
+                    let count = 0;
+                    Update.port.setConnection();
+                    Update.port.setBoxOperation();
+                    if(vm.reconnectInterval){
+                        clearInterval(vm.reconnectInterval);
+                        vm.reconnectInterval = '';
+                    }
+                    vm.reconnectInterval = setInterval(()=>{
+                        count++;
+                        console.log("Count",count);
+                        if(count === 1){
+                            vm.checkConnection();
+                        }else if(count > 1){
+                            if(vm.usbHID){
+                                vm.listenConnection();
+                                console.log("Count stop 0",count);
+                                clearInterval(vm.reconnectInterval);
+                            }
+                            if(count>3 && Update.port.isConnected()){
+                                vm.listenConnection();
+                                console.log("Count stop 1",count);
+                                clearInterval(vm.reconnectInterval);
+                            }
+                            if(count>3 && !Update.port.usbSDK.client.dfuEnabled()){
+                                vm.listenConnection();
+                                console.log("Count stop 2",count);
+                                clearInterval(vm.reconnectInterval);
+                            }
+                        }
+                    },500);
+                }
+            }
+        },
+        methods: {
+            checkManager(){
+                if(this.offLineFlag){
+                    return;
+                }
+                let user = Core.Data.getUser();
+                Core.Api.Org.isManager(this.org.id, user.id).then(res =>{
+                    Core.Data.set("isManager", res.is_manager);
+                });
+            },
+            // 获取固件 by id
+            getFirmwareById(updateID) {
+
+                Core.Api.Firmware.getHistory(updateID).then(res => {
+
+                    let record = res.record;
+                    /**
+                     0: {id: 40, item_id: 2554, operator_id: 24, operator_type: 4, version: "BSF33.04",…}
+                     create_time: 1567500891
+                     file: "6a297b3018191e09732fb5e5442986b5880a00484d0ce82c1798f0391ffdccc8.bin"
+                     id: 40
+                     item_id: 2554
+                     operator_id: 24
+                     operator_type: 4
+                     remark: "For  softversion BSF33.03 and BSF32.02 "
+                     update_time: 1567500891
+                     version: "BSF33.04"
+                     weight: 0
+                     1: {id: 39, item_id: 2554, operator_id: 24, operator_type: 4, version: "BSF33.04",…}
+                     create_time: 1567500633
+                     file: "4aa9e18917951b392072de299b2c0a35119cb660be49c95405ff0b2105aeaeb1.bin"
+                     id: 39
+                     item_id: 2554
+                     operator_id: 24
+                     operator_type: 4
+                     remark: "For softversion BSTFW8103001.X"
+                     update_time: 1567500633
+                     version: "BSF33.04"
+                     weight: 0
+                     **/
+                    if(updateID === 5027){
+                        record =  record.filter((item)=>{ return item.remark.indexOf('BSF3')>-1})
+                    }else{
+                        record =  record.filter((item)=>{ return item.remark.indexOf('01.X')>-1 || item.remark.indexOf('BSTFW')>-1  })
+                    }
+                    if(record.length > 0){
+                        this.updateBesstTool = true
+                        this.showContent = true
+                        this.HWRecordList = record
+                    }
+                });
+            },
+
+            open() {
+//                this.$notify({
+//                    title: 'Service Tool Update',
+//                    message: 'We have provided new software version for BESST Tool. Please go to "Tool - Update" section',
+//                    offset: 100,
+//                    duration: 0,
+//                    type: 'info'
+//                });
+            },
+
+            checkBESST_Property() {
+                if(Core.Data.getOffline()) {
+                    return;
+                }
+                console.log(this.sn, this.soft_version, this.hardware_version);
+
+                if(this.soft_version !== '' && this.hardware_version !== ''){
+                    if(this.count === 0 && !this.offLineFlag){
+                        Update.port.setBESST_Pro(this.sn, this.soft_version, this.hardware_version);
+                        let updateID = 0;
+
+                        if(this.soft_version.indexOf('BSF33.') > -1 && this.soft_version > 'BSF33.03'){
+                            if(this.hardware_version === 'BESST.UC 3.0.0' || this.hardware_version === 'BESST.UC 3.0.1'){
+                                updateID = 2554;
+                            }else if(this.hardware_version === 'BESST.UC 3.0.3'){
+                                updateID = 5027;
+                            }else{
+                                return
+                            }
+                            // 版本统一后通过比较软件版本更新
+                            Core.Api.Item.getItemDetail(updateID).then((res)=>{
+
+                                let itemSoft = res.item.attr_list.filter((item)=>{
+                                    return item.attr_def_id === 12
+                                });
+                                if(res.item.status === 1 && this.soft_version < itemSoft.value){
+                                    this.updateToolDialog = true;
+                                    this.getFirmwareById(updateID);
+                                }
+                            });
+                        }else{
+                            // 版本未统一，强制更新
+                            if(this.soft_version === 'BSTFW8103001.0' && this.hardware_version === 'BESST.UC 3.0'){
+                                updateID = 2554;
+                            }else if(this.soft_version === 'BSF3202' && this.hardware_version === 'BESST.UC 3.0.2'){
+                                updateID = 5027;
+                            }else if(this.soft_version === 'BSF33.03' && this.hardware_version === 'BESST.UC 3.0.3'){
+                                updateID = 5027;
+                            }else{
+                                return
+                            }
+                            this.updateToolDialog = true;
+                            this.getFirmwareById(updateID);
+                        }
+
+
+//                        Core.Api.Component.getComponentList(
+//                            '',
+//                            '',
+//                            '',
+//                            'BESST.UC3.0.3A31f8t8061569',
+//                            '',
+//                            1
+//                        ).then(res => {
+//                            let componentList =  res.component_list;
+//                            /**
+//                             brand_id: 0
+//                             brand_org_id: 25
+//                             category_id: 10
+//                             category_root_id: 10
+//                             id: 2172671
+//                             insurance_name: ""
+//                             item:
+//                             attr_list: Array(8)
+//                             0: {id: 25143, attr_def_id: 23, attr_def_type: 8, attr_def_name: "More Pictures", value: Array(0), …}
+//                             1: {id: 25144, attr_def_id: 21, attr_def_type: 6, attr_def_name: "Specification", value: Array(0), …}
+//                             2: {id: 25145, attr_def_id: 22, attr_def_type: 6, attr_def_name: "Drawing", value: Array(0), …}
+//                             3: {id: 25146, attr_def_id: 24, attr_def_type: 2, attr_def_name: "Currency", value: "1", …}
+//                             4: {id: 25147, attr_def_id: 12, attr_def_type: 1, attr_def_name: "Software Version", value: "BSTFW8103001.0", …}
+//                             5: {id: 25148, attr_def_id: 13, attr_def_type: 1, attr_def_name: "Hardware Version", value: "BESST.UC 3.0", …}
+//                             6: {id: 25149, attr_def_id: 5, attr_def_type: 1, attr_def_name: "Price", value: "0", …}
+//                             7: {id: 25150, attr_def_id: 6, attr_def_type: 1, attr_def_name: "Warranty", value: "", …}
+//                             length: 8
+//                             __proto__: Array(0)
+//                             brand_id: 0
+//                             category_id: 10
+//                             category_root_id: 10
+//                             desc: "This is besst tool v3.0 - UART+CAN"
+//                             ext_part_no: "2116000000004"
+//                             id: 2554
+//                             img: "2d8d349da72c72a40ab38f9df2f94ddcc1e300c52761362a1dd2827c28c2338d.jpg"
+//                             is_default: 1
+//                             is_show: 1
+//                             name: "BESST.UC 3.0"
+//                             org_id: 25
+//                             parent_id: 0
+//                             set_id: 0
+//                             status: 0
+//                             user_id: 24
+//                             website: ""
+//                             __proto__: Object
+//                             item_id: 2554
+//                             order: {id: 13939, user_id: 624, org_id: 25, sn: "PO19051484009", source_id: "0000054132", …}
+//                             order_id: 13939
+//                             org_id: 25
+//                             produce_time: 1557832257
+//                             qc: ""
+//                             sale_customer_id: 0
+//                             sale_time: 0
+//                             sn: "BESST.UC3.0A31F8T4291918"
+//                             status: 1
+//                             test_data: "{"soft_ver":"BSTFW8103001.0","model":"","hard_ver":"BESST.UC 3.0"}"
+//                             **/
+//                            if(componentList.length>0){
+//                                let itemSoft = componentList[0].item.attr_list.filter((item)=>{
+//                                    return item.attr_def_id === 12
+//                                });
+//                                let itemHard = componentList[0].item.attr_list.filter((item)=>{
+//                                    return item.attr_def_id === 13
+//                                });
+//                                if(this.soft_version !== itemSoft[0].value){
+//                                    this.open();
+//                                }
+//                            }
+
+//                        });
+                        let vm = this;
+                        setTimeout(()=>{
+                            vm.count = 0;
+                        },3000)
+
+                    }
+                    this.count++;
+                }
+            },
+            checkToolConnection(){
+                if(Update.port.isConnected() && Update.port.usbSDK.client.dfuEnabled()){
+                    this.$message({
+                        message: 'Connection is ready',
+                        type: 'success'
+                    });
+                }else if(!Update.port.isConnected()){
+                    this.$message({
+                        message: 'Connection is not ready',
+                        type: 'info'
+                    });
+                }
+            },
+            checkConnection(){
+                let vm = this;
+                if(vm.connectionIntervalIndex){
+                    clearInterval(vm.connectionIntervalIndex);
+                    vm.connectionIntervalIndex = null;
+                }
+                vm.connectionIntervalIndex = setInterval(()=>{
+                    console.log('checkConnection Index',new Date().getTime());
+                    let connection = Update.port.getConnection();
+                    if(connection.usb){
+                        vm.usbHID = true;
+                        if(vm.percentage > 96){
+                            vm.percentage = 0;
+                        }
+                        if(Update.port.usbSDK.client.dfuEnabled() && !vm.updateBesstTool && vm.$route.query.from === "login"){
+                            console.log(this.$route.query);
+                            vm.dialogUpdateBesstToolHelpVisible = true;
+                        }
+                        Update.port.getUsbBoxBasic().subscribe(res => {
+                            if (!res.data) {
+                                return;
+                            }
+                            if (res.data.hasOwnProperty("sn")) {
+                                vm.sn = res.data.sn.trim();
+                                vm.checkBESST_Property();
+                            }
+                            if (res.data.hasOwnProperty("version")) {
+                                vm.soft_version = res.data.version.trim();
+                                vm.checkBESST_Property();
+                            }
+                            if (res.data.hasOwnProperty("hardware_version")) {
+                                vm.hardware_version = res.data.hardware_version.trim();
+                                vm.checkBESST_Property();
+                            }
+                        });
+                    }
+                    if(connection.usb || connection.com){
+                        vm.listenConnection();
+                        clearInterval(vm.connectionIntervalIndex);
+                    }
+                },300)
+            },
+
+            listenConnection() {
+                this.isConnected = true;
+                Update.port.startConnection();
+                Update.port.getListenData().subscribe((res) => {
+                    if (!res.data) {
+                        return;
+                    }
+                    if (res.type === 'error_usb') {
+                        this.isConnected = false;
+                    }
+                });
+            },
+
+            doUpdate(data){
+                let count = 0;
+                let vm = this;
+                vm.startTip = true;
+                Update.port.usbSDK.client.events.on('firmware-update-progress',(e)=>{
+                    vm.startTip = false;
+                    vm.startUpdate = true;
+                    vm.percentage = Math.ceil(e.upload / e.total * 100);
+//                        console.log(e);
+                    if( e.upload == e.total || vm.percentage == 100){
+                        if(count == 0){
+                            if (vm.sn && vm.org.id !== 25) {
+                                vm.saveUpdateRecord();
+                            }
+                        }
+                        count++;
+                    }
+                });
+                Update.port.usbSDK.client.events.on('firmware-update-completed', (e) => {
+                    vm.percentage = 0;
+//                        this.$message({
+//                            message: this.$t('cNam.updateSuccessTip'),
+//                            type: 'success'
+//                        });
+                });
+                this.fileBufferCrc = Update.checkCrc(data.fileBuffer)
+                Update.port.usbSDK.firmware.update.firmware(data.fileBuffer);
+            },
+
+            // 在线更新
+            updateObject(item) {
+                if(Update.port.isConnected()){
+                    if(!Update.port.usbSDK.client.dfuEnabled()){
+                        Update.port.usbSDK.client.updateStart().then(res=>{
+//                            console.log(res);
+                            this.dialogUpdateBesstToolVisible = true;
+                        }).catch(err =>{
+
+                        }).finally(()=>{
+                            console.log('updateStart response');
+                        });
+                        return
+                    }
+                }else{
+                    this.$message({
+                        message: this.$t('cNam.comDisconnect'),
+                        type: "warning"
+                    });
+                    return
+                }
+
+
+                let url = Core.Const.NET.FILE_URL_PREFIX + item.file;
+                let $this = this;
+                $this.fileName = item.version;
+                $this.$http.get(url, {responseType: 'blob'})
+                    .then((response) => {
+//                        console.log(response, 'get complete');
+                        $this.fileBufferLength = response.body.size;
+//                        console.log(this.fileBufferLength, 'get complete');
+
+//                        $this.$message({
+//                            message: $this.$t('cNam.updateGetFileSucc'),
+//                            type: 'warning'
+//                        });
+                        var fileReader = new FileReader();
+                        fileReader.onload = function () {
+                            let data = {
+                                fileBuffer: this.result,
+                                name: item.version,
+                                type: 'data'
+                            };
+
+//                            let arr = Buffer.from(this.result);
+                            $this.doUpdate(data);
+//                            console.log("[Arr]",arr[2]);
+//                            console.log("[Arr]",$this.isCanSoft);
+                        };
+                        fileReader.readAsArrayBuffer(response.body);
+                        fileReader.onerror = function(e){
+                            fileReader.abort();
+//                            $this.$message({
+//                                message: $this.updateMsgObject.readFailTip,
+//                                type: 'error',
+//                                duration: 0,
+//                                showClose: true
+//                            });
+                        }
+                    });
+            },
+
+
+            initData() {
+                this.title = {
+                    1: this.$t('orgType.brand'),
+                    2: this.$t('orgType.dealer'),
+                    3: this.$t('orgType.assembler'),
+                    4: this.$t('orgType.component'),
+                    5: this.$t('orgType.serviceCenter'),
+                    6: this.$t('orgType.dealer')
+                };
+                this.languages = [
+                    {
+                        value: 1,
+                        label: this.$t('languages.chinese')
+                    }, {
+                        value: 2,
+                        label: this.$t('languages.german')
+                    }, {
+                        value: 3,
+                        label: this.$t('languages.english')
+                    }, {
+                        value: 4,
+                        label: this.$t('languages.dutch')
+                    }
+                ];
+            },
+
+            saveUpdateRecord(){
+                let time = Core.Util.time();
+                let filename = this.file.name || this.fileName;
+                let type = this.recordType;
+                if(this.userName.indexOf("fqc") < 0){
+                    if (!this.offLineFlag) {
+                        Core.Api.ObjectRecord.save(this.sn, filename +"--"+ this.fileBufferCrc, time, type);
+                    } else {
+                        let userId = this.userId;
+                        let recordData = {
+                            userId: userId,
+                            sn: this.sn,
+                            data: filename +"--"+ this.fileBufferCrc,
+                            time: time,
+                            type: type
+                        };
+                        this.offlineRecordList.push(recordData);
+
+                        Core.Data.setRecordList(this.offlineRecordList);
+                    }
+                }
+            },
+
+            settingDialog() {
+                this.dialogSettingVisible = true;
+            },
+
+            showResetDialog() {
+                this.dialogPasswordVisible = true;
+            },
+
+            checkParams() {
+                let org = this.org;
+                if (!org) {
+                    this.$message({
+                        message: 'Please input company info',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                if (!org.name) {
+                    this.$message({
+                        message: 'Please input company name',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                if (!org.email) {
+                    this.$message({
+                        message: 'Please input company e-mail',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                if (!org.address) {
+                    this.$message({
+                        message: 'Please input company address',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                if (!org.postcode) {
+                    this.$message({
+                        message: 'Please input company postcode',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+//                if (!org.phone) {
+//                    this.$message({
+//                        message: 'Please input company phone',
+//                        type: 'warning'
+//                    });
+//                    return false;
+//                }
+//                if (!org.website) {
+//                    this.$message({
+//                        message: 'Please input company website',
+//                        type: 'warning'
+//                    });
+//                    return false;
+//                }
+                return true;
+            },
+
+            showEditCompanyDialog() {
+                this.org = Core.Data.getOrg();
+                this.dialogSettingVisible = false;
+                this.dialogEditCompanyVisible = true;
+            },
+
+            changePassword() {
+                if (!this.oldPassword) {
+                    this.$message({
+                        message: 'Please input old password',
+                        type: 'warning'
+                    });
+                    return;
+                }
+
+                if (!this.newPassword) {
+                    this.$message({
+                        message: 'Please input new password',
+                        type: 'warning'
+                    });
+                    return;
+                }
+
+                if (!this.rePassword) {
+                    this.$message({
+                        message: 'Please input confirm password',
+                        type: 'warning'
+                    });
+                    return;
+                }
+
+                if (!Core.Util.verifyPassword(this.newPassword)) {
+                    this.$message({
+                        message:  "Password must be 8-16 characters, only A-Za-z0-9, case-sensitive.",
+                        type: 'warning'
+                    });
+                    return false;
+                }
+
+                if (this.rePassword !== this.newPassword) {
+                    this.$message({
+                        message: 'Two passwords are not the same',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                Core.Api.User.changePassword(this.oldPassword, this.newPassword).then(res => {
+                    this.$message({
+                        message: 'Change password successfully',
+                        type: 'success'
+                    });
+                    Core.Api.User.logout().then(res => {
+                        // Core.Data.setUser('');
+                        Core.Data.setToken('');
+                        Core.Data.setAuth('');
+                        Core.Data.setOrg('');
+                        Core.Data.remove('accountType');
+//                        console.log(Core.Data.get('accountType'))
+                        this.$router.push({name: 'login'});
+                    });
+                });
+            },
+            beforeUploadFile(file){
+                let size = file.size / 1024 / 1024;
+                if(size > 3) {
+                    this.$message.warning({
+                        message: 'Size is bigger than 3M, not support',
+                        type: 'warning',
+                    });
+                    return;
+                }
+            },
+            imageUploaded(res) {
+//                console.log(res);
+//                console.log( this.upload );
+                this.upload.photographSrc = res.data.file.name;
+            },
+
+            updateCompany() {
+                let avatar = this.upload.photographSrc;
+                if (!this.checkParams()) {
+                    return;
+                }
+//                let phone = `${this.areaCode} ${this.phoneNumber}`;
+//            	console.log(avatar);
+                Core.Api.Org.orgSave(this.org.id, this.org.type, this.org.name, this.org.email, this.org.country, this.org.address, this.org.postcode, this.phoneNumber, this.org.website, avatar, this.countryCode).then(res => {
+                    this.$message({
+                        message: 'Edit successfully',
+                        type: 'success',
+                    });
+                    this.org.avatar = avatar;
+
+                    Core.Data.setOrg(this.org);
+                    this.$root.eventHub.$emit(Core.Const.EVENT_HUB.ORG_CHANGE);
+                    this.dialogEditCompanyVisible = false;
+                })
+            },
+
+            setLang() {
+                switch (this.language) {
+                    case 1:
+                        Core.Data.setLang('zh');
+                        break;
+                    case 2:
+                        Core.Data.setLang('de');
+                        break;
+                    case 3:
+                        Core.Data.setLang('en');
+                        break;
+                    case 4:
+                        Core.Data.setLang('nl');
+                        break;
+                }
+
+                this.$root.eventHub.$emit(Core.Const.DATA.KEY_I18N);
+                this.dialogSettingVisible = false;
+            },
+
+            getAreaCode(){
+                let phoneArr = this.org.phone.split(" ");
+                for (let i = 1; i < phoneArr.length; i++){
+                    this.phoneNumber += phoneArr[i];
+                }
+            },
+
+            saveOffLine() {
+                if(Core.Data.getOffline() || !navigator.onLine) {
+                    return;
+                }
+                let offlineRecordList = Core.Data.getRecordList() || [] ;
+                if(offlineRecordList.length > 0) {
+                    let length = offlineRecordList.length;
+                    let promiseList = [];
+//                    console.log(length);
+                    for(let i = 0; i < length; i+=10) {
+                        //let listJson = i + 10 > lengt ? JSON.stringify(offlineRecordList.slice(i, length)) : JSON.stringify(offlineRecordList.slice(i, i + 10));
+                        let start = i;
+                        let end = start + 10 > length ? length : start + 10;
+                        let listJson =JSON.stringify(offlineRecordList.slice(start, end));
+                        //  console.log(listJson);
+                        let promise =  Core.Api.ObjectRecord.batchSave(listJson);
+                        promiseList.push(promise);
+                    }
+
+                    Promise.all(promiseList).then(res => {
+                        Core.Data.setIsBatchRecordIng(true);
+                        let nowOfflineRecordList = Core.Data.getRecordList() || [] ;
+                        nowOfflineRecordList.splice(0, offlineRecordList.length);
+                        Core.Data.setRecordList(nowOfflineRecordList);
+                        Core.Data.setIsBatchRecordIng(false);
+                    }).catch(err => {
+                    })
+
+                }
+            },
+
+            showSlide(){
+                this.slideDisplay = !this.slideDisplay;
+                this.showContent = !this.showContent;
+            }
+        },
+        beforeDestroy: function () {
+            if(this.reconnectInterval){
+                clearInterval(this.reconnectInterval);
+            }
+            if(this.connectionIntervalIndex){
+                clearInterval(this.connectionIntervalIndex);
+            }
+            Update.port.setBoxOperation();
+        },
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss" scoped="">
+    .container {
+        overflow: hidden;
+        height: 100%;
+        .main {
+            height: calc(100% - 50px);
+            width: 100%;
+        }
+        .dialog-setting {
+            .item {
+                height: 30px;
+                margin: 0 20px;
+                .label {
+                    display: inline-block;
+                    width: 150px;
+                }
+                .item-a {
+                    color: #FFFFFF;
+                    text-decoration: underline;
+                    &:hover {
+                        color: #E26829
+                    }
+                }
+                .select {
+                    width: 242px;
+                }
+
+            }
+            .version {
+                margin: 26px 20px;
+                .label {
+                    display: inline-block;
+                    width: 80px;
+                }
+                .version-label {
+                    margin-left: 70px;
+                    color: #ffffff;
+                    display: inline;
+                }
+                .update-btn {
+                    margin-left: 10px;
+                    display: inline;
+                    background-color: #98B42C;
+                }
+            }
+        }
+        .dialog-password {
+            .item {
+                font-size: 0;
+                height: 30px;
+                .item-box {
+                    line-height: 30px;
+                }
+                .label {
+                    display: inline-block;
+                    width: 120px;
+                    height: 30px;
+                    vertical-align: middle;
+                }
+                .input {
+                    margin-left: 40px;
+                    width: 260px;
+                }
+            }
+            .new-password {
+                margin: 20px 0;
+            }
+        }
+        .dialog-auth {
+            .el-dialog__body {
+                text-align: center;
+            }
+        }
+        .dialog-company {
+            overflow: auto;
+            .el-dialog__body {
+                font-size: 0;
+            }
+
+            .company-item {
+                width: 50%;
+                line-height: 30px;
+                display: inline-block;
+                .land {
+                    width: 250px;
+                }
+                .title {
+                    display: inline-block;
+                    width: 80px;
+                    line-height: 20px;
+                    vertical-align: middle;
+                }
+                .logo {
+                    margin-top: 10px;
+                    vertical-align: top;
+                }
+                .content {
+                    margin: 10px;
+                    display: inline-block;
+                    width: 250px;
+                    .upload-icon {
+                        max-width: 142px;
+                        max-height: 142px;
+                    }
+                }
+            }
+
+            .detail-item {
+                width: 50%;
+                line-height: 30px;
+                display: inline-block;
+                .title {
+                    display: inline-block;
+                    width: 120px;
+                }
+                .logo {
+                    margin-top: 10px;
+                    vertical-align: top;
+                }
+                .content {
+                    margin: 10px;
+                    display: inline-block;
+                    color: #fff;
+                }
+                &.img-item {
+                    display: flex;
+                    .content {
+                        display: flex;
+                        width: 144px;
+                        height: 144px;
+                        align-items: center;
+                        justify-content: center;
+                        border: 1px solid #fff;
+                        .upload-icon {
+                            max-width: 142px;
+                            max-height: 142px;
+                        }
+                    }
+                }
+            }
+        }
+        .dialog-update {
+            .update-step-title{
+                color: #E26829;
+                b {
+                    font-size: 18px;
+                }
+            }
+            .update-step{
+                color: white;
+                p {
+                    font-size: 16px;
+                    line-height: 20px;
+                }
+            }
+        }
+        .dialog-recover {
+            .update-step-title{
+                color: #E26829;
+                b {
+                    font-size: 18px;
+                }
+            }
+            .update-step{
+                color: white;
+                b {
+                    font-size: 16px;
+                }
+                p {
+                    font-size: 16px;
+                    line-height: 20px;
+                }
+                img {
+                    padding: 5px 5px;
+                    border: 1px dashed #E26829;
+                }
+            }
+        }
+        .history-table {
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            tr {
+                line-height: 30px;
+            }
+            .head {
+                color: white;
+            }
+            .history-td {
+                padding: 0 6px;
+                width: 300px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                font-size: 14px;
+                text-align: center;
+            }
+            .img {
+                width: auto;
+                height: 30px;
+                vertical-align: middle;
+                background-color: white;
+            }
+        }
+        .update-slide {
+            display: block;
+            position: fixed;
+            top: 49px;
+            right: 0;
+            /*width: 600px;*/
+            min-height: 260px;
+            overflow: auto;
+            border: 1px solid #E26829;
+            background: #2B2F3B;
+            z-index: 10000;
+            div.slide-content {
+                width: 40px;
+                min-height: 260px;
+                background-color: #383d49;
+                border-right: solid 1px transparent;
+                position: relative;
+                float: left;
+                //后加的
+                display: flex;
+                flex-direction: column;
+                &.slide-hidden {
+                    z-index: 0;
+                    // right: 10px;
+                    // width: 20px;
+                    width: 35px;
+                    &.slide-content-top {
+                        width: 32px;
+                        cursor: pointer;
+                    }
+                }
+                div.slide-content-top {
+                    // margin-left: 8px;
+                    padding-left: 8px;
+                    height: 30px;
+                    // width: 524px;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    border-bottom: solid 1px #e26829;
+                    &.slide-hidden {
+                        border-bottom: solid 1px transparent;
+                    }
+                    &.width{
+                        min-width:40px;
+                        cursor: pointer;
+                    }
+                    &.height{
+                        min-height:260px;
+                        cursor: pointer;
+                    }
+                    span.slide-to-right {
+                        cursor: pointer;
+                        border-right: 2px solid #e26829;
+                        border-bottom: 2px solid #e26829;
+                        width: 12px;
+                        height: 12px;
+                        margin-right: -2px;
+                        transform: rotate(-45deg);
+                        /*&.slide-hidden {*/
+                            /*transform: rotate(135deg);*/
+                            /*position: absolute;*/
+                            /*// left: -14px;*/
+                            /*left: 8px;*/
+                            /*&:last-child {*/
+                                /*// left: -24px;*/
+                                /*left: 18px;*/
+                            /*}*/
+                        /*}*/
+                    }
+                    span.slide-to-left {
+                        cursor: pointer;
+                        border-right: 2px solid #e26829;
+                        border-bottom: 2px solid #e26829;
+                        width: 12px;
+                        height: 12px;
+                        margin-right: -2px;
+                        transform: rotate(135deg);
+                        /*&.slide-hidden {*/
+                            /*transform: rotate(135deg);*/
+                            /*position: absolute;*/
+                            /*// left: -14px;*/
+                            /*left: 8px;*/
+                            /*&:last-child {*/
+                                /*// left: -24px;*/
+                                /*left: 18px;*/
+                            /*}*/
+                        /*}*/
+                    }
+                }
+            }
+            .update-note-wrap {
+                padding:10px 10px;
+                /*margin-left: 40px;*/
+                width: 600px;
+                position: relative;
+                float: left;
+                .update-title{
+                    font-size: 16px;
+                }
+                .update-note{
+                    font-size: 16px;
+                    line-height: 40px;
+                }
+                .update-tip {
+                    padding-left: 10px;
+                }
+                .update-btn{
+                    line-height: 40px;
+                    margin-top: 3px;
+                }
+                span.icon{
+                    i{
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// index.vue?1aebedf0

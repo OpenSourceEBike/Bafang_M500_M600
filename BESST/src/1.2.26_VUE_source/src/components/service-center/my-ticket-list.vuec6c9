@@ -1,0 +1,337 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "my-ticket-list"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('el-form', {
+    staticClass: "demo-form-inline",
+    attrs: {
+      "inline": true
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('category')
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "placeholder": ""
+    },
+    on: {
+      "change": _vm.getMyTicketList
+    },
+    model: {
+      value: (_vm.search.category),
+      callback: function($$v) {
+        _vm.$set(_vm.search, "category", $$v)
+      },
+      expression: "search.category"
+    }
+  }, _vm._l((_vm.categoryList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.value,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('status')
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "placeholder": ""
+    },
+    on: {
+      "change": _vm.getMyTicketList
+    },
+    model: {
+      value: (_vm.search.status),
+      callback: function($$v) {
+        _vm.$set(_vm.search, "status", $$v)
+      },
+      expression: "search.status"
+    }
+  }, _vm._l((_vm.statusList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.value,
+        "value": item.id
+      }
+    })
+  }))], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item add",
+    on: {
+      "click": _vm.showSaveDialog
+    }
+  })])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHead), function(item, index) {
+    return _c('td', {
+      class: {
+        'al-right': index === 0
+      }
+    }, [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.ticketList), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "al-right"
+    }, [_vm._v(_vm._s(item.sn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("ticketCategoryType")(item.category)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.target_sn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("timeFormat")(item.create_time, "Y-m-d")))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("ticketStatus")(item.status, _vm.Core.Data.getLang())))]), _vm._v(" "), _c('td', {
+      staticClass: "icon-td"
+    }, [_c('div', {
+      staticClass: "icons"
+    }, [_c('div', {
+      staticClass: "icon-item eye",
+      attrs: {
+        "title": _vm.$t('look')
+      },
+      on: {
+        "click": function($event) {
+          _vm.goToTicketDetailPage(item)
+        }
+      }
+    })])])])
+  }))]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.ticketList == false),
+      expression: "ticketList==false"
+    }],
+    staticClass: "no-data-content"
+  }, [_vm._v("\n                " + _vm._s(_vm.$t('noResult')) + "\n            ")])]), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v(_vm._s(_vm.$t('total')) + ": " + _vm._s(_vm.total))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('addTicketDialog.dialogTitle'),
+      "custom-class": "save-ticket-dialog",
+      "visible": _vm.dialogSaveVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogSaveVisible = $event
+      }
+    }
+  }, [_c('el-form', {
+    attrs: {
+      "label-position": "left",
+      "model": _vm.ticket,
+      "label-width": "160px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('addTicketDialog.category'),
+      "required": ""
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "placeholder": ""
+    },
+    model: {
+      value: (_vm.ticket.category),
+      callback: function($$v) {
+        _vm.$set(_vm.ticket, "category", $$v)
+      },
+      expression: "ticket.category"
+    }
+  }, _vm._l((_vm.categoryOptions), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.value,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('addTicketDialog.title'),
+      "required": ""
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "maxlength": 45
+    },
+    model: {
+      value: (_vm.ticket.title),
+      callback: function($$v) {
+        _vm.$set(_vm.ticket, "title", $$v)
+      },
+      expression: "ticket.title"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('addTicketDialog.description')
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "autosize": {
+        minRows: 2
+      }
+    },
+    model: {
+      value: (_vm.ticket.description),
+      callback: function($$v) {
+        _vm.$set(_vm.ticket, "description", $$v)
+      },
+      expression: "ticket.description"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('addTicketDialog.bike'),
+      "required": ""
+    }
+  }, [_c('el-input', {
+    staticClass: "scan-input scan-input-top-8",
+    attrs: {
+      "placeholder": _vm.$t('addTicketDialog.sn')
+    },
+    on: {
+      "blur": _vm.blurObjectSn
+    },
+    model: {
+      value: (_vm.ticket.targetSn),
+      callback: function($$v) {
+        _vm.$set(_vm.ticket, "targetSn", $$v)
+      },
+      expression: "ticket.targetSn"
+    }
+  })], 1), _vm._v(" "), (!_vm.hideServiceCenter) ? _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('addTicketDialog.serviceCenter'),
+      "required": ""
+    }
+  }, [(_vm.showServiceCenterList) ? _c('el-select', {
+    attrs: {
+      "placeholder": ""
+    },
+    model: {
+      value: (_vm.ticket.serviceCenterOrgId),
+      callback: function($$v) {
+        _vm.$set(_vm.ticket, "serviceCenterOrgId", $$v)
+      },
+      expression: "ticket.serviceCenterOrgId"
+    }
+  }, _vm._l((_vm.serviceCenterList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  })) : _c('el-input', {
+    attrs: {
+      "disabled": true
+    },
+    model: {
+      value: (_vm.brandOrg.name),
+      callback: function($$v) {
+        _vm.$set(_vm.brandOrg, "name", $$v)
+      },
+      expression: "brandOrg.name"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('addTicketDialog.image')
+    }
+  }, [_c('vue-clip', {
+    attrs: {
+      "options": _vm.upload,
+      "on-complete": _vm.complete
+    },
+    scopedSlots: _vm._u([{
+      key: "clip-uploader-body",
+      fn: function(props) {
+        return _vm._l((props.files), function(file) {
+          return _c('div', {
+            staticClass: "img-list"
+          }, [_c('img', {
+            attrs: {
+              "src": file.dataUrl
+            }
+          })])
+        })
+      }
+    }])
+  }, [_c('template', {
+    slot: "clip-uploader-action"
+  }, [_c('div', [_c('div', {
+    staticClass: "dz-message"
+  }, [_c('img', {
+    staticClass: "upload-icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-upload@2x.png")
+    }
+  })])])])], 2)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('addTicketDialog.video')
+    }
+  }, [_c('el-upload', {
+    attrs: {
+      "action": _vm.upload.url,
+      "on-change": _vm.handleChangeVideo,
+      "list-type": "picture",
+      "accept": "video/*",
+      "data": _vm.upload.params,
+      "file-list": _vm.fileList
+    }
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item upload",
+    attrs: {
+      "title": _vm.$t('addTicketDialog.clickToUpload')
+    }
+  }), _vm._v(" "), _c('span', [_vm._v("support:avi/mov/mp4/mp3/webm/wav")])])])])], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.addTicket
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))])], 1)], 1)], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-e94717ae","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/service-center/my-ticket-list.vue
+// module id = 1175
+// module chunks = 73

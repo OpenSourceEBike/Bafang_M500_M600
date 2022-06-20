@@ -1,0 +1,452 @@
+<template>
+    <div class="component-order-save">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" title="back"></div>
+                </div>
+            </div>
+            <label class="title">{{ fileErrorId ? $t('createFeedback') : $t('createFeedback') }}</label>
+        </div>
+        <div class="content-wrap">
+
+            <div class="content">
+                <div class="order-info">
+                    <label class="title">{{ $t('feedbackInfo') }}</label>
+                    <div class="left">
+                        <div class="item">
+                            <label class="label">{{ $t('desc') }} <span class="required">*</span></label>
+                            <el-input class="input-note" v-model="desc"></el-input>
+                        </div>
+
+                        <div class="item">
+                            <label class="label">{{ $t('status') }}</label>
+                            <el-select v-model="status" slot="append" class="select" @change="changeCategory">
+                                <el-option
+                                    v-for="item in categoryOptions"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                                </el-option>
+                            </el-select>
+
+                        </div>
+                    </div>
+                    <div class="parts-list">
+                        <label class="upload-label"></label>
+                        <el-upload
+                            class="HWUpload"
+                            :action="upload.url"
+                            :on-change="handleChangeFile"
+                            :data="upload.params"
+                            :file-list="fileList"
+                            :on-success="successFile">
+                            <el-button size="small" type="primary">{{ $t('clickUpload') }}</el-button>
+                        </el-upload>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                        <!--<td>-->
+                            <!--<el-checkbox v-model="allSelectedForDelete"></el-checkbox>-->
+                        <!--</td>-->
+                        <td v-for="item in tableHead">{{item}}</td>
+                        </thead>
+                        <tbody>
+                        <tr >
+                            <td v-show="show">{{name}}</td>
+
+                            <td v-show="show">
+                                {{size}}KB
+                            </td>
+
+                            <td>
+                                <a class="btn-underline"  v-on:click="deleteItem()" v-show="show">{{ $t('delete') }}</a>
+                                <a class="btn-underline"  v-on:click="downloadFile()" v-show="show" >{{$t("download")}}</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="footer">
+                    <el-button type="primary" @click="creatFileError">{{ $t('saveFeedback') }}</el-button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        data() {
+            return {
+                org: Core.Data.getOrg(),
+                tableHead: ['Name', 'Size', 'Operation'],
+                itemHeadData: ['Image', 'Name', 'Part No.'],
+                orderItems: [],
+                selectItems: [],
+                FileItem:[],
+                name:'',
+                show:true,
+
+                fileErrorId: 0,
+                queryItemCondition: '',
+                email: '',
+                fileName: '',
+                setTime: '',
+                fileList: [],
+                files:'',
+                fileId:0,
+                status:'',
+                size:'',
+                desc:'',
+                hash:'',
+                ext:'',
+                url_post:'',
+                categoryOptions: [
+                    { id: 0, name: 'Urgent' },
+                    { id: 1, name: 'Wait' },
+                    { id: 2, name: 'Finished' },
+                ],
+
+                allChecked: false,
+                currentPage: 1,
+                total: 0,
+                dialogCreateVisible: false,
+                dialogSelectCategoryVisible: false,
+                categoryList: [],
+                defaultProps: {
+                    id: 'id',
+                    children: 'child',
+                    label: 'name',
+                },
+                upload: {
+                    url: Core.Const.NET.FILE_UPLOAD_END_POINT,
+                    paramName: 'file',
+                    params: {'token': Core.Data.getToken()},
+                },
+
+                selectCategoryItem: {
+                    id: '',
+                    name: ''
+                }
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.TestFeedback.Save,
+                zh: ZH.Component.TestFeedback.Save,
+                de: DE.Component.TestFeedback.Save,
+                nl: NL.Component.TestFeedback.Save
+            }
+        },
+        computed: {
+            allSelectedForAdd: {
+                get: function () {
+                    return this.selectItems.reduce(function (prev, curr) {
+                        return prev && curr.selected;
+                    }, true);
+                },
+                set: function (newValue) {
+                    this.selectItems.forEach((item) => {
+                        item.selected = newValue;
+                    });
+                }
+            },
+            allSelectedForDelete: {
+                get: function () {
+                    return this.orderItems.reduce(function (prev, curr) {
+                        return prev && curr.selected;
+                    }, true);
+                },
+                set: function (newValue) {
+                    this.orderItems.forEach((item) => {
+                        item.selected = newValue;
+                    });
+                }
+            }
+        },
+        mounted: function () {
+            // 国际化
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            this.fileErrorId = this.$route.query.fileErrorId;
+
+            if (this.fileErrorId) {
+                //根据反馈文件id查询文件信息
+                Core.Api.FileError.getFilesOne(this.fileErrorId).then(res => {
+                    let file_object = res.file_object;
+                    this.email = file_object.email;
+                    this.fileName = file_object.file_id;
+                    this.setTime = file_object.set_time;
+                    this.status = file_object.status;
+                    this.desc = file_object.desc;
+                });
+                //根据id查询文件信息
+                Core.Api.FileError.findFileInfo(this.fileErrorId).then(res=>{
+                    this.FileItem = res.file;
+                    this.fileId = this.FileItem.id;
+                    this.name = this.FileItem.name;
+                    this.size = (this.FileItem.size/1000);
+                    this.hash = this.FileItem.hash;
+                    this.ext = this.FileItem.ext;
+                    this.url_post = Core.Const.NET.FILE_URL_PREFIX+this.hash+"."+this.ext;
+                })
+            }
+        },
+
+        methods: {
+            downloadFile(){
+                window.open(this.url_post);
+            },
+
+            changeCategory(val) {
+                this.status = val;
+            },
+            successFile(response, file, fileList){
+                this.files = file;
+                this.fileName = this.files.response.data.file.name;
+                this.fileId = this.files.response.data.file.id;
+                this.name = this.files.response.data.file.name;
+                this.size = (this.files.response.data.file.size/1000);
+                this.show=true;
+            },
+            handleChangeFile(file) {
+                this.fileList = [file];
+            },
+
+            deleteItem() {
+               this.show=false;
+            },
+
+            addItems() {
+                this.selectItems.forEach((item, index) => {
+                    if (item.selected === true) {
+                        let isAdded = false;
+                        this.orderItems.forEach((orderItem) => {
+                            if (orderItem.item_id === item.id) {
+                                isAdded = true;
+                            }
+                        });
+                        if (!isAdded) {
+                            let addItem = this.selectItems[index];
+                            this.orderItems.push({
+                                item_id: addItem.id,
+                                item_name: addItem.name,
+                                part_no: '',
+                                item_part_no: addItem.ext_part_no,
+                                amount: 1,
+                                selected: false
+                            });
+                        }
+                    }
+                });
+                this.closeChooseItem();
+            },
+
+            creatFileError() {
+                if (this.show){
+                    //'id','email','file_id','status','desc'
+                    Core.Api.FileError.updateFileError(this.fileErrorId,this.email,this.fileId,this.status,this.desc)
+                        .then(res => {
+                            this.$message({
+                                message: "Save Successfully",
+                                type: 'success'
+                            });
+                        })
+                    this.$router.push({path: 'list'});
+
+                }else{
+                    this.fileId='';
+                    this.fileName='';
+                    //updateFileError:['file/update','id','email','file_name','file_id','status','desc'],
+                    Core.Api.FileError.updateFileError(this.fileErrorId,this.email, this.fileId,this.status,this.desc)
+                        .then(res => {
+                            this.$message({
+                                message: "update Successfully",
+                                type: 'success'
+                            });
+                        })
+                    this.$router.push({path: 'list'});
+                }
+
+            },
+            checkParams() {
+                if (!this.desc) {
+                    this.$message({
+                        message: 'Please input Desc.',
+                        type: 'warning'
+                    });
+                    return false;
+                }
+
+                return true;
+            },
+
+
+            selectCategory() {
+                this.dialogSelectCategoryVisible = true;
+            },
+
+
+
+
+
+        }
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .component-order-save {
+        width: 100%;
+        height: 100%;
+
+        .table-wrap {
+            width: 100%;
+            height: calc(100% - 392px);
+            box-shadow: 0 -1px #2B2F3B;
+            overflow-x: hidden;
+        }
+
+        span.required {
+            color: #E26829;
+            display: inline-block;
+        }
+
+        .content {
+            height: 100%;
+            border: 1px solid #2B2F3B;
+            .order-info {
+                width: 100%;
+                height: 272px;
+                .title {
+                    height: 50px;
+                    line-height: 50px;
+                    padding-left: 40px;
+                    /*font-size: 12px;*/
+                }
+                .left {
+                    float: left;
+                    width: 100%;
+                    height: 170px;
+                    background: #353945;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .item {
+                        margin: 2px 0 0 40px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        height: 50px;
+                        .label {
+                            display: inline-block;
+                            width: 110px;
+                        }
+                        .input {
+                            margin-left: 10px;
+                            width: 256px;
+                            border-radius: 0 0 10px 10px;
+                        }
+                        .input-left {
+                            margin-left: 10px;
+                            width: 200px;
+                        }
+                        .input-right {
+                            width: 200px;
+                        }
+                        .input-note {
+                            margin-left: 10px;
+                            width: 608px;
+                        }
+                    }
+                }
+                .parts-list {
+                    float: left;
+                    padding: 0 40px;
+                    font-size: 12px;
+                    overflow: hidden;
+                    height: 50px;
+                    line-height: 50px;
+                    width: 100%;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .labelList {
+                        /*font-size: 12px;*/
+                    }
+                    .att-btn {
+                        margin-left: 46px;
+                        padding: 6px 9px;
+                        min-width: 0;
+                    }
+                    .labelAdd {
+                        margin-left: 14px;
+                        /*font-size: 12px;*/
+                    }
+                }
+            }
+            .footer {
+                width: 100%;
+                height: 60px;
+                line-height: 60px;
+                padding-left: 40px;
+                box-shadow: 0 -1px #2B2F3B;
+                .footer-pagination {
+                    float: right;
+                }
+            }
+        }
+        .dialog {
+            .el-dialog--large {
+                width: 1100px;
+            }
+            .header {
+                .search-content {
+                    width: 200px;
+                    margin-right: 10px;
+                }
+                .search-btn {
+                    position: absolute;
+                    top: 15px;
+                    left: 250px;
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+        }
+
+        .upload-label {
+            display: inline-block;
+            width: 100px;
+            vertical-align: top;
+            padding-left: 20px;
+        }
+        .HWUpload {
+            display: inline-block;
+        }
+
+        .table-wrap .table-content {
+            padding-bottom: 0;
+        }
+        .pagination {
+            padding: 10px;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// save.vue?d3c3a0d0

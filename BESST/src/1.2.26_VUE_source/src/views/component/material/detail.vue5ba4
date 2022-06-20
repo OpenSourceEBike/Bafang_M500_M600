@@ -1,0 +1,308 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "material-order-detail"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": _vm.goOrderList
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('back')))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errorMark),
+      expression: "errorMark"
+    }]
+  }, [_c('img', {
+    staticClass: "error-img",
+    attrs: {
+      "src": require("../../../assets/images/diagnosis/icon-error.png"),
+      "width": "28",
+      "height": "28"
+    }
+  }), _vm._v("Connection Error\n                ")]), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productionDelete]) ? _c('div', {
+    staticClass: "icon-item delete",
+    attrs: {
+      "title": _vm.$t('delete')
+    },
+    on: {
+      "click": function($event) {
+        _vm.showDeleteDialog()
+      }
+    }
+  }) : _vm._e()])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('title1')))]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "info-list"
+  }, [_c('div', {
+    staticClass: "col-left"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('orderNo')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.order_id || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('user')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.material_user_id || '/'))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('desc')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.model_type))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-right"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('status')))]), _vm._v(" "), _c('span', [_c('i', {
+    staticClass: "status"
+  }, [_vm._v(_vm._s(_vm.material_status || '/'))])])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('qty')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.materialItem.amount))])]), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('num')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.storageNum))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "note"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('drawing')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.materialItem.drawing))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('stator')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.materialItem.stator))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('exterior')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.materialItem.exterior))])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('title2')))]), _vm._v(" "), _c('div', {
+    staticClass: "left "
+  }, [_c('div', {
+    staticClass: "info-list gao2"
+  }, [_c('div', {
+    staticClass: "col-left"
+  }, [_c('ul', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.showQRProd && !_vm.showQRTest),
+      expression: "!showQRProd && !showQRTest"
+    }],
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('vue-qr', {
+    attrs: {
+      "text": _vm.material_qr,
+      "size": 150,
+      "margin": 0
+    }
+  })], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "col-right"
+  }, [_c('ul', {
+    staticClass: "list-group top-sapce"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('scanning')))]), _vm._v(" "), _c('el-input', {
+    directives: [{
+      name: "focus",
+      rawName: "v-focus",
+      value: (true),
+      expression: "true"
+    }],
+    ref: "content",
+    staticClass: "input-sn",
+    attrs: {
+      "id": "scanQR"
+    },
+    model: {
+      value: (_vm.mainSn),
+      callback: function($$v) {
+        _vm.mainSn = $$v
+      },
+      expression: "mainSn"
+    }
+  })], 1), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.showQRProd && !_vm.showQRTest),
+      expression: "!showQRProd && !showQRTest"
+    }],
+    staticClass: "list-group-item"
+  }, [_c('el-button', {
+    staticClass: "step",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.nextStep()
+      }
+    }
+  }, [_vm._v("下一步")]), _vm._v(" "), _c('span')], 1)])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "order-info"
+  }, [_c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "info-list"
+  }, [_c('div', {
+    staticClass: "col-left gao"
+  }, [_c('div', {
+    staticClass: "list-group"
+  }, [_c('div', {
+    staticClass: "qr-left"
+  }, [_c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.showQR(1)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('show1')))]), _vm._v(" "), _c('el-button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showQRProd),
+      expression: "showQRProd"
+    }],
+    staticClass: "step",
+    attrs: {
+      "type": "warning"
+    },
+    on: {
+      "click": function($event) {
+        _vm.nextStep(4)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('show11')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "qr-left"
+  }, [_c('transition', {
+    attrs: {
+      "name": "el-fade-in-linear"
+    }
+  }, [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showQRProd),
+      expression: "showQRProd"
+    }],
+    staticClass: "transition-box"
+  }, [_c('vue-qr', {
+    attrs: {
+      "text": _vm.material_qr_product,
+      "size": 150,
+      "margin": 0
+    }
+  })], 1)])], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "col-right gao"
+  }, [_c('div', {
+    staticClass: "list-group"
+  }, [_c('div', {
+    staticClass: "qr-left"
+  }, [_c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.showQR(2)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('show2')))]), _vm._v(" "), _c('el-button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showQRTest),
+      expression: "showQRTest"
+    }],
+    staticClass: "step",
+    attrs: {
+      "type": "warning"
+    },
+    on: {
+      "click": function($event) {
+        _vm.nextStep(5)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('show22')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "qr-left"
+  }, [_c('transition', {
+    attrs: {
+      "name": "el-fade-in-linear"
+    }
+  }, [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showQRTest),
+      expression: "showQRTest"
+    }],
+    staticClass: "transition-box"
+  }, [_c('vue-qr', {
+    attrs: {
+      "text": _vm.material_qr_test,
+      "size": 150,
+      "margin": 0
+    }
+  })], 1)])], 1)])])])])])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('deleteDialog.title'),
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('deleteDialog.content')))]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteProductionOrder
+    }
+  }, [_vm._v(_vm._s(_vm.$t('deleteDialog.yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('deleteDialog.no')))])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-bd7fd258","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/material/detail.vue
+// module id = 1856
+// module chunks = 73

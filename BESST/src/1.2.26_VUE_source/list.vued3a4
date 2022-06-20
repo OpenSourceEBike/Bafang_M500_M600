@@ -1,0 +1,428 @@
+<template>
+    <div class="component-list">
+        <div class="header">
+            <el-form :inline="true" class="demo-form-inline">
+                <div class="btn-group-inline" v-if="goBackStatus">
+                    <div class="icons">
+                        <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                    </div>
+                </div>
+                <el-form-item :label="$t('brand')">
+                    <el-select v-model="search.brand_org_id" placeholder="" @change="getVehicleList"
+                               class="brand-select">
+                        <el-option
+                            v-for="item in brandList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item :label="$t('tableHead.vehicleSn')">
+                    <el-input v-model="search.vehicle_sn"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('poNo')">
+                    <el-input v-model="search.source_id"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('modelName')">
+                    <el-input v-model="search.item_name"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('bomSn')">
+                    <el-input v-model="search.bom_sn" class="input-sn"></el-input>
+                </el-form-item>
+                <div class="btn-group-inline">
+                    <div class="icons">
+                        <div class="icon-item search" @click="getVehicleList" :title="$t('search')"></div>
+                        <div class="icon-item export" @click="exportVehicleList"
+                             :title="$t('export')"></div>
+                    </div>
+                </div>
+            </el-form>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <td v-for="item in tableHead">{{item}}</td>
+                    </thead>
+                    <tbody v-if="!loading">
+                    <tr v-for="item in vehicleList">
+                        <td>{{ item.sn }}</td>
+                        <td><img :src="item.img | getImgUrl "/></td>
+                        <td>{{ item.name || '-' }}</td>
+                        <td>{{ item.item_name || '-' }}</td>
+                        <td>{{ item.source_id?item.source_id : '-' }}</td>
+                        <td>{{ item.produce_time | timeFormat('Y-m-d') }}</td>
+                        <td>
+                            <a class="btn-underline" @click.stop="goToVehicleDetailView(item.id)">{{$t('detail')}}</a>
+                            <a class="btn-underline" @click.stop="showDeleteDialog(item)"
+                               v-if="authList[Core.Const.AUTH_LIST.objectDelete]">{{$t('delete')}}</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-show="!vehicleList || vehicleList.length <= 0 && !loading">
+                    {{ $t('noResult') }}
+                </div>
+                <div class="loading" v-if="loading">
+                    <img src="../../../assets/images/icon/loading-bars.svg" alt="Loading icon"/>
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next, jumper"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+
+        <!--删除弹框-->
+        <el-dialog
+            :title="$t('deleteVehicle')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteTip') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteVehicle">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('no') }}</el-button>
+            </span>
+        </el-dialog>
+
+        <!--导出弹框-->
+        <el-dialog
+            :title="$t('exportDialog.title')"
+            :visible.sync="dialogExportVisible"
+            size="tiny">
+            <el-form :inline="true" class="export-form-inline">
+                <el-form-item :label="$t('exportDialog.startNum')">
+                    <el-input v-model="search.export_start"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('exportDialog.endNum')">
+                    <el-input v-model="search.export_end"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="exportVehicleList">{{ $t('exportDialog.export') }}</el-button>
+                 <el-button type="primary" @click="dialogExportVisible = false">{{ $t('exportDialog.cancel')
+                     }}</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        name: 'vehicleList',
+        data() {
+            return {
+                Core: Core,
+                tableHead: ['Vehicle SN', 'Brand Logo', 'Brand Name', 'Model Name', 'Po No.', 'Produce Date', 'Operation'],
+                vehicleList: [],
+                currentPage: 1,
+                total: 0,
+
+                dialogDeleteVisible: false,
+                selectItem: {},
+                search: {
+                    brand_org_id: 0,
+                    source_id: '',
+                    item_name: '',
+                    vehicle_sn: '',
+                    bom_sn: '',
+                    export_start: 0,
+                    export_end: 100,
+                },
+                brandList: [],
+                selectBrand: '',
+
+                authList: [],
+                loading: false,
+                dialogExportVisible: false,
+                goBackStatus: false
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Assembler.AssemblerVehicleList,
+                zh: ZH.Assembler.AssemblerVehicleList,
+                de: DE.Assembler.AssemblerVehicleList,
+                nl: NL.Assembler.AssemblerVehicleList
+            }
+        },
+        mounted: function () {
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            let condition = Core.Data.get(Core.Const.DATA.KEY_ASSEMBLER_VEHICLE_LIST_CONDITION);
+
+            if (condition) {
+//                this.search.brand_org_id = condition.brand_org_id || 0;
+                this.search.vehicle_sn = condition.vehicle_sn || '';
+                this.search.source_id = condition.source_id || '';
+                this.search.item_name = condition.item_name || '';
+                this.currentPage = condition.page || 1;
+            }
+
+            if (this.$route.query.from === 'order') {
+                this.goBackStatus = true;
+                this.search.source_id = this.$route.query.poNo ? this.$route.query.poNo : '';
+                this.search.item_name = this.$route.query.itemName ? this.$route.query.itemName : '';
+                this.search.vehicle_sn = '';
+                this.currentPage = 1;
+            }
+
+            this.getAllBrandList();
+
+            if (this.search.brand_org_id !== 0 || this.search.source_id || this.search.item_name || this.search.vehicle_sn) {
+                this.getVehicleList();
+            }
+        },
+
+        watch: {
+            'search.bom_sn': function (newValue, oldValue) {
+                let vm = this;
+                if (newValue === oldValue || newValue === '') {
+                    return;
+                }
+                if (typeof oldValue !== 'undefined') {
+                    let time = new Date().getTime();
+                    vm.isScanner = time - vm.lastInputTime <= 100; // 间隔小于100ms的就认为是扫描枪输入
+                    vm.lastInputTime = time;
+                } else {
+                    vm.lastInputTime = new Date().getTime();
+                }
+                if (!vm.scannerTimeout) {
+                    vm.scannerTimeout = setTimeout(function () {
+                        if (vm.isScanner) {
+                            vm.search.bom_sn = vm.search.bom_sn.replace(/\s+/g, "");
+                            if(vm.search.bom_sn.indexOf('DP') > -1){
+                                let array = vm.search.bom_sn.split('DP');
+                                if (array.length > 1) {
+                                    vm.search.bom_sn = ('DP' + array[array.length - 1]).replace(/\s+/g, "");
+                                }
+                            }else if(vm.search.bom_sn.indexOf('SR') > -1){
+                                let array = vm.search.bom_sn.split('SR');
+                                if (array.length > 1) {
+                                    vm.search.bom_sn = ('SR' + array[array.length - 1]).replace(/\s+/g, "");
+                                }
+                            }
+                        }
+                        clearTimeout(vm.scannerTimeout);
+                        vm.scannerTimeout = undefined;
+                    }, 1000)
+                }
+            }
+        },
+
+        methods: {
+            initData() {
+                this.tableHead = [
+                    this.$t('tableHead.vehicleSn'),
+                    this.$t('tableHead.brandLogo'),
+                    this.$t('tableHead.brandName'),
+                    this.$t('tableHead.modelName'),
+                    this.$t('tableHead.poNo'),
+                    this.$t('tableHead.produceDate'),
+                    this.$t('tableHead.operation'),
+                ];
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getVehicleList();
+            },
+
+            getAllBrandList() {
+                Core.Api.Org.getAllPartnerBranList().then(res => {
+                    this.brandList = res.org_list;
+                    this.brandList.unshift({
+                        id: 0,
+                        name: 'All'
+                    })
+                });
+            },
+
+            getVehicleList() {
+//	            if (this.search.brand_org_id === '' && this.search.source_id === '' && this.search.item_name === '') {
+//		            this.$message({
+//			            message: 'please type search condition',
+//			            type: 'warning'
+//		            });
+//		            return;
+//	            }
+                let $this = this;
+                let getList = function () {
+                    $this.loading = true;
+                    // 记录搜索条件
+                    Core.Data.set(Core.Const.DATA.KEY_ASSEMBLER_VEHICLE_LIST_CONDITION,
+                        {
+                            brand_org_id: $this.search.brand_org_id,
+                            source_id: $this.search.source_id.trim(),
+                            vehicle_sn: $this.search.vehicle_sn.trim(),
+                            item_name: $this.search.item_name.trim(),
+                            page: $this.currentPage
+                        });
+                    Core.Api.Vehicle.getVehicleListForAssembler(
+                        $this.search.brand_org_id,
+                        $this.search.source_id.trim(),
+                        $this.search.item_name.trim(),
+                        $this.search.vehicle_sn.trim(),
+                        $this.currentPage
+                    ).then(res => {
+                        console.log(res);
+                        $this.loading = false;
+                        $this.vehicleList = res.vehicle_list;
+                        $this.total = res.count;
+                    });
+                };
+                let setEmptyList = function () {
+                    $this.loading = false;
+                    $this.vehicleList = [];
+                    $this.total = 0;
+                };
+
+                if (this.search.bom_sn.trim()) {
+                    this.loading = true;
+                    Core.Api.Vehicle.getVehicleByBomSn(this.search.bom_sn.trim()).then(res => {
+                        // 该部件存在车辆
+                        if (res.vehicle && res.vehicle.sn) {
+                            // 输入了车辆的sn
+                            if(this.search.vehicle_sn.trim() ) {
+                                //如果部件的sn锁绑定的车辆sn 与 输入的不同 则 返回空
+                                if (res.vehicle.sn !== this.search.vehicle_sn.trim()) {
+                                    setEmptyList();
+                                } else  {
+                                    getList();
+                                }
+                            } else {
+                                this.search.vehicle_sn = res.vehicle.sn;
+                                getList();
+                            }
+                        } else {
+                            setEmptyList();
+                        }
+                    })
+                } else {
+                    getList();
+                }
+
+            },
+
+            exportVehicleList() {
+                let data = {
+                    brand_org_id: this.search.brand_org_id,
+                    source_id: this.search.source_id.trim(),
+                    vehicle_sn: this.search.vehicle_sn.trim(),
+                    item_name: this.search.item_name.trim()
+                };
+
+                console.log(data);
+                window.location.href = Core.Api.getUrl('vehicle/export-for-assembler', data);
+                this.$message({
+                    message: 'The export task runs in the background. You may check after one minute if you get nothing.',
+                    type: 'success'
+                });
+                this.loading = true;
+                let vm = this;
+                setTimeout(function () {
+                    vm.loading = false;
+                }, 10000)
+            },
+
+            showDeleteDialog(item) {
+//                console.log("Bike item", item);
+                if( item.status === 2){
+                    this.$message({
+                        message: ' Bike has been sold. It could not been deleted.',
+                        type: 'warning'
+                    });
+                }else{
+                    this.dialogDeleteVisible = true;
+                    this.selectItem = item;
+                }
+            },
+
+            deleteVehicle() {
+                // if (this.selectItem.status === 2) {
+                //     this.$message.warning('The vehicle has been sold');
+                //     return;
+                // }
+                Core.Api.Vehicle.deleteVehicle(this.selectItem.id).then(res => {
+                    this.$message({
+                        message: 'Delete successfully',
+                        type: 'success'
+                    });
+                    this.dialogDeleteVisible = false;
+                    this.getVehicleList();
+                }).catch(() => {
+                    this.dialogDeleteVisible = false;
+                })
+            },
+
+            goToVehicleDetailView(id) {
+                this.$router.push({name: 'assemblerVehicleDetail', query: {"vehicleId": id}});
+            }
+        }
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .component-list {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        .header {
+            height: auto;
+            .el-form-item {
+                margin-bottom: 0;
+            }
+        }
+        .el-form-item__content {
+            width: 200px;
+        }
+        .loading {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .table-wrap {
+            flex: 1;
+        }
+        .input-sn {
+            &:after {
+                top: 8px;
+            }
+        }
+        .no-data-content {
+            position: relative;
+        }
+        .table-content{
+            padding-bottom: 0;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?7f32bc06

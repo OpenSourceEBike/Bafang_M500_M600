@@ -1,0 +1,299 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "technical-service-save"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": _vm.goAfterIndex
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v("Edit Technical Service")])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Customer Info")]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_vm._m(0), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.service_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "service_no", $$v)
+      },
+      expression: "formData.service_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_vm._m(1), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    on: {
+      "change": _vm.handleItemChange
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.customer_id),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "customer_id", $$v)
+      },
+      expression: "formData.customer_id"
+    }
+  }, _vm._l((_vm.customerList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Test Results")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.test_result),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "test_result", $$v)
+      },
+      expression: "formData.test_result"
+    }
+  }, _vm._l((_vm.testResultData), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Advice")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.formData.advice),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "advice", $$v)
+      },
+      expression: "formData.advice"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Remark")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.formData.remark),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "remark", $$v)
+      },
+      expression: "formData.remark"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Production Date")]), _vm._v(" "), _c('el-date-picker', {
+    staticClass: "input",
+    attrs: {
+      "type": "date",
+      "placeholder": "Date"
+    },
+    model: {
+      value: (_vm.productionDate),
+      callback: function($$v) {
+        _vm.productionDate = $$v
+      },
+      expression: "productionDate"
+    }
+  })], 1)])]), _vm._v(" "), (_vm.categoryList.length > 0) ? _c('div', {
+    staticClass: "table-wrap table-overflow"
+  }, [_c('el-table', {
+    staticStyle: {
+      "width": "100%",
+      "border": "none"
+    },
+    attrs: {
+      "data": _vm.categoryList
+    }
+  }, [_c('el-table-column', {
+    attrs: {
+      "type": "expand"
+    }
+  }, [
+    [_c('el-form', {
+      staticClass: "demo-table-expand",
+      attrs: {
+        "label-position": "left",
+        "inline": ""
+      }
+    }, [_c('el-form-item', {
+      attrs: {
+        "label": "Item Name"
+      }
+    }, [_c('span', [_vm._v(_vm._s(_vm._f("categoryRoot")(_vm.props.row.category_root_id)))])]), _vm._v(" "), _c('el-form-item', {
+      attrs: {
+        "label": "BF Art No."
+      }
+    }, [_c('span', [_vm._v(_vm._s(_vm.props.row.bf_art_no))])]), _vm._v(" "), _c('el-form-item', {
+      attrs: {
+        "label": "SN"
+      }
+    }, [_c('span', [_vm._v(_vm._s(_vm.props.row.sn))])]), _vm._v(" "), _c('el-form-item', {
+      attrs: {
+        "label": "Error Code"
+      }
+    }, [_c('el-input', {
+      directives: [{
+        name: "onlyNum",
+        rawName: "v-onlyNum"
+      }],
+      staticClass: "input",
+      attrs: {
+        "placeholder": "Error Code"
+      },
+      model: {
+        value: (_vm.props.row.error_code),
+        callback: function($$v) {
+          _vm.$set(_vm.props.row, "error_code", $$v)
+        },
+        expression: " props.row.error_code"
+      }
+    })], 1), _vm._v(" "), _c('el-form-item', {
+      attrs: {
+        "label": "Fault Des."
+      }
+    }, [_c('el-input', {
+      staticClass: "input",
+      attrs: {
+        "placeholder": "Fault Des."
+      },
+      model: {
+        value: (_vm.props.row.fault_desc),
+        callback: function($$v) {
+          _vm.$set(_vm.props.row, "fault_desc", $$v)
+        },
+        expression: "props.row.fault_desc"
+      }
+    })], 1), _vm._v(" "), _c('el-form-item', {
+      attrs: {
+        "label": "Responsibility"
+      }
+    }, [_c('el-input', {
+      directives: [{
+        name: "onlyNum",
+        rawName: "v-onlyNum"
+      }],
+      staticClass: "input",
+      attrs: {
+        "placeholder": "Responsibility"
+      },
+      model: {
+        value: (_vm.props.row.division_responsibilities),
+        callback: function($$v) {
+          _vm.$set(_vm.props.row, "division_responsibilities", $$v)
+        },
+        expression: "props.row.division_responsibilities"
+      }
+    })], 1), _vm._v(" "), _c('el-form-item', {
+      attrs: {
+        "label": "Diagnose"
+      }
+    }, [_c('span', [_vm._v(_vm._s(_vm.props.row.diagnosis_id))])]), _vm._v(" "), _c('el-form-item', {
+      attrs: {
+        "label": "Production Date"
+      }
+    }, [_c('span', [_vm._v(_vm._s(_vm._f("dateFormat")(_vm.props.row.production_date)))])])], 1)]
+  ], 2), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "label": "Item Name"
+    }
+  }, [
+    [_c('div', [_vm._v(_vm._s(_vm._f("categoryRoot")(_vm.scope.row.category_root_id)))])]
+  ], 2), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "label": "SN",
+      "prop": "sn"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "label": "Error Code",
+      "prop": "error_code"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "label": "Production Date",
+      "prop": "create_time"
+    }
+  }, [
+    [_c('div', [_vm._v(_vm._s(_vm._f("dateFormat")(_vm.scopes.row.production_date)))])]
+  ], 2)], 1)], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "parts-list"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.createOrder
+    }
+  }, [_vm._v("SAVE")])], 1)])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Service No.\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n              Customer\n              "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-6c2fa63e","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/after-sales/technical-service/technical-service-save.vue
+// module id = 2580
+// module chunks = 28

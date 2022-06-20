@@ -1,0 +1,684 @@
+<template>
+    <div class="create-project">
+        <h1 style="text-align: center;padding-top: 10px;">客户项目建档</h1>
+        <el-form :inline="true" class="demo-form-inline">
+            <!--<el-form-item label="客户名称:" >
+                 <el-input v-model="customerNameInput" placeholder="Customer Name" clearable></el-input>
+             </el-form-item>
+             <el-form-item label="客户代号:" >
+                 <el-input v-model="customerNumberInput" placeholder="Customer No." clearable></el-input>
+             </el-form-item>-->
+             <el-form-item>
+                <el-button class="save-project" @click="createProject">{{ $t('新建') }}</el-button>
+            </el-form-item>
+            <el-form-item>
+                <!--<el-button class="save-project" @click="testData">testData</el-button>-->
+                <el-button class="save-project" @click="testDataReport">testDataReport</el-button>
+            </el-form-item>
+        </el-form>
+       <!-- <el-form :inline="true" class="demo-form-inline">
+         <el-form-item label="客户名称:" >
+              <el-input v-model="customerNameInput" placeholder="Customer Name" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="客户代号:" >
+              <el-input v-model="customerNumberInput" placeholder="Customer No." clearable></el-input>
+          </el-form-item>
+          <el-form-item label="项目名称:" >
+              <el-input v-model="projectNameInput" placeholder="Project Name" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="项目类型:"  >
+            <el-select
+                v-model="projectType"
+                placeholder="请选择"
+                @change="getProjectType"
+                >
+                <el-option
+                v-for="(item,index) in options"
+                :key="index"
+                :label="item.name"
+                :value="item.value">
+
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="项目代号:" >
+              <el-input v-model="projectNumberInput" placeholder="Project No." clearable></el-input>
+          </el-form-item>
+          <el-form-item label="电机:"  >
+            <el-select
+                v-model="motor"
+                placeholder="请选择"
+                >
+                <el-option
+                v-for="(item,index) in motorList"
+                :key="index"
+                :label="item.name"
+                :value="item.value">
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="控制器:"  >
+            <el-select
+                v-model="controller"
+                placeholder="请选择"
+                >
+                <el-option
+                v-for="(item,index) in controllerList"
+                :key="index"
+                :label="item.name"
+                :value="item.value">
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="仪表:"  >
+            <el-select
+                v-model="HMI"
+                placeholder="请选择"
+                >
+                <el-option
+                v-for="(item,index) in HMIList"
+                :key="index"
+                :label="item.name"
+                :value="item.value">
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="电池:"  >
+            <el-select
+                v-model="battery"
+                placeholder="请选择"
+                >
+                <el-option
+                v-for="(item,index) in batteryList"
+                :key="index"
+                :label="item.name"
+                :value="item.value">
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="传感器:"  >
+            <el-select
+                v-model="sensor"
+                placeholder="请选择"
+                >
+                <el-option
+                v-for="(item,index) in sensorList"
+                :key="index"
+                :label="item.name"
+                :value="item.value">
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="充电器:"  >
+            <el-select
+                v-model="charger"
+                placeholder="请选择"
+                >
+                <el-option
+                v-for="(item,index) in chargerList"
+                :key="index"
+                :label="item.name"
+                :value="item.value">
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="服务工具:"  >
+            <el-select
+                v-model="serviceTool"
+                placeholder="请选择"
+                >
+                <el-option
+                v-for="(item,index) in serviceToolList"
+                :key="index"
+                :label="item.name"
+                :value="item.value">
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="车辆附件:"   v-if="projectType === '0'">
+            <el-select
+                v-model="attachment"
+                placeholder="请选择"
+                >
+                <el-option
+                v-for="(item,index) in attachmentList"
+                :key="index"
+                :label="item.name"
+                :value="item.value">
+                </el-option>
+            </el-select>
+          </el-form-item>
+      </el-form> -->
+
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        max-height="250">
+        <el-table-column width="160"  v-for="(item, index) in headData" :key="index" :prop="item.name"  :label="item.label"></el-table-column>
+        <el-table-column
+        fixed="right"
+        label="操作"
+        width="200">
+        <template slot-scope="scope">
+            <el-button
+            @click.native.prevent="showDeleteDialog(scope.$index, tableData)"
+            type="text"
+            size="small">
+            移除
+            </el-button>
+            <el-button
+            @click.native.prevent="editRow(scope.$index, tableData)"
+            type="text"
+            size="small">
+            编辑
+            </el-button>
+            <el-button
+            @click.native.prevent="showDetail(scope.$index, tableData)"
+            type="text"
+            size="small">
+            详情
+            </el-button>
+        </template>
+    </el-table-column>
+</el-table>
+<el-dialog
+    :title="$t('Delete Project Item')"
+    :visible.sync="dialogDeleteVisible"
+    size="tiny">
+    <span>{{ $t('Are you sure delete current item?') }}</span>
+    <span slot="footer" class="dialog-footer">
+        <el-button type="preview" @click="deleteProjectItem">{{ $t('confirm') }}</el-button>
+        <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('cancel') }}</el-button>
+    </span>
+</el-dialog>
+</div>
+
+</template>
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+    import Vue from "vue"
+    import VueResource from "vue-resource"
+    Vue.use(VueResource);
+
+    export default {
+        data() {
+            return {
+                testPlanToken: '',
+                projectNumberInput: '',
+                projectNameInput: '',
+                customerNameInput: '',
+                customerNumberInput: '520-001',
+                headData: [
+                    {
+                        name: 'id',
+                        label: 'id'
+                    },
+                    {
+                        name: 'code',
+                        label: '项目号'
+                    },
+                    {
+                        name: 'vehicleSystem',
+                        label: '驱动系统'
+                    },
+                    {
+                        name: 'name',
+                        label: '系统代号'
+                    },
+                    {
+                        name: 'motorName',
+                        label: '电机'
+                    },
+                    {
+                        name: 'controllerName',
+                        label: '控制器'
+                    },
+                    {
+                        name: 'instrumentName',
+                        label: '仪表'
+                    },
+                    {
+                        name: 'sensorName',
+                        label: '传感器'
+                    },
+                    {
+                        name: 'batteryName',
+                        label: '电池'
+                    },
+                    {
+                        name: 'paramName',
+                        label: '参数'
+                    },
+                    // {
+                    //     name: 'charger',
+                    //     label: '充电器'
+                    // },
+                    // {
+                    //     name: 'serviceTool',
+                    //     label: '服务工具'
+                    // },
+                ],
+                options: [{
+                    value: '0',
+                    name: '驱动系统',
+                }, {
+                    value: '1',
+                    name: '零部件'
+                }],
+                projectType: '',
+                motor: '',
+                controller: '',
+                HMI: '',
+                battery: '',
+                sensor: '',
+                charger: '',
+                serviceTool: '',
+                attachment: '',
+                motorTreeData: [],
+                defaultProps: {
+                    id: 'id',
+                    children: 'child',
+                    label: 'name',
+                },
+                tableData: [],
+                dialogDeleteVisible: false,
+                // deleteProjectItem: false,
+                selectItemID: ''
+            }
+        },
+        methods: {
+            isObjectValueEqual(a, b) {
+                var aProps = Object.getOwnPropertyNames(a);
+                var bProps = Object.getOwnPropertyNames(b);
+                if (aProps.length != bProps.length) {
+                    return false;
+                }
+                for (var i = 0; i < aProps.length; i++) {
+                    var propName = aProps[i]
+                    var propA = a[propName]
+                    var propB = b[propName]
+                    if ((typeof (propA) === 'object')) {
+                        if (this.isObjectValueEqual(propA, propB)) {
+                            return true
+                        } else {
+                            return false
+                        }
+                    } else if (propA !== propB) {
+                        return false
+                    } else {
+
+                    }
+                }
+                return true
+            },
+            testData(){
+                //  清洗测试数据
+                let leng = 0;
+                Core.Api.request({
+                    url: '/object/selectTestDataLengthTwo',
+                    method: 'GET',
+                    data: {
+                        id: null,
+                        len: 2000
+                    }
+                }).then(res1=>{
+//                    console.log(res1.data).slice(0,50);
+                    console.log(res1.data);
+//                    if(false){
+                    if(res1.data && res1.data.length>0){
+                        let allOrderList = res1.data.slice(0,600);
+                        let timer = setInterval(()=>{
+                            console.log("item",res1.data[leng].id)
+                            Core.Api.request({
+                                url: '/object/selectTestData',
+                                method: 'GET',
+                                data: {
+                                    id: res1.data[leng].id
+                                }
+                            }).then(res=>{
+                                if(res.data && res.data.test_data.length > 0){
+                                    console.log("data",res1.data[leng].id,res.data.test_data.substr(0,40))
+                                    let testData = JSON.parse(res.data.test_data);
+                                    testData = testData.filter((item)=>{
+                                        for(var i in item){
+                                            return item[i] !=''
+                                        }
+                                    })
+                                    for(var i = 0 ;i<testData.length;i++){
+                                        for(var j=i+1;j<testData.length;j++){
+                                            if(this.isObjectValueEqual(testData[i],testData[j])){
+                                                testData.splice(j,1);
+                                                j--;
+                                                testData.length-1;
+                                            }
+                                        }
+                                    }
+                                    if(JSON.stringify(testData).length<1000 && res1.data[leng].id == res.data.id){
+                                        console.log("success", res1.data[leng].id, JSON.stringify(testData).length)
+
+                                        let data = {
+                                            "create_time": res.data.create_time,
+                                            "id": res.data.id,
+                                            "object_id": res.data.object_id,
+                                            "qc": res.data.qc,
+                                            "test_data": JSON.stringify(testData),
+                                            "update_time": res.data.update_time,
+                                            "weight": res.data.weight
+                                        };
+                                        return Core.Api.request({
+                                            url: '/object/replaceTestData',
+                                            data: data,
+                                            method: 'post'
+                                        }).then(response=>{
+                                            leng++;
+                                            if(leng>allOrderList.length-1){
+                                                console.log("finish");
+                                                clearInterval(timer);
+                                            }
+                                        }).catch(err=>{
+                                            console.log(err);
+                                        })
+                                    }else{
+                                        console.log("fail",res1.data[leng].id, res.data.id, testData)
+                                        this.$message({
+                                            type: 'warning',
+                                            message: 'test data长度过长，请检查后再保存'
+                                        })
+                                        leng++;
+                                        if(leng>allOrderList.length-1){
+                                            console.log("finish");
+                                            clearInterval(timer);
+                                        }
+                                    }
+
+                                }else{
+                                    console.log("length",res1.data[leng].id);
+                                    leng++;
+                                    if(leng>allOrderList.length-1){
+                                        console.log("finish");
+                                        clearInterval(timer);
+                                    }
+                                }
+                            }).catch(err=>{
+                                console.log(res1.data[leng].id)
+                                console.log(err);
+                                leng++;
+                                if(leng>allOrderList.length-1){
+                                    console.log("finish");
+                                    clearInterval(timer);
+                                }
+                            })
+                        },1800);
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+
+            },
+
+            testDataReport(){
+                //  清洗诊断报告数据
+                let leng = 0;
+                Core.Api.request({
+                    url: '/vehicle/findReportByVehicleId',
+                    method: 'GET',
+                    data: {
+                        len: 50000,
+                        vehicle_id: 0
+                    }
+                }).then(res1=>{
+//                    console.log(res1.data).slice(0,50);
+                    console.log(res1.data);
+//                    if(false){
+                    if(res1.data && res1.data.list.length>0){
+                        let allOrderList = res1.data.list.slice(0,1);
+//                        let timer = setInterval(()=>{
+                            console.log("item",res1.data.list[leng]);
+                            Core.Api.Vehicle.getVehicleReportDetail(
+                                res1.data.list[leng]
+                            ).then(res=>{
+                                console.log(res);
+                                if(res.report && res.report.report_data.length > 0){
+                                    console.log("data", res1.data.list[leng], res.report.report_data.length);
+                                    let report = res.report;
+                                    let testData = JSON.parse(report.report_data);
+                                    console.log(testData,"testData");
+                                    testData.allConnectList = testData.allConnectList.map( (item) => { return item.No; });
+                                    testData.testList = testData.testList.map( ({No,name,detail,okOrFail}) => { return {No,name,detail,okOrFail} });
+                                    testData.allTestList = testData.allTestList.map( (item) => { return item.No; });
+                                    testData.connectList = testData.connectList.map( (item) => { return item.No; });
+
+                                    console.log(testData,"testData");
+                                    console.log(JSON.stringify(testData).length,"testData");
+
+//                                    testData = testData.filter((item)=>{
+//                                        for(var i in item){
+//                                            return item[i] !=''
+//                                        }
+//                                    })
+//                                    for(var i = 0 ;i<testData.length;i++){
+//                                        for(var j=i+1;j<testData.length;j++){
+//                                            if(this.isObjectValueEqual(testData[i],testData[j])){
+//                                                testData.splice(j,1);
+//                                                j--;
+//                                                testData.length-1;
+//                                            }
+//                                        }
+////                                    }
+                                    if(res1.data.list[leng] === res.report.id){
+                                        console.log("success", res1.data.list[leng], JSON.stringify(testData).length)
+
+                                        let data = {
+                                            "comment": report.comment,
+                                            "create_time": report.create_time,
+                                            "defect": report.defect,
+                                            "file": report.file,
+                                            "id": report.id,
+                                            "org_id": report.org_id,
+                                            "report_data": JSON.stringify(testData),
+                                            "update_time": report.update_time,
+                                            "user_id": report.user_id,
+                                            "vehicle_id": report.vehicle_id,
+                                            "weight": report.weight
+                                        };
+                                        return Core.Api.request({
+                                            url: '/vehicle/updateReport',
+                                            data: data,
+                                            method: 'post'
+                                        }).then(()=>{
+                                            leng++;
+                                            if(leng>allOrderList.length-1){
+                                                console.log("finish");
+//                                                clearInterval(timer);
+                                            }
+                                        }).catch(err=>{
+                                            console.log(err);
+                                        })
+                                    }else{
+                                        console.log("fail",res1.data.list[leng], res.report.id)
+                                        this.$message({
+                                            type: 'warning',
+                                            message: '请检查'
+                                        })
+                                        leng++;
+                                        if(leng>allOrderList.length-1){
+                                            console.log("finish");
+//                                            clearInterval(timer);
+                                        }
+                                    }
+                                }else{
+                                    console.log("length",res1.data.list[leng]);
+                                    leng++;
+                                    if(leng>allOrderList.length-1){
+                                        console.log("finish");
+//                                        clearInterval(timer);
+                                    }
+                                }
+                            }).catch(err=>{
+                                console.log(res1.data.list[leng])
+                                console.log(err);
+                                leng++;
+                                if(leng>allOrderList.length-1){
+                                    console.log("finish");
+//                                    clearInterval(timer);
+                                }
+                            })
+//                        },1800);
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+
+            },
+
+            showDeleteDialog(store, data) {
+                this.selectItemID = data[store].id;
+                this.dialogDeleteVisible = true;
+            },
+            createProject() {
+                this.$router.push({
+                    name: 'createProject'
+                })
+            },
+            // deleteRow(index, rows) {
+            //     rows.splice(index, 1);
+            // },
+            editRow(index, rows) {
+                this.$router.push({
+                    name: 'createProject',
+                    query: {
+                        projectNumber: rows[index].code,
+                        projectType: rows[index].name,
+                        vehicleSystem: rows[index].vehicleSystem,
+                        vehicleSystemCode: rows[index].vehicleSystemCode,
+                        controller: rows[index].controllerName,
+                        motor: rows[index].motorName,
+                        sensor: rows[index].sensorName,
+                        instrument: rows[index].instrumentName,
+                        battery: rows[index].batteryName,
+                        id: rows[index].id
+                    }
+                })
+            },
+            showDetail(index,rows){
+                this.$router.push({
+                    name: 'systemDetail',
+                    query: {
+                        id: rows[index].id
+                    }
+                })
+            },
+            searchProject(val) {
+
+            },
+            getProjectType() {
+                console.log(this.projectType)
+            },
+            getAllCategoryData() {
+                var userId = 24;
+                var that = this;
+                Core.Api.request({
+                    url: '/param/category/find-all-category?user_id=' + userId,
+                    method: 'GET',
+                }).then((res) => {
+                    for (var i of res.data.param_category_list) {
+                        if (i.name == '硬件') {
+                            for (var j of i.child) {
+                                if (j.name == '电机') {
+                                    that.motorTreeNode = j;
+                                }
+                            }
+                        }
+                    }
+                    that.$message({
+                        message: 'save success'
+                    })
+                }).catch((err)=>{
+                    console.log(err);
+                })
+            },
+            handleNodeClick() {
+                console.log(1);
+            },
+            deleteProjectItem(){
+                let token = Core.Data.getToken(),
+                    id = this.selectItemID,
+                    that = this;
+                Vue.http.post(
+                  Core.Const.NET.END_POINT+ '/besst/project/systemDelete?token='+Core.Data.getToken()+'&id='+id
+                ).then((res)=>{
+                    if(res.data.code == 0){
+                        that.$message({
+                            type: 'success',
+                            message: 'delete successfully'
+                        });
+                        that.dialogDeleteVisible = false;
+                        that.tableData.forEach((item,index)=>{
+                            if(item.id == id){
+                                that.tableData.splice(index,1)
+                            }
+                        })
+                    }
+                }).catch((err)=>{
+                    console.log(err);
+                })
+            },
+            getSystemData(){
+                Core.Api.request({
+                    url: '/besst/project/allBesst',
+                    method: 'GET'
+                }).then((res)=>{
+                    if(res.data&&res.data.length>0){
+                        this.tableData = res.data;
+                    }
+                }).catch((err)=>{
+                     console.log(err);
+                })
+            }
+        },
+
+        mounted() {
+            // this.getAllCategoryData();
+            this.getSystemData();
+        },
+    }
+</script>
+<style>
+    .create-project .el-form--inline .el-form-item__label {
+        float: left;
+    }
+
+    .create-project .el-form--inline .el-form-item {
+        width: 30%;
+        margin-left: 20px;
+    }
+
+    .create-project .el-form {
+        padding-top: 20px;
+    }
+
+    .project-btn {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .save-project {
+        margin-right: 30%;
+    }
+
+    .create-project .el-form--inline .el-form-item__label {
+        width: 100px;
+    }
+    .create-project .el-dialog {
+        width: 300px;
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// index.vue?7bce06be

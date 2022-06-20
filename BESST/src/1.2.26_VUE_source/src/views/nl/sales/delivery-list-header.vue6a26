@@ -1,0 +1,256 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "delivery-list-header"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": _vm.goAfterIndex
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.orderId ? 'Edit Delivery' : 'Add Delivery'))])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Delivery Info")]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Delivery Order No.")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": "Delivery Order No.",
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.delivery_order_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "delivery_order_no", $$v)
+      },
+      expression: "formData.delivery_order_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Delivery Date")]), _vm._v(" "), _c('el-date-picker', {
+    staticClass: "input",
+    attrs: {
+      "type": "date",
+      "placeholder": "Delivery Date"
+    },
+    model: {
+      value: (_vm.deliveryDate),
+      callback: function($$v) {
+        _vm.deliveryDate = $$v
+      },
+      expression: "deliveryDate"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Warehouse")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input land",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.warehouse_id),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "warehouse_id", $$v)
+      },
+      expression: "formData.warehouse_id "
+    }
+  }, _vm._l((_vm.warehouseData), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Customer")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input land",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    on: {
+      "change": _vm.handleItemChange
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.company_id),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "company_id", $$v)
+      },
+      expression: "formData.company_id"
+    }
+  }, _vm._l((_vm.customerList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Customer No.")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": true,
+      "placeholder": "Customer No."
+    },
+    model: {
+      value: (_vm.formData.customer_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "customer_no", $$v)
+      },
+      expression: "formData.customer_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Remark Date")]), _vm._v(" "), _c('el-date-picker', {
+    staticClass: "input",
+    attrs: {
+      "type": "date",
+      "placeholder": "Remark Date"
+    },
+    model: {
+      value: (_vm.reviewerDate),
+      callback: function($$v) {
+        _vm.reviewerDate = $$v
+      },
+      expression: "reviewerDate"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "row-textarea"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Remark")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "type": "textarea",
+      "rows": 4,
+      "resize": "none",
+      "placeholder": "Remark"
+    },
+    model: {
+      value: (_vm.formData.reviewer),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "reviewer", $$v)
+      },
+      expression: "formData.reviewer"
+    }
+  })], 1)])]), _vm._v(" "), (_vm.isEditPage) ? _c('div', {
+    staticClass: "order-info-two"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Add PI")]), _vm._v(" "), _c('div', {
+    staticClass: "pi-left"
+  }, [_vm._l((_vm.dynamicTags), function(tag) {
+    return _c('el-tag', {
+      key: tag.id,
+      attrs: {
+        "size": "small",
+        "closable": true,
+        "close-transition": false
+      },
+      on: {
+        "close": function($event) {
+          _vm.handleClose(tag)
+        }
+      }
+    }, [_vm._v(_vm._s(tag.pi_no))])
+  }), _vm._v(" "), (_vm.inputVisible) ? _c('el-autocomplete', {
+    ref: "saveTagInput",
+    staticClass: "input-new-tag",
+    attrs: {
+      "size": "small",
+      "fetch-suggestions": _vm.querySearchAsync,
+      "placeholder": "Please enter the content"
+    },
+    on: {
+      "select": _vm.handleInputConfirm
+    }
+  }) : _c('el-button', {
+    staticClass: "button-new-tag",
+    attrs: {
+      "size": "small"
+    },
+    on: {
+      "click": _vm.showInput
+    }
+  }, [_vm._v("+ New Tag")])], 2)]) : _vm._e(), _vm._v(" "), (_vm.isEditPage) ? _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.invoiceItems), function(item, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.model_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.bf_art_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.customer_art_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.description))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("currencyType")(item.currency)) + _vm._s(item.unit_price))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.vat_rate))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.quantity))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.amount))]), _vm._v(" "), (item.status == 0) ? _c('td', [_vm._v("- -")]) : _vm._e(), _vm._v(" "), (item.status == 1) ? _c('td', [_vm._v("confirm")]) : _vm._e(), _vm._v(" "), (item.status == 2) ? _c('td', [_vm._v("outOfStock")]) : _vm._e()])
+  }))])]) : _vm._e(), _vm._v(" "), (_vm.isEditPage) ? _c('div', {
+    staticClass: "parts-list"
+  }, [_c('span', {
+    staticClass: "att-total"
+  }, [_vm._v("total: " + _vm._s(_vm._f("currencyType")(_vm.formData.currency)) + _vm._s(_vm.totalCount))])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "parts-list"
+  }, [_c('el-button', {
+    staticClass: "cancel-button",
+    attrs: {
+      "type": "primary",
+      "disabled": !_vm.isActive
+    },
+    on: {
+      "click": _vm.saveDelivery
+    }
+  }, [_vm._v("Save")])], 1)])])])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-79e54cf8","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/sales/delivery-list-header.vue
+// module id = 2548
+// module chunks = 32

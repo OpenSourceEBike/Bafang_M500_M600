@@ -1,0 +1,1015 @@
+<template>
+    <div class="material-order-detail">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="goOrderList" :title="$t('back')"></div>
+                </div>
+            </div>
+            <label class="title">{{ $t('back') }}</label>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <span v-show="errorMark">
+                        <img src="../../../assets/images/diagnosis/icon-error.png" class="error-img" width="28" height="28" >Connection Error
+                    </span>
+                    <!--orderData.status 为 1时 标识 订单已经完成 不可编辑-->
+                    <!--<div class="icon-item export" @click="exportOrder()"></div>-->
+                    <!--<div class="icon-item edit" @click="goToEditOrder()" v-if="authList[Core.Const.AUTH_LIST.productionEdit]" :title="$t('edit')"></div>-->
+                    <div class="icon-item delete" @click="showDeleteDialog()" v-if="authList[Core.Const.AUTH_LIST.productionDelete]" :title="$t('delete')"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrap">
+            <div class="content">
+                <div class="order-info">
+                    <label class="title">{{ $t('title1') }}</label>
+                    <div class="left">
+                        <div class="info-list">
+                            <div class="col-left">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span>{{ $t('orderNo') }}</span>
+                                        <span>{{order_id || '/'}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>{{ $t('user') }}</span>
+                                        <span>{{material_user_id || '/'}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>{{ $t('desc') }}</span>
+                                        <span>{{model_type}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-right">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span>{{ $t('status') }}</span>
+                                        <span><i class="status">{{material_status || '/'}}</i></span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>{{ $t('qty') }}</span>
+                                        <span>{{materialItem.amount}}</span>
+
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>{{ $t('num') }}</span>
+                                        <span>{{storageNum}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="note">
+                                <div class="item">
+                                    <label class="label">{{ $t('drawing') }}</label>
+                                    <span>{{materialItem.drawing}}</span>
+                                </div>
+                                <div class="item">
+                                    <label class="label">{{ $t('stator') }}</label>
+                                    <span>{{materialItem.stator}}</span>
+                                </div>
+                                <div class="item">
+                                    <label class="label">{{ $t('exterior') }}</label>
+                                    <span>{{materialItem.exterior}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="clear-10"></div>-->
+                <div class="order-info">
+                    <label class="title">{{ $t('title2') }}</label>
+                    <div class="left ">
+                        <div class="info-list gao2">
+                            <div class="col-left" >
+                                <!--<div v-show="!showQRProd && !showQRTest" class="" style="float:left;padding:40px 20px">-->
+                                <!--<div v-show="!showQRProd && !showQRTest" class="">-->
+                                <!--<vue-qr :text=material_qr :size="150" :margin="0"></vue-qr>-->
+                                <!--</div>-->
+                                <ul class="list-group" v-show="!showQRProd && !showQRTest">
+                                    <li class="list-group-item">
+                                        <vue-qr :text=material_qr :size="150" :margin="0"></vue-qr>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-right">
+                                <ul class="list-group top-sapce">
+                                    <!--<li class="list-group-item" v-if=" material_type == 2" >-->
+                                        <!--<span>Finish</span>-->
+                                        <!--<el-input class="amount" v-model="storageNum"></el-input>-->
+                                        <!--<el-button @click="doStorageNumber()" type="button" class="">保存</el-button>-->
+                                    <!--</li>-->
+                                    <li class="list-group-item">
+                                        <span>{{ $t('scanning') }}</span>
+                                        <el-input class="input-sn" v-model="mainSn" ref="content" id="scanQR" v-focus="true"></el-input>
+                                    </li>
+                                    <li class="list-group-item" v-show="!showQRProd && !showQRTest">
+                                        <el-button type="primary" @click = "nextStep()" class="step">下一步</el-button>
+                                        <span></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-info">
+                    <div class="left">
+                        <div class="info-list">
+                            <div class="col-left gao">
+                                <div class="list-group">
+                                    <div class="qr-left">
+                                        <el-button @click="showQR(1)">{{ $t('show1') }}</el-button>
+                                        <el-button type="warning" @click = "nextStep(4)" class="step" v-show="showQRProd">{{ $t('show11') }}</el-button>
+                                    </div>
+                                    <div class="qr-left">
+                                        <transition name="el-fade-in-linear">
+                                            <span  class="transition-box" v-show="showQRProd">
+                                                <!--<label>{{ $t('show11') }}</label>-->
+                                                <vue-qr :text=material_qr_product :size="150" :margin="0"></vue-qr>
+                                            </span>
+                                        </transition>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-right gao">
+                                <div class="list-group">
+                                    <div class="qr-left">
+                                        <el-button @click="showQR(2)">{{ $t('show2') }}</el-button>
+                                        <el-button type="warning" @click = "nextStep(5)" class="step" v-show="showQRTest">{{ $t('show22') }}</el-button>
+                                    </div>
+                                    <div class="qr-left">
+                                        <transition name="el-fade-in-linear">
+                                        <span  class="transition-box" v-show="showQRTest">
+                                            <!--<label>{{ $t('show22') }}</label>-->
+                                            <vue-qr :text=material_qr_test :size="150" :margin="0"></vue-qr>
+                                        </span>
+                                        </transition>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <el-dialog
+            :title="$t('deleteDialog.title')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialog.content') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteProductionOrder">{{ $t('deleteDialog.yes') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('deleteDialog.no') }}</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    //    import DE from 'src/assets/lang/de';
+    import VueQr from 'vue-qr'
+    import ElButton from "../../../../node_modules/element-ui/packages/button/src/button";
+    export default{
+        components: {
+            ElButton,
+            VueQr},
+        data(){
+            return {
+                Core: Core,
+                dialogDeleteVisible: false,
+                materialSn: '',
+
+                auth: '',
+                authList: [],
+
+                total: 0,
+                currentPage: 1,
+
+                mainSn:'',
+
+                //  material
+                materialItem:{},
+                material_id:'',
+                material_sn:'',
+                material_desc:'',
+                user_id:'',
+                order_id:'',
+                material_type:'',
+                material_qr:'',
+                material_user_id:'',
+                material_status:'',
+                model_type:'',
+                showQRProd:false,
+                showQRTest:false,
+                material_qr_product:'',
+                material_qr_test:'',
+                isScanner: false,
+                lastInputTime: 0,
+                scannerTimeout: '',
+                storageNum: '',
+                line: '',
+                scanTem: '',
+                dateTem: '',
+
+                ws: '',
+                readyState: '',
+                lockReconnect: false,  //避免ws重复连接
+                wsUrl: '',
+                timeout: 8000,        //8s发一次心跳
+                timeoutObj: null,
+                serverTimeoutObj: null,
+                reconnectTimeoutObj: null,
+                reconnectCount:0,
+                closePage: false,
+                errorMark:false,
+
+                statusGroup: [
+                    'In plan',
+                    'In preparation',
+                    'In assembly',
+                    'In storage',
+                    'In test',
+                    'Abnormal assembly',
+                    'Abnormal test'],
+
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Material.Detail,
+                zh: ZH.Component.Material.Detail,
+                de: EN.Component.Material.Detail,
+                nl: EN.Component.Material.Detail,
+            }
+        },
+        created:function (){
+//            this.$refs.content.focus();
+
+//            var resetTem = document.getElementById("scanQR");
+//            resetTem.focus();
+
+        },
+        mounted: function() {
+            // 国际化
+//            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+//                setTimeout(() => {
+//                    this.initData();
+//                }, 100);
+//            });
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.materialSn = this.$route.query.materialSn;   //  "sn": "PO18090635562",
+
+            this.getMaterialDetail(this.materialSn);
+
+            this.wsUrl = "ws://test.api.besst.bafang-service.com/besst-api/" + Core.Data.getUser().id;
+//            this.wsUrl = "ws://58.211.213.54:9898/besst-api/" + Core.Data.getUser().id;
+            this.createWebSocket(this.wsUrl);
+            this.initData();
+
+        },
+        methods: {
+            initData(){
+                this.statusGroup = [
+                    this.$t('s1') ,
+                    this.$t('s2') ,
+                    this.$t('s3') ,
+                    this.$t('s4') ,
+                    this.$t('s5') ,
+                    this.$t('s6') ,
+                    this.$t('s7') ];
+
+//                this.$nextTick(() => {
+//                    if (this.$refs['content']) {
+//                        console.log( this.$refs['content'])
+//                        this.$refs['content'].focus();
+//                    }
+//                });
+            },
+
+            start(){
+                let self = this;
+                this.timeoutObj = setTimeout(function(){
+                    //这里发送一个心跳，后端收到后，返回一个心跳消息，
+                    //onmessage拿到返回的心跳就说明连接正常
+                    self.ws.send("ping");
+                    console.log("ping!");
+                    self.serverTimeoutObj = setTimeout(function(){//如果超过一定时间还没重置，说明后端主动断开了
+                        self.ws.close();     //如果onclose会执行reconnect，我们执行ws.close()就行了.如果直接执行reconnect 会触发onclose导致重连两次
+                    }, self.timeout)
+                }, this.timeout)
+            },
+            reset(){
+                clearTimeout(this.timeoutObj);
+                clearTimeout(this.serverTimeoutObj);
+                return this;
+            },
+            reconnect(url) {
+                let self = this;
+                if(this.lockReconnect) return;
+                this.lockReconnect = true;
+                this.reconnectTimeoutObj = setTimeout(function () {
+                    self.reconnectCount++;
+                    if( self.reconnectCount <5){
+                        //没连接上会一直重连，设置延迟避免请求过多
+                        self.createWebSocket(url);
+                        self.lockReconnect = false;
+                        console.log("reconnect");
+                    }else{
+                        self.errorMark = true ;
+                        clearTimeout(self.reconnectTimeoutObj);
+                    }
+                }, 10000);
+            },
+
+            createWebSocket(url) {
+                try{
+                    if ('WebSocket' in window) {
+                        let _this = this;
+                        this.ws = new WebSocket( url );//连接服务器
+                        console.log(this.ws);
+
+                        this.ws.onopen = function (event) {
+                            _this.reset();
+                            _this.start();      //心跳检测重置
+                            console.log("已经与服务器建立了连接rn当前连接状态:" + this.readyState);
+                        };
+
+                        this.ws.onmessage = function (event) {
+                            console.log(event.data);
+                            _this.reset();
+                            _this.start();      //心跳检测重置
+
+                            if( event.data.indexOf('{') > -1 ){
+                                _this.ws.send( 'ping');
+                                let res = JSON.parse(event.data);
+                                if(_this.materialItem.sn == res.sn){
+                                    _this.materialItem = res;
+                                    _this.storageNum = _this.materialItem.num;
+
+                                    switch (res.material_type) {
+                                        case '-1'://排计划
+                                            _this.material_status = _this.statusGroup[0];
+                                            break;
+                                        case '0'://备料
+                                            _this.material_status = _this.statusGroup[1];
+                                            break;
+                                        case '1'://生产
+                                            _this.material_status = _this.statusGroup[2];
+                                            break;
+                                        case '2'://入库
+                                            _this.material_status = _this.statusGroup[3];
+                                            break;
+                                        case '3'://测试中
+                                            _this.material_status = _this.statusGroup[4];
+                                            break;
+                                        case '4'://装配异常
+                                            _this.material_status = _this.statusGroup[5];
+                                            break;
+                                        case '5'://测试异常
+                                            _this.material_status = _this.statusGroup[6];
+                                            break;
+                                        default:
+                                            _this.$message({
+                                                message: "未知状态",
+                                                type: 'warning'
+                                            });
+                                    }
+                                }
+                            }
+                        };
+                        this.ws.onclose = function(event){
+                            if (!_this.closePage){
+                                _this.reconnect(url);
+                            }
+                            console.log("已经与服务器断开连接rn当前连接状态:" + this.readyState, event);
+                        };
+                        this.ws.onerror = function(event){
+                            _this.reconnect(url);
+                            console.log("WebSocket异常!");
+                        };
+
+                    } else {
+                        alert('当前浏览器 Not support websocket');
+                    }
+                }catch(e){
+                    this.reconnect(url);
+//                    console.log(e);
+                }
+            },
+            goOrderList(){
+                this.$router.push({path: 'list' ,query:{"from": "detail"}});
+            },
+
+            getMaterialDetail(sn){
+                console.log('sn' , sn);
+                Core.Api.Material.findBySn(sn).then(res=> {
+                    if ( res.material_sn === null ||  res.material_sn === "") {
+                        this.$message({
+                            message: "订单未被收录，请上传订单。",
+                            type: 'warning'
+                        });
+                    }
+                    this.materialItem = res.material_sn;
+//                    console.log( this.materialItem );
+                    this.material_id =  this.materialItem.id;
+                    this.material_user_id = this.materialItem.user_id;
+                    this.material_sn =  this.materialItem.sn;
+                    this.order_id =  this.materialItem.order_id;
+                    this.material_type =  this.materialItem.material_type;
+                    this.model_type = this.materialItem.model_type;
+                    this.storageNum = this.materialItem.num;
+                    this.dateTem = Core.Util.changeDateForm( this.materialItem.pre_delivery_date*1000 );
+
+//                    console.log(this.dateTem );
+//                    console.log(this.material_sn );
+                    console.log(this.material_type );
+                    switch (this.material_type) {
+                        case '-1'://排计划
+                            this.material_qr = this.material_sn+" "+ "T_1";//备料
+                            this.material_status = this.statusGroup[0];
+                            break;
+                        case '0'://备料
+                            this.material_qr = this.material_sn+" "+ "T_2";//生产
+                            this.material_status = this.statusGroup[1];
+                            break;
+                        case '1'://生产
+                            this.material_qr = this.material_sn+" "+ "T_3";//仓储
+                            this.material_status = this.statusGroup[2];
+                            break;
+                        case '2'://入库
+                            this.material_qr = this.material_sn+" "+ "T_3";//仓储
+                            this.material_status = this.statusGroup[3];
+                            break;
+                        case '3'://测试中
+                            this.material_qr = this.material_sn+" "+ "T_4";//测试
+                            this.material_status = this.statusGroup[4];
+                            break;
+                        case '4'://装配异常
+                            this.material_qr = this.material_sn+" "+ "T_5";//装配异常
+                            this.material_status = this.statusGroup[5];
+                            break;
+                        case '5'://测试异常
+                            this.material_qr = this.material_sn+" "+ "T_6";//测试异常
+                            this.material_status = this.statusGroup[6];
+                            break;
+                        default:
+                            this.$message({
+                                message: "未知状态",
+                                type: 'warning'
+                            });
+
+                    }
+                    this.material_qr_product=this.material_sn+" "+ "T_5";
+                    this.material_qr_test=this.material_sn+" "+ "T_6";
+                });
+            },
+
+            showDeleteDialog() {
+                this.dialogDeleteVisible = true;
+            },
+            deleteProductionOrder() {
+                Core.Api.Material.deleteById(this.material_id).then(res => {
+                    this.$message({
+                        message: 'Delete successfully',
+                        type: 'success'
+                    });
+                    this.dialogDeleteVisible = false;
+                    this.goOrderList();
+                })
+            },
+
+//            doStorageNumber(){
+//                if(!this.storageNum){
+//                    this.$message({
+//                        message: '请填写入库数量',
+//                        type: 'warning'
+//                    });
+//                }else{
+//                    Core.Api.Material.updateMaterial(this.material_id, this.order_id, this.material_sn, this.material_type, this.storageNum).then(res => {
+//                        this.$message({
+//                            message: "Save Successfully",
+//                            type: 'success'
+//                        });
+//                        console.log("刷新");
+//                        this.getMaterialDetail(this.material_sn);
+//                    });
+//                }
+//            },
+            showQR(index){
+                if(index && (this.material_type =='1'||this.material_type =='3')){
+                    if(index==1){
+                        this.showQRProd = !this.showQRProd;
+                    }else if(index==2){
+                        this.showQRTest= !this.showQRTest;
+                    }
+                }else{
+                    this.$message({
+                        message: 'Status is not correct',
+                        type: 'warning'
+                    });
+                }
+            },
+            nextStep(index){
+                if(!index){
+                    switch(this.material_type){
+                        case '-1':
+                            this.nextStepSave('0');
+                            break;
+                        case '0':
+                            this.nextStepSave('1');
+                            break;
+                        case '1':
+                            if(!this.showQRProd && !this.showQRTest){
+                                this.nextStepSave('3');
+                            }else if(this.showQRProd && !this.showQRTest){
+                                this.nextStepSave('4');
+                            }else{
+                                this.$message({
+                                    message: 'Status is not correct',
+                                    type: 'warning'
+                                });
+                            }
+                            break;
+                        case '3':
+                            if(!this.showQRProd && !this.showQRTest){
+                                this.nextStepSave('2');
+                            }else if(!this.showQRProd && this.showQRTest){
+                                this.nextStepSave('5');
+                            }else{
+                                this.$message({
+                                    message: 'Status is not correct',
+                                    type: 'warning'
+                                });
+                            }
+                            break;
+                        case '2':
+                            this.$message({
+                                message: 'Order is alreay in storage',
+                                type: 'warning'
+                            });
+                        default:
+                            this.$message({
+                                message: 'Status is not correct',
+                                type: 'warning'
+                            });
+                            break;
+                    }
+                }else{
+                    if( index ==4 && this.material_type == '1' ){
+                        this.nextStepSave('4');
+                    }else if(index ==5 && this.material_type == '3'){
+                        this.nextStepSave('5');
+                    }else{
+                        this.$message({
+                            message: 'Status is not correct',
+                            type: 'warning'
+                        });
+                    }
+                }
+
+            },
+
+            nextStepSave( type ){
+                Core.Api.Material.updateMaterial(this.material_id, this.order_id, this.material_sn, type, this.storageNum, this.dateTem).then(res => {
+                    this.$message({
+                        message: "Save Successfully",
+                        type: 'success'
+                    });
+                    console.log("刷新");
+                    this.goFunction();
+                });
+            },
+
+            goFunction(){
+                this.ws.send( Core.Data.getUser().id+'|update|'+this.material_sn);
+                let self= this;
+                setTimeout(function(){
+                    self.goOrderList();
+                },1500);
+            }
+
+        },
+        watch: {
+            mainSn: function (newValue, oldValue) {
+                let vm = this;
+                if (newValue === oldValue || newValue === '') {
+                    return;
+                }
+                if (typeof oldValue !== 'undefined') {
+                    let time = new Date().getTime();
+                    vm.isScanner = time - vm.lastInputTime <= 100; // 间隔小于100ms的就认为是扫描枪输入
+                    vm.lastInputTime = time;
+                } else {
+                    vm.lastInputTime = new Date().getTime();
+                }
+                if (!vm.scannerTimeout) {
+                    vm.scannerTimeout = setTimeout(function () {
+                        if (vm.isScanner) {
+
+//                            console.log( vm.mainSn);
+//                            console.log("============================>");
+//                            console.log( vm.storageNum );
+//                            console.log( vm.materialItem.amount );
+//                            console.log( vm.material_type );
+//                            console.log( vm.material_sn );
+
+                            if( vm.mainSn.length == 17 && vm.mainSn.indexOf("PO")>-1 ) {
+                                let array = vm.mainSn.split(' ');
+                                vm.material_sn = array[0];
+                                vm.sc_type = array[1];
+                                findSn(vm.material_sn, vm.sc_type);
+                            }else{
+                                console.log( vm.scanTem );
+                                console.log( vm.mainSn );
+
+                                if(vm.scanTem != vm.mainSn) {
+
+                                    vm.scanTem = vm.mainSn;
+                                    if( vm.material_type == '3' && vm.storageNum < vm.materialItem.amount ){
+                                        Core.Api.Material.updateMaterial(vm.material_id, vm.order_id, vm.material_sn, vm.material_type, ++vm.storageNum,vm.dateTem).then(res => {
+                                            vm.$message({
+                                                message: "Save Successfully",
+                                                type: 'success'
+                                            });
+                                            vm.ws.send( Core.Data.getUser().id+'|update|'+vm.material_sn);
+                                        });
+                                    }else if(vm.material_type == '3' && vm.storageNum > vm.materialItem.amount){
+                                        vm.$message({
+                                            message: "定单数量已完成",
+                                            type: 'success'
+                                        });
+                                    }else{
+                                        vm.$message({
+                                            message: "Order ID 二维码不正确！",
+                                            type: 'warning'
+                                        });
+                                    }
+
+                                }else{
+                                    vm.$message({
+                                        message: "二维码和之前一个重复了！",
+                                        type: 'warning'
+                                    });
+
+                                }
+
+
+                            }
+                            vm.mainSn = '';
+//                            }else{
+//                                vm.$message({
+//                                    message: "Order ID 二维码不正确！",
+//                                    type: 'warning'
+//                                });
+//                            }
+                        }
+                        clearTimeout(vm.scannerTimeout);
+                        vm.scannerTimeout = undefined;
+                    }, 1000)
+                }
+
+                function findSn(val, val2) {
+                    console.log("=====================");
+                    console.log(val);
+                    console.log(val2);
+                    Core.Api.Material.findBySn(val).then(res => {
+                        console.log(res);
+                        let model = res.material_sn;
+                        if (model === null || model === "") {
+                            vm.$message({
+                                message: "订单未被收录，请上传订单。",
+                                type: 'warning'
+                            });
+                        }
+                        vm.material_id = model.id;
+                        vm.order_id = model.order_id;
+                        vm.material_sn = model.sn;
+                        vm.material_type = model.material_type;
+
+                        let m_type = '-1';
+                        switch (val2) {
+                            case 'T_1':
+                                m_type = '0';//备料
+                                break;
+                            case 'T_2':
+                                m_type = '1';//装配
+                                break;
+                            case 'T_3':
+                                m_type = '3';//测试中
+                                break;
+                            case 'T_4':
+                                m_type = '2';//入库
+                                break;
+                            case 'T_5':
+                                m_type = '4';//装配异常
+                                break;
+                            case 'T_6':
+                                m_type = '5';//测试异常
+                                break;
+                            // case 'T_7':
+                            //     m_type='6';//问题订单
+                            //     break;
+                            default:
+                                vm.$message({
+                                    message: "未知状态----",
+                                    type: 'warning'
+                                });
+                        }
+
+                        console.log('material_type::::'+ vm.material_type);
+                        console.log('mtype::::'+ m_type);
+                        if (vm.material_type == "-1" && m_type == "0") {
+                            Core.Api.Material.updateMaterial(vm.material_id, vm.order_id, vm.material_sn, m_type,vm.storageNum,vm.dateTem).then(res => {
+                                vm.$message({
+                                    message: "Save Successfully",
+                                    type: 'success'
+                                });
+                                console.log("刷新");
+                                vm.goFunction();
+                            });
+                        }else if (vm.material_type == "0" && m_type == "1") {
+                            //当前T只能是T_2
+                            Core.Api.Material.updateMaterial(vm.material_id, vm.order_id, vm.material_sn, m_type,vm.storageNum,vm.dateTem).then(res => {
+                                vm.$message({
+                                    message: "Save Successfully",
+                                    type: 'success'
+                                });
+                                console.log("刷新");
+                                vm.goFunction();
+                            });
+
+                        }else if (vm.material_type == "1" && m_type == "3" ) {
+                            //会出现4装配异常  3进入测试阶段，但是不能有其他数字
+                            Core.Api.Material.updateMaterial(vm.material_id, vm.order_id, vm.material_sn, m_type,vm.storageNum,vm.dateTem).then(res => {
+                                vm.$message({
+                                    message: "Save Successfully",
+                                    type: 'success'
+                                });
+                                console.log("测试阶段");
+                                vm.goFunction();
+                            });
+
+                        }else if (vm.material_type == "1" && m_type == "4") {
+                            Core.Api.Material.updateMaterial(vm.material_id, vm.order_id, vm.material_sn, m_type,vm.storageNum,vm.dateTem).then(res => {
+                                vm.$message({
+                                    message: "Save Successfully",
+                                    type: 'success'
+                                });
+                                console.log("装配异常");
+                                vm.goFunction();
+                            });
+                        }else if (vm.material_type == "2") {
+                            vm.$message({
+                                message: "订单已入库！",
+                                type: 'warning'
+                            });
+                        }else if (vm.material_type == "3" && m_type == "2" ) {
+                            //出现5测试异常，或者2入库
+                            Core.Api.Material.updateMaterial(vm.material_id, vm.order_id, vm.material_sn, m_type, vm.storageNum, vm.dateTem).then(res => {
+                                vm.$message({
+                                    message: "Save Successfully",
+                                    type: 'success'
+                                });
+                                console.log("刷新");
+                                vm.goFunction();
+                            });
+
+                        }else if (vm.material_type == "3" && m_type == "5") {
+                            Core.Api.Material.updateMaterial(vm.material_id, vm.order_id, vm.material_sn, m_type,vm.storageNum,vm.dateTem).then(res => {
+                                vm.$message({
+                                    message: "Save Successfully",
+                                    type: 'success'
+                                });
+                                console.log("刷新");
+                                vm.goFunction();
+                            });
+                        }else {
+                            vm.$message({
+                                message: "请确认订单状态",
+                                type: 'success'
+                            });
+                        }
+                    });
+
+                }
+            },
+        },
+        beforeDestroy(){
+            this.closePage = true;
+            this.ws.close();
+            clearTimeout(this.timeoutObj);
+            clearTimeout(this.serverTimeoutObj);
+        },
+
+        directives: {
+          focus:function (el, option) {
+            var defClass = 'el-input', defTag = 'input';
+            var value = option.value || true;
+            if (typeof value === 'boolean'){
+                value = { cls: defClass, tag: defTag, foc: value };
+            }else{
+                value = { cls: value.cls || defClass, tag: value.tag || defTag, foc: value.foc || false };
+            }
+            if (el.classList.contains(value.cls) && value.foc)
+                el.getElementsByTagName(value.tag)[0].focus();
+            }
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .transition-box {
+        border-radius: 4px;
+        /*background-color: #409EFF;*/
+        text-align: center;
+        /*color: #fff;*/
+        box-sizing: border-box;
+        margin-left:20px;
+    }
+    .material-order-detail {
+        width: 100%;
+        font-size:18px !important;
+
+        /*height: 100%;*/
+        /*.myQR{*/
+        /*text-align: center;*/
+        /*}*/
+        .content {
+            /*height: 100%;*/
+            overflow: auto;
+            border: 1px solid #2B2F3B;
+            .order-info {
+                .title {
+                    height: 50px;
+                    line-height: 50px;
+                    padding-left: 40px;
+                    font-size: 18px;
+                }
+                .left {
+                    float: left;
+                    /*clear: both;*/
+                    width: 100%;
+                    background: #353945;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .item {
+                        margin-left: 40px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        height: 50px;
+                        .label {
+                            display: inline-block;
+                            width: 174px;
+                            font-size: 18px;
+                        }
+                        span{
+                            font-size: 18px;
+                        }
+                    }
+                    .info-list {
+                        font-size: 0;
+                        .col-left {
+                            display: inline-block;
+                            width: 50%;
+                            /*height:100%;*/
+                        }
+                        .col-right {
+                            display: inline-block;
+                            width: 50%;
+                            /*height:100%;*/
+                        }
+                        .gao {
+                            height: 200px;
+                        }
+                        .status{
+                            padding: 5px 10px;
+                            background-color: #E26829;
+                            border-radius: 3px 3px;
+                            font-style: normal;
+                            color: white;
+                        }
+                        .list-group {
+                            padding: 10px 0 0 40px;
+                            .list-group-item {
+                                height: 40px;
+                                line-height: 40px;
+                                font-size: 0;
+                                span {
+                                    display: inline-block;
+                                    font-size: 18px;
+                                }
+                                span:first-child {
+                                    /*font-size: 12px;*/
+                                    color: #FFFFFF;
+                                    width: 40%;
+                                }
+                                span:last-child {
+                                    /*font-size: 12px;*/
+                                    color: #A1A5B1;
+                                    width: 60%;
+                                }
+                                .amount{
+                                    width: 100px;
+                                    margin-right: 10px;
+                                }
+                                .step{
+                                    span {
+                                        color: white;
+                                        padding-left:-20px;
+                                    }
+                                }
+                            }
+                            .input-sn {
+                                /*float: left;*/
+                                width:235px;
+                            }
+                        }
+                        .top-sapce{
+                            position:absolute;
+                            top:0px;
+                            left:474px;
+                            width:474px;
+                            .btn{
+                                border-radius: 5px;
+                                padding:2px 5px;
+                            }
+                        }
+                        .qr-left{
+                            float:left;
+                        }
+                        .input-sn:after{
+                            top: 15px;
+                        }
+                    }
+                }
+                .gao2 {
+                    position:relative;
+                    height:190px;
+                    clear:both;
+                }
+                .parts-list {
+                    float: left;
+                    padding: 27px 40px;
+                    /*font-size: 12px;*/
+                    overflow: hidden;
+                    height: 50px;
+                    width: 100%;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .label1 {
+                        display: inline-block;
+                        /*font-size: 12px;*/
+                    }
+                }
+            }
+
+            .footer {
+                width: 100%;
+                height: 50px;
+                padding: 10px 38px;
+                .footer-pagination {
+                    float: right;
+                }
+                .footer-delete {
+                    margin-top: 3px;
+                    background-color: #858890;
+                }
+            }
+        }
+        .dialog {
+            .el-dialog--large {
+                width: 1100px;
+            }
+            .header {
+                .search-content {
+                    width: 200px;
+                    margin-right: 10px;
+                }
+                .search-btn {
+                    position: absolute;
+                    top: 15px;
+                    left: 250px;
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+            .table-content{
+                padding-bottom: 0;
+            }
+        }
+
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// detail.vue?7187d1b5

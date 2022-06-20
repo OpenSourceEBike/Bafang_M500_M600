@@ -1,0 +1,213 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "login"
+  }, [_c('nav-bar', {
+    attrs: {
+      "title": _vm.title
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "chooseLanguage"
+  }, [_c('div', {
+    staticClass: "languageList"
+  }, [_c('el-tabs', {
+    on: {
+      "tab-click": function($event) {
+        _vm.handleClick()
+      }
+    },
+    model: {
+      value: (_vm.language),
+      callback: function($$v) {
+        _vm.language = $$v
+      },
+      expression: "language"
+    }
+  }, _vm._l((_vm.languages), function(item) {
+    return _c('el-tab-pane', {
+      key: item.value,
+      attrs: {
+        "name": item.value,
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  })), _vm._v(" "), _c('div', {
+    staticClass: "clear"
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "main-container"
+  }, [_c('div', {
+    staticClass: "declare"
+  }, [_c('h2', [_vm._v(_vm._s(_vm.$t('declare')))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.$t('declareP1')))]), _vm._v(" "), _c('p', {
+    staticClass: "bodytext"
+  }, [_vm._v(_vm._s(_vm.$t('declareP2')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "showMore",
+    attrs: {
+      "type": "primary",
+      "icon": "arrow-right"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogVisible = !_vm.dialogVisible
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('readmore')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "main-warp",
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && $event.keyCode !== 13) { return null; }
+        return _vm.login($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "head"
+  }, [(!_vm.org) ? _c('img', {
+    staticClass: "icon-login",
+    attrs: {
+      "src": require("../assets/images/login/icon-login.png")
+    }
+  }) : _c('div', {
+    staticClass: "icon-login"
+  }, [_c('img', {
+    staticClass: "logo-img",
+    attrs: {
+      "src": _vm._f("getImgUrl")(_vm.org.avatar)
+    }
+  })])]), _vm._v(" "), _c('p', {
+    staticClass: "login-text"
+  }, [_vm._v(_vm._s(_vm.$t('login')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "username",
+    attrs: {
+      "type": "text",
+      "placeholder": _vm.$t('userNamePlaceholder')
+    },
+    model: {
+      value: (_vm.userName),
+      callback: function($$v) {
+        _vm.userName = $$v
+      },
+      expression: "userName"
+    }
+  }), _vm._v(" "), _c('el-input', {
+    staticClass: "password",
+    attrs: {
+      "type": "password",
+      "placeholder": _vm.$t('passwordPlaceholder')
+    },
+    model: {
+      value: (_vm.password),
+      callback: function($$v) {
+        _vm.password = $$v
+      },
+      expression: "password"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "check-div"
+  }, [_c('div', {
+    staticClass: "check-item",
+    on: {
+      "click": _vm.isCheck
+    }
+  }, [(_vm.check) ? _c('div', {
+    staticClass: "icon-check"
+  }) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "remember-text"
+  }, [_vm._v(_vm._s(_vm.$t('rememberMe')))]), _vm._v(" "), _c('p', {
+    staticClass: "forget",
+    on: {
+      "click": _vm.toForget
+    }
+  }, [_vm._v(_vm._s(_vm.$t('forgetPassword')))])]), _vm._v(" "), _c('el-button', {
+    staticClass: "login-btn",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.login
+    }
+  }, [_vm._v(_vm._s(_vm.$t('loginBtnTxt')))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-button', {
+    staticClass: "sign",
+    attrs: {
+      "type": "delete"
+    },
+    on: {
+      "click": _vm.toSign
+    }
+  }, [_vm._v(_vm._s(_vm.$t('signUp')))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.offlineBtn),
+      expression: "offlineBtn"
+    }],
+    staticClass: "off-line-btn",
+    attrs: {
+      "type": "delete"
+    },
+    on: {
+      "click": _vm.offLine
+    }
+  }, [_vm._v(_vm._s(_vm.$t('offLine')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "visible": _vm.dialogVisible,
+      "custom-class": "dialogInfo"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogVisible = $event
+      }
+    }
+  }, [_c('div', [_c('div', {
+    staticClass: "flex"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('h2', [_vm._v(_vm._s(_vm.$t('declareP3')))]), _vm._v(" "), _c('div', {
+    staticClass: "overflow"
+  }, [_c('div', {
+    staticClass: "declareInfo"
+  }, [_c('P', [_c('span'), _vm._v(_vm._s(_vm.$t('declareP1')))]), _vm._v(" "), _c('div', {
+    staticClass: "special"
+  }, [_c('p', [_c('span'), _vm._v(_vm._s(_vm.$t('declareP2')))]), _c('img', {
+    attrs: {
+      "src": require("../assets/images/login/besst-tool.png"),
+      "title": "BESST TOOL"
+    }
+  })]), _vm._v(" "), _c('br'), _vm._v(" "), _c('h3', [_vm._v(_vm._s(_vm.$t('declareP6')))]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP7')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP8')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP9')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP10')))])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP11')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP12')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP13')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP14')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP15')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP16')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP17')))])]), _vm._v(" "), _c('P', [_c('span'), _vm._v(" "), _c('a', {
+    staticClass: "btn-underline",
+    attrs: {
+      "href": "https://www.bafang-e.com/en/oem-area/service/besst/",
+      "target": "_blank"
+    }
+  }, [_vm._v("\n                                    https://www.bafang-e.com/en/oem-area/service/besst/")])])], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('h2', [_vm._v(_vm._s(_vm.$t('declareP29')))]), _vm._v(" "), _c('div', {
+    staticClass: "overflow"
+  }, [_c('div', {
+    staticClass: "declareInfo"
+  }, [_c('h3', [_vm._v(_vm._s(_vm.$t('declareP30')))]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP31')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP21')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP22')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP23')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP32')))])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP11')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP33')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP34')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP16')))])]), _vm._v(" "), _c('P', [_c('span'), _vm._v(_vm._s(_vm.$t('declareP17')) + "\n                            ")]), _vm._v(" "), _c('P', [_c('span'), _vm._v(" "), _c('a', {
+    staticClass: "btn-underline",
+    attrs: {
+      "href": "https://www.bafang-e.com/en/oem-area/service/besst/",
+      "target": "_blank"
+    }
+  }, [_vm._v("\n                                    https://www.bafang-e.com/en/oem-area/service/besst/")])])], 1)])]), _vm._v(" "), _c('div', {
+    staticClass: "item last"
+  }, [_c('h2', [_vm._v(_vm._s(_vm.$t('declareP18')))]), _vm._v(" "), _c('div', {
+    staticClass: "overflow"
+  }, [_c('div', {
+    staticClass: "declareInfo"
+  }, [_c('h3', [_vm._v(_vm._s(_vm.$t('declareP19')))]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP20')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP21')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP22')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP23')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP24')))])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP11')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP26')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP27')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP28')))])]), _vm._v(" "), _c('P', [_c('span', [_vm._v(_vm._s(_vm.$t('declareP16')))])]), _vm._v(" "), _c('P', [_c('span'), _vm._v(_vm._s(_vm.$t('declareP17')) + "\n                            ")]), _vm._v(" "), _c('P', [_c('span'), _vm._v(" "), _c('a', {
+    staticClass: "btn-underline",
+    attrs: {
+      "href": "https://www.bafang-e.com/en/oem-area/service/besst/",
+      "target": "_blank"
+    }
+  }, [_vm._v("\n                                    https://www.bafang-e.com/en/oem-area/service/besst/")])])], 1)])])])])])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-1a4b6896","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/login.vue
+// module id = 722
+// module chunks = 73
