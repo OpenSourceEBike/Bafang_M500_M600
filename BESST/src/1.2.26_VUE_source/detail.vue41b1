@@ -1,0 +1,1036 @@
+<template>
+    <div class="component-order-detail">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="goOrderList" :title="$t('back')"></div>
+                </div>
+            </div>
+            <label class="title">{{ $t('orderDetail') }}</label>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <!--orderData.status 为 1时 标识 订单已经完成 不可编辑-->
+                    <div class="icon-item export" @click="exportOrder()"></div>
+                    <div class="icon-item edit" @click="goToEditOrder()" v-if="authList[Core.Const.AUTH_LIST.productionEdit] && isEdit" :title="$t('edit')"></div>
+                    <div class="icon-item delete" @click="dialogDeleteVisible = true" v-if="authList[Core.Const.AUTH_LIST.productionDelete] && isEdit" :title="$t('delete')"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrap">
+            <div class="content">
+                <div class="order-info">
+                    <label class="title">{{ $t('orderInfo.title') }}</label>
+                    <div class="left">
+                        <div class="info-list">
+                            <div class="col-left">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span>{{ $t('orderInfo.customerPo') }}</span>
+                                        <span>{{orderData.customer_po_no || '/'}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>{{ $t('orderInfo.customerName') }}</span>
+                                        <span>{{orderData.customer_id || '/'}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>{{ $t('orderInfo.orderNo') }}</span>
+                                        <span>{{orderData.source_id || '/'}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>{{ $t('orderInfo.note') }}</span>
+                                        <span class="remark"><i>{{orderData.remark || '/'}}</i> </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-right">
+                                <ul class="list-group">
+
+                                    <li class="list-group-item">
+                                        <span>Create Time</span>
+                                        <span>{{orderData.create_time | dateFormat}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>Update Time</span>
+                                        <span>{{orderData.update_time | dateFormat}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>System Name</span>
+                                        <span>{{orderData.customer_part_no}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>TestPlan Name</span>
+                                        <span>{{orderData.test_plan_name}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="parts-list">
+                        <label class="label1">{{ $t('itemsList') }}</label>
+                    </div>
+                </div>
+                <div class="table-wrap order-detail">
+                    <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                        <tr>
+                          <td v-for="item in headData">{{item}}</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="item in tableData">
+                            <!--<td class="td" v-for="value in item">{{value}}</td>-->
+                            <td class="long-td">{{item.item_name}}</td>
+                            <td>{{item.item_part_no}}</td>
+                            <td>{{item.part_no}}</td>
+                            <td>{{item.produced + '/' + item.amount}}</td>
+                            <td v-if="authList[Core.Const.AUTH_LIST.productionProduce] && authList[Core.Const.AUTH_LIST.productionReport] && isEdit">
+                                <span v-if="!orderData.status">
+                                    <a v-if="item.category_root_id != 3 && item.category_root_id != 6" class="btn-underline" @click="goProduce(item.item_id, item.amount)">{{ $t('produce') }}</a>
+                                    <a class="btn-underline" @click="goTestReport(item)">{{ $t('testReport') }}</a>
+                                </span>
+                                <a class="btn-underline" @click="showReplaceDialog(item)">{{ $t('replace') }}</a>
+                                <a class="btn-underline" v-if="item.item_name.substring(1,2) == 'M' " @click="dataConnect(item.item_id, item.amount)">{{ $t('dataConnect') }}</a>
+                                <a class="btn-underline" @click="goToComponentList(item)">{{ $t('componentList') }}</a>
+                                <a class="btn-underline" @click="addNewTestData(item)">Add Test</a>
+                                <a class="btn-underline" @click="removeTestData(item)">Remove Test</a>
+                                <a class="btn-underline" @click="modifyTestData(item)">Modify Test</a>
+                                <a class="btn-underline" @click="moveTestData(item)">Move Test</a>
+                                <a class="btn-underline" @click="editSNType(item)">Edit SN Type</a>
+                            </td>
+                            <td v-else>
+                                <a class="btn-underline" @click="goToComponentList(item)">{{ $t('componentList') }}</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <el-dialog
+            :title="$t('deleteDialog.title')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialog.content') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteProductionOrder">{{ $t('deleteDialog.yes') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('deleteDialog.no') }}</el-button>
+            </span>
+        </el-dialog>
+        <!-- Replace 弹框-->
+        <el-dialog
+            class="dialog"
+            :title="$t('replace')"
+            :visible.sync="dialogReplaceVisible"
+            size="large"
+            >
+            <div class="content">
+                <div class="header">
+                    <el-input
+                        :placeholder="$t('category')"
+                        class="search-content"
+                        :disabled="true"
+                        v-model="selectCategoryItem.name"
+                        @click.native="selectCategory">
+                    </el-input>
+                    <el-input
+                        :placeholder="$t('modelNamePN')"
+                        class="search-content"
+                        v-model="queryItemCondition">
+                    </el-input>
+                    <div class="btn-group-inline">
+                        <div class="icons">
+                            <div class="icon-item search" @click="queryOrderItem" :title="$t('search')"></div>
+                            <div class="icon-item clear" @click="clearCondition" :title="$t('clear')"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                            <tr>
+                                <td v-for="item in itemHeadData">{{item}}</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr v-for="(item, index) in queryItemList">
+                            <td><img :src="item.img | getImgUrl"></td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.ext_part_no}}</td>
+                            <td>
+                                <a class="btn-underline" @click="showConfirmDialog(item)">{{ $t('replace') }}</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <el-pagination
+                        class="pagination"
+                        @current-change="handleCurrentPageChange"
+                        :current-page.sync="currentPage"
+                        :page-size="10"
+                        layout="prev, pager, next"
+                        :total="total">
+                    </el-pagination>
+
+                </div>
+            </div>
+        </el-dialog>
+        <!--产品类别弹窗-->
+        <el-dialog
+            class="dialog"
+            :title="$t('selectCategory')"
+            :visible.sync="dialogSelectCategoryVisible"
+            size="large">
+            <div class="content" style="max-height: 500px; overflow: auto">
+                <div class="category-tree">
+                    <el-tree :data="categoryList" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                </div>
+            </div>
+        </el-dialog>
+
+        <el-dialog
+            class="dialog"
+            :title="$t('replace')"
+            :visible.sync="dialogConfirmVisible"
+            size="tiny">
+            <span>{{selectNewItem.name}}({{selectNewItem.ext_part_no}})
+                {{ $t('confirmDialog.replace') }}
+            {{selectOldItem.item_name}}({{selectOldItem.item_part_no}})</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="replaceItem">{{ $t('confirmDialog.yes') }}</el-button>
+                <el-button type="primary" @click="dialogConfirmVisible = false">{{ $t('confirmDialog.no') }}</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="Add Test Data"
+            class="handle-test-data"
+            :visible.sync="addTestVisible">
+            <el-form>
+                <el-form-item label="SN">
+                    <el-input v-model="addTestSN"></el-input>
+                </el-form-item>
+                <el-form-item label="Quantity">
+                    <el-input v-model="addTestNumber"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmAdd">Confirm</el-button>
+                <el-button type="info" @click="addTestVisible = false">Cancel</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="Remove Test Data"
+            class="handle-test-data"
+            :visible.sync="removeTestVisible">
+            <el-form>
+                <el-form-item label="SN">
+                    <el-input v-model="removeTestSN"></el-input>
+                </el-form-item>
+                <el-form-item label="Quantity">
+                    <el-input v-model="removeTestNumber"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmRemove">Confirm</el-button>
+                <el-button type="info" @click="removeTestVisible = false">Cancel</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="Modify Test Data"
+            class="handle-test-data"
+            :visible.sync="modifyTestVisible">
+            <el-form>
+                <el-form-item label="SN">
+                    <el-input v-model="modifyTestSN"></el-input>
+                </el-form-item>
+                <el-form-item label="Quantity">
+                    <el-input v-model="modifyTestNumber"></el-input>
+                </el-form-item>
+                <el-form-item label="Modified Data">
+                    <el-input v-model="modifiedTestData"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmModify">Confirm</el-button>
+                <el-button type="info" @click="modifyTestVisible = false">Cancel</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="Move Test Data"
+            class="handle-test-data"
+            :visible.sync="moveTestVisible">
+            <el-form>
+                <el-form-item label="Order NO. Moved To">
+                    <el-select v-model="moveTestOrderNumber" filterable poper-class="select-job" @keyup.enter.native="inputOrderNumber($event)">
+                        <el-option v-for="(item, index) in orderNumberList" :key="index" :label="item.sn" :value="item.id">
+                        </el-option>
+                        <div style="text-align: center">
+                            <span class="text" @click.stop="prevePage" v-show="selectPage>1">Previous Page</span>
+                            <span class="text" @click.stop="nextPage" style="padding-left: 30px" v-show="selectPage !== pageCount">Next Page</span>
+                        </div>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="Moved SN">
+                    <el-input v-model="moveTestSN"></el-input>
+                </el-form-item>
+                <el-form-item label="Quantity">
+                    <el-input v-model="moveTestNumber"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmMove">Confirm</el-button>
+                <el-button type="info" @click="moveTestVisible = false">Cancel</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="Edit SN Type"
+                   class="handle-test-data"
+                   :visible.sync="editSNTypeVisible">
+            <el-form>
+                <el-form-item label="Update Type">
+                    <el-switch v-model="editSNTypeValue" on-color="#98b42c" off-color="#606161" on-text="Update"
+                               off-text="Not"></el-switch>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmEditSNType">Confirm</el-button>
+                <el-button type="info" @click="editSNTypeVisible = false">Cancel</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        components: {},
+        data(){
+            return {
+                Core: Core,
+                headData: ['Model Name', 'Article No.', 'Customer Article No.', 'Quantity', 'Operation'],
+                tableData: [],
+                orderData: {},
+                quantity: 1,
+                dialogDeleteVisible: false,
+                orderId: '',
+
+                authList: [],
+
+                selectOldItem: {},
+                selectNewItem: {},
+                dialogReplaceVisible: false,
+                dialogSelectCategoryVisible: false,
+                categoryList: [],
+                defaultProps: {
+                    id: 'id',
+                    children: 'child',
+                    label: 'name',
+                },
+                selectCategoryItem: {
+                    id: '',
+                    name: ''
+                },
+                queryItemCondition: '',
+                itemHeadData: ['Image', 'Name', 'Part No.', 'Operation'],
+                queryItemList: [],
+                total: 0,
+                currentPage: 1,
+                dialogConfirmVisible: false,
+
+                isMotor:false,
+                systemNameList: [],
+                testPlanList: [],
+                addTestVisible: false,
+                addTestNumber: '',
+                moveTestVisible: false,
+                moveTestNumber: '',
+                moveTestOrderNumber: '',
+                modifyTestVisible: false,
+                modifyTestNumber: '',
+                removeTestVisible: false,
+                removeTestNumber: '',
+                moveTestSN: '',
+                modifyTestSN: '',
+                editSNTypeVisible: false,
+                editSNTypeValue: true,
+                removeTestOrderNumber: '',
+                removeTestSN: '',
+                modifiedTestData: '',
+                pageCount: null, // 获取总页数
+                selectPage: 1, // 当前页数
+                orderNumberList: [], //当前页数数据
+                moveSourceId: '',
+                removeSourceId: '',
+                addSourceId: '',
+                modifySourceId: '',
+                selectedSN: '',
+                addTestSN: '',
+                addItemId: '',
+                isEdit: true,
+                isManager: false,
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Order.Detail,
+                zh: ZH.Component.Order.Detail,
+                de: DE.Component.Order.Detail,
+                nl: NL.Component.Order.Detail
+            }
+        },
+        mounted: function() {
+            // 国际化
+            this.initData();
+            let vm = this;
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    vm.initData();
+                }, 100);
+            });
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+//            console.log(this.authList);
+            this.orderId = this.$route.query.orderId;
+
+            this.getOrderDetail(this.orderId);
+            this.isManager = Core.Data.get('isManager');
+
+//            this.getAllCategory();
+
+        },
+        methods: {
+            checkEdit(data){
+                console.log((Date.now() - data.update_time*1000)>= 14*24*3600)
+                //  订单完成后，14天之后就不能修改
+                if(data.status === 1){
+                    if( ((Date.now() - data.update_time*1000)>= 14*24*3600) && !this.isManager){
+                        this.isEdit = false;
+                        this.$message({
+                            message: 'This order is finished over 14 days. Could not be edited. Please contact manager',
+                            type: 'warning'
+                        });
+                    }
+                }
+            },
+            inputOrderNumber(val){
+                this.selectedSN = val.target.value;
+                this.selectPage = 1;
+                this.getAllOrderId();
+            },
+            getSystemData(res){
+                if(!res.order.customer_part_no){
+                    this.orderData = res.order;
+                    return false;
+                }
+                Core.Api.request({
+                    url: '/besst/project/findBesstById',
+                    method: 'GET',
+                    data: {
+                        id: parseInt(res.order.customer_part_no)
+                    }
+                }).then((res1)=>{
+                    if(res1.code === 0 && res1.data && res1.data.name){
+                        // 借用这个字段, 系统数据的值，存的是id
+                        res.order.customer_part_no = res1.data.name;
+                        this.orderData = res.order;
+                    }
+                }).catch((err)=>{
+                     console.log(err);
+                })
+            },
+            getTestPlanData(){
+                this.$http.get(
+                    'https://www.bafang-electric.com:7777/api/login?username=admin&password=Jimmy007'
+                ).then(res=>{
+                    if(res.data && res.data.jwt){
+                        this.$http.get(
+                            'https://www.bafang-electric.com:7777/api/testplans',
+                            {
+                                headers:{
+                                    jwt: res.data.jwt
+                                }
+                            }
+                        ).then(res=>{
+                            if(res.data&&res.data.data&&res.data.data.length>0){
+                                res.data.data.forEach((item)=>{
+                                    let testPlanItem = {
+                                        name: item.name,
+                                        id: item.testPlanId,
+                                        value: item.testPlanId
+                                    };
+                                    this.testPlanList.push(testPlanItem);
+                                })
+                            // this.getOrderDetail(this.orderId);
+
+                            }
+                        }).catch(err=>{
+                            console.log(err);
+                        })
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                    this.$message({
+                        type: 'warning',
+                        message: '登录失败'
+                    })
+                })
+
+            },
+            initData() {
+                this.headData = [this.$t('headData.modelName'), this.$t('headData.articleNo'), this.$t('headData.customerArticleNo'), this.$t('headData.quantity'), this.$t('headData.operation')];
+            },
+
+            goOrderList(){
+                this.$router.push({path: 'list'});
+            },
+
+            deleteProductionOrder(){
+                Core.Api.Order.deleteProductionOrder(this.orderId).then(res => {
+                    this.$router.push({path: 'list'});
+                })
+            },
+
+            goProduce(id, account) {
+            	if (!this.authList['production.menu'] && !this.authList['production.produce']) {
+		            this.$message({
+			            message: 'you have no auth',
+			            type: 'warning'
+		            });
+                    return;
+                }
+                this.$router.push({
+                    name: 'componentOrderProduce',
+                    query: {"orderId": this.orderId, "itemId": id, "account": account}
+                })
+            },
+
+            goTestReport( item ) {
+	            if (!this.authList['production.menu'] && !this.authList['production.report']) {
+		            this.$message({
+			            message: 'you have no auth',
+			            type: 'warning'
+		            });
+		            return;
+	            }
+                this.$router.push({name: 'componentOrderTestReport', query: {"orderId": this.orderId, "item": item}})
+            },
+
+            dataConnect(id,amount){
+                this.account = "";
+                this.$router.push({
+                    name: 'componentOrderDataConnect',
+                    query: {"orderId": this.orderId, "itemId": id, "account": amount}
+                })
+            },
+
+            goToComponentList(item) {
+                this.$router.push({name: 'componentComponentList', query: {"orderNo": this.orderData.source_id, "itemName": item.item_name, from: 'order'}})
+            },
+
+            goToEditOrder() {
+                this.$router.push({name: 'componentOrderSave', query: {"orderItem": JSON.stringify(this.orderData)}})
+            },
+
+            getOrderDetail(id){
+                Core.Api.Order.getProductionOrderDetail(id).then((res) => {
+                    this.checkEdit(res.order);
+                    this.getSystemData(res);
+                    // this.orderData = res.order;
+                    this.tableData = res.order.item_list;
+                });
+            },
+
+            showReplaceDialog(item){
+                this.selectOldItem = {};
+                this.selectOldItem = item;
+                this.dialogReplaceVisible = true;
+            },
+
+            handleNodeClick(data) {
+                if (data.hasOwnProperty("child")) {
+                    let childList = data.child;
+                    if (childList.length <= 0) {
+                        this.selectCategoryItem = data;
+                        this.dialogSelectCategoryVisible = false;
+                    }
+                }
+            },
+
+            getAllCategory() {
+                Core.Api.Category.getAllCategoryList(Core.Const.COMPONENT_ROOT_CATEGORY).then(
+                    res => {
+                        this.categoryList = Core.Util.sortListTree(res.category_list);
+                    }
+                );
+            },
+
+            selectCategory() {
+                this.getAllCategory();
+                this.dialogSelectCategoryVisible = true;
+            },
+
+            queryOrderItem() {
+                let org = Core.Data.getOrg();
+                if (org !== null) {
+                    Core.Api.Item.queryOrderItem(org.id, this.selectCategoryItem.id, '', this.queryItemCondition.trim(), this.currentPage).then(res => {
+                        this.queryItemList = res.query;
+                        this.total = res.count;
+                        if (!this.queryItemList.length > 0) {
+                            this.$message({
+                                message: "There are no matching data",
+                                type: 'warning'
+                            });
+                        }
+                    })
+                }
+            },
+
+            clearCondition() {
+                this.queryItemList = [];
+                this.queryItemCondition = '';
+                this.selectCategoryItem = '';
+                this.total = 0;
+                this.currentPage  = 1;
+            },
+
+            handleCurrentPageChange(page){
+                this.currentPage = page;
+                this.queryOrderItem();
+            },
+
+            showConfirmDialog(item){
+                this.selectNewItem = {};
+                this.selectNewItem = item;
+            	this.dialogConfirmVisible = true;
+            },
+
+            //替换操作
+            replaceItem(){
+                Core.Api.Order.editProductionOrder(this.orderId, this.selectOldItem.item_id, this.selectNewItem.id).then(res =>{
+                	this.$message({
+                        message: 'Replace successfully',
+                        type: 'success'
+                    });
+                    this.dialogConfirmVisible = false;
+                    let data = {
+                        "old": this.selectOldItem.item_id +"-"+ this.selectOldItem.item_part_no,
+                        "new": this.selectNewItem.id +"-"+ this.selectNewItem.ext_part_no
+                    }
+                    let info ={
+                        'sn':this.orderData.source_id,
+                        'object_id':0,
+                        'data': JSON.stringify(data),
+                        'type':3,
+                        'remark':"",
+                    }
+                    Core.Api.request({
+                        url: '/report/save',
+                        data: info,
+                        headers: {
+                            'content-type': 'application/json,chart=utf-8'
+                        },
+                        method: 'POST'
+                    }).then(res=>{
+                        console.log(res);
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                    this.dialogReplaceVisible = false;
+                    this.clearCondition();
+                    this.getOrderDetail(this.orderId);
+                });
+
+
+            },
+
+            exportOrder() {
+                let data = {
+                    order_id: this.orderId
+                };
+                window.location.href = Core.Api.getUrl('component/export', data);
+
+            },
+            addNewTestData(item){
+                this.addTestVisible = true;
+                this.addItemId = item.item_id;
+            },
+            removeTestData(item){
+                this.removeTestVisible = true;
+            },
+            modifyTestData(item){
+                this.modifyTestVisible = true;
+            },
+            moveTestData(item){
+                this.moveTestVisible = true;
+                this.selectPage = 1;
+                this.getAllOrderId();
+            },
+            editSNType(item){
+                this.editSNTypeVisible = true;
+                this.addItemId = item.item_id;
+            },
+            confirmAdd(){
+                let info = {
+                    sn: this.addTestSN,
+                    number: this.addTestNumber,
+                    id: this.orderData.id?this.orderData.id: this.$route.query.orderId,
+                    item_id: this.addItemId
+                };
+                Core.Api.request({
+                    url: '/component/add-batch-test-data',
+                    method: 'GET',
+                    data: info
+                }).then(res=>{
+//                    console.log(res);
+                    if(res.code === 0){
+                        this.addTestVisible = false;
+                        this.addTestNumber = '';
+                        this.addTestSN = '';
+                        this.$message({
+                            type: 'success',
+                            message: 'Add successfully!'
+                        })
+                    }else{
+                        this.$message({
+                            type: 'warning',
+                            message: res.message
+                        })
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            confirmRemove(){
+                let info = {
+                    number: this.removeTestNumber,
+                    sn: this.removeTestSN,
+                    id: this.orderData.id?this.orderData.id: this.$route.query.orderId
+                };
+                Core.Api.request({
+                    url: '/component/delete-batch-test-data',
+                    method: 'GET',
+                    data: info
+                }).then(res=>{
+                    console.log(res);
+                    if(res.code === 0){
+                        this.removeTestVisible = false;
+                        this.removeTestNumber = '';
+                        this.removeTestSN = '';
+                        this.$message({
+                            type: 'success',
+                            message: 'Remove successfully!'
+                        })
+                    }else{
+                        this.$message({
+                            type: 'warning',
+                            message: res.message
+                        })
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            confirmModify(){
+                let info = {
+                    number: this.modifyTestNumber,
+                    sn: this.modifyTestSN,
+                    id: this.orderData.id?this.orderData.id: this.$route.query.orderId,
+                    test_data: this.modifiedTestData
+                };
+                Core.Api.request({
+                    url: '/component/update-batch-test-data',
+                    method: 'GET',
+                    data: info
+                }).then(res=>{
+                    console.log(res);
+                    if(res.code === 0){
+                        this.modifyTestVisible = false;
+                        this.modifyTestNumber = '';
+                        this.modifyTestSN = '';
+                        this.modifiedTestData = '';
+                        this.$message({
+                            type: 'success',
+                            message: 'Modify successfully!'
+                        })
+                    }else{
+                        this.$message({
+                            type: 'warning',
+                            message: res.message
+                        })
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            confirmMove(){
+                let info = {
+                    move_order_id: this.moveTestOrderNumber,
+                    number: this.moveTestNumber,
+                    sn: this.moveTestSN,
+                    id: this.orderData.id?this.orderData.id: this.$route.query.orderId
+                };
+                Core.Api.request({
+                    url: '/component/move-batch-test-data',
+                    method: 'GET',
+                    data: info
+                }).then(res=>{
+                    console.log(res);
+                    if(res.code === 0){
+                        this.moveTestVisible = false;
+                        this.moveTestNumber = '';
+                        this.moveTestOrderNumber = '';
+                        this.moveTestSN = '';
+                        this.$message({
+                            type: 'success',
+                            message: 'Move successfully!'
+                        })
+                    }else{
+                        this.$message({
+                            type: 'warning',
+                            message: res.message
+                        })
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            confirmEditSNType(){
+                Core.Api.Object.updateOrderType(this.orderData.id, this.addItemId, this.editSNTypeValue === true? 1: 0).then(res => {
+                    console.log(res);
+                    if(res === undefined){
+                        this.$message({
+                            type: 'success',
+                            message: 'Edit Order SN Type successfully!'
+                        })
+                    }
+                })
+            },
+
+            getAllOrderId(){
+                Core.Api.request({
+                    url: '/component/findAllOrder',
+                    data: {
+                        page: this.selectPage,
+                        size: 20,
+                        sn: this.selectedSN
+                    },
+                    method: 'GET'
+                }).then(res=>{
+                    this.orderNumberList = [];
+                    if(Array.isArray(res.data.list)&&res.data.list.length>0){
+                        let list = res.data.list;
+                        list.map((item)=>{
+                           if(item.sn!==''){
+                               this.orderNumberList.push(item);
+                           }
+                        })
+                        this.total = res.data.count; // 数据总数量
+                        this.pageCount = Math.ceil(this.total / 20);
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+            prevePage () {
+                --this.selectPage;
+                if (this.selectPage < 1) { // 判断点击的页数是否小于1
+                    this.selectPage = 1;
+                };
+                this.getAllOrderId();
+            },
+            nextPage () {
+                if (this.selectPage < this.pageCount) { // 判断点击的页数是否小于总页数;
+                    ++this.selectPage;
+                    this.getAllOrderId();
+                }
+            }
+        }
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .component-order-detail {
+        width: 100%;
+        height: 100%;
+
+        .content {
+            height: 100%;
+            /*overflow: auto;*/
+            border: 1px solid #2B2F3B;
+
+            .order-info {
+                height: 272px;
+                .title {
+                    height: 50px;
+                    line-height: 50px;
+                    padding-left: 40px;
+                    /*font-size: 12px;*/
+                }
+                .left {
+                    float: left;
+                    width: 100%;
+                    background: #353945;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .item {
+                        margin-left: 40px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        height: 50px;
+                        .label {
+                            display: inline-block;
+                            width: 90px;
+                        }
+                    }
+                    .info-list {
+                        font-size: 0;
+                        .col-left {
+                            display: inline-block;
+                            width: 50%;
+                        }
+                        .col-right {
+                            display: inline-block;
+                            width: 50%;
+                        }
+
+                        .list-group {
+                            padding: 0 40px;
+                            .list-group-item {
+                                height: 50px;
+                                line-height: 50px;
+                                font-size: 0;
+                                span {
+                                    display: inline-block;
+                                }
+                                span:first-child {
+                                    /*font-size: 12px;*/
+                                    color: #FFFFFF;
+                                    width: 30%;
+                                }
+                                span:last-child {
+                                    /*font-size: 12px;*/
+                                    color: #A1A5B1;
+                                    width: 65%;
+                                    vertical-align: middle;
+                                    line-height: 15px;
+                                    word-wrap:break-word;
+                                }
+                                span.remark{
+                                    /*overflow-y: scroll;*/
+                                }
+                            }
+                        }
+                    }
+                }
+                .parts-list {
+                    float: left;
+                    padding: 27px 40px;
+                    /*font-size: 12px;*/
+                    overflow: hidden;
+                    height: 50px;
+                    width: 100%;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .label1 {
+                        display: inline-block;
+                        /*font-size: 12px;*/
+                    }
+                }
+            }
+            .order-detail{
+                box-shadow: 0 -1px #2B2F3B;
+                height: calc(100% - 294px);
+                overflow-x: hidden;
+                .long-td{
+                    max-width: 200px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+                .table-content{
+                    padding-bottom: 0;
+                    tr{
+                        td{
+                            white-space: normal;
+                        }
+                    }
+                }
+            }
+
+            .footer {
+                width: 100%;
+                height: 50px;
+                padding: 10px 38px;
+                .footer-pagination {
+                    float: right;
+                }
+                .footer-delete {
+                    margin-top: 3px;
+                    background-color: #858890;
+                }
+            }
+        }
+        .dialog {
+            .el-dialog--large {
+                width: 1100px;
+            }
+            .header {
+                .search-content {
+                    width: 200px;
+                    margin-right: 10px;
+                }
+                .search-btn {
+                    position: absolute;
+                    top: 15px;
+                    left: 250px;
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+            .table-content{
+                padding-bottom: 0;
+            }
+        }
+        .handle-test-data{
+            .el-form{
+                .el-form-item{
+                    .el-form-item__label{
+                        width: 160px;
+                        text-align: center;
+                    }
+                    .el-input{
+                        width: 280px;
+                    }
+                    .el-select{
+                        width: 280px;
+                    }
+                }
+            }
+        }
+        .select-job{
+             span{
+                width:120px;
+                overflow :hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+             }
+
+            .text{
+                padding-left: 10px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                color: cornflowerblue;
+            }
+
+        }
+
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// detail.vue?59a48d78

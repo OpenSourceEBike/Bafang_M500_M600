@@ -1,0 +1,250 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "user-list"
+  }, [_c('div', {
+    staticClass: "search-header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_vm._v("User List")]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(true) ? _c('div', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('user-nl-add'),
+      expression: "'user-nl-add'"
+    }],
+    staticClass: "icon-item add-v2",
+    attrs: {
+      "title": "add"
+    },
+    on: {
+      "click": _vm.addRole
+    }
+  }) : _vm._e()])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [(_vm.tableList.length <= 0 && !_vm.loading) ? _c('div', {
+    staticClass: "no-data-content"
+  }, [_vm._v("noResult")]) : _c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.headData), function(item, index) {
+    return _c('td', {
+      key: index
+    }, [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), (!_vm.loading && _vm.tableList.length > 0) ? _c('tbody', _vm._l((_vm.tableList), function(item) {
+    return _c('tr', {
+      key: item.id,
+      staticClass: "areaList"
+    }, [_c('td', [_vm._v(_vm._s(item.uid))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.email))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.name || "-"))]), _vm._v(" "), _c('td', [_c('a', {
+      directives: [{
+        name: "ilpermission",
+        rawName: "v-ilpermission",
+        value: ('user-nl-delete'),
+        expression: "'user-nl-delete'"
+      }],
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onDelete(item)
+        }
+      }
+    }, [_vm._v("delete")])])])
+  })) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next, jumper",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v("total: " + _vm._s(_vm.total))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-region",
+    attrs: {
+      "title": _vm.dialogTitle,
+      "visible": _vm.dialogAddVisible
+    },
+    on: {
+      "update:title": function($event) {
+        _vm.dialogTitle = $event
+      },
+      "update:visible": function($event) {
+        _vm.dialogAddVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n          Country\n          "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.roleData.country),
+      callback: function($$v) {
+        _vm.$set(_vm.roleData, "country", $$v)
+      },
+      expression: "roleData.country"
+    }
+  }, _vm._l((_vm.areaCodeList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.area_en,
+        "value": item.area_code
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n          Email\n          "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "type": "email"
+    },
+    model: {
+      value: (_vm.roleData.email),
+      callback: function($$v) {
+        _vm.$set(_vm.roleData, "email", $$v)
+      },
+      expression: "roleData.email"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n          Name\n          "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.roleData.name),
+      callback: function($$v) {
+        _vm.$set(_vm.roleData, "name", $$v)
+      },
+      expression: "roleData.name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("\n          Password\n          "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.roleData.password),
+      callback: function($$v) {
+        _vm.$set(_vm.roleData, "password", $$v)
+      },
+      expression: "roleData.password"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.dialogConfirm
+    }
+  }, [_vm._v("confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.dialogCancel
+    }
+  }, [_vm._v("cancel")])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.dialogTitle,
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:title": function($event) {
+        _vm.dialogTitle = $event
+      },
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v("Are you sure to delete it ?")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteInvitation
+    }
+  }, [_vm._v("yes")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v("no")])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-867fe78c","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/user/user-list.vue
+// module id = 2503
+// module chunks = 54

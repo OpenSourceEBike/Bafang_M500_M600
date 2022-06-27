@@ -1,0 +1,247 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "dealer-brand-list"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group"
+  }, [_c('el-button', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!(_vm.ownOrg.type === _vm.Core.Const.ORG_TYPE.SPECIAL_DEAlER && _vm.brandList.length)),
+      expression: "!(ownOrg.type === Core.Const.ORG_TYPE.SPECIAL_DEAlER && brandList.length)"
+    }],
+    staticClass: "btn-accept",
+    on: {
+      "click": function($event) {
+        _vm.dialogCodeVisible = true
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('acceptInvitation')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item) + " ")])
+  }))]), _vm._v(" "), _c('tbody', _vm._l((_vm.brandList), function(item) {
+    return _c('tr', {
+      on: {
+        "click": function($event) {
+          _vm.showBrandDetail(item)
+        }
+      }
+    }, [_c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.phone))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.website))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.country))]), _vm._v(" "), (!_vm.partnerBrand) ? _c('td', [_c('el-tooltip', {
+      staticClass: "item",
+      attrs: {
+        "effect": "dark",
+        "content": "Set as current brand",
+        "placement": "right"
+      }
+    }, [_c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/dealer/flag-free.png")
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.setBrandPartner(item)
+        }
+      }
+    })])], 1) : _vm._e(), _vm._v(" "), (_vm.partnerBrand && item.id == _vm.partnerBrand.id) ? _c('td', [_c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/dealer/flag-select.png")
+      }
+    }), _vm._v(" "), _c('span', {
+      staticClass: "span"
+    }, [_vm._v(_vm._s(_vm.$t('currentBrand')))])]) : _vm._e(), _vm._v(" "), (_vm.partnerBrand && item.id !== _vm.partnerBrand.id) ? _c('td', [_c('el-tooltip', {
+      staticClass: "item",
+      attrs: {
+        "effect": "dark",
+        "content": "Set as current brand",
+        "placement": "right"
+      }
+    }, [_c('img', {
+      staticClass: "img",
+      attrs: {
+        "src": require("../../../assets/images/dealer/flag-free.png")
+      },
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.setBrandPartner(item)
+        }
+      }
+    })])], 1) : _vm._e()])
+  }))]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.brandList.length <= 0 && !_vm.loading),
+      expression: "brandList.length <= 0 && !loading"
+    }],
+    staticClass: "no-data-content"
+  }, [_vm._v("\n                " + _vm._s(_vm.$t('noResult')) + "\n            ")]), _vm._v(" "), (_vm.loading) ? _c('div', {
+    staticClass: "loading"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../../assets/images/icon/loading-bars.svg"),
+      "alt": "Loading icon"
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v(_vm._s(_vm.$t('total')) + " " + _vm._s(_vm.total))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "detail-dialog",
+    attrs: {
+      "title": _vm.selectBrand.name,
+      "visible": _vm.dialogDetailVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDetailVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "dialog-header"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('brandInfo.title')))])]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-content"
+  }, [_c('div', {
+    staticClass: "item img"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('brandInfo.logo')))]), _vm._v(" "), _c('div', {
+    staticClass: "img-box"
+  }, [_c('img', {
+    staticClass: "logo",
+    attrs: {
+      "src": _vm._f("getImgUrl")(_vm.selectBrand.avatar)
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('brandInfo.name')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.selectBrand.name))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('brandInfo.type')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v("Brand")])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('brandInfo.email')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.selectBrand.email))]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('brandInfo.website')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.selectBrand.website))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('brandInfo.tel')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.selectBrand.phone))]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('brandInfo.postcode')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.selectBrand.postcode))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('brandInfo.address')))]), _vm._v(" "), _c('label', {
+    staticClass: "text long"
+  }, [_vm._v(_vm._s(_vm.selectBrand.address))])])])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "code-dialog",
+    attrs: {
+      "title": _vm.$t('acceptInvitation'),
+      "visible": _vm.dialogCodeVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogCodeVisible = $event
+      }
+    }
+  }, [_c('div', [_c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": _vm.$t('invitationCode')
+    },
+    model: {
+      value: (_vm.invitationCode),
+      callback: function($$v) {
+        _vm.invitationCode = $$v
+      },
+      expression: "invitationCode"
+    }
+  })], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.acceptInvite
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.dialogCodeVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-237e3123","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/dealer/partner/invitation.vue
+// module id = 1678
+// module chunks = 73

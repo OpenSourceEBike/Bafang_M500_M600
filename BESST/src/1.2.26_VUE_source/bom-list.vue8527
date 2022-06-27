@@ -1,0 +1,853 @@
+<template>
+    <div class="product-bom-list">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="back" :title="$t('back')"></div>
+                </div>
+            </div>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item" :class="[isEdit ? 'save' : 'edit']" @click="editBom" v-if="authList[Core.Const.AUTH_LIST.productProductBomEdit]" :title="btnText"></div>
+                    <div class="icon-item print" @click="printBom" v-show="!isEdit" :title="$t('print')"></div>
+                    <div class="icon-item export" @click="exportBom" v-show="!isEdit" :title="$t('export')"></div>
+                    <div class="icon-item delete" @click="showDeleteDialog" v-if="authList[Core.Const.AUTH_LIST.productProductBomDelete]" :title="$t('delete')"></div>
+                    <div class="icon-item copy" @click="goToCopyView()"
+                         v-if="authList[Core.Const.AUTH_LIST.productProductAdd] || authList[Core.Const.AUTH_LIST.productProductBomDelete]"
+                         :title="$t('copy')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content-holder">
+            <div class="content">
+                <div class="part top">
+                    <label>{{ $t('articleNO') }} :</label>
+                    <label class="art-no" >{{artNo}}</label>
+                    <!--<el-input v-model="artNo" class="art-no" v-show="isEdit"></el-input>-->
+
+                    <div class="img-div">
+                        <el-upload
+                            class="upload"
+                            :action="upload.url"
+                            :show-file-list="false"
+                            :on-success="imageUploaded"
+                            :data="upload.data"
+                            v-if="isEdit">
+                            <div v-if="!upload.photographSrc">
+                                <img src="../../../assets/images/icon/icon-upload@2x.png" class="upload-icon">
+                            </div>
+                            <img v-else class="img" :src="Core.Const.NET.IMG_URL_PREFIX + upload.photographSrc"/>
+                        </el-upload>
+                        <div v-else>
+                            <div v-if="!upload.photographSrc" class="no-img">
+                                <span>{{ $t('noPhoto') }}</span>
+                            </div>
+                            <img v-else class="img" :src="upload.photographSrc | getImgUrl"/>
+                        </div>
+                        <div class="tip" v-if="isEdit">
+                            <div class="title" >{{ $t('tip') }}:</div>
+                            <div class="content">
+                                {{ $t('content01') }}<br/>{{ $t('content02') }}
+                            </div>
+                        </div>
+                        <el-button type="primary" @click="largeImgDialogVisible = true"
+                                   :disabled="!upload.photographSrc">{{ $t('viewLargerImage') }}
+                        </el-button>
+                    </div>
+                </div>
+                <div class="part list">
+                    <label class="list-title">
+                        {{ $t('list') }}
+                    </label>
+
+                    <el-input
+                        v-show="isEdit"
+                        :placeholder="$t('partName')"
+                        class='search-input'
+                        icon="search"
+                        v-model="partName"
+                        :on-icon-click="showPartDialog">
+                    </el-input>
+
+                    <table class="bom-list" border="0" cellspacing="0" cellpadding="0" v-if="childList.length > 0">
+                        <thead>
+                        <tr>
+                            <td v-for="item in listHead" class="td head"> {{item}}</td>
+                        </tr>
+                        </thead>
+                        <tr v-for="(item,index) in childList">
+                            <td>
+                                <label v-show="!isEdit">{{item.item_no || '-'}}</label>
+                                <el-input v-show="isEdit" v-model="item.item_no" class="item-input"></el-input>
+                            </td>
+                            <td>{{item.ext_part_no || '-'}}</td>
+                            <td v-if="item.img">
+                                <div class="td-img">
+                                    <img :src="item.img | getImgUrl"/>
+                                </div>
+                            </td>
+                            <td v-else> - </td>
+                            <td>{{item.name || '-'}}</td>
+                            <td>{{item.needAttr.spec || '-'}}</td>
+                            <td v-if="!item.needAttr.pack"> - </td>
+                            <td v-else>{{item.needAttr.pack}} {{item.needAttr.packUnti | packUnitType}}</td>
+                            <td>{{item.needAttr.packSize || '-' }}</td>
+                            <td v-if="!item.needAttr.price"> - </td>
+                            <td v-else>{{item.needAttr.currency | currencyType}} {{item.needAttr.price ? parseFloat(item.needAttr.price)/100 : 0}}</td>
+                            <td>{{item.link_bom || '-'}}</td>
+                            <td>
+                                <el-button v-if="!isEdit" type="text" class="btn-underline" @click="goToItemDetail(item)">{{ $t('detail') }}</el-button>
+                                <el-button v-if="isEdit" type="text" class="btn-underline" @click="deleteItem(index)">{{ $t('delete') }}</el-button>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!--选择零件添加弹窗-->
+                    <el-dialog
+                        class="dialogAddItem"
+                        title="Add Item"
+                        :visible.sync="dialogAddItemVisible"
+                        size="large"
+                        :before-close="closeChooseItem"
+                        top="10%">
+                        <div>
+                            <table class="bom-list" border="0" cellspacing="0" cellpadding="0">
+                                <thead>
+                                <td>
+                                    <el-checkbox v-model="allSelectedForAdd"></el-checkbox>
+                                </td>
+                                <td v-for="item in selectHead">{{item}}</td>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(item, index) in selectItems">
+                                    <td>
+                                        <el-checkbox class="table-checkbox" v-model="item.selected"></el-checkbox>
+                                    </td>
+                                    <td>{{item.ext_part_no}}</td>
+                                    <td>
+                                        <div class="td-img">
+                                            <img :src="item.img | getImgUrl"/>
+                                        </div>
+                                    </td>
+                                    <td>{{item.name}}</td>
+                                    <td>{{item.needAttr.spec}}</td>
+                                    <td v-if="!item.needAttr.pack"></td>
+                                    <td v-else>{{item.needAttr.pack}} {{item.needAttr.packUnti | packUnitType}}</td>
+                                    <td>{{item.needAttr.packSize}}</td>
+                                    <td v-if="!item.needAttr.price"></td>
+                                    <td v-else>{{item.needAttr.currency | currencyType}} {{item.needAttr.price ? parseFloat(item.needAttr.price)/100 : 0}}</td>
+                                    <td>{{item.link_bom}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="table-footer">
+                                <el-pagination
+                                    @current-change="handleCurrentChange"
+                                    :current-page.sync="currentPage"
+                                    :page-size="10"
+                                    layout="prev, pager, next"
+                                    :total="total">
+                                </el-pagination>
+                                <p class="total">Total: {{total}}</p>
+                            </div>
+                        </div>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button type="primary" @click="closeDialogAndAddAll">{{ $t('add') }}</el-button>
+                        </div>
+                    </el-dialog>
+                </div>
+            </div>
+            <!--打印显示页面-->
+            <div class="print-bom-content-wrap">
+            <div class="content">
+                <div class="part top">
+                    <label>{{ $t('articleNO') }} :</label>
+                    <label class="art-no" >{{artNo}}</label>
+                    <!--<el-input v-model="artNo" class="art-no" v-show="isEdit"></el-input>-->
+
+                    <div class="img-div">
+                            <div v-if="!upload.photographSrc" class="no-img">
+                                <span>{{ $t('noPhoto') }}</span>
+                            </div>
+                            <img v-else class="img" :src="upload.photographSrc | getImgUrl"/>
+                        </div>
+                </div>
+                <div class="part list" v-if="childList.length > 0">
+                    <label class="list-title">
+                        {{ $t('list') }}
+                    </label>
+
+                    <table class="bom-list" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                        <tr>
+                            <td v-for="item in printTableHead" class="td head"> {{item}}</td>
+                        </tr>
+                        </thead>
+                        <tr v-for="(item,index) in childList">
+                            <td>
+                                <label>{{item.item_no || '-'}}</label>
+                            </td>
+                            <td>{{item.ext_part_no || '-'}}</td>
+                            <td v-if="item.img">
+                                <div class="td-img">
+                                    <img :src="item.img | getImgUrl"/>
+                                </div>
+                            </td>
+                            <td v-else> - </td>
+                            <td>{{item.name || '-'}}</td>
+                            <td>{{item.needAttr.spec || '-'}}</td>
+                            <td v-if="!item.needAttr.pack"> - </td>
+                            <td v-else>{{item.needAttr.pack}} {{item.needAttr.packUnti | packUnitType}}</td>
+                            <td>{{item.needAttr.packSize || '-' }}</td>
+                            <td v-if="!item.needAttr.price"> - </td>
+                            <td v-else>{{item.needAttr.currency | currencyType}} {{item.needAttr.price ? parseFloat(item.needAttr.price)/100 : 0}}</td>
+                            <td>{{item.link_bom || '-'}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!--删除 BomList弹窗-->
+        <el-dialog :title="$t('deleteProductDialog.title')" :visible.sync="bomListDeleteDialogVisible" size="tiny">
+            <p>{{ $t('deleteProductDialog.content') }}</p>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="deleteBom">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="bomListDeleteDialogVisible = false">{{ $t('no') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--大图弹窗-->
+        <el-dialog title="Larger-Image" :visible.sync="largeImgDialogVisible" size="large" class="large-image">
+            <!--<img class="img" src="http://i-3.yiwan.com/2017/4/24/60ec4a83-1eb8-4c96-8b26-c50af6bfe18f.jpg"/>-->
+            <img :src="upload.photographSrc | getImgUrl" class="img"/><br/>
+        </el-dialog>
+
+
+        <!-- 复制BOM
+        <el-dialog
+            class="dialog"
+            :title="$t('addItem')"
+            :visible.sync="dialogCreateVisible"
+            size="large"
+            top="10%">
+            <div class="content">
+                <div class="header">
+                    <el-input
+                        :placeholder="$t('category')"
+                        class="search-content"
+                        :disabled="true"
+                        v-model="selectCategoryItem.name"
+                        @click.native="selectCategory">
+                    </el-input>
+                    <el-input
+                        :placeholder="$t('modelNamePN')"
+                        class="search-content"
+                        v-model="queryItemCondition">
+                    </el-input>
+                    <div class="btn-group-inline">
+                        <div class="icons">
+                            <div class="icon-item search" @click="queryOrderItem" :title="$t('search')"></div>
+                            <div class="icon-item clear" @click="clearCondition" :title="$t('clear')"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-wrap">
+
+                    <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                        <td>
+                            <el-checkbox v-model="allSelectedForAdd"></el-checkbox>
+                        </td>
+                        <td v-for="item in itemHeadData">{{item}}</td>
+                        </thead>
+
+                        <tbody>
+                        <tr v-for="(item, index) in selectItems">
+                            <td>
+                                <el-checkbox class="table-checkbox" v-model="item.selected"></el-checkbox>
+                            </td>
+                            <td><img :src="item.img | getImgUrl"></td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.ext_part_no}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <el-pagination
+                        class="pagination"
+                        @current-change="handleCurrentPageChange"
+                        :current-page.sync="currentPage"
+                        :page-size="10"
+                        layout="prev, pager, next"
+                        :total="total">
+                    </el-pagination>
+
+                </div>
+                <div class="footer">
+                    <el-button type="primary" @click="addItems">{{ $t('addItems') }}</el-button>
+                </div>
+            </div>
+        </el-dialog>
+         -->
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+    import printArea from 'printArea';
+
+    export default{
+        name: 'product-bom-list',
+        data(){
+            return {
+                Core: Core,
+                artNo: '',
+
+                bomListDeleteDialogVisible: false,
+                largeImgDialogVisible: false,
+                isEdit: false,
+                btnText: 'Edit',
+                listHead: ['ITEM NO.', 'PART NO.', 'PICTURE', 'NAME', 'SPEC', 'PACKAGE', 'PACKAGE SIZE', 'PRICE', 'LINK BOM', 'OPERATION'],
+
+                partName: '',
+                parentId: '',
+                parentType: 1,
+                upload: {
+                    url: Core.Const.NET.IMG_UPLOAD_END_POINT,
+                    photographSrc: "",
+                    data: {
+                        token: Core.Data.getToken()
+                    }
+                },
+                childList: [],
+                hasBom: false,
+
+                dialogAddItemVisible: false,
+                selectItems: [],
+                currentPage: 1,
+                total: 0,
+                allChecked: false,
+                childIdList: [],
+                selectHead: ['PART NO.', 'PICTURE', 'NAME', 'SPEC', 'PACKAGE', 'PACKAGE SIZE', 'PRICE', 'LINK BOM'],
+
+                bomId: '',
+                itemNoList: '',
+                bomDetail: '',
+                //过渡list
+                allSelectList: [],
+                selectedIdList: [],
+                oldList: [],
+
+                printTableHead: ['ITEM NO.', 'PART NO.', 'PICTURE', 'NAME', 'SPEC', 'PACKAGE', 'PACKAGE SIZE', 'PRICE', 'LINK BOM'],
+                authList: []
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Product.BomList,
+                zh: ZH.Component.Product.BomList,
+                de: DE.Component.Product.BomList,
+                nl: NL.Component.Product.BomList
+            }
+        },
+        mounted: function () {
+            // 国际化
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            this.btnText = this.$t('edit');
+
+            if (this.isEdit) {
+                this.btnText = this.$t('save');
+            }
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            //parent type  brand =2 component =1
+            this.parentId = this.$route.query.id;
+            this.artNo = this.$route.query.partNo;
+            this.getBomDetail(this.parentId);
+        },
+
+        methods: {
+            initData() {
+                this.listHead = [this.$t('listHead.itemNo'), this.$t('listHead.partNo'), this.$t('listHead.picture'), this.$t('listHead.name'), this.$t('listHead.spec'), this.$t('listHead.package'), this.$t('listHead.packageSize'), this.$t('listHead.price'), this.$t('listHead.linkBom'), this.$t('listHead.operation')];
+                this.selectHead = [this.$t('selectHead.partNo'), this.$t('selectHead.picture'), this.$t('selectHead.name'), this.$t('selectHead.spec'), this.$t('selectHead.package'), this.$t('selectHead.packageSize'), this.$t('selectHead.price'), this.$t('selectHead.linkBom')];
+                this.printTableHead = [this.$t('listHead.itemNo'), this.$t('listHead.partNo'), this.$t('listHead.picture'), this.$t('listHead.name'), this.$t('listHead.spec'), this.$t('listHead.package'), this.$t('listHead.packageSize'), this.$t('listHead.price'), this.$t('listHead.linkBom')];
+            },
+
+            back(){
+                if (this.isEdit && this.bomId) {
+                    this.isEdit = false;
+                    this.btnText = this.$t('edit');
+                    this.getBomDetail(this.parentId);
+                } else {
+                    this.$router.back();
+                }
+            },
+
+            getBomDetail(parentId){
+                Core.Api.Item.getBomDetailByItem(parentId).then(res => {
+                    this.bomDetail = res.bom;
+                    this.bomId = res.bom.id;
+                    this.upload.photographSrc = res.bom.img;
+//                    this.artNo = res.bom.item_part_no;
+//                    this.childList = res.bom.child_list;
+                    if (res.bom.child_list) {
+                        this.childList = [];
+                        this.getShowList(res.bom.child_list, this.childList);
+                    }
+
+                    if (!this.bomId) {
+                        this.isEdit = true;
+                        this.btnText = this.$t('save');
+                    }
+                });
+            },
+
+            addBom(){
+
+            },
+            goToCopyView(){
+
+            },
+            deleteBom(){
+                Core.Api.Item.deleteBom(this.bomId).then( res => {
+                    this.$message({
+                        message: 'Delete Successfully',
+                        type: 'success'
+                    });
+                    this.dialogDeleteVisible = false;
+                    this.$router.back();
+                })
+            },
+
+            editBom(){
+                if (this.isEdit) {
+                	this.getChildIdListAndItemNoList(this.childList);
+                    let childIdList = this.childIdList.join();
+                    let item_no = '';
+                    if(this.itemNoList.length > 0) {
+                        item_no = JSON.stringify(this.itemNoList);
+                    }
+                    Core.Api.Item.saveBom(this.bomId, this.parentId, this.parentType, childIdList, this.upload.photographSrc, item_no).then(res => {
+                        this.isEdit = false;
+                        this.btnText = this.$t('edit');
+                        this.getBomDetail(this.parentId);
+                    });
+                } else {
+                    this.isEdit = true;
+                    this.btnText = this.$t('save');
+                }
+            },
+
+            printBom(){
+//            	window.print();
+                let print = "div.print-bom-content-wrap";
+
+                let extraCss = "";
+                let mode = "iframe";
+                let close = false;
+                let retainAttr = ['class', 'id', 'style', 'on'];
+                let headElements = '<meta charset="utf-8" />,<meta http-equiv="X-UA-Compatible" content="IE=edge"/>';
+
+                let options = { mode : mode, popClose : close, extraCss : extraCss, retainAttr : retainAttr, extraHead : headElements };
+                $(print).printArea(options);
+            },
+
+            exportBom() {
+                let data = {
+                    id: this.bomId
+                };
+//                window.location.assign(Core.Api.getUrl('item/bom-export', data));
+                window.location.href = Core.Api.getUrl('item/bom-export', data);
+            },
+
+            showDeleteDialog(){
+                this.bomListDeleteDialogVisible = true;
+            },
+
+
+            deleteItem(index){
+                this.bomListDeleteDialogVisible = false;
+                this.childList.splice(index, 1)
+            },
+
+            goToItemDetail(item) {
+                this.$router.push({name: 'componentProductDetail', query: {"id": item.id}});
+            },
+
+            showPartDialog(){
+                this.dialogAddItemVisible = true;
+                this.searchPart();
+            },
+
+            searchPart() {
+                let $this = this;
+                let queryList = [];
+                this.selectItems = [];
+                Core.Api.Item.queryPartItem(this.partName.replace(/\s+/g, ""), this.currentPage).then(res => {
+                    queryList = res.list;
+                    this.total = res.count;
+                    if (!queryList.length > 0) {
+                        this.$message({
+                            message: "There are no match condition data",
+                            type: 'warning'
+                        });
+                        return;
+                    }
+                    this.getShowList(queryList, $this.selectItems);
+                    this.checkSelectStatus(this.selectItems);
+                })
+            },
+
+
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.addItems(this.selectItems, this.allSelectList);
+                this.removeItemFromAll(this.selectItems);
+                this.getSelectedIdList();
+                this.searchPart();
+            },
+
+            imageUploaded(res) {
+                this.upload.photographSrc = res.data.file.name;
+            },
+
+            addItems(childList, parentList) {
+            	console.log(childList,'...start');
+                childList.forEach((item, index) => {
+                    if (item.selected === true) {
+                        let isAdded = false;
+                        parentList.forEach((childItem) => {
+                            if (childItem.id === item.id) {
+                                isAdded = true;
+                            }
+                        });
+
+                        if (!isAdded) {
+                            let addItem = childList[index];
+                            console.log(addItem);
+                            parentList.push({
+                                id: addItem.id,
+                                ext_part_no: addItem.ext_part_no,
+                                name: addItem.name,
+                                needAttr: addItem.needAttr,
+                                img: addItem.img,
+                                selected: true,
+                            });
+                        }
+                    }
+                });
+                console.log(parentList,"....end")
+            },
+
+            getSelectedIdList(){
+                this.selectedIdList = [];
+            	this.allSelectList.forEach((item, index) => {
+                    this.selectedIdList.push(item.id);
+                })
+            },
+
+            closeChooseItem() {
+                this.selectItems = [];
+                this.selectedIdList = [];
+                this.allSelectList = [];
+                this.partName = '';
+                this.dialogAddItemVisible = false;
+            },
+
+            //之前添加过的要被选中
+            checkSelectStatus(list){
+            	list.forEach((item, index) => {
+            		if(this.selectedIdList.indexOf(item.id) > -1){
+            			list[index].selected = true;
+                    }
+                });
+            },
+
+            //同步状态，选中后改为不选中后应剔除
+            removeItemFromAll(list){
+            	list.forEach((item, index) => {
+            		this.allSelectList.forEach((selectItem, dex) => {
+            			if(selectItem.id === item.id){
+            				if(!item.selected){
+                                this.allSelectList.splice(dex,1);
+                            }
+                        }
+                    });
+                });
+            },
+
+            //点击Add之后的方法
+            closeDialogAndAddAll(){
+                this.addItems(this.selectItems, this.allSelectList);
+                this.removeItemFromAll(this.selectItems);
+            	this.addItems(this.allSelectList,this.childList);
+            	this. closeChooseItem();
+            },
+
+            getAttrList(attrList){
+                let needList = {};
+                attrList.forEach(function (item, index) {
+                    switch (item.attr_def_id) {
+                        case 25:
+                            needList.packUnti = item.value;
+                            break;
+                        case 24:
+                            needList.currency = item.value;
+                            break;
+                        case 18:
+                            needList.spec = item.value;
+                            break;
+                        case 19:
+                            needList.pack = item.value;
+                            break;
+                        case 20:
+                            needList.packSize = item.value;
+                            break;
+                        case 5:
+                            needList.price = item.value;
+                            break;
+                    }
+                });
+                return needList;
+            },
+
+            getShowList(list, showList){
+                list.forEach((item, index) => {
+                    let needPart = {
+                        id: item.id,
+                        selected: false,
+                        needAttr: this.getAttrList(item.attr_list),
+                        name: item.name,
+                        img: item.img,
+                        ext_part_no: item.ext_part_no,
+                        item_no: item.item_no,
+                        link_bom: item.link_bom ? item.link_bom.join(',') : ''
+                    };
+                    showList.push(needPart);
+                });
+            },
+
+            getChildIdListAndItemNoList(list){
+                let childIdList = [];
+                let itemNoList = [];
+
+                list.sort(function(a, b){
+                    return parseInt(a.item_no) - parseInt(b.item_no);
+                });
+
+                list.forEach((item, index) => {
+                    childIdList.push(item.id);
+
+                    itemNoList.push({
+                        id: item.id,
+                        item_no: item.item_no,
+                    });
+                });
+
+                this.childIdList = childIdList;
+                this.itemNoList = itemNoList;
+            },
+
+        },
+
+
+        computed: {
+            allSelectedForAdd: {
+                get: function () {
+                    return this.selectItems.reduce(function (prev, curr) {
+                        return prev && curr.selected;
+                    }, true);
+                },
+                set: function (newValue) {
+                    this.selectItems.forEach((item) => {
+                        item.selected = newValue;
+                    });
+                }
+            },
+            allSelectedForDelete: {
+                get: function () {
+                    return this.childList.reduce(function (prev, curr) {
+                        return prev && curr.selected;
+                    }, true);
+                },
+                set: function (newValue) {
+                    this.childList.forEach((item) => {
+                        item.selected = newValue;
+                    });
+                }
+            }
+        },
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .product-bom-list {
+        height: 100%;
+        padding-left: 272px;
+        .content-holder {
+            height: calc(100% - 60px);
+            overflow: auto;
+            .content {
+                width: 100%;
+                .part {
+                    margin: 10px auto;
+                    width: 950px;
+                    background-color: #353945;
+                    padding: 20px 40px;
+                }
+                .top {
+                    margin: 10px auto;
+                    width: 950px;
+                    background-color: #353945;
+                    padding: 20px 40px;
+                    .art-no {
+                        display: inline-block;
+                        width: 200px;
+                        margin-left: 20px;
+                        color: #A1A5B1;
+                        line-height: 30px;
+                    }
+                    .img-div {
+                        margin-top: 20px;
+                        text-align: center;
+                        .upload-icon {
+                            width: 102px;
+                            height: 102px;
+                            margin: 15px;
+                        }
+                        .img {
+                            max-width: 400px;
+                            max-height: 300px;
+                            margin: 15px;
+                        }
+                        .no-img {
+                            padding: 60px;
+                        }
+                        .tip {
+                            padding-bottom: 10px;
+                            .title {
+                                margin-right: 4px;
+                                font-size: 12px;
+                                color: #E26829;
+                            }
+                            .content {
+                                font-size: 12px;
+                                color: #E26829;
+                            }
+                        }
+                    }
+                }
+                .list {
+                    .list-title{
+                        display: inline-block;
+                        height: 30px;
+                        line-height: 30px;
+                        vertical-align: top;
+                    }
+                    .search-input {
+                        width: 200px;
+                        margin-left: 30px;
+                    }
+                    .bom-list {
+                        margin-top: 15px;
+                        width: 100%;
+                        overflow: auto;
+                        /*padding-bottom: 60px;*/
+                        border: 1px solid #2B2F3B;;
+                        thead td {
+                            font-size: 12px;
+                            padding: 10px;
+                            text-align: center;
+                            white-space: nowrap;
+                            color: #A1A5B1;
+                        }
+                        tr {
+                            height: 40px;
+                            &:nth-child(2n+1) {
+                                background: rgba(39, 43, 55, 0.20);
+                                /*box-shadow: 1px 0 0 1px #2B2F3B;*/
+                            }
+                            td {
+                                font-size: 12px;
+                                padding: 0 5px;
+                                text-align: center;
+                                max-width: 150px;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                & img {
+                                    vertical-align: middle;
+                                    width: 30px;
+                                    height: 30px;
+                                }
+                                .item-input {
+                                    width: 40px;
+                                    .el-input__inner {
+                                        text-align: center;
+                                        height: 20px;
+                                        vertical-align: middle;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+            .print-bom-content-wrap{
+                display: none;
+            }
+        }
+        .large-image {
+            text-align: center;
+            .el-dialog--large {
+                width: auto;
+            }
+            .el-dialog__header {
+                display: none;
+            }
+            .el-dialog__body {
+                font-size: 0;
+                width: auto;
+                max-width: 1000px;
+                padding: 0;
+                background-color: white;
+                .img {
+                    max-width: 1000px;
+                    height: auto;
+                }
+            }
+        }
+        .dialogAddItem {
+            .el-dialog--large {
+                width: 1100px;
+            }
+        }
+        .td-img{
+            margin: 0 auto;
+            width: 30px;
+            height: 30px;
+            background-color: white;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// bom-list.vue?634c8710

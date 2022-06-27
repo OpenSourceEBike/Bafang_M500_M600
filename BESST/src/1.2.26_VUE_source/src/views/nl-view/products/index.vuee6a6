@@ -1,0 +1,306 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "products-index"
+  }, [_c('div', {
+    staticClass: "search-header"
+  }, [_c('div', {
+    staticClass: "searchWrap"
+  }, [_c('el-form', {
+    attrs: {
+      "inline": true
+    }
+  }, [_c('el-form-item', [_c('el-input', {
+    attrs: {
+      "placeholder": "Material Code"
+    },
+    nativeOn: {
+      "keyup": function($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) { return null; }
+        return _vm.goSearch($event)
+      }
+    },
+    model: {
+      value: (_vm.formSearch.product_code),
+      callback: function($$v) {
+        _vm.$set(_vm.formSearch, "product_code", (typeof $$v === 'string' ? $$v.trim() : $$v))
+      },
+      expression: "formSearch.product_code"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('span', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": "search"
+    },
+    on: {
+      "click": _vm.goSearch
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item clear",
+    attrs: {
+      "title": "clear"
+    },
+    on: {
+      "click": _vm.onClean
+    }
+  })])])], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('button', {
+    staticClass: "el-button el-button--preview",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.onAdd
+    }
+  }, [_vm._v("\n            Add\n            "), _c('i', {
+    staticClass: "el-icon-plus btn-icon"
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "el-button el-button--preview",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.onDownload
+    }
+  }, [_vm._v("Template")]), _vm._v(" "), _c('button', {
+    staticClass: "el-button el-button--preview upload-btn",
+    attrs: {
+      "type": "button"
+    }
+  }, [_vm._v("\n            Import\n            "), _c('input', {
+    ref: "referenceUpload",
+    staticClass: "upload-file",
+    attrs: {
+      "type": "file",
+      "id": "fileUpload",
+      "accept": ".xls, .xlsx"
+    },
+    on: {
+      "change": _vm.changeFiles
+    }
+  })])])])], 1)]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "container",
+    attrs: {
+      "element-loading-text": "loading..."
+    }
+  }, [_c('div', {
+    staticClass: "category-tree"
+  }, [_c('ul', _vm._l((_vm.categoryList), function(category) {
+    return _c('li', {
+      key: category.id,
+      class: {
+        'is-active': category.isActive
+      },
+      on: {
+        "click": function($event) {
+          _vm.onClickCategory(category)
+        }
+      }
+    }, [_c('img', {
+      staticClass: "icon",
+      attrs: {
+        "src": require("../../../assets/images/warehouse/category.png")
+      }
+    }), _vm._v(" "), _c('span', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(category.name))])])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "list-container"
+  }, [_c('div', {
+    staticClass: "content-wrap-view"
+  }, [_c('div', {
+    staticClass: "content-holder"
+  }, [_c('div', {
+    staticClass: "list"
+  }, [_c('ul', _vm._l((_vm.productList), function(product) {
+    return _c('li', {
+      key: product.id
+    }, [_c('div', {
+      staticClass: "left"
+    }), _vm._v(" "), _c('div', {
+      staticClass: "right"
+    }, [_c('h1', [_vm._v(_vm._s(product.name))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(product.product_code))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(product.specification))])]), _vm._v(" "), _c('div', {
+      staticClass: "opt"
+    }, [_c('button', {
+      staticClass: "el-button el-button--preview",
+      attrs: {
+        "type": "button"
+      },
+      on: {
+        "click": function($event) {
+          _vm.onEdit(product)
+        }
+      }
+    }, [_vm._v("Edit")]), _vm._v(" "), _c('button', {
+      staticClass: "el-button el-button--primary",
+      attrs: {
+        "type": "button"
+      },
+      on: {
+        "click": function($event) {
+          _vm.onDelete(product)
+        }
+      }
+    }, [_vm._v("Delete")])]), _vm._v(" "), _c('hr')])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "content-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next, jumper",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v("total: " + _vm._s(_vm.total))])], 1)])])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog",
+    attrs: {
+      "title": _vm.dialogTitle,
+      "visible": _vm.dialogVisible
+    },
+    on: {
+      "update:title": function($event) {
+        _vm.dialogTitle = $event
+      },
+      "update:visible": function($event) {
+        _vm.dialogVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Material Code\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.formData.product_code),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "product_code", $$v)
+      },
+      expression: "formData.product_code"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Specification\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.formData.specification),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "specification", $$v)
+      },
+      expression: "formData.specification"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Category\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-select', {
+    staticClass: "land",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.category_id),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "category_id", $$v)
+      },
+      expression: "formData.category_id"
+    }
+  }, _vm._l((_vm.categoryList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Material Name\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.formData.name),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "name", $$v)
+      },
+      expression: "formData.name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.dialogConfirm
+    }
+  }, [_vm._v("confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.dialogCancel
+    }
+  }, [_vm._v("cancel")])], 1)]), _vm._v(" "), _c('dialog-delete', {
+    attrs: {
+      "dialogDeleteTitle": "Delete Material",
+      "dialogDeleteVisible": _vm.dialogDeleteVisible
+    },
+    on: {
+      "dialogConfirm": _vm.onDeleteConfirm,
+      "dialogCancel": _vm.onDeleteCancel
+    }
+  })], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-7e6e89a5","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl-view/products/index.vue
+// module id = 2627
+// module chunks = 1

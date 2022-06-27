@@ -1,0 +1,337 @@
+<template>
+    <div class="product-list-container">
+        <div class="header">
+            <!--<span class="title">{{ currentCategory.name || 'Component' }}</span>-->
+            <div class="search-holder">
+                <el-form :inline="true" class="demo-form-inline">
+                    <el-form-item label="" style="margin-bottom: 0">
+                        <el-input v-model="poNoInput" placeholder="Article No." clearable></el-input>
+                    </el-form-item>
+                    <div class="btn-group-inline">
+                        <div class="icons">
+                            <div class="icon-item search" @click="searchItemList(poNoInput)"></div>
+                        </div>
+                    </div>
+                    <!--<div class="icon-item">-->
+                         <!--<el-button @click="showBulkImport">批量导入</el-button>-->
+                    <!--</div>-->
+                </el-form>
+            </div>
+            <div class="btn-group-top">
+                <div class="icons" v-show = "currentCategory.level >=3">
+                    <div class="icon-item add" @click="goAddItem"
+                         v-if="authList[Core.Const.AUTH_LIST.productProductAdd]" :title="$t('add')"></div>
+                    <!--<div class="icon-item" v-if="categoryId!==''">
+                         <el-button @click="showBulkImport">批量导入</el-button>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <!--<td v-for="(item, index) in headData" :class="{'al-right' : (index === 1 || index === 4)}">{{item}}</td>-->
+                    <td v-for="(item, index) in headData">{{item}}</td>
+                    </thead>
+                    <tbody v-if="!loading">
+                    <tr v-for="item in itemList"  class="large ">
+                        <td class="td-img">
+                            <img :src="item.img | getImgUrl" class="table-tr-img">
+                        </td>
+                        <td class="td-name">{{ item.name }}</td>
+                        <td class="" >{{ item.hard_param || '/' }}</td>
+                        <td class="" >{{ item.hard_version || '/' }}</td>
+                        <td class="" >{{ item.firmware_version || '/' }}</td>
+                        <td class="" >{{ item.param_version || '/' }}</td>
+                        <td class="desc" >{{ item.ext_part_no}}</td>
+                        <td>
+                            <a class="btn-underline" @click.stop="goItemDetail(item.id,item.ext_part_no,item.set_id)">{{ $t('set.detail') }}</a>
+                        </td>
+                        <!--<td class="price" v-if="currentCategory.id === 11">{{item.currency | currencyType}} {{item.price | currencyFormat}}</td>-->
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="no-data-content" v-show="itemList == null || itemList.length <= 0">
+                    {{ $t('noResult') }}
+                </div>
+                <div class="loading" v-if="loading">
+                    <img src="../../../assets/images/icon/loading-bars.svg" alt="Loading icon" />
+                </div>
+            </div>
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total=count>
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{count}}</p>
+            </div>
+        </div>
+
+
+        <el-dialog
+            title="Bulk Import Article Number"
+            :visible.sync="bulkImportVisible"
+            size="large"
+        >
+            <div>
+                <label>批量导入物料</label>
+                <input @change="getUploadFile" type="file" id="file" ref="dataFile">
+            </div>
+            <el-table :data="dataImportantData">
+                <el-table-column v-for="(item, index) in bulkHeadList" :prop="item.name"  :label="item.label" :key="index"></el-table-column>
+            </el-table>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmBulkImport">Confirm</el-button>
+                <el-button type="preview" @click="bulkImportVisible=false" >Cancel</el-button>
+            </div>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from "core/core";
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+    import XLSX from 'xlsx'
+    export default {
+        name: 'account',
+        props: [
+            'count',
+            'itemList',
+            'currentCategory',
+            'currentPage',
+            'hasFooter',
+            'poNo',
+            'loading',
+            'categoryId',
+            'categoryName',
+            'currentCategoryId',
+        ],
+        inject: ['reload'],
+        data() {
+            return {
+                Core: Core,
+                headData: ['Image','Model', 'hard_param','Hardware Ver.','Firmware Ver.','Params Ver','Article No.','Detail'],
+                authList: [],
+                poNoInput: this.poNo,
+                bulkHeadList: [],
+                dataImportantData: [],
+                bulkImportVisible: false,
+                bulkImportList: [],
+                file: {}
+            };
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Product.List,
+                zh: ZH.Component.Product.List,
+                de: DE.Component.Product.List,
+                nl: NL.Component.Product.List
+            }
+        },
+        computed: {
+            getCurrentPage: function () {
+                return this.currentPage;
+            },
+            // poNoInput: function () {
+            //     return this.poNo;
+            // }
+        },
+
+        watch: {
+            poNo: function (val) {
+                this.poNoInput = val
+            },
+            'currentCategory.id': function (val, oldVal) {
+                if (val !== oldVal) {
+                    this.poNoInput = '';
+                }
+            }
+        },
+
+        mounted() {
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+            this.poNoInput = this.poNo;
+            this.headData = [this.$t('set.image'),this.$t('set.model'), this.$t('set.mechanical'), this.$t('set.hardVer'),this.$t('set.firmVer'),this.$t('set.paramVer'),this.$t('set.articleNo'),this.$t('set.detail')];
+        },
+        methods: {
+            showBulkImport(){
+                this.file = {};
+                this.bulkHeadList = [];
+                this.dataImportantData = [];
+                this.dataImportantData = [];
+                this.bulkImportVisible = true;
+            },
+            confirmBulkImport(){
+                Core.Api.request({
+                        url: '/item/import-spec',
+                        method: 'POST',
+                        data: this.bulkImportList
+                    }).then(res=>{
+                        console.log(res);
+                        if(res.code === 0){
+                            this.$message({
+                                type: 'success',
+                                message: '导入成功!'
+                            })
+                            this.reload();
+                            this.bulkImportVisible = false;
+                        }else{
+                            this.$message({
+                                type: 'warning',
+                                message: res.message
+                            })
+                            this.bulkImportList = [];
+                            this.dataImportantData = [];
+                            this.bulkHeadList = [];
+                            console.log(res.message);
+                        }
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+            },
+
+            getUploadFile (e) {
+                let result = [
+                    {
+                        // "category_id": this.categoryId,
+                        "list": [],
+                        "name": this.categoryName,
+                        "status": 0,
+                        "set_id": 0
+                    }
+                ]
+
+                this.file = this.$refs.dataFile;
+                if(!this.file.files){
+                    return;
+                }
+                let _this = this;
+                var zzexcel;
+                var f = this.file.files[0];
+                var reader = new FileReader();
+                reader.readAsBinaryString(f);
+                reader.onload = function(e){
+                    var data = e.target.result;
+                    zzexcel = XLSX.read(data,{
+                        type: 'binary'
+                    });
+                    _this.dataImportantData = XLSX.utils.sheet_to_json(zzexcel.Sheets[zzexcel.SheetNames[0]]);
+                    console.log(_this.dataImportantData)
+                    Object.keys(_this.dataImportantData[0]).forEach((item)=>{
+                        const headItem = {
+                            name: item,
+                            label: item
+                        }
+                        _this.bulkHeadList.push(headItem);
+                    });
+                    console.log(_this.bulkHeadList)
+                    _this.dataImportantData.forEach((item)=>{
+                        const keys = Object.keys(item);
+                        let nextItemm = {
+                            "list": [],
+                            "part_no": item['Part NO'],
+                            "category_name": item['CategoryName'],
+                            "name": item['Name']
+                        }
+                        let finalItem = {};
+                        keys.forEach((nextItem)=>{
+                            if(nextItem!=="Part NO" && nextItem!=="CategoryName" && nextItem!=="Name"){
+                                    finalItem = {
+                                    "attr_def_id": 0,
+                                    "attr_def_name": nextItem.replace(/^\s+|\s+$/g,""),
+                                    "attr_def_type": 1,
+                                    "create_time": 0,
+                                    "id": 0,
+                                    "target_id": 0,
+                                    "target_type": 2,
+                                    "update_time": 0,
+                                    "value": ((item[nextItem]).toString()).replace(/^\s+|\s+$/g,""),
+                                    "weight": 0
+                                }
+                                nextItemm.list.push(finalItem);
+                            }
+
+                        })
+                        result[0].list.push(nextItemm);
+                    })
+                    _this.bulkImportList = result;
+                    console.log(_this.bulkImportList)
+                }
+                console.log(this.bulkImportList)
+            },
+            goAddItem() {
+//                console.log(this.currentCategory);
+
+                if (!this.currentCategory.id) {
+                    this.$message({
+                        message: 'Please choose one category',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                this.$router.push({
+                    name: 'componentProductSave',
+                    query: {categoryId: this.currentCategory.id, name: this.currentCategory.name}
+                })
+            },
+
+            goItemDetail(itemId,extPartNo,setId) {
+                this.$router.push({name: 'componentProductDetail', query: {id: itemId,extPartNo: extPartNo,setId:setId,categoryId: this.currentCategoryId}})
+            },
+
+            handleCurrentChange(val) {
+                this.$emit('handlePageChange', val)
+            },
+
+            searchItemList(val) {
+                this.$emit('searchItemList', val.trim())
+            }
+        }
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss" scoped>
+    .product-list-container {
+        width: 100%;
+        height: 100%;
+        padding-left: 272px;
+        .table-wrap {
+            height: calc(100% - 120px);
+            .table-content {
+                padding-bottom: 0;
+            }
+        }
+        .td-img {
+            width: 100px;
+            height: 80px;
+        }
+        .td-name {
+            width: 200px;
+            text-align: left;
+        }
+        .header {
+            .title {
+                margin-left: 0;
+            }
+            .search-holder {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?816e095a

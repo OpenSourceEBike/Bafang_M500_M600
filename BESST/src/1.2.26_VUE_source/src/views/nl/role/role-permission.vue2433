@@ -1,0 +1,156 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "role-permission"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v("Permission")]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item save",
+    attrs: {
+      "title": "save"
+    },
+    on: {
+      "click": _vm.onSave
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('el-row', {
+    staticClass: "header listItem",
+    attrs: {
+      "gutter": 20
+    }
+  }, [_c('el-col', {
+    attrs: {
+      "span": 8
+    }
+  }, [_c('div', {
+    staticClass: "grid-content"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Module permissions")])])]), _vm._v(" "), _c('el-col', {
+    attrs: {
+      "span": 16
+    }
+  }, [_c('div', {
+    staticClass: "grid-content"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Functional authority")])])])], 1), _vm._v(" "), _vm._l((_vm.roleForm), function(item, index) {
+    return _c('div', {
+      key: index
+    }, [_c('el-row', {
+      staticClass: "listItem",
+      attrs: {
+        "gutter": 20
+      }
+    }, [_c('el-col', {
+      attrs: {
+        "span": 8
+      }
+    }, [_c('div', {
+      staticClass: "grid-content"
+    }, [_c('el-form', {
+      staticClass: "demo-form-inline",
+      attrs: {
+        "inline": true
+      }
+    }, [_c('el-form-item', {
+      attrs: {
+        "label": item.permissionName
+      }
+    }, [_c('el-switch', {
+      attrs: {
+        "on-text": "ON",
+        "off-text": "OFF",
+        "on-color": "#13ce66",
+        "off-color": "#ff4949"
+      },
+      on: {
+        "change": function($event) {
+          _vm.onChange('ALL', item, $event)
+        }
+      },
+      model: {
+        value: (item.permissioned),
+        callback: function($$v) {
+          _vm.$set(item, "permissioned", $$v)
+        },
+        expression: "item.permissioned"
+      }
+    })], 1)], 1)], 1)]), _vm._v(" "), _c('el-col', {
+      attrs: {
+        "span": 16
+      }
+    }, [_c('div', {
+      staticClass: "grid-content"
+    }, _vm._l((item.components), function(comp, index) {
+      return _c('el-form', {
+        key: index,
+        staticClass: "demo-form-inline",
+        attrs: {
+          "inline": true
+        }
+      }, [_c('el-form-item', {
+        attrs: {
+          "label": comp.permissionName
+        }
+      }, [_c('el-switch', {
+        attrs: {
+          "on-text": "ON",
+          "off-text": "OFF",
+          "on-color": "#13ce66",
+          "off-color": "#ff4949"
+        },
+        on: {
+          "change": function($event) {
+            _vm.onChange('CHECK', item, $event)
+          }
+        },
+        model: {
+          value: (comp.permissioned),
+          callback: function($$v) {
+            _vm.$set(comp, "permissioned", $$v)
+          },
+          expression: "comp.permissioned"
+        }
+      })], 1)], 1)
+    }))])], 1)], 1)
+  })], 2)])])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-30bcbf0b","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/role/role-permission.vue
+// module id = 2499
+// module chunks = 58

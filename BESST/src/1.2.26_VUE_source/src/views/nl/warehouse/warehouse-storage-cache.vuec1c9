@@ -1,0 +1,283 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "warehouse-storage-cache"
+  }, [_c('div', {
+    staticClass: "search-header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('span', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": _vm.backArea
+    }
+  })])]), _vm._v(" "), _c('el-form', {
+    staticClass: "list-form-inline",
+    attrs: {
+      "inline": true,
+      "model": _vm.formSearch
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Parcel No."
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "Parcel No."
+    },
+    model: {
+      value: (_vm.formSearch.parcel_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formSearch, "parcel_no", $$v)
+      },
+      expression: "formSearch.parcel_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline-icon"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": "search"
+    },
+    on: {
+      "click": _vm.onSearch
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item clear",
+    attrs: {
+      "title": "clear"
+    },
+    on: {
+      "click": _vm.onClean
+    }
+  })])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(true) ? _c('div', {
+    staticClass: "icon-item add-v2",
+    attrs: {
+      "title": "add"
+    },
+    on: {
+      "click": _vm.addstorageCache
+    }
+  }) : _vm._e()])])], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [(_vm.tableList.length <= 0 && !_vm.loading) ? _c('div', {
+    staticClass: "no-data-content"
+  }, [_vm._v("noResult")]) : _c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.headData), function(item, index) {
+    return _c('td', {
+      key: index
+    }, [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), (!_vm.loading && _vm.tableList.length > 0) ? _c('tbody', _vm._l((_vm.tableList), function(item) {
+    return _c('tr', {
+      key: item.id
+    }, [_c('td', [_vm._v(_vm._s(item.customer_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.parcel_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.warehouse_code))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.create_user_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("dateFormat")(item.create_time)))]), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onEdit(item)
+        }
+      }
+    }, [_vm._v("edit")]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.onDelete(item)
+        }
+      }
+    }, [_vm._v("delete")])])])
+  })) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 10,
+      "layout": "prev, pager, next, jumper",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v("total: " + _vm._s(_vm.total))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-area-details",
+    attrs: {
+      "title": _vm.dialogTitle,
+      "visible": _vm.dialogAddVisible,
+      "custom-class": "edit-dialog"
+    },
+    on: {
+      "update:title": function($event) {
+        _vm.dialogTitle = $event
+      },
+      "update:visible": function($event) {
+        _vm.dialogAddVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Warehouse Code\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.formData.warehouse_code),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "warehouse_code", $$v)
+      },
+      expression: "formData.warehouse_code"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Parcel No.\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "prepend",
+      "filterable": ""
+    },
+    on: {
+      "change": function($event) {
+        _vm.changeParcel(_vm.formData.parcel_no)
+      }
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.parcel_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "parcel_no", $$v)
+      },
+      expression: "formData.parcel_no"
+    }
+  }, _vm._l((_vm.parcelList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.parcel_no,
+        "value": item.parcel_no
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Customer Name\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.customer_name),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "customer_name", $$v)
+      },
+      expression: "formData.customer_name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.dialogConfirm
+    }
+  }, [_vm._v("confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.dialogCancel
+    }
+  }, [_vm._v("cancel")])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.dialogTitle,
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:title": function($event) {
+        _vm.dialogTitle = $event
+      },
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v("Are you sure to delete it ?")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteInvitation
+    }
+  }, [_vm._v("yes")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v("no")])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-262cb52c","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/warehouse/warehouse-storage-cache.vue
+// module id = 2390
+// module chunks = 23

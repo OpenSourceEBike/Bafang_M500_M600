@@ -1,0 +1,1293 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "product-detail-container"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('span', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.itemDetail.name))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(_vm.authList[_vm.Core.Const.AUTH_LIST.productProductEdit]) ? _c('div', {
+    staticClass: "icon-item edit",
+    attrs: {
+      "title": _vm.$t('edit')
+    },
+    on: {
+      "click": function($event) {
+        _vm.goToSaveView('edit')
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productProductEdit]) ? _c('div', {
+    staticClass: "icon-item change",
+    attrs: {
+      "title": "change"
+    },
+    on: {
+      "click": function($event) {
+        _vm.changeGroupDialogVisible = true
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productProductAdd] || _vm.authList[_vm.Core.Const.AUTH_LIST.productProductEdit]) ? _c('div', {
+    staticClass: "icon-item copy",
+    attrs: {
+      "title": _vm.$t('copy')
+    },
+    on: {
+      "click": function($event) {
+        _vm.goToSaveView('copy')
+      }
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productProductDelete]) ? _c('div', {
+    staticClass: "icon-item delete",
+    attrs: {
+      "title": _vm.$t('delete')
+    },
+    on: {
+      "click": function($event) {
+        _vm.showDeleteDialog(_vm.item)
+      }
+    }
+  }) : _vm._e()])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-holder"
+  }, [_c('div', {
+    staticClass: "carousel"
+  }, [_c('el-carousel', {
+    ref: "carousel",
+    attrs: {
+      "height": "234px",
+      "indicator-position": "none",
+      "interval": 5000,
+      "arrow": "always"
+    },
+    on: {
+      "change": _vm.change
+    }
+  }, _vm._l((_vm.productList), function(item) {
+    return _c('el-carousel-item', {
+      key: item
+    }, [_c('div', {
+      staticClass: "img-box"
+    }, [_c('img', {
+      attrs: {
+        "src": item
+      }
+    })])])
+  })), _vm._v(" "), _c('div', {
+    staticClass: "thumb-img-box"
+  }, _vm._l((_vm.productList), function(item, index) {
+    return _c('div', {
+      key: item,
+      staticClass: "thumb",
+      class: {
+        'selected': index == _vm.productSelected
+      },
+      on: {
+        "click": function($event) {
+          _vm.switchDemonstration(index)
+        }
+      }
+    }, [_c('img', {
+      staticClass: "thumb-img",
+      attrs: {
+        "src": item
+      }
+    })])
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "content-box"
+  }, [_c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('model')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', {
+    staticClass: "strong"
+  }, [_vm._v(_vm._s(_vm.itemDetail.name))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('set.mechanical')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', {
+    staticClass: "strong"
+  }, [_vm._v(_vm._s(_vm.itemDetail.hard_param || '/'))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('set.hardVer')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', {
+    staticClass: "strong"
+  }, [_vm._v(_vm._s(_vm.itemDetail.hard_version || '/'))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('set.firmVer')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', {
+    staticClass: "strong"
+  }, [_vm._v(_vm._s(_vm.itemDetail.firmware_version || '/'))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('set.paramVer')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', {
+    staticClass: "strong"
+  }, [_vm._v(_vm._s(_vm.itemDetail.param_version || '/'))])])]), _vm._v(" "), (_vm.itemDetail.setId > 0) ? _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('articleList')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('div', {
+    staticClass: "desc h-24"
+  }, [_c('div', {
+    staticClass: "icons jc-start"
+  }, [_c('div', {
+    staticClass: "icon-item eye",
+    attrs: {
+      "title": _vm.$t('view')
+    },
+    on: {
+      "click": function($event) {
+        _vm.articleDialogVisible = true
+      }
+    }
+  })])])])]) : _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('partNo')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', {
+    staticClass: "strong"
+  }, [_vm._v(_vm._s(_vm.itemDetail.ext_part_no))])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.itemDetail.category_root_id === 10),
+      expression: "itemDetail.category_root_id === 10"
+    }],
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('set.firmVer')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('a', {
+    staticClass: "strong btn-underline",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        _vm.clickFirmwareBtn()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('view')))])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.itemDetail.category_root_id === 10),
+      expression: "itemDetail.category_root_id === 10"
+    }],
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Status")]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('a', {
+    staticClass: "strong btn-underline",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.clickUpdateStatus($event)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('edit')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('desc')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v("\n                      " + _vm._s(_vm.itemDetail.desc) + "\n                    ")])])]), _vm._v(" "), (_vm.item.set_id) ? _c('div', _vm._l((_vm.itemDetail.attrList), function(item) {
+    return (item.fixed) ? _c('div', {
+      staticClass: " extra-div"
+    }, [(item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.TEXT) ? _c('div', {
+      staticClass: "extra text"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(item.attr_def_name))]), _vm._v(" "), _c('div', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (item.value),
+        expression: "item.value"
+      }],
+      staticClass: "desc text"
+    }, [_vm._v(_vm._s(item.attr_def_key === 'price' ? item.value / 100 :
+      item.value) + "\n                        ")]), _vm._v(" "), _c('div', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (!item.value),
+        expression: "!item.value"
+      }],
+      staticClass: "desc text"
+    }, [_vm._v("/")])]) : _vm._e(), _vm._v(" "), (item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.SELECT) ? _c('div', {
+      staticClass: "extra text"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(item.attr_def_name))]), _vm._v(" "), (item.attr_def_name == 'Currency') ? _c('div', {
+      staticClass: "desc text"
+    }, [_vm._v(_vm._s(_vm._f("currencyType")(item.value)) + "\n                        ")]) : (item.attr_def_name == 'Pack Unit') ? _c('div', {
+      staticClass: "desc text"
+    }, [_vm._v(_vm._s(_vm._f("packUnitType")(item.value)) + "\n                        ")]) : _c('div', {
+      staticClass: "desc text"
+    }, [_vm._v(_vm._s(item.value))])]) : _vm._e(), _vm._v(" "), (item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILE || item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILES) ? _c('div', {
+      staticClass: "extra file"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(item.attr_def_name))]), _vm._v(" "), _c('div', {
+      staticClass: "desc"
+    }, _vm._l((item.value), function(item) {
+      return _c('div', {
+        staticClass: "fileContent"
+      }, [_c('label', [_vm._v(" " + _vm._s(item.name))]), _vm._v(" "), _c('div', {
+        staticClass: "btn-group"
+      }, [_c('a', {
+        staticClass: "btn-underline mr-15",
+        attrs: {
+          "href": _vm._f("getFileUrl")(item.hash, item.ext),
+          "download": item.name
+        }
+      }, [_vm._v("\n                                        " + _vm._s(_vm.$t('download')))]), _vm._v(" "), _c('el-button', {
+        attrs: {
+          "type": "preview"
+        },
+        on: {
+          "click": function($event) {
+            _vm.preview(item)
+          }
+        }
+      }, [_vm._v(_vm._s(_vm.$t('preview')))])], 1)])
+    }))]) : _vm._e(), _vm._v(" "), (item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.PIC || item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.PICS) ? _c('div', {
+      staticClass: "extra img"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(item.attr_def_name))]), _vm._v(" "), _c('div', {
+      staticClass: "desc img-group"
+    }, _vm._l((item.value), function(value) {
+      return _c('div', [_c('img', {
+        attrs: {
+          "src": _vm._f("getFileUrl")(value.hash, value.ext)
+        }
+      })])
+    }))]) : _vm._e()]) : _vm._e()
+  })) : _c('div', _vm._l((_vm.itemDetail.attrList), function(item) {
+    return _c('div', {
+      staticClass: " extra-div"
+    }, [(item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.TEXT) ? _c('div', {
+      staticClass: "extra text"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(item.attr_def_name))]), _vm._v(" "), _c('div', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (item.value),
+        expression: "item.value"
+      }],
+      staticClass: "desc text"
+    }, [_vm._v(_vm._s(item.attr_def_key === 'price' ? item.value / 100 : item.value) + "\n                        ")]), _vm._v(" "), _c('div', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (!item.value),
+        expression: "!item.value"
+      }],
+      staticClass: "desc text"
+    }, [_vm._v("/")])]) : _vm._e(), _vm._v(" "), (item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.SELECT) ? _c('div', {
+      staticClass: "extra text"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(item.attr_def_name))]), _vm._v(" "), (item.attr_def_name == 'Currency') ? _c('div', {
+      staticClass: "desc text"
+    }, [_vm._v(_vm._s(_vm._f("currencyType")(item.value)) + "\n                        ")]) : (item.attr_def_name == 'Pack Unit') ? _c('div', {
+      staticClass: "desc text"
+    }, [_vm._v(_vm._s(_vm._f("packUnitType")(item.value)) + "\n                        ")]) : _c('div', {
+      staticClass: "desc text"
+    }, [_vm._v(_vm._s(item.value))])]) : _vm._e(), _vm._v(" "), (item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILE || item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILES) ? _c('div', {
+      staticClass: "extra file"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(item.attr_def_name))]), _vm._v(" "), _c('div', {
+      staticClass: "desc"
+    }, _vm._l((item.value), function(item) {
+      return _c('div', {
+        staticClass: "fileContent"
+      }, [_c('label', [_vm._v(" " + _vm._s(item.name))]), _vm._v(" "), _c('div', {
+        staticClass: "btn-group"
+      }, [_c('a', {
+        staticClass: "btn-underline mr-15",
+        attrs: {
+          "href": _vm._f("getFileUrl")(item.hash, item.ext),
+          "download": item.name
+        }
+      }, [_vm._v("\n                                       " + _vm._s(_vm.$t('download')))]), _vm._v(" "), _c('el-button', {
+        attrs: {
+          "type": "preview"
+        },
+        on: {
+          "click": function($event) {
+            _vm.preview(item)
+          }
+        }
+      }, [_vm._v(_vm._s(_vm.$t('preview')))])], 1)])
+    }))]) : _vm._e(), _vm._v(" "), (item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.PIC || item.attr_def_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.PICS) ? _c('div', {
+      staticClass: "extra img"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v(_vm._s(item.attr_def_name))]), _vm._v(" "), _c('div', {
+      staticClass: "desc img-group"
+    }, _vm._l((item.value), function(value) {
+      return _c('div', [_c('img', {
+        attrs: {
+          "src": _vm._f("getFileUrl")(value.hash, value.ext)
+        }
+      })])
+    }))]) : _vm._e()])
+  })), _vm._v(" "), (_vm.item.category_root_id !== 11) ? _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('bomList')))]), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productProductBomView]) ? _c('div', {
+    staticClass: "desc h-24"
+  }, [_c('div', {
+    staticClass: "icons jc-start"
+  }, [_c('div', {
+    staticClass: "icon-item eye",
+    attrs: {
+      "title": _vm.$t('view')
+    },
+    on: {
+      "click": _vm.goBomView
+    }
+  })])]) : _c('div', {
+    staticClass: "desc"
+  }, [_vm._v("\n                    -\n                ")])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('training')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc h-24"
+  }, [_c('div', {
+    staticClass: "icons jc-start"
+  }, [_c('div', {
+    staticClass: "icon-item eye",
+    attrs: {
+      "title": _vm.$t('view')
+    },
+    on: {
+      "click": _vm.goTrainingView
+    }
+  })])])])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('deleteProductDialog.title'),
+      "visible": _vm.deleteDialogVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.deleteDialogVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v(_vm._s(_vm.selectItem.name || _vm.selectItem.part_no))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.$t('deleteProductDialog.content')))]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [(_vm.selectItem.id == _vm.itemId) ? _c('el-button', {
+    attrs: {
+      "type": "preview",
+      "disabled": _vm.deleteOperation
+    },
+    on: {
+      "click": _vm.deleteModel
+    }
+  }, [_vm._v(_vm._s(_vm.$t('yes')))]) : _c('el-button', {
+    attrs: {
+      "type": "preview",
+      "disabled": _vm.deleteOperation
+    },
+    on: {
+      "click": _vm.deleteSpec
+    }
+  }, [_vm._v(_vm._s(_vm.$t('yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.deleteDialogVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('no')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('historyDialog.title'),
+      "visible": _vm.historyDialogVisible,
+      "before-close": _vm.handleCloseFirmwareListDialog,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.historyDialogVisible = $event
+      }
+    }
+  }, [(_vm.HWRecord.length > 0) ? _c('table', {
+    staticClass: "history-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', [_c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('historyDialog.updateTime')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('historyDialog.version')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    文件名\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    Hex文件名\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    checkSum\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    显示状态\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('historyDialog.remark')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('historyDialog.operation')) + "\n                ")])])]), _vm._v(" "), _vm._l((_vm.HWRecord), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(_vm._f("dateFormat")(item.create_time)))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.version))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.firmware_name))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.file))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.check_sum))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.type))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.remark))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.handleEditFirmwareDialog(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('edit')))]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      attrs: {
+        "href": _vm._f("getFileUrl")(item.file, ''),
+        "download": item.file
+      }
+    }, [_vm._v(_vm._s(_vm.$t('download')))]), _vm._v(" "), _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.showFirmwareDeleteDialog(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('delete')))])])])
+  })], 2) : _c('p', [_vm._v(_vm._s(_vm.$t('historyDialog.noResult')))]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "pull-right",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.showUpdateHwDialog
+    }
+  }, [_vm._v(_vm._s(_vm.$t('update')))]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.modelFirmwareDialogVisible),
+      expression: "modelFirmwareDialogVisible"
+    }]
+  }, [_c('p', [_vm._v("该型号下所有固件")]), _vm._v(" "), _c('table', {
+    staticClass: "history-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', [_c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        物料名称\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('historyDialog.version')) + "\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        文件名\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        Hex文件名\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        checkSum\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        显示状态\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('historyDialog.remark')) + "\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('historyDialog.operation')) + "\n                    ")])])]), _vm._v(" "), _vm._l((_vm.ModelFirmwareRecord), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.ext_part_no))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.version))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.firmware_name))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.file))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.check_sum))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.type))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.remark))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.copyModelFirmware(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('copy')))])])])
+  })], 2)])], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('deleteFirmwareDialog.title'),
+      "visible": _vm.deleteFirmwareDialogVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.deleteFirmwareDialogVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v(_vm._s(_vm.selectItem.version))]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.$t('deleteFirmwareDialog.content')))]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.deleteSoft
+    }
+  }, [_vm._v(_vm._s(_vm.$t('yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.deleteFirmwareDialogVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('no')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('updateFirmwareDialog.title'),
+      "visible": _vm.editDialogVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.editDialogVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('label', {
+    staticClass: "upload-label"
+  }, [_vm._v(_vm._s(_vm.$t('updateFirmwareDialog.version')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "remark",
+    model: {
+      value: (_vm.selectSoft.version),
+      callback: function($$v) {
+        _vm.$set(_vm.selectSoft, "version", $$v)
+      },
+      expression: "selectSoft.version"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('label', {
+    staticClass: "upload-label"
+  }, [_vm._v("Type")]), _vm._v(" "), _c('el-switch', {
+    attrs: {
+      "on-color": "#98b42c",
+      "off-color": "#606161",
+      "on-text": "Show",
+      "off-text": "Hide"
+    },
+    model: {
+      value: (_vm.HWType),
+      callback: function($$v) {
+        _vm.HWType = $$v
+      },
+      expression: "HWType"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('label', {
+    staticClass: "upload-label"
+  }, [_vm._v(_vm._s(_vm.$t('updateFirmwareDialog.remark')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "remark",
+    attrs: {
+      "resize": "none",
+      "type": "textarea",
+      "rows": 3
+    },
+    model: {
+      value: (_vm.selectSoft.remark),
+      callback: function($$v) {
+        _vm.$set(_vm.selectSoft, "remark", $$v)
+      },
+      expression: "selectSoft.remark"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [(_vm.copy) ? _c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.saveCopy
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]) : _c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.saveEdit
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.editDialogVisible = false;
+        _vm.copy = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('updateFirmwareDialog.title'),
+      "visible": _vm.updateHWDialogVisible,
+      "before-close": _vm.handleCloseFirmwareDialog,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.updateHWDialogVisible = $event
+      }
+    }
+  }, [_c('div', [_c('label', {
+    staticClass: "upload-label"
+  }, [_vm._v(_vm._s(_vm.$t('updateFirmwareDialog.file')))]), _vm._v(" "), _c('el-upload', {
+    staticClass: "HWUpload",
+    attrs: {
+      "action": _vm.upload.url,
+      "on-change": _vm.handleChangeFile,
+      "data": _vm.upload.params,
+      "file-list": _vm.fileList
+    }
+  }, [_c('el-button', {
+    attrs: {
+      "size": "small",
+      "type": "primary"
+    }
+  }, [_vm._v(_vm._s(_vm.$t('updateFirmwareDialog.clickToUpload')))])], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('label', {
+    staticClass: "upload-label"
+  }, [_vm._v(_vm._s(_vm.$t('updateFirmwareDialog.version')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "remark",
+    model: {
+      value: (_vm.HWVersion),
+      callback: function($$v) {
+        _vm.HWVersion = $$v
+      },
+      expression: "HWVersion"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('label', {
+    staticClass: "upload-label"
+  }, [_vm._v("Check sum")]), _vm._v(" "), _c('el-input', {
+    staticClass: "remark",
+    model: {
+      value: (_vm.HWCheckSum),
+      callback: function($$v) {
+        _vm.HWCheckSum = $$v
+      },
+      expression: "HWCheckSum"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', [_c('label', {
+    staticClass: "upload-label"
+  }, [_vm._v(_vm._s(_vm.$t('updateFirmwareDialog.remark')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "remark",
+    attrs: {
+      "resize": "none",
+      "type": "textarea",
+      "rows": 3,
+      "placeholder": ""
+    },
+    model: {
+      value: (_vm.remark),
+      callback: function($$v) {
+        _vm.remark = $$v
+      },
+      expression: "remark"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.updateFirmware
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.handleCloseFirmwareDialog
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.modelFirmwareDialogVisible),
+      expression: "modelFirmwareDialogVisible"
+    }]
+  }, [_c('p', [_vm._v("该型号下所有固件")]), _vm._v(" "), _c('table', {
+    staticClass: "history-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', [_c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        物料名称\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('historyDialog.version')) + "\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        文件名\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        Hex文件名\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        checkSum\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        显示状态\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('historyDialog.remark')) + "\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('historyDialog.operation')) + "\n                    ")])])]), _vm._v(" "), _vm._l((_vm.ModelFirmwareRecord), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.ext_part_no))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.version))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.firmware_name))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.file))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.check_sum))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.type))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.remark))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.copyModelFirmware(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('copy')))])])])
+  })], 2)])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "preview-dialog",
+    attrs: {
+      "title": "Larger-Image",
+      "visible": _vm.previewDialogVisible,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.previewDialogVisible = $event
+      }
+    }
+  }, [_c('img', {
+    staticClass: "img",
+    attrs: {
+      "src": _vm._f("getFileUrl")(_vm.previewFile.hash, _vm.previewFile.ext)
+    }
+  }), _c('br')]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Change Group",
+      "visible": _vm.changeGroupDialogVisible,
+      "width": "50%"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.changeGroupDialogVisible = $event
+      }
+    }
+  }, [_c('el-input', {
+    staticStyle: {
+      "width": "220px"
+    },
+    attrs: {
+      "placeholder": "category name"
+    },
+    model: {
+      value: (_vm.categoryName),
+      callback: function($$v) {
+        _vm.categoryName = $$v
+      },
+      expression: "categoryName"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "ml-10",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.getCategoryList
+    }
+  }, [_vm._v("Search")]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "max-height": "400px",
+      "overflow": "auto"
+    }
+  }, _vm._l((_vm.categoryList), function(item) {
+    return _c('div', {
+      staticStyle: {
+        "line-height": "30px"
+      }
+    }, [_c('label', {
+      staticStyle: {
+        "display": "inline-block",
+        "width": "300px"
+      }
+    }, [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('el-button', {
+      attrs: {
+        "type": "text"
+      },
+      on: {
+        "click": function($event) {
+          _vm.changeCategory(item)
+        }
+      }
+    }, [_vm._v("Confirm")])], 1)
+  }))], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Article List",
+      "visible": _vm.articleDialogVisible,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.articleDialogVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "spec-list-holder"
+  }, [_c('el-switch', {
+    attrs: {
+      "on-color": "#98b42c",
+      "off-color": "#606161",
+      "on-text": "Param",
+      "off-text": "Spec"
+    },
+    model: {
+      value: (_vm.showSpecOrParam),
+      callback: function($$v) {
+        _vm.showSpecOrParam = $$v
+      },
+      expression: "showSpecOrParam"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "spec-list-operation"
+  }, [_c('el-table', {
+    attrs: {
+      "data": _vm.specList,
+      "size": "mini",
+      "highlight-current-row": ""
+    }
+  }, [_c('el-table-column', {
+    attrs: {
+      "width": "150",
+      "prop": "part_no",
+      "label": "Article No."
+    }
+  }), _vm._v(" "), ((_vm.authList[_vm.Core.Const.AUTH_LIST.productProductAdd] || _vm.authList[_vm.Core.Const.AUTH_LIST.productProductEdit] ||
+    _vm.authList[_vm.Core.Const.AUTH_LIST.productProductDelete])) ? _c('el-table-column', {
+    attrs: {
+      "label": "Operation",
+      "width": "200"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return [(_vm.authList[_vm.Core.Const.AUTH_LIST.productProductAdd]) ? _c('a', {
+          staticClass: "btn-underline",
+          on: {
+            "click": function($event) {
+              $event.stopPropagation();
+              _vm.clickCreateSpec(scope.row)
+            }
+          }
+        }, [_vm._v("Create")]) : _vm._e(), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productProductEdit]) ? _c('a', {
+          staticClass: "btn-underline",
+          on: {
+            "click": function($event) {
+              $event.stopPropagation();
+              _vm.clickEditSpec(scope.row)
+            }
+          }
+        }, [_vm._v("Edit")]) : _vm._e(), _vm._v(" "), (_vm.item.category_root_id === _vm.Core.Const.CATEGORY_ROOT_TYPE.HMI ||
+          _vm.item.category_root_id === _vm.Core.Const.CATEGORY_ROOT_TYPE.CONTROLLER ||
+          _vm.item.category_root_id === _vm.Core.Const.CATEGORY_ROOT_TYPE.BATTERY) ? _c('a', {
+          staticClass: "btn-underline",
+          on: {
+            "click": function($event) {
+              $event.stopPropagation();
+              _vm.clickFirmwareBtn(scope.row)
+            }
+          }
+        }, [_vm._v("Firmware")]) : _vm._e(), _vm._v(" "), _c('br'), _vm._v(" "), (scope.row.id != _vm.itemId && _vm.authList[_vm.Core.Const.AUTH_LIST.productProductDelete]) ? _c('a', {
+          staticClass: "btn-underline",
+          on: {
+            "click": function($event) {
+              $event.stopPropagation();
+              _vm.clickChangeSpec(scope.row)
+            }
+          }
+        }, [_vm._v("Change")]) : _vm._e(), _vm._v(" "), (scope.row.id != _vm.itemId && _vm.authList[_vm.Core.Const.AUTH_LIST.productProductDelete]) ? _c('a', {
+          staticClass: "btn-underline",
+          on: {
+            "click": function($event) {
+              $event.stopPropagation();
+              _vm.showDeleteDialog(scope.row)
+            }
+          }
+        }, [_vm._v("Delete")]) : _vm._e(), _vm._v(" "), _c('br')]
+      }
+    }])
+  }) : _vm._e(), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "width": "120",
+      "prop": "status",
+      "label": "Update status"
+    }
+  }), _vm._v(" "), (_vm.showSpecOrParam) ? _c('el-table-column', {
+    attrs: {
+      "width": "120",
+      "prop": "hardParam",
+      "label": "Hard Param"
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.showSpecOrParam) ? _c('el-table-column', {
+    attrs: {
+      "width": "120",
+      "prop": "hardVersion",
+      "label": "Hard Version"
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.showSpecOrParam) ? _c('el-table-column', {
+    attrs: {
+      "width": "120",
+      "prop": "firmwareVersion",
+      "label": "Firmware Version"
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.showSpecOrParam) ? _c('el-table-column', {
+    attrs: {
+      "width": "120",
+      "prop": "paramVersion",
+      "label": "Param Version"
+    }
+  }) : _vm._e(), _vm._v(" "), _vm._l((_vm.specTableHead), function(head, index) {
+    return _c('el-table-column', {
+      key: head,
+      attrs: {
+        "label": head,
+        "width": "130"
+      },
+      scopedSlots: _vm._u([{
+        key: "default",
+        fn: function(scope) {
+          return [_c('span', [_vm._v(_vm._s((scope.row.attr_list[index] && scope.row.attr_list[index].value) || '-'))])]
+        }
+      }])
+    })
+  })], 2)], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.editSpecDialogTitle,
+      "visible": _vm.editSpecDialogVisible,
+      "custom-class": "dialog-w-600"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.editSpecDialogVisible = $event
+      }
+    }
+  }, [_c('el-form', {
+    ref: "specForm",
+    attrs: {
+      "model": _vm.specForm,
+      "label-width": "200px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('partNo'),
+      "prop": ""
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "String"
+    },
+    model: {
+      value: (_vm.specForm.part_no),
+      callback: function($$v) {
+        _vm.$set(_vm.specForm, "part_no", $$v)
+      },
+      expression: "specForm.part_no"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Update Status",
+      "prop": ""
+    }
+  }, [_c('el-switch', {
+    attrs: {
+      "on-color": "#98b42c",
+      "off-color": "#606161",
+      "on-text": "Up",
+      "off-text": "NoU"
+    },
+    model: {
+      value: (_vm.updateStatus),
+      callback: function($$v) {
+        _vm.updateStatus = $$v
+      },
+      expression: "updateStatus"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('set.mechanical'),
+      "prop": ""
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "String"
+    },
+    model: {
+      value: (_vm.mechanical),
+      callback: function($$v) {
+        _vm.mechanical = $$v
+      },
+      expression: "mechanical"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('set.hardVer'),
+      "prop": ""
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "String"
+    },
+    model: {
+      value: (_vm.hardVer),
+      callback: function($$v) {
+        _vm.hardVer = $$v
+      },
+      expression: "hardVer"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('set.firmVer'),
+      "prop": ""
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "String"
+    },
+    model: {
+      value: (_vm.firmVer),
+      callback: function($$v) {
+        _vm.firmVer = $$v
+      },
+      expression: "firmVer"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('set.paramVer'),
+      "prop": ""
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "String"
+    },
+    model: {
+      value: (_vm.paramVer),
+      callback: function($$v) {
+        _vm.paramVer = $$v
+      },
+      expression: "paramVer"
+    }
+  })], 1), _vm._v(" "), _vm._l((_vm.specForm.attr_list), function(spec) {
+    return _c('el-form-item', {
+      key: spec.attr_def_name,
+      attrs: {
+        "label": spec.attr_def_name,
+        "prop": ""
+      }
+    }, [_c('el-input', {
+      model: {
+        value: (spec.value),
+        callback: function($$v) {
+          _vm.$set(spec, "value", $$v)
+        },
+        expression: "spec.value"
+      }
+    })], 1)
+  })], 2), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.cancelEditSpec()
+      }
+    }
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "disabled": _vm.createOrEditDisabled,
+      "type": "preview"
+    },
+    on: {
+      "click": function($event) {
+        _vm.editSpec()
+      }
+    }
+  }, [_vm._v("Confirm")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Change",
+      "visible": _vm.changeSpecDialogVisible,
+      "custom-class": "dialog-400"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.changeSpecDialogVisible = $event
+      }
+    }
+  }, [_c('el-form', {
+    attrs: {
+      "label-width": "100px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Article No.",
+      "prop": ""
+    }
+  }, [_c('label', [_vm._v(_vm._s(_vm.selectItem.part_no))])]), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Model Name",
+      "prop": ""
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.newModelName),
+      callback: function($$v) {
+        _vm.newModelName = $$v
+      },
+      expression: "newModelName"
+    }
+  })], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.changeSpecDialogVisible = false
+      }
+    }
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.changeSpecToTarget
+    }
+  }, [_vm._v("Confirm")])], 1)], 1)], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-dbf32eb4","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/product/detail.vue
+// module id = 1763
+// module chunks = 73

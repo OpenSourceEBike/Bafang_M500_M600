@@ -1,0 +1,153 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "account"
+  }, [_c('nav-bar', {
+    attrs: {
+      "title": _vm.title
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "nav-btn"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary",
+      "icon": "arrow-left"
+    },
+    on: {
+      "click": _vm.goLogin
+    }
+  }, [_vm._v(_vm._s(_vm.$t('login')))])], 1), _vm._v(" "), _c('div', {
+    staticClass: "main-warp"
+  }, [_c('div', {
+    staticClass: "head"
+  }, [_c('el-steps', {
+    attrs: {
+      "space": 145,
+      "active": 2
+    }
+  }, [_c('el-step', {
+    attrs: {
+      "title": _vm.$t('verifyCode')
+    }
+  }), _vm._v(" "), _c('el-step', {
+    attrs: {
+      "title": _vm.$t('createAccount')
+    }
+  }), _vm._v(" "), _c('el-step', {
+    attrs: {
+      "title": _vm.$t('createCompany')
+    }
+  })], 1)], 1), _vm._v(" "), _c('div', {
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && $event.keyCode !== 13) { return null; }
+        return _vm.sendCode($event)
+      }
+    }
+  }, [_c('el-input', {
+    staticClass: "email",
+    attrs: {
+      "placeholder": _vm.$t('email'),
+      "disabled": _vm.emailDisabled
+    },
+    model: {
+      value: (_vm.account.email),
+      callback: function($$v) {
+        _vm.$set(_vm.account, "email", $$v)
+      },
+      expression: "account.email"
+    }
+  }, [_c('el-button', {
+    attrs: {
+      "slot": "append",
+      "disabled": _vm.isSend
+    },
+    on: {
+      "click": _vm.sendCode
+    },
+    slot: "append"
+  }, [_vm._v(_vm._s(_vm.text))])], 1)], 1), _vm._v(" "), _c('div', [(_vm.isEmail) ? _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": _vm.$t('company')
+    },
+    model: {
+      value: (_vm.companyName),
+      callback: function($$v) {
+        _vm.companyName = $$v
+      },
+      expression: "companyName"
+    }
+  }) : _vm._e()], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.show),
+      expression: "show"
+    }],
+    staticClass: "tip",
+    class: {
+      error: _vm.isError
+    }
+  }, [_c('p', [_vm._v(_vm._s(_vm.message))])]), _vm._v(" "), _c('div', {
+    on: {
+      "keyup": function($event) {
+        if (!('button' in $event) && $event.keyCode !== 13) { return null; }
+        return _vm.goCompany($event)
+      }
+    }
+  }, [_c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "maxlength": 4,
+      "placeholder": _vm.$t('emailValidationCode')
+    },
+    model: {
+      value: (_vm.account.validationCode),
+      callback: function($$v) {
+        _vm.$set(_vm.account, "validationCode", $$v)
+      },
+      expression: "account.validationCode"
+    }
+  }), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": _vm.$t('password'),
+      "type": "password"
+    },
+    model: {
+      value: (_vm.account.password),
+      callback: function($$v) {
+        _vm.$set(_vm.account, "password", $$v)
+      },
+      expression: "account.password"
+    }
+  }), _vm._v(" "), _c('br'), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": _vm.$t('confirmPassword'),
+      "type": "password"
+    },
+    model: {
+      value: (_vm.account.rePassword),
+      callback: function($$v) {
+        _vm.$set(_vm.account, "rePassword", $$v)
+      },
+      expression: "account.rePassword"
+    }
+  })], 1), _vm._v(" "), _c('el-button', {
+    staticClass: "next",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.goCompany
+    }
+  }, [_vm._v(_vm._s(_vm.$t('next')))])], 1)], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-242dcab8","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/register/account.vue
+// module id = 740
+// module chunks = 73

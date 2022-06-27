@@ -1,0 +1,2844 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "sidebar Noprint"
+  }, [_c('div', {
+    staticClass: "user-info"
+  }, [_c('div', {
+    staticClass: "logo-div"
+  }, [_c('img', {
+    staticClass: "user-avatar",
+    attrs: {
+      "src": require("../../assets/images/main/img-default-avatar.png"),
+      "src": _vm._f("getImgUrl")(_vm.org.avatar)
+    }
+  }), _vm._v(" "), (_vm.org.type == _vm.Core.Const.ORG_TYPE.COMPONENT || _vm.org.type == _vm.Core.Const.ORG_TYPE.SERVICE_CENTER) ? _c('div', {
+    staticClass: "user-name-box"
+  }, [_c('img', {
+    staticClass: "user-icon",
+    attrs: {
+      "src": require("../../assets/images/main/icon-user.png")
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "user-name"
+  }, [_vm._v(_vm._s(_vm.org.name))])]) : _c('div', {
+    staticClass: "brand-info"
+  }, [_c('div', {
+    staticClass: "user-name-box",
+    on: {
+      "click": _vm.tapUserName
+    }
+  }, [_c('img', {
+    staticClass: "brand-icon",
+    attrs: {
+      "src": require("../../assets/images/main/icon-brand.png")
+    }
+  }), _vm._v(" "), (_vm.org.type == _vm.Core.Const.ORG_TYPE.BRAND) ? _c('span', {
+    staticClass: "user-name"
+  }, [_vm._v(_vm._s(_vm.org.name))]) : _c('span', {
+    staticClass: "user-name"
+  }, [_vm._v(_vm._s(_vm.$t('brand')))]), _vm._v(" "), _c('img', {
+    staticClass: "arrow-icon",
+    attrs: {
+      "src": require("../../assets/images/main/arrow-right.png")
+    }
+  })])])])]), _vm._v(" "), _c('div', {
+    staticClass: "menu-container"
+  }, [_c('el-menu', {
+    staticClass: "el-menu-vertical-demo",
+    attrs: {
+      "default-active": _vm.$route.path,
+      "theme": "dark",
+      "default-openeds": _vm.defaultOpenList,
+      "unique-opened": true
+    }
+  }, [(_vm.org.type == 1 && !_vm.offline) ? _c('div', {
+    staticClass: "new"
+  }, [(_vm.authList['brand.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/brand/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/brand/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/brand.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('brand')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['item.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/model/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          path: '/brand/model/list',
+          query: {
+            page: 1,
+            index: 0
+          }
+        })
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/product.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('model')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['object.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/vehicle/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/vehicle/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/model.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('vehicle')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['dealer.menu']) ? _c('el-submenu', {
+    attrs: {
+      "index": "/brand/partner/dealer"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/dealer.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('dealer')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/partner/dealer/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/partner/dealer/list')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('dealerList')) + "\n                        ")])]), _vm._v(" "), (_vm.authList['dealer.invitation']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/partner/dealer/invite"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/partner/dealer/invite')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('invitation')) + "\n                        ")])]) : _vm._e()], 2) : _vm._e(), _vm._v(" "), (_vm.authList['oem.menu']) ? _c('el-submenu', {
+    attrs: {
+      "index": "/brand/partner/oem"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/oem.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('oem')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/partner/oem/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/partner/oem/list')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('oemList')) + "\n                        ")])]), _vm._v(" "), (_vm.authList['oem.invitation']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/partner/oem/invite"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/partner/oem/invite')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('invitation')) + "\n                        ")])]) : _vm._e()], 2) : _vm._e(), _vm._v(" "), (_vm.authList['item.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/partner/component/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          path: '/brand/partner/component/list',
+          query: {
+            page: 1,
+            index: 0
+          }
+        })
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/component.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('componentList')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['account.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/account/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/account/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/account.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('account')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/service"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/service.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('serviceCenter')) + "\n                    ")]), _vm._v(" "), (_vm.authList['ticket.service_center']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/service-center/ticket/service-center-list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/service-center/ticket/service-center-list')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('serviceCenters')) + "\n                        ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['ticket.complaint']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/service-center/ticket/center-ticket-list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/service-center/ticket/center-ticket-list')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('complaints')) + "\n                        ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['ticket.task']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/service-center/ticket/my-ticket-list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/service-center/ticket/my-ticket-list')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('tasks')) + "\n                        ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['diagnose.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/diagnosis/3rd-diagnosis"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/diagnosis/3rd-diagnosis')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/diagnosis.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('diagnosis')) + "\n                        ")])]) : _vm._e(), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/diagnosis/report-list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/diagnosis/report-list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/order.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('report')) + "\n                        ")])]), _vm._v(" "), (_vm.authList['tool.menu']) ? _c('el-submenu', {
+    attrs: {
+      "index": "/tool"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/tool.png")
+    }
+  }), _c('span', {
+    staticClass: "titleSec"
+  }, [_vm._v(_vm._s(_vm.$t('tool')))])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/tool/hmi"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/tool/hmi')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('hmi')) + "\n                            ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/tool/controller"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/tool/controller')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('controller')) + "\n                            ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/tool/battery"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/tool/battery')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-battery.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('battery')) + "\n                            ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/sensor"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/sensor')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-sensor.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('sensor')) + "\n                            ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/tool/update"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/tool/update')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-update.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('update')) + "\n                            ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/tool/record"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/tool/record')
+      }
+    }
+  }, [_vm._v("\n                                " + _vm._s(_vm.$t('record')) + "\n                            ")])])], 2) : _vm._e(), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/error/shooting"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/error-shooting.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('faq')) + "\n                        ")]), _vm._v(" "), (_vm.authList['error_shooting.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/error/shooting"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/error/shooting')
+      }
+    }
+  }, [_vm._v("\n                                " + _vm._s(_vm.$t('errorCode')) + "\n                            ")])]) : _vm._e()], 2)], 2)], 1) : (_vm.org.type == 1 && _vm.offline) ? _c('div', [_c('el-menu-item', {
+    attrs: {
+      "index": "/brand/diagnosis/3rd-diagnosis"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/diagnosis/3rd-diagnosis')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/diagnosis.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('diagnosis')) + "\n                    ")])]), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/component/tool"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/tool.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('tool')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/tool/hmi"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/tool/hmi')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('hmi')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/tool/controller"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/tool/controller')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('controller')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/tool/battery"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/tool/battery')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-battery.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('battery')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/sensor"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/sensor')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-sensor.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('sensor')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/brand/tool/update"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/brand/tool/update')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-update.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('update')) + "\n                        ")])])], 2)], 1) : (_vm.org.type == 2 && _vm.offline) ? _c('div', [_c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/diagnosis/3rd-diagnosis"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/diagnosis/3rd-diagnosis')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/diagnosis.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('diagnosis')) + "\n                    ")])]), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/component/tool"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/tool.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('tool')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/tool/hmi"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/hmi')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('hmi')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/tool/controller"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/controller')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('controller')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/tool/battery"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/battery')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-battery.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('battery')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/sensor"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/sensor')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-sensor.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('sensor')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/tool/update"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/update')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-update.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('update')) + "\n                        ")])])], 2)], 1) : (_vm.org.type == 2) ? _c('div', {
+    staticClass: "new"
+  }, [(_vm.authList['object.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/partner/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/partner/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/product.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('bikeModel')))])]) : _vm._e(), _vm._v(" "), (_vm.authList['object.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/sale/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/sale/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/order.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('bikeSales')))])]) : _vm._e(), _vm._v(" "), (_vm.authList['object.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/vehicle/search"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/vehicle/search')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/model.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('bikeInfo')))])]) : _vm._e(), _vm._v(" "), (_vm.authList['account.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/account/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/account/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/account.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('account')))])]) : _vm._e(), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/dealer/service"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/service.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('serviceCenter')) + "\n                    ")]), _vm._v(" "), (_vm.authList['ticket.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/ticket/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/ticket/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/service.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('serviceCenter')) + "\n                        ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['diagnose.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/diagnosis/3rd-diagnosis"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/diagnosis/3rd-diagnosis')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/diagnosis.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('diagnosis')) + "\n                        ")])]) : _vm._e(), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/diagnosis/report-list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/diagnosis/report-list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/order.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('report')) + "\n                        ")])]), _vm._v(" "), (_vm.authList['tool.menu']) ? _c('el-submenu', {
+    attrs: {
+      "index": "/tool"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('span', {
+    staticClass: "titleSec"
+  }, [_vm._v(_vm._s(_vm.$t('tool')))])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/tool/hmi"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/hmi')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('hmi')) + "\n                            ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/tool/controller"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/controller')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('controller')) + "\n                            ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/tool/battery"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/battery')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-battery.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('battery')) + "\n                            ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/sensor"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/sensor')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-sensor.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('sensor')) + "\n                            ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/tool/update"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/update')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-update.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('update')) + "\n                            ")])])], 2) : _vm._e(), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/error/shooting"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/error-shooting.png")
+    }
+  }), _vm._v("FAQ\n                        ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/error/shooting"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/error/shooting')
+      }
+    }
+  }, [_vm._v("\n                                " + _vm._s(_vm.$t('errorCode')) + "\n                            ")])])], 2)], 2)], 1) : (_vm.org.type == 3) ? _c('div', [(_vm.authList['production.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/assembler/order/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/assembler/order/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/order.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('order')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['object.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/assembler/vehicle/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/assembler/vehicle/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/model.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('vehicle')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/assembler/diagnosis"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/diagnosis.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('diagnosis')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/assembler/diagnosis/3rd-diagnosis"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/assembler/diagnosis/3rd-diagnosis')
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('diagnosis')))])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/assembler/diagnosis/report-list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/assembler/diagnosis/report-list')
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('report')))])])], 2), _vm._v(" "), (_vm.authList['account.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/assembler/account/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/assembler/account/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/account.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('account')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/error/shooting"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/error-shooting.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('faq')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/assembler/error/shooting"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/assembler/error/shooting')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('errorCode')) + "\n                        ")])])], 2), _vm._v(" "), (_vm.authList['tool.menu']) ? _c('el-submenu', {
+    attrs: {
+      "index": "/component/tool"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/tool.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('tool')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/hmi"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/hmi')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('hmi')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/controller"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/controller')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('controller')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/battery"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/battery')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-battery.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('battery')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/sensor"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/sensor')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-sensor.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('sensor')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/update"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/update')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-update.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('update')) + "\n                        ")])])], 2) : _vm._e()], 1) : (_vm.org.type == 4 && !_vm.offline) ? _c('div', [(_vm.authList['product.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/component/product/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/product/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/product.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('product')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['product.menu'] && _vm.org.id == 25) ? _c('el-submenu', {
+    attrs: {
+      "index": "/component/param"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/param.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('tt.param')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/project/"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/project/index')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/project.png")
+    }
+  }), _vm._v("\n                            " + _vm._s(_vm.$t('tt.system')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/testPlan/testPlan"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/testPlan/testPlan')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/list.png")
+    }
+  }), _vm._v("\n                            " + _vm._s(_vm.$t('tt.testPlan')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/createParam/"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/createParam/index')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/param.png")
+    }
+  }), _vm._v("\n                            " + _vm._s(_vm.$t('tt.param')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/headList/"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": _vm.checkHeadList
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/list.png")
+    }
+  }), _vm._v("\n                            " + _vm._s(_vm.$t('tt.headList')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/dictionary/detail"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/dictionary/detail')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/dictionary.png")
+    }
+  }), _vm._v("\n                            " + _vm._s(_vm.$t('tt.dictionary')) + "\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.authList['object.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/component/component/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/component/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/component.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('component')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['production.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/component/order/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/order/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/order.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('order')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['ticket.menu']) ? _c('el-submenu', {
+    attrs: {
+      "index": "/component/service-center"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/service.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('serviceCenter')) + "\n                    ")]), _vm._v(" "), (_vm.authList['ticket.service_center']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/ticket/service-center-list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          name: 'componentServiceCenterAssignList'
+        })
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('serviceCenters')) + "\n                        ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['ticket.complaint']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/ticket/complaint"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          name: 'componentServiceCenterTicketList'
+        })
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('complaints')) + "\n                        ")])]) : _vm._e(), _vm._v(" "), (_vm.authList['ticket.task']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/ticket/task"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          name: 'componentMyTicketList'
+        })
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('tasks')) + "\n                        ")])]) : _vm._e(), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/ticket/statistics"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          name: 'componentTicketStatistics'
+        })
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('statistics')) + "\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.authList['account.menu']) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/component/account/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/account/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/account.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('account')) + "\n                    ")])]) : _vm._e(), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/error/shooting"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/error-shooting.png")
+    }
+  }), _vm._v("FAQ\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/error/shooting"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/error/shooting')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('errorCode')) + "\n                        ")])])], 2), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/component/diagnosis"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/diagnosis.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('diagnosis')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/diagnosis/3rd-diagnosis"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/diagnosis/3rd-diagnosis')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('diagnosis')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/diagnosis/report-list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/diagnosis/report-list')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('report')) + "\n                        ")])])], 2), _vm._v(" "), _c('el-submenu', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id == 25),
+      expression: "org.id == 25 "
+    }],
+    attrs: {
+      "index": "/component/audit-apply/apply"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/order.png")
+    }
+  }), _vm._v("\n                            Application record\n                    ")]), _vm._v(" "), (_vm.accountType_2) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/component/audit-apply/apply"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/audit-apply/apply')
+      }
+    }
+  }, [_vm._v("\n                            Apply BESST Account\n                        ")])]) : _vm._e(), _vm._v(" "), (_vm.accountType_3) ? _c('el-menu-item', {
+    attrs: {
+      "index": "/component/audit-apply/audit"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/audit-apply/audit')
+      }
+    }
+  }, [_vm._v("\n                            Audit BESST Account\n                        ")])]) : _vm._e(), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/audit-apply/ip"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/audit-apply/ip')
+      }
+    }
+  }, [_vm._v("\n                            Apply IP Verification\n                        ")])])], 2), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id == 25),
+      expression: "org.id == 25 "
+    }],
+    attrs: {
+      "index": "/component/material/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/material/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/order.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('material')) + "\n                    ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id == 25),
+      expression: "org.id == 25 "
+    }],
+    attrs: {
+      "index": "/component/feedback-center/list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/feedback-center/list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/order.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('testFeedback')) + "\n                    ")])]), _vm._v(" "), (_vm.authList['tool.menu']) ? _c('el-submenu', {
+    attrs: {
+      "index": "/component/tool"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/tool.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('tool')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/hmi"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/hmi')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('hmi')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/controller"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/controller')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('controller')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/battery"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/battery')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-battery.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('battery')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/sensor"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/sensor')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-sensor.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('sensor')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/update"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/update')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-update.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('update')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id == 25),
+      expression: "org.id == 25"
+    }],
+    attrs: {
+      "index": "/component/tool/record"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/record')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('tool')) + " " + _vm._s(_vm.$t('record')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id == 25),
+      expression: "org.id == 25"
+    }],
+    attrs: {
+      "index": "/component/tool/firmware-delete-record"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/operationTraceRecord')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('component')) + " " + _vm._s(_vm.$t('record')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id == 25),
+      expression: "org.id == 25"
+    }],
+    attrs: {
+      "index": "/component/tool/save"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/save')
+      }
+    }
+  }, [_vm._v("\n                            Component Save\n                        ")])])], 2) : _vm._e()], 1) : (_vm.org.type == 4 && _vm.offline) ? _c('div', [_c('el-menu-item', {
+    attrs: {
+      "index": "/component/diagnosis/3rd-diagnosis"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/diagnosis/3rd-diagnosis')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/diagnosis.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('diagnosis')) + "\n                    ")])]), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/component/tool"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/tool.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('tool')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/hmi"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/hmi')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('hmi')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/controller"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/controller')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('controller')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/battery"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/battery')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-battery.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('battery')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/sensor"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/sensor')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-sensor.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('sensor')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/tool/update"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/update')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-update.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('update')) + "\n                        ")])])], 2)], 1) : (_vm.org.type == 5 && !_vm.isSpecial) ? _c('div', [_c('el-menu-item', {
+    attrs: {
+      "index": "/service-center/center-ticket-lit"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          name: 'centerTicketList'
+        })
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/tool.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('centerTicket')) + "\n                    ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/service-center/my-ticket-list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/service-center/my-ticket-list')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/tool.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('myTicket')) + "\n                    ")])]), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/error/shooting"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/error-shooting.png")
+    }
+  }), _vm._v("FAQ\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/service-center/error/shooting"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/service-center/error/shooting')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('errorCode')) + "\n                        ")])])], 2)], 1) : (_vm.org.type == 5 && _vm.isSpecial) ? _c('div', [_c('el-submenu', {
+    attrs: {
+      "index": "/warehouse"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/warehouse.svg")
+    }
+  }), _vm._v("\n                        Warehouse\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/warehouse/list"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          path: '/warehouse/list'
+        })
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/receipt.svg")
+    }
+  }), _vm._v("\n                            Warehouse\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/warehouse/area"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          path: '/warehouse/area'
+        })
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/shipment.svg")
+    }
+  }), _vm._v("\n                            Area\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/warehouse/location"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          path: '/warehouse/location'
+        })
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/receipt.svg")
+    }
+  }), _vm._v("\n                            Location\n                        ")])])], 2), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/products/index"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          name: 'productsIndex'
+        })
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/product.png")
+    }
+  }), _vm._v("\n                        Products\n                    ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/inventory/index"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          name: 'inventoryIndex'
+        })
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/inventory.svg")
+    }
+  }), _vm._v("\n                        Inventory\n                    ")])]), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/stocks"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/warehouse.svg")
+    }
+  }), _vm._v("\n                        Stocks\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/stocks/in"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          name: 'stockIn'
+        })
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/receipt.svg")
+    }
+  }), _vm._v("\n                            Stock In\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/stocks/out"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push({
+          path: '/stocks/out'
+        })
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/shipment.svg")
+    }
+  }), _vm._v("\n                            Stock Out\n                        ")])])], 2), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/dealer/tool"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/tool.png")
+    }
+  }), _vm._v("\n                        " + _vm._s(_vm.$t('tool')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/hmi"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/hmi')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v("\n                            " + _vm._s(_vm.$t('hmi')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/controller"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/controller')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v("\n                            " + _vm._s(_vm.$t('controller')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/battery"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/battery')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-battery.png")
+    }
+  }), _vm._v("\n                            " + _vm._s(_vm.$t('battery')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/sensor"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/sensor')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-sensor.png")
+    }
+  }), _vm._v("\n                            " + _vm._s(_vm.$t('sensor')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/update"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/update')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-update.png")
+    }
+  }), _vm._v("\n                            " + _vm._s(_vm.$t('update')) + "\n                        ")])])], 2), _vm._v(" "), (_vm.serviceCenter || _vm.parcelInformation || _vm.customerServiceRecord || _vm.technicalService) ? _c('el-submenu', {
+    attrs: {
+      "index": "/after-sales"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/after-sales.svg")
+    }
+  }), _vm._v("\n                        After Sales\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('service-center'),
+      expression: "'service-center'"
+    }],
+    attrs: {
+      "index": "/after-sales/service-center"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/after-sales/service-center')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/service-center.svg")
+    }
+  }), _vm._v("\n                            Service Center\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('parcel-information'),
+      expression: "'parcel-information'"
+    }],
+    attrs: {
+      "index": "/after-sales/parcel-information"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/after-sales/parcel-information')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/package.svg")
+    }
+  }), _vm._v("\n                            Parcel Info\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('customer-service-record'),
+      expression: "'customer-service-record'"
+    }],
+    attrs: {
+      "index": "/after-sales/customer-service-record"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/after-sales/customer-service-record')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/record.svg")
+    }
+  }), _vm._v("\n                            CS Record\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('technical-service'),
+      expression: "'technical-service'"
+    }],
+    attrs: {
+      "index": "/after-sales/technical-service"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/after-sales/technical-service')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/technical.svg")
+    }
+  }), _vm._v("\n                            Technical\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.customerServiceUser || _vm.technicalServiceUser) ? _c('el-submenu', {
+    attrs: {
+      "index": "/customer-service"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/service.svg")
+    }
+  }), _vm._v("\n                        CSD\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('customer-service-user'),
+      expression: "'customer-service-user'"
+    }],
+    attrs: {
+      "index": "/customer-service/customer-service-user"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/customer-service/customer-service-user')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/user.svg")
+    }
+  }), _vm._v("\n                            Service User\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('technical-service-user'),
+      expression: "'technical-service-user'"
+    }],
+    attrs: {
+      "index": "/customer-service/technical-service-user"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/customer-service/technical-service-user')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/technology.svg")
+    }
+  }), _vm._v("\n                            Technical User\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/customer-service/carrier-order"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/customer-service/carrier-order')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/cleanRecords.svg")
+    }
+  }), _vm._v("\n                            Carrier Order\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.commercialInvoice || _vm.cleanRecord) ? _c('el-submenu', {
+    attrs: {
+      "index": "/clean-manage"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/management.svg")
+    }
+  }), _vm._v("\n                        Clean Manage\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('commerial-invoice'),
+      expression: "'commerial-invoice'"
+    }],
+    attrs: {
+      "index": "/clean-manage/commerial-invoice"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/clean-manage/commerial-invoice')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/ci.svg")
+    }
+  }), _vm._v("\n                            CI\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('clean-record'),
+      expression: "'clean-record'"
+    }],
+    attrs: {
+      "index": "/clean-manage/clean-record"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/clean-manage/clean-record')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/cleanRecords.svg")
+    }
+  }), _vm._v("\n                            Clean Record\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.invoiceList || _vm.cashierList || _vm.financeReceptionList) ? _c('el-submenu', {
+    attrs: {
+      "index": "/finance"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/finance.svg")
+    }
+  }), _vm._v("\n                        Finance\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('invoice-list'),
+      expression: "'invoice-list'"
+    }],
+    attrs: {
+      "index": "/finance/invoice-list"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/finance/invoice-list')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/invoice.svg")
+    }
+  }), _vm._v("\n                            Invoice\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('cashier-list'),
+      expression: "'cashier-list'"
+    }],
+    attrs: {
+      "index": "/finance/cashier"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/finance/cashier')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/cashier.svg")
+    }
+  }), _vm._v("\n                            Cashier\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('finance-reception-list'),
+      expression: "'finance-reception-list'"
+    }],
+    attrs: {
+      "index": "/finance/reception"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/finance/reception')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/process.svg")
+    }
+  }), _vm._v("\n                            Reception\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.purchaseList) ? _c('el-submenu', {
+    attrs: {
+      "index": "/purchase"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/purchase.svg")
+    }
+  }), _vm._v("\n                        Purchase\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('purchase-list'),
+      expression: "'purchase-list'"
+    }],
+    attrs: {
+      "index": "/purchase/purchase-list"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/purchase/purchase-list')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/list.svg")
+    }
+  }), _vm._v("\n                            List\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.proformaInvoiceList || _vm.deliveryList) ? _c('el-submenu', {
+    attrs: {
+      "index": "/sales"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/sales.svg")
+    }
+  }), _vm._v("\n                        Sales\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('proforma-invoice-list'),
+      expression: "'proforma-invoice-list'"
+    }],
+    attrs: {
+      "index": "/sales/proforma-invoice"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/sales/proforma-invoice')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/PI.svg")
+    }
+  }), _vm._v("\n                            PI\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('delivery-list'),
+      expression: "'delivery-list'"
+    }],
+    attrs: {
+      "index": "/sales/delivery-list"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/sales/delivery-list')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/delivery.svg")
+    }
+  }), _vm._v("\n                            Delivery\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (true) ? _c('el-submenu', {
+    attrs: {
+      "index": "/customer"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/customer.svg")
+    }
+  }), _vm._v("\n                        Customer\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/customer/customer-list"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/customer/customer-list')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/list.svg")
+    }
+  }), _vm._v("\n                            List\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.departmentList) ? _c('el-submenu', {
+    attrs: {
+      "index": "/department"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/department.svg")
+    }
+  }), _vm._v("\n                        Department\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('department-list'),
+      expression: "'department-list'"
+    }],
+    attrs: {
+      "index": "/department/department-list"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/department/department-list')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/list.svg")
+    }
+  }), _vm._v("\n                            List\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.roleList || _vm.roleSetting) ? _c('el-submenu', {
+    attrs: {
+      "index": "/role"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/role.svg")
+    }
+  }), _vm._v("\n                        Role\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('role-list'),
+      expression: "'role-list'"
+    }],
+    attrs: {
+      "index": "/role/role-list"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/role/role-list')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/list.svg")
+    }
+  }), _vm._v("\n                            List\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('role-setting'),
+      expression: "'role-setting'"
+    }],
+    attrs: {
+      "index": "/role/role-setting"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/role/role-setting')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/role-setting.svg")
+    }
+  }), _vm._v("\n                            Setting\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.userNL) ? _c('el-submenu', {
+    attrs: {
+      "index": "/user"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/role.svg")
+    }
+  }), _vm._v("\n                        User\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('user-nl'),
+      expression: "'user-nl'"
+    }],
+    attrs: {
+      "index": "/user/user-list"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/user/user-list')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/role-setting.svg")
+    }
+  }), _vm._v("\n                            List\n                        ")])])], 2) : _vm._e(), _vm._v(" "), (_vm.permissionList || _vm.permissionCategory) ? _c('el-submenu', {
+    attrs: {
+      "index": "/permission"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/permission.svg")
+    }
+  }), _vm._v("\n                        Permission\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('permission-list'),
+      expression: "'permission-list'"
+    }],
+    attrs: {
+      "index": "/permission/permission-list"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/permission/permission-list')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/list.svg")
+    }
+  }), _vm._v("\n                            List\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "ilpermission",
+      rawName: "v-ilpermission",
+      value: ('permission-category'),
+      expression: "'permission-category'"
+    }],
+    attrs: {
+      "index": "/permission/permission-category"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/permission/permission-category')
+      }
+    }
+  }, [_c('a', {
+    staticClass: "a-link"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/warehouse/category.svg")
+    }
+  }), _vm._v("\n                            Category\n                        ")])])], 2) : _vm._e()], 1) : (_vm.org.type == 6) ? _c('div', [_c('el-submenu', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id != 1549),
+      expression: "org.id != 1549"
+    }],
+    attrs: {
+      "index": "/component/diagnosis/3rd-diagnosis"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/diagnosis.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('diagnosis')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/diagnosis/3rd-diagnosis"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/diagnosis/3rd-diagnosis')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('diagnosis')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/component/diagnosis/report-list"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/diagnosis/report-list')
+      }
+    }
+  }, [_vm._v("\n                            " + _vm._s(_vm.$t('report')) + "\n                        ")])])], 2), _vm._v(" "), _c('el-submenu', {
+    attrs: {
+      "index": "/dealer/tool"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/menu/tool.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('tool')) + "\n                    ")]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id != 1549),
+      expression: "org.id != 1549"
+    }],
+    attrs: {
+      "index": "/dealer/tool/hmi"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/hmi')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('hmi')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id != 1549),
+      expression: "org.id != 1549"
+    }],
+    attrs: {
+      "index": "/dealer/tool/controller"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/controller')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('controller')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id != 1549),
+      expression: "org.id != 1549"
+    }],
+    attrs: {
+      "index": "/dealer/tool/battery"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/battery')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-battery.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('battery')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.org.id != 1549),
+      expression: "org.id != 1549"
+    }],
+    attrs: {
+      "index": "/component/tool/sensor"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/component/tool/sensor')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-sensor.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('sensor')) + "\n                        ")])]), _vm._v(" "), _c('el-menu-item', {
+    attrs: {
+      "index": "/dealer/tool/update"
+    }
+  }, [_c('a', {
+    staticClass: "a-link",
+    on: {
+      "click": function($event) {
+        _vm.$router.push('/dealer/tool/update')
+      }
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-update.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('update')) + "\n                        ")])])], 2)], 1) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "menu-footer"
+  }, [_c('div', {
+    staticClass: "menu"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (this.org.type !== 6),
+      expression: "this.org.type !== 6"
+    }],
+    staticClass: "menu-item"
+  }, [_c('el-tooltip', {
+    attrs: {
+      "placement": "top",
+      "effect": "light"
+    }
+  }, [_c('div', {
+    attrs: {
+      "slot": "content"
+    },
+    slot: "content"
+  }, [_vm._v(_vm._s(_vm.$t('help')))]), _vm._v(" "), _c('a', {
+    attrs: {
+      "href": _vm.helpUrl,
+      "title": "Bafang",
+      "target": "_blank"
+    }
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-help.png")
+    }
+  })])])], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.offline && this.org.type !== 6),
+      expression: "!offline && this.org.type !== 6"
+    }],
+    staticClass: "menu-item",
+    on: {
+      "click": _vm.setting
+    }
+  }, [_c('el-tooltip', {
+    attrs: {
+      "placement": "top",
+      "effect": "light"
+    }
+  }, [_c('div', {
+    attrs: {
+      "slot": "content"
+    },
+    slot: "content"
+  }, [_vm._v(_vm._s(_vm.$t('setting')))]), _vm._v(" "), _c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-setting.png")
+    }
+  })])], 1), _vm._v(" "), _c('div', {
+    staticClass: "menu-item",
+    on: {
+      "click": _vm.logout
+    }
+  }, [_c('el-tooltip', {
+    attrs: {
+      "placement": "top",
+      "effect": "light"
+    }
+  }, [_c('div', {
+    attrs: {
+      "slot": "content"
+    },
+    slot: "content"
+  }, [_vm._v(_vm._s(_vm.$t('logout')))]), _vm._v(" "), _c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-logout.png")
+    }
+  })])], 1)]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (this.org.type !== 6),
+      expression: "this.org.type !== 6"
+    }],
+    staticClass: "copyright"
+  }, [_c('span', {
+    staticClass: "power-by"
+  }, [_vm._v("Powered by")]), _vm._v(" "), _c('a', {
+    staticClass: "logo",
+    attrs: {
+      "href": "http://www.bafang-e.com",
+      "title": "Bafang",
+      "target": "_blank"
+    }
+  }, [_c('svg', {
+    staticClass: "svg replaced-svg",
+    attrs: {
+      "xmlns": "http://www.w3.org/2000/svg",
+      "xmlns:xlink": "http://www.w3.org/1999/xlink",
+      "version": "1.1",
+      "id": "logo",
+      "x": "0px",
+      "y": "0px",
+      "width": "170.574px",
+      "height": "48px",
+      "viewBox": "0 0 170.574 48",
+      "enable-background": "new 0 0 170.574 48",
+      "xml:space": "preserve"
+    }
+  }, [_c('g', [_c('path', {
+    attrs: {
+      "fill": "#D07327",
+      "d": "M146.573,0H24C10.745,0,0,10.745,0,24s10.745,24,24,24h122.573c13.255,0,24.001-10.745,24.001-24   S159.828,0,146.573,0z"
+    }
+  }), _vm._v(" "), _c('path', {
+    attrs: {
+      "fill": "#FFFFFF",
+      "d": "M36.609,23.264c1.255-0.893,2.218-2.266,2.218-3.88c0-3.415-2.63-5.773-6.298-5.773H22.157v20.325   l10.708-0.001c3.52,0,6.54-2.578,6.54-6.096C39.404,25.743,38.312,24.2,36.609,23.264z M25.869,16.923h6.467   c1.535,0,2.713,1.111,2.713,2.582c0,1.51-1.089,2.571-2.773,2.571l-6.407,0.003V16.923z M32.731,30.622h-6.869v-5.396l6.929-0.005   c1.759,0,2.836,1.066,2.836,2.635C35.628,29.417,34.413,30.622,32.731,30.622z M53.04,13.057c-5.101,0-9.306,4.136-9.306,9.237   v10.301c0,1.045,0.847,1.893,1.893,1.893s1.91-0.848,1.91-1.893v-5.861h10.87v5.861c0,1.045,0.848,1.893,1.894,1.893   c1.045,0,1.909-0.848,1.909-1.893V22.294C62.208,17.193,58.142,13.057,53.04,13.057z M58.406,23.417h-10.87v-1.061   c0-3.159,2.013-5.72,5.435-5.72c3.42,0,5.435,2.561,5.435,5.72V23.417z M80.2,17.136h-9.053v5.935c0,0,6.923,0,7.896,0   s1.661,0.745,1.661,1.66c0,0.916-0.742,1.658-1.658,1.658h-7.899v6.207c0,1.045-0.864,1.893-1.909,1.893   c-1.046,0-1.893-0.848-1.893-1.893h0v-18.99l12.813,0.005c1.063,0,1.806,0.788,1.806,1.761   C81.964,16.347,81.174,17.136,80.2,17.136z M93.977,13.057c-5.103,0-9.308,4.136-9.308,9.237v10.301   c0,1.045,0.85,1.893,1.894,1.893c1.047,0,1.91-0.848,1.91-1.893v-5.861h10.87v5.861c0,1.045,0.848,1.893,1.893,1.893   s1.91-0.848,1.91-1.893V22.294C103.146,17.193,99.077,13.057,93.977,13.057z M99.343,23.417h-10.87v-1.061   c0-3.159,2.014-5.72,5.436-5.72c3.42,0,5.435,2.561,5.435,5.72V23.417z M125.836,32.596c0,1.045-0.934,1.893-1.979,1.893   c-1.046,0-1.962-0.848-1.962-1.893v-10.58c0-2.825-1.944-5.208-4.85-5.208s-4.851,2.383-4.851,5.208v10.58   c0,1.045-0.932,1.893-1.979,1.893c-1.045,0-1.961-0.848-1.961-1.893v-10.78c0-4.861,3.997-8.759,8.858-8.759   c4.86,0,8.722,3.897,8.722,8.759V32.596z M140.908,34.488c-6.103,0-10.783-4.557-10.783-10.716c0-5.918,4.845-10.715,10.854-10.715   c2.916,0,5.08,0.734,7.011,2.248c0.83,0.652,0.962,1.827,0.365,2.609c-0.621,0.814-1.652,1.006-2.459,0.445   c-1.533-1.067-2.916-1.726-4.989-1.726c-3.823,0-6.926,3.07-6.926,7.014c0,4.285,3.042,7.266,6.986,7.266   c1.563,0,2.952-0.412,4.043-1.109v-4.11h-3.419c0,0-0.002,0-0.004,0c-0.925,0-1.675-0.75-1.675-1.676   c0-0.926,0.75-1.677,1.675-1.677h7.222c0,0,0.002,6.841,0.002,9.222C147.046,33.094,144.241,34.488,140.908,34.488z"
+    }
+  })])])])])])], 1)])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-e47cc5cc","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/layout/sidebar.vue
+// module id = 2028
+// module chunks = 73

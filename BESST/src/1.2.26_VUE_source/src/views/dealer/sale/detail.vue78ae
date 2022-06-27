@@ -1,0 +1,272 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "dealer-order-detail"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": _vm.goOrderList
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('orderDetail')))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(_vm.authList[_vm.Core.Const.AUTH_LIST.orderEdit]) ? _c('div', {
+    staticClass: "icon-item edit",
+    attrs: {
+      "title": _vm.$t('edit')
+    },
+    on: {
+      "click": _vm.goOrderEdit
+    }
+  }) : _vm._e(), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.orderDelete]) ? _c('div', {
+    staticClass: "icon-item delete",
+    attrs: {
+      "title": _vm.$t('delete')
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = true
+      }
+    }
+  }) : _vm._e()])])]), _vm._v(" "), (_vm.loading) ? _c('div', {
+    staticClass: "loading"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../../assets/images/icon/loading-bars.svg"),
+      "alt": "Loading icon"
+    }
+  })]) : _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.invoice),
+      expression: "!invoice"
+    }],
+    staticClass: "update-invoice"
+  }, [_c('el-input', {
+    staticClass: "invoice-input",
+    attrs: {
+      "placeholder": _vm.$t('invoiceNo')
+    },
+    model: {
+      value: (_vm.invoiceNo),
+      callback: function($$v) {
+        _vm.invoiceNo = $$v
+      },
+      expression: "invoiceNo"
+    }
+  }), _vm._v(" "), _c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "placeholder": _vm.$t('invoiceDate'),
+      "picker-options": _vm.pickerOptions
+    },
+    model: {
+      value: (_vm.invoiceDate),
+      callback: function($$v) {
+        _vm.invoiceDate = $$v
+      },
+      expression: "invoiceDate"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "btn",
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.updateInvoice
+    }
+  }, [_vm._v(_vm._s(_vm.$t('submit')))])], 1), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('customerInfo.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "info"
+  }, [_c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('customerInfo.name')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.customer.name))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('customerInfo.phone')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.customer.phone))])])]), _vm._v(" "), _c('div', {
+    staticClass: "right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('customerInfo.email')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.customer.email))])])])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "info"
+  }, [_c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.brand')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.detailOrder.brand_name))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.model')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.detailOrder.item_name))])])]), _vm._v(" "), _c('div', {
+    staticClass: "right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.bikeId')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.detailOrder.object_sn))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bikeInfo.warrantyPeriod')))]), _vm._v(" "), (_vm.detailOrder.warranty && _vm.detailOrder.warranty > 0) ? _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.detailOrder.warranty) + " Months")]) : _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.detailOrder.warranty) + " Month")])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-0"
+  }), _vm._v(" "), _c('table', {
+    staticClass: "table",
+    attrs: {
+      "border": "0",
+      "cellpadding": "1",
+      "cellspacing": "0"
+    }
+  }, [_vm._m(0), _vm._v(" "), _vm._l((_vm.bomList), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(_vm._f("categoryRoot")(item.category_root_id)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.item && item.item.name && '-'))]), _vm._v(" "), _c('td', {
+      on: {
+        "click": function($event) {
+          _vm.goToBomDetail(item.item_id)
+        }
+      }
+    }, [_vm._m(1, true)])])
+  })], 2)]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('detail.title')))]), _vm._v(" "), _c('div', {
+    staticClass: "info",
+    class: {
+      detail: _vm.invoice
+    }
+  }, [_c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('detail.orderNo')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.detailOrder.sn))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('detail.price')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm._f("currencyType")(_vm.detailOrder.currency)) + " " + _vm._s(_vm.detailOrder.price / 100))])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.invoice),
+      expression: "invoice"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('detail.invoice')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.invoiceNo) + " date:" + _vm._s(_vm._f("timeFormat")(_vm.invoiceDate, 'Y-m-d')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "right"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('detail.salesDate')))]), _vm._v(" "), (_vm.detailOrder.sale_time == 0) ? _c('label', {
+    staticClass: "text"
+  }, [_vm._v(" - ")]) : _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.detailOrder.sale_time, 'Y-m-d')))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('detail.remark')))]), _vm._v(" "), _c('label', {
+    staticClass: "text"
+  }, [_vm._v(_vm._s(_vm.detailOrder.remark))])])])])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('deleteDialog.title'),
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('deleteDialog.content')))]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.deleteDealerOrder
+    }
+  }, [_vm._v(_vm._s(_vm.$t('deleteDialog.yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('deleteDialog.no')))])], 1)])], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('tr', [_c('td', [_vm._v("Type")]), _vm._v(" "), _c('td', [_vm._v("SN")]), _vm._v(" "), _c('td', [_vm._v("Name")]), _vm._v(" "), _c('td', [_vm._v("Operation")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item eye",
+    attrs: {
+      "title": "View"
+    }
+  })])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-6c5df846","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/dealer/sale/detail.vue
+// module id = 1662
+// module chunks = 73

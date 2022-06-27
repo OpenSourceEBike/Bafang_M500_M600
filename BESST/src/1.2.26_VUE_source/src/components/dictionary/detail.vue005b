@@ -1,0 +1,558 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "dictionary-page"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('el-form', {
+    staticClass: "dictionary-base-info",
+    attrs: {
+      "inline": true
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('字典/词条名')
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.dictionaryName),
+      callback: function($$v) {
+        _vm.dictionaryName = $$v
+      },
+      expression: "dictionaryName"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('code')
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.dictionaryCode),
+      callback: function($$v) {
+        _vm.dictionaryCode = $$v
+      },
+      expression: "dictionaryCode"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": _vm.$t('dic.search')
+    },
+    on: {
+      "click": function($event) {
+        _vm.getDicList()
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item add",
+    attrs: {
+      "title": _vm.$t('add')
+    },
+    on: {
+      "click": function($event) {
+        _vm.addDictionaryList()
+      }
+    }
+  })])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "flex"
+  }, [_c('div', {
+    staticClass: "width-33"
+  }, [_c('div', {
+    staticClass: "title"
+  }, [_vm._v("字典/词条名")]), _vm._v(" "), _c('div', {
+    staticClass: "dic-content"
+  }, _vm._l((_vm.dicList), function(item, index) {
+    return _c('div', {
+      key: index,
+      staticClass: "info",
+      class: {
+        "active": _vm.active == item.name
+      },
+      on: {
+        "click": function($event) {
+          _vm.getDicDetail(item)
+        }
+      }
+    }, [_c('span', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('span', {
+      staticClass: "icon"
+    }, [_c('i', {
+      staticClass: "el-icon-edit",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.showEditDialog(item.id)
+        }
+      }
+    }), _vm._v(" "), _c('i', {
+      staticClass: "el-icon-delete",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.showDeleteDialog(item.id)
+        }
+      }
+    })])])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "width-66"
+  }, [_c('div', {
+    staticClass: "width-50"
+  }, [_c('div', {
+    staticClass: "title"
+  }, [_vm._v("硬件")]), _vm._v(" "), _c('div', {
+    staticClass: "dic-content"
+  }, _vm._l((_vm.hardware), function(item, index) {
+    return _c('div', {
+      key: index,
+      staticClass: "info",
+      on: {
+        "click": function($event) {
+          _vm.getHeadNameAndValue(item.serial_number)
+        }
+      }
+    }, [_c('span', [_vm._v(_vm._s(item.serial_number))])])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "width-50"
+  }, [_c('div', {
+    staticClass: "title"
+  }, [_vm._v("固件")]), _vm._v(" "), _c('div', {
+    staticClass: "dic-content"
+  }, _vm._l((_vm.firmware), function(item, index) {
+    return _c('div', {
+      key: index,
+      staticClass: "info",
+      on: {
+        "click": function($event) {
+          _vm.firmwareDetail(item.parent_id, item.serial_number)
+        }
+      }
+    }, [_c('span', [_vm._v(_vm._s(item.serial_number))])])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "width-50"
+  }, [_c('div', {
+    staticClass: "title"
+  }, [_vm._v("参数")]), _vm._v(" "), _c('div', {
+    staticClass: "dic-content"
+  }, _vm._l((_vm.params), function(item, index) {
+    return _c('div', {
+      key: index,
+      staticClass: "info normal",
+      on: {
+        "click": function($event) {
+          _vm.getHeadNameAndValue(item.serial_number)
+        }
+      }
+    }, [_c('span', [_vm._v(_vm._s(item.serial_number))])])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "width-50"
+  }, [_c('div', {
+    staticClass: "title"
+  }, [_vm._v("属性")]), _vm._v(" "), _c('div', {
+    staticClass: "dic-content"
+  }, _vm._l((_vm.attrs), function(item, index) {
+    return _c('div', {
+      key: index,
+      staticClass: "info normal"
+    }, [_c('span', {
+      staticClass: "mr-10"
+    }, [_vm._v(_vm._s(item.property_name + ":"))]), _c('span', [_vm._v(_vm._s(item.property_list.toString()))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "table-content-holder"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', _vm._l((_vm.headData), function(item, index) {
+    return _c('th', {
+      key: index
+    }, [_vm._v(_vm._s(item.head_name))])
+  }))]), _vm._v(" "), _c('tbody', [_c('tr', _vm._l((_vm.headData), function(item, index) {
+    return _c('td', {
+      key: index
+    }, [_vm._v(_vm._s(item.value == '' ? '/' : item.value))])
+  }))])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.headData.length < 1 && !_vm.loading),
+      expression: "headData.length<1 && !loading"
+    }],
+    staticClass: "no-data-content"
+  }, [_vm._v("\n                " + _vm._s('noData') + "\n            ")])])], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('Delete Dictionary'),
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v(" " + _vm._s(_vm.$t('Are you sure delete the dictionary?')) + " ")]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.deleteDictionary
+    }
+  }, [_vm._v(_vm._s(_vm.$t('yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('no')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Edit Dictionary Data",
+      "visible": _vm.dialogEditVisible,
+      "custom-class": "editDialog"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogEditVisible = $event
+      }
+    }
+  }, [_c('div', [_c('div', {
+    staticClass: "editDiv"
+  }, [_c('div', {
+    staticClass: "params"
+  }, [_c('div', {
+    staticClass: "title"
+  }, [_vm._v("硬件：")]), _vm._v(" "), _c('div', {
+    staticClass: "input max"
+  }, [_c('div', [_vm._l((_vm.hardwareValue), function(item, index) {
+    return _c('div', {
+      key: index,
+      staticClass: "selectList"
+    }, [_c('el-select', {
+      attrs: {
+        "filterable": ""
+      },
+      on: {
+        "change": function($event) {
+          _vm.changeData(item, _vm.hardwareValue)
+        }
+      },
+      model: {
+        value: (item.serial_number),
+        callback: function($$v) {
+          _vm.$set(item, "serial_number", $$v)
+        },
+        expression: "item.serial_number"
+      }
+    }, _vm._l((_vm.hardwareList), function(value, key) {
+      return _c('el-option', {
+        key: key,
+        attrs: {
+          "label": value.serial_number,
+          "value": value.serial_number
+        }
+      })
+    })), _vm._v(" "), _c('span', {
+      staticClass: "icon"
+    }, [_c('i', {
+      staticClass: "el-icon-delete",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.deleteData(item, _vm.hardwareValue)
+        }
+      }
+    })])], 1)
+  }), _vm._v(" "), (_vm.hardwareValue.length < 4) ? _c('div', {
+    staticStyle: {
+      "display": "inline-block"
+    }
+  }) : _vm._e()], 2)]), _vm._v(" "), _c('el-button', {
+    staticClass: "add-btn",
+    class: _vm.hardwareValue.length == 0 ? 'noData' : _vm.hardwareValue.length >= 4 ? 'overflow' : '',
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.addData(_vm.hardwareValue)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "el-icon-plus"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "clear",
+    staticStyle: {
+      "clear": "both"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "params"
+  }, [_c('div', {
+    staticClass: "title"
+  }, [_vm._v("固件：")]), _vm._v(" "), _c('div', {
+    staticClass: "input max"
+  }, [_c('div', [_vm._l((_vm.firmwareValue), function(item, index) {
+    return _c('div', {
+      key: index,
+      staticClass: "selectList"
+    }, [_c('el-select', {
+      attrs: {
+        "filterable": ""
+      },
+      on: {
+        "change": function($event) {
+          _vm.changeData(item, _vm.firmwareValue)
+        }
+      },
+      model: {
+        value: (item.serial_number),
+        callback: function($$v) {
+          _vm.$set(item, "serial_number", $$v)
+        },
+        expression: "item.serial_number"
+      }
+    }, _vm._l((_vm.firmwareList), function(value, key) {
+      return _c('el-option', {
+        key: key,
+        attrs: {
+          "label": value.serial_number,
+          "value": value.serial_number
+        }
+      })
+    })), _vm._v(" "), _c('span', {
+      staticClass: "icon"
+    }, [_c('i', {
+      staticClass: "el-icon-delete",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.deleteData(item, _vm.firmwareValue)
+        }
+      }
+    })])], 1)
+  }), _vm._v(" "), (_vm.firmwareValue.length < 4) ? _c('div', {
+    staticStyle: {
+      "display": "inline-block"
+    }
+  }) : _vm._e()], 2)]), _vm._v(" "), _c('el-button', {
+    staticClass: "add-btn",
+    class: _vm.firmwareValue.length == 0 ? 'noData' : _vm.firmwareValue.length >= 4 ? 'overflow' : '',
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.addData(_vm.firmwareValue)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "el-icon-plus"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "clear",
+    staticStyle: {
+      "clear": "both"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "params"
+  }, [_c('div', {
+    staticClass: "title"
+  }, [_vm._v("参数：")]), _vm._v(" "), _c('div', {
+    staticClass: "input max"
+  }, [_c('div', [_vm._l((_vm.paramsValue), function(item, index) {
+    return _c('div', {
+      key: index,
+      staticClass: "selectList"
+    }, [_c('el-select', {
+      attrs: {
+        "filterable": ""
+      },
+      on: {
+        "change": function($event) {
+          _vm.changeData(item, _vm.paramsValue)
+        }
+      },
+      model: {
+        value: (item.serial_number),
+        callback: function($$v) {
+          _vm.$set(item, "serial_number", $$v)
+        },
+        expression: "item.serial_number"
+      }
+    }, _vm._l((_vm.paramsList), function(value, key) {
+      return _c('el-option', {
+        key: key,
+        attrs: {
+          "label": value.serial_number,
+          "value": value.serial_number
+        }
+      })
+    })), _vm._v(" "), _c('span', {
+      staticClass: "icon"
+    }, [_c('i', {
+      staticClass: "el-icon-delete",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.deleteData(item, _vm.paramsValue)
+        }
+      }
+    })])], 1)
+  }), _vm._v(" "), (_vm.paramsValue.length < 4) ? _c('div', {
+    staticStyle: {
+      "display": "inline-block"
+    }
+  }) : _vm._e()], 2)]), _vm._v(" "), _c('el-button', {
+    staticClass: "add-btn",
+    class: _vm.paramsValue.length == 0 ? 'noData' : _vm.paramsValue.length >= 4 ? 'overflow' : '',
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.addData(_vm.paramsValue)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "el-icon-plus"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "clear",
+    staticStyle: {
+      "clear": "both"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "editDiv top"
+  }, [_c('div', {
+    staticClass: "params"
+  }, [_c('div', {
+    staticClass: "title"
+  }, [_vm._v("属性：")]), _vm._v(" "), _c('div', {
+    staticClass: "input"
+  }, [_c('div', [_vm._l((_vm.attrValue), function(item, index) {
+    return _c('div', {
+      key: index,
+      staticClass: "selectList"
+    }, [_c('el-select', {
+      attrs: {
+        "filterable": ""
+      },
+      on: {
+        "change": function($event) {
+          _vm.getAttrDetail(item, _vm.attrValue)
+        }
+      },
+      model: {
+        value: (item.property_name),
+        callback: function($$v) {
+          _vm.$set(item, "property_name", $$v)
+        },
+        expression: "item.property_name"
+      }
+    }, _vm._l((_vm.attrList), function(attr, key) {
+      return _c('el-option', {
+        key: key,
+        attrs: {
+          "label": attr.propertyName,
+          "value": attr.propertyName
+        }
+      })
+    })), _vm._v(" "), _c('span', {
+      staticClass: "icon",
+      staticStyle: {
+        "margin-right": "10px"
+      }
+    }, [_c('i', {
+      staticClass: "el-icon-delete",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.deleteData(item, _vm.attrValue)
+        }
+      }
+    })]), _vm._v(" "), _c('span', {
+      staticClass: "icon",
+      staticStyle: {
+        "margin-right": "10px"
+      }
+    }, [_c('i', {
+      staticClass: "el-icon-view"
+    })]), _vm._v(" "), (item.property_name) ? _c('div', {
+      staticClass: "checkBoxGroup"
+    }, [_c('el-checkbox-group', {
+      model: {
+        value: (item.property_list),
+        callback: function($$v) {
+          _vm.$set(item, "property_list", $$v)
+        },
+        expression: "item.property_list"
+      }
+    }, _vm._l((_vm.attrDetail[item.property_name]), function(attr, index) {
+      return _c('el-checkbox', {
+        key: index,
+        attrs: {
+          "label": attr
+        }
+      }, [_vm._v(_vm._s(attr))])
+    }))], 1) : _vm._e()], 1)
+  }), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "display": "inline-block"
+    }
+  })], 2)]), _vm._v(" "), _c('el-button', {
+    staticClass: "add-btn",
+    class: _vm.attrValue.length == 0 ? 'noData' : '',
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.addData(_vm.attrValue)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "el-icon-plus"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "clear",
+    staticStyle: {
+      "clear": "both"
+    }
+  })], 1)])]), _vm._v(" "), _c('el-button', {
+    staticStyle: {
+      "margin-top": "10px"
+    },
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.saveEditData
+    }
+  }, [_vm._v(_vm._s(_vm.$t('save')))])], 1)], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-747b9893","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/dictionary/detail.vue
+// module id = 1213
+// module chunks = 73

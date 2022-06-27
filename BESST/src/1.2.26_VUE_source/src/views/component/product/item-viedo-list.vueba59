@@ -1,0 +1,256 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "item-video-list"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": _vm.$t('back')
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [(_vm.authList[_vm.Core.Const.AUTH_LIST.productProductTrainingEdit]) ? _c('div', {
+    staticClass: "icon-item add",
+    attrs: {
+      "title": _vm.$t('addVideo')
+    },
+    on: {
+      "click": _vm.showAddDialog
+    }
+  }) : _vm._e()])])]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v("\n                    " + _vm._s(item) + "\n                ")])
+  }))]), _vm._v(" "), _c('tbody', _vm._l((_vm.videoList), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("videoCategoryType")(item.category)))]), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.preview(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('preview')))]), _vm._v(" "), (_vm.authList[_vm.Core.Const.AUTH_LIST.productProductTrainingDelete]) ? _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.showDeleteDialog(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('delete')))]) : _vm._e()])])
+  }))]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.videoList.length <= 0 && !_vm.loading),
+      expression: "videoList.length <= 0 && !loading"
+    }],
+    staticClass: "no-data-content"
+  }, [_vm._v("\n            " + _vm._s(_vm.$t('noResult')) + "\n        ")]), _vm._v(" "), (_vm.loading) ? _c('div', {
+    staticClass: "loading"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../../assets/images/icon/loading-bars.svg"),
+      "alt": "Loading icon"
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Add Video",
+      "visible": _vm.AddDialogVisible,
+      "before-close": _vm.closeChooseItem
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.AddDialogVisible = $event
+      }
+    }
+  }, [_c('div', [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('category')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "select",
+    attrs: {
+      "slot": "append"
+    },
+    on: {
+      "change": _vm.getVideoByCategory
+    },
+    slot: "append",
+    model: {
+      value: (_vm.category),
+      callback: function($$v) {
+        _vm.category = $$v
+      },
+      expression: "category"
+    }
+  }, [_c('el-option-group', {
+    key: _vm.categoryOptions[1].label,
+    attrs: {
+      "label": _vm.categoryOptions[1].label
+    }
+  }, _vm._l((_vm.categoryOptions[1].options), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  })), _vm._v(" "), _vm._l((_vm.categoryOptions[2].options), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  })], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('table', {
+    staticClass: "video-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', [_c('td', {
+    staticClass: "video-td head"
+  }, [_c('el-checkbox', {
+    model: {
+      value: (_vm.allSelectedForAdd),
+      callback: function($$v) {
+        _vm.allSelectedForAdd = $$v
+      },
+      expression: "allSelectedForAdd"
+    }
+  })], 1), _vm._v(" "), _c('td', {
+    staticClass: "video-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('name')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "video-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('category')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "video-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('operation')) + "\n                ")])])]), _vm._v(" "), _vm._l((_vm.showList), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "video-td head"
+    }, [_c('el-checkbox', {
+      staticClass: "table-checkbox",
+      model: {
+        value: (item.selected),
+        callback: function($$v) {
+          _vm.$set(item, "selected", $$v)
+        },
+        expression: "item.selected"
+      }
+    })], 1), _vm._v(" "), _c('td', {
+      staticClass: "video-td"
+    }, [_vm._v(_vm._s(item.name))]), _vm._v(" "), _c('td', {
+      staticClass: "video-td"
+    }, [_vm._v(_vm._s(_vm._f("videoCategoryType")(item.category)))]), _vm._v(" "), _c('td', {
+      staticClass: "video-td"
+    }, [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          _vm.preview(item)
+        }
+      }
+    }, [_vm._v(_vm._s(_vm.$t('preview')))])])])
+  })], 2), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.addVideo
+    }
+  }, [_vm._v(" " + _vm._s(_vm.$t('confirm')) + " ")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.closeChooseItem
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.selectVideo.name,
+      "custom-class": "video-dialog",
+      "visible": _vm.dialogPreviewVisible,
+      "before-close": _vm.closeVideoDialog
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogPreviewVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "dialog-container"
+  }, [(_vm.dialogPreviewVisible) ? _c('iframe', {
+    staticClass: "video-iframe",
+    attrs: {
+      "src": _vm.selectVideo.file,
+      "frameborder": "0"
+    }
+  }) : _vm._e()])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('deleteVideo'),
+      "visible": _vm.videoListDeleteDialogVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.videoListDeleteDialogVisible = $event
+      }
+    }
+  }, [_c('p', [_vm._v(_vm._s(_vm.$t('deleteTip')))]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.deleteVideo
+    }
+  }, [_vm._v(_vm._s(_vm.$t('yes')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.videoListDeleteDialogVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('no')))])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-348df043","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/product/item-viedo-list.vue
+// module id = 1775
+// module chunks = 73

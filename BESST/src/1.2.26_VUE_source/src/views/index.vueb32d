@@ -1,0 +1,597 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('nav-bar', {
+    attrs: {
+      "title": _vm.title[_vm.type],
+      "type": _vm.type
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "main"
+  }, [_c('side-bar', {
+    on: {
+      "settingDialog": _vm.settingDialog
+    }
+  }), _vm._v(" "), _c('AppContent')], 1), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-setting",
+    attrs: {
+      "title": _vm.$t('setting'),
+      "visible": _vm.dialogSettingVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogSettingVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('language')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "select",
+    on: {
+      "change": _vm.setLang
+    },
+    model: {
+      value: (_vm.language),
+      callback: function($$v) {
+        _vm.language = $$v
+      },
+      expression: "language"
+    }
+  }, _vm._l((_vm.languages), function(item) {
+    return _c('el-option', {
+      key: item.value,
+      attrs: {
+        "label": item.label,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "version"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('version')))]), _vm._v(" "), _c('label', {
+    staticClass: "version-label"
+  }, [_vm._v(_vm._s(_vm.version))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('versionDate')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.Core.Const.SYSTEM.VERSION_DATE))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('userInfo')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.user.email))])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isTryAccount),
+      expression: "!isTryAccount"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('password')))]), _vm._v(" "), _c('a', {
+    staticClass: "item-a",
+    on: {
+      "click": _vm.showResetDialog
+    }
+  }, [_vm._v(_vm._s(_vm.$t('changePassword')))])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.isTryAccount),
+      expression: "!isTryAccount"
+    }],
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('company')))]), _vm._v(" "), _c('a', {
+    staticClass: "item-a",
+    on: {
+      "click": _vm.showEditCompanyDialog
+    }
+  }, [_vm._v(_vm._s(_vm.$t('editCompanyInfo')))])])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-password",
+    attrs: {
+      "title": _vm.$t('changePassword'),
+      "visible": _vm.dialogPasswordVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogPasswordVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('oldPassword')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    model: {
+      value: (_vm.oldPassword),
+      callback: function($$v) {
+        _vm.oldPassword = $$v
+      },
+      expression: "oldPassword"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item new-password"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('newPassword')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "type": "password"
+    },
+    model: {
+      value: (_vm.newPassword),
+      callback: function($$v) {
+        _vm.newPassword = $$v
+      },
+      expression: "newPassword"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('confirmPassword')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "type": "password"
+    },
+    model: {
+      value: (_vm.rePassword),
+      callback: function($$v) {
+        _vm.rePassword = $$v
+      },
+      expression: "rePassword"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.changePassword
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogPasswordVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-auth",
+    attrs: {
+      "title": _vm.$t('warning'),
+      "visible": _vm.dialogAuthVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogAuthVisible = $event
+      }
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.$t('authTipOne'))), _c('br'), _vm._v("\n        " + _vm._s(_vm.$t('authTipTwo')) + "\n    ")]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-company",
+    attrs: {
+      "title": _vm.$t('editCompany'),
+      "visible": _vm.dialogEditCompanyVisible,
+      "custom-class": "edit-dialog"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogEditCompanyVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title logo"
+  }, [_vm._v(_vm._s(_vm.$t('logo')))]), _vm._v(" "), _c('div', {
+    staticClass: "content edit-img-box"
+  }, [_c('el-upload', {
+    staticClass: "btn btn-primary upload-btn",
+    attrs: {
+      "action": _vm.upload.url,
+      "show-file-list": false,
+      "before-upload": _vm.beforeUploadFile,
+      "on-success": _vm.imageUploaded,
+      "data": _vm.upload.data
+    }
+  }, [_c('img', {
+    staticClass: "upload-icon",
+    attrs: {
+      "src": _vm._f("getImgUrl")(_vm.upload.photographSrc)
+    }
+  })])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('span', {
+    staticClass: "logo-tip"
+  }, [_c('label', [_vm._v("Tip:")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('label', [_vm._v(_vm._s(_vm.$t('uploadTipOne')))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('label', [_vm._v(_vm._s(_vm.$t('uploadTipTwo')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('company')) + " " + _vm._s(_vm.$t('name')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.org.name),
+      callback: function($$v) {
+        _vm.$set(_vm.org, "name", $$v)
+      },
+      expression: "org.name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('email')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.org.email),
+      callback: function($$v) {
+        _vm.$set(_vm.org, "email", $$v)
+      },
+      expression: "org.email"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('phone')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.phoneNumber),
+      callback: function($$v) {
+        _vm.phoneNumber = $$v
+      },
+      expression: "phoneNumber"
+    }
+  }, [_c('template', {
+    slot: "prepend"
+  }, [_vm._v("+" + _vm._s(_vm.areaCode))])], 2)], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('website')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.org.website),
+      callback: function($$v) {
+        _vm.$set(_vm.org, "website", $$v)
+      },
+      expression: "org.website"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('country')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.org.country),
+      callback: function($$v) {
+        _vm.$set(_vm.org, "country", $$v)
+      },
+      expression: "org.country"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('address')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.org.address),
+      callback: function($$v) {
+        _vm.$set(_vm.org, "address", $$v)
+      },
+      expression: "org.address"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "company-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('postcode')))]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.org.postcode),
+      callback: function($$v) {
+        _vm.$set(_vm.org, "postcode", $$v)
+      },
+      expression: "org.postcode"
+    }
+  }, [_c('template', {
+    slot: "append"
+  }, [_vm._v("No.")])], 2)], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.updateCompany
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogEditCompanyVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "BESST Service Tool Update",
+      "visible": _vm.dialogUpdateBesstToolVisible,
+      "custom-class": "edit-dialog dialog-update"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogUpdateBesstToolVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "update-step-title"
+  }, [_c('b', [_vm._v("\n                Please do below steps to continue the process to update BESST service tool.\n            ")])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
+    staticClass: "update-step"
+  }, [_c('p', [_c('b', [_vm._v("Step 1")])]), _vm._v(" "), _c('p', [_vm._v("Disconnect the service tool from computer. And wait until all the LED turn off.")]), _vm._v(" "), _c('div', [_c('img', {
+    attrs: {
+      "src": require("../assets/images/tool/service_tool_1.png"),
+      "width": "300"
+    }
+  }), _vm._v(" "), _c('img', {
+    attrs: {
+      "src": require("../assets/images/tool/service_tool_2.png"),
+      "width": "300"
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "update-step"
+  }, [_c('p', [_c('b', [_vm._v("Step 2")])]), _vm._v(" "), _c('p', [_vm._v("Connect the service tool to computer again. Wait until the computer recognize service tool.")]), _vm._v(" "), _c('div', [_c('img', {
+    attrs: {
+      "src": require("../assets/images/tool/service_tool_3.png"),
+      "width": "300"
+    }
+  }), _vm._v(" "), _c('img', {
+    attrs: {
+      "src": require("../assets/images/tool/service_tool_4.png"),
+      "width": "300"
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "update-step"
+  }, [_c('p', [_c('b', [_vm._v("Step 3")])]), _vm._v(" "), _c('p', [_vm._v("Please click below button to check connection.  ")]), _c('p'), _c('p', [_vm._v("If connection is ready,\n                click \"update\" to finish updating service tool on the right border window. If connection is not ready, please do Step 1 and Step 2 again.")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.checkToolConnection
+    }
+  }, [_vm._v("Check Connection")]), _vm._v(" "), _c('p')], 1), _vm._v(" "), _c('div', {
+    staticClass: "update-step"
+  }, [_c('p', [_c('b', [_vm._v("Finally")])]), _vm._v(" "), _c('p', [_vm._v("If update successfully, the \"Test\" LED would turn off and the \"Run\" LED would turn on. Then do Step 1 and Step 2 again.")])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "BESST Service Tool Update Help",
+      "visible": _vm.dialogUpdateBesstToolHelpVisible,
+      "custom-class": "edit-dialog dialog-recover"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogUpdateBesstToolHelpVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "update-step-title"
+  }, [_c('b', [_vm._v("\n                Please do below steps to recover BESST service tool.\n            ")])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
+    staticClass: "update-step"
+  }, [_c('p', [_c('b', [_vm._v("Step 1")])]), _vm._v(" "), _c('p', [_vm._v("Go to Tool - Update Section. Select Component as Service Tool")]), _vm._v(" "), _c('div', [_c('img', {
+    attrs: {
+      "src": require("../assets/images/tool/tool_update.png")
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "update-step"
+  }, [_c('p', [_c('b', [_vm._v("Step 2")])]), _vm._v(" "), _c('p', [_vm._v("Please input the SN of service tool")]), _c('p'), _c('div', [_c('img', {
+    attrs: {
+      "src": require("../assets/images/tool/tool_sn.png")
+    }
+  })]), _vm._v(" "), _c('p')]), _vm._v(" "), _c('div', {
+    staticClass: "update-step"
+  }, [_c('p', [_c('b', [_vm._v("Step 3")])]), _vm._v(" "), _c('p', [_vm._v("Click the button \"Get a file from cloud\". And then select the history software to update.\n                If there is notice about \"components not exist\", please contact besst@bafang-e.com with above SN.")])]), _vm._v(" "), _c('div', {
+    staticClass: "update-step"
+  }, [_c('p', [_c('b', [_vm._v("Finally")])]), _vm._v(" "), _c('p', [_vm._v("If update successfully, the \"Test\" LED would turn off and the \"Run\" LED would turn on. Then do Step 1 and Step 2 again.")])])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.updateBesstTool),
+      expression: "updateBesstTool"
+    }],
+    ref: "update_box",
+    staticClass: "update-slide"
+  }, [_c('div', {
+    staticClass: "slide-content",
+    on: {
+      "click": function($event) {
+        _vm.showSlide()
+      }
+    }
+  }, [(_vm.slideDisplay) ? _c('div', {
+    staticClass: "slide-content-top slide-hidden height"
+  }, [_c('span', {
+    staticClass: "slide-to-right"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "slide-to-right"
+  })]) : _c('div', {
+    staticClass: "slide-content-top slide-hidden height"
+  }, [_c('span', {
+    staticClass: "slide-to-left"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "slide-to-left"
+  })])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showContent),
+      expression: "showContent"
+    }],
+    staticClass: "update-note-wrap"
+  }, [_c('div', {
+    staticClass: "update-title"
+  }, [_vm._v("\n                " + _vm._s(_vm.$t('updToolNote1')) + "\n            ")]), _vm._v(" "), _c('div', {
+    staticClass: "update-note"
+  }, [_c('b', {
+    staticStyle: {
+      "color": "#E26829",
+      "font-size": "16px"
+    }
+  }, [_vm._v(_vm._s(_vm.$t('updToolNote')) + "*")]), _vm._v(_vm._s(_vm.$t('updToolNote2')))]), _vm._v(" "), _c('div', {
+    staticClass: "20"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "update-tip"
+  }, [_vm._m(0), _vm._v("\n                " + _vm._s(_vm.$t('updToolNote3')) + "\n            ")]), _vm._v(" "), _c('div', {
+    staticClass: "10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "update-tip"
+  }, [_vm._m(1), _vm._v("\n                " + _vm._s(_vm.$t('updToolNote4')) + "\n            ")]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('table', {
+    staticClass: "history-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', [_c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('upd.version')) + "\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('upd.updateTime')) + "\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('upd.remark')) + "\n                    ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t('upd.operation')) + "\n                    ")])])]), _vm._v(" "), _vm._l((_vm.HWRecordList), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.version))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(_vm._f("dateFormat")(item.create_time)))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.remark))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_c('el-button', {
+      attrs: {
+        "type": "text"
+      },
+      on: {
+        "click": function($event) {
+          _vm.updateObject(item)
+        }
+      }
+    }, [_vm._v("\n                            " + _vm._s(_vm.$t('upd.update')) + "\n                        ")])], 1)])
+  })], 2), _vm._v(" "), _c('div', [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.startTip),
+      expression: "startTip"
+    }]
+  }, [_vm._v(_vm._s(_vm.$t('updStarting')))])]), _vm._v(" "), _c('div', [_c('el-progress', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.percentage > 0),
+      expression: "percentage>0"
+    }],
+    attrs: {
+      "percentage": _vm.percentage
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.startUpdate),
+      expression: "startUpdate"
+    }],
+    staticClass: "update-btn"
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('updSuccess')))]), _vm._v(" "), _c('el-switch', {
+    attrs: {
+      "on-color": "#98b42c",
+      "off-color": "#606161",
+      "on-text": _vm.$t('op.yes'),
+      "off-text": _vm.$t('op.no')
+    },
+    model: {
+      value: (_vm.switchTest),
+      callback: function($$v) {
+        _vm.switchTest = $$v
+      },
+      expression: "switchTest"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "report",
+    staticStyle: {
+      "float": "right"
+    },
+    attrs: {
+      "type": "primary",
+      "disabled": !_vm.switchTest
+    },
+    on: {
+      "click": function($event) {
+        _vm.updateBesstTool = false;
+        _vm.dialogUpdateBesstToolVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('op.close')))])], 1)])])], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "el-icon-circle-check",
+    staticStyle: {
+      "color": "#E26829"
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "el-icon-circle-close"
+  })])
+}]}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-50a3c57f","hasScoped":true}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/index.vue
+// module id = 2065
+// module chunks = 73

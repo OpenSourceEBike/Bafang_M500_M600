@@ -1,0 +1,1285 @@
+<template>
+    <div class="component-order-produce">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content-wrap">
+            <div class="content">
+                <div class="content-card-item">
+                    <label class="content-header">{{ $t('orderInfo.title') }}</label>
+                    <div class="content-body">
+                        <div class="item">
+                            <label class="label">{{ $t('orderInfo.model') }}</label>
+                            <span>{{orderItemInfo.item_name || '/'}}</span>
+                        </div>
+                        <div class="item">
+                            <label class="label">{{ $t('orderInfo.customerPartNo') }}</label>
+                            <span>{{orderItemInfo.part_no || '/'}}</span>
+                        </div>
+                        <div class="item">
+                            <label class="label">物料号</label>
+                            <span>{{orderItemInfo.item_part_no || '/'}}</span>
+                        </div>
+                        <div class="item">
+                            <label class="label">{{ $t('orderInfo.customerName') }}</label>
+                            <span>{{orderInfo.customer_id || '/'}}</span>
+                        </div>
+                        <div class="item">
+                            <label class="label">Order No.</label>
+                            <span>{{orderInfo.source_id || '/'}}</span>
+                        </div>
+                        <div class="item">
+                            <label class="label">已经生产的数据</label>
+                            <span>{{orderInfo.produced || '/'}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card-item">
+                    <label class="content-header">刷程序</label>
+                    <div class="content-body">
+                        <div class="hardware-item">
+                            <div >
+                                <el-button class="cloud" :style="a" @click="getFirmware()" type="primary">{{ $t('up.fileCloudToUpdate') }}</el-button>
+                                <!--<label class="label">{{ $t('itemName') }}</label>-->
+                                <!--<el-input-->
+                                <!--:placeholder="$t('select')"-->
+                                <!--class="input"-->
+                                <!--:disabled="true"-->
+                                <!--v-model="selectObject.name"-->
+                                <!--@click.native="dialogSelectCategoryVisible = true">-->
+                                <!--</el-input>  -->
+                            </div>
+                            <div class="file">
+                                <label class="label" :style="a" for="uploadFile">{{ $t('up.fileToUpdate') }} </label> <br>
+                                <span>{{fileName}}</span>
+                                <input class="file-input" id="uploadFile" ref="fileUpdate" type="file"
+                                       @change = 'onChangeUpdateFile()'/>
+                            </div>
+                            <div class="file">
+                                <el-progress v-show="percentage > 0" :percentage="percentage"></el-progress>
+                                <span v-show="startTip"> {{ $t('cNam.updateStarting') }}</span>
+                            </div>
+                            <div class="pull-right">
+                                <el-button @click="startUpdate" type="preview">{{ $t('up.update') }}</el-button>
+                            </div>
+                        </div>
+                        <div class="hardware-item">
+                            <div class="select-holder" v-if = "!usbHID">
+                                <label class="label">{{ $t('programingInfo.com') }}</label>
+                                <el-select v-model="com" @click.native="getComList" :placeholder="$t('up.select')">
+                                    <el-option v-for="(com, index) in comList" :key=index :label="com" :value="com">
+                                    </el-option>
+                                </el-select>
+                                <label class="tip" :class="{connect: isConnected}"></label>
+                                <el-button type="primary" @click="connect">{{ $t('connect') }}</el-button>
+                                <el-button type="primary" @click="reset">{{ $t('reset') }}</el-button>
+                            </div>
+                            <div class="select-holder" v-else>
+                                <label class="label">USB HID</label>
+                                <label class="tip" :class="{connect: isConnected}"></label>
+                                <el-button type="primary" @click="connect">{{ $t('connect') }}</el-button>
+                                <el-button type="primary" @click="reset">{{ $t('reset') }}</el-button>
+                            </div>
+                            <div class="clear-10"></div>
+                            <!--<div class="file-upload-holder">-->
+                            <!--<label class="label">{{ $t('programingInfo.file') }}</label>-->
+                            <!--<input class="file-input" ref="fileUpdate" type="file"/>-->
+                            <!--<el-progress v-show="percentage > 0 && percentage < 100" :percentage="percentage"></el-progress>-->
+                            <!--</div>-->
+                            <!--<div class="operation-holder">-->
+                            <!--<div class="icons">-->
+                            <!--<div class="icon-item update" @click="startUpdate" :title="$t('update')"></div>-->
+                            <!--</div>-->
+                            <!--&lt;!&ndash;<el-button type="primary" @click="startUpdate">{{ $t('update') }}</el-button>&ndash;&gt;-->
+                            <!--</div>-->
+                            <div class="input-holder" v-show="true">
+                                <div class="note">
+                                    <div class="msg-title">{{ $t('cNam.updateMsg') }}</div>
+                                </div>
+                                <div class="note">
+                                    <div class="msg">{{ updateMsg }}</div>
+                                </div>
+                                <div class="clear-30"></div>
+                            </div>
+                            <div class="file">
+                                <el-progress v-show="boxPercentage > 0" :percentage="boxPercentage"></el-progress>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card-item">
+                    <label class="content-header">操作</label>
+                    <div class="content-body">
+                        <div class="hardware-item">
+                            <div class="input-holder">
+                                <label class="label">{{ $t('writeSnInfo.sn') }}</label>
+                                <el-input class="sn input-sn" v-model="sn"></el-input>
+                            </div>
+                            <div class="operation-holder">
+                                <el-button type="preview" @click="updateCount">保存刷程序记录</el-button>
+                                <br>
+                                <el-button type="preview" @click="snUpdateSelect(2)">搜索SN刷程序次数</el-button>
+                                <span>{{orderSnCount}}</span>
+                            <!--<el-button type="preview" @click="orderUpdateSelect">搜索订单刷程序记录</el-button>-->
+                            </div>
+                        </div>
+                        <div class="hardware-item">
+                            <!--<div class="input-holder">-->
+                            <!--<label class="label">{{ $t('writeSnInfo.sn') }}</label>-->
+                            <!--<el-input class="sn input-sn" v-model="sn"></el-input>-->
+                            <!--</div>-->
+                            <!--<div class="operation-holder">-->
+                            <!--<el-button type="preview" @click="readBase">{{ $t('readSn') }}</el-button>-->
+                            <!--<el-button type="preview" @click="writeSn">{{ $t('writeSn') }}</el-button>-->
+                            <!--</div>-->
+                            <div>
+                                <label class="label">订单已经刷程序的次数</label>
+                                <span>{{orderCount}}</span>
+                            </div>
+                            <div class="operation-holder">
+                                <el-button type="preview" @click="orderUpdateRecord">订单刷程序记录</el-button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--固件的历史记录弹窗-->
+                <el-dialog :title="queryItemCondition" :visible.sync="dialogRecordListVisible"  size="large">
+                    <table border="0" cellspacing="0" cellpadding="0" class="history-table">
+                        <thead>
+                        <tr>
+                            <td class="history-td head">
+                                {{ $t('up.updateTime') }}
+                            </td>
+                            <td class="history-td head">
+                                {{ $t('up.version') }}
+                            </td>
+                            <td class="history-td head">
+                                文件名称
+                            </td>
+                            <td class="history-td head">
+                                {{ $t('up.remark') }}
+                            </td>
+                            <td class="history-td head">
+                                {{ $t('up.operation') }}
+                            </td>
+                        </tr>
+                        </thead>
+                        <tr v-for="item in HWRecordList">
+                            <td class="history-td">{{item.create_time | dateFormat}}</td>
+                            <td class="history-td">{{item.version}}</td>
+                            <td class="history-td">{{item.firmware_name}}</td>
+                            <td class="history-td">{{item.remark}}</td>
+                            <td class="history-td">
+                                <el-button type="text" @click="updateObject(item)">
+                                    {{ $t('up.update') }}
+                                </el-button>
+                            </td>
+                        </tr>
+                    </table>
+                </el-dialog>
+
+
+                <!--订单SN刷程序记录弹窗-->
+                <el-dialog title="SN刷程序记录" :visible.sync="snUpdateRecordDialogVisible"  size="large">
+                    <p>同一个SN 刷程序的记录为最后一次保存的记录。重复刷程序，不记录。</p>
+                    <table border="0" cellspacing="0" cellpadding="0" class="history-table">
+                        <thead>
+                        <tr>
+                            <td class="history-td head">
+                                sn
+                            </td>
+                            <td class="history-td head">
+                                {{ $t('up.updateTime') }}
+                            </td>
+                            <td class="history-td head">
+                                {{ $t('up.version') }}
+                            </td>
+                            <td class="history-td head">
+                                文件名称
+                            </td>
+                        </tr>
+                        </thead>
+                        <tr v-for="item in snUpdateRecord">
+                            <td class="history-td">{{item.sn}}</td>
+                            <td class="history-td">{{item.create_time | dateFormat}}</td>
+                            <td class="history-td">{{item.firmware_version}}</td>
+                            <td class="history-td">{{item.firmware_name}}</td>
+                        </tr>
+                    </table>
+                </el-dialog>
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core'
+    import HMI from '../../../../device/hmi'
+    import Battery from '../../../../device/battery'
+    import Controller from '../../../../device/controller'
+    import Tool from '../../../../device/tool'
+    import Update from '../../../../device/update'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        name: "componentOrderProduce",
+        data() {
+            return {
+                orderId: '',
+                itemId: '',
+                orderInfo: '',
+	            orderItemInfo: '',
+                itemInfo: '',
+                category_root: 0,
+                quantity: '-',
+
+                percentage: 0,
+                boxPercentage: 0,
+                queryItemCondition: '',
+                dialogListVisible: false,
+                dialogRecordListVisible: false,
+                HWRecordList: [],
+
+                com: '',
+                comList: [],
+                isConnected: HMI.port.isConnected(),
+                sn: '',
+                isWrite: true,
+
+                deviceList: {'HMI': HMI, 'battery': Battery, 'controller': Controller, 'tool': Tool},
+                device: '',
+
+                isScanner: false,
+                lastInputTime: 0,
+                scannerTimeout: '',
+
+                startTip:false,
+
+                beforeUpdate:false,
+                a:{
+                    width:'280px',
+                },
+                isCan: false,
+                isCanSoft: false,
+                usbHID: true,
+                isReset: false,
+                target: 0x03,
+                loading: false,
+
+                updateMsg: '',
+                updateMsgObject: {},
+                updateOnline: false,
+                fileName: '',
+                file: null,
+                fileBufferLength: 0,
+                //  刷程序计数
+                orderCount: 0,
+                orderSnCount: 0,
+                snUpdateRecord: [],
+                snUpdateRecordDialogVisible: false,
+                firmwareVersion: '',
+                reconnectInterval: null,
+                connectionInterval: null,
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Order.Produce,
+                zh: ZH.Component.Order.Produce,
+                de: DE.Component.Order.Produce,
+                nl: NL.Component.Order.Produce
+            }
+        },
+        mounted: function () {
+            this.orderId = this.$route.query.orderId;
+            this.itemId = this.$route.query.itemId;
+            this.quantity = this.$route.query.account;
+            // 获取订单详情
+            this.getProductionOrderDetail(this.orderId);
+            // 获取item详情
+            this.getItemDetail(this.itemId);
+            this.updateMsgObject = {
+                msg0: this.$t('cNam.updateMsg0'),
+                msg1: this.$t('cNam.updateMsg1'),
+                msg2: this.$t('cNam.updateMsg2'),
+                msg3: this.$t('cNam.updateMsg3'),
+                msg4: this.$t('cNam.updateMsg4'),
+                msg5: this.$t('cNam.updateMsg5'),
+                msg6: this.$t('cNam.updateMsg6'),
+                msg7: this.$t('cNam.updateMsg7'),
+                msg8: this.$t('cNam.updateMsg8'),
+                msg10: this.$t('cNam.updateMsg10'),
+                msg11: this.$t('cNam.updateMsg11'),
+                msg20: this.$t('cNam.updateMsg20'),
+                msg30: this.$t('cNam.updateMsg30'),
+                successTip: this.$t('cNam.updateSuccessTip')
+            };
+
+            this.updateMsg = this.updateMsgObject.msg0;
+            Update.port.setBoxOperation();
+            this.checkConnection();
+
+        },
+        methods: {
+            checkConnection() {
+                let vm = this;
+                if(vm.connectionInterval){
+                    clearInterval(vm.connectionInterval);
+                    vm.connectionInterval = '';
+                }
+                vm.connectionInterval = setInterval(()=>{
+                    let connection = Update.port.getConnection();
+                    if(connection.usb){
+//                        this.checkUSBUartOrCan();
+                        vm.usbHID = true;
+                    }
+                    if(connection.com){
+                        vm.usbHID = false;
+                    }
+                    if(connection.usb || connection.com){
+                        vm.init();
+                        vm.connect();
+                        clearInterval(vm.connectionInterval);
+                    }
+                },300)
+            },
+
+            getProductionOrderDetail(orderId) {
+	            Core.Api.Order.getProductionOrderDetail(orderId).then(res => {
+		            this.orderInfo = res.order;
+                    this.getOrderItemInfo(this.orderInfo.item_list);
+                });
+                let countList =Core.Data.getUpdateCount() || [];
+	            if( countList > 0){
+                    let obj = countList.filter( item=>{
+	                      return item.id === orderId
+                      });
+                    if(obj){
+                        this.count = obj.count;
+                    }
+                }
+            },
+            //  查找订单中
+	        getOrderItemInfo(list) {
+		        let $this = this;
+		        let newList = list.filter(function (item) {
+			        return item.item_id === $this.itemId;
+		        });
+		        this.orderItemInfo = newList[0];
+                this.category_root = this.orderItemInfo.category_root_id;
+//                console.log(this.orderItemInfo);
+		        if(this.orderItemInfo.produced >= this.orderItemInfo.amount){
+			        this.$message({
+				        message: "订单已经完成了",
+				        type: "warning"
+			        });
+			        this.$router.back();
+			        return;
+		        }
+                this.snUpdateSelect();
+            },
+
+            getItemDetail(id) {
+                if(!id){
+                    return;
+                }
+                let vm = this;
+                Core.Api.Item.getItemDetail(id).then(res => {
+                    vm.itemInfo = res.item;
+//                    console.log(vm.itemInfo, '.........itemInfo');
+                    if (this.category_root === Core.Const.CATEGORY_ROOT_TYPE.HMI) {
+                        this.device = this.deviceList['HMI'];
+                    }
+                    if (this.category_root === Core.Const.CATEGORY_ROOT_TYPE.BATTERY) {
+                        this.device = this.deviceList['battery'];
+                    }
+                    if (this.category_root === Core.Const.CATEGORY_ROOT_TYPE.CONTROLLER) {
+                        this.device = this.deviceList['controller'];
+                    }
+                    if (this.category_root === Core.Const.CATEGORY_ROOT_TYPE.TOOL) {
+                        this.device = this.deviceList['tool'];
+                    }
+                    if (!this.device) {
+                        this.$message({
+                            message: 'this model not support tool-read yet',
+                            type: 'warning'
+                        });
+                        return;
+                    }
+                })
+            },
+            init(){
+                Update.port.startConnection();
+                if(Update.port.getUSBDevice() || this.usbHID){
+                    this.usbHID = true;
+//                    Update.port.setUSBDevice(true);
+                    console.log(" getUSBDevice  update");
+                    if(this.isReset){
+                        this.connect();
+                    }else{
+                        this.connect(1);
+                    }
+                }else{
+                    console.log("COM Update");
+                    this.usbHID = false;
+                    this.getComList();
+                }
+                this.isConnected = Update.port.isConnected();
+            },
+            getComList() {
+
+                this.device.port.getPortList().subscribe(res => {
+                    if (res.type === 'port') {
+                    	if (res.data) {
+                            this.comList = res.data;
+                            this.com = this.comList[0];
+                            this.connect();
+                        } else {
+                            this.$message({
+                                message: 'no com connect',
+                                type: 'warning'
+                            });
+                        }
+                    }
+                });
+            },
+
+            connect(type) {
+                this.checkBoxUpdate();
+
+                if( this.usbHID ){
+                    if(type === 1){
+                        this.test();
+                    }else{
+                        setTimeout(()=>{
+                            this.test();
+                        },1000)
+                    }
+                    this.isConnected = Update.port.isConnected();
+                    this.isCan = !Update.port.checkUsbUart();
+
+                    console.log("usbHID connect");
+                    Update.port.getListenData().subscribe((res) => {
+                        if (!res.data) {
+                            return;
+                        }
+                        if (res.type == 'error_usb') {
+                            this.isConnected = false;
+                        }
+                    });
+                }else{
+                    if (!this.com) {
+                        this.$message({
+                            message: this.$t('cNam.selectComTip'),
+                            type: 'warning'
+                        });
+                        return;
+                    } else {
+                        Update.connect(this.com,parseInt(this.BaudRateType));
+                        Update.getBus().subscribe(res => {
+//                    console.log('update-vm1:', res);
+                            if (res.type === 'open' || res.type === 'connect') {
+                                this.isConnected = true;
+                            }
+                            if (res.type === 'close' || res.type === 'error') {
+                                this.com = '';
+                                this.isConnected = false;
+                                this.loading = false;
+//                        this.$message({
+//                            message: this.$t('comDisconnect'),
+//                            type: 'warning'
+//                        });
+                            }
+                        });
+                    }
+                }
+            },
+
+            test(){
+                Update.port.checkUsbConnection('0101',1);
+            },
+
+            onChangeUpdateFile() {
+                console.log(this.$refs.fileUpdate);
+                if (this.$refs.fileUpdate.files.length>0) {
+                    this.file = this.$refs.fileUpdate.files[0];
+                    console.log(this.file);
+                    this.fileBufferLength = this.file.size;
+//                    console.log(this.fileBufferLength);
+                    this.fileName = this.file.name;
+                } else {
+                    this.file = null;
+                    this.fileName = '';
+                }
+            },
+
+            reset() {
+                this.percentage = 0;
+                this.isReset = true;
+                setTimeout(()=>{
+                    this.isReset = false;
+                },1000);
+                if( this.usbHID ){
+                    this.startTip = false;
+                    this.updateMsg = '';
+                    this.boxPercentage = 0;
+                    this.updateOnline = false;
+                    Update.port.reset(300);
+                    this.isConnected = false;
+                }else{
+                    if( this.com ){
+                        Update.connect(this.com, 57600);
+                        Update.port.reset(300);
+                        setTimeout(()=>{
+                            this.isConnected = Update.port.isConnected();
+                        },400);
+                    }
+                }
+            },
+
+            // 获取固件 by sn
+            getFirmware() {
+//                Core.Api.Firmware.getHistory(this.itemId)
+//                    .then(res => {
+//                        this.HWRecordList = res.record;
+//                        this.dialogRecordListVisible = true;
+//                    })
+                Core.Api.Firmware.getHistory(this.itemInfo.id).then(res => {
+                    /*create_time: 1524291381
+                     file: "0f0c813df4f10736234a7019002f3bbe18e16f9ae8b9785c5befa030b79aee55.bin"
+                     firmware_name: ""
+                     id: 6
+                     item_id: 1005
+                     operator_id: 24
+                     operator_type: 4
+                     remark: ""
+                     update_time: 1524291381
+                     version: "CRS10F4313E101013.0"
+                     weight: 0
+                    * */
+                    this.HWRecordList = res.record;
+                    this.dialogRecordListVisible = true;
+                });
+            },
+
+            doUpdate(data) {
+                let count = 0;
+                let vm = this;
+                vm.startTip = true;
+                if( vm.usbHID ){
+//                    Update.port.getUSBList();
+//                    Update.connect();
+//                    Update.readFileData( data );
+//                    Update.sendFileHeadFrameHID();
+
+                    Update.port.usbSDK.client.events.on('firmware-update-progress',(e)=>{
+                        vm.startTip = false;
+                        vm.percentage = Math.ceil(e.upload / e.total * 100);
+//                        console.log(e);
+                        if( e.upload == e.total || vm.percentage == 100){
+                            if(count == 0){
+                                vm.$message({
+                                    message: vm.updateMsgObject.successTip,
+                                    type: 'success'
+                                });
+                                vm.updateOnline = false;
+                                if(vm.category_root){
+                                    switch(vm.category_root){
+                                        case 4:
+                                            vm.updateMsg = vm.updateMsgObject.msg1;
+                                            break;
+                                        case 7:
+                                            vm.updateMsg = vm.updateMsgObject.msg2;
+                                            break;
+                                        case 10:
+                                            vm.updateMsg = vm.updateMsgObject.msg3;
+                                            break;
+                                    }
+                                }else{
+                                    vm.updateMsg = '';
+                                }
+                                vm.checkBoxUpdate();
+                            }
+                            count++;
+                        }
+                    });
+                    Update.port.usbSDK.client.events.on('firmware-update-completed', (e) => {
+                        vm.percentage = 0;
+//                        this.$message({
+//                            message: this.$t('cNam.updateSuccessTip'),
+//                            type: 'success'
+//                        });
+                    });
+                    Update.port.usbSDK.client.events.on('firmware-update-check', (e) => {
+                        vm.percentage = 0;
+                    });
+                    if(vm.updateOnline) {
+                        Update.port.usbSDK.firmware.update.firmware(data.fileBuffer);
+                    }else{
+                        let reader = new FileReader();
+                        reader.readAsArrayBuffer(vm.file);
+                        reader.onload  = function(e){
+//                            console.log(e.target.result);
+                            let arr = Buffer.from(e.target.result);
+                            if(vm.firmCheck(arr)){
+                                Update.port.usbSDK.firmware.update.firmware(e.target.result);
+                            }
+//                            console.log("[Arr]",arr[2]);
+//                            console.log("[Arr]",vm.isCanSoft);
+                        };
+                        reader.onerror = function(e){
+                            reader.abort();
+                            vm.$message({
+                                message: vm.updateMsgObject.readFailTip,
+                                type: 'error',
+                                duration: 0,
+                                showClose: true
+                            });
+                        }
+                    }
+
+                    Update.port.getListenData().subscribe((res) => {
+                        if (!res.data) {
+                            return;
+                        }
+                        if( res.type === 'error_usb'){
+                            vm.isConnected = false;
+                        }
+                    });
+//                    reader.onload  = function(e){
+//                        console.log(e.target.result);
+//                    };
+
+                    console.log("start update",);
+                }else {
+                    if (vm.device) {
+                        vm.device.port.reset(100);
+                    }
+                    setTimeout( ()=>{
+//                        console.log("update bound:" + this.BaudRateType);
+                        Update.connect(vm.com, parseInt(vm.BaudRateType));
+                        Update.sendPackage(data);
+                        Update.getBus().subscribe(res => {
+                            if (res.type === 'close' || res.type === 'error') {
+                                vm.isConnected = false;
+                                vm.com = "";
+                            }
+                            if (res.type === 'data' && res.data.update) {
+                                vm.startTip = false;
+                                let update = res.data.update;
+                                if (update.percentage) {
+                                    vm.percentage = Math.ceil(update.percentage * 100);
+                                }
+                                if (update.percentage === 1) {
+                                    vm.$message({
+                                        message: vm.updateMsgObject.successTip,
+                                        type: 'success'
+                                    });
+                                    vm.percentage = 0;
+                                }
+                                if (update.fail) {
+                                    vm.$message({
+                                        message: update.fail,
+                                        type: 'warning'
+                                    });
+                                }
+                                if (update.error) {
+                                    vm.$message({
+                                        message: update.error,
+                                        type: 'warning'
+                                    });
+                                }
+                            }
+
+                        });
+                    },800)
+                }
+            },
+
+            startUpdate() {
+                this.beforeUpdate = true;
+                setTimeout(()=>{
+                    this.beforeUpdate = false;
+                },2000);
+                console.log(this.fileName, 'before');
+                if( this.fileName == ''){
+                    this.$message({
+                        message: this.$t('cNam.updateSelectFile'),
+                        type: 'warning'
+                    });
+                    return;
+                }
+                this.doUpdate(this.file);
+            },
+
+            checkBoxUpdate(){
+                let count = 1;
+
+//                this.dialogUpdateResVisible = true;
+//                Update.port.getListenData().subscribe((res) => {
+//                    if (!res.data) {
+//                        return;
+//                    }
+//                    if (res.type == 'error_usb') {
+//                        this.isConnected = false;
+//                        this.clear();
+//                    }
+//                    if(res.data.toString('hex').toUpperCase().substr(0,2) == '28'){
+//                        console.log(res.data.toString('hex'));
+////                        let len = res.data.toString('hex').toUpperCase().substr(2,4);
+////                        this.boxPercentage = Math.ceil( parseInt( Buffer.from(len).toString('hex'), 16)/this.fileBufferLength*100 );
+//                    }
+//                });
+                let vm = this;
+                let res = Update.port.usbSDK.client.events.on('firmware-update-completed-progress',(e)=>{
+//                    console.log(e); // {progress: 0, status: "01"}
+//                    console.log(e.progress,vm.fileBufferLength);
+                    if(vm.category_root){
+                        switch (vm.category_root) {
+                            case 4:
+                                vm.updateMsg = vm.updateMsgObject.msg4;
+                                break;
+                            case 7:
+                                vm.updateMsg = vm.updateMsgObject.msg5;
+                                break;
+                            case 10:
+                                vm.updateMsg = vm.updateMsgObject.msg6;
+                                break;
+                        }
+                    }else{
+                        vm.updateMsg = vm.updateMsgObject.msg10;
+                    }
+//                    console.log("[true]",vm.isCanSoft, vm.isCan);
+//                    console.log("[true]",vm.isCanSoft || vm.isCan);
+                    if(vm.isCanSoft || vm.isCan){
+                        vm.boxPercentage = Math.ceil(e.progress / vm.fileBufferLength * 100);
+                    }else{
+                        if( e.progress*128 > vm.fileBufferLength &&  e.progress*128 - vm.fileBufferLength < 1024){
+                            vm.boxPercentage = 100;
+                        }else{
+                            vm.boxPercentage = Math.ceil((e.progress*128) / vm.fileBufferLength * 100);
+                        }
+                    }
+                    if( vm.boxPercentage > 100){
+                        vm.updateMsg = vm.updateMsgObject.msg11;
+                    }
+                    if( vm.boxPercentage === 0){
+                        if(count === 1){
+                            vm.updateMsg = vm.updateMsgObject.msg20;
+                            vm.updateCount();
+                        }
+                        count++;
+                    }else {
+                        count = 1;
+                    }
+                });
+//                console.log(res,'[ud]');
+            },
+            // 在线更新
+            updateObject(item) {
+                let url = Core.Const.NET.FILE_URL_PREFIX + item.file;
+                let $this = this;
+                $this.firmwareVersion = item.version;
+                $this.fileName = item.firmware_name;
+                console.log($this.fileName, 'get fileName');
+
+                this.$http.get(url, {responseType: 'blob'})
+                    .then((response) => {
+//                        console.log(response, 'get complete');
+                        $this.fileBufferLength = response.body.size;
+//                        console.log(this.fileBufferLength, 'get complete');
+
+                        /*
+                         body:Blob(39899) {size: 39899, type: "application/octet-stream"}
+                         bodyBlob:Blob(39899) {size: 39899, type: "application/octet-stream"}
+                         headers:Headers {map: {…}}
+                         ok:true
+                         status:200
+                         statusText:"OK"
+                         url:"http://static.besst.bafang-service.com/besst/file/0f0c813df4f10736234a7019002f3bbe18e16f9ae8b9785c5befa030b79aee55.bin"
+                         data:(...)
+                         */
+//                        console.log(typeof response.body);
+                        // console.log(response.body.length)
+//                        let fileBody = response.body;
+//                        console.log(fileBody, 'getFile');
+                        $this.$message({
+                            message: this.$t('cNam.updateGetFileSucc'),
+                            type: 'warning'
+                        });
+                        var fileReader = new FileReader();
+                        fileReader.onload = function () {
+                            let data = {
+                                fileBuffer: this.result,
+                                name: item.version,
+                                type: 'data'
+                            };
+
+                            let arr = Buffer.from(this.result);
+                            if($this.firmCheck(arr)){
+                                $this.doUpdate(data);
+                                $this.dialogRecordListVisible = false;
+                            }
+//                            console.log("[Arr]",arr[2]);
+//                            console.log("[Arr]",$this.isCanSoft);
+
+                        };
+                        fileReader.readAsArrayBuffer(response.body);
+                        fileReader.onerror = function(e){
+                            fileReader.abort();
+                            $this.$message({
+                                message: $this.updateMsgObject.readFailTip,
+                                type: 'error',
+                                duration: 0,
+                                showClose: true
+                            });
+                        }
+                    });
+                this.updateOnline = true;
+            },
+
+            // 刷程序计数
+            updateCount() {
+                this.sn = this.sn.trim();
+                if(!this.fileName){
+                    this.$message({
+                        message: "文件名称为空",
+                        type: "warning",
+                        duration: 0
+                    })
+                }
+                if(this.sn){
+                    Core.Api.ProgramBrush.saveBrush(
+                        this.itemInfo.category_id,
+                        this.itemInfo.category_root_id,
+                        this.itemInfo.id,
+                        this.itemInfo.ext_part_no,
+                        this.orderItemInfo.id,
+                        this.sn,
+                        this.fileName,
+                        this.firmwareVersion
+                    ).then(res => {
+//                        console.log(res);
+                        this.orderCount = res;
+                        this.sn = '';
+                    });
+                }else{
+                    this.$message({
+                        message: "输入SN",
+                        type: 'warning'
+                    });
+                }
+            },
+
+            // 订单刷程序SN记录
+            orderUpdateRecord() {
+                Core.Api.ProgramBrush.selectProgramBrushRecord(
+                    this.orderItemInfo.id,
+                ).then(res => {
+                    console.log(res);
+                    res.length > 0 ? this.snUpdateRecordDialogVisible = true : this.snUpdateRecordDialogVisible = false;
+                    /**
+                     create_time: 1571813803548
+                     firmware_name: "",
+                     version: "",
+                     num: 1
+                     part_no: "2101300100010"
+                     sn: "CRS10F.350.SN.U1.1K04F8T9100013"
+                     **/
+                    this.snUpdateRecord = res;
+                });
+            },
+
+            // 搜索计数功能
+            snUpdateSelect(type) {
+                let part_no='', snData='', order_id='';
+                this.sn = this.sn.trim();
+                order_id = this.orderItemInfo.id;
+
+                if( type === 2){
+                    this.orderSnCount = 0;
+                    snData = this.sn;
+                }
+                Core.Api.ProgramBrush.selectProgramBrushCount(
+                    part_no, snData, order_id
+                ).then(res => {
+                    console.log(res);
+                    if(type === 2){
+                        this.orderSnCount = res;
+                    }else{
+                        this.orderCount = res;
+                    }
+                });
+
+            },
+
+            orderUpdateSelect() {
+                this.$message({
+                    message: this.$t('comDisconnect'),
+                    type: 'warning'
+                });
+            },
+            // 软件程序前16个字符检查
+            firmCheck( arr ) {
+//                console.log(arr);
+
+                let BESST_Pro = Update.port.getBESST_Pro();
+                let BESST_update = false;
+                if( BESST_Pro.soft_ver && BESST_Pro.soft_ver.indexOf('BSF33.0')>-1 && BESST_Pro.soft_ver > "BSF33.03" ){
+                    BESST_update = true
+                }
+
+                let show = false;
+                if(arr[2]>128 && arr[2]<136){
+                    this.isCanSoft = true;
+                }else if(arr[2]>0 && arr[2]<8){
+                    this.isCanSoft = false;
+                }else if(arr[2] !== 0xFC){
+                    show = true;
+                }
+                let res = false;
+                if(this.isCanSoft){
+                    let sec = false;
+                    for(let i=18; i<32; i++ ){
+                        if(arr[i]!== 0){
+                            sec = true;
+                        }else{
+                            sec = false;
+                        }
+                    }
+                    if(!sec){
+                        let fileContentBuffer_32 = arr.slice(32);
+                        let fileCrc_32 = Update.checkCrc(fileContentBuffer_32);
+                        let bufferCrc = Buffer.from(arr.slice(16, 18)).toString('hex');
+                        if( fileCrc_32 !== bufferCrc && BESST_update){
+                            this.$message({
+                                message: this.$t("cNam.updateCrcError"),
+                                type: "warning",
+                                duration: 5000,
+                                showClose: true,
+                            });
+                        }
+                    }else{
+                        for(let i=4; i<16; i++ ){
+                            if(arr[i]!== 0){
+                                res = true;
+                            }
+                        }
+                    }
+                }else{
+                    for(let i=4; i<16; i++ ){
+                        if(arr[i]!== 0){
+                            res = true;
+                        }
+                    }
+                }
+                if(res || show){
+                    this.$message({
+                        message: this.$t("cNam.updateDataError"),
+                        type: "warning",
+                        duration: 5000,
+                        showClose: true,
+                    });
+                    return false;
+                }else{
+                    return true;
+                }
+            },
+        },
+        watch: {
+            sn: function (newValue, oldValue) {
+                let vm = this;
+                if (newValue === oldValue || newValue === '') {
+                    return;
+                }
+                if (typeof oldValue !== 'undefined') {
+                    let time = new Date().getTime();
+                    vm.isScanner = time - vm.lastInputTime <= 100; // 间隔小于100ms的就认为是扫描枪输入
+                    vm.lastInputTime = time;
+                } else {
+                    vm.lastInputTime = new Date().getTime();
+                }
+                if (!vm.scannerTimeout) {
+                    vm.scannerTimeout = setTimeout(function () {
+                        if (vm.isScanner) {
+                            vm.sn = vm.sn.replace(/\s+/g, "");
+                            if( vm.sn.indexOf('DP') > -1){
+                                let array = vm.sn.split('DP');
+                                if (array.length > 1) {
+                                    vm.sn = ('DP' + array[array.length - 1]).replace(/\s+/g, "");
+                                }
+                            }else if( vm.sn.indexOf('SR') > -1){
+                                let array = vm.sn.split('SR');
+                                if (array.length > 1) {
+                                    vm.sn = ('SR' + array[array.length - 1]).replace(/\s+/g, "");
+                                }
+                            }
+                        }
+                        clearTimeout(vm.scannerTimeout);
+                        vm.scannerTimeout = undefined;
+                    }, 1000)
+                }
+            },
+            isConnected: function(newValue, oldValue) {
+                let vm = this;
+                if (newValue != oldValue && oldValue == true) {
+                    let count = 0;
+                    Update.port.setConnection();
+                    Update.port.setBoxOperation();
+                    if (false) {
+                        vm.reconnectInterval = setInterval(() => {
+                            count++;
+                            if(count>1 && Update.port.isConnected()){
+                                console.log("Count",count);
+                                vm.connect();
+                            }
+                            if(count>3 && Update.port.isConnected()){
+                                console.log("Count stop",count);
+                                clearInterval(vm.reconnectInterval);
+                            }
+                        }, 500);
+                    } else {
+                        if(vm.reconnectInterval){
+                            clearInterval(vm.reconnectInterval);
+                            vm.reconnectInterval = '';
+                        }
+                        vm.reconnectInterval = setInterval(()=>{
+                            count++;
+                            console.log("Count",count);
+                            if(count === 1){
+                                vm.checkConnection();
+                            }else if(count > 1){
+                                if(!vm.usbHID && vm.com){
+                                    clearInterval(vm.reconnectInterval);
+                                    vm.init();
+                                }
+                                if(vm.usbHID){
+                                    clearInterval(vm.reconnectInterval);
+                                    vm.init();
+                                }
+                                if(count>3 && Update.port.isConnected()){
+                                    console.log("Count stop",count);
+                                    clearInterval(vm.reconnectInterval);
+                                }
+                            }
+                        },500);
+                    }
+
+                }
+            }
+        },
+        beforeDestroy: function () {
+            if(this.reconnectInterval){
+                clearInterval(this.reconnectInterval);
+            }
+            if(this.connectionInterval){
+                clearInterval(this.connectionInterval);
+            }
+            Update.port.setBoxOperation();
+        },
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .component-order-produce {
+        width: 100%;
+        height: 100%;
+        .header {
+            line-height: 40px;
+            height: 40px;
+            padding: 0 38px;
+            border-bottom: 1px solid #2B2F3B;
+            .label {
+                margin-left: 25px;
+                font-size: 16px;
+            }
+            .add-btn {
+                margin: 20px 0;
+                float: right;
+                background-color: #858890;
+            }
+        }
+
+        .content-card-item {
+            .content-header {
+                display: block;
+                padding: 10px 43px;
+                font-size: 14px;
+                height: 40px;
+                line-height: 20px;
+                font-weight: bold;
+                box-sizing: border-box;
+            }
+
+            .content-body {
+                font-size: 0;
+                background: #353945;
+                overflow: hidden;
+                .item {
+                    width: 50%;
+                    display: inline-block;
+                    padding-left: 60px;
+                    line-height: 40px;
+                    label {
+                        display: inline-block;
+                        width: 120px;
+                        font-size: 14px;
+                        color: #A1A5B1;
+                    }
+                    span {
+                        font-size: 14px;
+                    }
+                }
+                .hardware-item {
+                    width: 50%;
+                    float: left;
+                    padding: 15px 60px;
+                    line-height: 40px;
+                    .select-holder {
+                        width: 100%;
+                        & > label {
+                            display: inline-block;
+                            width: 120px;
+                            /*float: left;*/
+                        }
+                        .el-select {
+                            /*float: left;*/
+                            width: calc(100% - 146px);
+                        }
+                        .tip {
+                            display: inline-block;
+                            border-radius: 50%;
+                            width: 10px;
+                            height: 10px;
+                            background: #E26829;
+                            margin-left: 6px;
+                        }
+                        .connect {
+                            background: #76EE00;
+                        }
+                    }
+                    .file-upload-holder {
+                        overflow: hidden;
+                        & > label {
+                            float: left;
+                            display: inline-block;
+                            width: 120px;
+                        }
+                        .upload-demo {
+                            float: left;
+                            overflow: hidden;
+                            .el-upload {
+                                float: left;
+                            }
+                            .el-upload-list {
+                                float: left;
+                                .el-upload-list__item {
+                                    padding-left: 20px;
+                                }
+                            }
+                            .el-upload-list__item:first-child {
+                                margin-top: 13px;
+                            }
+                        }
+                        .file-input {
+                            width: calc(100% - 120px);
+                        }
+                    }
+                    .input-holder {
+                        overflow: hidden;
+                        & > label {
+                            float: left;
+                            display: inline-block;
+                            width: 120px;
+                        }
+                        .el-input {
+                            float: left;
+                            width: calc(100% - 124px);
+                        }
+                        .sn:after {
+                            top: 10px;
+                        }
+                    }
+                    .operation-holder {
+                        padding-top: 10px;
+                        margin-right: 4px;
+                        float: right;
+                    }
+                    .file {
+                        position:relative;
+                        .label {
+                            display:inline-block;
+                            height: 20px;
+                            line-height: 20px;
+                            text-align: center;
+                            background-color: #E26829;
+                            border-radius: 26px;
+                        }
+                        span{
+                            display:inline-block;
+                            margin: 15px 0 0 33px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            -o-text-overflow: ellipsis;
+                            white-space:nowrap;
+                        }
+                        .btn {
+                            margin-left: 33px;
+                        }
+                        .file-input {
+                            display: none;
+                            margin: 10px 30px;
+                            width: 300px;
+                        }
+                        .textFixed{
+                            position:absolute;
+                            top:0;
+                            left:0;
+                        }
+                        /*.el-progress {*/
+                            /*padding: 5px 0  0 33px;*/
+                        /*}*/
+                    }
+                }
+            }
+        }
+
+        .history-table {
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            tr {
+                line-height: 20px;
+            }
+            .head {
+                color: white;
+            }
+            .history-td {
+                padding: 0 6px;
+                width: 300px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                font-size: 14px;
+                text-align: center;
+            }
+            .img {
+                width: auto;
+                height: 30px;
+                vertical-align: middle;
+                background-color: white;
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// produce.vue?48c0a2dd

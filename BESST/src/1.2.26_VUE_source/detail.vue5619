@@ -1,0 +1,356 @@
+<template>
+    <div class="component-order-detail">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="goFeedBackList" :title="$t('back')"></div>
+                </div>
+            </div>
+            <label class="title">{{ $t('back') }}</label>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <!--orderData.status 为 1时 标识 订单已经完成 不可编辑-->
+                    <!--<div class="icon-item export" @click="exportOrder()"></div>-->
+                    <div class="icon-item edit" @click="goToEditFeedback()"  :title="$t('edit')"></div>
+                    <div class="icon-item delete" @click="showDeleteDialog(fileId)" :title="$t('delete')"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrap">
+            <div class="content">
+                <div class="order-info">
+                    <label class="title">{{ $t('detail.title') }}</label>
+                    <div class="left">
+                        <div class="info-list">
+                            <div class="col-left">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span>{{ $t('detail.email') }}</span>
+                                        <span>{{feedBackData.email || '/'}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>{{ $t('detail.fileName') }}</span>
+                                        <span>{{feedBackData.file_id || '/'}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span>{{ $t('detail.status') }}</span>
+                                        <span :class="{
+                                        'file-finished':feedBackData.status == 2,
+                                        'file-wait': feedBackData.status == 1,
+                                        'file-urgent': feedBackData.status == 0
+                                        }">{{feedBackData.status | fileStatus}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-right">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <span>{{ $t('detail.desc') }}</span>
+                                        <span>{{feedBackData.desc || '/'}}</span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span></span>
+                                        <span></span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span></span>
+                                        <span></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                        <!--<td>-->
+                        <!--<el-checkbox v-model="allSelectedForDelete"></el-checkbox>-->
+                        <!--</td>-->
+                        <td v-for="item in tableHead">{{item}}</td>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td v-show="show">{{name}}</td>
+                            <td v-show="show">
+                                {{size}}KB
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <el-dialog
+            :title="$t('deleteDialog.title')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialog.content') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteFeedBack">{{ $t('deleteDialog.yes') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('deleteDialog.no') }}</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        components: {},
+        name: 'getFilesList',
+        data(){
+            return {
+                Core: Core,
+                tableData: [],
+                feedBackData: {},
+                quantity: 1,
+                dialogDeleteVisible: false,
+                fileErrorId: '',
+                fileId:'',
+                selectId:'',
+
+                categoryList: [],
+                defaultProps: {
+                    id: 'id',
+                    children: 'child',
+                    label: 'name',
+                },
+                selectCategoryItem: {
+                    id: '',
+                    name: ''
+                },
+                queryItemCondition: '',
+                itemHeadData: ['Image', 'Name', 'Part No.', 'Operation'],
+                queryItemList: [],
+                total: 0,
+                currentPage: 1,
+                dialogConfirmVisible: false,
+                tableHead: ['Name', 'Size'],
+                FileItem:[],
+                files:'',
+                status:'',
+                size:'',
+                desc:'',
+                hash:'',
+                ext:'',
+                url_post:'',
+                show:true,
+                name:'',
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.TestFeedback.Detail,
+                zh: ZH.Component.TestFeedback.Detail,
+                de: DE.Component.TestFeedback.Detail,
+                nl: NL.Component.TestFeedback.Detail
+            }
+        },
+        mounted: function() {
+            // 国际化
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            this.fileErrorId = this.$route.query.fileId;
+
+            this.getOrderDetail(this.fileErrorId);
+
+
+            //根据id查询文件信息
+            if(this.fileErrorId){
+                Core.Api.FileError.findFileInfo(this.fileErrorId).then(res=>{
+                    this.FileItem = res.file;
+                    console.log(this.FileItem);
+                    this.fileId = this.FileItem.id;
+                    this.name = this.FileItem.name;
+                    this.size = (this.FileItem.size/1000);
+                    this.hash = this.FileItem.hash;
+                    this.ext = this.FileItem.ext;
+                    this.url_post = Core.Const.NET.FILE_URL_PREFIX+this.hash+"."+this.ext;
+                })
+            }
+        },
+        methods: {
+
+            goFeedBackList(){
+                this.$router.push({path: 'list'});
+            },
+
+            deleteFeedBack(){
+                Core.Api.FileError.deleteFileError(this.fileErrorId).then(res => {
+                    this.$router.push({path: 'list'});
+                })
+            },
+
+            goToEditFeedback() {
+                this.$router.push({name: 'componentTestFeedbackSave', query: {"fileErrorId": this.fileErrorId}})
+            },
+
+            getOrderDetail(id){
+                Core.Api.FileError.getFilesOne(id).then(res => {
+                    this.feedBackData = res.file_object;
+                });
+            },
+
+            downloadFile(){
+                window.open(this.url_post);
+            },
+
+
+            showDeleteDialog(selectId) {
+                console.log("+++++++++++++++++++++++++++++++++++"+selectId);
+                this.selectId = selectId;
+                this.dialogDeleteVisible = true;
+            },
+
+        }
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .component-order-detail {
+        width: 100%;
+        height: 100%;
+
+        .content {
+            height: 100%;
+            overflow: auto;
+            border: 1px solid #2B2F3B;
+
+            .order-info {
+                height: 272px;
+                .title {
+                    height: 50px;
+                    line-height: 50px;
+                    padding-left: 40px;
+                    /*font-size: 12px;*/
+                }
+                .left {
+                    float: left;
+                    width: 100%;
+                    background: #353945;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .item {
+                        margin-left: 40px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        height: 50px;
+                        .label {
+                            display: inline-block;
+                            width: 90px;
+                        }
+                    }
+                    .info-list {
+                        font-size: 0;
+                        .col-left {
+                            display: inline-block;
+                            width: 50%;
+                        }
+                        .col-right {
+                            display: inline-block;
+                            width: 50%;
+                        }
+
+                        .list-group {
+                            padding: 0 40px;
+                            .list-group-item {
+                                height: 50px;
+                                line-height: 50px;
+                                font-size: 0;
+
+                                span {
+                                    display: inline-block;
+                                }
+                                span:first-child {
+                                    /*font-size: 12px;*/
+                                    color: #FFFFFF;
+                                    width: 40%;
+                                }
+                                span:last-child {
+                                    /*font-size: 12px;*/
+                                    color: #A1A5B1;
+                                    width: 60%;
+                                }
+                            }
+                        }
+                    }
+                }
+                .parts-list {
+                    float: left;
+                    padding: 27px 40px;
+                    /*font-size: 12px;*/
+                    overflow: hidden;
+                    height: 50px;
+                    width: 100%;
+                    box-shadow: 0 -1px #2B2F3B;
+                    .label1 {
+                        display: inline-block;
+                        /*font-size: 12px;*/
+                    }
+                }
+            }
+            .table-wrap {
+                box-shadow: 0 -1px #2B2F3B;
+                height: calc(100% - 294px);
+                overflow-x: hidden;
+                .long-td{
+                    max-width: 200px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+            }
+
+            .footer {
+                width: 100%;
+                height: 50px;
+                padding: 10px 38px;
+                .footer-pagination {
+                    float: right;
+                }
+                .footer-delete {
+                    margin-top: 3px;
+                    background-color: #858890;
+                }
+            }
+        }
+        .dialog {
+            .el-dialog--large {
+                width: 1100px;
+            }
+            .header {
+                .search-content {
+                    width: 200px;
+                    margin-right: 10px;
+                }
+                .search-btn {
+                    position: absolute;
+                    top: 15px;
+                    left: 250px;
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+            .table-content{
+                padding-bottom: 0;
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// detail.vue?02969692

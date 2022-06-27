@@ -1,0 +1,422 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "update"
+  }, [_c('div', {
+    staticClass: "update-content"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-update.png")
+    }
+  }), _vm._v(_vm._s(_vm.$t('update')) + "\n            "), _c('div', {
+    staticClass: "connect-tip"
+  }, [_c('a', {
+    staticClass: "btn-tip btn-underline",
+    attrs: {
+      "href": "javascript:;"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogTipVisible = true
+      }
+    }
+  }, [(!_vm.showHelp) ? _c('img', {
+    staticClass: "tip-img",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-help.png")
+    }
+  }) : _c('img', {
+    staticClass: "tip-img",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-help.gif")
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.component')))]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": _vm.$t('cNam.select')
+    },
+    on: {
+      "change": _vm.changeComp
+    },
+    model: {
+      value: (_vm.componentType),
+      callback: function($$v) {
+        _vm.componentType = $$v
+      },
+      expression: "componentType"
+    }
+  }, _vm._l((_vm.optionsCom), function(item) {
+    return _c('el-option', {
+      key: item.type,
+      attrs: {
+        "label": item.label,
+        "value": item.type
+      }
+    })
+  }))], 1), _vm._v(" "), (_vm.disableInput) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.sn),
+      callback: function($$v) {
+        _vm.sn = $$v
+      },
+      expression: "sn"
+    }
+  })], 1) : _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("SN")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input input-sn",
+    model: {
+      value: (_vm.sn),
+      callback: function($$v) {
+        _vm.sn = $$v
+      },
+      expression: "sn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.softwareVersion')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.version),
+      callback: function($$v) {
+        _vm.version = $$v
+      },
+      expression: "version"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item btn"
+  }, [_c('div', {
+    staticClass: "pull-right operation"
+  }, [(_vm.loading) ? _c('vue-loading', {
+    staticClass: "loading",
+    attrs: {
+      "type": "spin",
+      "color": "#E26829"
+    }
+  }) : _vm._e(), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "danger"
+    },
+    on: {
+      "click": _vm.clear
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.clear')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.readBase
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "space"
+  }), _vm._v(" "), (!_vm.offLineFlag && _vm.org.type != _vm.Core.Const.ORG_TYPE.SPECIAL_DEAlER) ? _c('div', {
+    staticClass: "item"
+  }, [_c('el-button', {
+    staticClass: "cloud",
+    style: (_vm.a),
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.getFirmwareBySn()
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('fileCloudToUpdate')))])], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "file"
+  }, [_c('label', {
+    ref: "fileToU",
+    staticClass: "label",
+    style: (_vm.a),
+    attrs: {
+      "for": "uploadFile"
+    }
+  }, [_vm._v(_vm._s(_vm.$t('fileToUpdate')) + " ")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('span', {
+    staticClass: "text-span"
+  }, [_vm._v(_vm._s(_vm.fileName))]), _vm._v(" "), _c('input', {
+    ref: "fileUpdate",
+    staticClass: "file-input",
+    attrs: {
+      "id": "uploadFile",
+      "type": "file"
+    },
+    on: {
+      "change": function($event) {
+        _vm.onChangeUpdateFile()
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "file"
+  }, [_c('el-progress', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.percentage > 0),
+      expression: "percentage > 0"
+    }],
+    attrs: {
+      "percentage": _vm.percentage
+    }
+  }), _vm._v(" "), _c('div', {}, [_c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.startTip),
+      expression: "startTip"
+    }],
+    staticClass: "text-span"
+  }, [_vm._v(" " + _vm._s(_vm.$t('cNam.updateStarting')))])])], 1), _vm._v(" "), _c('div', {
+    staticClass: "btns pull-right"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.startUpdate
+    }
+  }, [_vm._v(_vm._s(_vm.$t('update')))])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "right"
+  }, [(!_vm.usbHID) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.com')))]), _vm._v(" "), _c('el-select', {
+    attrs: {
+      "placeholder": _vm.$t('cNam.select')
+    },
+    on: {
+      "change": _vm.changeCom
+    },
+    nativeOn: {
+      "click": function($event) {
+        return _vm.getComList($event)
+      }
+    },
+    model: {
+      value: (_vm.com),
+      callback: function($$v) {
+        _vm.com = $$v
+      },
+      expression: "com"
+    }
+  }, _vm._l((_vm.comList), function(com, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": com,
+        "value": com
+      }
+    })
+  })), _vm._v(" "), _c('label', {
+    staticClass: "tip",
+    class: {
+      connect: _vm.isConnected
+    }
+  })], 1) : _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("USB HID")]), _vm._v(" "), _c('label', {
+    staticClass: "tip",
+    class: {
+      connect: _vm.isConnected
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "clear-float"
+  }, [_c('div', {
+    staticClass: "btns pull-right"
+  }, [_c('el-button', {
+    staticClass: "btn",
+    attrs: {
+      "type": "primary",
+      "disabled": _vm.loading || _vm.isReset
+    },
+    on: {
+      "click": _vm.connect
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))]), _vm._v(" "), _c('el-button', {
+    staticClass: "btn",
+    attrs: {
+      "type": "primary",
+      "disabled": _vm.loading || _vm.isReset || !_vm.isConnected
+    },
+    on: {
+      "click": _vm.reset
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cNam.reset')))])], 1)]), _vm._v(" "), (!_vm.usbHID) ? _c('div', {
+    staticClass: "tip item"
+  }, [_c('label', [_vm._v(_vm._s(_vm.$t('tip')) + ":")]), _vm._v(" "), _c('label', [_vm._v(_vm._s(_vm.$t('updateTip')))])]) : _c('div', [_c('div', {
+    staticClass: "clear-10"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "note tip"
+  }, [_c('div', {
+    staticClass: "msg-title"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.updateMsg')))])]), _vm._v(" "), _c('div', {
+    staticClass: "note"
+  }, [_c('div', {
+    staticClass: "msg"
+  }, [_vm._v(_vm._s(_vm.updateMsg))])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-30"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "file"
+  }, [_c('el-progress', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.boxPercentage > 0),
+      expression: "boxPercentage > 0"
+    }],
+    attrs: {
+      "percentage": _vm.boxPercentage
+    }
+  })], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "step"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.updateStep0')) + " ")]), _vm._v(" "), _c('div', {
+    staticClass: "step"
+  }, [_c('div', [_c('span', {
+    staticClass: "no"
+  }, [_vm._v("1:")]), _c('span', {
+    staticClass: "stepText"
+  }, [_vm._v(" " + _vm._s(_vm.$t('cNam.updateStep1')) + " ")])]), _vm._v(" "), _c('div', [_c('span', {
+    staticClass: "no"
+  }, [_vm._v("2:")]), _c('span', {
+    staticClass: "stepText"
+  }, [_vm._v(" " + _vm._s(_vm.$t('cNam.updateStep2')) + " ")])]), _vm._v(" "), _c('div', [_c('span', {
+    staticClass: "no"
+  }, [_vm._v("3:")]), _c('span', {
+    staticClass: "stepText"
+  }, [_vm._v(" " + _vm._s(_vm.$t('cNam.updateStep3')) + " ")])]), _vm._v(" "), _c('div', [_c('span', {
+    staticClass: "no"
+  }, [_vm._v("4:")]), _c('span', {
+    staticClass: "stepText"
+  }, [_vm._v(" " + _vm._s(_vm.$t('cNam.updateStep4')) + " ")])]), _vm._v(" "), _c('div', [_c('span', {
+    staticClass: "no"
+  }, [_vm._v("5:")]), _c('span', {
+    staticClass: "stepText"
+  }, [_vm._v(" " + _vm._s(_vm.$t('cNam.updateStep5')) + " ")])]), _vm._v(" "), _c('div', [_c('span', {
+    staticClass: "no"
+  }, [_vm._v("6:")]), _c('span', {
+    staticClass: "stepText"
+  }, [_vm._v(" " + _vm._s(_vm.$t('cNam.updateStep6')) + " ")])])])])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('cNam.operationTip'),
+      "custom-class": "tip-dialog",
+      "visible": _vm.dialogTipVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogTipVisible = $event
+      }
+    }
+  }, [_c('div', [_c('h1', [_vm._v(" " + _vm._s(_vm.$t('cNam.txtTitle1')) + " ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v("COM")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleCom')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v("USB HID")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleHid')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.connect')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleCon')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.read')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleRead')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.reset')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleReset')))])]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_c('span', {
+    staticClass: "itemName"
+  }, [_vm._v(_vm._s(_vm.$t('update')))]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.$t('cNam.txtTitleUpt')))])]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('h1', [_vm._v(" " + _vm._s(_vm.$t('cNam.txtTitle2')) + " ")]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.txtNote1')))]), _vm._v(" "), _c('div', {
+    staticClass: "txt"
+  }, [_vm._v(_vm._s(_vm.$t('cNam.txtNote3')))]), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), [_c('updateFirmware')]], 2)]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.queryItemCondition,
+      "visible": _vm.dialogRecordListVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogRecordListVisible = $event
+      }
+    }
+  }, [_c('table', {
+    staticClass: "history-table",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', [_c('tr', [_c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('version')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('updateTime')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('remark')) + "\n                ")]), _vm._v(" "), _c('td', {
+    staticClass: "history-td head"
+  }, [_vm._v("\n                    " + _vm._s(_vm.$t('operation')) + "\n                ")])])]), _vm._v(" "), _vm._l((_vm.HWRecordList), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.version))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(_vm._f("dateFormat")(item.create_time)))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_vm._v(_vm._s(item.remark))]), _vm._v(" "), _c('td', {
+      staticClass: "history-td"
+    }, [_c('el-button', {
+      attrs: {
+        "type": "text"
+      },
+      on: {
+        "click": function($event) {
+          _vm.updateObject(item)
+        }
+      }
+    }, [_vm._v("\n                        " + _vm._s(_vm.$t('update')) + "\n                    ")])], 1)])
+  })], 2)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-58684f89","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/tool/update.vue
+// module id = 1126
+// module chunks = 73

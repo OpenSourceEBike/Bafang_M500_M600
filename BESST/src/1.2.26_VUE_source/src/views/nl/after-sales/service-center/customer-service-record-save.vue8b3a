@@ -1,0 +1,213 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "CS-record-save"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": _vm.goCSRecord
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v("Edit Customer Service Record")])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Customer Info")]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Customer")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "prepend",
+      "filterable": "",
+      "disabled": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.customer_id),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "customer_id", $$v)
+      },
+      expression: "formData.customer_id"
+    }
+  }, _vm._l((_vm.customerList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Sales Order")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.sales_order_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "sales_order_no", $$v)
+      },
+      expression: "formData.sales_order_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Service No")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "disabled": ""
+    },
+    model: {
+      value: (_vm.formData.service_no),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "service_no", $$v)
+      },
+      expression: "formData.service_no"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Service Type")]), _vm._v(" "), _c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "prepend",
+      "filterable": "",
+      "disabled": ""
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.formData.service_type),
+      callback: function($$v) {
+        _vm.$set(_vm.formData, "service_type", $$v)
+      },
+      expression: "formData.service_type"
+    }
+  }, _vm._l((_vm.typeArr), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.label,
+        "value": item.id
+      }
+    })
+  }))], 1)])]), _vm._v(" "), (_vm.categoryList.length > 0) ? _c('div', {
+    staticClass: "table-wrap table-overflow"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.headData), function(item, index) {
+    return _c('td', {
+      key: index
+    }, [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.categoryList), function(item) {
+    return _c('tr', {
+      key: item.id
+    }, [_c('td', [_vm._v(_vm._s(_vm._f("categoryRoot")(item.category_root_id)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.bf_art_no))]), _vm._v(" "), _c('td', [_c('el-input', {
+      staticClass: "input",
+      attrs: {
+        "placeholder": "SN",
+        "disabled": _vm.formData.status > 0
+      },
+      model: {
+        value: (item.sn),
+        callback: function($$v) {
+          _vm.$set(item, "sn", $$v)
+        },
+        expression: "item.sn"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('el-input', {
+      staticClass: "input",
+      attrs: {
+        "placeholder": "Error Code",
+        "disabled": _vm.formData.status > 0
+      },
+      model: {
+        value: (item.error_code),
+        callback: function($$v) {
+          _vm.$set(item, "error_code", $$v)
+        },
+        expression: "item.error_code"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('el-input', {
+      staticClass: "number",
+      attrs: {
+        "type": "number",
+        "placeholder": "Damage Count",
+        "disabled": _vm.formData.status > 0
+      },
+      model: {
+        value: (item.damage_count),
+        callback: function($$v) {
+          _vm.$set(item, "damage_count", $$v)
+        },
+        expression: "item.damage_count"
+      }
+    })], 1), _vm._v(" "), _c('td', [_c('el-date-picker', {
+      staticClass: "input",
+      attrs: {
+        "type": "date",
+        "placeholder": "Date",
+        "disabled": _vm.formData.status > 0
+      },
+      model: {
+        value: (item.production_date),
+        callback: function($$v) {
+          _vm.$set(item, "production_date", $$v)
+        },
+        expression: "item.production_date"
+      }
+    })], 1)])
+  }))])]) : _vm._e(), _vm._v(" "), (_vm.formData.status === 0) ? _c('div', {
+    staticClass: "parts-list"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.createOrder
+    }
+  }, [_vm._v("SAVE")])], 1) : _vm._e()])])])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-d94d1c1c","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/after-sales/service-center/customer-service-record-save.vue
+// module id = 2572
+// module chunks = 29

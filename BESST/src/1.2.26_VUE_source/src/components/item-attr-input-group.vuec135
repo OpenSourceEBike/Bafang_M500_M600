@@ -1,0 +1,129 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "upper-attr"
+  }, [(_vm.item.input_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.TEXT) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.item.name))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-input', {
+    on: {
+      "change": function($event) {
+        _vm.inputChange($event, _vm.item.key)
+      }
+    },
+    model: {
+      value: (_vm.inputValue),
+      callback: function($$v) {
+        _vm.inputValue = $$v
+      },
+      expression: "inputValue"
+    }
+  })], 1)]) : (_vm.item.input_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.SELECT) ? _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.item.name))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('el-select', {
+    attrs: {
+      "slot": "prepend"
+    },
+    on: {
+      "change": function($event) {
+        _vm.selectChange($event, _vm.item.key)
+      }
+    },
+    slot: "prepend",
+    model: {
+      value: (_vm.selectedValue),
+      callback: function($$v) {
+        _vm.selectedValue = $$v
+      },
+      expression: "selectedValue"
+    }
+  }, _vm._l((_vm.selectList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  }))], 1)]) : (_vm.item.input_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.PICS ||
+    _vm.item.input_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.PIC) ? _c('div', {
+    staticClass: "item imgs"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.item.name))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('vue-clip', {
+    staticClass: "img-upload",
+    attrs: {
+      "options": _vm.item.options,
+      "on-complete": _vm.imgUploadCompleteCallback
+    }
+  }, [_c('template', {
+    slot: "clip-uploader-action"
+  }, [_c('img', {
+    staticClass: "upload-icon",
+    attrs: {
+      "src": require("../assets/images/icon/icon-upload@2x.png")
+    }
+  })]), _vm._v(" "), _c('template', {
+    slot: "clip-uploader-body"
+  }, _vm._l((_vm.imgUploadList), function(file, index) {
+    return _c('div', [_c('img', {
+      staticClass: "pic",
+      attrs: {
+        "src": _vm.Core.Const.NET.FILE_URL_PREFIX + file.hash + '.' + file.ext
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "pic remove",
+      on: {
+        "click": function($event) {
+          _vm.removeImg(index, file)
+        }
+      }
+    }, [_vm._v("  ")])])
+  }))], 2)], 1)]) : (_vm.item.input_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILE ||
+    _vm.item.input_type == _vm.Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILES) ? _c('div', {
+    staticClass: "file-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.item.name))]), _vm._v(" "), _c('vue-clip', {
+    staticClass: "desc",
+    attrs: {
+      "options": _vm.item.options,
+      "on-complete": _vm.fileUploadCompleteCallback
+    }
+  }, [_c('template', {
+    slot: "clip-uploader-body"
+  }, _vm._l((_vm.fileUploadList), function(file, index) {
+    return _c('div', [_vm._v("\n                    " + _vm._s(file.name) + "\n                    "), _vm._v(" "), _c('el-button', {
+      attrs: {
+        "type": "text"
+      },
+      on: {
+        "click": function($event) {
+          _vm.removedFile(index, file)
+        }
+      }
+    }, [_vm._v("Remove")])], 1)
+  })), _vm._v(" "), _c('template', {
+    slot: "clip-uploader-action"
+  }, [_c('a', {
+    staticClass: "btn-underline",
+    attrs: {
+      "href": "javascript:;"
+    }
+  }, [_vm._v("Add")])])], 2)], 1) : _vm._e()])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-6c2986fa","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/item-attr-input-group.vue
+// module id = 1602
+// module chunks = 73

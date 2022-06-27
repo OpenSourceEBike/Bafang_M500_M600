@@ -1,0 +1,386 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "receipt-put-away-advice"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$router.back()
+      }
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v("Receipt Put Away Advice")])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content content-set"
+  }, [(_vm.orderItems.length <= 0 && !_vm.loading) ? _c('div', {
+    staticClass: "parts-list"
+  }, [_c('div', {
+    staticClass: "no-data-content"
+  }, [_vm._v("No material space was found. Please create a space.")])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.tableHead), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.orderItems), function(item, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.item_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.item_code))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.warehousePipe(item)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.location_no || 'No location'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.put_away_quantity))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.received_quantity))]), _vm._v(" "), _c('td', [_c('el-button', {
+      attrs: {
+        "type": "primary",
+        "disabled": item.location_id ? true : false
+      },
+      on: {
+        "click": function($event) {
+          _vm.createOrder(item)
+        }
+      }
+    }, [_vm._v("Create")])], 1)])
+  }))])]), _vm._v(" "), (_vm.isAdvice && !_vm.noLocation) ? _c('div', {
+    staticClass: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.saveAdvice
+    }
+  }, [_vm._v("Save Advice")])], 1) : _vm._e()])]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-area-details",
+    attrs: {
+      "title": _vm.dialogTitle,
+      "visible": _vm.dialogAddVisible,
+      "custom-class": "edit-dialog"
+    },
+    on: {
+      "update:title": function($event) {
+        _vm.dialogTitle = $event
+      },
+      "update:visible": function($event) {
+        _vm.dialogAddVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Area\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-select', {
+    staticClass: "input",
+    attrs: {
+      "slot": "append",
+      "filterable": ""
+    },
+    slot: "append",
+    model: {
+      value: (_vm.areaLocationData.area_id),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "area_id", $$v)
+      },
+      expression: "areaLocationData.area_id"
+    }
+  }, _vm._l((_vm.areaList), function(item) {
+    return _c('el-option', {
+      key: item.id,
+      attrs: {
+        "label": item.area_name,
+        "value": item.id
+      }
+    })
+  }))], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Location No.\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.location_no),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "location_no", $$v)
+      },
+      expression: "areaLocationData.location_no"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Location Name\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.location_name),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "location_name", $$v)
+      },
+      expression: "areaLocationData.location_name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        " + _vm._s(_vm.$t('category')) + "\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    staticClass: "input",
+    attrs: {
+      "placeholder": _vm.$t('category'),
+      "disabled": true
+    },
+    nativeOn: {
+      "click": function($event) {
+        return _vm.selectCategory($event)
+      }
+    },
+    model: {
+      value: (_vm.selectCategoryItem.name),
+      callback: function($$v) {
+        _vm.$set(_vm.selectCategoryItem, "name", $$v)
+      },
+      expression: "selectCategoryItem.name"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("\n        Max Quantity\n        "), _c('span', {
+    staticClass: "required"
+  }, [_vm._v("*")])]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.max_quantity),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "max_quantity", $$v)
+      },
+      expression: "areaLocationData.max_quantity"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Max Cartons")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.max_cartoons),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "max_cartoons", $$v)
+      },
+      expression: "areaLocationData.max_cartoons"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Weight Capacity (Kg)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.weight_capacity),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "weight_capacity", $$v)
+      },
+      expression: "areaLocationData.weight_capacity"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Cube (m³)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.cube),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "cube", $$v)
+      },
+      expression: "areaLocationData.cube"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Height (m)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.height),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "height", $$v)
+      },
+      expression: "areaLocationData.height"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Length (m)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.length),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "length", $$v)
+      },
+      expression: "areaLocationData.length"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Width (m)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.width),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "width", $$v)
+      },
+      expression: "areaLocationData.width"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Type Code")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.type_code),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "type_code", $$v)
+      },
+      expression: "areaLocationData.type_code"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("X Coord (m)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.x_coord),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "x_coord", $$v)
+      },
+      expression: "areaLocationData.x_coord"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Y Coord (m)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.y_coord),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "y_coord", $$v)
+      },
+      expression: "areaLocationData.y_coord"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Z Coord (m)")]), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.areaLocationData.z_coord),
+      callback: function($$v) {
+        _vm.$set(_vm.areaLocationData, "z_coord", $$v)
+      },
+      expression: "areaLocationData.z_coord"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.dialogConfirm
+    }
+  }, [_vm._v("confirm")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.dialogCancel
+    }
+  }, [_vm._v("cancel")])], 1)]), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-category",
+    attrs: {
+      "title": _vm.$t('selectCategory'),
+      "visible": _vm.dialogSelectCategoryVisible,
+      "size": "large"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogSelectCategoryVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "content",
+    staticStyle: {
+      "max-height": "500px",
+      "overflow": "auto"
+    }
+  }, [_c('div', {
+    staticClass: "category-tree"
+  }, [_c('el-tree', {
+    attrs: {
+      "data": _vm.categoryList,
+      "props": _vm.defaultProps
+    },
+    on: {
+      "node-click": _vm.handleNodeClick
+    }
+  })], 1)])])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-5facc220","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/receipt-order/receipt-put-away-advice.vue
+// module id = 2450
+// module chunks = 60

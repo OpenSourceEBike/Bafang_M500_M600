@@ -1,0 +1,219 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vehicle-search-holder"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('el-form', {
+    staticClass: "demo-form-inline",
+    attrs: {
+      "inline": true
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": _vm.$t('search.bikeId')
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.sn),
+      callback: function($$v) {
+        _vm.sn = $$v
+      },
+      expression: "sn"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": _vm.$t('search.searchBtn')
+    },
+    on: {
+      "click": _vm.getVehicleDetail
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "icon-item clear",
+    attrs: {
+      "title": _vm.$t('search.clear')
+    },
+    on: {
+      "click": _vm.clear
+    }
+  })])])], 1)], 1), _vm._v(" "), (_vm.vehicleId) ? _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "content-holder"
+  }, [_c('div', {
+    staticClass: "vehicle-item"
+  }, [_c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('sn')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.vehicle.sn))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('key')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.vehicle.secret_key ? _vm.vehicle.secret_key : '-'))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('brand')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.vehicle.brand.name))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('itemName')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm.vehicle.item.name))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('productTime')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [_c('span', [_vm._v(_vm._s(_vm._f("timeFormat")(_vm.vehicle.produce_time, "Y-m-d")))])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('saleTime')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [(_vm.vehicle.sale_time && _vm.vehicle.sale_time != 0) ? _c('span', [_vm._v(_vm._s(_vm._f("dateFormat")(_vm.vehicle.sale_time)))]) : _c('span', [_vm._v("-")])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('customerName')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [(_vm.vehicle.customer && _vm.vehicle.customer.name) ? _c('span', [_vm._v(_vm._s(_vm.vehicle.customer.name))]) : _c('span', [_vm._v("-")])])]), _vm._v(" "), _c('div', {
+    staticClass: "content-item"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v(_vm._s(_vm.$t('customerEmail')))]), _vm._v(" "), _c('div', {
+    staticClass: "desc"
+  }, [(_vm.vehicle.customer && _vm.vehicle.customer.email) ? _c('span', [_vm._v(_vm._s(_vm.vehicle.customer.email))]) : _c('span', [_vm._v("-")])])])]), _vm._v(" "), _c('el-collapse', {
+    attrs: {
+      "accordion": ""
+    }
+  }, [_c('el-collapse-item', [_c('template', {
+    slot: "title"
+  }, [_c('label', [_vm._v(_vm._s(_vm.$t('part')))]), _vm._v(" "), _c('div', {
+    staticClass: "btn-div"
+  }, [_c('a', {
+    staticClass: "btn-underline",
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.onClickHistory($event)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('history')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "bom-content-holder"
+  }, _vm._l((_vm.bomAttrList), function(bom) {
+    return (_vm.bomAttrList.length > 0) ? _c('div', {
+      staticClass: "bom-item"
+    }, [_c('div', {
+      staticClass: "bom-header"
+    }, [_c('label', {
+      staticClass: "bom-title"
+    }, [_vm._v("\n                                        " + _vm._s(bom.rootName) + "\n                                    ")]), _vm._v(" "), _c('el-button', {
+      staticClass: "btn-replace",
+      attrs: {
+        "type": "text"
+      },
+      on: {
+        "click": function($event) {
+          _vm.showUpdateDialog(bom.sn, bom.id)
+        }
+      }
+    }, [_vm._v("\n                                        " + _vm._s(_vm.$t('replace')) + "\n                                    ")])], 1), _vm._v(" "), _c('div', {
+      staticClass: "bom-content"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v("SN")]), _vm._v(" "), _c('div', {
+      staticClass: "desc"
+    }, [_c('span', [_vm._v(_vm._s(bom.sn || '-'))])])]), _vm._v(" "), _c('div', {
+      staticClass: "bom-content"
+    }, [_c('label', {
+      staticClass: "title"
+    }, [_vm._v("Name")]), _vm._v(" "), _c('div', {
+      staticClass: "desc"
+    }, [_c('span', [_vm._v(_vm._s(bom.name || '-'))])])]), _vm._v(" "), _vm._l((bom.attrList), function(item) {
+      return _c('div', {
+        staticClass: "bom-content"
+      }, [_c('label', {
+        staticClass: "title"
+      }, [_vm._v("\n                                        " + _vm._s(item.attr_def_name) + "\n                                    ")]), _vm._v(" "), _c('div', {
+        staticClass: "desc"
+      }, [_c('span', [_vm._v(_vm._s(item.value || '-'))])])])
+    })], 2) : _vm._e()
+  }))], 2)], 1)], 1)])]) : _vm._e(), _vm._v(" "), _c('el-dialog', {
+    staticClass: "dialog-password",
+    attrs: {
+      "title": _vm.$t('replace'),
+      "visible": _vm.dialogReplaceVisible
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogReplaceVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('oldSn')))]), _vm._v(" "), _c('label', {
+    staticClass: "input old-sn"
+  }, [_vm._v(_vm._s(_vm.selectSn))])])]), _vm._v(" "), _c('div', {
+    staticClass: "item new-password"
+  }, [_c('div', {
+    staticClass: "item-box"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('newSn')))]), _vm._v(" "), _c('el-input', {
+    staticClass: "input scan-input",
+    model: {
+      value: (_vm.newSn),
+      callback: function($$v) {
+        _vm.newSn = $$v
+      },
+      expression: "newSn"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.updateSn
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogReplaceVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-7c88a064","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/dealer/vehicle/search.vue
+// module id = 1690
+// module chunks = 73

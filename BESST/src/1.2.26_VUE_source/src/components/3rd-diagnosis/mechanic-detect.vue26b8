@@ -1,0 +1,427 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "mechanic-detect"
+  }, [_c('div', {
+    staticClass: "header top-box"
+  }, [_vm._v("\n        This is new function that we would promote. It is still not finished yet.\n    ")]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('div', {
+    staticClass: "info read"
+  }, [_c('el-collapse', [_c('el-collapse-item', {
+    attrs: {
+      "name": "1"
+    }
+  }, [_c('template', {
+    slot: "title"
+  }, [_c('div', {
+    staticClass: "search-item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v(_vm._s(_vm.$t('bike')))]), _vm._v(" "), _c('el-input', {
+    staticClass: " input input-sn",
+    attrs: {
+      "placeholder": _vm.$t('sn')
+    },
+    model: {
+      value: (_vm.vehicleSn),
+      callback: function($$v) {
+        _vm.vehicleSn = $$v
+      },
+      expression: "vehicleSn"
+    }
+  }), _vm._v(" "), (!_vm.offLineFlag) ? _c('el-button', {
+    staticClass: "search-btn",
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.getVehicle($event)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')) + "\n                                ")]) : _vm._e()], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "component-list"
+  }, [_c('ul', [_c('li', [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-hmi.png")
+    }
+  }), _vm._v(" "), _c('label', {
+    staticClass: "title-text"
+  }, [_vm._v("HMI")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-sn",
+    attrs: {
+      "placeholder": _vm.$t('sn')
+    },
+    on: {
+      "blur": function($event) {
+        _vm.onBlurSn(_vm.hmiInfo.sn)
+      }
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.stopPrevent($event)
+      }
+    },
+    model: {
+      value: (_vm.hmiInfo.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.hmiInfo, "sn", $$v)
+      },
+      expression: "hmiInfo.sn"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "title-select",
+    attrs: {
+      "type": "delete"
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        _vm.showErrorSelectDialog('hmi')
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('selectError')) + "\n                                    ")])], 1), _vm._v(" "), _c('li', [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-controller.png")
+    }
+  }), _vm._v(" "), _c('label', {
+    staticClass: "title-text"
+  }, [_vm._v("Controller")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-sn",
+    attrs: {
+      "placeholder": _vm.$t('sn')
+    },
+    on: {
+      "blur": function($event) {
+        _vm.onBlurSn(_vm.controllerInfo.sn)
+      }
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.stopPrevent($event)
+      }
+    },
+    model: {
+      value: (_vm.controllerInfo.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.controllerInfo, "sn", $$v)
+      },
+      expression: "controllerInfo.sn"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "title-select",
+    attrs: {
+      "type": "delete"
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        _vm.showErrorSelectDialog('controller')
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('selectError')) + "\n                                    ")])], 1), _vm._v(" "), _c('li', [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-battery.png")
+    }
+  }), _vm._v(" "), _c('label', {
+    staticClass: "title-text"
+  }, [_vm._v("Battery")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-sn",
+    attrs: {
+      "placeholder": _vm.$t('sn')
+    },
+    on: {
+      "blur": function($event) {
+        _vm.onBlurSn(_vm.batteryInfo.sn)
+      }
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.stopPrevent($event)
+      }
+    },
+    model: {
+      value: (_vm.batteryInfo.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.batteryInfo, "sn", $$v)
+      },
+      expression: "batteryInfo.sn"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "title-select",
+    attrs: {
+      "type": "delete"
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        _vm.showErrorSelectDialog('battery')
+      }
+    }
+  }, [_vm._v("\n                                        " + _vm._s(_vm.$t('selectError')) + "\n                                    ")])], 1), _vm._v(" "), _c('li', [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-motor.png")
+    }
+  }), _vm._v(" "), _c('label', {
+    staticClass: "title-text"
+  }, [_vm._v("Motor")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-sn",
+    attrs: {
+      "placeholder": _vm.$t('sn')
+    },
+    on: {
+      "blur": function($event) {
+        _vm.onBlurSn(_vm.motorInfo.sn)
+      }
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.stopPrevent($event)
+      }
+    },
+    model: {
+      value: (_vm.motorInfo.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.motorInfo, "sn", $$v)
+      },
+      expression: "motorInfo.sn"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "title-select",
+    attrs: {
+      "type": "delete"
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        _vm.showErrorSelectDialog('motor')
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('selectError')) + "\n                                    ")])], 1), _vm._v(" "), _c('li', [_c('img', {
+    staticClass: "icon",
+    attrs: {
+      "src": require("../../assets/images/icon/icon-sensor.png")
+    }
+  }), _vm._v(" "), _c('label', {
+    staticClass: "title-text"
+  }, [_vm._v("Pedal Sensor")]), _vm._v(" "), _c('el-input', {
+    staticClass: "input-sn",
+    attrs: {
+      "placeholder": _vm.$t('sn')
+    },
+    on: {
+      "blur": function($event) {
+        _vm.onBlurSn(_vm.pedalSensorInfo.sn)
+      }
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.stopPrevent($event)
+      }
+    },
+    model: {
+      value: (_vm.pedalSensorInfo.sn),
+      callback: function($$v) {
+        _vm.$set(_vm.pedalSensorInfo, "sn", $$v)
+      },
+      expression: "pedalSensorInfo.sn"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    staticClass: "title-select",
+    attrs: {
+      "type": "delete"
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        _vm.showErrorSelectDialog('pedalSensor')
+      }
+    }
+  }, [_vm._v("\n                                        " + _vm._s(_vm.$t('selectError')) + "\n                                    ")])], 1), _vm._v(" "), _c('li', [_c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "rows": 1,
+      "resize": "none",
+      "placeholder": "Type here"
+    },
+    model: {
+      value: (_vm.other),
+      callback: function($$v) {
+        _vm.other = $$v
+      },
+      expression: "other"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": _vm.saveBikeDetect
+    }
+  }, [_vm._v("Save")])], 1)])])], 2)], 1), _vm._v(" "), _c('div', {
+    staticClass: "clear-20"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "parts-list"
+  }, [_c('span', {
+    staticClass: "title"
+  }, [_vm._v("Mechanic Detect List")]), _vm._v(" "), _c('div', {
+    staticClass: "search"
+  }, [_c('el-input', {
+    staticClass: "input-sn",
+    attrs: {
+      "placeholder": _vm.$t('sn')
+    },
+    nativeOn: {
+      "click": function($event) {
+        $event.stopPropagation();
+        return _vm.stopPrevent($event)
+      }
+    },
+    model: {
+      value: (_vm.componentSN),
+      callback: function($$v) {
+        _vm.componentSN = $$v
+      },
+      expression: "componentSN"
+    }
+  }), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {}
+    }
+  }, [_vm._v("Search")])], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap"
+  }, [_c('div', {
+    staticClass: "table-content-holder"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.headData), function(item, index) {
+    return _c('td', {
+      class: {
+        'al-right': index === 0 || index === 1
+      }
+    }, [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.detectList), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "al-right"
+    }, [_vm._v(_vm._s(item.a || '/'))]), _vm._v(" "), _c('td', {
+      staticClass: "al-right"
+    }, [_vm._v(_vm._s(item.b || '/'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.c || '/'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.d))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.e || '/'))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.f || '/'))]), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.goDetectEditView(item)
+        }
+      }
+    }, [_vm._v("Edit")]), _vm._v(" "), (true) ? _c('a', {
+      staticClass: "btn-underline",
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.showDeleteDialog(item)
+        }
+      }
+    }, [_vm._v("delete")]) : _vm._e()])])
+  }))])]), _vm._v(" "), (_vm.loading) ? _c('div', {
+    staticClass: "loading"
+  }, [_c('img', {
+    attrs: {
+      "src": require("../../assets/images/icon/loading-bars.svg"),
+      "alt": "Loading icon"
+    }
+  })]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "table-footer"
+  }, [_c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-size": 8,
+      "layout": "prev, pager, next, jumper",
+      "total": _vm.total
+    },
+    on: {
+      "current-change": _vm.handleCurrentChange,
+      "update:currentPage": function($event) {
+        _vm.currentPage = $event
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "total"
+  }, [_vm._v("total: " + _vm._s(_vm.total))])], 1)])], 1)])]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('selectError'),
+      "visible": _vm.dialogErrorSelectVisible,
+      "custom-class": "error-select-dialog"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogErrorSelectVisible = $event
+      }
+    }
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('el-checkbox-group', {
+    model: {
+      value: (_vm.errorList),
+      callback: function($$v) {
+        _vm.errorList = $$v
+      },
+      expression: "errorList"
+    }
+  }, _vm._l((_vm.selectErrorList), function(error) {
+    return _c('el-checkbox', {
+      key: error.label,
+      attrs: {
+        "label": error.label
+      }
+    })
+  }))], 1), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.addItemError
+    }
+  }, [_vm._v("Add")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogErrorSelectVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-015e04ef","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/components/3rd-diagnosis/mechanic-detect.vue
+// module id = 1552
+// module chunks = 73

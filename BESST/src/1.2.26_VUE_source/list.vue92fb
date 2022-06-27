@@ -1,0 +1,401 @@
+<template>
+    <div class="brand-list">
+        <div class="header">
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item add" @click="showEditDialog" v-if="authList[Core.Const.AUTH_LIST.brandAdd]"></div>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <div class="table-content-holder">
+                <table class="table-content" border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <td v-for="item in tableHead">{{item}}</td>
+                    </thead>
+                    <tbody>
+                    <tr class="large" v-for="item in brandList" @click="showDetailDialog(item)">
+                        <!--<td class="td" v-for="value in item">{{value}}</td>-->
+                        <td class="td-img"><img :src="Core.Const.NET.IMG_URL_PREFIX + item.img"/></td>
+                        <td class="td-name">{{item.name}}</td>
+                        <td class="desc" :title="item.desc">{{item.desc}}</td>
+                        <td class="desc">{{item.website}}</td>
+                        <td v-if="authList[Core.Const.AUTH_LIST.brandEdit] && authList[Core.Const.AUTH_LIST.brandDelete]" class="icon-td">
+                            <div class="icons">
+                                <div class="icon-item edit" v-on:click.stop="showEditDialog(item)"  v-if="authList[Core.Const.AUTH_LIST.brandEdit]" :title="$t('edit')"></div>
+                            </div>
+                            <div class="icons">
+                                <div class="icon-item delete" v-on:click.stop='showDeleteDialog(item.id)' v-if="authList[Core.Const.AUTH_LIST.brandDelete]" :title="$t('delete')"></div>
+                            </div>
+                            <!-- <a class="btn-underline" v-on:click.stop="showEditDialog(item)"  v-if="authList[Core.Const.AUTH_LIST.brandEdit]">{{ $t('edit') }}</a>
+                            <a class="btn-underline" v-on:click.stop='showDeleteDialog(item.id)' v-if="authList[Core.Const.AUTH_LIST.brandDelete]">{{ $t('delete') }}</a> -->
+                        </td>
+                        <td v-else>-</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="no-data-content" v-show="brandList.length <= 0">
+                {{ $t('noResult') }}
+            </div>
+
+            <div class="table-footer">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="10"
+                    layout="prev, pager, next"
+                    :total="total">
+                </el-pagination>
+                <p class="total">{{ $t('total') }}: {{total}}</p>
+            </div>
+        </div>
+        <!-- 删除弹窗 -->
+        <el-dialog :title="$t('deleteBrand')" :visible.sync="dialogDeleteVisible" size="tiny">
+            <p> {{ $t('deleteTip') }} </p>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="deleteBrand">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('no') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!-- 添加弹窗 -->
+        <el-dialog :title="selectBrand.name ? selectBrand.name : $t('addBrand')" custom-class="edit-dialog"
+                   :visible.sync="dialogEditVisible">
+            <div class="dialog-container">
+                <div class="operation-holder">
+                    <h4>{{ $t('brandInfo') }}</h4>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('logo') }}</label>
+                    <div class="content">
+                        <el-upload
+                            class="btn btn-primary upload-btn"
+                            :action=upload.url
+                            :show-file-list="false"
+                            :on-success="imageUploaded"
+                            :data="upload.data">
+                            <img v-if="!logoOptions.src" class="upload-icon"
+                                 src="../../../assets/images/icon/icon-upload@2x.png"/>
+                            <img v-else class="upload-icon"
+                                 :src="logoOptions.src "/>
+                            <label class="tipOne" v-if="!logoOptions.src">PNG,JPG</label>
+                            <label class="tipTwo" v-if="!logoOptions.src">&lt;3M</label>
+                            <label class="tipThree" v-if="!logoOptions.src">300*300/400*400</label>
+                        </el-upload>
+                    </div>
+
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('name') }}</label>
+                    <div class="content">
+                        <el-input v-model="brand.name"></el-input>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('link') }}</label>
+                    <div class="content text-area">
+                        <el-input v-model="brand.website"
+                                  type="textarea"
+                                  :rows="2"
+                                  resize="none"></el-input>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('introduction') }}</label>
+                    <div class="content text-area">
+                        <el-input v-model="brand.desc"
+                                  type="textarea"
+                                  :rows="3"
+                                  resize="none"></el-input>
+                    </div>
+                </div>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click.stop="saveBrand">{{ $t('confirm') }}</el-button>
+                <el-button type="delete" v-if="selectBrand.name" v-on:click.stop='showDeleteDialog(selectBrand.id)'>
+                    {{ $t('delete') }}
+                </el-button>
+            </div>
+        </el-dialog>
+
+        <!--  展示弹窗 -->
+        <el-dialog :title="selectBrand.name" custom-class="edit-dialog" :visible.sync="dialogDetailVisible">
+            <div class="dialog-container">
+                <div class="operation-holder">
+                    <h4>{{ $t('brandInfo') }}</h4>
+                    <div class="btn-group">
+                        <el-button type="primary" @click="showEditDialog(selectBrand)" v-if="authList[Core.Const.AUTH_LIST.brandEdit]">{{ $t('edit') }}</el-button>
+                        <el-button type="delete" @click="showDeleteDialog(selectBrand.id)" v-if="authList[Core.Const.AUTH_LIST.brandDelete]">{{ $t('delete') }}</el-button>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('logo') }}</label>
+                    <div class="content">
+                        <img :src="Core.Const.NET.IMG_URL_PREFIX + selectBrand.img">
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('name') }}</label>
+                    <div class="content">
+                        <p>{{selectBrand.name}}</p>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('introduction') }}</label>
+                    <div class="content">
+                        <p style="word-break: break-all;">{{selectBrand.desc}}</p>
+                    </div>
+                </div>
+            </div>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from '../../../../core/core'
+    import VueCoreImageUpload from 'vue-core-image-upload'
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default{
+        components: {
+            VueCoreImageUpload
+        },
+        name: 'brandList',
+        data(){
+            return {
+                Core: Core,
+
+                upload: {
+                    url: Core.Const.NET.IMG_UPLOAD_END_POINT,
+                    data: {
+                        token: Core.Data.getToken()
+                    }
+                },
+                dialogDeleteVisible: false,
+                dialogDetailVisible: false,
+                dialogEditVisible: false,
+                tableHead: ['Logo', 'Brand Name', 'Introduction', 'Link', 'Operation'],
+                brandList: [],
+                currentPage: 1,
+                total: 0,
+                selectBrand: {},
+                logoOptions: {
+                    src: ""
+                },
+                // 编辑brand表单
+                brand: {
+                    id: "",
+                    name: "",
+                    img: "",
+                    desc: "",
+                    website: ""
+                },
+
+                authList: []
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Brand.BrandList,
+                zh: ZH.Brand.BrandList,
+                de: DE.Brand.BrandList,
+                nl: NL.Brand.BrandList
+            }
+        },
+        mounted: function () {
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.getBrandList();
+        },
+        methods: {
+            initData() {
+                this.tableHead = [
+                    this.$t('logo'),
+                    this.$t('name'),
+                    this.$t('introduction'),
+                    this.$t('link'),
+                    this.$t('operation')
+                ];
+            },
+
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.getBrandList();
+            },
+            getBrandList(){
+                Core.Api.Brand.getBrandList(this.currentPage).then(res => {
+                    this.brandList = res.brand_list;
+                    this.total = res.count;
+                })
+            },
+            showDeleteDialog(id){
+                this.dialogDetailVisible = false;
+                this.dialogEditVisible = false;
+                this.dialogDeleteVisible = true;
+                this.selectId = id;
+            },
+            deleteBrand(){
+                Core.Api.Brand.deleteBrand(this.selectId).then(res => {
+                    this.dialogDeleteVisible = false;
+                    this.getBrandList(this.currentPage);
+                    this.$message({
+                        message: this.$t('deleteSuccess'),
+                        type: 'success'
+                    });
+                });
+            },
+            showEditDialog(brand){
+                this.dialogDetailVisible = false;
+                this.dialogDeleteVisible = false;
+                this.dialogEditVisible = true;
+                this.brand = {
+                    id: brand.id ? brand.id : "",
+                    name: brand.name ? brand.name : "",
+                    img: brand.img ? brand.img : "",
+                    desc: brand.desc ? brand.desc : "",
+                    website: brand.website ? brand.website : ""
+                };
+                this.selectBrand = brand;
+                this.logoOptions.src = brand.img ? Core.Const.NET.IMG_URL_PREFIX + brand.img : "";
+            },
+            showDetailDialog(brand){
+                this.dialogDetailVisible = true;
+                this.dialogDeleteVisible = false;
+                this.dialogEditVisible = false;
+                this.selectBrand = brand;
+            },
+            imageUploaded(res) {
+                console.log(res);
+                this.logoOptions.src = Core.Const.NET.IMG_URL_PREFIX + res.data.file.name;
+                this.brand.img = res.data.file.name;
+            },
+            saveBrand() {
+                let $this = this;
+                if (!$this.checkParam()) {
+                    return;
+                }
+                let id = $this.brand.id;
+                let img = $this.brand.img;
+                let name = $this.brand.name;
+                let desc = $this.brand.desc;
+                let website = $this.brand.website;
+                // 执行保存
+                Core.Api.Brand.saveBrand(id, name, img, desc, website).then(res => {
+                    let message = '';
+                    if (id > 0) {
+                        message = this.$t('editSuccess');
+                    } else {
+                        message = this.$t('addSuccess');
+                    }
+                    this.$message({
+                        message: message,
+                        type: 'success'
+                    });
+                    $this.dialogEditVisible = false;
+                    $this.getBrandList();
+                });
+            },
+            checkParam() {
+                if (!this.brand.img) {
+                    this.$message({
+                        message: this.$t('emptyTip.logo'),
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                if (!this.brand.name) {
+                    this.$message({
+                        message: this.$t('emptyTip.name'),
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                if (!this.brand.desc) {
+                    this.$message({
+                        message: this.$t('emptyTip.desc'),
+                        type: 'warning'
+                    });
+                    return false;
+                }
+                return true;
+            }
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .brand-list {
+        width: 100%;
+        height: 100%;
+        .tipOne{
+            position: absolute;
+            top:18px;
+            left:38px;
+        }
+        .tipTwo{
+            position: absolute;
+            top:38px;
+            left:100px;
+            font-size:12px;
+        }
+        .tipThree{
+            position: absolute;
+            top:106px;
+            left:17px;
+        }
+        .td-name {
+            max-width: 150px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .td-img {
+            width: 100%;
+            max-width: 80px;
+        }
+        .desc {
+            text-overflow: ellipsis;
+            max-width: 570px;
+            overflow: hidden;
+            height: auto;
+        }
+        .icon-td{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            height:80px;
+            .icons{
+                align-self: center;
+                width:35px;
+                height:35px;
+                padding-bottom:36px;
+            }
+        }
+        .table-content{
+            td:last-child {
+                text-align:center;
+            }
+        }
+        .edit-dialog .el-dialog__body .content-item .content, .save-vehicle-dialog .el-dialog__body .content-item .content{
+            vertical-align: middle;
+            position: relative;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// list.vue?dc892bd6

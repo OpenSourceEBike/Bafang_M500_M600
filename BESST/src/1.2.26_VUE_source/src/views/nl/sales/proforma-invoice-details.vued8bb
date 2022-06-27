@@ -1,0 +1,124 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "PI-details"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('div', {
+    staticClass: "btn-group-inline"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "back"
+    },
+    on: {
+      "click": _vm.goPIList
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "btn-group-top"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item print",
+    attrs: {
+      "title": "print"
+    },
+    on: {
+      "click": _vm.onPrint
+    }
+  })])]), _vm._v(" "), _c('label', {
+    staticClass: "title"
+  }, [_vm._v("Proforma Invoice Details")])]), _vm._v(" "), _c('div', {
+    staticClass: "content-wrap"
+  }, [_c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading.body",
+      value: (_vm.loading),
+      expression: "loading",
+      modifiers: {
+        "body": true
+      }
+    }],
+    staticClass: "content content-width"
+  }, [_c('div', {
+    staticClass: "order-info"
+  }, [_c('label', {
+    staticClass: "title"
+  }, [_vm._v("Proforma Invoice Info")]), _vm._v(" "), _c('div', {
+    staticClass: "left"
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("PI No.")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.pi_no))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Sales")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.sales_name))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Customer")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.customer_name))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Country")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.country))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Address")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.address))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Tel")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.country_code) + " " + _vm._s(_vm.formData.telephone))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("VAT No.")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.vat_no))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("ETD")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.etd))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Trade Terms")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.trade_terms))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Payment Term")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.payment_term))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Date")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.formData.date))])]), _vm._v(" "), _c('div', {
+    staticClass: "item"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Currency/Amount")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm._f("currencyType")(_vm.formData.currency)) + _vm._s(_vm.formData.amount))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "table-wrap table-overflow"
+  }, [_c('table', {
+    staticClass: "table-content",
+    attrs: {
+      "border": "0",
+      "cellspacing": "0",
+      "cellpadding": "0"
+    }
+  }, [_c('thead', _vm._l((_vm.headData), function(item) {
+    return _c('td', [_vm._v(_vm._s(item))])
+  })), _vm._v(" "), _c('tbody', _vm._l((_vm.orderItems), function(item, index) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.model_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.bf_art_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.customer_art_no))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.description))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("currencyType")(item.currency)) + _vm._s(item.unit_price))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.vat_rate) + "%")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.quantity))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.amount))])])
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "parts-list"
+  }, [_c('span', {
+    staticClass: "att-total"
+  }, [_vm._v("total: " + _vm._s(_vm._f("currencyType")(_vm.currency)) + _vm._s(_vm.totalCount))])])])])])
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-499d8726","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/nl/sales/proforma-invoice-details.vue
+// module id = 2540
+// module chunks = 25

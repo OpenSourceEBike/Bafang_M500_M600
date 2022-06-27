@@ -1,0 +1,1560 @@
+<template>
+    <div class="product-detail-container">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="$router.back()" :title="$t('back')"></div>
+                </div>
+            </div>
+
+            <span class="title">{{itemDetail.name}}</span>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item edit" @click="goToSaveView('edit')"
+                         v-if="authList[Core.Const.AUTH_LIST.productProductEdit]" :title="$t('edit')"></div>
+                    <div class="icon-item change"  v-if="authList[Core.Const.AUTH_LIST.productProductEdit]"
+                         @click="changeGroupDialogVisible = true" title="change"></div>
+                    <div class="icon-item copy" @click="goToSaveView('copy')"
+                         v-if="authList[Core.Const.AUTH_LIST.productProductAdd] || authList[Core.Const.AUTH_LIST.productProductEdit]"
+                         :title="$t('copy')"></div>
+                    <div class="icon-item delete" @click="showDeleteDialog(item)"
+                         v-if="authList[Core.Const.AUTH_LIST.productProductDelete]" :title="$t('delete')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content-holder">
+            <div class="carousel">
+                <el-carousel height="234px" indicator-position="none" :interval="5000" arrow="always" ref="carousel"
+                             @change="change">
+                    <el-carousel-item v-for="item in productList" :key="item">
+                        <div class="img-box">
+                            <img :src='item'/>
+                        </div>
+                    </el-carousel-item>
+                </el-carousel>
+                <div class="thumb-img-box">
+                    <div class="thumb"
+                         :class="{'selected': index == productSelected}"
+                         v-for="(item, index) in productList"
+                         :key="item"
+                         @click="switchDemonstration(index)">
+                        <img class="thumb-img" :src='item'/>
+                    </div>
+                </div>
+            </div>
+            <div class="content-box">
+                <div class="content-item">
+                    <label class="title">{{ $t('model') }}</label>
+                    <div class="desc">
+                        <span class="strong">{{itemDetail.name}}</span>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('set.mechanical') }}</label>
+                    <div class="desc">
+                        <span class="strong">{{itemDetail.hard_param || '/'}}</span>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('set.hardVer') }}</label>
+                    <div class="desc">
+                        <span class="strong">{{itemDetail.hard_version || '/'}}</span>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('set.firmVer') }}</label>
+                    <div class="desc">
+                        <span class="strong">{{itemDetail.firmware_version || '/'}}</span>
+                    </div>
+                </div>
+                <div class="content-item">
+                    <label class="title">{{ $t('set.paramVer') }}</label>
+                    <div class="desc">
+                        <span class="strong">{{itemDetail.param_version || '/'}}</span>
+                    </div>
+                </div>
+                <div class="content-item" v-if="itemDetail.setId > 0">
+                    <label class="title">{{ $t('articleList') }}</label>
+                    <div class="desc">
+                        <div class="desc h-24">
+                            <div class="icons jc-start">
+                                <div class="icon-item eye" @click="articleDialogVisible = true"
+                                     :title="$t('view')"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-item" v-else>
+                    <label class="title">{{ $t('partNo') }}</label>
+                    <div class="desc">
+                        <span class="strong">{{itemDetail.ext_part_no}}</span>
+                    </div>
+                </div>
+                <div class="content-item" v-show = "itemDetail.category_root_id === 10">
+                    <label class="title">{{ $t('set.firmVer') }}</label>
+                    <div class="desc">
+                        <a class="strong btn-underline" @click.stop="clickFirmwareBtn()">{{ $t('view') }}</a>
+                    </div>
+                </div>
+                <div class="content-item" v-show = "itemDetail.category_root_id === 10">
+                    <label class="title">Status</label>
+                    <div class="desc">
+                        <a class="strong btn-underline" @click.stop="clickUpdateStatus">{{ $t('edit') }}</a>
+                    </div>
+                </div>
+
+                <div class="content-item">
+                    <label class="title">{{ $t('desc') }}</label>
+                    <div class="desc">
+                        <span>
+                          {{itemDetail.desc}}
+                        </span>
+                    </div>
+                </div>
+                <div v-if = "item.set_id">
+                    <div class=" extra-div" v-for="item in itemDetail.attrList" v-if="item.fixed">
+                        <!--input   text-->
+                        <div class="extra text"
+                             v-if="item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.TEXT">
+                            <label class="title">{{item.attr_def_name}}</label>
+                            <div class="desc text" v-show="item.value">{{item.attr_def_key === 'price' ? item.value/100 :
+                                item.value}}
+                            </div>
+                            <div class="desc text" v-show="!item.value">/</div>
+                        </div>
+                        <!--input   select-->
+                        <div class="extra text"
+                             v-if="item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.SELECT">
+                            <label class="title">{{item.attr_def_name}}</label>
+                            <div class="desc text" v-if="item.attr_def_name == 'Currency'">{{item.value | currencyType}}
+                            </div>
+                            <div class="desc text" v-else-if="item.attr_def_name == 'Pack Unit'">{{item.value |
+                                packUnitType}}
+                            </div>
+                            <div class="desc text" v-else>{{item.value}}</div>
+                        </div>
+                        <!--input   file-->
+                        <div class="extra file"
+                             v-if="item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILE||item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILES">
+                            <label class="title">{{item.attr_def_name}}</label>
+                            <div class="desc">
+                                <div class="fileContent" v-for="item in item.value">
+                                    <label> {{item.name}}</label>
+                                    <div class="btn-group">
+                                        <a :href="item.hash | getFileUrl(item.ext)" :download="item.name"
+                                           class="btn-underline mr-15">
+                                            {{ $t('download') }}</a>
+                                        <!--<el-button type="preview" >{{ $t('download') }}</el-button>-->
+                                        <el-button type="preview" @click="preview(item)">{{ $t('preview') }}</el-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extra img"
+                             v-if="item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.PIC||item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.PICS">
+                            <label class="title">{{item.attr_def_name}}</label>
+                            <div class="desc img-group">
+                                <div v-for="value in item.value">
+                                    <img :src='value.hash | getFileUrl(value.ext)'/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else>
+                    <div class=" extra-div" v-for="item in itemDetail.attrList" >
+                       <!--input   text-->
+                        <div class="extra text"
+                            v-if="item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.TEXT">
+                            <label class="title">{{item.attr_def_name}}</label>
+                            <div class="desc text" v-show="item.value">{{item.attr_def_key === 'price' ? item.value/100 : item.value}}
+                            </div>
+                            <div class="desc text" v-show="!item.value">/</div>
+                        </div>
+                        <!--input   select-->
+                        <div class="extra text"
+                            v-if="item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.SELECT">
+                            <label class="title">{{item.attr_def_name}}</label>
+                            <div class="desc text" v-if="item.attr_def_name == 'Currency'">{{item.value | currencyType}}
+                            </div>
+                            <div class="desc text" v-else-if="item.attr_def_name == 'Pack Unit'">{{item.value | packUnitType}}
+                            </div>
+                            <div class="desc text" v-else>{{item.value}}</div>
+                        </div>
+                        <!--input   file-->
+                        <div class="extra file"
+                            v-if="item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILE||item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.FILES">
+                            <label class="title">{{item.attr_def_name}}</label>
+                            <div class="desc">
+                                <div class="fileContent" v-for="item in item.value">
+                                    <label> {{item.name}}</label>
+                                    <div class="btn-group">
+                                        <a :href="item.hash | getFileUrl(item.ext)" :download="item.name"
+                                          class="btn-underline mr-15">
+                                           {{ $t('download') }}</a>
+                                        <!--<el-button type="preview" >{{ $t('download') }}</el-button>-->
+                                        <el-button type="preview" @click="preview(item)">{{ $t('preview') }}</el-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="extra img"
+                             v-if="item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.PIC||item.attr_def_type==Core.Const.CATEGORY_ATTR_INPUT_TYPE.PICS">
+                            <label class="title">{{item.attr_def_name}}</label>
+                            <div class="desc img-group">
+                                <div v-for="value in item.value">
+                                   <img :src='value.hash | getFileUrl(value.ext)'/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-item" v-if="item.category_root_id !== 11">
+                    <label class="title">{{ $t('bomList') }}</label>
+                    <div class="desc h-24" v-if="authList[Core.Const.AUTH_LIST.productProductBomView]">
+                        <div class="icons jc-start">
+                            <div class="icon-item eye" @click="goBomView" :title="$t('view')"></div>
+                        </div>
+                    </div>
+                    <div class="desc" v-else>
+                        -
+                    </div>
+                </div>
+
+                <div class="content-item">
+                    <label class="title">{{ $t('training') }}</label>
+                    <div class="desc h-24">
+                        <div class="icons jc-start">
+                            <div class="icon-item eye" @click="goTrainingView" :title="$t('view')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--删除 Product弹窗-->
+        <el-dialog :title="$t('deleteProductDialog.title')" :visible.sync="deleteDialogVisible" size="tiny">
+            <p>{{selectItem.name || selectItem.part_no}}</p>
+            <p>{{ $t('deleteProductDialog.content') }}</p>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="deleteModel" v-if="selectItem.id == itemId" :disabled="deleteOperation">{{ $t('yes') }}</el-button>
+                <el-button type="preview" @click="deleteSpec" v-else :disabled="deleteOperation">{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="deleteDialogVisible = false">{{ $t('no') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--固件的历史记录弹窗-->
+        <el-dialog :title="$t('historyDialog.title')" :visible.sync="historyDialogVisible" :before-close="handleCloseFirmwareListDialog" size="large">
+            <table border="0" cellspacing="0" cellpadding="0" class="history-table" v-if="HWRecord.length > 0">
+                <thead>
+                <tr>
+                    <td class="history-td head">
+                        {{ $t('historyDialog.updateTime') }}
+                    </td>
+                    <td class="history-td head">
+                        {{ $t('historyDialog.version') }}
+                    </td>
+                    <td class="history-td head" >
+                        文件名
+                    </td>
+                    <td class="history-td head" >
+                        Hex文件名
+                    </td>
+                    <td class="history-td head" >
+                        checkSum
+                    </td>
+                    <td class="history-td head" >
+                        显示状态
+                    </td>
+                    <td class="history-td head">
+                        {{ $t('historyDialog.remark') }}
+                    </td>
+                    <td class="history-td head">
+                        {{ $t('historyDialog.operation') }}
+                    </td>
+                </tr>
+                </thead>
+                <tr v-for="item in HWRecord">
+                    <td class="history-td">{{item.create_time | dateFormat}}</td>
+                    <td class="history-td">{{item.version}}</td>
+                    <td class="history-td">{{item.firmware_name}}</td>
+                    <td class="history-td">{{item.file}}</td>
+                    <td class="history-td">{{item.check_sum}}</td>
+                    <td class="history-td">{{item.type}}</td>
+                    <td class="history-td">{{item.remark}}</td>
+                    <td class="history-td">
+                        <a class="btn-underline" @click="handleEditFirmwareDialog(item)">{{ $t('edit') }}</a>
+                        <a class="btn-underline" :href="item.file | getFileUrl('')"
+                                              :download="item.file">{{ $t('download') }}</a>
+                        <a class="btn-underline" @click="showFirmwareDeleteDialog(item)">{{ $t('delete') }}</a>
+                    </td>
+                </tr>
+            </table>
+            <p v-else>{{ $t('historyDialog.noResult') }}</p>
+            <div class="clear-20"></div>
+            <el-button type="primary" @click="showUpdateHwDialog" class="pull-right">{{ $t('update') }}</el-button>
+            <div class="clear-20"></div>
+            <div v-show="modelFirmwareDialogVisible">
+                <p>该型号下所有固件</p>
+                <table border="0" cellspacing="0" cellpadding="0" class="history-table">
+                    <thead>
+                    <tr>
+                        <td class="history-td head">
+                            物料名称
+                        </td>
+                        <td class="history-td head">
+                            {{ $t('historyDialog.version') }}
+                        </td>
+                        <td class="history-td head">
+                            文件名
+                        </td>
+                        <td class="history-td head">
+                            Hex文件名
+                        </td>
+                        <td class="history-td head">
+                            checkSum
+                        </td>
+                        <td class="history-td head">
+                            显示状态
+                        </td>
+                        <td class="history-td head">
+                            {{ $t('historyDialog.remark') }}
+                        </td>
+                        <td class="history-td head">
+                            {{ $t('historyDialog.operation') }}
+                        </td>
+                    </tr>
+                    </thead>
+                    <tr v-for="item in ModelFirmwareRecord">
+                        <td class="history-td">{{item.ext_part_no}}</td>
+                        <td class="history-td">{{item.version}}</td>
+                        <td class="history-td">{{item.firmware_name}}</td>
+                        <td class="history-td">{{item.file}}</td>
+                        <td class="history-td">{{item.check_sum}}</td>
+                        <td class="history-td">{{item.type}}</td>
+                        <td class="history-td">{{item.remark}}</td>
+                        <td class="history-td">
+                            <a class="btn-underline" @click="copyModelFirmware(item)">{{ $t('copy') }}</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </el-dialog>
+
+        <!--删除 固件弹窗-->
+        <el-dialog :title="$t('deleteFirmwareDialog.title')" :visible.sync="deleteFirmwareDialogVisible" size="tiny">
+            <p>{{selectItem.version}}</p>
+            <p>{{ $t('deleteFirmwareDialog.content') }}</p>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="deleteSoft" >{{ $t('yes') }}</el-button>
+                <el-button type="primary" @click="deleteFirmwareDialogVisible = false">{{ $t('no') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--编辑固件的弹窗-->
+        <el-dialog :title="$t('updateFirmwareDialog.title')" :visible.sync="editDialogVisible">
+            <div class="clear-10"></div>
+            <div>
+                <label class="upload-label">{{ $t('updateFirmwareDialog.version') }}</label>
+                <el-input class="remark" v-model="selectSoft.version"></el-input>
+            </div>
+            <div class="clear-10"></div>
+            <div>
+                <label class="upload-label">Type</label>
+                <el-switch v-model="HWType" on-color="#98b42c" off-color="#606161" on-text="Show" off-text="Hide"></el-switch>
+            </div>
+            <div class="clear-10"></div>
+            <div>
+                <label class="upload-label">{{ $t('updateFirmwareDialog.remark') }}</label>
+                <el-input
+                    class="remark"
+                    resize="none"
+                    type="textarea"
+                    :rows="3"
+                    v-model="selectSoft.remark">
+                </el-input>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="saveCopy" v-if="copy">{{ $t('confirm') }}</el-button>
+                <el-button type="preview" @click="saveEdit" v-else>{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="editDialogVisible = false; copy = false">{{ $t('cancel') }}</el-button>
+            </div>
+        </el-dialog>
+
+        <!--上传固件的弹窗-->
+        <el-dialog :title="$t('updateFirmwareDialog.title')" :visible.sync="updateHWDialogVisible"
+                   :before-close="handleCloseFirmwareDialog" size="large">
+            <div>
+                <label class="upload-label">{{ $t('updateFirmwareDialog.file') }}</label>
+                <el-upload
+                    class="HWUpload"
+                    :action="upload.url"
+                    :on-change="handleChangeFile"
+                    :data="upload.params"
+                    :file-list="fileList">
+                    <el-button size="small" type="primary">{{ $t('updateFirmwareDialog.clickToUpload') }}</el-button>
+                </el-upload>
+            </div>
+            <div class="clear-10"></div>
+            <div>
+                <label class="upload-label">{{ $t('updateFirmwareDialog.version') }}</label>
+                <el-input class="remark" v-model="HWVersion"></el-input>
+            </div>
+            <div class="clear-10"></div>
+            <div>
+                <label class="upload-label">Check sum</label>
+                <el-input class="remark" v-model="HWCheckSum"></el-input>
+            </div>
+            <div class="clear-10"></div>
+            <div>
+                <label class="upload-label">{{ $t('updateFirmwareDialog.remark') }}</label>
+                <el-input
+                    class="remark"
+                    resize="none"
+                    type="textarea"
+                    :rows="3"
+                    placeholder=""
+                    v-model="remark">
+                </el-input>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="preview" @click="updateFirmware">{{ $t('confirm') }}</el-button>
+                <el-button type="primary" @click="handleCloseFirmwareDialog">{{ $t('cancel') }}</el-button>
+            </div>
+            <div class="clear-20"></div>
+            <div v-show="modelFirmwareDialogVisible">
+                <p>该型号下所有固件</p>
+                <table border="0" cellspacing="0" cellpadding="0" class="history-table">
+                    <thead>
+                    <tr>
+                        <td class="history-td head">
+                            物料名称
+                        </td>
+                        <td class="history-td head">
+                            {{ $t('historyDialog.version') }}
+                        </td>
+                        <td class="history-td head">
+                            文件名
+                        </td>
+                        <td class="history-td head">
+                            Hex文件名
+                        </td>
+                        <td class="history-td head">
+                            checkSum
+                        </td>
+                        <td class="history-td head">
+                            显示状态
+                        </td>
+                        <td class="history-td head">
+                            {{ $t('historyDialog.remark') }}
+                        </td>
+                        <td class="history-td head">
+                            {{ $t('historyDialog.operation') }}
+                        </td>
+                    </tr>
+                    </thead>
+                    <tr v-for="item in ModelFirmwareRecord">
+                        <td class="history-td">{{item.ext_part_no}}</td>
+                        <td class="history-td">{{item.version}}</td>
+                        <td class="history-td">{{item.firmware_name}}</td>
+                        <td class="history-td">{{item.file}}</td>
+                        <td class="history-td">{{item.check_sum}}</td>
+                        <td class="history-td">{{item.type}}</td>
+                        <td class="history-td">{{item.remark}}</td>
+                        <td class="history-td">
+                            <a class="btn-underline" @click="copyModelFirmware(item)">{{ $t('copy') }}</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </el-dialog>
+
+        <!--图片预览弹窗-->
+        <el-dialog title="Larger-Image" :visible.sync="previewDialogVisible" size="large" class="preview-dialog">
+            <img :src="previewFile.hash | getFileUrl(previewFile.ext)" class="img"/><br/>
+        </el-dialog>
+
+        <!--迁移-->
+        <el-dialog title="Change Group" :visible.sync="changeGroupDialogVisible" width="50%">
+            <el-input v-model="categoryName" placeholder="category name" style="width: 220px"></el-input>
+            <el-button type="primary" @click="getCategoryList" class="ml-10">Search</el-button>
+            <div class="clear-20"></div>
+            <div style="max-height: 400px; overflow: auto">
+                <div v-for="item in categoryList" style="line-height: 30px">
+                    <label style="display: inline-block; width: 300px">{{item.name}}</label>
+                    <el-button type="text" @click="changeCategory(item)">Confirm</el-button>
+                </div>
+            </div>
+        </el-dialog>
+
+        <!--物料号-->
+        <el-dialog title="Article List" :visible.sync="articleDialogVisible" size="large">
+            <div class='spec-list-holder'>
+                <el-switch v-model="showSpecOrParam" on-color="#98b42c" off-color="#606161" on-text="Param" off-text="Spec"></el-switch>
+            </div>
+            <div class="clear-10"></div>
+            <div class='spec-list-operation'>
+                <el-table :data="specList" size="mini"
+                          highlight-current-row>
+                    <el-table-column
+                        width="150"
+                        prop="part_no"
+                        label="Article No.">
+                    </el-table-column>
+                    <el-table-column label="Operation" width="200" v-if="(authList[Core.Const.AUTH_LIST.productProductAdd] || authList[Core.Const.AUTH_LIST.productProductEdit]
+                                                             ||authList[Core.Const.AUTH_LIST.productProductDelete])">
+                        <template slot-scope="scope">
+                            <a class="btn-underline" @click.stop="clickCreateSpec(scope.row)"
+                               v-if="authList[Core.Const.AUTH_LIST.productProductAdd]">Create</a>
+                            <a class="btn-underline" @click.stop="clickEditSpec(scope.row)"
+                               v-if="authList[Core.Const.AUTH_LIST.productProductEdit]">Edit</a>
+                            <a class="btn-underline" @click.stop="clickFirmwareBtn(scope.row)"
+                               v-if="item.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.HMI
+                                    || item.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.CONTROLLER
+                                    || item.category_root_id === Core.Const.CATEGORY_ROOT_TYPE.BATTERY">Firmware</a>
+                            <br />
+                            <a class="btn-underline" @click.stop="clickChangeSpec(scope.row)"
+                               v-if="scope.row.id != itemId && authList[Core.Const.AUTH_LIST.productProductDelete]">Change</a>
+                            <a class="btn-underline" @click.stop="showDeleteDialog(scope.row)"
+                               v-if="scope.row.id != itemId && authList[Core.Const.AUTH_LIST.productProductDelete]">Delete</a>
+                            <br />
+                            <!--<el-switch v-model="scope.row.id" on-color="#98b42c" off-color="#606161" on-text="Up"-->
+                            <!--off-text="NoU" @change="updateTypeChange(scope.row)" v-if="authList[Core.Const.AUTH_LIST.productProductDelete]"></el-switch>-->
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        width="120"
+                        prop="status"
+                        label="Update status">
+                    </el-table-column>
+                    <el-table-column
+                        width="120"
+                        prop="hardParam"
+                        label="Hard Param" v-if="showSpecOrParam">
+                    </el-table-column>
+                    <el-table-column
+                        width="120"
+                        prop="hardVersion"
+                        label="Hard Version" v-if="showSpecOrParam">
+                    </el-table-column>
+                    <el-table-column
+                        width="120"
+                        prop="firmwareVersion"
+                        label="Firmware Version" v-if="showSpecOrParam">
+                    </el-table-column>
+                    <el-table-column
+                        width="120"
+                        prop="paramVersion"
+                        label="Param Version" v-if="showSpecOrParam">
+                    </el-table-column>
+                    <el-table-column v-for="(head, index) in specTableHead" :key="head"
+                                     :label="head" width="130">
+                        <template slot-scope="scope">
+                            <span>{{(scope.row.attr_list[index] && scope.row.attr_list[index].value) || '-'}}</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+        </el-dialog>
+
+        <!--物料号编辑弹窗-->
+        <el-dialog :title="editSpecDialogTitle" :visible.sync="editSpecDialogVisible" custom-class="dialog-w-600">
+            <el-form ref="specForm" :model="specForm" label-width="200px">
+
+                <el-form-item :label="$t('partNo')" prop="">
+                    <el-input v-model="specForm.part_no" type="String"></el-input>
+                </el-form-item>
+                <el-form-item label="Update Status" prop="">
+                    <el-switch v-model="updateStatus" on-color="#98b42c" off-color="#606161" on-text="Up" off-text="NoU"></el-switch>
+                </el-form-item>
+                <el-form-item :label="$t('set.mechanical')" prop="">
+                    <el-input v-model="mechanical" type="String"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('set.hardVer')" prop="">
+                    <el-input v-model="hardVer" type="String"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('set.firmVer')" prop="">
+                    <el-input v-model="firmVer" type="String"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('set.paramVer')" prop="">
+                    <el-input v-model="paramVer" type="String"></el-input>
+                </el-form-item>
+                <el-form-item :label="spec.attr_def_name" prop="" v-for="spec in specForm.attr_list" :key="spec.attr_def_name">
+                    <el-input v-model="spec.value"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="cancelEditSpec()">Cancel</el-button>
+                <el-button :disabled="createOrEditDisabled" type="preview" @click="editSpec()">Confirm</el-button>
+            </div>
+        </el-dialog>
+
+        <!--物料号迁移弹窗-->
+        <el-dialog title="Change" :visible.sync="changeSpecDialogVisible" custom-class="dialog-400">
+            <el-form label-width="100px">
+                <el-form-item label="Article No." prop="">
+                    <label>{{selectItem.part_no}}</label>
+                </el-form-item>
+                <el-form-item label="Model Name" prop="">
+                    <el-input v-model="newModelName"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="changeSpecDialogVisible = false">Cancel</el-button>
+                <el-button type="preview" @click="changeSpecToTarget">Confirm</el-button>
+            </div>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+    import ElForm from "../../../../node_modules/element-ui/packages/form/src/form.vue";
+    import XLSX from 'xlsx'
+
+    export default {
+        components: {
+            ElForm
+        },
+
+        data() {
+            return {
+                Core: Core,
+                itemId: '',
+                item: '', //当前显示的item
+                imgUrlPrefix: Core.Const.NET.FILE_URL_PREFIX,
+                editDialogVisible: false,
+                deleteDialogVisible: false,
+                selectSoft: {},
+                deleteFirmwareDialogVisible: false,
+
+                itemDetail: {},
+                productList: [],
+                valueList: [],
+                productSelected: "",
+                historyDialogVisible: false,
+                modelFirmwareDialogVisible: false,
+                updateHWDialogVisible: false,
+                upload: {
+                    url: Core.Const.NET.FILE_UPLOAD_END_POINT,
+                    paramName: 'file',
+                    params: {
+                        'token': Core.Data.getToken()
+                    }
+                },
+                file: {},
+                remark: '',
+                HWVersion: '',
+                HWCheckSum: '',
+                HWType: true,
+                HWInfo: {},
+                HWRecord: [],
+                ModelFirmwareRecord: [],
+                fileList: [],
+                previewFile: {},
+                selectItem: '',
+                previewDialogVisible: false,
+
+                authList: [],
+                itemList: [],
+                specList: [],
+                specTableHead: [],
+                editSpecDialogVisible: false,
+                editSpecDialogTitle: 'Edit Param',
+                isCreateNew: false,
+                specForm: {},
+                updateStatus: false,
+                mechanical: "",
+                hardVer: "",
+                firmVer: "",
+                paramVer: "",
+                currentRow: null,
+                showSpecOrParam: false,
+
+                changeGroupDialogVisible: false,
+                categoryName: '',
+                categoryList: [],
+
+                articleDialogVisible: false,
+
+                //change spec
+                changeSpecDialogVisible: false,
+                newModelName: '',
+                copy: false,
+                options: {
+                    url: Core.Const.NET.FILE_UPLOAD_END_POINT,
+                    //url:'http://static.besst.bafang-service.com/besst/file',
+                    paramName: 'file',
+                    params: {
+                        token: Core.Data.getToken(),
+                        // order_id: '',
+                        // item_id: '',
+                    }
+                },
+                oldVersions: {},
+                deleteOperation: false,
+                createOrEditDisabled: false,
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Product.Detail,
+                zh: ZH.Component.Product.Detail,
+                de: DE.Component.Product.Detail,
+                nl: NL.Component.Product.Detail
+            }
+        },
+        mounted: function() {
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            this.itemId = this.$route.query.id;
+
+            this.getItemDetail();
+
+        },
+        methods: {
+
+            beforeAvatarUpload(file) {
+                var reader = new FileReader();
+                reader.readAsText(file,'gb2312');
+                reader.onload = function(evt) {
+                    console.log(evt.target.result);
+                };
+            },
+            getItemDetail() {
+                Core.Api.Item.getItemDetail(this.itemId).then(res => {
+                    this.item = res.item;
+                    this.setItem(this.item);
+//                    this.getItemListWithSameName();
+                    this.getSpecList();
+                });
+            },
+
+            change(item) {
+                this.productSelected = item;
+            },
+
+            switchDemonstration(index) {
+                this.$refs.carousel.setActiveItem(index);
+                this.productSelected = index;
+            },
+
+//            getItemListWithSameName() {
+//                Core.Api.Item.getItemListWithSameName(this.itemId).then(
+//                    res => {
+//                        this.itemList = res.item_list;
+//                        //                        console.log(this.itemList);
+//                    });
+//            },
+
+            getSpecList() {
+                this.specList = [];
+                this.specTableHead = [];
+                if (this.itemDetail.setId > 0) {  // 产品类别
+                    Core.Api.Item.getSpecList(this.item.id, this.itemDetail.setId).then(
+                        res => {
+                            console.log(res);
+
+                            let result = Core.Data.deepClone(res);
+
+                            let specList = result.list;
+//                            specList.sort((a,b)=>{
+//                                console.log(a.attr_list.filter((item)=>{ return item.attr_def_id === 12})[0].value );
+//
+//                                return a.attr_list.filter((item)=>{ return item.attr_def_id === 12})[0].value - b.attr_list.filter((item)=>{ return item.attr_def_id === 12})[0].value;
+//                            })
+
+//                            console.log(this.specList);
+
+                            if (specList !== null && specList.length > 0) {
+                                let len = specList.length;
+                                let attrList = [];
+                                for (var i = 0; i < len; i++) {
+                                    attrList = specList[i].attr_list;
+                                    if (attrList.length > 0) {
+                                        let empty = [];
+                                        if (this.item.name.substr(0, 2) === 'DP' && (this.item.name.indexOf(".UART") > -1 || this.item.name.indexOf(".U") > -1)) {
+                                            empty = attrList.filter((item) => {
+                                                return item.attr_def_key !== "circuference";
+                                            });
+                                            attrList = empty;
+                                        }
+                                        if (this.item.name.substr(0, 2) === 'DP' && this.item.name.indexOf(".C") > -1) {
+                                            empty = attrList.filter((item) => {
+                                                return item.attr_def_key !== "wheel_size" && item.attr_def_key !== "speed_limit" && item.attr_def_key !== "circuference";
+                                            });
+                                            attrList = empty;
+                                        }
+                                        if (this.item.name.substr(0, 2) === 'CR' && this.item.name.indexOf(".FC") > -1) {
+                                            empty = attrList.filter((item) => {
+                                                return item.attr_def_key !== "pas_signals";
+                                            });
+                                            attrList = empty;
+                                        }
+                                        if (this.item.name.substr(0, 2) === 'CR' && this.item.name.indexOf(".SN") > -1) {
+                                            empty = attrList.filter((item) => {
+                                                return item.attr_def_key !== "speed_limit" && item.attr_def_key !== "circuference" && item.attr_def_key !== "wheel_diameter";
+                                            });
+                                            attrList = empty;
+                                        }
+                                        specList[i].attr_list = attrList;
+                                        if(this.specTableHead.length<=0){
+                                            attrList.forEach(item => {
+                                                this.specTableHead.push(item.attr_def_name);
+                                            })
+                                        }
+                                    };
+                                }
+
+                                if(len>1 && this.item.category_root_id>3 && this.item.category_root_id<8 ){
+                                    for (var j = 0; j < len -1- i; j++) {
+                                        let soft_1 = specList[j].attr_list.filter((item)=>{ return item.attr_def_id === 12})[0].value;
+                                        let soft_2 = specList[j+1].attr_list.filter((item)=>{ return item.attr_def_id === 12})[0].value;
+//                                        console.log(soft_1,soft_2,soft_1 > soft_2);
+                                        if (soft_1 > soft_2) {        // 低版本在前面
+                                            var temp = specList[j+1];        // 元素交换
+                                            specList[j+1] = specList[j];
+                                            specList[j] = temp;
+                                        }
+                                    }
+                                }
+                                this.specList = specList;
+//                                console.log('head', this.specTableHead);
+//                                this.specList.forEach((item, index) => {
+//                                    let selectRow = Core.Data.get(Core.Const.DATA.KEY_COMPONENT_PROJECT_SELECT_SPEC);
+//                                    selectRow = JSON.parse(selectRow);
+//                                    if (item.id === selectRow.id) {
+//                                        let vm = this;
+//                                        setTimeout(() => {
+//                                            vm.currentRow = vm.specList[index];
+//                                        }, 1000);
+//                                        console.log('current', this.currentRow);
+//                                    }
+//                                });
+                            }
+
+                        });
+                }
+
+            },
+
+            clickEditSpec(item) {
+//                console.log('[Item]', item);
+                this.editSpecDialogTitle = 'Edit Param';
+                this.editSpecDialogVisible = true;
+                this.specForm = {};
+                this.specForm = Core.Util.clone(item);
+                this.mechanical = this.specForm.hardParam || "";
+                this.hardVer = this.specForm.hardVersion || "";
+                this.firmVer = this.specForm.firmwareVersion || "";
+                this.paramVer = this.specForm.paramVersion || "";
+//                console.log( this.specForm );
+                this.updateStatus = this.specForm.status === 0 ? false : true;
+                this.isCreateNew = false;
+                this.createOrEditDisabled = false;
+
+                item.attr_list.forEach((attrItem)=>{
+                    if(attrItem.attr_def_name === 'Software Version' || attrItem.attr_def_name === 'Hardware Version'){
+                        this.$set(this.oldVersions,[attrItem.attr_def_name],attrItem.value);
+                    }
+                })
+            },
+
+            clickCreateSpec(item) {
+//                console.log('[Item]', item);
+                this.selectItem = item;
+                this.editSpecDialogTitle = 'Create New';
+                this.editSpecDialogVisible = true;
+                this.specForm = {};
+                this.specForm = Core.Util.clone(item);
+                this.updateStatus = this.specForm.status === 0 ? false : true;
+                this.isCreateNew = true;
+                this.createOrEditDisabled = false;
+            },
+
+            clickChangeSpec(item) {
+                this.selectItem = item;
+                this.newModelName = '';
+                this.changeSpecDialogVisible = true;
+            },
+
+            cancelEditSpec() {
+                this.editSpecDialogVisible = false
+            },
+
+            editSpec() {
+                let attrList = this.specForm.attr_list;
+
+                let haveNewVersion = false;
+
+//                console.log("[status]", this.specForm);
+//                console.log("[status]", this.updateStatus);
+//                console.log("[status]", this.updateStatus == true ? 1 : 0);
+                let empty = [];
+                if (this.item.name.substr(0, 2) === 'DP' && (this.item.name.indexOf(".UART") > -1 || this.item.name.indexOf(".U") > -1)) {
+                    empty = attrList.filter((item) => {
+                        return item.attr_def_key !== "circuference";
+                    });
+                    attrList = empty;
+                }
+                if (this.item.name.substr(0, 2) === 'DP' && this.item.name.indexOf(".C") > -1) {
+                    empty = attrList.filter((item) => {
+                        return item.attr_def_key !== "wheel_size" && item.attr_def_key !== "speed_limit" && item.attr_def_key !== "circuference";
+                    });
+                    attrList = empty;
+                }
+                if (this.item.name.substr(0, 2) === 'CR' && this.item.name.indexOf(".FC") > -1) {
+                    empty = attrList.filter((item) => {
+                        return item.attr_def_key !== "pas_signals";
+                    });
+                    attrList = empty;
+                }
+                if (this.item.name.substr(0, 2) === 'CR' && this.item.name.indexOf(".SN") > -1) {
+                    empty = attrList.filter((item) => {
+                        return item.attr_def_key !== "speed_limit" && item.attr_def_key !== "circuference" && item.attr_def_key !== "wheel_diameter";
+                    });
+                    attrList = empty;
+                }
+                let newAttrList = [];
+                if (attrList !== null && attrList !== undefined && attrList.length > 0) {
+                    attrList.forEach(item => {
+                        let data = {
+                            attr_def_id: item.attr_def_id,
+                            value: item.value
+                        };
+                        if(item.attr_def_name === 'Software Version' || item.attr_def_name === 'Hardware Version'){
+                            if(this.oldVersions[item.attr_def_name] !== item.value){
+                                haveNewVersion = true;
+                            }
+                        }
+
+                        newAttrList.push(data);
+                    })
+                }
+                let json = JSON.stringify(newAttrList);
+                if (!json) {
+                    return;
+                }
+
+                if (this.isCreateNew) {
+                    this.createOrEditDisabled = true;
+                    Core.Api.Item.copySpec(this.specForm.id, this.specForm.part_no.trim(), json, this.updateStatus === true ? 1 : 0, this.mechanical, this.hardVer, this.firmVer, this.paramVer).then(
+                        res => {
+                            this.editSpecDialogVisible = false;
+                            this.createOrEditDisabled = false;
+                            this.getSpecList();
+                        }).catch( (err)=>{
+                            this.createOrEditDisabled = false;
+                            console.log(err);
+                        });
+                } else {
+
+                    this.createOrEditDisabled = true;
+                    Core.Api.Item.editSpec(this.specForm.id, this.specForm.part_no.trim(), json, this.updateStatus === true ? 1 : 0, this.mechanical, this.hardVer, this.firmVer, this.paramVer).then(
+                        res => {
+                            this.editSpecDialogVisible = false;
+                            this.createOrEditDisabled = false;
+                            this.getSpecList();
+                        }).catch( (err)=>{
+                            this.createOrEditDisabled = false;
+                            console.log(err);
+                        });
+//                    console.log(haveNewVersion);
+                    if(haveNewVersion){
+                        let versionList = {
+                            old: {},
+                            new: {}
+                        };
+                        Object.keys(this.oldVersions).forEach((versionItem)=>{
+                            attrList.forEach((attrItem)=>{
+                                if(attrItem.attr_def_name == versionItem){
+                                    versionList.new[versionItem] = attrItem.value;
+                                }
+
+                            })
+                            versionList.old[versionItem] = this.oldVersions[versionItem];
+                        })
+//                        console.log(versionList);
+                        const info ={
+                            'sn':this.specForm.part_no,
+                            'object_id':this.specForm.id,
+                            'data':JSON.stringify(versionList),
+                            'type':1,
+                            'remark':'',
+                        }
+                        Core.Api.request({
+                            url: '/report/save',
+                            data:info,
+                            headers: {
+                                'content-type': 'application/json,chart=utf-8'
+                            },
+                            method: 'POST'
+                        }).then(res=>{
+                            console.log(res);
+                        }).catch(err=>{
+                            console.log(err);
+                        })
+                    }
+                }
+            },
+
+            setItem(item) {
+                this.productList = [];
+                this.itemDetail.id = item.id;
+                this.itemDetail.name = item.name;
+                this.itemDetail.ext_part_no = item.ext_part_no;
+                this.itemDetail.desc = item.desc;
+                this.itemDetail.img = Core.Const.NET.IMG_URL_PREFIX + item.img;
+                this.itemDetail.attrList = item.attr_list;
+                this.itemDetail.setId = item.set_id;
+                this.itemDetail.category_root_id = item.category_root_id;
+                this.itemDetail.hard_param = item.hard_param || "";
+                this.itemDetail.hard_version = item.hard_version || "";
+                this.itemDetail.firmware_version = item.firmware_version || "";
+                this.itemDetail.param_version = item.param_version || "";
+                this.itemDetail.status = item.status;
+                this.productList.push(this.itemDetail.img);
+                this.getShowPic();
+            },
+
+            getShowPic() {
+                if (!this.itemDetail.attrList) {
+                    return;
+                }
+                let contain = false;
+                let vm = this;
+                this.itemDetail.attrList.forEach(function(item, index) {
+                    if (item.attr_def_key === 'display_img') {
+                        contain = true;
+                        vm.valueList = item.value;
+                        vm.valueList.forEach(function(item) {
+                            vm.productList.push(Core.Const.NET.FILE_URL_PREFIX + item.hash + '.' + item.ext);
+                        });
+                        //为了不让它在下部呈现，把它从数组里面去掉
+                        vm.itemDetail.attrList.splice(index, 1);
+                    }
+                });
+                if (contain && vm.productList.length > 1) {
+                    //当包含展示图时，去掉原来的logo图
+                    //                    vm.productList.splice(0, 1);
+                }
+            },
+
+            showDeleteDialog(item) {
+                this.selectItem = item;
+                this.deleteDialogVisible = true;
+                this.deleteOperation = false;
+            },
+
+            showFirmwareDeleteDialog(firmware) {
+                this.selectSoft = firmware;
+                console.log(firmware);
+                this.deleteFirmwareDialogVisible = true
+            },
+
+            //删除item方法
+            deleteSpec() {
+                this.deleteOperation = true;
+                let item = this.selectItem;
+                Core.Api.Item.deleteItem(item.id).then(res => {
+                    this.deleteOperation = false;
+                    this.deleteDialogVisible = false;
+                    this.getSpecList();
+                });
+            },
+
+            //删除整个model
+            deleteModel() {
+                this.deleteOperation = true;
+                let item = this.selectItem;
+                Core.Api.Item.deleteItem(item.id).then(res => {
+                    this.deleteOperation = false;
+                    this.deleteDialogVisible = false;
+                    this.$root.eventHub.$emit(Core.Const.EVENT_HUB.REFRESH_ITEM_LIST_BY_CATEGORY_ID, this.item.category_id);
+                    this.$router.back();
+                });
+            },
+
+            goToSaveView(type) {
+                this.$router.push({
+                    name: 'componentProductSave',
+                    query: {
+                        "itemId": this.itemId,
+                        "categoryId": this.item.category_id,
+                        "type": type
+                    }
+                });
+            },
+
+            goBomView() {
+                this.$router.push({
+                    name: 'componentProductBom',
+                    query: {
+                        "id": this.itemId,
+                        "partNo": this.itemDetail.ext_part_no
+                    }
+                });
+            },
+
+            //            showEditHwDialog() {
+            //                this.editHWDialogVisible = true;
+            //                this.HWVersion = '';
+            //            },
+
+            showUpdateHwDialog() {
+                this.updateHWDialogVisible = true;
+                this.fileList = [];
+                this.remark = '';
+                this.HWVersion = '';
+                this.HWCheckSum = '';
+            },
+
+            handleChangeFile(file) {
+                this.fileList = [file];
+//                console.log(this.fileList);
+
+                let reader = new FileReader();
+                reader.readAsArrayBuffer(file.raw);
+                let vm = this;
+                reader.onload  = function(e){
+                    let arr = Buffer.from(e.target.result);
+                    vm.HWCheckSum = Core.Util.checkCrc(arr);
+                    console.log("HWCheckSum",vm.HWCheckSum);
+                };
+
+
+                /**
+                 name: "besst3.0_app_2019_3_30_release.bin"
+                 percentage: 100
+                 raw: (...)
+                 response:
+                 code: 0
+                 data:
+                 file: {id: 1139, name: "besst3.0_app_2019_3_30_release.bin", hash: "d4bcd20802a80e4a47a9e6e92efb5882ed7965239cde7ebf63a65420d9142c3d", ext: "bin", mime_type: "application/octet-stream", …}
+                 __proto__: Object
+                 __proto__: Object
+                 size: 37442
+                 status: "success"
+                 uid: 1571796550499
+                 url: "blob:http://localhost:8181/81336e63-64d3-468a-990d-aab7b26cd487"
+                 */
+            },
+
+            //点击firmware按钮
+            clickFirmwareBtn(item) {
+                if(item === undefined){
+                    this.selectItem = this.item;
+                }else{
+                    this.selectItem = item;
+                }
+//                console.log(this.selectItem);
+                Core.Api.Firmware.getHistory(this.selectItem.id).then(res => {
+                    res.record.length > 0 ? this.historyDialogVisible = true : this.updateHWDialogVisible = true;
+                    this.HWRecord = res.record;
+                    this.getAllFirmwareList();
+                });
+            },
+
+            //  获取这个型号下面所有的文件
+            getAllFirmwareList(){
+                this.ModelFirmwareRecord = [];
+                Core.Api.Item.getItemFirmwareFile(this.item.name).then(res => {
+                    console.log("File",res);
+                    /**
+                     * ext_part_no: "2101300100010"
+                     file: "6b18abae772b6152704bdad1bb823e4680e6724c1abb0fc5cd5b0532292e38f6.bin"
+                     id: 1005
+                     remark: "电量显示提升"
+                     version: "CRS10F4313E101013.1"
+                     **/
+                    res.length > 0 ? this.modelFirmwareDialogVisible = true : this.modelFirmwareDialogVisible = false;
+                    this.ModelFirmwareRecord = res;
+                });
+            },
+
+            // 复制
+            copyModelFirmware(item){
+                this.selectSoft = item;
+                console.log( item );
+                this.copy = true;
+                this.HWType = this.selectSoft.type == 1? true : false;
+                this.editDialogVisible = true;
+            },
+
+            //Tool update Status
+            clickUpdateStatus(){
+                this.editSpecDialogVisible = true;
+                this.specForm.id = this.itemDetail.id;
+                this.specForm.setId = 1;
+                this.specForm.part_no = this.itemDetail.ext_part_no;
+                this.specForm.status = this.itemDetail.status;
+//                console.log(this.specForm, this.itemDetail);
+            },
+
+            //删除 固件/firmware 方法
+            deleteSoft() {
+                let item = this.selectItem;
+                let selectSoft = this.selectSoft;
+                Core.Api.Firmware.delete(selectSoft.id).then(res => {
+                    this.deleteFirmwareDialogVisible = false;
+                    this.$message.success('删除固件文件成功');
+
+                    if (this.HWRecord.length < 2) {
+                        this.historyDialogVisible = false;
+                    } else {
+                        Core.Api.Firmware.getHistory(item.id).then(res => {
+                            this.HWRecord = res.record;
+                        });
+                    }
+                });
+
+            },
+            //上传固件
+            updateFirmware() {
+                if (this.fileList.length <= 0) {
+                    this.$message({
+                        message: "请上传固件文件",
+                        type: 'warning'
+                    });
+                    return;
+                }
+                if (!this.HWVersion) {
+                    this.$message({
+                        message: "请输入软件版本号",
+                        type: 'warning'
+                    });
+                    return;
+                }
+                console.log(this.fileList);
+                try{
+                    if (!this.fileList[0].response.data.file) {
+                        this.$message.warning("上传固件文件失败");
+                        return;
+                    }
+                }catch(err){
+                    console.log(err);
+                }
+
+                let fileName = this.fileList[0].response.data.file.hash + '.' + this.fileList[0].response.data.file.ext;
+//                let fileName = "d4bcd20802a80e4a47a9e6e92efb5882ed7965239cde7ebf63a65420d9142c3d.bin";
+                Core.Api.Firmware.saveFirmware('', this.selectItem.id, this.HWVersion, fileName, this.remark, this.fileList[0].raw.name, this.HWCheckSum, 1).then(res => {
+                    this.updateHWDialogVisible = false;
+                    this.$message.success('新建固件成功');
+                    Core.Api.Firmware.getHistory(this.selectItem.id).then(res => {
+                        this.HWRecord = res.record;
+                    });
+                });
+
+            },
+            // 保存编辑
+            saveEdit(){
+//                console.log("saveEdit");
+//                console.log(this.selectItem);
+                Core.Api.Firmware.saveFirmware(this.selectSoft.id, this.selectItem.id, this.selectSoft.version, this.selectSoft.file, this.selectSoft.remark, this.selectSoft.firmware_name, this.selectSoft.check_sum,  this.HWType == true ? 1 : 0).then(res => {
+                    this.editDialogVisible = false;
+                    this.$message.success('编辑固件详情成功');
+                    Core.Api.Firmware.getHistory(this.selectItem.id).then(res => {
+                        this.HWRecord = res.record;
+                    });
+                    this.selectSoft = '';
+                });
+            },
+            // 保存复制
+            saveCopy(){
+//                console.log("saveCopy");
+//                console.log(this.selectItem);
+//                console.log(this.selectSoft);
+                let fileName = this.selectSoft.file;
+
+                let fileNameCheck = false;
+                this.HWRecord.forEach((item)=>{
+                   if(item.file === fileName){
+                       fileNameCheck = true;
+                   }
+                });
+                let firmware = '';
+
+                if(this.selectSoft.hasOwnProperty('firmware_name')){
+                    console.log("firmware_name");
+                    firmware = this.selectSoft.firmware_name;
+                }
+                if(fileNameCheck){
+                    this.$message({
+                        message: "文件重复，请校对",
+                        type: 'error',
+                        duration: 0
+                    });
+                    return;
+                }
+                Core.Api.Firmware.saveFirmware('', this.selectItem.id, this.selectSoft.version, this.selectSoft.file, this.selectSoft.remark, firmware, this.selectSoft.check_sum?this.selectSoft.check_sum:'', this.selectSoft.type?this.selectSoft.type:1).then(res => {
+                    this.editDialogVisible = false;
+                    this.$message.success('新建固件成功');
+                    Core.Api.Firmware.getHistory(this.selectItem.id).then(res => {
+                        this.HWRecord = res.record;
+                    });
+                });
+                this.copy = false;
+            },
+
+            goTrainingView() {
+                this.$router.push({
+                    name: 'componentProductItemVideo',
+                    query: {
+                        itemId: this.itemId
+                    }
+                });
+            },
+
+            preview(item) {
+                this.previewFile = item;
+                this.previewDialogVisible = true;
+            },
+
+            changeCategory(category) {
+                let itemId = this.itemId;
+                let categoryId = category.id;
+                Core.Api.Item.changeCategory(itemId, categoryId).then(res => {
+                    this.changeGroupDialogVisible = false;
+                    this.categoryName = '';
+                    this.categoryList = [];
+                })
+            },
+
+            changeSpecToTarget() {
+                let item = this.selectItem;
+                Core.Api.Item.changeSpecToOtherItem(item.id, this.newModelName).then(res => {
+                    this.$message.success('变更目录成功');
+                    this.getSpecList();
+                    this.changeSpecDialogVisible = false;
+                })
+            },
+
+            getCategoryList() {
+                Core.Api.Category.queryEndCategory(this.categoryName).then(res => {
+                    this.categoryList = res.category_list;
+                    if (this.categoryList.length < 0) {
+                        this.$message.warning('There is no content that meets the criteria.');
+                    }
+                })
+            },
+
+            handleEditFirmwareDialog(item) {
+                this.selectSoft = item;
+                console.log( item );
+                this.copy = false;
+                this.HWType = this.selectSoft.type == 1? true : false;
+                this.editDialogVisible = true;
+            },
+
+            handleCloseFirmwareDialog() {
+                this.fileList.length = 0;
+                this.fileList = [];
+                this.HWVersion = '';
+                this.remark = '';
+                this.updateHWDialogVisible = false;
+            },
+
+            handleCloseFirmwareListDialog() {
+                this.HWRecord.length = 0;
+                this.HWRecord = [];
+                this.historyDialogVisible = false;
+            },
+
+            updateTypeChange(item) {
+                console.log(item);
+            }
+        }
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .product-detail-container {
+        height: 100%;
+        overflow: hidden;
+        padding-left: 272px;
+        .content-holder {
+            height: calc(100% - 60px);
+            overflow: auto;
+            .thumb-img-box {
+                width: 100%;
+                height: 72px;
+                font-size: 0;
+                text-align: center;
+                .thumb {
+                    display: inline-block;
+                    width: 72px;
+                    height: 72px;
+                    margin-right: 10px;
+                    /*background: url('../../../assets/images/components/carousel-example@2x.png');*/
+                    background-size: cover;
+                    border: 1px solid rgba(39, 43, 55, 0.20);
+                    cursor: pointer;
+                    overflow: hidden;
+                    .thumb-img {
+                        width: 70px;
+                        height: 70px;
+                    }
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                    &.selected {
+                        border: 2px solid rgba(226, 104, 41, 1);
+                    }
+                }
+            }
+            .content-box {
+                padding: 26px 60px;
+                .content-item {
+                    padding: 16px 0;
+                    border-top: 1px solid rgba(255, 255, 255, 0.10);
+                    font-size: 0;
+                    &.border-none {
+                        border: none;
+                        padding-top: 0;
+                    }
+                    .title {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: 140px;
+                        font-size: 14px;
+                        color: rgba(255, 255, 255, 0.6);
+                        padding: 0 5px;
+                        &.strong {
+                            color: #FFFFFF;
+                            font-weight: bold;
+                        }
+                    }
+                    .desc {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: calc(100% - 140px);
+                        &.h-24 {
+                            height: 24px;
+                        }
+                        span {
+                            font-size: 14px;
+                            color: #FFFFFF;
+                            &.strong {
+                                font-weight: bold;
+                            }
+                        }
+                    }
+                }
+                .extra-div {
+                    padding: 16px 0;
+                    border-top: 1px solid rgba(255, 255, 255, 0.10);
+                    .title {
+                        display: inline-block;
+                        vertical-align: top;
+                        width: 140px;
+                        font-size: 14px;
+                        color: rgba(255, 255, 255, 0.6);
+                        padding: 0 5px;
+                    }
+                    .extra {
+                        .desc {
+                            display: inline-block;
+                            vertical-align: top;
+                            position: relative;
+                            top: -16px;
+                            .fileContent {
+                                margin-top: 16px;
+                                .title {
+                                    display: inline-block;
+                                }
+                                .btn-group {
+                                    display: inline-block;
+                                    margin-left: 6px;
+                                }
+                            }
+                        }
+                        .img-group {
+                            margin-top: 10px;
+                            img {
+                                width: 50px;
+                                height: 50px;
+                            }
+                        }
+                        .text {
+                            top: 0;
+                        }
+                    }
+                }
+                .version {
+                    .version-label {
+                        display: inline-block;
+                        margin-right: 40px;
+                    }
+                }
+            }
+        }
+        .history-table {
+            width: 100%;
+            /*min-width:700px;*/
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            tr {
+                line-height: 30px;
+            }
+            .head {
+                color: white;
+            }
+            .history-td {
+                padding: 0 6px;
+                width: 160px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                font-size: 14px;
+                text-align: center;
+            }
+        }
+        .upload-label {
+            display: inline-block;
+            width: 100px;
+            vertical-align: top;
+        }
+        .HWUpload {
+            display: inline-block;
+        }
+        .remark {
+            width: calc(100% - 140px);
+        }
+        .head-cell-class {
+            font-size: 12px;
+        }
+        .spec-list-operation {
+
+        }
+        .spec-list-holder {
+            overflow: auto;
+            width: 100%;
+            max-height: 600px;
+            .btn-underline {
+                padding-right: 5px;
+            }
+        }
+        .el-table__header {
+            .is-leaf {
+                .cell {
+                    /*text-wrap:normal;*/
+                    word-break: normal;
+                    /*word-wrap:normal;*/
+                }
+            }
+        }
+        /*.el-table__body{*/
+        /*overflow: scroll;*/
+        /*width: 100%;*/
+        /*height:100%;*/
+        /*}*/
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// detail.vue?82588dbc

@@ -1,0 +1,386 @@
+<template>
+    <div class="dealer-order-detail">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="goOrderList" :title="$t('back')"></div>
+                </div>
+            </div>
+            <label class="title">{{ $t('orderDetail') }}</label>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item edit" @click="goOrderEdit" v-if="authList[Core.Const.AUTH_LIST.orderEdit]"
+                         :title="$t('edit')"></div>
+                    <div class="icon-item delete" @click="dialogDeleteVisible = true"
+                         v-if="authList[Core.Const.AUTH_LIST.orderDelete]" :title="$t('delete')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="loading" v-if="loading">
+            <img src="../../../assets/images/icon/loading-bars.svg" alt="Loading icon"/>
+        </div>
+        <div class="content-wrap" v-else>
+            <div class="content">
+                <div class="update-invoice" v-show="!invoice">
+                    <el-input class="invoice-input" v-model="invoiceNo" :placeholder="$t('invoiceNo')"></el-input>
+                    <el-date-picker
+                        v-model="invoiceDate"
+                        type="date"
+                        :placeholder="$t('invoiceDate')"
+                        :picker-options="pickerOptions">
+                    </el-date-picker>
+                    <el-button class="btn" type="primary" @click="updateInvoice">{{ $t('submit') }}</el-button>
+                </div>
+                <label class="title">{{ $t('customerInfo.title') }}</label>
+                <div class="info">
+                    <div class="left">
+                        <div class="item">
+                            <label class="label">{{ $t('customerInfo.name') }}</label>
+                            <label class="text">{{customer.name}}</label>
+                        </div>
+                        <div class="item">
+                            <label class="label">{{ $t('customerInfo.phone') }}</label>
+                            <label class="text">{{customer.phone}}</label>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="item">
+                            <label class="label">{{ $t('customerInfo.email') }}</label>
+                            <label class="text">{{customer.email}}</label>
+                        </div>
+                    </div>
+                </div>
+                <label class="title">{{ $t('bikeInfo.title') }}</label>
+                <div class="info">
+                    <div class="left">
+                        <div class="item">
+                            <label class="label">{{ $t('bikeInfo.brand') }}</label>
+                            <label class="text">{{detailOrder.brand_name}}</label>
+                        </div>
+
+                        <div class="item">
+                            <label class="label">{{ $t('bikeInfo.model') }}</label>
+                            <label class="text">{{detailOrder.item_name}}</label>
+                        </div>
+                    </div>
+
+                    <div class="right">
+                        <div class="item">
+                            <label class="label">{{ $t('bikeInfo.bikeId') }}</label>
+                            <label class="text">{{detailOrder.object_sn}}</label>
+                        </div>
+                        <div class="item">
+                            <label class="label">{{ $t('bikeInfo.warrantyPeriod') }}</label>
+                            <label class="text"
+                                   v-if="detailOrder.warranty && detailOrder.warranty > 0">{{detailOrder.warranty}} Months</label>
+                            <label class="text" v-else>{{detailOrder.warranty}} Month</label>
+                        </div>
+                    </div>
+
+                    <div class="clear-0"></div>
+
+                    <table class="table" border="0" cellpadding="1" cellspacing="0">
+                        <tr>
+                            <td>Type</td>
+                            <td>SN</td>
+                            <td>Name</td>
+                            <td>Operation</td>
+                        </tr>
+                        <tr v-for="item in bomList">
+                            <td>{{ item.category_root_id | categoryRoot }}</td>
+                            <td>{{ item.sn }}</td>
+                            <td>{{ item.item && item.item.name && '-'}}</td>
+                            <td @click="goToBomDetail(item.item_id)">
+                                <div class="icons">
+                                    <div class="icon-item eye" title="View"></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <label class="title">{{ $t('detail.title') }}</label>
+                <div class="info" :class="{detail:invoice}">
+                    <div class="left">
+                        <div class="item">
+                            <label class="label">{{ $t('detail.orderNo') }}</label>
+                            <label class="text">{{detailOrder.sn}}</label>
+                        </div>
+
+                        <div class="item">
+                            <label class="label">{{ $t('detail.price') }}</label>
+                            <label
+                                class="text">{{detailOrder.currency | currencyType}} {{detailOrder.price / 100}}</label>
+                        </div>
+
+                        <div class="item" v-show="invoice">
+                            <label class="label">{{ $t('detail.invoice') }}</label>
+                            <label class="text">{{invoiceNo}} date:{{invoiceDate | timeFormat('Y-m-d')}}</label>
+                        </div>
+                    </div>
+
+                    <div class="right">
+                        <div class="item">
+                            <label class="label">{{ $t('detail.salesDate') }}</label>
+                            <label class="text" v-if="detailOrder.sale_time == 0"> - </label>
+                            <label class="text" v-else>{{detailOrder.sale_time | timeFormat('Y-m-d')}}</label>
+
+                        </div>
+                        <div class="item">
+                            <label class="label">{{ $t('detail.remark') }}</label>
+                            <label class="text">{{detailOrder.remark}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <el-dialog
+            :title="$t('deleteDialog.title')"
+            :visible.sync="dialogDeleteVisible"
+            size="tiny">
+            <span>{{ $t('deleteDialog.content') }}</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="deleteDealerOrder">{{ $t('deleteDialog.yes') }}</el-button>
+                 <el-button type="primary" @click="dialogDeleteVisible = false">{{ $t('deleteDialog.no') }}</el-button>
+            </span>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        name: "dealerOrderDetail",
+        components: {},
+        data() {
+            return {
+                Core: Core,
+                invoiceDate: '',
+                invoice: '',
+                invoiceNo: '',
+                dialogDeleteVisible: false,
+                orderId: '',
+                detailOrder: {},
+                customer: {},
+                pickerOptions: {
+                    disabledDate(time) {
+                        return time.getTime() >= Date.now();
+                    }
+                },
+                authList: [],
+                bomList: [],
+
+                loading: true
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Dealer.Sale.Detail,
+                zh: ZH.Dealer.Sale.Detail,
+                de: DE.Dealer.Sale.Detail,
+                nl: NL.Dealer.Sale.Detail
+            }
+        },
+        mounted: function () {
+            this.orderId = this.$route.query.id;
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+            this.getDealerOrderDetail();
+        },
+        methods: {
+
+            goOrderList() {
+                this.$router.back();
+            },
+
+            goOrderEdit() {
+                this.$router.push({name: 'dealerSaleOrderEdit', query: {id: this.orderId}});
+            },
+
+            getDealerOrderDetail() {
+                Core.Api.Order.getDealerOrderDetail(this.orderId)
+                    .then(res => {
+                        this.detailOrder = res.order;
+                        this.invoice = res.order.invoice_no;
+                        this.customer = res.order.customer;
+
+                        let sn = this.detailOrder.object_sn;
+                        return Core.Api.Vehicle.getVehicleBomBySn(sn);
+                    })
+                    .then(res => {
+                        this.bomList = res.bom;
+                        this.loading = false;
+                        this.getInvoice();
+                    });
+            },
+
+            deleteDealerOrder() {
+                Core.Api.Order.deleteSaleOrder(this.orderId).then(res => {
+                    this.$message({
+                        message: 'Delete successfully',
+                        type: 'success'
+                    });
+                    this.dialogDeleteVisible = false;
+                    this.$router.back();
+                });
+            },
+
+            updateInvoice() {
+                let tip = '';
+                if (!this.invoiceDate) {
+                    tip = 'Please select invoice date';
+                }
+                if (!this.invoiceNo.trim()) {
+                    tip = 'Please input invoice';
+                }
+                if (tip) {
+                    this.$message.warning(tip);
+                    return;
+                }
+
+                if (this.invoiceDate) {
+                    this.invoiceDate = Date.parse(this.invoiceDate) / 1000;
+                    this.invoice = this.invoiceNo + 'date' + this.invoiceDate;
+                }
+                Core.Api.Order.updateSaleOrderInvoice(this.orderId, this.invoice).then(res => {
+                    this.$message({
+                        message: 'Submit successfully',
+                        type: 'success'
+                    });
+                    this.getDealerOrderDetail();
+                });
+            },
+
+            getInvoice() {
+                let index = this.invoice.indexOf('date');
+                //	console.log(index);
+                if (index >= 0) {
+                    this.invoiceDate = this.invoice.substring(index + 4);
+                    this.invoiceNo = this.invoice.substring(0, index);
+                }
+            },
+
+            // 获取零件列表
+            getBom(sn) {
+                Core.Api.Vehicle.getVehicleBomBySn(sn).then(res => {
+                    this.bomList = res.bom;
+//                    let $this = this;
+//                    this.bomList.forEach(function (item, index) {
+//                        if (item.category_root_id === 5) {
+//                            $this.hasBattery = true;
+//                        }
+//                    });
+                });
+            },
+
+            //去看产品详情
+            goToBomDetail(id) {
+                this.$router.push({name: 'dealerBomDetail', query: {id: id}});
+            },
+        }
+
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .dealer-order-detail {
+        height: 100%;
+
+        .loading {
+            height: 150px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content {
+            .title {
+                display: block;
+                margin-top: 15px;
+                padding: 9px 33px;
+                font-size: 18px;
+            }
+
+            .info {
+                margin-top: 15px;
+                background-color: #353945;
+                border-bottom: 1px dotted #2B2F3B;
+                overflow: hidden;
+                .left {
+                    float: left;
+                    width: 465px;
+                    .item {
+                        margin-left: 33px;
+                        line-height: 50px;
+                        overflow: hidden;
+                        height: 50px;
+                        .label {
+                            display: inline-block;
+                            width: 120px;
+                        }
+                        .text {
+                            color: #858890;
+                        }
+
+                    }
+                }
+                .right {
+                    float: left;
+                    width: 465px;
+                    .item {
+                        margin-left: 33px;
+                        line-height: 50px;
+                        overflow: hidden;
+                        height: 50px;
+                        .label {
+                            display: inline-block;
+                            width: 120px;
+                        }
+                        .text {
+
+                            color: #858890;
+                        }
+
+                    }
+                }
+            }
+            .update-invoice {
+                margin-left: 30px;
+                margin-top: 15px;
+                .invoice-input {
+                    width: 260px;
+                }
+                .btn {
+                    margin-left: 30px;
+                }
+            }
+        }
+
+        .table {
+            width: calc(100% - 66px);
+            margin: 10px 33px 20px 33px;
+            border-right: 1px solid rgb(132, 135, 150);
+            border-bottom: 1px solid rgb(132, 135, 150);
+            tr {
+                line-height: 30px;
+                td {
+                    text-align: center;
+                    border-left: 1px solid rgb(132, 135, 150);
+                    border-top: 1px solid rgb(132, 135, 150);
+                }
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// detail.vue?60b987a6

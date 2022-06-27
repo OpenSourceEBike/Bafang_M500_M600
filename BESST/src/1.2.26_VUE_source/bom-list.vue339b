@@ -1,0 +1,444 @@
+<template>
+    <div class="dealer-product-bom-list">
+        <div class="header">
+            <div class="btn-group-inline">
+                <div class="icons">
+                    <div class="icon-item back" @click="back" :title="$t('back')"></div>
+                </div>
+            </div>
+            <div class="btn-group-top">
+                <div class="icons">
+                    <div class="icon-item print" @click="printBom" :title="$t('print')"></div>
+                    <div class="icon-item export" @click="exportBom" :title="$t('export')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content-holder">
+            <div class="content">
+                <div class="part top">
+                    <label>{{ $t('articleNO') }} :</label>
+                    <label class="art-no">{{artNo}}</label>
+                    <div class="img-div">
+                        <div>
+                            <div v-if="!upload.photographSrc" class="no-img">
+                                <span>{{ $t('noPhoto') }}</span>
+                            </div>
+                            <img v-else class="img" :src="upload.photographSrc | getImgUrl"/>
+                        </div>
+                        <el-button type="primary" @click="largeImgDialogVisible = true"
+                                   :disabled="!upload.photographSrc">{{ $t('viewLargerImage') }}
+                        </el-button>
+                    </div>
+                </div>
+                <div class="part list">
+                    <label class="list-title">
+                        {{ $t('list') }}
+                    </label>
+
+                    <table class="bom-list" border="0" cellspacing="0" cellpadding="0" v-if="childList.length > 0">
+                        <thead>
+                        <tr>
+                            <td v-for="item in listHead" class="td head"> {{item}}</td>
+                        </tr>
+                        </thead>
+                        <tr v-for="(item,index) in childList">
+                            <td>
+                                <label>{{item.item_no || '-'}}</label>
+                            </td>
+                            <td>{{item.ext_part_no || '-'}}</td>
+                            <td v-if="item.img">
+                                <div class="td-img">
+                                    <img :src="item.img | getImgUrl"/>
+                                </div>
+                            </td>
+                            <td v-else> - </td>
+                            <td>{{item.name || '-'}}</td>
+                            <td>{{item.needAttr.spec || '-'}}</td>
+                            <td v-if="!item.needAttr.pack"> - </td>
+                            <td v-else>{{item.needAttr.pack}} {{item.needAttr.packUnti | packUnitType}}</td>
+                            <td>{{item.needAttr.packSize || '-' }}</td>
+                            <td>{{item.link_bom || '-'}}</td>
+                            <td>
+                                <el-button type="text" class="btn-underline"
+                                           @click="goToItemDetail(item)">{{ $t('detail') }}
+                                </el-button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--打印显示页面-->
+            <div class="print-bom-content-wrap">
+                <div class="content">
+                    <div class="part top">
+                        <label>{{ $t('articleNO') }} :</label>
+                        <label class="art-no">{{artNo}}</label>
+                        <div class="img-div">
+                            <div v-if="!upload.photographSrc" class="no-img">
+                                <span>{{ $t('noPhoto') }}</span>
+                            </div>
+                            <img v-else class="img" :src="upload.photographSrc | getImgUrl"/>
+                        </div>
+                    </div>
+                    <div class="part list" v-if="childList.length > 0">
+                        <label class="list-title">
+                            {{ $t('list') }}
+                        </label>
+
+                        <table class="bom-list" border="0" cellspacing="0" cellpadding="0">
+                            <thead>
+                            <tr>
+                                <td v-for="item in printTableHead" class="td head"> {{item}}</td>
+                            </tr>
+                            </thead>
+                            <tr v-for="(item,index) in childList">
+                                <td>
+                                    <label>{{item.item_no || '-'}}</label>
+                                </td>
+                                <td>{{item.ext_part_no || '-'}}</td>
+                                <td v-if="item.img">
+                                    <div class="td-img">
+                                        <img :src="item.img | getImgUrl"/>
+                                    </div>
+                                </td>
+                                <td v-else> - </td>
+                                <td>{{item.name || '-'}}</td>
+                                <td>{{item.needAttr.spec || '-'}}</td>
+                                <td v-if="!item.needAttr.pack"> - </td>
+                                <td v-else>{{item.needAttr.pack}} {{item.needAttr.packUnti | packUnitType}}</td>
+                                <td>{{item.needAttr.packSize || '-' }}</td>
+                                <td>{{item.link_bom || '-'}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--大图弹窗-->
+        <el-dialog title="Larger-Image" :visible.sync="largeImgDialogVisible" size="large" class="large-image">
+            <!--<img class="img" src="http://i-3.yiwan.com/2017/4/24/60ec4a83-1eb8-4c96-8b26-c50af6bfe18f.jpg"/>-->
+            <img :src="upload.photographSrc | getImgUrl" class="img"/><br/>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+    import printArea from 'printArea';
+
+    export default {
+        name: 'product-bom-list',
+        data() {
+            return {
+                Core: Core,
+                artNo: '',
+                largeImgDialogVisible: false,
+                listHead: ['ITEM NO.', 'PART NO.', 'PICTURE', 'NAME', 'SPEC', 'PACKAGE', 'PACKAGE SIZE', 'LINK BOM', 'OPERATION'],
+
+                parentId: '',
+                upload: {
+                    url: Core.Const.NET.IMG_UPLOAD_END_POINT,
+                    photographSrc: "",
+                    data: {
+                        token: Core.Data.getToken()
+                    }
+                },
+                childList: [],
+
+                bomId: '',
+                itemNoList: '',
+                bomDetail: '',
+
+                printTableHead: ['ITEM NO.', 'PART NO.', 'PICTURE', 'NAME', 'SPEC', 'PACKAGE', 'PACKAGE SIZE', 'LINK BOM'],
+                authList: []
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Component.Product.BomList,
+                zh: ZH.Component.Product.BomList,
+                de: DE.Component.Product.BomList,
+                nl: NL.Component.Product.BomList
+            }
+        },
+        mounted: function () {
+            // 国际化
+            this.initData();
+            this.$root.eventHub.$on(Core.Const.DATA.KEY_I18N_UPDATE, () => {
+                setTimeout(() => {
+                    this.initData();
+                }, 100);
+            });
+
+            // 获取权限
+            this.authList = this.$store.state.userAuth;
+
+            //parent type  brand =2 component =1
+            this.parentId = this.$route.query.id;
+            this.artNo = this.$route.query.partNo;
+            this.getBomDetail(this.parentId);
+        },
+
+        methods: {
+            initData() {
+                this.listHead = [this.$t('listHead.itemNo'), this.$t('listHead.partNo'), this.$t('listHead.picture'), this.$t('listHead.name'), this.$t('listHead.spec'), this.$t('listHead.package'), this.$t('listHead.packageSize'), this.$t('listHead.linkBom'), this.$t('listHead.operation')];
+                this.printTableHead = [this.$t('listHead.itemNo'), this.$t('listHead.partNo'), this.$t('listHead.picture'), this.$t('listHead.name'), this.$t('listHead.spec'), this.$t('listHead.package'), this.$t('listHead.packageSize'), this.$t('listHead.linkBom')];
+            },
+
+            back() {
+                this.$router.back();
+            },
+
+            getBomDetail(parentId) {
+                Core.Api.Item.getBomDetailByItem(parentId).then(res => {
+                    this.bomDetail = res.bom;
+                    this.bomId = res.bom.id;
+                    this.upload.photographSrc = res.bom.img;
+//                    this.artNo = res.bom.item_part_no;
+//                    this.childList = res.bom.child_list;
+                    if (res.bom.child_list) {
+                        this.childList = [];
+                        this.getShowList(res.bom.child_list, this.childList);
+                    }
+                });
+            },
+
+            printBom() {
+//            	window.print();
+                let print = "div.print-bom-content-wrap";
+
+                let extraCss = "";
+                let mode = "iframe";
+                let close = false;
+                let retainAttr = ['class', 'id', 'style', 'on'];
+                let headElements = '<meta charset="utf-8" />,<meta http-equiv="X-UA-Compatible" content="IE=edge"/>';
+
+                let options = {
+                    mode: mode,
+                    popClose: close,
+                    extraCss: extraCss,
+                    retainAttr: retainAttr,
+                    extraHead: headElements
+                };
+                $(print).printArea(options);
+            },
+
+            exportBom() {
+                let data = {
+                    id: this.bomId
+                };
+//                window.location.assign(Core.Api.getUrl('item/bom-export', data));
+                window.location.href = Core.Api.getUrl('item/bom-export', data);
+            },
+
+            goToItemDetail(item) {
+                this.$router.push({name: 'dealerBomDetail', query: {"id": item.id}});
+            },
+
+
+            getAttrList(attrList) {
+                let needList = {};
+                attrList.forEach(function (item, index) {
+                    switch (item.attr_def_id) {
+                        case 25:
+                            needList.packUnti = item.value;
+                            break;
+                        case 24:
+                            needList.currency = item.value;
+                            break;
+                        case 18:
+                            needList.spec = item.value;
+                            break;
+                        case 19:
+                            needList.pack = item.value;
+                            break;
+                        case 20:
+                            needList.packSize = item.value;
+                            break;
+                        case 5:
+                            needList.price = item.value;
+                            break;
+                    }
+                });
+                return needList;
+            },
+
+            getShowList(list, showList) {
+                list.forEach((item, index) => {
+                    let needPart = {
+                        id: item.id,
+                        selected: false,
+                        needAttr: this.getAttrList(item.attr_list),
+                        name: item.name,
+                        img: item.img,
+                        ext_part_no: item.ext_part_no,
+                        item_no: item.item_no,
+                        link_bom: item.link_bom ? item.link_bom.join(',') : ''
+                    };
+                    showList.push(needPart);
+                });
+            },
+        },
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .dealer-product-bom-list {
+        height: 100%;
+        .content-holder {
+            height: calc(100% - 60px);
+            overflow: auto;
+            .content {
+                width: 100%;
+                .part {
+                    margin: 10px auto;
+                    width: 950px;
+                    background-color: #353945;
+                    padding: 20px 40px;
+                }
+                .top {
+                    margin: 10px auto;
+                    width: 950px;
+                    background-color: #353945;
+                    padding: 20px 40px;
+                    .art-no {
+                        display: inline-block;
+                        width: 200px;
+                        margin-left: 20px;
+                        color: #A1A5B1;
+                        line-height: 30px;
+                    }
+                    .img-div {
+                        margin-top: 20px;
+                        text-align: center;
+                        .upload-icon {
+                            width: 102px;
+                            height: 102px;
+                            margin: 15px;
+                        }
+                        .img {
+                            max-width: 400px;
+                            max-height: 300px;
+                            margin: 15px;
+                        }
+                        .no-img {
+                            padding: 60px;
+                        }
+                        .tip {
+                            padding-bottom: 10px;
+                            .title {
+                                margin-right: 4px;
+                                font-size: 12px;
+                                color: #E26829;
+                            }
+                            .content {
+                                font-size: 12px;
+                                color: #E26829;
+                            }
+                        }
+                    }
+                }
+                .list {
+                    .list-title {
+                        display: inline-block;
+                        height: 30px;
+                        line-height: 30px;
+                        vertical-align: top;
+                    }
+                    .search-input {
+                        width: 200px;
+                        margin-left: 30px;
+                    }
+                    .bom-list {
+                        margin-top: 15px;
+                        width: 100%;
+                        overflow: auto;
+                        /*padding-bottom: 60px;*/
+                        border: 1px solid #2B2F3B;;
+                        thead td {
+                            font-size: 12px;
+                            padding: 10px;
+                            text-align: center;
+                            white-space: nowrap;
+                            color: #A1A5B1;
+                        }
+                        tr {
+                            height: 40px;
+                            &:nth-child(2n+1) {
+                                background: rgba(39, 43, 55, 0.20);
+                                /*box-shadow: 1px 0 0 1px #2B2F3B;*/
+                            }
+                            td {
+                                font-size: 12px;
+                                padding: 0 5px;
+                                text-align: center;
+                                max-width: 150px;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                & img {
+                                    vertical-align: middle;
+                                    width: 30px;
+                                    height: 30px;
+                                }
+                                .item-input {
+                                    width: 40px;
+                                    .el-input__inner {
+                                        text-align: center;
+                                        height: 20px;
+                                        vertical-align: middle;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+            .print-bom-content-wrap {
+                display: none;
+            }
+        }
+        .large-image {
+            text-align: center;
+            .el-dialog--large {
+                width: auto;
+            }
+            .el-dialog__header {
+                display: none;
+            }
+            .el-dialog__body {
+                font-size: 0;
+                width: auto;
+                max-width: 1000px;
+                padding: 0;
+                background-color: white;
+                .img {
+                    max-width: 1000px;
+                    height: auto;
+                }
+            }
+        }
+        .dialogAddItem {
+            .el-dialog--large {
+                width: 1100px;
+            }
+        }
+        .td-img {
+            margin: 0 auto;
+            width: 30px;
+            height: 30px;
+            background-color: white;
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// bom-list.vue?4e90a337

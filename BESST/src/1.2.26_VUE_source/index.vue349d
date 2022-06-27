@@ -1,0 +1,120 @@
+<template>
+    <div class="dealer-index">
+        <div class="operation ">
+            <div class="item" @click="goOrder" v-if="authList['order.menu']">
+                <div class="order-list"></div>
+                <label class="label">{{ $t('order') }}</label>
+            </div>
+            <div class="item" @click="goDiagnosis" v-if="authList['diagnose.menu']">
+                <div class="diagnosis"></div>
+                <label class="label">{{ $t('diagnosis') }}</label>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Core from 'core/core';
+    import ZH from 'src/assets/lang/zh';
+    import EN from 'src/assets/lang/en';
+    import DE from 'src/assets/lang/de';
+    import NL from 'src/assets/lang/nl';
+
+    export default {
+        data() {
+            return {
+                authList: [],
+            }
+        },
+        i18n: {
+            messages: {
+                en: EN.Dealer.Index,
+                zh: ZH.Dealer.Index,
+                de: DE.Dealer.Index,
+                nl: NL.Dealer.Index
+            }
+        },
+        mounted(){
+            this.getAuth();
+        },
+        methods: {
+            goOrder() {
+                this.$router.push({name: 'dealerSaleOrderList'});
+            },
+
+            goDiagnosis() {
+                this.$root.eventHub.$emit(Core.Const.EVENT_HUB.OPEN_MENU, '/dealer/diagnosis');
+                this.$router.push({name: 'dealerDiagnosisNormal'});
+            },
+
+            getAuth(){
+                let $this = this;
+                Core.Api.Auth.authDetail()
+                    .then(res => {
+                        $this.authList = res.auth;
+//                        Core.Data.setAuth(res.auth);
+                        $this.$store.commit("currentAuth", $this.authList);
+                        let authFlag = false;
+
+                        for (let i in $this.authList) {
+                            if ($this.authList[i]) {
+                                authFlag = true;
+                                break;
+                            }
+                        }
+                        if (!authFlag) {
+                            $this.$root.eventHub.$emit(Core.Const.EVENT_HUB.NO_AUTH);
+                        }
+                    });
+            },
+
+        },
+    }
+</script>
+
+<style lang="scss" rel="stylesheet/scss">
+    .dealer-index {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 530px;
+        min-height: 360px;
+        .operation {
+            .item {
+                text-align: center;
+                display: inline-block;
+                width: 230px;
+                margin: 15px;
+                border-radius: 10px;
+                background-color: #98B42C;
+                padding-bottom: 20px;
+                cursor: pointer;
+
+                .order-list {
+                    height: 180px;
+                    background: url('../../assets/images/icon/icon-order.png') no-repeat center;
+                    background-size: 60px;
+                }
+
+                .diagnosis {
+                    height: 180px;
+                    background: url('../../assets/images/icon/icon-diagnosis.png') no-repeat center;
+                    background-size: 80px;
+                }
+
+                .label {
+                    margin: auto;
+                    font-size: 26px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+</style>
+
+
+
+// WEBPACK FOOTER //
+// index.vue?70d0ebe6

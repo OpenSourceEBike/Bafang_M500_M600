@@ -1,0 +1,234 @@
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "create-project"
+  }, [_c('h1', {
+    staticStyle: {
+      "text-align": "center",
+      "padding-top": "10px"
+    }
+  }, [_vm._v("客户项目建档")]), _vm._v(" "), _c('div', {
+    staticClass: "icons go-back",
+    on: {
+      "click": _vm.back
+    }
+  }, [_c('div', {
+    staticClass: "icon-item back",
+    attrs: {
+      "title": "Back"
+    }
+  })]), _vm._v(" "), _c('el-form', {
+    staticClass: "demo-form-inline",
+    attrs: {
+      "inline": true
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "客户名称:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "Customer Name",
+      "clearable": ""
+    },
+    model: {
+      value: (_vm.customerNameInput),
+      callback: function($$v) {
+        _vm.customerNameInput = $$v
+      },
+      expression: "customerNameInput"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "客户代号:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "Customer No.",
+      "clearable": ""
+    },
+    model: {
+      value: (_vm.customerNumberInput),
+      callback: function($$v) {
+        _vm.customerNumberInput = $$v
+      },
+      expression: "customerNumberInput"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "项目:"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "placeholder": "请选择"
+    },
+    on: {
+      "change": _vm.getSystem
+    },
+    model: {
+      value: (_vm.selectedSystem),
+      callback: function($$v) {
+        _vm.selectedSystem = $$v
+      },
+      expression: "selectedSystem"
+    }
+  }, _vm._l((_vm.systemList), function(item, index) {
+    return _c('el-option', {
+      key: index,
+      attrs: {
+        "label": item.name,
+        "value": item.value
+      }
+    })
+  }))], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "创建日期:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "Create Date",
+      "clearable": ""
+    },
+    model: {
+      value: (_vm.customerCreateDate),
+      callback: function($$v) {
+        _vm.customerCreateDate = $$v
+      },
+      expression: "customerCreateDate"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "客户订单号:"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "Create Order No.",
+      "clearable": ""
+    },
+    model: {
+      value: (_vm.customerOrderNumber),
+      callback: function($$v) {
+        _vm.customerOrderNumber = $$v
+      },
+      expression: "customerOrderNumber"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', [_c('div', {
+    staticClass: "btn-group-inline-icon"
+  }, [_c('div', {
+    staticClass: "icons"
+  }, [_c('div', {
+    staticClass: "icon-item search",
+    attrs: {
+      "title": "search"
+    },
+    on: {
+      "click": _vm.onSearchClientInfo
+    }
+  })])])]), _vm._v(" "), _c('el-form-item', [_c('el-button', {
+    staticStyle: {
+      "margin-left": "20px"
+    },
+    on: {
+      "click": _vm.saveClientOrder
+    }
+  }, [_vm._v("save")])], 1)], 1), _vm._v(" "), _c('el-table', {
+    staticStyle: {
+      "width": "100%"
+    },
+    attrs: {
+      "data": _vm.tableData,
+      "max-height": "250"
+    }
+  }, [_vm._l((_vm.headData), function(item, index) {
+    return _c('el-table-column', {
+      key: index,
+      attrs: {
+        "prop": item.name,
+        "label": item.label
+      }
+    })
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "fixed": "right",
+      "label": "操作"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return [_c('el-button', {
+          attrs: {
+            "type": "text",
+            "size": "small"
+          },
+          nativeOn: {
+            "click": function($event) {
+              $event.preventDefault();
+              _vm.showDeleteDialog(scope.$index, _vm.tableData)
+            }
+          }
+        }, [_vm._v("\n            移除\n            ")]), _vm._v(" "), _c('el-button', {
+          attrs: {
+            "type": "text",
+            "size": "small"
+          },
+          nativeOn: {
+            "click": function($event) {
+              $event.preventDefault();
+              _vm.editRow(scope.$index, _vm.tableData)
+            }
+          }
+        }, [_vm._v("\n             编辑\n            ")]), _vm._v(" "), _c('el-button', {
+          attrs: {
+            "type": "text",
+            "size": "small"
+          },
+          nativeOn: {
+            "click": function($event) {
+              $event.preventDefault();
+              _vm.toProduct(scope.$index, _vm.tableData)
+            }
+          }
+        }, [_vm._v("\n             生产\n            ")])]
+      }
+    }])
+  })], 2), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": _vm.$t('Delete Project Item'),
+      "visible": _vm.dialogDeleteVisible,
+      "size": "tiny"
+    },
+    on: {
+      "update:visible": function($event) {
+        _vm.dialogDeleteVisible = $event
+      }
+    }
+  }, [_c('span', [_vm._v(_vm._s(_vm.$t('Are you sure delete current item?')))]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "slot": "footer"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "preview"
+    },
+    on: {
+      "click": _vm.deleteProjectItem
+    }
+  }, [_vm._v(_vm._s(_vm.$t('confirm')))]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.dialogDeleteVisible = false
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.$t('cancel')))])], 1)])], 1)
+},staticRenderFns: []}
+
+
+//////////////////
+// WEBPACK FOOTER
+// ./node_modules/vue-loader/lib/template-compiler?{"id":"data-v-71728cca","hasScoped":false}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/views/component/client/create.vue
+// module id = 2014
+// module chunks = 73
