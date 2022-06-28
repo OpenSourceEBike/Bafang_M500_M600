@@ -39,18 +39,13 @@ Help test our firmwares, join discussions, fork the repository or send us releva
 
 See the **[notes about the maintenance and repair of M500/M600 motor](maintenance_and_repair.md)**.
 
+## Improve your Bafang M500/M600 EBike 
+
+Build your own **[EasyDIY OpenSource display](https://opensourceebike.github.io/)** that is a fully replacement of the original display, but let you configure the motor max speed and wheel perimeter. It also shows you advanced data like battery current, voltage and motor power. And for the ones that use a cycling GPS computer Garmin Edge, this display also implements the ANT+ LEV EBike wireless and sends to the Edge the battery SOC and assist level, as also let you change the Edge page by clicking on the remote button:
+
+![](https://opensourceebike.github.io/bafang_display/04.png)
+
 ## Ideas for projects
-### DIY OpenSource display
-
-Adapt the [EBike DIY OpenSource display](https://opensourceebike.github.io/) to control and show the motor data. We know the CAN commands to read all data from the controller and to change max speed and wheel diameter. It should also be possible to flash the motor firmware. A display button combination can be used to quick change max speed (offroad mode).
-
-Current status - see this video:
-
-[![](https://img.youtube.com/vi/6Nxme5Gt-_c/0.jpg)](https://www.youtube.com/watch?v=6Nxme5Gt-_c)
-
-
-Pictures of the [EBike DIY OpenSource display](https://opensourceebike.github.io/):<br>
-![](diy_display-small.png)
 
 ### Develop our own firmware for the original motor controller
 
