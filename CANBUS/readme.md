@@ -145,11 +145,19 @@ https://ornias1993.github.io/Bafang_M500_M600/index.html
 ##### BESST Speed/Wheel/Circumference Setup
 
 ```
+Decoding example: 05103203 6 70 17 B5 01 C0 08
 ID: 05103203
-Numbers Byte: 6
-Speed Limit Byte 0/1    : 60.00km/h(0x1770) = 70 17 / 25.00km/h(0x09C4) = C4 09
-Wheel Size Byte 2/3     : 29.0(0x01D0) = D0 01 / 27.5(0x01B5) = B5 01
-Circumference Byte 4/5  : 2280(0x08E8) = E8 08 / 2240mm(0x08C0) = C0 08
+Speed Limit Byte   1/0	: 70 17 -> 0x1770              = 6000   => 60.00km/h
+Wheel Size Byte    3/2	: B5 01 -> 0x01B5 -> 0x01B . 5 = 27 . 5 => 27.5"
+Circumference Byte 5/4	: C0 08 -> 0x08C0              = 2240   => 2240mm
+
+Decoding example: 05103203 6 C4 09 D0 01 C0 08
+ID: 05103203
+Speed Limit Byte   1/0	: C4 09 -> 0x09C4              = 2500   => 25.00km/h
+Wheel Size Byte    3/2	: D0 01 -> 0x01D0 -> 0x01D . 0 = 29 . 0 => 29.0"
+Circumference Byte 5/4	: E8 08 -> 0x08E8              = 2280   => 2280mm
+
+Little-Endian byte order!
 ```
 
 ##### BESST Torque Sensor Calibration
@@ -181,23 +189,35 @@ Level Byte 6/7			: FF FF
 ##### Controller Speed/Current/Voltage/Temperature Informations
 
 ```
+Decoding example: 02F83201 8 C4 09 E8 03 E2 14 32 3C
 ID: 02F83201
 Numbers Byte: 8
-Speed Byte 0/1			: 25.00km/h(0x09C4) = C4 09
-Current Byte 2/3		: 10.00A(0x03E8) = E8 03
-Voltage Byte 4/5		: 53.46V(0x14E2) = E2 14
-Temp. Control. Byte 6   : 10°C = 10+40=50(0x32) = 32
-Temp. Motor Byte 7	    : 20°C = 20+40=60(0x3C) = 3C
+Speed Byte   1/0	: C4 09 -> 0x09C4 = 2500 => 25.00km/h
+Current Byte 3/2	: E8 03 -> 0x03E8 = 1000 => 10.00A
+Voltage Byte 5/4	: E2 14 -> 0x14E2 = 5346 => 53.46V
+Temp. Control. Byte 6	: 32    -> 0x32   = 50   -> 50 - 40 = 10 => 10°C
+Temp. Motor Byte 7	: 3C    -> 0x3C   = 60   -> 60 - 40 = 20 => 20°C
+
+Little-Endian byte order!
 ```
 
 ##### Controller Speed/Wheel/Circumference Informations
 
 ```
+Decoding example: 02F83203 6 70 17 B5 01 C0 08
 ID: 02F83203
-Numbers Byte: 6
-Speed Limit Byte 0/1	: 60.00km/h(0x1770) = 70 17 / 25.00km/h(0x09C4) = C4 09
-Wheel Size Byte 2/3		: 29.0(0x01D0) = D0 01 / 27.5(0x01B5) = B5 01
-Circumference Byte 4/5	: 2280(0x08E8) = E8 08 / 2240mm(0x08C0) = C0 08
+Speed Limit Byte   1/0 : 70 17 -> 0x1770              = 6000   => 60.00km/h
+Wheel Size Byte    3/2 : B5 01 -> 0x01B5 -> 0x01B . 5 = 27 . 5 => 27.5"
+Circumference Byte 5/4 : C0 08 -> 0x08C0              = 2240   => 2240mm
+
+Decoding example: 02F83203 6 C4 09 D0 01 C0 08
+ID: 02F83203
+Speed Limit Byte   1/0 : C4 09 -> 0x09C4              = 2500   => 25.00km/h
+Wheel Size Byte    3/2 : D0 01 -> 0x01D0 -> 0x01D . 0 = 29 . 0 => 29.0"
+Circumference Byte 5/4 : E8 08 -> 0x08E8              = 2280   => 2280mm
+
+Little-Endian byte order!
+
 ```
 
 ##### Controller State Informations
