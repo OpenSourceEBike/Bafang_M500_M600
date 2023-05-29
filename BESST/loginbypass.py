@@ -52,10 +52,13 @@ class BESST_server(BaseHTTPRequestHandler):
 
 def run(handler_class=BESST_server, port=80):
         ip_lookup = socket.gethostbyname('api.besst.bafang-service.com')
-        print(("test.api.besst.bafang-service.com forwards to %s"%ip_lookup))
+        ip_lookup2 = socket.gethostbyname('test.api.besst.bafang-service.com')
+        print(("api.besst.bafang-service.com forwards to %s"%ip_lookup))
+        print(("test.api.besst.bafang-service.com forwards to %s"%ip_lookup2))
         httpd = socketserver.TCPServer(("", port), handler_class)
         print("Starting httpd...")
         httpd.serve_forever()
+
 
 
 if __name__ == "__main__":
