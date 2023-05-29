@@ -17,7 +17,7 @@ class BESST_server(BaseHTTPRequestHandler):
 			self.send_header('Content-type', 'application/json;charset:UTF-8\r\n')
 			self.end_headers()
 			#user type: 1 brand, 2 dealer, 3 assembler, 4 component, 5 service center, 6 dealer for tool access
-			userdata = json.dumps( {'code':0,'data':{'account_type':[1,2,3,6,7],'user':{'status':6,'org': {'id': 25, 'type': 6}},'token':123}} )
+			userdata = json.dumps( {'code':0,'data':{'account_type':[1,2,3,6,7],'user':{'status':6,'name':'hacked','org': {'id': 1340, 'type': 6}},'token':'9e393b1ae594706896a9b037dc0dd9b9'}} )
 			self.wfile.write(userdata.encode('utf-8'))
 		elif self.path == '/client/1/auth/detail':
 			print("sending auth details")
