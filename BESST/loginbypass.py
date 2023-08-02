@@ -8,6 +8,13 @@ import socketserver
 import json
 import socket
 
+bafang_api_domains = [
+    'api.besst.bafang-service.com',
+	'test.api.besst.bafang-service.com',
+	'eu-central-1.api.besst.bafang-service.com',
+	'bafang-besst.oss-cn-shanghai.aliyuncs.com'
+]
+
 class BESST_server(BaseHTTPRequestHandler):
 	def do_GET(self):
 		#data_string = self.rfile.read(int(self.headers['Content-Length']))
@@ -51,15 +58,12 @@ class BESST_server(BaseHTTPRequestHandler):
 
 
 def run(handler_class=BESST_server, port=80):
-        ip_lookup = socket.gethostbyname('api.besst.bafang-service.com')
-        ip_lookup2 = socket.gethostbyname('test.api.besst.bafang-service.com')
-        print(("api.besst.bafang-service.com forwards to %s"%ip_lookup))
-        print(("test.api.besst.bafang-service.com forwards to %s"%ip_lookup2))
+        for d in bafang_api_domains:
+            print(f"{d} forwards to {socket.gethostbyname(d)}")
+
         httpd = socketserver.TCPServer(("", port), handler_class)
         print("Starting httpd...")
         httpd.serve_forever()
-
-
 
 if __name__ == "__main__":
 	run()
