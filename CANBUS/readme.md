@@ -285,9 +285,9 @@ Progressive Byte 3	: 01
 ##### Battery
 
 ```
-04F83400
-04F83401
-04F83402
+04F83400 every 200ms
+04F83401 every 100ms
+04F83402 every 500ms
 ```
 
 ## CAN messages ondemand
