@@ -148,6 +148,7 @@ class BESST_server(BaseHTTPRequestHandler):
                             "file.error.add",
                             "file.error.edit",
                             "auth_material",
+                            "firmware.menu",
                         ]
                     },
                 }
