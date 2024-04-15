@@ -14,4 +14,4 @@ You might need to set InnoMaker to "loopback mode" for the settings to stick.
 
 `TODO: Insert images`
 
-(https://endless-sphere.com/forums/viewtopic.php?f=28&t=100777&start=400#p1595302)
+(https://endless-sphere.com/sphere/threads/bafang-m500-m600-thread.100777/page-17#post-1595302)
