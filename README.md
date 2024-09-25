@@ -4,6 +4,7 @@
   - [Project structure](#project-structure)
   - [How to build your EBike with M500/M600 motor](#how-to-build-your-ebike-with-m500m600-motor)
   - [Maintenance and repair](#maintenance-and-repair)
+  - [Configuration and diagnostics](#configuration-and-diagnostics)
   - [Ideas for projects](#ideas-for-projects)
     - [DIY OpenSource display](#diy-opensource-display)
     - [Develop our own firmware for the original motor controller](#develop-our-own-firmware-for-the-original-motor-controller)
@@ -38,6 +39,10 @@ Help test our firmwares, join discussions, fork the repository or send us releva
 ## Maintenance and repair
 
 See the **[notes about the maintenance and repair of M500/M600 motor](maintenance_and_repair.md)**.
+
+## Configuration and diagnostics
+
+You can use software called [OpenBafangTool](https://github.com/andrey-pr/OpenBafangTool) to configurate your motor (and other components) or to get diagnostic information (data from inner sensors, error codes)
 
 ## Improve your Bafang M500/M600 EBike 
 
