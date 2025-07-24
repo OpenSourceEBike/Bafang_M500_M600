@@ -174,16 +174,17 @@ ID: 05116201
 Numbers Bytes: 0
 ```
 
-##### Controller % Battery/Level Informations
+##### Controller % Battery/Cadans/Torque/Range Informations
 
 ```
+Decoding example: 02F83200 8 32 0B 00 22 38 01 34 00
 ID: 02F83200
 Numbers Byte: 8
-% Battery Byte 0	    : 50%(0x32) = 32
-Byte 1/2/3              : 00 00 00
-Byte 4                  : EE
-Byte 5                  : 02
-Level Byte 6/7			: FF FF
+% Battery Byte 0	                    : 0x32        -> 0x32        = 50 => 50%
+Distance since power on Byte 2/1        : 0x00 0x0B   -> 0x000B      = 11 => 0,11KM
+Cadans Byte 3                           : 0x22        -> 0x22        = 34 => 34RPM
+mV Torque Byte 4/5                      : 0x01 0x38   -> 0x138       = 312 => 312mV
+KM range Byte 6/7			            : 0x00 0x34   -> 0x0034      = 52 => 52KM
 ```
 
 ##### Controller Speed/Current/Voltage/Temperature Informations
