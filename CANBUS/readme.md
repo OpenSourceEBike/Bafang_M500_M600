@@ -138,7 +138,7 @@ OPT_CLIENT_NO           : 0x04
 ```
 
 These can be used using our CANBUS frameid calculator here:
-https://ornias1993.github.io/Bafang_M500_M600/index.html
+[https://www.onlinegdb.com/NBfCUWKTt](https://www.onlinegdb.com/NBfCUWKTt)
 
 ## Known working CANBUS commands
 
@@ -180,10 +180,11 @@ Numbers Bytes: 0
 ID: 02F83200
 Numbers Byte: 8
 % Battery Byte 0	    : 50%(0x32) = 32
-Byte 1/2/3              : 00 00 00
+Byte 1/2                : 00 00
+Cadence Byte 3          : rpms directly
 Byte 4                  : EE
 Byte 5                  : 02
-Level Byte 6/7			: FF FF
+Range Byte 6/7          : 2C 27 -> 0x272C = 10028 = 100.28km
 ```
 
 ##### Controller Speed/Current/Voltage/Temperature Informations
