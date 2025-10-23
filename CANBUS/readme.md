@@ -238,8 +238,8 @@ ID: 03106300
 Numbers Byte: 4
 Levels number Byte 0	: 03 / 05 / 09
 Set Level Byte 1		: Walk = 06 / 0 = 00 / 1 = 01 / 2 = 0B / 3 = 0C / 4 = 0D / 5 = 02 / 6 = 15 / 7 = 16 / 8 = 17 / 9 = 03
-Button "+" Byte 2      	: Off = 00 / On = 02 / Off with light = 01 / On with light = 03
-Boost mode Byte 3	    : Off = 01 / On = 00 (after two seconds of pressing the power button)
+Byte 2      	        : Bit 0: Light, Bit 2: Button +, Bit 5 Button -
+Boost mode Byte 3	    : Off = 01 / On = 00 (after two seconds of pressing the power button) (is always 1 with my DPC080 display)
 ```
 
 ##### Torque Sensor
