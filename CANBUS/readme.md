@@ -180,11 +180,13 @@ Numbers Bytes: 0
 ID: 02F83200
 Numbers Byte: 8
 % Battery Byte 0	    : 50%(0x32) = 32
-Byte 1/2                : 00 00
+distance Byte 1         : distance in 10m, increases up to 100 (=1km), then resets to zero. Is necessary to make display count the trip, ODO .... information
+Byte 2                  : unknown
 Cadence Byte 3          : rpms directly
-Byte 4                  : EE
-Byte 5                  : 02
-Range Byte 6/7          : 2C 27 -> 0x272C = 10028 = 100.28km
+Torque Signal Byte 4    : torquesensor mV LSB
+Torque Signal Byte 5    : torquesensor mV MSB
+Range Byte 6            : Range in km LSB 2C 27 -> 0x272C = 10028 = 100.28km
+Range Byte 7            : Range in km MSB 2C 27 -> 0x272C = 10028 = 100.28km
 ```
 
 ##### Controller Speed/Current/Voltage/Temperature Informations
