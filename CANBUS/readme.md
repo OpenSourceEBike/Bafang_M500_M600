@@ -137,8 +137,11 @@ OPT_SN                  : 0x03
 OPT_CLIENT_NO           : 0x04
 ```
 
-These can be used using our CANBUS frameid calculator here:
-[https://www.onlinegdb.com/NBfCUWKTt](https://www.onlinegdb.com/NBfCUWKTt)
+These can be used for our CANBUS frameid calculator. Fork this, put in your parameter and press "run":  
+[ID calulator](https://www.onlinegdb.com/NBfCUWKTt)
+
+To decode a logged ID fork this and put in your ID:  
+[ID decoder](https://onlinegdb.com/LirIynWGa)
 
 ## Known working CANBUS commands
 
