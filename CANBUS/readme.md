@@ -166,7 +166,7 @@ Little-Endian byte order!
 ##### BESST Torque Sensor Calibration
 
 ```
-ID: 05106101
+ID: 05106100
 Numbers Byte: 0
 ```
 
