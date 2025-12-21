@@ -166,14 +166,14 @@ Little-Endian byte order!
 ##### BESST Torque Sensor Calibration
 
 ```
-ID: 05106100
+ID: 05106101
 Numbers Byte: 0
 ```
 
 ##### BESST Position Sensor Calibration
 
 ```
-ID: 05116201
+ID: 05116200
 Numbers Bytes: 0
 ```
 
